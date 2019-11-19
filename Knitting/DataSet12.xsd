@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="DataSet12" targetNamespace="http://tempuri.org/DataSet12.xsd" xmlns:mstns="http://tempuri.org/DataSet12.xsd" xmlns="http://tempuri.org/DataSet12.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections>
+          <Connection AppSettingsObjectName="Settings" AppSettingsPropertyName="TTI2ConnectionString" ConnectionStringObject="" IsAppSettingsProperty="true" Modifier="Assembly" Name="TTI2ConnectionString (Settings)" ParameterPrefix="@" PropertyReference="ApplicationSettings.Knitting.Properties.Settings.GlobalReference.Default.TTI2ConnectionString" Provider="System.Data.SqlClient" />
+        </Connections>
+        <Tables />
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="DataSet12" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="DataSet12" msprop:Generator_UserDSName="DataSet12">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="DataTable1" msprop:Generator_TableClassName="DataTable1DataTable" msprop:Generator_TableVarName="tableDataTable1" msprop:Generator_TablePropName="DataTable1" msprop:Generator_RowDeletingName="DataTable1RowDeleting" msprop:Generator_RowChangingName="DataTable1RowChanging" msprop:Generator_RowEvHandlerName="DataTable1RowChangeEventHandler" msprop:Generator_RowDeletedName="DataTable1RowDeleted" msprop:Generator_UserTableName="DataTable1" msprop:Generator_RowChangedName="DataTable1RowChanged" msprop:Generator_RowEvArgName="DataTable1RowChangeEvent" msprop:Generator_RowClassName="DataTable1Row">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Pallet_x0020_No" msprop:Generator_ColumnVarNameInTable="columnPallet_No" msprop:Generator_ColumnPropNameInRow="Pallet_No" msprop:Generator_ColumnPropNameInTable="Pallet_NoColumn" msprop:Generator_UserColumnName="Pallet No" type="xs:string" minOccurs="0" />
+              <xs:element name="Yarn_Description" msprop:Generator_ColumnVarNameInTable="columnYarn_Description" msprop:Generator_ColumnPropNameInRow="Yarn_Description" msprop:Generator_ColumnPropNameInTable="Yarn_DescriptionColumn" msprop:Generator_UserColumnName="Yarn_Description" type="xs:string" minOccurs="0" />
+              <xs:element name="Tex_Count" msprop:Generator_ColumnVarNameInTable="columnTex_Count" msprop:Generator_ColumnPropNameInRow="Tex_Count" msprop:Generator_ColumnPropNameInTable="Tex_CountColumn" msprop:Generator_UserColumnName="Tex_Count" type="xs:decimal" minOccurs="0" />
+              <xs:element name="Twist" msprop:Generator_ColumnVarNameInTable="columnTwist" msprop:Generator_ColumnPropNameInRow="Twist" msprop:Generator_ColumnPropNameInTable="TwistColumn" msprop:Generator_UserColumnName="Twist" type="xs:decimal" minOccurs="0" />
+              <xs:element name="Identification" msprop:Generator_ColumnVarNameInTable="columnIdentification" msprop:Generator_ColumnPropNameInRow="Identification" msprop:Generator_ColumnPropNameInTable="IdentificationColumn" msprop:Generator_UserColumnName="Identification" type="xs:string" minOccurs="0" />
+              <xs:element name="No_Of_Cones" msprop:Generator_ColumnVarNameInTable="columnNo_Of_Cones" msprop:Generator_ColumnPropNameInRow="No_Of_Cones" msprop:Generator_ColumnPropNameInTable="No_Of_ConesColumn" msprop:Generator_UserColumnName="No_Of_Cones" type="xs:int" minOccurs="0" />
+              <xs:element name="Weight" msprop:Generator_ColumnVarNameInTable="columnWeight" msprop:Generator_ColumnPropNameInRow="Weight" msprop:Generator_ColumnPropNameInTable="WeightColumn" msprop:Generator_UserColumnName="Weight" type="xs:decimal" minOccurs="0" />
+              <xs:element name="YarnReturnNo" msprop:Generator_ColumnVarNameInTable="columnYarnReturnNo" msprop:Generator_ColumnPropNameInRow="YarnReturnNo" msprop:Generator_ColumnPropNameInTable="YarnReturnNoColumn" msprop:Generator_UserColumnName="YarnReturnNo" type="xs:string" minOccurs="0" />
+              <xs:element name="KnitOrderNo" msprop:Generator_ColumnVarNameInTable="columnKnitOrderNo" msprop:Generator_ColumnPropNameInRow="KnitOrderNo" msprop:Generator_ColumnPropNameInTable="KnitOrderNoColumn" msprop:Generator_UserColumnName="KnitOrderNo" type="xs:string" minOccurs="0" />
+              <xs:element name="ToStoreDescription" msprop:Generator_ColumnVarNameInTable="columnToStoreDescription" msprop:Generator_ColumnPropNameInRow="ToStoreDescription" msprop:Generator_ColumnPropNameInTable="ToStoreDescriptionColumn" msprop:Generator_UserColumnName="ToStoreDescription" type="xs:string" minOccurs="0" />
+              <xs:element name="Transaction_Date" msprop:Generator_ColumnVarNameInTable="columnTransaction_Date" msprop:Generator_ColumnPropNameInRow="Transaction_Date" msprop:Generator_ColumnPropNameInTable="Transaction_DateColumn" msprop:Generator_UserColumnName="Transaction_Date" type="xs:dateTime" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

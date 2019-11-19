@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="DataSet17" targetNamespace="http://tempuri.org/DataSet17.xsd" xmlns:mstns="http://tempuri.org/DataSet17.xsd" xmlns="http://tempuri.org/DataSet17.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections />
+        <Tables />
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="DataSet17" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="DataSet17" msprop:Generator_UserDSName="DataSet17">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="DataTable1" msprop:Generator_TableClassName="DataTable1DataTable" msprop:Generator_TableVarName="tableDataTable1" msprop:Generator_RowChangedName="DataTable1RowChanged" msprop:Generator_TablePropName="DataTable1" msprop:Generator_RowDeletingName="DataTable1RowDeleting" msprop:Generator_RowChangingName="DataTable1RowChanging" msprop:Generator_RowEvHandlerName="DataTable1RowChangeEventHandler" msprop:Generator_RowDeletedName="DataTable1RowDeleted" msprop:Generator_RowClassName="DataTable1Row" msprop:Generator_UserTableName="DataTable1" msprop:Generator_RowEvArgName="DataTable1RowChangeEvent">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Pk" msprop:Generator_ColumnVarNameInTable="columnPk" msprop:Generator_ColumnPropNameInRow="Pk" msprop:Generator_ColumnPropNameInTable="PkColumn" msprop:Generator_UserColumnName="Pk" type="xs:int" minOccurs="0" />
+              <xs:element name="CutSheet_Number" msprop:Generator_ColumnVarNameInTable="columnCutSheet_Number" msprop:Generator_ColumnPropNameInRow="CutSheet_Number" msprop:Generator_ColumnPropNameInTable="CutSheet_NumberColumn" msprop:Generator_UserColumnName="CutSheet_Number" type="xs:string" minOccurs="0" />
+              <xs:element name="CutSheet_Style" msprop:Generator_ColumnVarNameInTable="columnCutSheet_Style" msprop:Generator_ColumnPropNameInRow="CutSheet_Style" msprop:Generator_ColumnPropNameInTable="CutSheet_StyleColumn" msprop:Generator_UserColumnName="CutSheet_Style" type="xs:string" minOccurs="0" />
+              <xs:element name="CutSheet_Colour" msprop:Generator_ColumnVarNameInTable="columnCutSheet_Colour" msprop:Generator_ColumnPropNameInRow="CutSheet_Colour" msprop:Generator_ColumnPropNameInTable="CutSheet_ColourColumn" msprop:Generator_UserColumnName="CutSheet_Colour" type="xs:string" minOccurs="0" />
+              <xs:element name="CutSheet_Required_Date" msprop:Generator_ColumnVarNameInTable="columnCutSheet_Required_Date" msprop:Generator_ColumnPropNameInRow="CutSheet_Required_Date" msprop:Generator_ColumnPropNameInTable="CutSheet_Required_DateColumn" msprop:Generator_UserColumnName="CutSheet_Required_Date" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="CutSheet_Completed_Date" msprop:Generator_ColumnVarNameInTable="columnCutSheet_Completed_Date" msprop:Generator_ColumnPropNameInRow="CutSheet_Completed_Date" msprop:Generator_ColumnPropNameInTable="CutSheet_Completed_DateColumn" msprop:Generator_UserColumnName="CutSheet_Completed_Date" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="CutSheet_Days" msprop:Generator_ColumnVarNameInTable="columnCutSheet_Days" msprop:Generator_ColumnPropNameInRow="CutSheet_Days" msprop:Generator_ColumnPropNameInTable="CutSheet_DaysColumn" msprop:Generator_UserColumnName="CutSheet_Days" type="xs:int" minOccurs="0" />
+              <xs:element name="CutSheet_Units" msprop:Generator_ColumnVarNameInTable="columnCutSheet_Units" msprop:Generator_ColumnPropNameInRow="CutSheet_Units" msprop:Generator_ColumnPropNameInTable="CutSheet_UnitsColumn" msprop:Generator_UserColumnName="CutSheet_Units" type="xs:int" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="DataTable2" msprop:Generator_TableClassName="DataTable2DataTable" msprop:Generator_TableVarName="tableDataTable2" msprop:Generator_RowChangedName="DataTable2RowChanged" msprop:Generator_TablePropName="DataTable2" msprop:Generator_RowDeletingName="DataTable2RowDeleting" msprop:Generator_RowChangingName="DataTable2RowChanging" msprop:Generator_RowEvHandlerName="DataTable2RowChangeEventHandler" msprop:Generator_RowDeletedName="DataTable2RowDeleted" msprop:Generator_RowClassName="DataTable2Row" msprop:Generator_UserTableName="DataTable2" msprop:Generator_RowEvArgName="DataTable2RowChangeEvent">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Pk" msprop:Generator_ColumnVarNameInTable="columnPk" msprop:Generator_ColumnPropNameInRow="Pk" msprop:Generator_ColumnPropNameInTable="PkColumn" msprop:Generator_UserColumnName="Pk" type="xs:int" minOccurs="0" />
+              <xs:element name="FromDate" msprop:Generator_ColumnVarNameInTable="columnFromDate" msprop:Generator_ColumnPropNameInRow="FromDate" msprop:Generator_ColumnPropNameInTable="FromDateColumn" msprop:Generator_UserColumnName="FromDate" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="ToDate" msprop:Generator_ColumnVarNameInTable="columnToDate" msprop:Generator_ColumnPropNameInRow="ToDate" msprop:Generator_ColumnPropNameInTable="ToDateColumn" msprop:Generator_UserColumnName="ToDate" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="Title" msprop:Generator_ColumnVarNameInTable="columnTitle" msprop:Generator_ColumnPropNameInRow="Title" msprop:Generator_ColumnPropNameInTable="TitleColumn" msprop:Generator_UserColumnName="Title" type="xs:string" minOccurs="0" />
+              <xs:element name="ErrorLog" msprop:Generator_ColumnVarNameInTable="columnErrorLog" msprop:Generator_ColumnPropNameInRow="ErrorLog" msprop:Generator_ColumnPropNameInTable="ErrorLogColumn" msprop:Generator_UserColumnName="ErrorLog" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+  <xs:annotation>
+    <xs:appinfo>
+      <msdata:Relationship name="DataTable2_DataTable1" msdata:parent="DataTable2" msdata:child="DataTable1" msdata:parentkey="Pk" msdata:childkey="Pk" msprop:Generator_UserChildTable="DataTable1" msprop:Generator_ChildPropName="GetDataTable1Rows" msprop:Generator_UserRelationName="DataTable2_DataTable1" msprop:Generator_ParentPropName="DataTable2Row" msprop:Generator_RelationVarName="relationDataTable2_DataTable1" msprop:Generator_UserParentTable="DataTable2" />
+    </xs:appinfo>
+  </xs:annotation>
+</xs:schema>

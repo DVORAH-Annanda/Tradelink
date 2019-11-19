@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="DataSet30" targetNamespace="http://tempuri.org/DataSet30.xsd" xmlns:mstns="http://tempuri.org/DataSet30.xsd" xmlns="http://tempuri.org/DataSet30.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections />
+        <Tables />
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="DataSet30" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="DataSet30" msprop:Generator_UserDSName="DataSet30">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="DataTable1" msprop:Generator_TableClassName="DataTable1DataTable" msprop:Generator_TableVarName="tableDataTable1" msprop:Generator_TablePropName="DataTable1" msprop:Generator_RowDeletingName="DataTable1RowDeleting" msprop:Generator_RowChangingName="DataTable1RowChanging" msprop:Generator_RowEvHandlerName="DataTable1RowChangeEventHandler" msprop:Generator_RowDeletedName="DataTable1RowDeleted" msprop:Generator_UserTableName="DataTable1" msprop:Generator_RowChangedName="DataTable1RowChanged" msprop:Generator_RowEvArgName="DataTable1RowChangeEvent" msprop:Generator_RowClassName="DataTable1Row">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="NCRBatchNo" msprop:Generator_ColumnVarNameInTable="columnNCRBatchNo" msprop:Generator_ColumnPropNameInRow="NCRBatchNo" msprop:Generator_ColumnPropNameInTable="NCRBatchNoColumn" msprop:Generator_UserColumnName="NCRBatchNo" type="xs:string" minOccurs="0" />
+              <xs:element name="NCRNumber" msprop:Generator_ColumnVarNameInTable="columnNCRNumber" msprop:Generator_ColumnPropNameInRow="NCRNumber" msprop:Generator_ColumnPropNameInTable="NCRNumberColumn" msprop:Generator_UserColumnName="NCRNumber" type="xs:int" minOccurs="0" />
+              <xs:element name="NCRDate" msprop:Generator_ColumnVarNameInTable="columnNCRDate" msprop:Generator_ColumnPropNameInRow="NCRDate" msprop:Generator_ColumnPropNameInTable="NCRDateColumn" msprop:Generator_UserColumnName="NCRDate" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="NCRMachine" msprop:Generator_ColumnVarNameInTable="columnNCRMachine" msprop:Generator_ColumnPropNameInRow="NCRMachine" msprop:Generator_ColumnPropNameInTable="NCRMachineColumn" msprop:Generator_UserColumnName="NCRMachine" type="xs:string" minOccurs="0" />
+              <xs:element name="NCRColour" msprop:Generator_ColumnVarNameInTable="columnNCRColour" msprop:Generator_ColumnPropNameInRow="NCRColour" msprop:Generator_ColumnPropNameInTable="NCRColourColumn" msprop:Generator_UserColumnName="NCRColour" type="xs:string" minOccurs="0" />
+              <xs:element name="NCRProduct" msprop:Generator_ColumnVarNameInTable="columnNCRProduct" msprop:Generator_ColumnPropNameInRow="NCRProduct" msprop:Generator_ColumnPropNameInTable="NCRProductColumn" msprop:Generator_UserColumnName="NCRProduct" type="xs:string" minOccurs="0" />
+              <xs:element name="NCROperator" msprop:Generator_ColumnVarNameInTable="columnNCROperator" msprop:Generator_ColumnPropNameInRow="NCROperator" msprop:Generator_ColumnPropNameInTable="NCROperatorColumn" msprop:Generator_UserColumnName="NCROperator" type="xs:string" minOccurs="0" />
+              <xs:element name="NCRStage" msprop:Generator_ColumnVarNameInTable="columnNCRStage" msprop:Generator_ColumnPropNameInRow="NCRStage" msprop:Generator_ColumnPropNameInTable="NCRStageColumn" msprop:Generator_UserColumnName="NCRStage" type="xs:string" minOccurs="0" />
+              <xs:element name="NCRCode" msprop:Generator_ColumnVarNameInTable="columnNCRCode" msprop:Generator_ColumnPropNameInRow="NCRCode" msprop:Generator_ColumnPropNameInTable="NCRCodeColumn" msprop:Generator_UserColumnName="NCRCode" type="xs:string" minOccurs="0" />
+              <xs:element name="NCRCodeDescription" msprop:Generator_ColumnVarNameInTable="columnNCRCodeDescription" msprop:Generator_ColumnPropNameInRow="NCRCodeDescription" msprop:Generator_ColumnPropNameInTable="NCRCodeDescriptionColumn" msprop:Generator_UserColumnName="NCRCodeDescription" type="xs:string" minOccurs="0" />
+              <xs:element name="NCRFromDate" msprop:Generator_ColumnVarNameInTable="columnNCRFromDate" msprop:Generator_ColumnPropNameInRow="NCRFromDate" msprop:Generator_ColumnPropNameInTable="NCRFromDateColumn" msprop:Generator_UserColumnName="NCRFromDate" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="NCRToDate" msprop:Generator_ColumnVarNameInTable="columnNCRToDate" msprop:Generator_ColumnPropNameInRow="NCRToDate" msprop:Generator_ColumnPropNameInTable="NCRToDateColumn" msprop:Generator_UserColumnName="NCRToDate" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="NCRreportTitle" msprop:Generator_ColumnVarNameInTable="columnNCRreportTitle" msprop:Generator_ColumnPropNameInRow="NCRreportTitle" msprop:Generator_ColumnPropNameInTable="NCRreportTitleColumn" msprop:Generator_UserColumnName="NCRreportTitle" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

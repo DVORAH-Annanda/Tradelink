@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="DataSet1" targetNamespace="http://tempuri.org/DataSet1.xsd" xmlns:mstns="http://tempuri.org/DataSet1.xsd" xmlns="http://tempuri.org/DataSet1.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections />
+        <Tables />
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="DataSet1" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="DataSet1" msprop:Generator_UserDSName="DataSet1">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="DataTable1" msprop:Generator_TableClassName="DataTable1DataTable" msprop:Generator_TableVarName="tableDataTable1" msprop:Generator_RowChangedName="DataTable1RowChanged" msprop:Generator_TablePropName="DataTable1" msprop:Generator_RowDeletingName="DataTable1RowDeleting" msprop:Generator_RowChangingName="DataTable1RowChanging" msprop:Generator_RowEvHandlerName="DataTable1RowChangeEventHandler" msprop:Generator_RowDeletedName="DataTable1RowDeleted" msprop:Generator_RowClassName="DataTable1Row" msprop:Generator_UserTableName="DataTable1" msprop:Generator_RowEvArgName="DataTable1RowChangeEvent">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Pk" msprop:Generator_ColumnVarNameInTable="columnPk" msprop:Generator_ColumnPropNameInRow="Pk" msprop:Generator_ColumnPropNameInTable="PkColumn" msprop:Generator_UserColumnName="Pk" type="xs:int" minOccurs="0" />
+              <xs:element name="LoadNo" msprop:Generator_ColumnVarNameInTable="columnLoadNo" msprop:Generator_ColumnPropNameInRow="LoadNo" msprop:Generator_ColumnPropNameInTable="LoadNoColumn" msprop:Generator_UserColumnName="LoadNo" type="xs:int" minOccurs="0" />
+              <xs:element name="LoadDate" msprop:Generator_ColumnVarNameInTable="columnLoadDate" msprop:Generator_ColumnPropNameInRow="LoadDate" msprop:Generator_ColumnPropNameInTable="LoadDateColumn" msprop:Generator_UserColumnName="LoadDate" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="CMTName" msprop:Generator_ColumnVarNameInTable="columnCMTName" msprop:Generator_ColumnPropNameInRow="CMTName" msprop:Generator_ColumnPropNameInTable="CMTNameColumn" msprop:Generator_UserColumnName="CMTName" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="DataTable2" msprop:Generator_TableClassName="DataTable2DataTable" msprop:Generator_TableVarName="tableDataTable2" msprop:Generator_RowChangedName="DataTable2RowChanged" msprop:Generator_TablePropName="DataTable2" msprop:Generator_RowDeletingName="DataTable2RowDeleting" msprop:Generator_RowChangingName="DataTable2RowChanging" msprop:Generator_RowEvHandlerName="DataTable2RowChangeEventHandler" msprop:Generator_RowDeletedName="DataTable2RowDeleted" msprop:Generator_RowClassName="DataTable2Row" msprop:Generator_UserTableName="DataTable2" msprop:Generator_RowEvArgName="DataTable2RowChangeEvent">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Pk" msprop:Generator_ColumnVarNameInTable="columnPk" msprop:Generator_ColumnPropNameInRow="Pk" msprop:Generator_ColumnPropNameInTable="PkColumn" msprop:Generator_UserColumnName="Pk" type="xs:int" minOccurs="0" />
+              <xs:element name="CutSheet" msprop:Generator_ColumnVarNameInTable="columnCutSheet" msprop:Generator_ColumnPropNameInRow="CutSheet" msprop:Generator_ColumnPropNameInTable="CutSheetColumn" msprop:Generator_UserColumnName="CutSheet" type="xs:string" minOccurs="0" />
+              <xs:element name="Colour" msprop:Generator_ColumnVarNameInTable="columnColour" msprop:Generator_ColumnPropNameInRow="Colour" msprop:Generator_ColumnPropNameInTable="ColourColumn" msprop:Generator_UserColumnName="Colour" type="xs:string" minOccurs="0" />
+              <xs:element name="Style" msprop:Generator_ColumnVarNameInTable="columnStyle" msprop:Generator_ColumnPropNameInRow="Style" msprop:Generator_ColumnPropNameInTable="StyleColumn" msprop:Generator_UserColumnName="Style" type="xs:string" minOccurs="0" />
+              <xs:element name="AdultBoxes" msprop:Generator_ColumnVarNameInTable="columnAdultBoxes" msprop:Generator_ColumnPropNameInRow="AdultBoxes" msprop:Generator_ColumnPropNameInTable="AdultBoxesColumn" msprop:Generator_UserColumnName="AdultBoxes" type="xs:int" minOccurs="0" />
+              <xs:element name="KidsBoxes" msprop:Generator_ColumnVarNameInTable="columnKidsBoxes" msprop:Generator_ColumnPropNameInRow="KidsBoxes" msprop:Generator_ColumnPropNameInTable="KidsBoxesColumn" msprop:Generator_UserColumnName="KidsBoxes" type="xs:int" minOccurs="0" />
+              <xs:element name="TotalBoxes" msprop:Generator_ColumnVarNameInTable="columnTotalBoxes" msprop:Generator_ColumnPropNameInRow="TotalBoxes" msprop:Generator_ColumnPropNameInTable="TotalBoxesColumn" msprop:Generator_UserColumnName="TotalBoxes" type="xs:int" minOccurs="0" />
+              <xs:element name="NoOfPanels" msprop:Generator_ColumnVarNameInTable="columnNoOfPanels" msprop:Generator_ColumnPropNameInRow="NoOfPanels" msprop:Generator_ColumnPropNameInTable="NoOfPanelsColumn" msprop:Generator_UserColumnName="NoOfPanels" type="xs:int" minOccurs="0" />
+              <xs:element name="ErrorLog" msprop:Generator_ColumnVarNameInTable="columnErrorLog" msprop:Generator_ColumnPropNameInRow="ErrorLog" msprop:Generator_ColumnPropNameInTable="ErrorLogColumn" msprop:Generator_UserColumnName="ErrorLog" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+  <xs:annotation>
+    <xs:appinfo>
+      <msdata:Relationship name="DataTable1_DataTable2" msdata:parent="DataTable1" msdata:child="DataTable2" msdata:parentkey="Pk" msdata:childkey="Pk" msprop:Generator_UserChildTable="DataTable2" msprop:Generator_ChildPropName="GetDataTable2Rows" msprop:Generator_UserRelationName="DataTable1_DataTable2" msprop:Generator_RelationVarName="relationDataTable1_DataTable2" msprop:Generator_UserParentTable="DataTable1" msprop:Generator_ParentPropName="DataTable1Row" />
+    </xs:appinfo>
+  </xs:annotation>
+</xs:schema>

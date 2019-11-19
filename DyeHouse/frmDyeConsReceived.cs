@@ -1,0 +1,191 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using Utilities;
+
+namespace DyeHouse
+{
+    public partial class frmDyeConsReceived : Form
+    {
+        DataGridViewComboBoxColumn oCmboA;  // ConsumablesDC 
+        DataGridViewComboBoxColumn oCmboB;  // ConsumablesDC UOM
+        DataGridViewTextBoxColumn selectb;  // Volume
+        Util core;
+
+        public frmDyeConsReceived()
+        {
+            InitializeComponent();
+            core = new Util();
+
+            oCmboA = new DataGridViewComboBoxColumn();   // Consumables foreign Key
+            oCmboA.HeaderText = "Consumables";
+            oCmboA.Width = 175;
+
+
+            oCmboB = new DataGridViewComboBoxColumn();   // Consumables UOM foreign Key
+            oCmboB.HeaderText = "UOM";
+            oCmboB.Width = 120;
+
+
+            selectb = new DataGridViewTextBoxColumn();  //  Mel / FC value
+            selectb.HeaderText = "Quantity Received";
+            selectb.ValueType = typeof(decimal);
+
+
+            dataGridView1.AutoGenerateColumns = false;
+            dataGridView1.Columns.Add(oCmboA);
+            dataGridView1.Columns.Add(selectb);
+            dataGridView1.Columns.Add(oCmboB);
+
+            dataGridView1.EditingControlShowing += new DataGridViewEditingControlShowingEventHandler(dataGridView1_EditingControlShowing);
+
+            SetUp(); 
+        }
+
+        void SetUp()
+        {
+            dataGridView1.Rows.Clear();
+
+            using (var context = new TTI2Entities())
+            {
+                oCmboA.DataSource = context.TLADM_ConsumablesDC.Where(x=>!x.ConsDC_Discontinued).OrderBy(x => x.ConsDC_Description).ToList();
+                oCmboA.DisplayMember = "ConsDC_Description";
+                oCmboA.ValueMember = "ConsDC_Pk";
+
+                cmboChemicalStore.DataSource = context.TLADM_WhseStore.Where(x => x.WhStore_ChemicalStore).ToList();
+                cmboChemicalStore.ValueMember = "WhStore_Id";
+                cmboChemicalStore.DisplayMember = "WhStore_Description";
+                cmboChemicalStore.SelectedValue = -1;
+
+                oCmboB.DataSource = context.TLADM_UOM.OrderBy(x => x.UOM_Description).ToList();
+                oCmboB.DisplayMember = "UOM_Description";
+                oCmboB.ValueMember = "UOM_Pk";
+            }
+
+        }
+
+        private void dataGridView1_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
+        {
+            DataGridView oDgv = sender as DataGridView;
+            ComboBox combo = e.Control as ComboBox;
+
+            if (oDgv.Focused && oDgv.CurrentCell is DataGridViewTextBoxCell && oDgv.CurrentCell.ColumnIndex == 1)
+            {
+                e.Control.KeyDown -= new KeyEventHandler(core.txtWin_KeyDownOEM);
+                e.Control.KeyDown += new KeyEventHandler(core.txtWin_KeyDownOEM);
+                e.Control.KeyPress -= new KeyPressEventHandler(core.txtWin_KeyPress);
+                e.Control.KeyPress += new KeyPressEventHandler(core.txtWin_KeyPress);
+            }
+            else if (combo != null)
+            {
+                combo.SelectedIndexChanged -= new EventHandler(ComboBox_SelectedIndexChanged);
+                combo.SelectedIndexChanged += new EventHandler(ComboBox_SelectedIndexChanged);
+                
+            }
+       }
+
+        private void ComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ComboBox cb = (ComboBox)sender;
+            if (cb != null)
+            {
+                try
+                {
+                    var selected = (TLADM_ConsumablesDC)cb.SelectedItem;
+                    if (selected != null)
+                    {
+                        var Cell = dataGridView1.CurrentCell;
+                        using (var context = new TTI2Entities())
+                        {
+                            var UOM = context.TLADM_UOM.Find(selected.ConsDC_UOM_Fk);
+                            if (UOM != null)
+                            {
+                                dataGridView1.Rows[Cell.RowIndex].Cells[Cell.ColumnIndex + 2].Value = UOM.UOM_Pk;
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Incorrect UOM Selected");
+                }
+            }
+        }
+
+        private void btnSave_Click(object sender, EventArgs e)
+        {
+            Button oBtn = sender as Button;
+            if (oBtn != null)
+            {
+                using (var context = new TTI2Entities())
+                {
+                    var StoreSelected = (TLADM_WhseStore)cmboChemicalStore.SelectedItem;
+                    if (StoreSelected == null)
+                    {
+                        MessageBox.Show("Please select a Chemical Store from the list provided");
+                        return;
+
+                    }
+                    foreach (DataGridViewRow row in dataGridView1.Rows)
+                    {
+                        if (row.Cells[0].Value == null || row.Cells[1].Value == null || row.Cells[2].Value == null)
+                            continue;
+
+                        TLDYE_ConSummableReceived consReceived = new TLDYE_ConSummableReceived();
+
+                        consReceived.DYECON_Consumable_FK = (int)row.Cells[0].Value;
+                        consReceived.DYECON_Amount = (decimal)row.Cells[1].Value;
+                        consReceived.DYECON_TransactionDate = dtpDateReceived.Value;
+                        consReceived.DYECON_UOM_FK = (int)row.Cells[2].Value;
+                        consReceived.DYECON_WhseStore_FK = StoreSelected.WhStore_Id;
+                        context.TLDYE_ConSummableReceived.Add(consReceived);
+
+                        var StockOH = context.TLDYE_ConsumableSOH.Where(x => x.DYCSH_Consumable_FK == consReceived.DYECON_Consumable_FK &&  !x.DYCSH_DyeKitchen).FirstOrDefault();
+                        if (StockOH == null)
+                        {
+                            TLDYE_ConsumableSOH soh = new TLDYE_ConsumableSOH();
+                            soh.DYCSH_Consumable_FK = consReceived.DYECON_Consumable_FK;
+                            soh.DYCSH_StockOnHand += consReceived.DYECON_Amount;
+                            soh.DYCSH_WhseStore_FK = (int)consReceived.DYECON_WhseStore_FK;
+                            soh.DYCSH_DyeKitchen = StoreSelected.WhStore_DyeKitchen;
+
+                            context.TLDYE_ConsumableSOH.Add(soh);
+                        }
+                        else
+                        {
+                            StockOH.DYCSH_StockOnHand += consReceived.DYECON_Amount;
+                        }
+                    }
+
+                    try
+                    {
+                        context.SaveChanges();
+                        MessageBox.Show("Data updated to database successfully");
+                        SetUp();
+                    }
+                    catch (System.Data.Entity.Validation.DbEntityValidationException en)
+                    {
+                        foreach (var eve in en.EntityValidationErrors)
+                        {
+                            MessageBox.Show("following validation errors: Type" + eve.Entry.Entity.GetType().Name.ToString() + "State " + eve.Entry.State.ToString());
+                            foreach (var ve in eve.ValidationErrors)
+                            {
+                                MessageBox.Show("- Property" + ve.PropertyName + " Message " + ve.ErrorMessage);
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                    }
+                }
+            }
+        }
+    }
+}

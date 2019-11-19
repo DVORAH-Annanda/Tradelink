@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="DataSetSliverProduction" targetNamespace="http://tempuri.org/DataSetSliverProduction.xsd" xmlns:mstns="http://tempuri.org/DataSetSliverProduction.xsd" xmlns="http://tempuri.org/DataSetSliverProduction.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections />
+        <Tables />
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="DataSetSliverProduction" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="DataSetSliverProduction" msprop:Generator_UserDSName="DataSetSliverProduction">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="SliverProduction" msprop:Generator_TableClassName="SliverProductionDataTable" msprop:Generator_TableVarName="tableSliverProduction" msprop:Generator_TablePropName="SliverProduction" msprop:Generator_RowDeletingName="SliverProductionRowDeleting" msprop:Generator_RowChangingName="SliverProductionRowChanging" msprop:Generator_RowEvHandlerName="SliverProductionRowChangeEventHandler" msprop:Generator_RowDeletedName="SliverProductionRowDeleted" msprop:Generator_UserTableName="SliverProduction" msprop:Generator_RowChangedName="SliverProductionRowChanged" msprop:Generator_RowEvArgName="SliverProductionRowChangeEvent" msprop:Generator_RowClassName="SliverProductionRow">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Key" msprop:Generator_ColumnVarNameInTable="columnKey" msprop:Generator_ColumnPropNameInRow="Key" msprop:Generator_ColumnPropNameInTable="KeyColumn" msprop:Generator_UserColumnName="Key" type="xs:unsignedByte" />
+              <xs:element name="Date" msprop:Generator_ColumnVarNameInTable="columnDate" msprop:Generator_ColumnPropNameInRow="Date" msprop:Generator_ColumnPropNameInTable="DateColumn" msprop:Generator_UserColumnName="Date" type="xs:string" minOccurs="0" />
+              <xs:element name="Card1Production" msprop:Generator_ColumnVarNameInTable="columnCard1Production" msprop:Generator_ColumnPropNameInRow="Card1Production" msprop:Generator_ColumnPropNameInTable="Card1ProductionColumn" msprop:Generator_UserColumnName="Card1Production" type="xs:double" minOccurs="0" />
+              <xs:element name="Card2Production" msprop:Generator_ColumnVarNameInTable="columnCard2Production" msprop:Generator_ColumnPropNameInRow="Card2Production" msprop:Generator_ColumnPropNameInTable="Card2ProductionColumn" msprop:Generator_UserColumnName="Card2Production" type="xs:double" minOccurs="0" />
+              <xs:element name="Card3Production" msprop:Generator_ColumnVarNameInTable="columnCard3Production" msprop:Generator_ColumnPropNameInRow="Card3Production" msprop:Generator_ColumnPropNameInTable="Card3ProductionColumn" msprop:Generator_UserColumnName="Card3Production" type="xs:double" minOccurs="0" />
+              <xs:element name="Card4Production" msprop:Generator_ColumnVarNameInTable="columnCard4Production" msprop:Generator_ColumnPropNameInRow="Card4Production" msprop:Generator_ColumnPropNameInTable="Card4ProductionColumn" msprop:Generator_UserColumnName="Card4Production" type="xs:double" minOccurs="0" />
+              <xs:element name="RSB1Production" msprop:Generator_ColumnVarNameInTable="columnRSB1Production" msprop:Generator_ColumnPropNameInRow="RSB1Production" msprop:Generator_ColumnPropNameInTable="RSB1ProductionColumn" msprop:Generator_UserColumnName="RSB1Production" type="xs:double" minOccurs="0" />
+              <xs:element name="RSB2Production" msprop:Generator_ColumnVarNameInTable="columnRSB2Production" msprop:Generator_ColumnPropNameInRow="RSB2Production" msprop:Generator_ColumnPropNameInTable="RSB2ProductionColumn" msprop:Generator_UserColumnName="RSB2Production" type="xs:double" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="SliverProductionHeader" msprop:Generator_TableClassName="SliverProductionHeaderDataTable" msprop:Generator_TableVarName="tableSliverProductionHeader" msprop:Generator_RowChangedName="SliverProductionHeaderRowChanged" msprop:Generator_TablePropName="SliverProductionHeader" msprop:Generator_RowDeletingName="SliverProductionHeaderRowDeleting" msprop:Generator_RowChangingName="SliverProductionHeaderRowChanging" msprop:Generator_RowEvHandlerName="SliverProductionHeaderRowChangeEventHandler" msprop:Generator_RowDeletedName="SliverProductionHeaderRowDeleted" msprop:Generator_RowClassName="SliverProductionHeaderRow" msprop:Generator_UserTableName="SliverProductionHeader" msprop:Generator_RowEvArgName="SliverProductionHeaderRowChangeEvent">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Key" msprop:Generator_ColumnVarNameInTable="columnKey" msprop:Generator_ColumnPropNameInRow="Key" msprop:Generator_ColumnPropNameInTable="KeyColumn" msprop:Generator_UserColumnName="Key" type="xs:unsignedByte" />
+              <xs:element name="ReportTitle" msprop:Generator_ColumnVarNameInTable="columnReportTitle" msprop:Generator_ColumnPropNameInRow="ReportTitle" msprop:Generator_ColumnPropNameInTable="ReportTitleColumn" msprop:Generator_UserColumnName="ReportTitle" type="xs:string" minOccurs="0" />
+              <xs:element name="FromDate" msprop:Generator_ColumnVarNameInTable="columnFromDate" msprop:Generator_ColumnPropNameInRow="FromDate" msprop:Generator_ColumnPropNameInTable="FromDateColumn" msprop:Generator_UserColumnName="FromDate" type="xs:string" minOccurs="0" />
+              <xs:element name="ToDate" msprop:Generator_ColumnVarNameInTable="columnToDate" msprop:Generator_ColumnPropNameInRow="ToDate" msprop:Generator_ColumnPropNameInTable="ToDateColumn" msprop:Generator_UserColumnName="ToDate" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+  <xs:annotation>
+    <xs:appinfo>
+      <msdata:Relationship name="SliverProduction_SliverProductionHeader" msdata:parent="SliverProduction" msdata:child="SliverProductionHeader" msdata:parentkey="Key" msdata:childkey="Key" msprop:Generator_UserChildTable="SliverProductionHeader" msprop:Generator_ChildPropName="GetSliverProductionHeaderRows" msprop:Generator_UserRelationName="SliverProduction_SliverProductionHeader" msprop:Generator_RelationVarName="relationSliverProduction_SliverProductionHeader" msprop:Generator_UserParentTable="SliverProduction" msprop:Generator_ParentPropName="SliverProductionRow" />
+    </xs:appinfo>
+  </xs:annotation>
+</xs:schema>

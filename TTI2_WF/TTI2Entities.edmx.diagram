@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="c85ccd6f6fd848c09940816127641c96" Name="Diagram1">
+        <EntityTypeShape EntityType="TTI2Model.TLADM_AuxColours" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_Colours" Width="1.5" PointX="5.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_ConsumableGroups" Width="1.5" PointX="0.75" PointY="4.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_ConsumablesDC" Width="1.5" PointX="5.75" PointY="18.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_ConsumablesOther" Width="1.5" PointX="3" PointY="5.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_Cotton" Width="1.5" PointX="10.75" PointY="18.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_CottonOrigin" Width="1.5" PointX="7.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_CustomerFile" Width="1.5" PointX="21" PointY="12" IsExpanded="true" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_CustomerTypes" Width="1.5" PointX="18.75" PointY="13.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_Departments" Width="1.5" PointX="10.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_FabricProduct" Width="1.5" PointX="0.75" PointY="19" IsExpanded="true" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_FabricType" Width="1.5" PointX="3" PointY="19" IsExpanded="true" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_FabricWeight" Width="1.5" PointX="9.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_FabWidth" Width="1.5" PointX="13.75" PointY="16.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_FinishedGoods" Width="1.5" PointX="11.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_GarmentDef" Width="1.5" PointX="8" PointY="15" IsExpanded="true" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_GarmentDefectCodes" Width="1.5" PointX="2.75" PointY="15.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_Griege" Width="1.5" PointX="16" PointY="14.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_Labels" Width="1.5" PointX="5.75" PointY="14.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_MachineDefinitions" Width="1.5" PointX="8.25" PointY="5" IsExpanded="true" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_MachineMaintenance" Width="1.5" PointX="18.75" PointY="17.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_MachineOperators" Width="1.5" PointX="13" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_NonStockCat" Width="1.5" PointX="3.75" PointY="2.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_NonStockItems" Width="1.5" PointX="6" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_ProductRating" Width="1.5" PointX="11" PointY="14.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_ProductRating_Detail" Width="1.5" PointX="16" PointY="18" IsExpanded="true" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_ProductTypes" Width="1.5" PointX="15.75" PointY="2.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_QualityDefinition" Width="1.5" PointX="18" PointY="8" IsExpanded="true" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_RejectReasons" Width="1.5" PointX="15.75" PointY="8.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_Ribbing" Width="1.5" PointX="12.75" PointY="19.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_Sizes" Width="1.5" PointX="0.75" PointY="10.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_StockTakeFreq" Width="1.5" PointX="20.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_StockTypes" Width="1.5" PointX="3.75" PointY="12.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_StoreTypes" Width="1.5" PointX="0.75" PointY="13.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_Styles" Width="1.5" PointX="8.75" PointY="18.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_Suppliers" Width="1.5" PointX="18" PointY="1.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_Trims" Width="1.5" PointX="20.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_UOM" Width="1.5" PointX="0.75" PointY="7.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_WhseStore" Width="1.5" PointX="13" PointY="7.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_Yarn" Width="1.5" PointX="20.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="TTI2Model.TLCMT_ProductDefects" Width="1.5" PointX="7.75" PointY="12.75" IsExpanded="true" />
+        <AssociationConnector Association="TTI2Model.FK_TLADM_ConsumablesOther_TLADM_ConsumableGroups" ManuallyRouted="false" />
+        <AssociationConnector Association="TTI2Model.FK_TLADM_ConsumablesOther_TLADM_Sizes" ManuallyRouted="false" />
+        <AssociationConnector Association="TTI2Model.FK_TLADM_ConsumablesOther_TLADM_StoreTypes" ManuallyRouted="false" />
+        <AssociationConnector Association="TTI2Model.FK_TLADM_ConsumablesOther_TLADM_UOM" ManuallyRouted="false" />
+        <AssociationConnector Association="TTI2Model.FK_TLADM_ConsumablesOther_TLADM_UOM1" ManuallyRouted="false" />
+        <AssociationConnector Association="TTI2Model.FK_TLADM_CustomerFile_TLADM_CustomerTypes" ManuallyRouted="false" />
+        <AssociationConnector Association="TTI2Model.FK_TLADM_MachineOperators_TLADM_Departments" ManuallyRouted="false" />
+        <AssociationConnector Association="TTI2Model.FK_TLADM_WhseStore_TLADM_Departments" ManuallyRouted="false" />
+        <AssociationConnector Association="TTI2Model.FK_TLADM_FabricType_TLADM_FabricProduct" ManuallyRouted="false" />
+        <AssociationConnector Association="TTI2Model.FK_TLADM_Griege_TLADM_FabWidth" ManuallyRouted="false" />
+        <AssociationConnector Association="TTI2Model.FK_TLADM_ProductRating_Detail_TLADM_FabWidth" ManuallyRouted="false" />
+        <AssociationConnector Association="TTI2Model.FK_TLADM_GarmentDef_TLADM_Labels" ManuallyRouted="false" />
+        <AssociationConnector Association="TTI2Model.FK_TLADM_ProductRating_TLADM_Labels" ManuallyRouted="false" />
+        <AssociationConnector Association="TTI2Model.FK_TLADM_MachineDefinitions_TLADM_NonStockItems" ManuallyRouted="false" />
+        <AssociationConnector Association="TTI2Model.FK_TLADM_MachineDefinitions_TLADM_NonStockItems1" ManuallyRouted="false" />
+        <AssociationConnector Association="TTI2Model.FK_TLADM_MachineDefinitions_TLADM_NonStockItems2" ManuallyRouted="false" />
+        <AssociationConnector Association="TTI2Model.FK_TLADM_MachineDefinitions_TLADM_NonStockItems3" ManuallyRouted="false" />
+        <AssociationConnector Association="TTI2Model.FK_TLADM_MachineDefinitions_TLADM_NonStockItems4" ManuallyRouted="false" />
+        <AssociationConnector Association="TTI2Model.FK_TLADM_MachineDefinitions_TLADM_NonStockItems5" ManuallyRouted="false" />
+        <AssociationConnector Association="TTI2Model.FK_TLADM_MachineDefinitions_TLADM_NonStockItems6" ManuallyRouted="false" />
+        <AssociationConnector Association="TTI2Model.FK_TLADM_MachineDefinitions_TLADM_NonStockItems7" ManuallyRouted="false" />
+        <AssociationConnector Association="TTI2Model.FK_TLADM_MachineDefinitions_TLADM_NonStockItems8" ManuallyRouted="false" />
+        <AssociationConnector Association="TTI2Model.FK_TLADM_NonStockItems_TLADM_NonStockCat" ManuallyRouted="false" />
+        <AssociationConnector Association="TTI2Model.FK_TLADM_NonStockItems_TLADM_StockTypes" ManuallyRouted="false" />
+        <AssociationConnector Association="TTI2Model.FK_TLADM_NonStockItems_TLADM_UOM" ManuallyRouted="false" />
+        <AssociationConnector Association="TTI2Model.FK_TLADM_ProductRating_TLADM_Styles" ManuallyRouted="false" />
+        <AssociationConnector Association="TTI2Model.FK_TLADM_Suppliers_TLADM_ProductTypes" ManuallyRouted="false" />
+        <AssociationConnector Association="TTI2Model.FK_TLADM_QualityDefinition_TLADM_RejectReasons1" ManuallyRouted="false" />
+        <AssociationConnector Association="TTI2Model.FK_TLADM_WhseStore_TLADM_StoreTypes" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

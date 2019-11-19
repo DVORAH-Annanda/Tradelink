@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="79df6c64e66c4e248f8a84ff4f8081a7" Name="Diagram1" ZoomLevel="71">
+        <EntityTypeShape EntityType="TTI2Model.TLADM_ConsumableGroups" Width="1.5" PointX="0.75" PointY="4.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_ConsumablesOther" Width="1.5" PointX="3" PointY="5.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_CustomerTypes" Width="1.5" PointX="18.75" PointY="13.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_FabricType" Width="1.5" PointX="3" PointY="19" IsExpanded="true" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_FabricWeight" Width="1.5" PointX="9.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_FinishedGoods" Width="1.5" PointX="11.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_GarmentDef" Width="1.5" PointX="8" PointY="15" IsExpanded="true" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_GarmentDefectCodes" Width="1.5" PointX="2.75" PointY="15.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_NonStockCat" Width="1.5" PointX="3.75" PointY="2.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_NonStockItems" Width="1.5" PointX="6" PointY="5.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_ProductTypes" Width="1.5" PointX="15.75" PointY="2.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_RejectReasons" Width="1.5" PointX="15.75" PointY="8.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_Ribbing" Width="1.5" PointX="12.75" PointY="19.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_StockTakeFreq" Width="1.5" PointX="20.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_StockTypes" Width="1.5" PointX="3.75" PointY="12.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_StoreTypes" Width="1.5" PointX="0.75" PointY="13.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_Suppliers" Width="1.5" PointX="18" PointY="1.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_UOM" Width="1.5" PointX="0.75" PointY="7.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="TTI2Model.TLFIN_Calendar" Width="1.5" PointX="20.75" PointY="17.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="TTI2Model.TLFIN_FinancialYear" Width="1.5" PointX="15.75" PointY="11.75" IsExpanded="true" />
+        <AssociationConnector Association="TTI2Model.FK_TLADM_ConsumablesOther_TLADM_ConsumableGroups" ManuallyRouted="false" />
+        <AssociationConnector Association="TTI2Model.FK_TLADM_ConsumablesOther_TLADM_StoreTypes" ManuallyRouted="false" />
+        <AssociationConnector Association="TTI2Model.FK_TLADM_ConsumablesOther_TLADM_UOM" ManuallyRouted="false" />
+        <AssociationConnector Association="TTI2Model.FK_TLADM_ConsumablesOther_TLADM_UOM1" ManuallyRouted="false" />
+        <AssociationConnector Association="TTI2Model.FK_TLADM_NonStockItems_TLADM_NonStockCat" ManuallyRouted="false" />
+        <AssociationConnector Association="TTI2Model.FK_TLADM_NonStockItems_TLADM_StockTypes" ManuallyRouted="false" />
+        <AssociationConnector Association="TTI2Model.FK_TLADM_NonStockItems_TLADM_UOM" ManuallyRouted="false" />
+        <AssociationConnector Association="TTI2Model.FK_TLADM_Suppliers_TLADM_ProductTypes" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_FabricProduct" Width="1.5" PointX="0.75" PointY="19.125" />
+        <AssociationConnector Association="TTI2Model.FK_TLADM_FabricType_TLADM_FabricProduct" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_AdditionalAddress" Width="1.5" PointX="8" PointY="3.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_PanelAttributes" Width="1.5" PointX="21.375" PointY="21.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_StylesAdditional" Width="1.5" PointX="0.75" PointY="22.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_MachineMaintenance" Width="1.5" PointX="22.375" PointY="6.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_CompanyDetails" Width="1.5" PointX="23.375" PointY="0.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_CottonAgent" Width="1.5" PointX="23.375" PointY="10.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_CottonHauliers" Width="1.5" PointX="23.375" PointY="19.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_CottonHauliersVehicles" Width="1.5" PointX="23.375" PointY="23.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_TranactionType" Width="1.5" PointX="25.375" PointY="22.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_StoreBal" Width="1.5" PointX="24.375" PointY="4.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLSPN_CottonReceived" Width="1.5" PointX="25.375" PointY="13.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLSPN_CottonReceivedBales" Width="1.5" PointX="13.375" PointY="26.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLSPN_OpenBalance" Width="1.5" PointX="25.375" PointY="18.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLSPN_QAMeasurements" Width="1.5" PointX="10.375" PointY="27.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_Shifts" Width="1.5" PointX="27.375" PointY="11.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLKNI_YarnTransaction" Width="1.5" PointX="28.375" PointY="3.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLKNI_GreigeTransactions" Width="1.5" PointX="26.375" PointY="7.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_Labels" Width="1.5" PointX="10.375" PointY="3.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_Yarn" Width="1.5" PointX="21.375" PointY="26.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_ProductionLoss" Width="1.5" PointX="14.375" PointY="5.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_GreigeQuality" Width="1.5" PointX="17.375" PointY="19.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_FabricAttributes" Width="1.5" PointX="30.375" PointY="0.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_MachineOperators" Width="1.5" PointX="13.375" PointY="22.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_ProductRating_Detail" Width="1.5" PointX="31.375" PointY="5.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLDYE_DefinitionDetails" Width="1.5" PointX="16.375" PointY="16.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLSPN_CottonTransactions" Width="1.5" PointX="31.375" PointY="29.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLSPN_CottonMerge" Width="1.5" PointX="31.375" PointY="22.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLSPN_CottonMergeDetails" Width="1.5" PointX="32.375" PointY="0.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLSPN_YarnOrder" Width="1.5" PointX="7.375" PointY="24.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLSPN_YarnWaste" Width="1.5" PointX="17.375" PointY="29.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLDYE_DyeBatchAllocated" Width="1.5" PointX="28.375" PointY="7.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_DyeQDCodes" Width="1.5" PointX="21.375" PointY="32.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_DyeRemendyCodes" Width="1.5" PointX="20.375" PointY="3.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_QADyeProcess" Width="1.5" PointX="12.375" PointY="13.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_QADyeProcessFields" Width="1.5" PointX="33.375" PointY="13.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLDYE_NonComplianceDetail" Width="1.5" PointX="33.375" PointY="16.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLDYE_NonCompliance" Width="1.5" PointX="33.375" PointY="3.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLSPN_YarnOrderLayDown" Width="1.5" PointX="16.375" PointY="33.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLDYE_ComDyeBatch" Width="1.5" PointX="31.375" PointY="25.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLDYE_ComDyeBatchDetails" Width="1.5" PointX="33.375" PointY="19.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLDYE_AllocatedOperator" Width="1.5" PointX="33.375" PointY="25.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLSPN_YarnTransactions" Width="1.5" PointX="0.75" PointY="25.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_DepartmentsArea" Width="1.5" PointX="25.375" PointY="0.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_DepartmentsAreaTransaction" Width="1.5" PointX="27.375" PointY="0.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLKNI_GreigeCommisionAdjustment" Width="1.5" PointX="33.375" PointY="34.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLDYE_ConSummableReceived" Width="1.5" PointX="12.375" PointY="31.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLDYE_NonComplianceAnalysis" Width="1.5" PointX="18.375" PointY="33.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLDYE_DyeOrder" Width="1.5" PointX="0.75" PointY="35.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLCUT_CutSheetReceiptBoxes" Width="1.5" PointX="35.375" PointY="17.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLCUT_QCBerrie" Width="1.5" PointX="20.375" PointY="35.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_CutMeasureArea" Width="1.5" PointX="35.375" PointY="24.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLCUT_FabricReturns" Width="1.5" PointX="35.375" PointY="30.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_CutTrims" Width="1.5" PointX="3.375" PointY="36.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_CutFleeceCuffs" Width="1.5" PointX="24.375" PointY="36.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_CutFleeceWaist" Width="1.5" PointX="26.375" PointY="36.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLCUT_TrimsOnCut" Width="1.5" PointX="37.375" PointY="0.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLCUT_CutFleeceStats" Width="1.5" PointX="37.375" PointY="4.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLCMT_ProductDefects" Width="1.5" PointX="6.375" PointY="10.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLCUT_RejectReasons" Width="1.5" PointX="17.375" PointY="26.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLCUT_CutSheetDetail" Width="1.5" PointX="7.375" PointY="35.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_StandardProduct" Width="1.5" PointX="37.375" PointY="20.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLCMT_ProductionFaults" Width="1.5" PointX="37.375" PointY="26.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLKNI_ProductionSplit" Width="1.5" PointX="34.375" PointY="38.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLCMT_BodyMeasureRP" Width="1.5" PointX="39.375" PointY="0.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLCMT_LineFeederBundleCheck" Width="1.5" PointX="39.375" PointY="10.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLCSV_BoxSelected" Width="1.5" PointX="39.375" PointY="15.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLCSV_BoxSplit" Width="1.5" PointX="39.375" PointY="24.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLDYE_DyeOrderDetails" Width="1.5" PointX="0.75" PointY="30.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLSEC_UserSections" Width="1.5" PointX="0.75" PointY="41.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLDYE_DyeOrderFabric" Width="1.5" PointX="3.375" PointY="31.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_DailyLog" Width="1.5" PointX="41.375" PointY="9.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_Cotton" Width="1.5" PointX="5.375" PointY="17.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_StyleColour" Width="1.5" PointX="41.375" PointY="0.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_MachineDefinitions" Width="1.5" PointX="13.375" PointY="42.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLKNI_YarnTransactionDetails" Width="1.5" PointX="11.375" PointY="34.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLSPN_YarnOrderPallets" Width="1.5" PointX="15.375" PointY="40.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLKNI_Order" Width="1.5" PointX="3.375" PointY="23.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_StylesGrades" Width="1.5" PointX="27.375" PointY="22.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLSEC_Departments" Width="1.5" PointX="12.375" PointY="8.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_ConsumablesDC" Width="1.5" PointX="17.375" PointY="40.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLDYE_RecipeColourDefinition" Width="1.5" PointX="35.375" PointY="7.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_CottonContracts" Width="1.5" PointX="34.375" PointY="42.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLCUT_CutMeasureActuals" Width="1.5" PointX="7.375" PointY="29.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_CutAreaLocations" Width="1.5" PointX="10.375" PointY="16.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_CutMeasureStandards" Width="1.5" PointX="9.375" PointY="19.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLCUT_QAResults" Width="1.5" PointX="41.375" PointY="27.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_Trims" Width="1.5" PointX="41.375" PointY="35.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_Sizes" Width="1.5" PointX="5.375" PointY="39" />
+        <AssociationConnector Association="TTI2Model.FK_TLADM_ConsumablesOther_TLADM_Sizes" />
+        <EntityTypeShape EntityType="TTI2Model.TLCSV_MergePODetail" Width="1.5" PointX="30.375" PointY="35.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_WareHouseAssociation" Width="1.5" PointX="36.375" PointY="10.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLDYE_ReceipeGreigeQual" Width="1.5" PointX="39.375" PointY="31.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLDYE_RecipeDefinition" Width="1.5" PointX="41.375" PointY="31.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLDYE_NonComplianceConsDetail" Width="1.5" PointX="26.375" PointY="26.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLCUT_CutSheetReceiptDetail" Width="1.5" PointX="19.375" PointY="43.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_StyleTrim" Width="1.5" PointX="23.375" PointY="26.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLDYE_ConsumableSOH" Width="1.5" PointX="15.375" PointY="22.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLKNI_GreigeCommissionTransctions" Width="1.5" PointX="43.375" PointY="21.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLKNI_MachineLastNumber" Width="1.5" PointX="13.375" PointY="34.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_LastNumberUsed" Width="1.5" PointX="40.375" PointY="39.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLKNI_YarnAllocTransctions" Width="1.5" PointX="35.375" PointY="34.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLCMT_Statistics" Width="1.5" PointX="41.375" PointY="4.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLCMT_PanelIssue" Width="1.5" PointX="9.375" PointY="23.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLCMT_DeflectFlaw" Width="1.5" PointX="42.375" PointY="39.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_AuxColours" Width="1.5" PointX="0.75" PointY="0.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_WhseStore" Width="1.5" PointX="29.375" PointY="15.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_CMTNonCompliance" Width="1.5" PointX="42.375" PointY="42.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_BoxTypes" Width="1.5" PointX="43.375" PointY="4.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLCSV_WhseTransferDetail" Width="1.5" PointX="43.375" PointY="7.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLCSV_WhseTransfer" Width="1.5" PointX="28.375" PointY="43.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_CustomerAccess" Width="1.5" PointX="19.375" PointY="40.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLCMT_AuditMeasureRecorded" Width="1.5" PointX="7.375" PointY="44.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLCMT_PanelIssueDetail" Width="1.5" PointX="13.375" PointY="37.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLKNI_BoughtInFabric" Width="1.5" PointX="30.375" PointY="42.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLDYE_BIFInTransitDetails" Width="1.5" PointX="39.375" PointY="20.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLDYE_BIFInTransit" Width="1.5" PointX="26.375" PointY="30.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLCMT_NonCompliance" Width="1.5" PointX="26.375" PointY="39.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLCSV_Movement" Width="1.5" PointX="8.375" PointY="6.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_BoxType_Packing_Specifications" Width="1.5" PointX="28.375" PointY="30.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLCSV_BoxConfiguration" Width="1.5" PointX="3.375" PointY="43.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLCSV_RePackConfig" Width="1.5" PointX="43.375" PointY="15.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLCSV_RePackTransactions" Width="1.5" PointX="37.375" PointY="7.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLPPS_ProductionLeadTime" Width="1.5" PointX="17.375" PointY="37.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLDYE_DyeTransactions" Width="1.5" PointX="45.375" PointY="0.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLCMT_UnitProductionTargets" Width="1.5" PointX="45.375" PointY="6.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_Departments" Width="1.5" PointX="17.75" PointY="22.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_Styles" Width="1.5" PointX="0.75" PointY="44.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLSEC_Sections" Width="1.5" PointX="34.375" PointY="0.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLKNI_YarnOrderPallets" Width="1.5" PointX="21.375" PointY="43.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLCMT_FactConfig" Width="1.5" PointX="35.375" PointY="13.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLCSV_PuchaseOrderDetail" Width="1.5" PointX="23.375" PointY="43.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLPPS_Replenishment" Width="1.5" PointX="7.375" PointY="38.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLCSV_PickingListMaster" Width="1.5" PointX="9.375" PointY="40.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_CustomerFile" Width="1.5" PointX="21" PointY="11.625" />
+        <AssociationConnector Association="TTI2Model.FK_TLADM_CustomerFile_TLADM_CustomerTypes" />
+        <EntityTypeShape EntityType="TTI2Model.TLDye_QualityException" Width="1.5" PointX="45.375" PointY="9.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLSEC_UserAccess" Width="1.5" PointX="28.375" PointY="38.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLCSV_OrderAllocated" Width="1.5" PointX="23.375" PointY="29.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_Transporters" Width="1.5" PointX="37.375" PointY="34.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLCMT_ProductionCosts" Width="1.5" PointX="37.375" PointY="37.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_CMTMeasurementPoints" Width="1.5" PointX="32.375" PointY="10.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_Colours" Width="1.5" PointX="28.375" PointY="25.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLCSV_PurchaseOrder" Width="1.5" PointX="30.375" PointY="38.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLCSV_StockOnHand" Width="1.5" PointX="36.375" PointY="41.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_Griege" Width="1.5" PointX="38.375" PointY="44.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_FabWidth" Width="1.5" PointX="12.375" PointY="16.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_QualityDefinition" Width="1.5" PointX="18" PointY="7.75" />
+        <AssociationConnector Association="TTI2Model.FK_TLADM_QualityDefinition_TLADM_RejectReasons1" />
+        <EntityTypeShape EntityType="TTI2Model.TLCMT_LineIssue" Width="1.5" PointX="44.375" PointY="41.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_CottonOrigin" Width="1.5" PointX="6.375" PointY="0.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLCUT_CutSheet" Width="1.5" PointX="45.375" PointY="20.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLDYE_DyeBatch" Width="1.5" PointX="45.375" PointY="12.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLCMT_CompletedWork" Width="1.5" PointX="43.375" PointY="28.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_GreigeColour" Width="1.5" PointX="22.375" PointY="39.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLDYE_DyeBatchDetails" Width="1.5" PointX="9.375" PointY="43.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLCUT_CutSheetReceipt" Width="1.5" PointX="29.375" PointY="10.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLCUT_ExpectedUnits" Width="1.5" PointX="45.375" PointY="27.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLSPN_YarnProductionPerMachine" Width="1.5" PointX="15.625" PointY="49.5" />
+        <AssociationConnector Association="TTI2Model.FK_TLSPN_YarnProductionPerMachine_TLADM_MachineDefinitions" />
+        <EntityTypeShape EntityType="TTI2Model.TLKNI_GreigeProduction" Width="1.5" PointX="25.375" PointY="43.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_ProductRating" Width="1.5" PointX="44.375" PointY="35.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLCMT_AuditMeasurements" Width="1.5" PointX="8.375" PointY="11.75" />
+        </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

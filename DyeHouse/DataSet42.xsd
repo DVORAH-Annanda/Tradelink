@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="DataSet42" targetNamespace="http://tempuri.org/DataSet42.xsd" xmlns:mstns="http://tempuri.org/DataSet42.xsd" xmlns="http://tempuri.org/DataSet42.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections />
+        <Tables />
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="DataSet42" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="DataSet42" msprop:Generator_UserDSName="DataSet42">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="DataTable1" msprop:Generator_TableClassName="DataTable1DataTable" msprop:Generator_TableVarName="tableDataTable1" msprop:Generator_RowChangedName="DataTable1RowChanged" msprop:Generator_TablePropName="DataTable1" msprop:Generator_RowDeletingName="DataTable1RowDeleting" msprop:Generator_RowChangingName="DataTable1RowChanging" msprop:Generator_RowEvHandlerName="DataTable1RowChangeEventHandler" msprop:Generator_RowDeletedName="DataTable1RowDeleted" msprop:Generator_RowClassName="DataTable1Row" msprop:Generator_UserTableName="DataTable1" msprop:Generator_RowEvArgName="DataTable1RowChangeEvent">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="NCRPk" msprop:Generator_ColumnVarNameInTable="columnNCRPk" msprop:Generator_ColumnPropNameInRow="NCRPk" msprop:Generator_ColumnPropNameInTable="NCRPkColumn" msprop:Generator_UserColumnName="NCRPk" type="xs:int" minOccurs="0" />
+              <xs:element name="NCReportTitle" msprop:Generator_ColumnVarNameInTable="columnNCReportTitle" msprop:Generator_ColumnPropNameInRow="NCReportTitle" msprop:Generator_ColumnPropNameInTable="NCReportTitleColumn" msprop:Generator_UserColumnName="NCReportTitle" type="xs:string" minOccurs="0" />
+              <xs:element name="NCRSelection" msprop:Generator_ColumnVarNameInTable="columnNCRSelection" msprop:Generator_ColumnPropNameInRow="NCRSelection" msprop:Generator_ColumnPropNameInTable="NCRSelectionColumn" msprop:Generator_UserColumnName="NCRSelection" type="xs:string" minOccurs="0" />
+              <xs:element name="NCRSorted" msprop:Generator_ColumnVarNameInTable="columnNCRSorted" msprop:Generator_ColumnPropNameInRow="NCRSorted" msprop:Generator_ColumnPropNameInTable="NCRSortedColumn" msprop:Generator_UserColumnName="NCRSorted" type="xs:string" minOccurs="0" />
+              <xs:element name="NCRFromDate" msprop:Generator_ColumnVarNameInTable="columnNCRFromDate" msprop:Generator_ColumnPropNameInRow="NCRFromDate" msprop:Generator_ColumnPropNameInTable="NCRFromDateColumn" msprop:Generator_UserColumnName="NCRFromDate" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="NCRToDate" msprop:Generator_ColumnVarNameInTable="columnNCRToDate" msprop:Generator_ColumnPropNameInRow="NCRToDate" msprop:Generator_ColumnPropNameInTable="NCRToDateColumn" msprop:Generator_UserColumnName="NCRToDate" type="xs:dateTime" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="DataTable2" msprop:Generator_TableClassName="DataTable2DataTable" msprop:Generator_TableVarName="tableDataTable2" msprop:Generator_RowChangedName="DataTable2RowChanged" msprop:Generator_TablePropName="DataTable2" msprop:Generator_RowDeletingName="DataTable2RowDeleting" msprop:Generator_RowChangingName="DataTable2RowChanging" msprop:Generator_RowEvHandlerName="DataTable2RowChangeEventHandler" msprop:Generator_RowDeletedName="DataTable2RowDeleted" msprop:Generator_RowClassName="DataTable2Row" msprop:Generator_UserTableName="DataTable2" msprop:Generator_RowEvArgName="DataTable2RowChangeEvent">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="NCRPk" msprop:Generator_ColumnVarNameInTable="columnNCRPk" msprop:Generator_ColumnPropNameInRow="NCRPk" msprop:Generator_ColumnPropNameInTable="NCRPkColumn" msprop:Generator_UserColumnName="NCRPk" type="xs:int" minOccurs="0" />
+              <xs:element name="NCRBatchNo" msprop:Generator_ColumnVarNameInTable="columnNCRBatchNo" msprop:Generator_ColumnPropNameInRow="NCRBatchNo" msprop:Generator_ColumnPropNameInTable="NCRBatchNoColumn" msprop:Generator_UserColumnName="NCRBatchNo" type="xs:string" minOccurs="0" />
+              <xs:element name="NCRPieceNo" msdata:Caption="NCRKg" msprop:Generator_ColumnVarNameInTable="columnNCRPieceNo" msprop:Generator_ColumnPropNameInRow="NCRPieceNo" msprop:Generator_ColumnPropNameInTable="NCRPieceNoColumn" msprop:Generator_UserColumnName="NCRPieceNo" type="xs:string" minOccurs="0" />
+              <xs:element name="NCRFabricWidth" msprop:Generator_ColumnVarNameInTable="columnNCRFabricWidth" msprop:Generator_ColumnPropNameInRow="NCRFabricWidth" msprop:Generator_ColumnPropNameInTable="NCRFabricWidthColumn" msprop:Generator_UserColumnName="NCRFabricWidth" type="xs:decimal" minOccurs="0" />
+              <xs:element name="NCRFabricWeight" msprop:Generator_ColumnVarNameInTable="columnNCRFabricWeight" msprop:Generator_ColumnPropNameInRow="NCRFabricWeight" msprop:Generator_ColumnPropNameInTable="NCRFabricWeightColumn" msprop:Generator_UserColumnName="NCRFabricWeight" type="xs:decimal" minOccurs="0" />
+              <xs:element name="NCRLengthShrinkage" msprop:Generator_ColumnVarNameInTable="columnNCRLengthShrinkage" msprop:Generator_ColumnPropNameInRow="NCRLengthShrinkage" msprop:Generator_ColumnPropNameInTable="NCRLengthShrinkageColumn" msprop:Generator_UserColumnName="NCRLengthShrinkage" type="xs:decimal" minOccurs="0" />
+              <xs:element name="NCRWidthShrinkage" msprop:Generator_ColumnVarNameInTable="columnNCRWidthShrinkage" msprop:Generator_ColumnPropNameInRow="NCRWidthShrinkage" msprop:Generator_ColumnPropNameInTable="NCRWidthShrinkageColumn" msprop:Generator_UserColumnName="NCRWidthShrinkage" type="xs:decimal" minOccurs="0" />
+              <xs:element name="NCRSpiral" msprop:Generator_ColumnVarNameInTable="columnNCRSpiral" msprop:Generator_ColumnPropNameInRow="NCRSpiral" msprop:Generator_ColumnPropNameInTable="NCRSpiralColumn" msprop:Generator_UserColumnName="NCRSpiral" type="xs:decimal" minOccurs="0" />
+              <xs:element name="NCRCourse" msprop:Generator_ColumnVarNameInTable="columnNCRCourse" msprop:Generator_ColumnPropNameInRow="NCRCourse" msprop:Generator_ColumnPropNameInTable="NCRCourseColumn" msprop:Generator_UserColumnName="NCRCourse" type="xs:decimal" minOccurs="0" />
+              <xs:element name="NCRWales" msprop:Generator_ColumnVarNameInTable="columnNCRWales" msprop:Generator_ColumnPropNameInRow="NCRWales" msprop:Generator_ColumnPropNameInTable="NCRWalesColumn" msprop:Generator_UserColumnName="NCRWales" type="xs:decimal" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+  <xs:annotation>
+    <xs:appinfo>
+      <msdata:Relationship name="DataTable1_DataTable2" msdata:parent="DataTable1" msdata:child="DataTable2" msdata:parentkey="NCRPk" msdata:childkey="NCRPk" msprop:Generator_UserChildTable="DataTable2" msprop:Generator_ChildPropName="GetDataTable2Rows" msprop:Generator_UserRelationName="DataTable1_DataTable2" msprop:Generator_ParentPropName="DataTable1Row" msprop:Generator_RelationVarName="relationDataTable1_DataTable2" msprop:Generator_UserParentTable="DataTable1" />
+    </xs:appinfo>
+  </xs:annotation>
+</xs:schema>

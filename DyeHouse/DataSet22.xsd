@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="DataSet22" targetNamespace="http://tempuri.org/DataSet22.xsd" xmlns:mstns="http://tempuri.org/DataSet22.xsd" xmlns="http://tempuri.org/DataSet22.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections />
+        <Tables />
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="DataSet22" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="DataSet22" msprop:Generator_UserDSName="DataSet22">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="DataTable2" msprop:Generator_TableClassName="DataTable2DataTable" msprop:Generator_TableVarName="tableDataTable2" msprop:Generator_RowChangedName="DataTable2RowChanged" msprop:Generator_TablePropName="DataTable2" msprop:Generator_RowDeletingName="DataTable2RowDeleting" msprop:Generator_RowChangingName="DataTable2RowChanging" msprop:Generator_RowEvHandlerName="DataTable2RowChangeEventHandler" msprop:Generator_RowDeletedName="DataTable2RowDeleted" msprop:Generator_RowClassName="DataTable2Row" msprop:Generator_UserTableName="DataTable2" msprop:Generator_RowEvArgName="DataTable2RowChangeEvent">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Pk" msprop:Generator_ColumnVarNameInTable="columnPk" msprop:Generator_ColumnPropNameInRow="Pk" msprop:Generator_ColumnPropNameInTable="PkColumn" msprop:Generator_UserColumnName="Pk" type="xs:int" minOccurs="0" />
+              <xs:element name="Test1" msprop:Generator_ColumnVarNameInTable="columnTest1" msprop:Generator_ColumnPropNameInRow="Test1" msprop:Generator_ColumnPropNameInTable="Test1Column" msprop:Generator_UserColumnName="Test1" type="xs:string" minOccurs="0" />
+              <xs:element name="Test1Value" msprop:Generator_ColumnVarNameInTable="columnTest1Value" msprop:Generator_ColumnPropNameInRow="Test1Value" msprop:Generator_ColumnPropNameInTable="Test1ValueColumn" msprop:Generator_UserColumnName="Test1Value" type="xs:int" minOccurs="0" />
+              <xs:element name="Test2" msprop:Generator_ColumnVarNameInTable="columnTest2" msprop:Generator_ColumnPropNameInRow="Test2" msprop:Generator_ColumnPropNameInTable="Test2Column" msprop:Generator_UserColumnName="Test2" type="xs:string" minOccurs="0" />
+              <xs:element name="Test2Value" msprop:Generator_ColumnVarNameInTable="columnTest2Value" msprop:Generator_ColumnPropNameInRow="Test2Value" msprop:Generator_ColumnPropNameInTable="Test2ValueColumn" msprop:Generator_UserColumnName="Test2Value" type="xs:int" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

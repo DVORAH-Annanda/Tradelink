@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="DataSet32" targetNamespace="http://tempuri.org/DataSet32.xsd" xmlns:mstns="http://tempuri.org/DataSet32.xsd" xmlns="http://tempuri.org/DataSet32.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections>
+          <Connection AppSettingsObjectName="Settings" AppSettingsPropertyName="TTI2ConnectionString" ConnectionStringObject="" IsAppSettingsProperty="true" Modifier="Assembly" Name="TTI2ConnectionString (Settings)" ParameterPrefix="@" PropertyReference="ApplicationSettings.Knitting.Properties.Settings.GlobalReference.Default.TTI2ConnectionString" Provider="System.Data.SqlClient" />
+        </Connections>
+        <Tables />
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="DataSet32" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="DataSet32" msprop:Generator_UserDSName="DataSet32">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="DataTable1" msprop:Generator_TableClassName="DataTable1DataTable" msprop:Generator_TableVarName="tableDataTable1" msprop:Generator_TablePropName="DataTable1" msprop:Generator_RowDeletingName="DataTable1RowDeleting" msprop:Generator_RowChangingName="DataTable1RowChanging" msprop:Generator_RowEvHandlerName="DataTable1RowChangeEventHandler" msprop:Generator_RowDeletedName="DataTable1RowDeleted" msprop:Generator_UserTableName="DataTable1" msprop:Generator_RowChangedName="DataTable1RowChanged" msprop:Generator_RowEvArgName="DataTable1RowChangeEvent" msprop:Generator_RowClassName="DataTable1Row">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="CountryOfOrigin" msprop:Generator_ColumnVarNameInTable="columnCountryOfOrigin" msprop:Generator_ColumnPropNameInRow="CountryOfOrigin" msprop:Generator_ColumnPropNameInTable="CountryOfOriginColumn" msprop:Generator_UserColumnName="CountryOfOrigin" type="xs:string" minOccurs="0" />
+              <xs:element name="CurrentStore" msprop:Generator_ColumnVarNameInTable="columnCurrentStore" msprop:Generator_ColumnPropNameInRow="CurrentStore" msprop:Generator_ColumnPropNameInTable="CurrentStoreColumn" msprop:Generator_UserColumnName="CurrentStore" type="xs:string" minOccurs="0" />
+              <xs:element name="DskWeight" msprop:Generator_ColumnVarNameInTable="columnDskWeight" msprop:Generator_ColumnPropNameInRow="DskWeight" msprop:Generator_ColumnPropNameInTable="DskWeightColumn" msprop:Generator_UserColumnName="DskWeight" type="xs:decimal" minOccurs="0" />
+              <xs:element name="DskWidth" msprop:Generator_ColumnVarNameInTable="columnDskWidth" msprop:Generator_ColumnPropNameInRow="DskWidth" msprop:Generator_ColumnPropNameInTable="DskWidthColumn" msprop:Generator_UserColumnName="DskWidth" type="xs:decimal" minOccurs="0" />
+              <xs:element name="Quality" msprop:Generator_ColumnVarNameInTable="columnQuality" msprop:Generator_ColumnPropNameInRow="Quality" msprop:Generator_ColumnPropNameInTable="QualityColumn" msprop:Generator_UserColumnName="Quality" type="xs:string" minOccurs="0" />
+              <xs:element name="Machine" msprop:Generator_ColumnVarNameInTable="columnMachine" msprop:Generator_ColumnPropNameInRow="Machine" msprop:Generator_ColumnPropNameInTable="MachineColumn" msprop:Generator_UserColumnName="Machine" type="xs:string" minOccurs="0" />
+              <xs:element name="NettWeight" msprop:Generator_ColumnVarNameInTable="columnNettWeight" msprop:Generator_ColumnPropNameInRow="NettWeight" msprop:Generator_ColumnPropNameInTable="NettWeightColumn" msprop:Generator_UserColumnName="NettWeight" type="xs:decimal" minOccurs="0" />
+              <xs:element name="TheirPartNo" msprop:Generator_ColumnVarNameInTable="columnTheirPartNo" msprop:Generator_ColumnPropNameInRow="TheirPartNo" msprop:Generator_ColumnPropNameInTable="TheirPartNoColumn" msprop:Generator_UserColumnName="TheirPartNo" type="xs:string" minOccurs="0" />
+              <xs:element name="OurPartNo" msprop:Generator_ColumnVarNameInTable="columnOurPartNo" msprop:Generator_ColumnPropNameInRow="OurPartNo" msprop:Generator_ColumnPropNameInTable="OurPartNoColumn" msprop:Generator_UserColumnName="OurPartNo" type="xs:string" minOccurs="0" />
+              <xs:element name="TransDate" msprop:Generator_ColumnVarNameInTable="columnTransDate" msprop:Generator_ColumnPropNameInRow="TransDate" msprop:Generator_ColumnPropNameInTable="TransDateColumn" msprop:Generator_UserColumnName="TransDate" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="TransNO" msprop:Generator_ColumnVarNameInTable="columnTransNO" msprop:Generator_ColumnPropNameInRow="TransNO" msprop:Generator_ColumnPropNameInTable="TransNOColumn" msprop:Generator_UserColumnName="TransNO" type="xs:int" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

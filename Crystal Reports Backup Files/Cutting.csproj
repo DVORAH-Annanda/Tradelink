@@ -1,0 +1,1003 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{A1982AAD-DB8E-4B4F-AA12-C4060D46628D}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Cutting</RootNamespace>
+    <AssemblyName>Cutting</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>Cutting.pfx</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="CrystalDecisions.CrystalReports.Engine, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
+    <Reference Include="CrystalDecisions.Enterprise.Framework, Version=10.5.3700.0, Culture=neutral, PublicKeyToken=692fbea5521e1304">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="CrystalDecisions.Enterprise.InfoStore, Version=10.5.3700.0, Culture=neutral, PublicKeyToken=692fbea5521e1304">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="CrystalDecisions.ReportSource, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
+    <Reference Include="CrystalDecisions.Shared, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
+    <Reference Include="CrystalDecisions.Windows.Forms, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="LinqKit, Version=1.1.15.0, Culture=neutral, PublicKeyToken=bc217f8844052a91, processorArchitecture=MSIL">
+      <HintPath>..\packages\LinqKit.1.1.15\lib\net45\LinqKit.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BIFDeliveryNote.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BIFDeliveryNote.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="BIFInterTransfer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BIFInterTransfer.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="BIFReceipts.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BIFReceipts.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="BIFTickets.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BIFTickets.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="CheckComboBoxItem.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="CRListSummary.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CRListSummary.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="CRSummary.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CRSummary.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="CrystalReport1.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CrystalReport1.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="CutPanelIssue.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CutPanelIssue.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="CutProduction.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CutProduction.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="CutSheetRegister.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CutSheetRegister.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="CutsheetsOnHold.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CutsheetsOnHold.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="CutSheetTickets.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CutSheetTickets.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="CuttingRepository.cs" />
+    <Compile Include="DataSet1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSet1.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="DataSet10.cs">
+      <DependentUpon>DataSet10.xsd</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="DataSet10.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSet10.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="DataSet11.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSet11.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="DataSet12.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSet12.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="DataSet13.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSet13.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="DataSet14.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSet14.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="DataSet15.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSet15.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="DataSet16.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSet16.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="DataSet17.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSet17.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="DataSet19.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSet19.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="DataSet2.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSet2.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="DataSet20.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSet20.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="DataSet21.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSet21.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="DataSet3.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSet3.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="DataSet4.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSet4.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="DataSet5.cs">
+      <DependentUpon>DataSet5.xsd</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="DataSet5.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSet5.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="DataSet6.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSet6.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="DataSet7.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSet7.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="DataSet8.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSet8.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="DataSet9.cs">
+      <DependentUpon>DataSet9.xsd</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="DataSet9.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSet9.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="fmtCuttingBoxesAdjustment.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="fmtCuttingBoxesAdjustment.Designer.cs">
+      <DependentUpon>fmtCuttingBoxesAdjustment.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmBerrieb1.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmBerrieb1.Designer.cs">
+      <DependentUpon>frmBerrieb1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmBierriebiSel.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmBierriebiSel.Designer.cs">
+      <DependentUpon>FrmBierriebiSel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmBIFStoreToStore.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmBIFStoreToStore.Designer.cs">
+      <DependentUpon>frmBIFStoreToStore.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmBIFTruckLoad.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmBIFTruckLoad.Designer.cs">
+      <DependentUpon>frmBIFTruckLoad.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmBoughtInFabric.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmBoughtInFabric.Designer.cs">
+      <DependentUpon>frmBoughtInFabric.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmCloseCutSheet.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmCloseCutSheet.Designer.cs">
+      <DependentUpon>frmCloseCutSheet.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmCMTPanelReissue.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmCMTPanelReissue.Designer.cs">
+      <DependentUpon>frmCMTPanelReissue.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmCreatePickingList.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmCreatePickingList.Designer.cs">
+      <DependentUpon>frmCreatePickingList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmCSSelectDyeBatch.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmCSSelectDyeBatch.Designer.cs">
+      <DependentUpon>frmCSSelectDyeBatch.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmCutBoxes.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmCutBoxes.Designer.cs">
+      <DependentUpon>frmCutBoxes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmCutOnOffHold.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmCutOnOffHold.Designer.cs">
+      <DependentUpon>frmCutOnOffHold.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmCutProductionPlan.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmCutProductionPlan.Designer.cs">
+      <DependentUpon>frmCutProductionPlan.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmCutSheet.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmCutSheet.Designer.cs">
+      <DependentUpon>frmCutSheet.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmCutSheetReceipt.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmCutSheetReceipt.Designer.cs">
+      <DependentUpon>frmCutSheetReceipt.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmCutView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmCutView.Designer.cs">
+      <DependentUpon>frmCutView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmCutViewRep.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmCutViewRep.Designer.cs">
+      <DependentUpon>frmCutViewRep.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmFabricReturn.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmFabricReturn.Designer.cs">
+      <DependentUpon>frmFabricReturn.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmFleeceData.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmFleeceData.Designer.cs">
+      <DependentUpon>frmFleeceData.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmPanelReject.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmPanelReject.Designer.cs">
+      <DependentUpon>frmPanelReject.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmQAInput.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmQAInput.Designer.cs">
+      <DependentUpon>frmQAInput.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmQaReportSelection.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmQaReportSelection.Designer.cs">
+      <DependentUpon>frmQaReportSelection.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmQASelection.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmQASelection.Designer.cs">
+      <DependentUpon>frmQASelection.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmQtyAdjustment.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmQtyAdjustment.Designer.cs">
+      <DependentUpon>frmQtyAdjustment.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmRejectReasons.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmRejectReasons.Designer.cs">
+      <DependentUpon>frmRejectReasons.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmReprintBIFTransfer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmReprintBIFTransfer.Designer.cs">
+      <DependentUpon>frmReprintBIFTransfer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmReprintCS.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmReprintCS.Designer.cs">
+      <DependentUpon>frmReprintCS.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmSelBundleStore.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmSelBundleStore.Designer.cs">
+      <DependentUpon>frmSelBundleStore.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmSelCutProduction.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmSelCutProduction.Designer.cs">
+      <DependentUpon>frmSelCutProduction.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmSelectBIF.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmSelectBIF.Designer.cs">
+      <DependentUpon>FrmSelectBIF.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmSelPanelStock.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmSelPanelStock.Designer.cs">
+      <DependentUpon>frmSelPanelStock.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmSelQaReport.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmSelQaReport.Designer.cs">
+      <DependentUpon>frmSelQaReport.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmSelRejectedPanel.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmSelRejectedPanel.Designer.cs">
+      <DependentUpon>frmSelRejectedPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmSelWipCutting.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmSelWipCutting.Designer.cs">
+      <DependentUpon>frmSelWipCutting.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmSplitCutSheet.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmSplitCutSheet.Designer.cs">
+      <DependentUpon>frmSplitCutSheet.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmTrimsOnCuff.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmTrimsOnCuff.Designer.cs">
+      <DependentUpon>frmTrimsOnCuff.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PanelReject.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PanelReject.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="PanelStock.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PanelStock.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="PanelStockByCS.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PanelStockByCS.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ProductionDays.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ProductionDays.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="QACutting.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>QACutting.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="QCBerrie.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>QCBerrie.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="RejectPanelStore.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>RejectPanelStore.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="StockBundleStore.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>StockBundleStore.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="WIPCutting.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>WIPCutting.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="WIPCuttingByCS.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>WIPCuttingByCS.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <EmbeddedResource Include="BIFDeliveryNote.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>BIFDeliveryNote.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BIFInterTransfer.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>BIFInterTransfer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BIFReceipts.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>BIFReceipts.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BIFTickets.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>BIFTickets.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CRListSummary.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>CRListSummary.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CRSummary.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>CRSummary.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CrystalReport1.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>CrystalReport1.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CutPanelIssue.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>CutPanelIssue.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CutProduction.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>CutProduction.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CutSheetRegister.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>CutSheetRegister.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CutsheetsOnHold.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>CutsheetsOnHold.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CutSheetTickets.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>CutSheetTickets.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="fmtCuttingBoxesAdjustment.resx">
+      <DependentUpon>fmtCuttingBoxesAdjustment.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmBerrieb1.resx">
+      <DependentUpon>frmBerrieb1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmBierriebiSel.resx">
+      <DependentUpon>FrmBierriebiSel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmBIFStoreToStore.resx">
+      <DependentUpon>frmBIFStoreToStore.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmBIFTruckLoad.resx">
+      <DependentUpon>frmBIFTruckLoad.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmBoughtInFabric.resx">
+      <DependentUpon>frmBoughtInFabric.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmCloseCutSheet.resx">
+      <DependentUpon>frmCloseCutSheet.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmCMTPanelReissue.resx">
+      <DependentUpon>frmCMTPanelReissue.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmCreatePickingList.resx">
+      <DependentUpon>frmCreatePickingList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmCSSelectDyeBatch.resx">
+      <DependentUpon>frmCSSelectDyeBatch.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmCutBoxes.resx">
+      <DependentUpon>frmCutBoxes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmCutOnOffHold.resx">
+      <DependentUpon>frmCutOnOffHold.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmCutProductionPlan.resx">
+      <DependentUpon>frmCutProductionPlan.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmCutSheet.resx">
+      <DependentUpon>frmCutSheet.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmCutSheetReceipt.resx">
+      <DependentUpon>frmCutSheetReceipt.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmCutView.resx">
+      <DependentUpon>frmCutView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmCutViewRep.resx">
+      <DependentUpon>frmCutViewRep.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmFabricReturn.resx">
+      <DependentUpon>frmFabricReturn.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmFleeceData.resx">
+      <DependentUpon>frmFleeceData.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmPanelReject.resx">
+      <DependentUpon>frmPanelReject.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmQAInput.resx">
+      <DependentUpon>frmQAInput.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmQaReportSelection.resx">
+      <DependentUpon>frmQaReportSelection.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmQASelection.resx">
+      <DependentUpon>frmQASelection.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmQtyAdjustment.resx">
+      <DependentUpon>frmQtyAdjustment.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmRejectReasons.resx">
+      <DependentUpon>frmRejectReasons.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmReprintBIFTransfer.resx">
+      <DependentUpon>frmReprintBIFTransfer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmReprintCS.resx">
+      <DependentUpon>frmReprintCS.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmSelBundleStore.resx">
+      <DependentUpon>frmSelBundleStore.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmSelCutProduction.resx">
+      <DependentUpon>frmSelCutProduction.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmSelectBIF.resx">
+      <DependentUpon>FrmSelectBIF.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmSelPanelStock.resx">
+      <DependentUpon>frmSelPanelStock.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmSelQaReport.resx">
+      <DependentUpon>frmSelQaReport.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmSelRejectedPanel.resx">
+      <DependentUpon>frmSelRejectedPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmSelWipCutting.resx">
+      <DependentUpon>frmSelWipCutting.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmSplitCutSheet.resx">
+      <DependentUpon>frmSplitCutSheet.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmTrimsOnCuff.resx">
+      <DependentUpon>frmTrimsOnCuff.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PanelReject.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>PanelReject.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PanelStock.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>PanelStock.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PanelStockByCS.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>PanelStockByCS.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProductionDays.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>ProductionDays.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="QACutting.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>QACutting.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="QCBerrie.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>QCBerrie.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RejectPanelStore.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>RejectPanelStore.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="StockBundleStore.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>StockBundleStore.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WIPCutting.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>WIPCutting.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WIPCuttingByCS.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>WIPCuttingByCS.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="Cutting.pfx" />
+    <None Include="DataSet1.xsc">
+      <DependentUpon>DataSet1.xsd</DependentUpon>
+    </None>
+    <None Include="DataSet1.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSet1.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="DataSet1.xss">
+      <DependentUpon>DataSet1.xsd</DependentUpon>
+    </None>
+    <None Include="DataSet10.xsc">
+      <DependentUpon>DataSet10.xsd</DependentUpon>
+    </None>
+    <None Include="DataSet10.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSet10.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="DataSet10.xss">
+      <DependentUpon>DataSet10.xsd</DependentUpon>
+    </None>
+    <None Include="DataSet11.xsc">
+      <DependentUpon>DataSet11.xsd</DependentUpon>
+    </None>
+    <None Include="DataSet11.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSet11.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="DataSet11.xss">
+      <DependentUpon>DataSet11.xsd</DependentUpon>
+    </None>
+    <None Include="DataSet12.xsc">
+      <DependentUpon>DataSet12.xsd</DependentUpon>
+    </None>
+    <None Include="DataSet12.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSet12.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="DataSet12.xss">
+      <DependentUpon>DataSet12.xsd</DependentUpon>
+    </None>
+    <None Include="DataSet13.xsc">
+      <DependentUpon>DataSet13.xsd</DependentUpon>
+    </None>
+    <None Include="DataSet13.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSet13.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="DataSet13.xss">
+      <DependentUpon>DataSet13.xsd</DependentUpon>
+    </None>
+    <None Include="DataSet14.xsc">
+      <DependentUpon>DataSet14.xsd</DependentUpon>
+    </None>
+    <None Include="DataSet14.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSet14.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="DataSet14.xss">
+      <DependentUpon>DataSet14.xsd</DependentUpon>
+    </None>
+    <None Include="DataSet15.xsc">
+      <DependentUpon>DataSet15.xsd</DependentUpon>
+    </None>
+    <None Include="DataSet15.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSet15.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="DataSet15.xss">
+      <DependentUpon>DataSet15.xsd</DependentUpon>
+    </None>
+    <None Include="DataSet16.xsc">
+      <DependentUpon>DataSet16.xsd</DependentUpon>
+    </None>
+    <None Include="DataSet16.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSet16.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="DataSet16.xss">
+      <DependentUpon>DataSet16.xsd</DependentUpon>
+    </None>
+    <None Include="DataSet17.xsc">
+      <DependentUpon>DataSet17.xsd</DependentUpon>
+    </None>
+    <None Include="DataSet17.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSet17.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="DataSet17.xss">
+      <DependentUpon>DataSet17.xsd</DependentUpon>
+    </None>
+    <None Include="DataSet19.xsc">
+      <DependentUpon>DataSet19.xsd</DependentUpon>
+    </None>
+    <None Include="DataSet19.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSet19.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="DataSet19.xss">
+      <DependentUpon>DataSet19.xsd</DependentUpon>
+    </None>
+    <None Include="DataSet2.xsc">
+      <DependentUpon>DataSet2.xsd</DependentUpon>
+    </None>
+    <None Include="DataSet2.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSet2.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="DataSet2.xss">
+      <DependentUpon>DataSet2.xsd</DependentUpon>
+    </None>
+    <None Include="DataSet20.xsc">
+      <DependentUpon>DataSet20.xsd</DependentUpon>
+    </None>
+    <None Include="DataSet20.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSet20.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="DataSet20.xss">
+      <DependentUpon>DataSet20.xsd</DependentUpon>
+    </None>
+    <None Include="DataSet21.xsc">
+      <DependentUpon>DataSet21.xsd</DependentUpon>
+    </None>
+    <None Include="DataSet21.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSet21.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="DataSet21.xss">
+      <DependentUpon>DataSet21.xsd</DependentUpon>
+    </None>
+    <None Include="DataSet3.xsc">
+      <DependentUpon>DataSet3.xsd</DependentUpon>
+    </None>
+    <None Include="DataSet3.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSet3.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="DataSet3.xss">
+      <DependentUpon>DataSet3.xsd</DependentUpon>
+    </None>
+    <None Include="DataSet4.xsc">
+      <DependentUpon>DataSet4.xsd</DependentUpon>
+    </None>
+    <None Include="DataSet4.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSet4.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="DataSet4.xss">
+      <DependentUpon>DataSet4.xsd</DependentUpon>
+    </None>
+    <None Include="DataSet5.xsc">
+      <DependentUpon>DataSet5.xsd</DependentUpon>
+    </None>
+    <None Include="DataSet5.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSet5.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="DataSet5.xss">
+      <DependentUpon>DataSet5.xsd</DependentUpon>
+    </None>
+    <None Include="DataSet6.xsc">
+      <DependentUpon>DataSet6.xsd</DependentUpon>
+    </None>
+    <None Include="DataSet6.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSet6.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="DataSet6.xss">
+      <DependentUpon>DataSet6.xsd</DependentUpon>
+    </None>
+    <None Include="DataSet7.xsc">
+      <DependentUpon>DataSet7.xsd</DependentUpon>
+    </None>
+    <None Include="DataSet7.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSet7.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="DataSet7.xss">
+      <DependentUpon>DataSet7.xsd</DependentUpon>
+    </None>
+    <None Include="DataSet8.xsc">
+      <DependentUpon>DataSet8.xsd</DependentUpon>
+    </None>
+    <None Include="DataSet8.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSet8.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="DataSet8.xss">
+      <DependentUpon>DataSet8.xsd</DependentUpon>
+    </None>
+    <None Include="DataSet9.xsc">
+      <DependentUpon>DataSet9.xsd</DependentUpon>
+    </None>
+    <None Include="DataSet9.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSet9.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="DataSet9.xss">
+      <DependentUpon>DataSet9.xsd</DependentUpon>
+    </None>
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Utilities\Utilities.csproj">
+      <Project>{0ddd76b3-5438-41a8-8592-d680951de8e2}</Project>
+      <Name>Utilities</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{C0C07587-41A7-46C8-8FBD-3F9C8EBE2DDC}" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

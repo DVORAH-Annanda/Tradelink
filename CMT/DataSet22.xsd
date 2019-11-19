@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="DataSet22" targetNamespace="http://tempuri.org/DataSet22.xsd" xmlns:mstns="http://tempuri.org/DataSet22.xsd" xmlns="http://tempuri.org/DataSet22.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections />
+        <Tables />
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="DataSet22" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="DataSet22" msprop:Generator_UserDSName="DataSet22">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="DataTable1" msprop:Generator_TableClassName="DataTable1DataTable" msprop:Generator_TableVarName="tableDataTable1" msprop:Generator_TablePropName="DataTable1" msprop:Generator_RowDeletingName="DataTable1RowDeleting" msprop:Generator_RowChangingName="DataTable1RowChanging" msprop:Generator_RowEvHandlerName="DataTable1RowChangeEventHandler" msprop:Generator_RowDeletedName="DataTable1RowDeleted" msprop:Generator_UserTableName="DataTable1" msprop:Generator_RowChangedName="DataTable1RowChanged" msprop:Generator_RowEvArgName="DataTable1RowChangeEvent" msprop:Generator_RowClassName="DataTable1Row">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="CutSheet" msprop:Generator_ColumnVarNameInTable="columnCutSheet" msprop:Generator_ColumnPropNameInRow="CutSheet" msprop:Generator_ColumnPropNameInTable="CutSheetColumn" msprop:Generator_UserColumnName="CutSheet" type="xs:string" minOccurs="0" />
+              <xs:element name="Style" msprop:Generator_ColumnVarNameInTable="columnStyle" msprop:Generator_ColumnPropNameInRow="Style" msprop:Generator_ColumnPropNameInTable="StyleColumn" msprop:Generator_UserColumnName="Style" type="xs:string" minOccurs="0" />
+              <xs:element name="Sizes" msprop:Generator_ColumnVarNameInTable="columnSizes" msprop:Generator_ColumnPropNameInRow="Sizes" msprop:Generator_ColumnPropNameInTable="SizesColumn" msprop:Generator_UserColumnName="Sizes" type="xs:string" minOccurs="0" />
+              <xs:element name="OnHold" msprop:Generator_ColumnVarNameInTable="columnOnHold" msprop:Generator_ColumnPropNameInRow="OnHold" msprop:Generator_ColumnPropNameInTable="OnHoldColumn" msprop:Generator_UserColumnName="OnHold" type="xs:boolean" minOccurs="0" />
+              <xs:element name="ReceiptCage" msprop:Generator_ColumnVarNameInTable="columnReceiptCage" msprop:Generator_ColumnPropNameInRow="ReceiptCage" msprop:Generator_ColumnPropNameInTable="ReceiptCageColumn" msprop:Generator_UserColumnName="ReceiptCage" type="xs:int" minOccurs="0" />
+              <xs:element name="WIP" msprop:Generator_ColumnVarNameInTable="columnWIP" msprop:Generator_ColumnPropNameInRow="WIP" msprop:Generator_ColumnPropNameInTable="WIPColumn" msprop:Generator_UserColumnName="WIP" type="xs:int" minOccurs="0" />
+              <xs:element name="DespatchCage" msprop:Generator_ColumnVarNameInTable="columnDespatchCage" msprop:Generator_ColumnPropNameInRow="DespatchCage" msprop:Generator_ColumnPropNameInTable="DespatchCageColumn" msprop:Generator_UserColumnName="DespatchCage" type="xs:int" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

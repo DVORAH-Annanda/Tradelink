@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="DataSet31" targetNamespace="http://tempuri.org/DataSet31.xsd" xmlns:mstns="http://tempuri.org/DataSet31.xsd" xmlns="http://tempuri.org/DataSet31.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections />
+        <Tables />
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="DataSet31" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="DataSet31" msprop:Generator_UserDSName="DataSet31">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="DataTable1" msprop:Generator_TableClassName="DataTable1DataTable" msprop:Generator_TableVarName="tableDataTable1" msprop:Generator_TablePropName="DataTable1" msprop:Generator_RowDeletingName="DataTable1RowDeleting" msprop:Generator_RowChangingName="DataTable1RowChanging" msprop:Generator_RowEvHandlerName="DataTable1RowChangeEventHandler" msprop:Generator_RowDeletedName="DataTable1RowDeleted" msprop:Generator_UserTableName="DataTable1" msprop:Generator_RowChangedName="DataTable1RowChanged" msprop:Generator_RowEvArgName="DataTable1RowChangeEvent" msprop:Generator_RowClassName="DataTable1Row">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Description" msprop:Generator_ColumnVarNameInTable="columnDescription" msprop:Generator_ColumnPropNameInRow="Description" msprop:Generator_ColumnPropNameInTable="DescriptionColumn" msprop:Generator_UserColumnName="Description" type="xs:string" minOccurs="0" />
+              <xs:element name="ReOrder_Level" msprop:Generator_ColumnVarNameInTable="columnReOrder_Level" msprop:Generator_ColumnPropNameInRow="ReOrder_Level" msprop:Generator_ColumnPropNameInTable="ReOrder_LevelColumn" msprop:Generator_UserColumnName="ReOrder_Level" type="xs:int" minOccurs="0" />
+              <xs:element name="ReOrder_Qty" msprop:Generator_ColumnVarNameInTable="columnReOrder_Qty" msprop:Generator_ColumnPropNameInRow="ReOrder_Qty" msprop:Generator_ColumnPropNameInTable="ReOrder_QtyColumn" msprop:Generator_UserColumnName="ReOrder_Qty" type="xs:int" minOccurs="0" />
+              <xs:element name="OutStanding_KO" msprop:Generator_ColumnVarNameInTable="columnOutStanding_KO" msprop:Generator_ColumnPropNameInRow="OutStanding_KO" msprop:Generator_ColumnPropNameInTable="OutStanding_KOColumn" msprop:Generator_UserColumnName="OutStanding_KO" type="xs:decimal" minOccurs="0" />
+              <xs:element name="Pending_Ins" msprop:Generator_ColumnVarNameInTable="columnPending_Ins" msprop:Generator_ColumnPropNameInRow="Pending_Ins" msprop:Generator_ColumnPropNameInTable="Pending_InsColumn" msprop:Generator_UserColumnName="Pending_Ins" type="xs:decimal" minOccurs="0" />
+              <xs:element name="Qualified" msprop:Generator_ColumnVarNameInTable="columnQualified" msprop:Generator_ColumnPropNameInRow="Qualified" msprop:Generator_ColumnPropNameInTable="QualifiedColumn" msprop:Generator_UserColumnName="Qualified" type="xs:decimal" minOccurs="0" />
+              <xs:element name="Available_ToBatch" msprop:Generator_ColumnVarNameInTable="columnAvailable_ToBatch" msprop:Generator_ColumnPropNameInRow="Available_ToBatch" msprop:Generator_ColumnPropNameInTable="Available_ToBatchColumn" msprop:Generator_UserColumnName="Available_ToBatch" type="xs:decimal" minOccurs="0" />
+              <xs:element name="DO_LT8" msprop:Generator_ColumnVarNameInTable="columnDO_LT8" msprop:Generator_ColumnPropNameInRow="DO_LT8" msprop:Generator_ColumnPropNameInTable="DO_LT8Column" msprop:Generator_UserColumnName="DO_LT8" type="xs:decimal" minOccurs="0" />
+              <xs:element name="DO_GT8" msprop:Generator_ColumnVarNameInTable="columnDO_GT8" msprop:Generator_ColumnPropNameInRow="DO_GT8" msprop:Generator_ColumnPropNameInTable="DO_GT8Column" msprop:Generator_UserColumnName="DO_GT8" type="xs:decimal" minOccurs="0" />
+              <xs:element name="GroupDescription" msprop:Generator_ColumnVarNameInTable="columnGroupDescription" msprop:Generator_ColumnPropNameInRow="GroupDescription" msprop:Generator_ColumnPropNameInTable="GroupDescriptionColumn" msprop:Generator_UserColumnName="GroupDescription" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

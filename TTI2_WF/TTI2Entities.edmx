@@ -1,0 +1,2718 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="TTI2Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="TLADM_AuxColours">
+          <Key>
+            <PropertyRef Name="AuxCol_Id" />
+          </Key>
+          <Property Name="AuxCol_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AuxCol_Description" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="AuxCol_PowerN" Type="int" Nullable="false" />
+          <Property Name="AuxCol_FinishedCode" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TLADM_Colours">
+          <Key>
+            <PropertyRef Name="Col_Id" />
+          </Key>
+          <Property Name="Col_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Col_Description" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Col_PowerN" Type="int" Nullable="false" />
+          <Property Name="Col_Discontinued" Type="bit" />
+          <Property Name="Col_Discontinued_Date" Type="date" />
+          <Property Name="Col_FinishedCode" Type="varchar" MaxLength="5" />
+          <Property Name="Col_HasAuxColors" Type="bit" Nullable="false" />
+          <Property Name="Col_AuxPowerN" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TLADM_ConsumableGroups">
+          <Key>
+            <PropertyRef Name="ConG_Pk" />
+          </Key>
+          <Property Name="ConG_Pk" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ConG_ShortCode" Type="varchar" MaxLength="5" Nullable="false" />
+          <Property Name="ConG_Description" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TLADM_ConsumablesDC">
+          <Key>
+            <PropertyRef Name="ConsDC_Pk" />
+          </Key>
+          <Property Name="ConsDC_Pk" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ConsDC_Code" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="ConsDC_Description" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="ConsDC_UOM_Fk" Type="int" Nullable="false" />
+          <Property Name="ConsDC_AUOM_FK" Type="int" Nullable="false" />
+          <Property Name="ConsDC_ConsFactors" Type="decimal" Precision="18" Scale="6" Nullable="false" />
+          <Property Name="ConsDC_StockType_FK" Type="int" Nullable="false" />
+          <Property Name="ConsDC_Hazardous" Type="bit" Nullable="false" />
+          <Property Name="ConsDC_ShowQty" Type="bit" Nullable="false" />
+          <Property Name="ConsDC_ShowStdCost" Type="bit" Nullable="false" />
+          <Property Name="ConsDC_ReOrderLevel" Type="int" Nullable="false" />
+          <Property Name="ConsDC_Economic_ReOrderQty" Type="int" Nullable="false" />
+          <Property Name="ConsDC_MinReorderQty" Type="int" Nullable="false" />
+          <Property Name="ConsDC_DelLeadTime" Type="int" Nullable="false" />
+          <Property Name="ConsDC_StockTake_FK" Type="int" Nullable="false" />
+          <Property Name="ConsDC_StandardCost" Type="money" Nullable="false" />
+          <Property Name="ConsDC_Units" Type="int" Nullable="false" />
+          <Property Name="ConsDC_PreferedSupplier_FK" Type="int" Nullable="false" />
+          <Property Name="ConsDC_Consignment" Type="bit" Nullable="false" />
+          <Property Name="ConsDC_Notes" Type="varchar(max)" />
+          <Property Name="ConsDC_HazChem" Type="varchar(max)" />
+          <Property Name="ConsDC_SizeCode_FK" Type="int" Nullable="false" />
+          <Property Name="ConsDC_StoreCode_FK" Type="int" Nullable="false" />
+          <Property Name="ConsDC_ConsGroup_FK" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TLADM_ConsumablesOther">
+          <Key>
+            <PropertyRef Name="ConsOther_Pk" />
+          </Key>
+          <Property Name="ConsOther_Pk" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ConsOther_Code" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="ConsOther_Description" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="ConsOther_UOM_FK" Type="int" Nullable="false" />
+          <Property Name="ConsOther_AUOM_FK" Type="int" Nullable="false" />
+          <Property Name="ConsOther_ConvFactor" Type="decimal" Precision="18" Scale="6" Nullable="false" />
+          <Property Name="ConsOther_StockType_Fk" Type="int" Nullable="false" />
+          <Property Name="ConsOther_Store_FK" Type="int" Nullable="false" />
+          <Property Name="ConsOther_ShowQty" Type="bit" Nullable="false" />
+          <Property Name="ConsOther_Unit" Type="int" Nullable="false" />
+          <Property Name="ConsOther_ShowStdCost" Type="bit" Nullable="false" />
+          <Property Name="ConsOther_StdCost" Type="decimal" Precision="18" Scale="6" Nullable="false" />
+          <Property Name="ConsOther_ReOrderLevel" Type="int" Nullable="false" />
+          <Property Name="ConsOther_EconomicReOrderQty" Type="int" Nullable="false" />
+          <Property Name="ConsOther_MinReOrderQty" Type="int" Nullable="false" />
+          <Property Name="ConsOther_DeliveryLeadTime" Type="int" Nullable="false" />
+          <Property Name="ConsOther_StockTakeFrequency_Fk" Type="int" Nullable="false" />
+          <Property Name="ConsOther_ConsGroup_FK" Type="int" Nullable="false" />
+          <Property Name="ConsOther_PreferredSupplier_FK" Type="int" Nullable="false" />
+          <Property Name="ConsOther_SizeCode_FK" Type="int" Nullable="false" />
+          <Property Name="ConsOther_Notes" Type="varchar(max)" />
+          <Property Name="ConsOther_Consignment" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TLADM_Cotton">
+          <Key>
+            <PropertyRef Name="Cotton_Pk" />
+          </Key>
+          <Property Name="Cotton_Pk" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Cotton_Code" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="Cotton_Description" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Cotton_UOM_Fk" Type="int" Nullable="false" />
+          <Property Name="Cotton_StockType_FK" Type="int" Nullable="false" />
+          <Property Name="Cotton_Store_FK" Type="int" Nullable="false" />
+          <Property Name="Cotton_Origin_FK" Type="int" Nullable="false" />
+          <Property Name="Cotton_ShowQty" Type="bit" Nullable="false" />
+          <Property Name="Cotton_ShowStdCost" Type="bit" Nullable="false" />
+          <Property Name="Cotton_MicFrom" Type="decimal" Precision="18" Scale="6" Nullable="false" />
+          <Property Name="Cotton_MicTo" Type="decimal" Precision="18" Scale="6" Nullable="false" />
+          <Property Name="Cotton_StapleFrom" Type="decimal" Precision="18" Scale="6" Nullable="false" />
+          <Property Name="Cotton_StapleTo" Type="decimal" Precision="18" Scale="6" Nullable="false" />
+          <Property Name="Cotton_ROL" Type="decimal" Precision="18" Scale="6" Nullable="false" />
+          <Property Name="Cotton_ROQ" Type="decimal" Precision="18" Scale="6" Nullable="false" />
+          <Property Name="Cotton_Contract" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="Cotton_Grade" Type="varchar" MaxLength="12" Nullable="false" />
+          <Property Name="Cotton_Notes" Type="varchar(max)" />
+          <Property Name="Cotton_StdCost" Type="money" Nullable="false" />
+          <Property Name="Cotton_Units" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TLADM_CottonOrigin">
+          <Key>
+            <PropertyRef Name="CottonOrigin_Pk" />
+          </Key>
+          <Property Name="CottonOrigin_Pk" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CottonOrigin_ShortCode" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="CottonOrigin_Description" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TLADM_CustomerFile">
+          <Key>
+            <PropertyRef Name="Cust_Pk" />
+          </Key>
+          <Property Name="Cust_Pk" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Cust_Code" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="Cust_Description" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Cust_PostalAddress" Type="varchar(max)" Nullable="false" />
+          <Property Name="Cust_Telephone" Type="varchar" MaxLength="30" />
+          <Property Name="Cust_Fax" Type="varchar" MaxLength="30" />
+          <Property Name="Cust_ContactPerson" Type="varchar" MaxLength="50" />
+          <Property Name="Cust_DeliveryAddress1" Type="varchar(max)" Nullable="false" />
+          <Property Name="Cust_DeliveryAddress2" Type="varchar(max)" />
+          <Property Name="Cust_DeliveryAddress3" Type="varchar(max)" />
+          <Property Name="Cust_DeliveryAddress4" Type="varchar(max)" />
+          <Property Name="Cust_Blocked" Type="bit" Nullable="false" />
+          <Property Name="Cust_CustomerCat_FK" Type="int" Nullable="false" />
+          <Property Name="Cust_VatReferenced" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Cust_EmailContact" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Cust_SendEmail" Type="bit" Nullable="false" />
+          <Property Name="Cust_Notes" Type="varchar(max)" />
+        </EntityType>
+        <EntityType Name="TLADM_CustomerTypes">
+          <Key>
+            <PropertyRef Name="CT_Id" />
+          </Key>
+          <Property Name="CT_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CT_ShortCode" Type="varchar" MaxLength="5" Nullable="false" />
+          <Property Name="CT_Description" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TLADM_Departments">
+          <Key>
+            <PropertyRef Name="Dep_Id" />
+          </Key>
+          <Property Name="Dep_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Dep_ShortCode" Type="varchar" MaxLength="5" Nullable="false" />
+          <Property Name="Dep_Description" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Dep_PowerN" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TLADM_FabricProduct">
+          <Key>
+            <PropertyRef Name="FP_Id" />
+          </Key>
+          <Property Name="FP_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FP_Description" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="FP_PowerN" Type="int" Nullable="false" />
+          <Property Name="FP_Discontinued" Type="bit" />
+          <Property Name="FP_Discontinued_Date" Type="date" />
+        </EntityType>
+        <EntityType Name="TLADM_FabricType">
+          <Key>
+            <PropertyRef Name="FT_Id" />
+          </Key>
+          <Property Name="FT_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FT_Description" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="FT_Product_FK" Type="int" Nullable="false" />
+          <Property Name="FT_PowerN" Type="int" Nullable="false" />
+          <Property Name="FT_TotalPN_Weight" Type="int" Nullable="false" />
+          <Property Name="FT_TotalPN_Width" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TLADM_FabricWeight">
+          <Key>
+            <PropertyRef Name="FWW_Id" />
+          </Key>
+          <Property Name="FWW_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FWW_Description" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="FWW_PowerN" Type="int" Nullable="false" />
+          <Property Name="FWW_Discontinued" Type="bit" />
+          <Property Name="FWW_Discontinued_Date" Type="date" />
+          <Property Name="FWW_Calculation_Value" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TLADM_FabWidth">
+          <Key>
+            <PropertyRef Name="FW_Id" />
+          </Key>
+          <Property Name="FW_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FW_Description" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="FW_PowerN" Type="int" Nullable="false" />
+          <Property Name="FW_Discontinued" Type="bit" />
+          <Property Name="FW_Discontinued_Date" Type="date" />
+        </EntityType>
+        <EntityType Name="TLADM_FinishedGoods">
+          <Key>
+            <PropertyRef Name="Fin_Pk" />
+          </Key>
+          <Property Name="Fin_Pk" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Fin_Description" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TLADM_GarmentDef">
+          <Key>
+            <PropertyRef Name="GarDef_Id" />
+          </Key>
+          <Property Name="GarDef_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="GarDef_Description" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="GarDef_Alt_Description" Type="varchar" MaxLength="50" />
+          <Property Name="GarDef_Label_FK" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TLADM_GarmentDefectCodes">
+          <Key>
+            <PropertyRef Name="Defect_Id" />
+          </Key>
+          <Property Name="Defect_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Defect_ShortCode" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="Defect_Dept_Fk" Type="int" Nullable="false" />
+          <Property Name="Defect_Desacription" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TLADM_Griege">
+          <Key>
+            <PropertyRef Name="TLGreige_Id" />
+          </Key>
+          <Property Name="TLGreige_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TLGreige_Description" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="TLGreige_PowerN" Type="int" Nullable="false" />
+          <Property Name="TLGriege_FW_FK" Type="int" Nullable="false" />
+          <Property Name="TLGreige_Discontinued" Type="bit" />
+          <Property Name="TLGreige_Discontinued_Date" Type="date" />
+          <Property Name="TLGreige_FinishedCode" Type="varchar" MaxLength="5" />
+          <Property Name="TLGreige_FWPowerN" Type="int" Nullable="false" />
+          <Property Name="TLGriege_YarnPowerN" Type="int" Nullable="false" />
+          <Property Name="TLGriege_FWTPowerN" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TLADM_Labels">
+          <Key>
+            <PropertyRef Name="Lbl_Id" />
+          </Key>
+          <Property Name="Lbl_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Lbl_Description" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Lbl_Discontinued" Type="bit" />
+          <Property Name="Lbl_Discontinued_Date" Type="date" />
+          <Property Name="Lbl_PowerN" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TLADM_MachineDefinitions">
+          <Key>
+            <PropertyRef Name="MD_Pk" />
+          </Key>
+          <Property Name="MD_Pk" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MD_MachineCode" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="MD_Department_FK" Type="int" Nullable="false" />
+          <Property Name="MD_FabricType_FK" Type="int" Nullable="false" />
+          <Property Name="MD_MaxCapacity" Type="int" Nullable="false" />
+          <Property Name="MD_Description" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="MD_Realistic" Type="int" Nullable="false" />
+          <Property Name="MD_GLCostCentre" Type="varchar" MaxLength="10" />
+          <Property Name="MD_AssetRegNo" Type="varchar" MaxLength="10" />
+          <Property Name="MD_SerialNo" Type="varchar" MaxLength="15" />
+          <Property Name="MD_FirstMeasure_FK" Type="int" />
+          <Property Name="MD_SecMeasure_FK" Type="int" />
+          <Property Name="MD_ThirdMeasure_FK" Type="int" />
+          <Property Name="MD_FourthMeasure_FK" Type="int" />
+          <Property Name="MD_FifthMeasure_FK" Type="int" />
+          <Property Name="MD_SixMeasure_FK" Type="int" />
+          <Property Name="MD_SevenMeasure_FK" Type="int" />
+          <Property Name="MD_EightMeasure_FK" Type="int" />
+          <Property Name="MD_FinishGoods_FK" Type="int" />
+          <Property Name="MD_Operators_TotalPN" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TLADM_MachineMaintenance">
+          <Key>
+            <PropertyRef Name="Maint_Pk" />
+          </Key>
+          <Property Name="Maint_Pk" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Maint_ShortCode" Type="varchar" MaxLength="5" Nullable="false" />
+          <Property Name="Maint_Description" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Maint_PowerN" Type="int" Nullable="false" />
+          <Property Name="Maint_IntervalDownTime" Type="int" Nullable="false" />
+          <Property Name="Maint_DownTimePeriod" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TLADM_MachineOperators">
+          <Key>
+            <PropertyRef Name="MachOp_Pk" />
+          </Key>
+          <Property Name="MachOp_Pk" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MachOp_Code" Type="varchar" MaxLength="5" Nullable="false" />
+          <Property Name="MachOp_Description" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="MachOp_Department_FK" Type="int" Nullable="false" />
+          <Property Name="MachOp_Payroll_Code" Type="varchar" MaxLength="15" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TLADM_NonStockCat">
+          <Key>
+            <PropertyRef Name="NSC_Pk" />
+          </Key>
+          <Property Name="NSC_Pk" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NSC_ShortCode" Type="varchar" MaxLength="5" Nullable="false" />
+          <Property Name="NSC_Description" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TLADM_NonStockItems">
+          <Key>
+            <PropertyRef Name="NSI_Pk" />
+          </Key>
+          <Property Name="NSI_Pk" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NSI_Code" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="NSI_Description" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="NSI_UOM_FK" Type="int" Nullable="false" />
+          <Property Name="NSI_StockType_FK" Type="int" Nullable="false" />
+          <Property Name="NSI_Department_PWN" Type="int" Nullable="false" />
+          <Property Name="NSI_Category_FK" Type="int" Nullable="false" />
+          <Property Name="NSI_ShowUnitCost" Type="bit" Nullable="false" />
+          <Property Name="NSI_UnitCost" Type="money" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TLADM_ProductRating">
+          <Key>
+            <PropertyRef Name="Pr_Id" />
+          </Key>
+          <Property Name="Pr_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Pr_Label_FK" Type="int" Nullable="false" />
+          <Property Name="Pr_Style_FK" Type="int" Nullable="false" />
+          <Property Name="Pr_Size_Power" Type="int" Nullable="false" />
+          <Property Name="Pr_BodyorRibbing" Type="int" Nullable="false" />
+          <Property Name="Pr_PowerN" Type="int" Nullable="false" />
+          <Property Name="Pr_Ratio" Type="varchar" MaxLength="50" />
+          <Property Name="Pr_Marker_Length" Type="decimal" Precision="18" Scale="6" Nullable="false" />
+          <Property Name="Pr_numeric_Rating" Type="decimal" Precision="18" Scale="6" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TLADM_ProductRating_Detail">
+          <Key>
+            <PropertyRef Name="prd_Id" />
+          </Key>
+          <Property Name="prd_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="prd_Parent_FK" Type="int" Nullable="false" />
+          <Property Name="Prd_Weight" Type="int" Nullable="false" />
+          <Property Name="Prd_Width" Type="int" Nullable="false" />
+          <Property Name="Prd_Yield" Type="decimal" Precision="18" Scale="6" Nullable="false" />
+          <Property Name="Prd_PiecesKg" Type="decimal" Precision="18" Scale="6" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TLADM_ProductTypes">
+          <Key>
+            <PropertyRef Name="PT_pk" />
+          </Key>
+          <Property Name="PT_pk" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PT_ShortCode" Type="varchar" MaxLength="5" Nullable="false" />
+          <Property Name="PT_Description" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="PT_UOMFk" Type="int" Nullable="false" />
+          <Property Name="PT_StdCost" Type="bit" Nullable="false" />
+          <Property Name="PT_Hazardous" Type="bit" Nullable="false" />
+          <Property Name="PT_StdCostValue" Type="money" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TLADM_QualityDefinition">
+          <Key>
+            <PropertyRef Name="QD_Pk" />
+          </Key>
+          <Property Name="QD_Pk" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="QD_ShortCode" Type="varchar" MaxLength="5" Nullable="false" />
+          <Property Name="QD_Description" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="QD_RejectReasonFK" Type="int" Nullable="false" />
+          <Property Name="QD_ReportingDept_FK" Type="int" Nullable="false" />
+          <Property Name="QD_OriginatingDept_FK" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TLADM_RejectReasons">
+          <Key>
+            <PropertyRef Name="RJR_Pk" />
+          </Key>
+          <Property Name="RJR_Pk" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RJR_Description" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TLADM_Ribbing">
+          <Key>
+            <PropertyRef Name="RI_Id" />
+          </Key>
+          <Property Name="RI_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RI_Description" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="RI_PowerN" Type="int" Nullable="false" />
+          <Property Name="RI_Discontinued" Type="bit" />
+          <Property Name="RI_Discontinued_Date" Type="date" />
+        </EntityType>
+        <EntityType Name="TLADM_Sizes">
+          <Key>
+            <PropertyRef Name="SI_id" />
+          </Key>
+          <Property Name="SI_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SI_Description" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="SI_PowerN" Type="int" Nullable="false" />
+          <Property Name="SI_Discontinued" Type="bit" />
+          <Property Name="SI_Discontinued_Date" Type="date" />
+          <Property Name="SI_FinishedCode" Type="varchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="TLADM_StockTakeFreq">
+          <Key>
+            <PropertyRef Name="STF_Pk" />
+          </Key>
+          <Property Name="STF_Pk" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="STF_ShortCode" Type="varchar" MaxLength="5" Nullable="false" />
+          <Property Name="STF_Description" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="STF_Period_Weeks" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TLADM_StockTypes">
+          <Key>
+            <PropertyRef Name="ST_Id" />
+          </Key>
+          <Property Name="ST_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ST_ShortCode" Type="varchar" MaxLength="5" Nullable="false" />
+          <Property Name="ST_Description" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TLADM_StoreTypes">
+          <Key>
+            <PropertyRef Name="StoreT_Id" />
+          </Key>
+          <Property Name="StoreT_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="StoreT_ShortCode" Type="varchar" MaxLength="5" Nullable="false" />
+          <Property Name="StoreT_Description" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="StoreT_UOMFK" Type="int" Nullable="false" />
+          <Property Name="StoreT_ProdTypeFK" Type="int" Nullable="false" />
+          <Property Name="StoreT_Hazardous" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TLADM_Styles">
+          <Key>
+            <PropertyRef Name="Sty_Id" />
+          </Key>
+          <Property Name="Sty_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Sty_Description" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Sty_PowerN" Type="int" Nullable="false" />
+          <Property Name="Sty_Discontinued" Type="bit" />
+          <Property Name="Sty_Discontinued_Date" Type="date" />
+          <Property Name="Sty_Label_FK" Type="int" Nullable="false" />
+          <Property Name="Sty_Size_PowerN" Type="int" Nullable="false" />
+          <Property Name="Sty_Colour_PowerN" Type="int" Nullable="false" />
+          <Property Name="Sty_Ribbing_PowerN" Type="int" Nullable="false" />
+          <Property Name="Sty_Trims_PowerN" Type="int" Nullable="false" />
+          <Property Name="Sty_Fabric_PowerN" Type="int" Nullable="false" />
+          <Property Name="Sty_FabricWeight_PowerN" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TLADM_Suppliers">
+          <Key>
+            <PropertyRef Name="Sup_Pk" />
+          </Key>
+          <Property Name="Sup_Pk" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Sup_Code" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="Sup_Description" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Sup_StdPayMentTerms" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Sup_DiscountStructure" Type="varchar" MaxLength="5" Nullable="false" />
+          <Property Name="Sup_PostalAddress" Type="varchar(max)" Nullable="false" />
+          <Property Name="Sup_Telephone" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Sup_ContactPerson" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Suip_ShippingAddress1" Type="varchar(max)" Nullable="false" />
+          <Property Name="Sup_ShippingAddress2" Type="varchar(max)" />
+          <Property Name="Sup_ShippingAddress3" Type="varchar(max)" />
+          <Property Name="Sup_ShippingAddress4" Type="varchar(max)" />
+          <Property Name="Sup_Blocked" Type="bit" Nullable="false" />
+          <Property Name="Sup_ProductTypes_FK" Type="int" Nullable="false" />
+          <Property Name="Sup_AllowsConsignment" Type="bit" Nullable="false" />
+          <Property Name="Sup_VatReference" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Sup_EMailContact" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Sup_AllowsEMail" Type="bit" />
+          <Property Name="Sup_Notes" Type="varchar(max)" />
+          <Property Name="Sup_Fax" Type="varchar" MaxLength="20" />
+          <Property Name="Sup_ProductGroups_FK" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TLADM_Trims">
+          <Key>
+            <PropertyRef Name="TR_Id" />
+          </Key>
+          <Property Name="TR_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TR_Description" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="TR_powerN" Type="int" Nullable="false" />
+          <Property Name="TR_Discontinued" Type="bit" />
+          <Property Name="TR_Discontinued_Date" Type="date" />
+          <Property Name="TR_Rating" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TLADM_UOM">
+          <Key>
+            <PropertyRef Name="UOM_Pk" />
+          </Key>
+          <Property Name="UOM_Pk" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UOM_ShortCode" Type="varchar" MaxLength="5" Nullable="false" />
+          <Property Name="UOM_Description" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TLADM_WhseStore">
+          <Key>
+            <PropertyRef Name="WhStore_Id" />
+          </Key>
+          <Property Name="WhStore_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="WhStore_Code" Type="varchar" MaxLength="7" Nullable="false" />
+          <Property Name="WhStore_Description" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="WhStore_DepartmentFK" Type="int" Nullable="false" />
+          <Property Name="WhStore_TypeFK" Type="int" Nullable="false" />
+          <Property Name="WhStore_Address1" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="WhStore_Address2" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="WhStore_Address3" Type="varchar" MaxLength="50" />
+          <Property Name="WhStore_Address4" Type="varchar" MaxLength="50" />
+          <Property Name="WhStore_Address5" Type="varchar" MaxLength="50" />
+          <Property Name="WhStore_Contact" Type="varchar" MaxLength="50" />
+          <Property Name="WhStore_Telephone" Type="varchar" MaxLength="50" />
+          <Property Name="WhStore_Email" Type="varchar" MaxLength="50" />
+          <Property Name="WhStore_Notes" Type="varchar(max)" />
+          <Property Name="WhStore_WhseOrStore" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TLADM_Yarn">
+          <Key>
+            <PropertyRef Name="YA_Id" />
+          </Key>
+          <Property Name="YA_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="YA_Description" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="YA_PowerN" Type="int" Nullable="false" />
+          <Property Name="YA_Discontinued" Type="bit" />
+          <Property Name="YA_Discontnued_Date" Type="date" />
+        </EntityType>
+        <EntityType Name="TLCMT_ProductDefects">
+          <Key>
+            <PropertyRef Name="PD_Id" />
+          </Key>
+          <Property Name="PD_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PD_Description" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_TLADM_ConsumablesOther_TLADM_ConsumableGroups">
+          <End Role="TLADM_ConsumableGroups" Type="Self.TLADM_ConsumableGroups" Multiplicity="1" />
+          <End Role="TLADM_ConsumablesOther" Type="Self.TLADM_ConsumablesOther" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TLADM_ConsumableGroups">
+              <PropertyRef Name="ConG_Pk" />
+            </Principal>
+            <Dependent Role="TLADM_ConsumablesOther">
+              <PropertyRef Name="ConsOther_ConsGroup_FK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TLADM_ConsumablesOther_TLADM_Sizes">
+          <End Role="TLADM_Sizes" Type="Self.TLADM_Sizes" Multiplicity="1" />
+          <End Role="TLADM_ConsumablesOther" Type="Self.TLADM_ConsumablesOther" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TLADM_Sizes">
+              <PropertyRef Name="SI_id" />
+            </Principal>
+            <Dependent Role="TLADM_ConsumablesOther">
+              <PropertyRef Name="ConsOther_SizeCode_FK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TLADM_ConsumablesOther_TLADM_StoreTypes">
+          <End Role="TLADM_StoreTypes" Type="Self.TLADM_StoreTypes" Multiplicity="1" />
+          <End Role="TLADM_ConsumablesOther" Type="Self.TLADM_ConsumablesOther" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TLADM_StoreTypes">
+              <PropertyRef Name="StoreT_Id" />
+            </Principal>
+            <Dependent Role="TLADM_ConsumablesOther">
+              <PropertyRef Name="ConsOther_Store_FK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TLADM_ConsumablesOther_TLADM_UOM">
+          <End Role="TLADM_UOM" Type="Self.TLADM_UOM" Multiplicity="1" />
+          <End Role="TLADM_ConsumablesOther" Type="Self.TLADM_ConsumablesOther" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TLADM_UOM">
+              <PropertyRef Name="UOM_Pk" />
+            </Principal>
+            <Dependent Role="TLADM_ConsumablesOther">
+              <PropertyRef Name="ConsOther_UOM_FK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TLADM_ConsumablesOther_TLADM_UOM1">
+          <End Role="TLADM_UOM" Type="Self.TLADM_UOM" Multiplicity="1" />
+          <End Role="TLADM_ConsumablesOther" Type="Self.TLADM_ConsumablesOther" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TLADM_UOM">
+              <PropertyRef Name="UOM_Pk" />
+            </Principal>
+            <Dependent Role="TLADM_ConsumablesOther">
+              <PropertyRef Name="ConsOther_AUOM_FK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TLADM_CustomerFile_TLADM_CustomerTypes">
+          <End Role="TLADM_CustomerTypes" Type="Self.TLADM_CustomerTypes" Multiplicity="1" />
+          <End Role="TLADM_CustomerFile" Type="Self.TLADM_CustomerFile" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TLADM_CustomerTypes">
+              <PropertyRef Name="CT_Id" />
+            </Principal>
+            <Dependent Role="TLADM_CustomerFile">
+              <PropertyRef Name="Cust_CustomerCat_FK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TLADM_FabricType_TLADM_FabricProduct">
+          <End Role="TLADM_FabricProduct" Type="Self.TLADM_FabricProduct" Multiplicity="1" />
+          <End Role="TLADM_FabricType" Type="Self.TLADM_FabricType" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TLADM_FabricProduct">
+              <PropertyRef Name="FP_Id" />
+            </Principal>
+            <Dependent Role="TLADM_FabricType">
+              <PropertyRef Name="FT_Product_FK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TLADM_GarmentDef_TLADM_Labels">
+          <End Role="TLADM_Labels" Type="Self.TLADM_Labels" Multiplicity="1" />
+          <End Role="TLADM_GarmentDef" Type="Self.TLADM_GarmentDef" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TLADM_Labels">
+              <PropertyRef Name="Lbl_Id" />
+            </Principal>
+            <Dependent Role="TLADM_GarmentDef">
+              <PropertyRef Name="GarDef_Label_FK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TLADM_Griege_TLADM_FabWidth">
+          <End Role="TLADM_FabWidth" Type="Self.TLADM_FabWidth" Multiplicity="1" />
+          <End Role="TLADM_Griege" Type="Self.TLADM_Griege" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TLADM_FabWidth">
+              <PropertyRef Name="FW_Id" />
+            </Principal>
+            <Dependent Role="TLADM_Griege">
+              <PropertyRef Name="TLGriege_FW_FK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TLADM_MachineDefinitions_TLADM_NonStockItems">
+          <End Role="TLADM_NonStockItems" Type="Self.TLADM_NonStockItems" Multiplicity="0..1" />
+          <End Role="TLADM_MachineDefinitions" Type="Self.TLADM_MachineDefinitions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TLADM_NonStockItems">
+              <PropertyRef Name="NSI_Pk" />
+            </Principal>
+            <Dependent Role="TLADM_MachineDefinitions">
+              <PropertyRef Name="MD_FirstMeasure_FK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TLADM_MachineDefinitions_TLADM_NonStockItems1">
+          <End Role="TLADM_NonStockItems" Type="Self.TLADM_NonStockItems" Multiplicity="0..1" />
+          <End Role="TLADM_MachineDefinitions" Type="Self.TLADM_MachineDefinitions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TLADM_NonStockItems">
+              <PropertyRef Name="NSI_Pk" />
+            </Principal>
+            <Dependent Role="TLADM_MachineDefinitions">
+              <PropertyRef Name="MD_SecMeasure_FK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TLADM_MachineDefinitions_TLADM_NonStockItems2">
+          <End Role="TLADM_NonStockItems" Type="Self.TLADM_NonStockItems" Multiplicity="0..1" />
+          <End Role="TLADM_MachineDefinitions" Type="Self.TLADM_MachineDefinitions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TLADM_NonStockItems">
+              <PropertyRef Name="NSI_Pk" />
+            </Principal>
+            <Dependent Role="TLADM_MachineDefinitions">
+              <PropertyRef Name="MD_ThirdMeasure_FK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TLADM_MachineDefinitions_TLADM_NonStockItems3">
+          <End Role="TLADM_NonStockItems" Type="Self.TLADM_NonStockItems" Multiplicity="0..1" />
+          <End Role="TLADM_MachineDefinitions" Type="Self.TLADM_MachineDefinitions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TLADM_NonStockItems">
+              <PropertyRef Name="NSI_Pk" />
+            </Principal>
+            <Dependent Role="TLADM_MachineDefinitions">
+              <PropertyRef Name="MD_FourthMeasure_FK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TLADM_MachineDefinitions_TLADM_NonStockItems4">
+          <End Role="TLADM_NonStockItems" Type="Self.TLADM_NonStockItems" Multiplicity="0..1" />
+          <End Role="TLADM_MachineDefinitions" Type="Self.TLADM_MachineDefinitions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TLADM_NonStockItems">
+              <PropertyRef Name="NSI_Pk" />
+            </Principal>
+            <Dependent Role="TLADM_MachineDefinitions">
+              <PropertyRef Name="MD_FifthMeasure_FK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TLADM_MachineDefinitions_TLADM_NonStockItems5">
+          <End Role="TLADM_NonStockItems" Type="Self.TLADM_NonStockItems" Multiplicity="0..1" />
+          <End Role="TLADM_MachineDefinitions" Type="Self.TLADM_MachineDefinitions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TLADM_NonStockItems">
+              <PropertyRef Name="NSI_Pk" />
+            </Principal>
+            <Dependent Role="TLADM_MachineDefinitions">
+              <PropertyRef Name="MD_SixMeasure_FK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TLADM_MachineDefinitions_TLADM_NonStockItems6">
+          <End Role="TLADM_NonStockItems" Type="Self.TLADM_NonStockItems" Multiplicity="0..1" />
+          <End Role="TLADM_MachineDefinitions" Type="Self.TLADM_MachineDefinitions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TLADM_NonStockItems">
+              <PropertyRef Name="NSI_Pk" />
+            </Principal>
+            <Dependent Role="TLADM_MachineDefinitions">
+              <PropertyRef Name="MD_SixMeasure_FK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TLADM_MachineDefinitions_TLADM_NonStockItems7">
+          <End Role="TLADM_NonStockItems" Type="Self.TLADM_NonStockItems" Multiplicity="0..1" />
+          <End Role="TLADM_MachineDefinitions" Type="Self.TLADM_MachineDefinitions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TLADM_NonStockItems">
+              <PropertyRef Name="NSI_Pk" />
+            </Principal>
+            <Dependent Role="TLADM_MachineDefinitions">
+              <PropertyRef Name="MD_SevenMeasure_FK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TLADM_MachineDefinitions_TLADM_NonStockItems8">
+          <End Role="TLADM_NonStockItems" Type="Self.TLADM_NonStockItems" Multiplicity="0..1" />
+          <End Role="TLADM_MachineDefinitions" Type="Self.TLADM_MachineDefinitions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TLADM_NonStockItems">
+              <PropertyRef Name="NSI_Pk" />
+            </Principal>
+            <Dependent Role="TLADM_MachineDefinitions">
+              <PropertyRef Name="MD_EightMeasure_FK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TLADM_MachineOperators_TLADM_Departments">
+          <End Role="TLADM_Departments" Type="Self.TLADM_Departments" Multiplicity="1" />
+          <End Role="TLADM_MachineOperators" Type="Self.TLADM_MachineOperators" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TLADM_Departments">
+              <PropertyRef Name="Dep_Id" />
+            </Principal>
+            <Dependent Role="TLADM_MachineOperators">
+              <PropertyRef Name="MachOp_Department_FK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TLADM_NonStockItems_TLADM_NonStockCat">
+          <End Role="TLADM_NonStockCat" Type="Self.TLADM_NonStockCat" Multiplicity="1" />
+          <End Role="TLADM_NonStockItems" Type="Self.TLADM_NonStockItems" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TLADM_NonStockCat">
+              <PropertyRef Name="NSC_Pk" />
+            </Principal>
+            <Dependent Role="TLADM_NonStockItems">
+              <PropertyRef Name="NSI_Category_FK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TLADM_NonStockItems_TLADM_StockTypes">
+          <End Role="TLADM_StockTypes" Type="Self.TLADM_StockTypes" Multiplicity="1" />
+          <End Role="TLADM_NonStockItems" Type="Self.TLADM_NonStockItems" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TLADM_StockTypes">
+              <PropertyRef Name="ST_Id" />
+            </Principal>
+            <Dependent Role="TLADM_NonStockItems">
+              <PropertyRef Name="NSI_StockType_FK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TLADM_NonStockItems_TLADM_UOM">
+          <End Role="TLADM_UOM" Type="Self.TLADM_UOM" Multiplicity="1" />
+          <End Role="TLADM_NonStockItems" Type="Self.TLADM_NonStockItems" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TLADM_UOM">
+              <PropertyRef Name="UOM_Pk" />
+            </Principal>
+            <Dependent Role="TLADM_NonStockItems">
+              <PropertyRef Name="NSI_UOM_FK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TLADM_ProductRating_Detail_TLADM_FabWidth">
+          <End Role="TLADM_FabWidth" Type="Self.TLADM_FabWidth" Multiplicity="1" />
+          <End Role="TLADM_ProductRating_Detail" Type="Self.TLADM_ProductRating_Detail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TLADM_FabWidth">
+              <PropertyRef Name="FW_Id" />
+            </Principal>
+            <Dependent Role="TLADM_ProductRating_Detail">
+              <PropertyRef Name="Prd_Width" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TLADM_ProductRating_TLADM_Labels">
+          <End Role="TLADM_Labels" Type="Self.TLADM_Labels" Multiplicity="1" />
+          <End Role="TLADM_ProductRating" Type="Self.TLADM_ProductRating" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TLADM_Labels">
+              <PropertyRef Name="Lbl_Id" />
+            </Principal>
+            <Dependent Role="TLADM_ProductRating">
+              <PropertyRef Name="Pr_Label_FK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TLADM_ProductRating_TLADM_Styles">
+          <End Role="TLADM_Styles" Type="Self.TLADM_Styles" Multiplicity="1" />
+          <End Role="TLADM_ProductRating" Type="Self.TLADM_ProductRating" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TLADM_Styles">
+              <PropertyRef Name="Sty_Id" />
+            </Principal>
+            <Dependent Role="TLADM_ProductRating">
+              <PropertyRef Name="Pr_Style_FK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TLADM_QualityDefinition_TLADM_RejectReasons1">
+          <End Role="TLADM_RejectReasons" Type="Self.TLADM_RejectReasons" Multiplicity="1" />
+          <End Role="TLADM_QualityDefinition" Type="Self.TLADM_QualityDefinition" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TLADM_RejectReasons">
+              <PropertyRef Name="RJR_Pk" />
+            </Principal>
+            <Dependent Role="TLADM_QualityDefinition">
+              <PropertyRef Name="QD_RejectReasonFK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TLADM_Suppliers_TLADM_ProductTypes">
+          <End Role="TLADM_ProductTypes" Type="Self.TLADM_ProductTypes" Multiplicity="1" />
+          <End Role="TLADM_Suppliers" Type="Self.TLADM_Suppliers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TLADM_ProductTypes">
+              <PropertyRef Name="PT_pk" />
+            </Principal>
+            <Dependent Role="TLADM_Suppliers">
+              <PropertyRef Name="Sup_ProductTypes_FK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TLADM_WhseStore_TLADM_Departments">
+          <End Role="TLADM_Departments" Type="Self.TLADM_Departments" Multiplicity="1" />
+          <End Role="TLADM_WhseStore" Type="Self.TLADM_WhseStore" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TLADM_Departments">
+              <PropertyRef Name="Dep_Id" />
+            </Principal>
+            <Dependent Role="TLADM_WhseStore">
+              <PropertyRef Name="WhStore_DepartmentFK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TLADM_WhseStore_TLADM_StoreTypes">
+          <End Role="TLADM_StoreTypes" Type="Self.TLADM_StoreTypes" Multiplicity="1" />
+          <End Role="TLADM_WhseStore" Type="Self.TLADM_WhseStore" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="TLADM_StoreTypes">
+              <PropertyRef Name="StoreT_Id" />
+            </Principal>
+            <Dependent Role="TLADM_WhseStore">
+              <PropertyRef Name="WhStore_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="TTI2ModelStoreContainer">
+          <EntitySet Name="TLADM_AuxColours" EntityType="Self.TLADM_AuxColours" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TLADM_Colours" EntityType="Self.TLADM_Colours" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TLADM_ConsumableGroups" EntityType="Self.TLADM_ConsumableGroups" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TLADM_ConsumablesDC" EntityType="Self.TLADM_ConsumablesDC" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TLADM_ConsumablesOther" EntityType="Self.TLADM_ConsumablesOther" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TLADM_Cotton" EntityType="Self.TLADM_Cotton" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TLADM_CottonOrigin" EntityType="Self.TLADM_CottonOrigin" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TLADM_CustomerFile" EntityType="Self.TLADM_CustomerFile" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TLADM_CustomerTypes" EntityType="Self.TLADM_CustomerTypes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TLADM_Departments" EntityType="Self.TLADM_Departments" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TLADM_FabricProduct" EntityType="Self.TLADM_FabricProduct" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TLADM_FabricType" EntityType="Self.TLADM_FabricType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TLADM_FabricWeight" EntityType="Self.TLADM_FabricWeight" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TLADM_FabWidth" EntityType="Self.TLADM_FabWidth" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TLADM_FinishedGoods" EntityType="Self.TLADM_FinishedGoods" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TLADM_GarmentDef" EntityType="Self.TLADM_GarmentDef" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TLADM_GarmentDefectCodes" EntityType="Self.TLADM_GarmentDefectCodes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TLADM_Griege" EntityType="Self.TLADM_Griege" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TLADM_Labels" EntityType="Self.TLADM_Labels" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TLADM_MachineDefinitions" EntityType="Self.TLADM_MachineDefinitions" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TLADM_MachineMaintenance" EntityType="Self.TLADM_MachineMaintenance" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TLADM_MachineOperators" EntityType="Self.TLADM_MachineOperators" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TLADM_NonStockCat" EntityType="Self.TLADM_NonStockCat" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TLADM_NonStockItems" EntityType="Self.TLADM_NonStockItems" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TLADM_ProductRating" EntityType="Self.TLADM_ProductRating" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TLADM_ProductRating_Detail" EntityType="Self.TLADM_ProductRating_Detail" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TLADM_ProductTypes" EntityType="Self.TLADM_ProductTypes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TLADM_QualityDefinition" EntityType="Self.TLADM_QualityDefinition" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TLADM_RejectReasons" EntityType="Self.TLADM_RejectReasons" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TLADM_Ribbing" EntityType="Self.TLADM_Ribbing" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TLADM_Sizes" EntityType="Self.TLADM_Sizes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TLADM_StockTakeFreq" EntityType="Self.TLADM_StockTakeFreq" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TLADM_StockTypes" EntityType="Self.TLADM_StockTypes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TLADM_StoreTypes" EntityType="Self.TLADM_StoreTypes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TLADM_Styles" EntityType="Self.TLADM_Styles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TLADM_Suppliers" EntityType="Self.TLADM_Suppliers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TLADM_Trims" EntityType="Self.TLADM_Trims" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TLADM_UOM" EntityType="Self.TLADM_UOM" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TLADM_WhseStore" EntityType="Self.TLADM_WhseStore" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TLADM_Yarn" EntityType="Self.TLADM_Yarn" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TLCMT_ProductDefects" EntityType="Self.TLCMT_ProductDefects" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_TLADM_ConsumablesOther_TLADM_ConsumableGroups" Association="Self.FK_TLADM_ConsumablesOther_TLADM_ConsumableGroups">
+            <End Role="TLADM_ConsumableGroups" EntitySet="TLADM_ConsumableGroups" />
+            <End Role="TLADM_ConsumablesOther" EntitySet="TLADM_ConsumablesOther" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TLADM_ConsumablesOther_TLADM_Sizes" Association="Self.FK_TLADM_ConsumablesOther_TLADM_Sizes">
+            <End Role="TLADM_Sizes" EntitySet="TLADM_Sizes" />
+            <End Role="TLADM_ConsumablesOther" EntitySet="TLADM_ConsumablesOther" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TLADM_ConsumablesOther_TLADM_StoreTypes" Association="Self.FK_TLADM_ConsumablesOther_TLADM_StoreTypes">
+            <End Role="TLADM_StoreTypes" EntitySet="TLADM_StoreTypes" />
+            <End Role="TLADM_ConsumablesOther" EntitySet="TLADM_ConsumablesOther" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TLADM_ConsumablesOther_TLADM_UOM" Association="Self.FK_TLADM_ConsumablesOther_TLADM_UOM">
+            <End Role="TLADM_UOM" EntitySet="TLADM_UOM" />
+            <End Role="TLADM_ConsumablesOther" EntitySet="TLADM_ConsumablesOther" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TLADM_ConsumablesOther_TLADM_UOM1" Association="Self.FK_TLADM_ConsumablesOther_TLADM_UOM1">
+            <End Role="TLADM_UOM" EntitySet="TLADM_UOM" />
+            <End Role="TLADM_ConsumablesOther" EntitySet="TLADM_ConsumablesOther" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TLADM_CustomerFile_TLADM_CustomerTypes" Association="Self.FK_TLADM_CustomerFile_TLADM_CustomerTypes">
+            <End Role="TLADM_CustomerTypes" EntitySet="TLADM_CustomerTypes" />
+            <End Role="TLADM_CustomerFile" EntitySet="TLADM_CustomerFile" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TLADM_FabricType_TLADM_FabricProduct" Association="Self.FK_TLADM_FabricType_TLADM_FabricProduct">
+            <End Role="TLADM_FabricProduct" EntitySet="TLADM_FabricProduct" />
+            <End Role="TLADM_FabricType" EntitySet="TLADM_FabricType" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TLADM_GarmentDef_TLADM_Labels" Association="Self.FK_TLADM_GarmentDef_TLADM_Labels">
+            <End Role="TLADM_Labels" EntitySet="TLADM_Labels" />
+            <End Role="TLADM_GarmentDef" EntitySet="TLADM_GarmentDef" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TLADM_Griege_TLADM_FabWidth" Association="Self.FK_TLADM_Griege_TLADM_FabWidth">
+            <End Role="TLADM_FabWidth" EntitySet="TLADM_FabWidth" />
+            <End Role="TLADM_Griege" EntitySet="TLADM_Griege" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TLADM_MachineDefinitions_TLADM_NonStockItems" Association="Self.FK_TLADM_MachineDefinitions_TLADM_NonStockItems">
+            <End Role="TLADM_NonStockItems" EntitySet="TLADM_NonStockItems" />
+            <End Role="TLADM_MachineDefinitions" EntitySet="TLADM_MachineDefinitions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TLADM_MachineDefinitions_TLADM_NonStockItems1" Association="Self.FK_TLADM_MachineDefinitions_TLADM_NonStockItems1">
+            <End Role="TLADM_NonStockItems" EntitySet="TLADM_NonStockItems" />
+            <End Role="TLADM_MachineDefinitions" EntitySet="TLADM_MachineDefinitions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TLADM_MachineDefinitions_TLADM_NonStockItems2" Association="Self.FK_TLADM_MachineDefinitions_TLADM_NonStockItems2">
+            <End Role="TLADM_NonStockItems" EntitySet="TLADM_NonStockItems" />
+            <End Role="TLADM_MachineDefinitions" EntitySet="TLADM_MachineDefinitions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TLADM_MachineDefinitions_TLADM_NonStockItems3" Association="Self.FK_TLADM_MachineDefinitions_TLADM_NonStockItems3">
+            <End Role="TLADM_NonStockItems" EntitySet="TLADM_NonStockItems" />
+            <End Role="TLADM_MachineDefinitions" EntitySet="TLADM_MachineDefinitions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TLADM_MachineDefinitions_TLADM_NonStockItems4" Association="Self.FK_TLADM_MachineDefinitions_TLADM_NonStockItems4">
+            <End Role="TLADM_NonStockItems" EntitySet="TLADM_NonStockItems" />
+            <End Role="TLADM_MachineDefinitions" EntitySet="TLADM_MachineDefinitions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TLADM_MachineDefinitions_TLADM_NonStockItems5" Association="Self.FK_TLADM_MachineDefinitions_TLADM_NonStockItems5">
+            <End Role="TLADM_NonStockItems" EntitySet="TLADM_NonStockItems" />
+            <End Role="TLADM_MachineDefinitions" EntitySet="TLADM_MachineDefinitions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TLADM_MachineDefinitions_TLADM_NonStockItems6" Association="Self.FK_TLADM_MachineDefinitions_TLADM_NonStockItems6">
+            <End Role="TLADM_NonStockItems" EntitySet="TLADM_NonStockItems" />
+            <End Role="TLADM_MachineDefinitions" EntitySet="TLADM_MachineDefinitions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TLADM_MachineDefinitions_TLADM_NonStockItems7" Association="Self.FK_TLADM_MachineDefinitions_TLADM_NonStockItems7">
+            <End Role="TLADM_NonStockItems" EntitySet="TLADM_NonStockItems" />
+            <End Role="TLADM_MachineDefinitions" EntitySet="TLADM_MachineDefinitions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TLADM_MachineDefinitions_TLADM_NonStockItems8" Association="Self.FK_TLADM_MachineDefinitions_TLADM_NonStockItems8">
+            <End Role="TLADM_NonStockItems" EntitySet="TLADM_NonStockItems" />
+            <End Role="TLADM_MachineDefinitions" EntitySet="TLADM_MachineDefinitions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TLADM_MachineOperators_TLADM_Departments" Association="Self.FK_TLADM_MachineOperators_TLADM_Departments">
+            <End Role="TLADM_Departments" EntitySet="TLADM_Departments" />
+            <End Role="TLADM_MachineOperators" EntitySet="TLADM_MachineOperators" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TLADM_NonStockItems_TLADM_NonStockCat" Association="Self.FK_TLADM_NonStockItems_TLADM_NonStockCat">
+            <End Role="TLADM_NonStockCat" EntitySet="TLADM_NonStockCat" />
+            <End Role="TLADM_NonStockItems" EntitySet="TLADM_NonStockItems" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TLADM_NonStockItems_TLADM_StockTypes" Association="Self.FK_TLADM_NonStockItems_TLADM_StockTypes">
+            <End Role="TLADM_StockTypes" EntitySet="TLADM_StockTypes" />
+            <End Role="TLADM_NonStockItems" EntitySet="TLADM_NonStockItems" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TLADM_NonStockItems_TLADM_UOM" Association="Self.FK_TLADM_NonStockItems_TLADM_UOM">
+            <End Role="TLADM_UOM" EntitySet="TLADM_UOM" />
+            <End Role="TLADM_NonStockItems" EntitySet="TLADM_NonStockItems" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TLADM_ProductRating_Detail_TLADM_FabWidth" Association="Self.FK_TLADM_ProductRating_Detail_TLADM_FabWidth">
+            <End Role="TLADM_FabWidth" EntitySet="TLADM_FabWidth" />
+            <End Role="TLADM_ProductRating_Detail" EntitySet="TLADM_ProductRating_Detail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TLADM_ProductRating_TLADM_Labels" Association="Self.FK_TLADM_ProductRating_TLADM_Labels">
+            <End Role="TLADM_Labels" EntitySet="TLADM_Labels" />
+            <End Role="TLADM_ProductRating" EntitySet="TLADM_ProductRating" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TLADM_ProductRating_TLADM_Styles" Association="Self.FK_TLADM_ProductRating_TLADM_Styles">
+            <End Role="TLADM_Styles" EntitySet="TLADM_Styles" />
+            <End Role="TLADM_ProductRating" EntitySet="TLADM_ProductRating" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TLADM_QualityDefinition_TLADM_RejectReasons1" Association="Self.FK_TLADM_QualityDefinition_TLADM_RejectReasons1">
+            <End Role="TLADM_RejectReasons" EntitySet="TLADM_RejectReasons" />
+            <End Role="TLADM_QualityDefinition" EntitySet="TLADM_QualityDefinition" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TLADM_Suppliers_TLADM_ProductTypes" Association="Self.FK_TLADM_Suppliers_TLADM_ProductTypes">
+            <End Role="TLADM_ProductTypes" EntitySet="TLADM_ProductTypes" />
+            <End Role="TLADM_Suppliers" EntitySet="TLADM_Suppliers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TLADM_WhseStore_TLADM_Departments" Association="Self.FK_TLADM_WhseStore_TLADM_Departments">
+            <End Role="TLADM_Departments" EntitySet="TLADM_Departments" />
+            <End Role="TLADM_WhseStore" EntitySet="TLADM_WhseStore" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TLADM_WhseStore_TLADM_StoreTypes" Association="Self.FK_TLADM_WhseStore_TLADM_StoreTypes">
+            <End Role="TLADM_StoreTypes" EntitySet="TLADM_StoreTypes" />
+            <End Role="TLADM_WhseStore" EntitySet="TLADM_WhseStore" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="TTI2Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="TLADM_AuxColours">
+          <Key>
+            <PropertyRef Name="AuxCol_Id" />
+          </Key>
+          <Property Name="AuxCol_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AuxCol_Description" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="AuxCol_PowerN" Type="Int32" Nullable="false" />
+          <Property Name="AuxCol_FinishedCode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TLADM_Colours">
+          <Key>
+            <PropertyRef Name="Col_Id" />
+          </Key>
+          <Property Name="Col_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Col_Description" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Col_PowerN" Type="Int32" Nullable="false" />
+          <Property Name="Col_Discontinued" Type="Boolean" />
+          <Property Name="Col_Discontinued_Date" Type="DateTime" Precision="0" />
+          <Property Name="Col_FinishedCode" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="Col_HasAuxColors" Type="Boolean" Nullable="false" />
+          <Property Name="Col_AuxPowerN" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TLADM_ConsumableGroups">
+          <Key>
+            <PropertyRef Name="ConG_Pk" />
+          </Key>
+          <Property Name="ConG_Pk" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ConG_ShortCode" Type="String" MaxLength="5" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ConG_Description" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="TLADM_ConsumablesOther" Relationship="Self.FK_TLADM_ConsumablesOther_TLADM_ConsumableGroups" FromRole="TLADM_ConsumableGroups" ToRole="TLADM_ConsumablesOther" />
+        </EntityType>
+        <EntityType Name="TLADM_ConsumablesDC">
+          <Key>
+            <PropertyRef Name="ConsDC_Pk" />
+          </Key>
+          <Property Name="ConsDC_Pk" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ConsDC_Code" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ConsDC_Description" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ConsDC_UOM_Fk" Type="Int32" Nullable="false" />
+          <Property Name="ConsDC_AUOM_FK" Type="Int32" Nullable="false" />
+          <Property Name="ConsDC_ConsFactors" Type="Decimal" Precision="18" Scale="6" Nullable="false" />
+          <Property Name="ConsDC_StockType_FK" Type="Int32" Nullable="false" />
+          <Property Name="ConsDC_Hazardous" Type="Boolean" Nullable="false" />
+          <Property Name="ConsDC_ShowQty" Type="Boolean" Nullable="false" />
+          <Property Name="ConsDC_ShowStdCost" Type="Boolean" Nullable="false" />
+          <Property Name="ConsDC_ReOrderLevel" Type="Int32" Nullable="false" />
+          <Property Name="ConsDC_Economic_ReOrderQty" Type="Int32" Nullable="false" />
+          <Property Name="ConsDC_MinReorderQty" Type="Int32" Nullable="false" />
+          <Property Name="ConsDC_DelLeadTime" Type="Int32" Nullable="false" />
+          <Property Name="ConsDC_StockTake_FK" Type="Int32" Nullable="false" />
+          <Property Name="ConsDC_StandardCost" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+          <Property Name="ConsDC_Units" Type="Int32" Nullable="false" />
+          <Property Name="ConsDC_PreferedSupplier_FK" Type="Int32" Nullable="false" />
+          <Property Name="ConsDC_Consignment" Type="Boolean" Nullable="false" />
+          <Property Name="ConsDC_Notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="ConsDC_HazChem" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="ConsDC_SizeCode_FK" Type="Int32" Nullable="false" />
+          <Property Name="ConsDC_StoreCode_FK" Type="Int32" Nullable="false" />
+          <Property Name="ConsDC_ConsGroup_FK" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TLADM_ConsumablesOther">
+          <Key>
+            <PropertyRef Name="ConsOther_Pk" />
+          </Key>
+          <Property Name="ConsOther_Pk" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ConsOther_Code" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ConsOther_Description" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ConsOther_UOM_FK" Type="Int32" Nullable="false" />
+          <Property Name="ConsOther_AUOM_FK" Type="Int32" Nullable="false" />
+          <Property Name="ConsOther_ConvFactor" Type="Decimal" Precision="18" Scale="6" Nullable="false" />
+          <Property Name="ConsOther_StockType_Fk" Type="Int32" Nullable="false" />
+          <Property Name="ConsOther_Store_FK" Type="Int32" Nullable="false" />
+          <Property Name="ConsOther_ShowQty" Type="Boolean" Nullable="false" />
+          <Property Name="ConsOther_Unit" Type="Int32" Nullable="false" />
+          <Property Name="ConsOther_ShowStdCost" Type="Boolean" Nullable="false" />
+          <Property Name="ConsOther_StdCost" Type="Decimal" Precision="18" Scale="6" Nullable="false" />
+          <Property Name="ConsOther_ReOrderLevel" Type="Int32" Nullable="false" />
+          <Property Name="ConsOther_EconomicReOrderQty" Type="Int32" Nullable="false" />
+          <Property Name="ConsOther_MinReOrderQty" Type="Int32" Nullable="false" />
+          <Property Name="ConsOther_DeliveryLeadTime" Type="Int32" Nullable="false" />
+          <Property Name="ConsOther_StockTakeFrequency_Fk" Type="Int32" Nullable="false" />
+          <Property Name="ConsOther_ConsGroup_FK" Type="Int32" Nullable="false" />
+          <Property Name="ConsOther_PreferredSupplier_FK" Type="Int32" Nullable="false" />
+          <Property Name="ConsOther_SizeCode_FK" Type="Int32" Nullable="false" />
+          <Property Name="ConsOther_Notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="ConsOther_Consignment" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="TLADM_ConsumableGroups" Relationship="Self.FK_TLADM_ConsumablesOther_TLADM_ConsumableGroups" FromRole="TLADM_ConsumablesOther" ToRole="TLADM_ConsumableGroups" />
+          <NavigationProperty Name="TLADM_Sizes" Relationship="Self.FK_TLADM_ConsumablesOther_TLADM_Sizes" FromRole="TLADM_ConsumablesOther" ToRole="TLADM_Sizes" />
+          <NavigationProperty Name="TLADM_StoreTypes" Relationship="Self.FK_TLADM_ConsumablesOther_TLADM_StoreTypes" FromRole="TLADM_ConsumablesOther" ToRole="TLADM_StoreTypes" />
+          <NavigationProperty Name="TLADM_UOM" Relationship="Self.FK_TLADM_ConsumablesOther_TLADM_UOM" FromRole="TLADM_ConsumablesOther" ToRole="TLADM_UOM" />
+          <NavigationProperty Name="TLADM_UOM1" Relationship="Self.FK_TLADM_ConsumablesOther_TLADM_UOM1" FromRole="TLADM_ConsumablesOther" ToRole="TLADM_UOM" />
+        </EntityType>
+        <EntityType Name="TLADM_Cotton">
+          <Key>
+            <PropertyRef Name="Cotton_Pk" />
+          </Key>
+          <Property Name="Cotton_Pk" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Cotton_Code" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Cotton_Description" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Cotton_UOM_Fk" Type="Int32" Nullable="false" />
+          <Property Name="Cotton_StockType_FK" Type="Int32" Nullable="false" />
+          <Property Name="Cotton_Store_FK" Type="Int32" Nullable="false" />
+          <Property Name="Cotton_Origin_FK" Type="Int32" Nullable="false" />
+          <Property Name="Cotton_ShowQty" Type="Boolean" Nullable="false" />
+          <Property Name="Cotton_ShowStdCost" Type="Boolean" Nullable="false" />
+          <Property Name="Cotton_MicFrom" Type="Decimal" Precision="18" Scale="6" Nullable="false" />
+          <Property Name="Cotton_MicTo" Type="Decimal" Precision="18" Scale="6" Nullable="false" />
+          <Property Name="Cotton_StapleFrom" Type="Decimal" Precision="18" Scale="6" Nullable="false" />
+          <Property Name="Cotton_StapleTo" Type="Decimal" Precision="18" Scale="6" Nullable="false" />
+          <Property Name="Cotton_ROL" Type="Decimal" Precision="18" Scale="6" Nullable="false" />
+          <Property Name="Cotton_ROQ" Type="Decimal" Precision="18" Scale="6" Nullable="false" />
+          <Property Name="Cotton_Contract" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Cotton_Grade" Type="String" MaxLength="12" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Cotton_Notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Cotton_StdCost" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+          <Property Name="Cotton_Units" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TLADM_CottonOrigin">
+          <Key>
+            <PropertyRef Name="CottonOrigin_Pk" />
+          </Key>
+          <Property Name="CottonOrigin_Pk" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CottonOrigin_ShortCode" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CottonOrigin_Description" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TLADM_CustomerFile">
+          <Key>
+            <PropertyRef Name="Cust_Pk" />
+          </Key>
+          <Property Name="Cust_Pk" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Cust_Code" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Cust_Description" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Cust_PostalAddress" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Cust_Telephone" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="Cust_Fax" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="Cust_ContactPerson" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Cust_DeliveryAddress1" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Cust_DeliveryAddress2" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Cust_DeliveryAddress3" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Cust_DeliveryAddress4" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Cust_Blocked" Type="Boolean" Nullable="false" />
+          <Property Name="Cust_CustomerCat_FK" Type="Int32" Nullable="false" />
+          <Property Name="Cust_VatReferenced" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Cust_EmailContact" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Cust_SendEmail" Type="Boolean" Nullable="false" />
+          <Property Name="Cust_Notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="TLADM_CustomerTypes" Relationship="Self.FK_TLADM_CustomerFile_TLADM_CustomerTypes" FromRole="TLADM_CustomerFile" ToRole="TLADM_CustomerTypes" />
+        </EntityType>
+        <EntityType Name="TLADM_CustomerTypes">
+          <Key>
+            <PropertyRef Name="CT_Id" />
+          </Key>
+          <Property Name="CT_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CT_ShortCode" Type="String" MaxLength="5" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CT_Description" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="TLADM_CustomerFile" Relationship="Self.FK_TLADM_CustomerFile_TLADM_CustomerTypes" FromRole="TLADM_CustomerTypes" ToRole="TLADM_CustomerFile" />
+        </EntityType>
+        <EntityType Name="TLADM_Departments">
+          <Key>
+            <PropertyRef Name="Dep_Id" />
+          </Key>
+          <Property Name="Dep_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Dep_ShortCode" Type="String" MaxLength="5" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Dep_Description" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Dep_PowerN" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="TLADM_MachineOperators" Relationship="Self.FK_TLADM_MachineOperators_TLADM_Departments" FromRole="TLADM_Departments" ToRole="TLADM_MachineOperators" />
+          <NavigationProperty Name="TLADM_WhseStore" Relationship="Self.FK_TLADM_WhseStore_TLADM_Departments" FromRole="TLADM_Departments" ToRole="TLADM_WhseStore" />
+        </EntityType>
+        <EntityType Name="TLADM_FabricProduct">
+          <Key>
+            <PropertyRef Name="FP_Id" />
+          </Key>
+          <Property Name="FP_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FP_Description" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="FP_PowerN" Type="Int32" Nullable="false" />
+          <Property Name="FP_Discontinued" Type="Boolean" />
+          <Property Name="FP_Discontinued_Date" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="TLADM_FabricType" Relationship="Self.FK_TLADM_FabricType_TLADM_FabricProduct" FromRole="TLADM_FabricProduct" ToRole="TLADM_FabricType" />
+        </EntityType>
+        <EntityType Name="TLADM_FabricType">
+          <Key>
+            <PropertyRef Name="FT_Id" />
+          </Key>
+          <Property Name="FT_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FT_Description" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="FT_Product_FK" Type="Int32" Nullable="false" />
+          <Property Name="FT_PowerN" Type="Int32" Nullable="false" />
+          <Property Name="FT_TotalPN_Weight" Type="Int32" Nullable="false" />
+          <Property Name="FT_TotalPN_Width" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="TLADM_FabricProduct" Relationship="Self.FK_TLADM_FabricType_TLADM_FabricProduct" FromRole="TLADM_FabricType" ToRole="TLADM_FabricProduct" />
+        </EntityType>
+        <EntityType Name="TLADM_FabricWeight">
+          <Key>
+            <PropertyRef Name="FWW_Id" />
+          </Key>
+          <Property Name="FWW_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FWW_Description" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="FWW_PowerN" Type="Int32" Nullable="false" />
+          <Property Name="FWW_Discontinued" Type="Boolean" />
+          <Property Name="FWW_Discontinued_Date" Type="DateTime" Precision="0" />
+          <Property Name="FWW_Calculation_Value" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TLADM_FabWidth">
+          <Key>
+            <PropertyRef Name="FW_Id" />
+          </Key>
+          <Property Name="FW_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FW_Description" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="FW_PowerN" Type="Int32" Nullable="false" />
+          <Property Name="FW_Discontinued" Type="Boolean" />
+          <Property Name="FW_Discontinued_Date" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="TLADM_Griege" Relationship="Self.FK_TLADM_Griege_TLADM_FabWidth" FromRole="TLADM_FabWidth" ToRole="TLADM_Griege" />
+          <NavigationProperty Name="TLADM_ProductRating_Detail" Relationship="Self.FK_TLADM_ProductRating_Detail_TLADM_FabWidth" FromRole="TLADM_FabWidth" ToRole="TLADM_ProductRating_Detail" />
+        </EntityType>
+        <EntityType Name="TLADM_FinishedGoods">
+          <Key>
+            <PropertyRef Name="Fin_Pk" />
+          </Key>
+          <Property Name="Fin_Pk" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Fin_Description" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TLADM_GarmentDef">
+          <Key>
+            <PropertyRef Name="GarDef_Id" />
+          </Key>
+          <Property Name="GarDef_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="GarDef_Description" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="GarDef_Alt_Description" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="GarDef_Label_FK" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="TLADM_Labels" Relationship="Self.FK_TLADM_GarmentDef_TLADM_Labels" FromRole="TLADM_GarmentDef" ToRole="TLADM_Labels" />
+        </EntityType>
+        <EntityType Name="TLADM_GarmentDefectCodes">
+          <Key>
+            <PropertyRef Name="Defect_Id" />
+          </Key>
+          <Property Name="Defect_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Defect_ShortCode" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Defect_Dept_Fk" Type="Int32" Nullable="false" />
+          <Property Name="Defect_Desacription" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TLADM_Griege">
+          <Key>
+            <PropertyRef Name="TLGreige_Id" />
+          </Key>
+          <Property Name="TLGreige_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TLGreige_Description" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="TLGreige_PowerN" Type="Int32" Nullable="false" />
+          <Property Name="TLGriege_FW_FK" Type="Int32" Nullable="false" />
+          <Property Name="TLGreige_Discontinued" Type="Boolean" />
+          <Property Name="TLGreige_Discontinued_Date" Type="DateTime" Precision="0" />
+          <Property Name="TLGreige_FinishedCode" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="TLGreige_FWPowerN" Type="Int32" Nullable="false" />
+          <Property Name="TLGriege_YarnPowerN" Type="Int32" Nullable="false" />
+          <Property Name="TLGriege_FWTPowerN" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="TLADM_FabWidth" Relationship="Self.FK_TLADM_Griege_TLADM_FabWidth" FromRole="TLADM_Griege" ToRole="TLADM_FabWidth" />
+        </EntityType>
+        <EntityType Name="TLADM_Labels">
+          <Key>
+            <PropertyRef Name="Lbl_Id" />
+          </Key>
+          <Property Name="Lbl_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Lbl_Description" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Lbl_Discontinued" Type="Boolean" />
+          <Property Name="Lbl_Discontinued_Date" Type="DateTime" Precision="0" />
+          <Property Name="Lbl_PowerN" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="TLADM_GarmentDef" Relationship="Self.FK_TLADM_GarmentDef_TLADM_Labels" FromRole="TLADM_Labels" ToRole="TLADM_GarmentDef" />
+          <NavigationProperty Name="TLADM_ProductRating" Relationship="Self.FK_TLADM_ProductRating_TLADM_Labels" FromRole="TLADM_Labels" ToRole="TLADM_ProductRating" />
+        </EntityType>
+        <EntityType Name="TLADM_MachineDefinitions">
+          <Key>
+            <PropertyRef Name="MD_Pk" />
+          </Key>
+          <Property Name="MD_Pk" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MD_MachineCode" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="MD_Department_FK" Type="Int32" Nullable="false" />
+          <Property Name="MD_FabricType_FK" Type="Int32" Nullable="false" />
+          <Property Name="MD_MaxCapacity" Type="Int32" Nullable="false" />
+          <Property Name="MD_Description" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="MD_Realistic" Type="Int32" Nullable="false" />
+          <Property Name="MD_GLCostCentre" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="MD_AssetRegNo" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="MD_SerialNo" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="MD_FirstMeasure_FK" Type="Int32" />
+          <Property Name="MD_SecMeasure_FK" Type="Int32" />
+          <Property Name="MD_ThirdMeasure_FK" Type="Int32" />
+          <Property Name="MD_FourthMeasure_FK" Type="Int32" />
+          <Property Name="MD_FifthMeasure_FK" Type="Int32" />
+          <Property Name="MD_SixMeasure_FK" Type="Int32" />
+          <Property Name="MD_SevenMeasure_FK" Type="Int32" />
+          <Property Name="MD_EightMeasure_FK" Type="Int32" />
+          <Property Name="MD_FinishGoods_FK" Type="Int32" />
+          <Property Name="MD_Operators_TotalPN" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="TLADM_NonStockItems" Relationship="Self.FK_TLADM_MachineDefinitions_TLADM_NonStockItems" FromRole="TLADM_MachineDefinitions" ToRole="TLADM_NonStockItems" />
+          <NavigationProperty Name="TLADM_NonStockItems1" Relationship="Self.FK_TLADM_MachineDefinitions_TLADM_NonStockItems1" FromRole="TLADM_MachineDefinitions" ToRole="TLADM_NonStockItems" />
+          <NavigationProperty Name="TLADM_NonStockItems2" Relationship="Self.FK_TLADM_MachineDefinitions_TLADM_NonStockItems2" FromRole="TLADM_MachineDefinitions" ToRole="TLADM_NonStockItems" />
+          <NavigationProperty Name="TLADM_NonStockItems3" Relationship="Self.FK_TLADM_MachineDefinitions_TLADM_NonStockItems3" FromRole="TLADM_MachineDefinitions" ToRole="TLADM_NonStockItems" />
+          <NavigationProperty Name="TLADM_NonStockItems4" Relationship="Self.FK_TLADM_MachineDefinitions_TLADM_NonStockItems4" FromRole="TLADM_MachineDefinitions" ToRole="TLADM_NonStockItems" />
+          <NavigationProperty Name="TLADM_NonStockItems5" Relationship="Self.FK_TLADM_MachineDefinitions_TLADM_NonStockItems5" FromRole="TLADM_MachineDefinitions" ToRole="TLADM_NonStockItems" />
+          <NavigationProperty Name="TLADM_NonStockItems6" Relationship="Self.FK_TLADM_MachineDefinitions_TLADM_NonStockItems6" FromRole="TLADM_MachineDefinitions" ToRole="TLADM_NonStockItems" />
+          <NavigationProperty Name="TLADM_NonStockItems7" Relationship="Self.FK_TLADM_MachineDefinitions_TLADM_NonStockItems7" FromRole="TLADM_MachineDefinitions" ToRole="TLADM_NonStockItems" />
+          <NavigationProperty Name="TLADM_NonStockItems8" Relationship="Self.FK_TLADM_MachineDefinitions_TLADM_NonStockItems8" FromRole="TLADM_MachineDefinitions" ToRole="TLADM_NonStockItems" />
+        </EntityType>
+        <EntityType Name="TLADM_MachineMaintenance">
+          <Key>
+            <PropertyRef Name="Maint_Pk" />
+          </Key>
+          <Property Name="Maint_Pk" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Maint_ShortCode" Type="String" MaxLength="5" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Maint_Description" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Maint_PowerN" Type="Int32" Nullable="false" />
+          <Property Name="Maint_IntervalDownTime" Type="Int32" Nullable="false" />
+          <Property Name="Maint_DownTimePeriod" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TLADM_MachineOperators">
+          <Key>
+            <PropertyRef Name="MachOp_Pk" />
+          </Key>
+          <Property Name="MachOp_Pk" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MachOp_Code" Type="String" MaxLength="5" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="MachOp_Description" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="MachOp_Department_FK" Type="Int32" Nullable="false" />
+          <Property Name="MachOp_Payroll_Code" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="TLADM_Departments" Relationship="Self.FK_TLADM_MachineOperators_TLADM_Departments" FromRole="TLADM_MachineOperators" ToRole="TLADM_Departments" />
+        </EntityType>
+        <EntityType Name="TLADM_NonStockCat">
+          <Key>
+            <PropertyRef Name="NSC_Pk" />
+          </Key>
+          <Property Name="NSC_Pk" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NSC_ShortCode" Type="String" MaxLength="5" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="NSC_Description" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="TLADM_NonStockItems" Relationship="Self.FK_TLADM_NonStockItems_TLADM_NonStockCat" FromRole="TLADM_NonStockCat" ToRole="TLADM_NonStockItems" />
+        </EntityType>
+        <EntityType Name="TLADM_NonStockItems">
+          <Key>
+            <PropertyRef Name="NSI_Pk" />
+          </Key>
+          <Property Name="NSI_Pk" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NSI_Code" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="NSI_Description" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="NSI_UOM_FK" Type="Int32" Nullable="false" />
+          <Property Name="NSI_StockType_FK" Type="Int32" Nullable="false" />
+          <Property Name="NSI_Department_PWN" Type="Int32" Nullable="false" />
+          <Property Name="NSI_Category_FK" Type="Int32" Nullable="false" />
+          <Property Name="NSI_ShowUnitCost" Type="Boolean" Nullable="false" />
+          <Property Name="NSI_UnitCost" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+          <NavigationProperty Name="TLADM_MachineDefinitions" Relationship="Self.FK_TLADM_MachineDefinitions_TLADM_NonStockItems" FromRole="TLADM_NonStockItems" ToRole="TLADM_MachineDefinitions" />
+          <NavigationProperty Name="TLADM_MachineDefinitions1" Relationship="Self.FK_TLADM_MachineDefinitions_TLADM_NonStockItems1" FromRole="TLADM_NonStockItems" ToRole="TLADM_MachineDefinitions" />
+          <NavigationProperty Name="TLADM_MachineDefinitions2" Relationship="Self.FK_TLADM_MachineDefinitions_TLADM_NonStockItems2" FromRole="TLADM_NonStockItems" ToRole="TLADM_MachineDefinitions" />
+          <NavigationProperty Name="TLADM_MachineDefinitions3" Relationship="Self.FK_TLADM_MachineDefinitions_TLADM_NonStockItems3" FromRole="TLADM_NonStockItems" ToRole="TLADM_MachineDefinitions" />
+          <NavigationProperty Name="TLADM_MachineDefinitions4" Relationship="Self.FK_TLADM_MachineDefinitions_TLADM_NonStockItems4" FromRole="TLADM_NonStockItems" ToRole="TLADM_MachineDefinitions" />
+          <NavigationProperty Name="TLADM_MachineDefinitions5" Relationship="Self.FK_TLADM_MachineDefinitions_TLADM_NonStockItems5" FromRole="TLADM_NonStockItems" ToRole="TLADM_MachineDefinitions" />
+          <NavigationProperty Name="TLADM_MachineDefinitions6" Relationship="Self.FK_TLADM_MachineDefinitions_TLADM_NonStockItems6" FromRole="TLADM_NonStockItems" ToRole="TLADM_MachineDefinitions" />
+          <NavigationProperty Name="TLADM_MachineDefinitions7" Relationship="Self.FK_TLADM_MachineDefinitions_TLADM_NonStockItems7" FromRole="TLADM_NonStockItems" ToRole="TLADM_MachineDefinitions" />
+          <NavigationProperty Name="TLADM_MachineDefinitions8" Relationship="Self.FK_TLADM_MachineDefinitions_TLADM_NonStockItems8" FromRole="TLADM_NonStockItems" ToRole="TLADM_MachineDefinitions" />
+          <NavigationProperty Name="TLADM_NonStockCat" Relationship="Self.FK_TLADM_NonStockItems_TLADM_NonStockCat" FromRole="TLADM_NonStockItems" ToRole="TLADM_NonStockCat" />
+          <NavigationProperty Name="TLADM_StockTypes" Relationship="Self.FK_TLADM_NonStockItems_TLADM_StockTypes" FromRole="TLADM_NonStockItems" ToRole="TLADM_StockTypes" />
+          <NavigationProperty Name="TLADM_UOM" Relationship="Self.FK_TLADM_NonStockItems_TLADM_UOM" FromRole="TLADM_NonStockItems" ToRole="TLADM_UOM" />
+        </EntityType>
+        <EntityType Name="TLADM_ProductRating">
+          <Key>
+            <PropertyRef Name="Pr_Id" />
+          </Key>
+          <Property Name="Pr_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Pr_Label_FK" Type="Int32" Nullable="false" />
+          <Property Name="Pr_Style_FK" Type="Int32" Nullable="false" />
+          <Property Name="Pr_Size_Power" Type="Int32" Nullable="false" />
+          <Property Name="Pr_BodyorRibbing" Type="Int32" Nullable="false" />
+          <Property Name="Pr_PowerN" Type="Int32" Nullable="false" />
+          <Property Name="Pr_Ratio" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Pr_Marker_Length" Type="Decimal" Precision="18" Scale="6" Nullable="false" />
+          <Property Name="Pr_numeric_Rating" Type="Decimal" Precision="18" Scale="6" Nullable="false" />
+          <NavigationProperty Name="TLADM_Labels" Relationship="Self.FK_TLADM_ProductRating_TLADM_Labels" FromRole="TLADM_ProductRating" ToRole="TLADM_Labels" />
+          <NavigationProperty Name="TLADM_Styles" Relationship="Self.FK_TLADM_ProductRating_TLADM_Styles" FromRole="TLADM_ProductRating" ToRole="TLADM_Styles" />
+        </EntityType>
+        <EntityType Name="TLADM_ProductRating_Detail">
+          <Key>
+            <PropertyRef Name="prd_Id" />
+          </Key>
+          <Property Name="prd_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="prd_Parent_FK" Type="Int32" Nullable="false" />
+          <Property Name="Prd_Weight" Type="Int32" Nullable="false" />
+          <Property Name="Prd_Width" Type="Int32" Nullable="false" />
+          <Property Name="Prd_Yield" Type="Decimal" Precision="18" Scale="6" Nullable="false" />
+          <Property Name="Prd_PiecesKg" Type="Decimal" Precision="18" Scale="6" Nullable="false" />
+          <NavigationProperty Name="TLADM_FabWidth" Relationship="Self.FK_TLADM_ProductRating_Detail_TLADM_FabWidth" FromRole="TLADM_ProductRating_Detail" ToRole="TLADM_FabWidth" />
+        </EntityType>
+        <EntityType Name="TLADM_ProductTypes">
+          <Key>
+            <PropertyRef Name="PT_pk" />
+          </Key>
+          <Property Name="PT_pk" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PT_ShortCode" Type="String" MaxLength="5" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="PT_Description" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="PT_UOMFk" Type="Int32" Nullable="false" />
+          <Property Name="PT_StdCost" Type="Boolean" Nullable="false" />
+          <Property Name="PT_Hazardous" Type="Boolean" Nullable="false" />
+          <Property Name="PT_StdCostValue" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+          <NavigationProperty Name="TLADM_Suppliers" Relationship="Self.FK_TLADM_Suppliers_TLADM_ProductTypes" FromRole="TLADM_ProductTypes" ToRole="TLADM_Suppliers" />
+        </EntityType>
+        <EntityType Name="TLADM_QualityDefinition">
+          <Key>
+            <PropertyRef Name="QD_Pk" />
+          </Key>
+          <Property Name="QD_Pk" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="QD_ShortCode" Type="String" MaxLength="5" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="QD_Description" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="QD_RejectReasonFK" Type="Int32" Nullable="false" />
+          <Property Name="QD_ReportingDept_FK" Type="Int32" Nullable="false" />
+          <Property Name="QD_OriginatingDept_FK" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="TLADM_RejectReasons" Relationship="Self.FK_TLADM_QualityDefinition_TLADM_RejectReasons1" FromRole="TLADM_QualityDefinition" ToRole="TLADM_RejectReasons" />
+        </EntityType>
+        <EntityType Name="TLADM_RejectReasons">
+          <Key>
+            <PropertyRef Name="RJR_Pk" />
+          </Key>
+          <Property Name="RJR_Pk" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RJR_Description" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="TLADM_QualityDefinition" Relationship="Self.FK_TLADM_QualityDefinition_TLADM_RejectReasons1" FromRole="TLADM_RejectReasons" ToRole="TLADM_QualityDefinition" />
+        </EntityType>
+        <EntityType Name="TLADM_Ribbing">
+          <Key>
+            <PropertyRef Name="RI_Id" />
+          </Key>
+          <Property Name="RI_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RI_Description" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="RI_PowerN" Type="Int32" Nullable="false" />
+          <Property Name="RI_Discontinued" Type="Boolean" />
+          <Property Name="RI_Discontinued_Date" Type="DateTime" Precision="0" />
+        </EntityType>
+        <EntityType Name="TLADM_Sizes">
+          <Key>
+            <PropertyRef Name="SI_id" />
+          </Key>
+          <Property Name="SI_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SI_Description" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="SI_PowerN" Type="Int32" Nullable="false" />
+          <Property Name="SI_Discontinued" Type="Boolean" />
+          <Property Name="SI_Discontinued_Date" Type="DateTime" Precision="0" />
+          <Property Name="SI_FinishedCode" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="TLADM_ConsumablesOther" Relationship="Self.FK_TLADM_ConsumablesOther_TLADM_Sizes" FromRole="TLADM_Sizes" ToRole="TLADM_ConsumablesOther" />
+        </EntityType>
+        <EntityType Name="TLADM_StockTakeFreq">
+          <Key>
+            <PropertyRef Name="STF_Pk" />
+          </Key>
+          <Property Name="STF_Pk" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="STF_ShortCode" Type="String" MaxLength="5" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="STF_Description" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="STF_Period_Weeks" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TLADM_StockTypes">
+          <Key>
+            <PropertyRef Name="ST_Id" />
+          </Key>
+          <Property Name="ST_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ST_ShortCode" Type="String" MaxLength="5" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ST_Description" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="TLADM_NonStockItems" Relationship="Self.FK_TLADM_NonStockItems_TLADM_StockTypes" FromRole="TLADM_StockTypes" ToRole="TLADM_NonStockItems" />
+        </EntityType>
+        <EntityType Name="TLADM_StoreTypes">
+          <Key>
+            <PropertyRef Name="StoreT_Id" />
+          </Key>
+          <Property Name="StoreT_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="StoreT_ShortCode" Type="String" MaxLength="5" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="StoreT_Description" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="StoreT_UOMFK" Type="Int32" Nullable="false" />
+          <Property Name="StoreT_ProdTypeFK" Type="Int32" Nullable="false" />
+          <Property Name="StoreT_Hazardous" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="TLADM_ConsumablesOther" Relationship="Self.FK_TLADM_ConsumablesOther_TLADM_StoreTypes" FromRole="TLADM_StoreTypes" ToRole="TLADM_ConsumablesOther" />
+          <NavigationProperty Name="TLADM_WhseStore" Relationship="Self.FK_TLADM_WhseStore_TLADM_StoreTypes" FromRole="TLADM_StoreTypes" ToRole="TLADM_WhseStore" />
+        </EntityType>
+        <EntityType Name="TLADM_Styles">
+          <Key>
+            <PropertyRef Name="Sty_Id" />
+          </Key>
+          <Property Name="Sty_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Sty_Description" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Sty_PowerN" Type="Int32" Nullable="false" />
+          <Property Name="Sty_Discontinued" Type="Boolean" />
+          <Property Name="Sty_Discontinued_Date" Type="DateTime" Precision="0" />
+          <Property Name="Sty_Label_FK" Type="Int32" Nullable="false" />
+          <Property Name="Sty_Size_PowerN" Type="Int32" Nullable="false" />
+          <Property Name="Sty_Colour_PowerN" Type="Int32" Nullable="false" />
+          <Property Name="Sty_Ribbing_PowerN" Type="Int32" Nullable="false" />
+          <Property Name="Sty_Trims_PowerN" Type="Int32" Nullable="false" />
+          <Property Name="Sty_Fabric_PowerN" Type="Int32" Nullable="false" />
+          <Property Name="Sty_FabricWeight_PowerN" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="TLADM_ProductRating" Relationship="Self.FK_TLADM_ProductRating_TLADM_Styles" FromRole="TLADM_Styles" ToRole="TLADM_ProductRating" />
+        </EntityType>
+        <EntityType Name="TLADM_Suppliers">
+          <Key>
+            <PropertyRef Name="Sup_Pk" />
+          </Key>
+          <Property Name="Sup_Pk" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Sup_Code" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Sup_Description" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Sup_StdPayMentTerms" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Sup_DiscountStructure" Type="String" MaxLength="5" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Sup_PostalAddress" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Sup_Telephone" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Sup_ContactPerson" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Suip_ShippingAddress1" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Sup_ShippingAddress2" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Sup_ShippingAddress3" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Sup_ShippingAddress4" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Sup_Blocked" Type="Boolean" Nullable="false" />
+          <Property Name="Sup_ProductTypes_FK" Type="Int32" Nullable="false" />
+          <Property Name="Sup_AllowsConsignment" Type="Boolean" Nullable="false" />
+          <Property Name="Sup_VatReference" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Sup_EMailContact" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Sup_AllowsEMail" Type="Boolean" />
+          <Property Name="Sup_Notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Sup_Fax" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Sup_ProductGroups_FK" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="TLADM_ProductTypes" Relationship="Self.FK_TLADM_Suppliers_TLADM_ProductTypes" FromRole="TLADM_Suppliers" ToRole="TLADM_ProductTypes" />
+        </EntityType>
+        <EntityType Name="TLADM_Trims">
+          <Key>
+            <PropertyRef Name="TR_Id" />
+          </Key>
+          <Property Name="TR_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TR_Description" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="TR_powerN" Type="Int32" Nullable="false" />
+          <Property Name="TR_Discontinued" Type="Boolean" />
+          <Property Name="TR_Discontinued_Date" Type="DateTime" Precision="0" />
+          <Property Name="TR_Rating" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TLADM_UOM">
+          <Key>
+            <PropertyRef Name="UOM_Pk" />
+          </Key>
+          <Property Name="UOM_Pk" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UOM_ShortCode" Type="String" MaxLength="5" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="UOM_Description" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="TLADM_ConsumablesOther" Relationship="Self.FK_TLADM_ConsumablesOther_TLADM_UOM" FromRole="TLADM_UOM" ToRole="TLADM_ConsumablesOther" />
+          <NavigationProperty Name="TLADM_ConsumablesOther1" Relationship="Self.FK_TLADM_ConsumablesOther_TLADM_UOM1" FromRole="TLADM_UOM" ToRole="TLADM_ConsumablesOther" />
+          <NavigationProperty Name="TLADM_NonStockItems" Relationship="Self.FK_TLADM_NonStockItems_TLADM_UOM" FromRole="TLADM_UOM" ToRole="TLADM_NonStockItems" />
+        </EntityType>
+        <EntityType Name="TLADM_WhseStore">
+          <Key>
+            <PropertyRef Name="WhStore_Id" />
+          </Key>
+          <Property Name="WhStore_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="WhStore_Code" Type="String" MaxLength="7" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="WhStore_Description" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="WhStore_DepartmentFK" Type="Int32" Nullable="false" />
+          <Property Name="WhStore_TypeFK" Type="Int32" Nullable="false" />
+          <Property Name="WhStore_Address1" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="WhStore_Address2" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="WhStore_Address3" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="WhStore_Address4" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="WhStore_Address5" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="WhStore_Contact" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="WhStore_Telephone" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="WhStore_Email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="WhStore_Notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="WhStore_WhseOrStore" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="TLADM_Departments" Relationship="Self.FK_TLADM_WhseStore_TLADM_Departments" FromRole="TLADM_WhseStore" ToRole="TLADM_Departments" />
+          <NavigationProperty Name="TLADM_StoreTypes" Relationship="Self.FK_TLADM_WhseStore_TLADM_StoreTypes" FromRole="TLADM_WhseStore" ToRole="TLADM_StoreTypes" />
+        </EntityType>
+        <EntityType Name="TLADM_Yarn">
+          <Key>
+            <PropertyRef Name="YA_Id" />
+          </Key>
+          <Property Name="YA_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="YA_Description" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="YA_PowerN" Type="Int32" Nullable="false" />
+          <Property Name="YA_Discontinued" Type="Boolean" />
+          <Property Name="YA_Discontnued_Date" Type="DateTime" Precision="0" />
+        </EntityType>
+        <EntityType Name="TLCMT_ProductDefects">
+          <Key>
+            <PropertyRef Name="PD_Id" />
+          </Key>
+          <Property Name="PD_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PD_Description" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_TLADM_ConsumablesOther_TLADM_ConsumableGroups">
+          <End Role="TLADM_ConsumableGroups" Type="Self.TLADM_ConsumableGroups" Multiplicity="1" />
+          <End Role="TLADM_ConsumablesOther" Type="Self.TLADM_ConsumablesOther" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TLADM_ConsumableGroups">
+              <PropertyRef Name="ConG_Pk" />
+            </Principal>
+            <Dependent Role="TLADM_ConsumablesOther">
+              <PropertyRef Name="ConsOther_ConsGroup_FK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TLADM_ConsumablesOther_TLADM_Sizes">
+          <End Role="TLADM_Sizes" Type="Self.TLADM_Sizes" Multiplicity="1" />
+          <End Role="TLADM_ConsumablesOther" Type="Self.TLADM_ConsumablesOther" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TLADM_Sizes">
+              <PropertyRef Name="SI_id" />
+            </Principal>
+            <Dependent Role="TLADM_ConsumablesOther">
+              <PropertyRef Name="ConsOther_SizeCode_FK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TLADM_ConsumablesOther_TLADM_StoreTypes">
+          <End Role="TLADM_StoreTypes" Type="Self.TLADM_StoreTypes" Multiplicity="1" />
+          <End Role="TLADM_ConsumablesOther" Type="Self.TLADM_ConsumablesOther" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TLADM_StoreTypes">
+              <PropertyRef Name="StoreT_Id" />
+            </Principal>
+            <Dependent Role="TLADM_ConsumablesOther">
+              <PropertyRef Name="ConsOther_Store_FK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TLADM_ConsumablesOther_TLADM_UOM">
+          <End Role="TLADM_UOM" Type="Self.TLADM_UOM" Multiplicity="1" />
+          <End Role="TLADM_ConsumablesOther" Type="Self.TLADM_ConsumablesOther" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TLADM_UOM">
+              <PropertyRef Name="UOM_Pk" />
+            </Principal>
+            <Dependent Role="TLADM_ConsumablesOther">
+              <PropertyRef Name="ConsOther_UOM_FK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TLADM_ConsumablesOther_TLADM_UOM1">
+          <End Role="TLADM_UOM" Type="Self.TLADM_UOM" Multiplicity="1" />
+          <End Role="TLADM_ConsumablesOther" Type="Self.TLADM_ConsumablesOther" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TLADM_UOM">
+              <PropertyRef Name="UOM_Pk" />
+            </Principal>
+            <Dependent Role="TLADM_ConsumablesOther">
+              <PropertyRef Name="ConsOther_AUOM_FK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TLADM_CustomerFile_TLADM_CustomerTypes">
+          <End Role="TLADM_CustomerTypes" Type="Self.TLADM_CustomerTypes" Multiplicity="1" />
+          <End Role="TLADM_CustomerFile" Type="Self.TLADM_CustomerFile" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TLADM_CustomerTypes">
+              <PropertyRef Name="CT_Id" />
+            </Principal>
+            <Dependent Role="TLADM_CustomerFile">
+              <PropertyRef Name="Cust_CustomerCat_FK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TLADM_MachineOperators_TLADM_Departments">
+          <End Role="TLADM_Departments" Type="Self.TLADM_Departments" Multiplicity="1" />
+          <End Role="TLADM_MachineOperators" Type="Self.TLADM_MachineOperators" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TLADM_Departments">
+              <PropertyRef Name="Dep_Id" />
+            </Principal>
+            <Dependent Role="TLADM_MachineOperators">
+              <PropertyRef Name="MachOp_Department_FK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TLADM_WhseStore_TLADM_Departments">
+          <End Role="TLADM_Departments" Type="Self.TLADM_Departments" Multiplicity="1" />
+          <End Role="TLADM_WhseStore" Type="Self.TLADM_WhseStore" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TLADM_Departments">
+              <PropertyRef Name="Dep_Id" />
+            </Principal>
+            <Dependent Role="TLADM_WhseStore">
+              <PropertyRef Name="WhStore_DepartmentFK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TLADM_FabricType_TLADM_FabricProduct">
+          <End Role="TLADM_FabricProduct" Type="Self.TLADM_FabricProduct" Multiplicity="1" />
+          <End Role="TLADM_FabricType" Type="Self.TLADM_FabricType" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TLADM_FabricProduct">
+              <PropertyRef Name="FP_Id" />
+            </Principal>
+            <Dependent Role="TLADM_FabricType">
+              <PropertyRef Name="FT_Product_FK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TLADM_Griege_TLADM_FabWidth">
+          <End Role="TLADM_FabWidth" Type="Self.TLADM_FabWidth" Multiplicity="1" />
+          <End Role="TLADM_Griege" Type="Self.TLADM_Griege" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TLADM_FabWidth">
+              <PropertyRef Name="FW_Id" />
+            </Principal>
+            <Dependent Role="TLADM_Griege">
+              <PropertyRef Name="TLGriege_FW_FK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TLADM_ProductRating_Detail_TLADM_FabWidth">
+          <End Role="TLADM_FabWidth" Type="Self.TLADM_FabWidth" Multiplicity="1" />
+          <End Role="TLADM_ProductRating_Detail" Type="Self.TLADM_ProductRating_Detail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TLADM_FabWidth">
+              <PropertyRef Name="FW_Id" />
+            </Principal>
+            <Dependent Role="TLADM_ProductRating_Detail">
+              <PropertyRef Name="Prd_Width" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TLADM_GarmentDef_TLADM_Labels">
+          <End Role="TLADM_Labels" Type="Self.TLADM_Labels" Multiplicity="1" />
+          <End Role="TLADM_GarmentDef" Type="Self.TLADM_GarmentDef" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TLADM_Labels">
+              <PropertyRef Name="Lbl_Id" />
+            </Principal>
+            <Dependent Role="TLADM_GarmentDef">
+              <PropertyRef Name="GarDef_Label_FK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TLADM_ProductRating_TLADM_Labels">
+          <End Role="TLADM_Labels" Type="Self.TLADM_Labels" Multiplicity="1" />
+          <End Role="TLADM_ProductRating" Type="Self.TLADM_ProductRating" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TLADM_Labels">
+              <PropertyRef Name="Lbl_Id" />
+            </Principal>
+            <Dependent Role="TLADM_ProductRating">
+              <PropertyRef Name="Pr_Label_FK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TLADM_MachineDefinitions_TLADM_NonStockItems">
+          <End Role="TLADM_NonStockItems" Type="Self.TLADM_NonStockItems" Multiplicity="0..1" />
+          <End Role="TLADM_MachineDefinitions" Type="Self.TLADM_MachineDefinitions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TLADM_NonStockItems">
+              <PropertyRef Name="NSI_Pk" />
+            </Principal>
+            <Dependent Role="TLADM_MachineDefinitions">
+              <PropertyRef Name="MD_FirstMeasure_FK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TLADM_MachineDefinitions_TLADM_NonStockItems1">
+          <End Role="TLADM_NonStockItems" Type="Self.TLADM_NonStockItems" Multiplicity="0..1" />
+          <End Role="TLADM_MachineDefinitions" Type="Self.TLADM_MachineDefinitions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TLADM_NonStockItems">
+              <PropertyRef Name="NSI_Pk" />
+            </Principal>
+            <Dependent Role="TLADM_MachineDefinitions">
+              <PropertyRef Name="MD_SecMeasure_FK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TLADM_MachineDefinitions_TLADM_NonStockItems2">
+          <End Role="TLADM_NonStockItems" Type="Self.TLADM_NonStockItems" Multiplicity="0..1" />
+          <End Role="TLADM_MachineDefinitions" Type="Self.TLADM_MachineDefinitions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TLADM_NonStockItems">
+              <PropertyRef Name="NSI_Pk" />
+            </Principal>
+            <Dependent Role="TLADM_MachineDefinitions">
+              <PropertyRef Name="MD_ThirdMeasure_FK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TLADM_MachineDefinitions_TLADM_NonStockItems3">
+          <End Role="TLADM_NonStockItems" Type="Self.TLADM_NonStockItems" Multiplicity="0..1" />
+          <End Role="TLADM_MachineDefinitions" Type="Self.TLADM_MachineDefinitions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TLADM_NonStockItems">
+              <PropertyRef Name="NSI_Pk" />
+            </Principal>
+            <Dependent Role="TLADM_MachineDefinitions">
+              <PropertyRef Name="MD_FourthMeasure_FK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TLADM_MachineDefinitions_TLADM_NonStockItems4">
+          <End Role="TLADM_NonStockItems" Type="Self.TLADM_NonStockItems" Multiplicity="0..1" />
+          <End Role="TLADM_MachineDefinitions" Type="Self.TLADM_MachineDefinitions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TLADM_NonStockItems">
+              <PropertyRef Name="NSI_Pk" />
+            </Principal>
+            <Dependent Role="TLADM_MachineDefinitions">
+              <PropertyRef Name="MD_FifthMeasure_FK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TLADM_MachineDefinitions_TLADM_NonStockItems5">
+          <End Role="TLADM_NonStockItems" Type="Self.TLADM_NonStockItems" Multiplicity="0..1" />
+          <End Role="TLADM_MachineDefinitions" Type="Self.TLADM_MachineDefinitions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TLADM_NonStockItems">
+              <PropertyRef Name="NSI_Pk" />
+            </Principal>
+            <Dependent Role="TLADM_MachineDefinitions">
+              <PropertyRef Name="MD_SixMeasure_FK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TLADM_MachineDefinitions_TLADM_NonStockItems6">
+          <End Role="TLADM_NonStockItems" Type="Self.TLADM_NonStockItems" Multiplicity="0..1" />
+          <End Role="TLADM_MachineDefinitions" Type="Self.TLADM_MachineDefinitions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TLADM_NonStockItems">
+              <PropertyRef Name="NSI_Pk" />
+            </Principal>
+            <Dependent Role="TLADM_MachineDefinitions">
+              <PropertyRef Name="MD_SixMeasure_FK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TLADM_MachineDefinitions_TLADM_NonStockItems7">
+          <End Role="TLADM_NonStockItems" Type="Self.TLADM_NonStockItems" Multiplicity="0..1" />
+          <End Role="TLADM_MachineDefinitions" Type="Self.TLADM_MachineDefinitions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TLADM_NonStockItems">
+              <PropertyRef Name="NSI_Pk" />
+            </Principal>
+            <Dependent Role="TLADM_MachineDefinitions">
+              <PropertyRef Name="MD_SevenMeasure_FK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TLADM_MachineDefinitions_TLADM_NonStockItems8">
+          <End Role="TLADM_NonStockItems" Type="Self.TLADM_NonStockItems" Multiplicity="0..1" />
+          <End Role="TLADM_MachineDefinitions" Type="Self.TLADM_MachineDefinitions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TLADM_NonStockItems">
+              <PropertyRef Name="NSI_Pk" />
+            </Principal>
+            <Dependent Role="TLADM_MachineDefinitions">
+              <PropertyRef Name="MD_EightMeasure_FK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TLADM_NonStockItems_TLADM_NonStockCat">
+          <End Role="TLADM_NonStockCat" Type="Self.TLADM_NonStockCat" Multiplicity="1" />
+          <End Role="TLADM_NonStockItems" Type="Self.TLADM_NonStockItems" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TLADM_NonStockCat">
+              <PropertyRef Name="NSC_Pk" />
+            </Principal>
+            <Dependent Role="TLADM_NonStockItems">
+              <PropertyRef Name="NSI_Category_FK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TLADM_NonStockItems_TLADM_StockTypes">
+          <End Role="TLADM_StockTypes" Type="Self.TLADM_StockTypes" Multiplicity="1" />
+          <End Role="TLADM_NonStockItems" Type="Self.TLADM_NonStockItems" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TLADM_StockTypes">
+              <PropertyRef Name="ST_Id" />
+            </Principal>
+            <Dependent Role="TLADM_NonStockItems">
+              <PropertyRef Name="NSI_StockType_FK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TLADM_NonStockItems_TLADM_UOM">
+          <End Role="TLADM_UOM" Type="Self.TLADM_UOM" Multiplicity="1" />
+          <End Role="TLADM_NonStockItems" Type="Self.TLADM_NonStockItems" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TLADM_UOM">
+              <PropertyRef Name="UOM_Pk" />
+            </Principal>
+            <Dependent Role="TLADM_NonStockItems">
+              <PropertyRef Name="NSI_UOM_FK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TLADM_ProductRating_TLADM_Styles">
+          <End Role="TLADM_Styles" Type="Self.TLADM_Styles" Multiplicity="1" />
+          <End Role="TLADM_ProductRating" Type="Self.TLADM_ProductRating" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TLADM_Styles">
+              <PropertyRef Name="Sty_Id" />
+            </Principal>
+            <Dependent Role="TLADM_ProductRating">
+              <PropertyRef Name="Pr_Style_FK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TLADM_Suppliers_TLADM_ProductTypes">
+          <End Role="TLADM_ProductTypes" Type="Self.TLADM_ProductTypes" Multiplicity="1" />
+          <End Role="TLADM_Suppliers" Type="Self.TLADM_Suppliers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TLADM_ProductTypes">
+              <PropertyRef Name="PT_pk" />
+            </Principal>
+            <Dependent Role="TLADM_Suppliers">
+              <PropertyRef Name="Sup_ProductTypes_FK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TLADM_QualityDefinition_TLADM_RejectReasons1">
+          <End Role="TLADM_RejectReasons" Type="Self.TLADM_RejectReasons" Multiplicity="1" />
+          <End Role="TLADM_QualityDefinition" Type="Self.TLADM_QualityDefinition" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TLADM_RejectReasons">
+              <PropertyRef Name="RJR_Pk" />
+            </Principal>
+            <Dependent Role="TLADM_QualityDefinition">
+              <PropertyRef Name="QD_RejectReasonFK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TLADM_WhseStore_TLADM_StoreTypes">
+          <End Role="TLADM_StoreTypes" Type="Self.TLADM_StoreTypes" Multiplicity="1" />
+          <End Role="TLADM_WhseStore" Type="Self.TLADM_WhseStore" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="TLADM_StoreTypes">
+              <PropertyRef Name="StoreT_Id" />
+            </Principal>
+            <Dependent Role="TLADM_WhseStore">
+              <PropertyRef Name="WhStore_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="TTI2Entities1" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="TLADM_AuxColours" EntityType="Self.TLADM_AuxColours" />
+          <EntitySet Name="TLADM_Colours" EntityType="Self.TLADM_Colours" />
+          <EntitySet Name="TLADM_ConsumableGroups" EntityType="Self.TLADM_ConsumableGroups" />
+          <EntitySet Name="TLADM_ConsumablesDC" EntityType="Self.TLADM_ConsumablesDC" />
+          <EntitySet Name="TLADM_ConsumablesOther" EntityType="Self.TLADM_ConsumablesOther" />
+          <EntitySet Name="TLADM_Cotton" EntityType="Self.TLADM_Cotton" />
+          <EntitySet Name="TLADM_CottonOrigin" EntityType="Self.TLADM_CottonOrigin" />
+          <EntitySet Name="TLADM_CustomerFile" EntityType="Self.TLADM_CustomerFile" />
+          <EntitySet Name="TLADM_CustomerTypes" EntityType="Self.TLADM_CustomerTypes" />
+          <EntitySet Name="TLADM_Departments" EntityType="Self.TLADM_Departments" />
+          <EntitySet Name="TLADM_FabricProduct" EntityType="Self.TLADM_FabricProduct" />
+          <EntitySet Name="TLADM_FabricType" EntityType="Self.TLADM_FabricType" />
+          <EntitySet Name="TLADM_FabricWeight" EntityType="Self.TLADM_FabricWeight" />
+          <EntitySet Name="TLADM_FabWidth" EntityType="Self.TLADM_FabWidth" />
+          <EntitySet Name="TLADM_FinishedGoods" EntityType="Self.TLADM_FinishedGoods" />
+          <EntitySet Name="TLADM_GarmentDef" EntityType="Self.TLADM_GarmentDef" />
+          <EntitySet Name="TLADM_GarmentDefectCodes" EntityType="Self.TLADM_GarmentDefectCodes" />
+          <EntitySet Name="TLADM_Griege" EntityType="Self.TLADM_Griege" />
+          <EntitySet Name="TLADM_Labels" EntityType="Self.TLADM_Labels" />
+          <EntitySet Name="TLADM_MachineDefinitions" EntityType="Self.TLADM_MachineDefinitions" />
+          <EntitySet Name="TLADM_MachineMaintenance" EntityType="Self.TLADM_MachineMaintenance" />
+          <EntitySet Name="TLADM_MachineOperators" EntityType="Self.TLADM_MachineOperators" />
+          <EntitySet Name="TLADM_NonStockCat" EntityType="Self.TLADM_NonStockCat" />
+          <EntitySet Name="TLADM_NonStockItems" EntityType="Self.TLADM_NonStockItems" />
+          <EntitySet Name="TLADM_ProductRating" EntityType="Self.TLADM_ProductRating" />
+          <EntitySet Name="TLADM_ProductRating_Detail" EntityType="Self.TLADM_ProductRating_Detail" />
+          <EntitySet Name="TLADM_ProductTypes" EntityType="Self.TLADM_ProductTypes" />
+          <EntitySet Name="TLADM_QualityDefinition" EntityType="Self.TLADM_QualityDefinition" />
+          <EntitySet Name="TLADM_RejectReasons" EntityType="Self.TLADM_RejectReasons" />
+          <EntitySet Name="TLADM_Ribbing" EntityType="Self.TLADM_Ribbing" />
+          <EntitySet Name="TLADM_Sizes" EntityType="Self.TLADM_Sizes" />
+          <EntitySet Name="TLADM_StockTakeFreq" EntityType="Self.TLADM_StockTakeFreq" />
+          <EntitySet Name="TLADM_StockTypes" EntityType="Self.TLADM_StockTypes" />
+          <EntitySet Name="TLADM_StoreTypes" EntityType="Self.TLADM_StoreTypes" />
+          <EntitySet Name="TLADM_Styles" EntityType="Self.TLADM_Styles" />
+          <EntitySet Name="TLADM_Suppliers" EntityType="Self.TLADM_Suppliers" />
+          <EntitySet Name="TLADM_Trims" EntityType="Self.TLADM_Trims" />
+          <EntitySet Name="TLADM_UOM" EntityType="Self.TLADM_UOM" />
+          <EntitySet Name="TLADM_WhseStore" EntityType="Self.TLADM_WhseStore" />
+          <EntitySet Name="TLADM_Yarn" EntityType="Self.TLADM_Yarn" />
+          <EntitySet Name="TLCMT_ProductDefects" EntityType="Self.TLCMT_ProductDefects" />
+          <AssociationSet Name="FK_TLADM_ConsumablesOther_TLADM_ConsumableGroups" Association="Self.FK_TLADM_ConsumablesOther_TLADM_ConsumableGroups">
+            <End Role="TLADM_ConsumableGroups" EntitySet="TLADM_ConsumableGroups" />
+            <End Role="TLADM_ConsumablesOther" EntitySet="TLADM_ConsumablesOther" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TLADM_ConsumablesOther_TLADM_Sizes" Association="Self.FK_TLADM_ConsumablesOther_TLADM_Sizes">
+            <End Role="TLADM_Sizes" EntitySet="TLADM_Sizes" />
+            <End Role="TLADM_ConsumablesOther" EntitySet="TLADM_ConsumablesOther" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TLADM_ConsumablesOther_TLADM_StoreTypes" Association="Self.FK_TLADM_ConsumablesOther_TLADM_StoreTypes">
+            <End Role="TLADM_StoreTypes" EntitySet="TLADM_StoreTypes" />
+            <End Role="TLADM_ConsumablesOther" EntitySet="TLADM_ConsumablesOther" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TLADM_ConsumablesOther_TLADM_UOM" Association="Self.FK_TLADM_ConsumablesOther_TLADM_UOM">
+            <End Role="TLADM_UOM" EntitySet="TLADM_UOM" />
+            <End Role="TLADM_ConsumablesOther" EntitySet="TLADM_ConsumablesOther" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TLADM_ConsumablesOther_TLADM_UOM1" Association="Self.FK_TLADM_ConsumablesOther_TLADM_UOM1">
+            <End Role="TLADM_UOM" EntitySet="TLADM_UOM" />
+            <End Role="TLADM_ConsumablesOther" EntitySet="TLADM_ConsumablesOther" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TLADM_CustomerFile_TLADM_CustomerTypes" Association="Self.FK_TLADM_CustomerFile_TLADM_CustomerTypes">
+            <End Role="TLADM_CustomerTypes" EntitySet="TLADM_CustomerTypes" />
+            <End Role="TLADM_CustomerFile" EntitySet="TLADM_CustomerFile" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TLADM_MachineOperators_TLADM_Departments" Association="Self.FK_TLADM_MachineOperators_TLADM_Departments">
+            <End Role="TLADM_Departments" EntitySet="TLADM_Departments" />
+            <End Role="TLADM_MachineOperators" EntitySet="TLADM_MachineOperators" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TLADM_WhseStore_TLADM_Departments" Association="Self.FK_TLADM_WhseStore_TLADM_Departments">
+            <End Role="TLADM_Departments" EntitySet="TLADM_Departments" />
+            <End Role="TLADM_WhseStore" EntitySet="TLADM_WhseStore" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TLADM_FabricType_TLADM_FabricProduct" Association="Self.FK_TLADM_FabricType_TLADM_FabricProduct">
+            <End Role="TLADM_FabricProduct" EntitySet="TLADM_FabricProduct" />
+            <End Role="TLADM_FabricType" EntitySet="TLADM_FabricType" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TLADM_Griege_TLADM_FabWidth" Association="Self.FK_TLADM_Griege_TLADM_FabWidth">
+            <End Role="TLADM_FabWidth" EntitySet="TLADM_FabWidth" />
+            <End Role="TLADM_Griege" EntitySet="TLADM_Griege" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TLADM_ProductRating_Detail_TLADM_FabWidth" Association="Self.FK_TLADM_ProductRating_Detail_TLADM_FabWidth">
+            <End Role="TLADM_FabWidth" EntitySet="TLADM_FabWidth" />
+            <End Role="TLADM_ProductRating_Detail" EntitySet="TLADM_ProductRating_Detail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TLADM_GarmentDef_TLADM_Labels" Association="Self.FK_TLADM_GarmentDef_TLADM_Labels">
+            <End Role="TLADM_Labels" EntitySet="TLADM_Labels" />
+            <End Role="TLADM_GarmentDef" EntitySet="TLADM_GarmentDef" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TLADM_ProductRating_TLADM_Labels" Association="Self.FK_TLADM_ProductRating_TLADM_Labels">
+            <End Role="TLADM_Labels" EntitySet="TLADM_Labels" />
+            <End Role="TLADM_ProductRating" EntitySet="TLADM_ProductRating" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TLADM_MachineDefinitions_TLADM_NonStockItems" Association="Self.FK_TLADM_MachineDefinitions_TLADM_NonStockItems">
+            <End Role="TLADM_NonStockItems" EntitySet="TLADM_NonStockItems" />
+            <End Role="TLADM_MachineDefinitions" EntitySet="TLADM_MachineDefinitions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TLADM_MachineDefinitions_TLADM_NonStockItems1" Association="Self.FK_TLADM_MachineDefinitions_TLADM_NonStockItems1">
+            <End Role="TLADM_NonStockItems" EntitySet="TLADM_NonStockItems" />
+            <End Role="TLADM_MachineDefinitions" EntitySet="TLADM_MachineDefinitions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TLADM_MachineDefinitions_TLADM_NonStockItems2" Association="Self.FK_TLADM_MachineDefinitions_TLADM_NonStockItems2">
+            <End Role="TLADM_NonStockItems" EntitySet="TLADM_NonStockItems" />
+            <End Role="TLADM_MachineDefinitions" EntitySet="TLADM_MachineDefinitions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TLADM_MachineDefinitions_TLADM_NonStockItems3" Association="Self.FK_TLADM_MachineDefinitions_TLADM_NonStockItems3">
+            <End Role="TLADM_NonStockItems" EntitySet="TLADM_NonStockItems" />
+            <End Role="TLADM_MachineDefinitions" EntitySet="TLADM_MachineDefinitions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TLADM_MachineDefinitions_TLADM_NonStockItems4" Association="Self.FK_TLADM_MachineDefinitions_TLADM_NonStockItems4">
+            <End Role="TLADM_NonStockItems" EntitySet="TLADM_NonStockItems" />
+            <End Role="TLADM_MachineDefinitions" EntitySet="TLADM_MachineDefinitions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TLADM_MachineDefinitions_TLADM_NonStockItems5" Association="Self.FK_TLADM_MachineDefinitions_TLADM_NonStockItems5">
+            <End Role="TLADM_NonStockItems" EntitySet="TLADM_NonStockItems" />
+            <End Role="TLADM_MachineDefinitions" EntitySet="TLADM_MachineDefinitions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TLADM_MachineDefinitions_TLADM_NonStockItems6" Association="Self.FK_TLADM_MachineDefinitions_TLADM_NonStockItems6">
+            <End Role="TLADM_NonStockItems" EntitySet="TLADM_NonStockItems" />
+            <End Role="TLADM_MachineDefinitions" EntitySet="TLADM_MachineDefinitions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TLADM_MachineDefinitions_TLADM_NonStockItems7" Association="Self.FK_TLADM_MachineDefinitions_TLADM_NonStockItems7">
+            <End Role="TLADM_NonStockItems" EntitySet="TLADM_NonStockItems" />
+            <End Role="TLADM_MachineDefinitions" EntitySet="TLADM_MachineDefinitions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TLADM_MachineDefinitions_TLADM_NonStockItems8" Association="Self.FK_TLADM_MachineDefinitions_TLADM_NonStockItems8">
+            <End Role="TLADM_NonStockItems" EntitySet="TLADM_NonStockItems" />
+            <End Role="TLADM_MachineDefinitions" EntitySet="TLADM_MachineDefinitions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TLADM_NonStockItems_TLADM_NonStockCat" Association="Self.FK_TLADM_NonStockItems_TLADM_NonStockCat">
+            <End Role="TLADM_NonStockCat" EntitySet="TLADM_NonStockCat" />
+            <End Role="TLADM_NonStockItems" EntitySet="TLADM_NonStockItems" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TLADM_NonStockItems_TLADM_StockTypes" Association="Self.FK_TLADM_NonStockItems_TLADM_StockTypes">
+            <End Role="TLADM_StockTypes" EntitySet="TLADM_StockTypes" />
+            <End Role="TLADM_NonStockItems" EntitySet="TLADM_NonStockItems" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TLADM_NonStockItems_TLADM_UOM" Association="Self.FK_TLADM_NonStockItems_TLADM_UOM">
+            <End Role="TLADM_UOM" EntitySet="TLADM_UOM" />
+            <End Role="TLADM_NonStockItems" EntitySet="TLADM_NonStockItems" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TLADM_ProductRating_TLADM_Styles" Association="Self.FK_TLADM_ProductRating_TLADM_Styles">
+            <End Role="TLADM_Styles" EntitySet="TLADM_Styles" />
+            <End Role="TLADM_ProductRating" EntitySet="TLADM_ProductRating" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TLADM_Suppliers_TLADM_ProductTypes" Association="Self.FK_TLADM_Suppliers_TLADM_ProductTypes">
+            <End Role="TLADM_ProductTypes" EntitySet="TLADM_ProductTypes" />
+            <End Role="TLADM_Suppliers" EntitySet="TLADM_Suppliers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TLADM_QualityDefinition_TLADM_RejectReasons1" Association="Self.FK_TLADM_QualityDefinition_TLADM_RejectReasons1">
+            <End Role="TLADM_RejectReasons" EntitySet="TLADM_RejectReasons" />
+            <End Role="TLADM_QualityDefinition" EntitySet="TLADM_QualityDefinition" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TLADM_WhseStore_TLADM_StoreTypes" Association="Self.FK_TLADM_WhseStore_TLADM_StoreTypes">
+            <End Role="TLADM_StoreTypes" EntitySet="TLADM_StoreTypes" />
+            <End Role="TLADM_WhseStore" EntitySet="TLADM_WhseStore" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="TTI2ModelStoreContainer" CdmEntityContainer="TTI2Entities1">
+          <EntitySetMapping Name="TLADM_AuxColours">
+            <EntityTypeMapping TypeName="TTI2Model.TLADM_AuxColours">
+              <MappingFragment StoreEntitySet="TLADM_AuxColours">
+                <ScalarProperty Name="AuxCol_Id" ColumnName="AuxCol_Id" />
+                <ScalarProperty Name="AuxCol_Description" ColumnName="AuxCol_Description" />
+                <ScalarProperty Name="AuxCol_PowerN" ColumnName="AuxCol_PowerN" />
+                <ScalarProperty Name="AuxCol_FinishedCode" ColumnName="AuxCol_FinishedCode" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TLADM_Colours">
+            <EntityTypeMapping TypeName="TTI2Model.TLADM_Colours">
+              <MappingFragment StoreEntitySet="TLADM_Colours">
+                <ScalarProperty Name="Col_Id" ColumnName="Col_Id" />
+                <ScalarProperty Name="Col_Description" ColumnName="Col_Description" />
+                <ScalarProperty Name="Col_PowerN" ColumnName="Col_PowerN" />
+                <ScalarProperty Name="Col_Discontinued" ColumnName="Col_Discontinued" />
+                <ScalarProperty Name="Col_Discontinued_Date" ColumnName="Col_Discontinued_Date" />
+                <ScalarProperty Name="Col_FinishedCode" ColumnName="Col_FinishedCode" />
+                <ScalarProperty Name="Col_HasAuxColors" ColumnName="Col_HasAuxColors" />
+                <ScalarProperty Name="Col_AuxPowerN" ColumnName="Col_AuxPowerN" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TLADM_ConsumableGroups">
+            <EntityTypeMapping TypeName="TTI2Model.TLADM_ConsumableGroups">
+              <MappingFragment StoreEntitySet="TLADM_ConsumableGroups">
+                <ScalarProperty Name="ConG_Pk" ColumnName="ConG_Pk" />
+                <ScalarProperty Name="ConG_ShortCode" ColumnName="ConG_ShortCode" />
+                <ScalarProperty Name="ConG_Description" ColumnName="ConG_Description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TLADM_ConsumablesDC">
+            <EntityTypeMapping TypeName="TTI2Model.TLADM_ConsumablesDC">
+              <MappingFragment StoreEntitySet="TLADM_ConsumablesDC">
+                <ScalarProperty Name="ConsDC_Pk" ColumnName="ConsDC_Pk" />
+                <ScalarProperty Name="ConsDC_Code" ColumnName="ConsDC_Code" />
+                <ScalarProperty Name="ConsDC_Description" ColumnName="ConsDC_Description" />
+                <ScalarProperty Name="ConsDC_UOM_Fk" ColumnName="ConsDC_UOM_Fk" />
+                <ScalarProperty Name="ConsDC_AUOM_FK" ColumnName="ConsDC_AUOM_FK" />
+                <ScalarProperty Name="ConsDC_ConsFactors" ColumnName="ConsDC_ConsFactors" />
+                <ScalarProperty Name="ConsDC_StockType_FK" ColumnName="ConsDC_StockType_FK" />
+                <ScalarProperty Name="ConsDC_Hazardous" ColumnName="ConsDC_Hazardous" />
+                <ScalarProperty Name="ConsDC_ShowQty" ColumnName="ConsDC_ShowQty" />
+                <ScalarProperty Name="ConsDC_ShowStdCost" ColumnName="ConsDC_ShowStdCost" />
+                <ScalarProperty Name="ConsDC_ReOrderLevel" ColumnName="ConsDC_ReOrderLevel" />
+                <ScalarProperty Name="ConsDC_Economic_ReOrderQty" ColumnName="ConsDC_Economic_ReOrderQty" />
+                <ScalarProperty Name="ConsDC_MinReorderQty" ColumnName="ConsDC_MinReorderQty" />
+                <ScalarProperty Name="ConsDC_DelLeadTime" ColumnName="ConsDC_DelLeadTime" />
+                <ScalarProperty Name="ConsDC_StockTake_FK" ColumnName="ConsDC_StockTake_FK" />
+                <ScalarProperty Name="ConsDC_StandardCost" ColumnName="ConsDC_StandardCost" />
+                <ScalarProperty Name="ConsDC_Units" ColumnName="ConsDC_Units" />
+                <ScalarProperty Name="ConsDC_PreferedSupplier_FK" ColumnName="ConsDC_PreferedSupplier_FK" />
+                <ScalarProperty Name="ConsDC_Consignment" ColumnName="ConsDC_Consignment" />
+                <ScalarProperty Name="ConsDC_Notes" ColumnName="ConsDC_Notes" />
+                <ScalarProperty Name="ConsDC_HazChem" ColumnName="ConsDC_HazChem" />
+                <ScalarProperty Name="ConsDC_SizeCode_FK" ColumnName="ConsDC_SizeCode_FK" />
+                <ScalarProperty Name="ConsDC_StoreCode_FK" ColumnName="ConsDC_StoreCode_FK" />
+                <ScalarProperty Name="ConsDC_ConsGroup_FK" ColumnName="ConsDC_ConsGroup_FK" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TLADM_ConsumablesOther">
+            <EntityTypeMapping TypeName="TTI2Model.TLADM_ConsumablesOther">
+              <MappingFragment StoreEntitySet="TLADM_ConsumablesOther">
+                <ScalarProperty Name="ConsOther_Pk" ColumnName="ConsOther_Pk" />
+                <ScalarProperty Name="ConsOther_Code" ColumnName="ConsOther_Code" />
+                <ScalarProperty Name="ConsOther_Description" ColumnName="ConsOther_Description" />
+                <ScalarProperty Name="ConsOther_UOM_FK" ColumnName="ConsOther_UOM_FK" />
+                <ScalarProperty Name="ConsOther_AUOM_FK" ColumnName="ConsOther_AUOM_FK" />
+                <ScalarProperty Name="ConsOther_ConvFactor" ColumnName="ConsOther_ConvFactor" />
+                <ScalarProperty Name="ConsOther_StockType_Fk" ColumnName="ConsOther_StockType_Fk" />
+                <ScalarProperty Name="ConsOther_Store_FK" ColumnName="ConsOther_Store_FK" />
+                <ScalarProperty Name="ConsOther_ShowQty" ColumnName="ConsOther_ShowQty" />
+                <ScalarProperty Name="ConsOther_Unit" ColumnName="ConsOther_Unit" />
+                <ScalarProperty Name="ConsOther_ShowStdCost" ColumnName="ConsOther_ShowStdCost" />
+                <ScalarProperty Name="ConsOther_StdCost" ColumnName="ConsOther_StdCost" />
+                <ScalarProperty Name="ConsOther_ReOrderLevel" ColumnName="ConsOther_ReOrderLevel" />
+                <ScalarProperty Name="ConsOther_EconomicReOrderQty" ColumnName="ConsOther_EconomicReOrderQty" />
+                <ScalarProperty Name="ConsOther_MinReOrderQty" ColumnName="ConsOther_MinReOrderQty" />
+                <ScalarProperty Name="ConsOther_DeliveryLeadTime" ColumnName="ConsOther_DeliveryLeadTime" />
+                <ScalarProperty Name="ConsOther_StockTakeFrequency_Fk" ColumnName="ConsOther_StockTakeFrequency_Fk" />
+                <ScalarProperty Name="ConsOther_ConsGroup_FK" ColumnName="ConsOther_ConsGroup_FK" />
+                <ScalarProperty Name="ConsOther_PreferredSupplier_FK" ColumnName="ConsOther_PreferredSupplier_FK" />
+                <ScalarProperty Name="ConsOther_SizeCode_FK" ColumnName="ConsOther_SizeCode_FK" />
+                <ScalarProperty Name="ConsOther_Notes" ColumnName="ConsOther_Notes" />
+                <ScalarProperty Name="ConsOther_Consignment" ColumnName="ConsOther_Consignment" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TLADM_Cotton">
+            <EntityTypeMapping TypeName="TTI2Model.TLADM_Cotton">
+              <MappingFragment StoreEntitySet="TLADM_Cotton">
+                <ScalarProperty Name="Cotton_Pk" ColumnName="Cotton_Pk" />
+                <ScalarProperty Name="Cotton_Code" ColumnName="Cotton_Code" />
+                <ScalarProperty Name="Cotton_Description" ColumnName="Cotton_Description" />
+                <ScalarProperty Name="Cotton_UOM_Fk" ColumnName="Cotton_UOM_Fk" />
+                <ScalarProperty Name="Cotton_StockType_FK" ColumnName="Cotton_StockType_FK" />
+                <ScalarProperty Name="Cotton_Store_FK" ColumnName="Cotton_Store_FK" />
+                <ScalarProperty Name="Cotton_Origin_FK" ColumnName="Cotton_Origin_FK" />
+                <ScalarProperty Name="Cotton_ShowQty" ColumnName="Cotton_ShowQty" />
+                <ScalarProperty Name="Cotton_ShowStdCost" ColumnName="Cotton_ShowStdCost" />
+                <ScalarProperty Name="Cotton_MicFrom" ColumnName="Cotton_MicFrom" />
+                <ScalarProperty Name="Cotton_MicTo" ColumnName="Cotton_MicTo" />
+                <ScalarProperty Name="Cotton_StapleFrom" ColumnName="Cotton_StapleFrom" />
+                <ScalarProperty Name="Cotton_StapleTo" ColumnName="Cotton_StapleTo" />
+                <ScalarProperty Name="Cotton_ROL" ColumnName="Cotton_ROL" />
+                <ScalarProperty Name="Cotton_ROQ" ColumnName="Cotton_ROQ" />
+                <ScalarProperty Name="Cotton_Contract" ColumnName="Cotton_Contract" />
+                <ScalarProperty Name="Cotton_Grade" ColumnName="Cotton_Grade" />
+                <ScalarProperty Name="Cotton_Notes" ColumnName="Cotton_Notes" />
+                <ScalarProperty Name="Cotton_StdCost" ColumnName="Cotton_StdCost" />
+                <ScalarProperty Name="Cotton_Units" ColumnName="Cotton_Units" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TLADM_CottonOrigin">
+            <EntityTypeMapping TypeName="TTI2Model.TLADM_CottonOrigin">
+              <MappingFragment StoreEntitySet="TLADM_CottonOrigin">
+                <ScalarProperty Name="CottonOrigin_Pk" ColumnName="CottonOrigin_Pk" />
+                <ScalarProperty Name="CottonOrigin_ShortCode" ColumnName="CottonOrigin_ShortCode" />
+                <ScalarProperty Name="CottonOrigin_Description" ColumnName="CottonOrigin_Description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TLADM_CustomerFile">
+            <EntityTypeMapping TypeName="TTI2Model.TLADM_CustomerFile">
+              <MappingFragment StoreEntitySet="TLADM_CustomerFile">
+                <ScalarProperty Name="Cust_Pk" ColumnName="Cust_Pk" />
+                <ScalarProperty Name="Cust_Code" ColumnName="Cust_Code" />
+                <ScalarProperty Name="Cust_Description" ColumnName="Cust_Description" />
+                <ScalarProperty Name="Cust_PostalAddress" ColumnName="Cust_PostalAddress" />
+                <ScalarProperty Name="Cust_Telephone" ColumnName="Cust_Telephone" />
+                <ScalarProperty Name="Cust_Fax" ColumnName="Cust_Fax" />
+                <ScalarProperty Name="Cust_ContactPerson" ColumnName="Cust_ContactPerson" />
+                <ScalarProperty Name="Cust_DeliveryAddress1" ColumnName="Cust_DeliveryAddress1" />
+                <ScalarProperty Name="Cust_DeliveryAddress2" ColumnName="Cust_DeliveryAddress2" />
+                <ScalarProperty Name="Cust_DeliveryAddress3" ColumnName="Cust_DeliveryAddress3" />
+                <ScalarProperty Name="Cust_DeliveryAddress4" ColumnName="Cust_DeliveryAddress4" />
+                <ScalarProperty Name="Cust_Blocked" ColumnName="Cust_Blocked" />
+                <ScalarProperty Name="Cust_CustomerCat_FK" ColumnName="Cust_CustomerCat_FK" />
+                <ScalarProperty Name="Cust_VatReferenced" ColumnName="Cust_VatReferenced" />
+                <ScalarProperty Name="Cust_EmailContact" ColumnName="Cust_EmailContact" />
+                <ScalarProperty Name="Cust_SendEmail" ColumnName="Cust_SendEmail" />
+                <ScalarProperty Name="Cust_Notes" ColumnName="Cust_Notes" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TLADM_CustomerTypes">
+            <EntityTypeMapping TypeName="TTI2Model.TLADM_CustomerTypes">
+              <MappingFragment StoreEntitySet="TLADM_CustomerTypes">
+                <ScalarProperty Name="CT_Id" ColumnName="CT_Id" />
+                <ScalarProperty Name="CT_ShortCode" ColumnName="CT_ShortCode" />
+                <ScalarProperty Name="CT_Description" ColumnName="CT_Description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TLADM_Departments">
+            <EntityTypeMapping TypeName="TTI2Model.TLADM_Departments">
+              <MappingFragment StoreEntitySet="TLADM_Departments">
+                <ScalarProperty Name="Dep_Id" ColumnName="Dep_Id" />
+                <ScalarProperty Name="Dep_ShortCode" ColumnName="Dep_ShortCode" />
+                <ScalarProperty Name="Dep_Description" ColumnName="Dep_Description" />
+                <ScalarProperty Name="Dep_PowerN" ColumnName="Dep_PowerN" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TLADM_FabricProduct">
+            <EntityTypeMapping TypeName="TTI2Model.TLADM_FabricProduct">
+              <MappingFragment StoreEntitySet="TLADM_FabricProduct">
+                <ScalarProperty Name="FP_Id" ColumnName="FP_Id" />
+                <ScalarProperty Name="FP_Description" ColumnName="FP_Description" />
+                <ScalarProperty Name="FP_PowerN" ColumnName="FP_PowerN" />
+                <ScalarProperty Name="FP_Discontinued" ColumnName="FP_Discontinued" />
+                <ScalarProperty Name="FP_Discontinued_Date" ColumnName="FP_Discontinued_Date" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TLADM_FabricType">
+            <EntityTypeMapping TypeName="TTI2Model.TLADM_FabricType">
+              <MappingFragment StoreEntitySet="TLADM_FabricType">
+                <ScalarProperty Name="FT_Id" ColumnName="FT_Id" />
+                <ScalarProperty Name="FT_Description" ColumnName="FT_Description" />
+                <ScalarProperty Name="FT_Product_FK" ColumnName="FT_Product_FK" />
+                <ScalarProperty Name="FT_PowerN" ColumnName="FT_PowerN" />
+                <ScalarProperty Name="FT_TotalPN_Weight" ColumnName="FT_TotalPN_Weight" />
+                <ScalarProperty Name="FT_TotalPN_Width" ColumnName="FT_TotalPN_Width" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TLADM_FabricWeight">
+            <EntityTypeMapping TypeName="TTI2Model.TLADM_FabricWeight">
+              <MappingFragment StoreEntitySet="TLADM_FabricWeight">
+                <ScalarProperty Name="FWW_Id" ColumnName="FWW_Id" />
+                <ScalarProperty Name="FWW_Description" ColumnName="FWW_Description" />
+                <ScalarProperty Name="FWW_PowerN" ColumnName="FWW_PowerN" />
+                <ScalarProperty Name="FWW_Discontinued" ColumnName="FWW_Discontinued" />
+                <ScalarProperty Name="FWW_Discontinued_Date" ColumnName="FWW_Discontinued_Date" />
+                <ScalarProperty Name="FWW_Calculation_Value" ColumnName="FWW_Calculation_Value" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TLADM_FabWidth">
+            <EntityTypeMapping TypeName="TTI2Model.TLADM_FabWidth">
+              <MappingFragment StoreEntitySet="TLADM_FabWidth">
+                <ScalarProperty Name="FW_Id" ColumnName="FW_Id" />
+                <ScalarProperty Name="FW_Description" ColumnName="FW_Description" />
+                <ScalarProperty Name="FW_PowerN" ColumnName="FW_PowerN" />
+                <ScalarProperty Name="FW_Discontinued" ColumnName="FW_Discontinued" />
+                <ScalarProperty Name="FW_Discontinued_Date" ColumnName="FW_Discontinued_Date" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TLADM_FinishedGoods">
+            <EntityTypeMapping TypeName="TTI2Model.TLADM_FinishedGoods">
+              <MappingFragment StoreEntitySet="TLADM_FinishedGoods">
+                <ScalarProperty Name="Fin_Pk" ColumnName="Fin_Pk" />
+                <ScalarProperty Name="Fin_Description" ColumnName="Fin_Description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TLADM_GarmentDef">
+            <EntityTypeMapping TypeName="TTI2Model.TLADM_GarmentDef">
+              <MappingFragment StoreEntitySet="TLADM_GarmentDef">
+                <ScalarProperty Name="GarDef_Id" ColumnName="GarDef_Id" />
+                <ScalarProperty Name="GarDef_Description" ColumnName="GarDef_Description" />
+                <ScalarProperty Name="GarDef_Alt_Description" ColumnName="GarDef_Alt_Description" />
+                <ScalarProperty Name="GarDef_Label_FK" ColumnName="GarDef_Label_FK" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TLADM_GarmentDefectCodes">
+            <EntityTypeMapping TypeName="TTI2Model.TLADM_GarmentDefectCodes">
+              <MappingFragment StoreEntitySet="TLADM_GarmentDefectCodes">
+                <ScalarProperty Name="Defect_Id" ColumnName="Defect_Id" />
+                <ScalarProperty Name="Defect_ShortCode" ColumnName="Defect_ShortCode" />
+                <ScalarProperty Name="Defect_Dept_Fk" ColumnName="Defect_Dept_Fk" />
+                <ScalarProperty Name="Defect_Desacription" ColumnName="Defect_Desacription" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TLADM_Griege">
+            <EntityTypeMapping TypeName="TTI2Model.TLADM_Griege">
+              <MappingFragment StoreEntitySet="TLADM_Griege">
+                <ScalarProperty Name="TLGreige_Id" ColumnName="TLGreige_Id" />
+                <ScalarProperty Name="TLGreige_Description" ColumnName="TLGreige_Description" />
+                <ScalarProperty Name="TLGreige_PowerN" ColumnName="TLGreige_PowerN" />
+                <ScalarProperty Name="TLGriege_FW_FK" ColumnName="TLGriege_FW_FK" />
+                <ScalarProperty Name="TLGreige_Discontinued" ColumnName="TLGreige_Discontinued" />
+                <ScalarProperty Name="TLGreige_Discontinued_Date" ColumnName="TLGreige_Discontinued_Date" />
+                <ScalarProperty Name="TLGreige_FinishedCode" ColumnName="TLGreige_FinishedCode" />
+                <ScalarProperty Name="TLGreige_FWPowerN" ColumnName="TLGreige_FWPowerN" />
+                <ScalarProperty Name="TLGriege_YarnPowerN" ColumnName="TLGriege_YarnPowerN" />
+                <ScalarProperty Name="TLGriege_FWTPowerN" ColumnName="TLGriege_FWTPowerN" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TLADM_Labels">
+            <EntityTypeMapping TypeName="TTI2Model.TLADM_Labels">
+              <MappingFragment StoreEntitySet="TLADM_Labels">
+                <ScalarProperty Name="Lbl_Id" ColumnName="Lbl_Id" />
+                <ScalarProperty Name="Lbl_Description" ColumnName="Lbl_Description" />
+                <ScalarProperty Name="Lbl_Discontinued" ColumnName="Lbl_Discontinued" />
+                <ScalarProperty Name="Lbl_Discontinued_Date" ColumnName="Lbl_Discontinued_Date" />
+                <ScalarProperty Name="Lbl_PowerN" ColumnName="Lbl_PowerN" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TLADM_MachineDefinitions">
+            <EntityTypeMapping TypeName="TTI2Model.TLADM_MachineDefinitions">
+              <MappingFragment StoreEntitySet="TLADM_MachineDefinitions">
+                <ScalarProperty Name="MD_Pk" ColumnName="MD_Pk" />
+                <ScalarProperty Name="MD_MachineCode" ColumnName="MD_MachineCode" />
+                <ScalarProperty Name="MD_Department_FK" ColumnName="MD_Department_FK" />
+                <ScalarProperty Name="MD_FabricType_FK" ColumnName="MD_FabricType_FK" />
+                <ScalarProperty Name="MD_MaxCapacity" ColumnName="MD_MaxCapacity" />
+                <ScalarProperty Name="MD_Description" ColumnName="MD_Description" />
+                <ScalarProperty Name="MD_Realistic" ColumnName="MD_Realistic" />
+                <ScalarProperty Name="MD_GLCostCentre" ColumnName="MD_GLCostCentre" />
+                <ScalarProperty Name="MD_AssetRegNo" ColumnName="MD_AssetRegNo" />
+                <ScalarProperty Name="MD_SerialNo" ColumnName="MD_SerialNo" />
+                <ScalarProperty Name="MD_FirstMeasure_FK" ColumnName="MD_FirstMeasure_FK" />
+                <ScalarProperty Name="MD_SecMeasure_FK" ColumnName="MD_SecMeasure_FK" />
+                <ScalarProperty Name="MD_ThirdMeasure_FK" ColumnName="MD_ThirdMeasure_FK" />
+                <ScalarProperty Name="MD_FourthMeasure_FK" ColumnName="MD_FourthMeasure_FK" />
+                <ScalarProperty Name="MD_FifthMeasure_FK" ColumnName="MD_FifthMeasure_FK" />
+                <ScalarProperty Name="MD_SixMeasure_FK" ColumnName="MD_SixMeasure_FK" />
+                <ScalarProperty Name="MD_SevenMeasure_FK" ColumnName="MD_SevenMeasure_FK" />
+                <ScalarProperty Name="MD_EightMeasure_FK" ColumnName="MD_EightMeasure_FK" />
+                <ScalarProperty Name="MD_FinishGoods_FK" ColumnName="MD_FinishGoods_FK" />
+                <ScalarProperty Name="MD_Operators_TotalPN" ColumnName="MD_Operators_TotalPN" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TLADM_MachineMaintenance">
+            <EntityTypeMapping TypeName="TTI2Model.TLADM_MachineMaintenance">
+              <MappingFragment StoreEntitySet="TLADM_MachineMaintenance">
+                <ScalarProperty Name="Maint_Pk" ColumnName="Maint_Pk" />
+                <ScalarProperty Name="Maint_ShortCode" ColumnName="Maint_ShortCode" />
+                <ScalarProperty Name="Maint_Description" ColumnName="Maint_Description" />
+                <ScalarProperty Name="Maint_PowerN" ColumnName="Maint_PowerN" />
+                <ScalarProperty Name="Maint_IntervalDownTime" ColumnName="Maint_IntervalDownTime" />
+                <ScalarProperty Name="Maint_DownTimePeriod" ColumnName="Maint_DownTimePeriod" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TLADM_MachineOperators">
+            <EntityTypeMapping TypeName="TTI2Model.TLADM_MachineOperators">
+              <MappingFragment StoreEntitySet="TLADM_MachineOperators">
+                <ScalarProperty Name="MachOp_Pk" ColumnName="MachOp_Pk" />
+                <ScalarProperty Name="MachOp_Code" ColumnName="MachOp_Code" />
+                <ScalarProperty Name="MachOp_Description" ColumnName="MachOp_Description" />
+                <ScalarProperty Name="MachOp_Department_FK" ColumnName="MachOp_Department_FK" />
+                <ScalarProperty Name="MachOp_Payroll_Code" ColumnName="MachOp_Payroll_Code" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TLADM_NonStockCat">
+            <EntityTypeMapping TypeName="TTI2Model.TLADM_NonStockCat">
+              <MappingFragment StoreEntitySet="TLADM_NonStockCat">
+                <ScalarProperty Name="NSC_Pk" ColumnName="NSC_Pk" />
+                <ScalarProperty Name="NSC_ShortCode" ColumnName="NSC_ShortCode" />
+                <ScalarProperty Name="NSC_Description" ColumnName="NSC_Description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TLADM_NonStockItems">
+            <EntityTypeMapping TypeName="TTI2Model.TLADM_NonStockItems">
+              <MappingFragment StoreEntitySet="TLADM_NonStockItems">
+                <ScalarProperty Name="NSI_Pk" ColumnName="NSI_Pk" />
+                <ScalarProperty Name="NSI_Code" ColumnName="NSI_Code" />
+                <ScalarProperty Name="NSI_Description" ColumnName="NSI_Description" />
+                <ScalarProperty Name="NSI_UOM_FK" ColumnName="NSI_UOM_FK" />
+                <ScalarProperty Name="NSI_StockType_FK" ColumnName="NSI_StockType_FK" />
+                <ScalarProperty Name="NSI_Department_PWN" ColumnName="NSI_Department_PWN" />
+                <ScalarProperty Name="NSI_Category_FK" ColumnName="NSI_Category_FK" />
+                <ScalarProperty Name="NSI_ShowUnitCost" ColumnName="NSI_ShowUnitCost" />
+                <ScalarProperty Name="NSI_UnitCost" ColumnName="NSI_UnitCost" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TLADM_ProductRating">
+            <EntityTypeMapping TypeName="TTI2Model.TLADM_ProductRating">
+              <MappingFragment StoreEntitySet="TLADM_ProductRating">
+                <ScalarProperty Name="Pr_Id" ColumnName="Pr_Id" />
+                <ScalarProperty Name="Pr_Label_FK" ColumnName="Pr_Label_FK" />
+                <ScalarProperty Name="Pr_Style_FK" ColumnName="Pr_Style_FK" />
+                <ScalarProperty Name="Pr_Size_Power" ColumnName="Pr_Size_Power" />
+                <ScalarProperty Name="Pr_BodyorRibbing" ColumnName="Pr_BodyorRibbing" />
+                <ScalarProperty Name="Pr_PowerN" ColumnName="Pr_PowerN" />
+                <ScalarProperty Name="Pr_Ratio" ColumnName="Pr_Ratio" />
+                <ScalarProperty Name="Pr_Marker_Length" ColumnName="Pr_Marker_Length" />
+                <ScalarProperty Name="Pr_numeric_Rating" ColumnName="Pr_numeric_Rating" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TLADM_ProductRating_Detail">
+            <EntityTypeMapping TypeName="TTI2Model.TLADM_ProductRating_Detail">
+              <MappingFragment StoreEntitySet="TLADM_ProductRating_Detail">
+                <ScalarProperty Name="prd_Id" ColumnName="prd_Id" />
+                <ScalarProperty Name="prd_Parent_FK" ColumnName="prd_Parent_FK" />
+                <ScalarProperty Name="Prd_Weight" ColumnName="Prd_Weight" />
+                <ScalarProperty Name="Prd_Width" ColumnName="Prd_Width" />
+                <ScalarProperty Name="Prd_Yield" ColumnName="Prd_Yield" />
+                <ScalarProperty Name="Prd_PiecesKg" ColumnName="Prd_PiecesKg" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TLADM_ProductTypes">
+            <EntityTypeMapping TypeName="TTI2Model.TLADM_ProductTypes">
+              <MappingFragment StoreEntitySet="TLADM_ProductTypes">
+                <ScalarProperty Name="PT_pk" ColumnName="PT_pk" />
+                <ScalarProperty Name="PT_ShortCode" ColumnName="PT_ShortCode" />
+                <ScalarProperty Name="PT_Description" ColumnName="PT_Description" />
+                <ScalarProperty Name="PT_UOMFk" ColumnName="PT_UOMFk" />
+                <ScalarProperty Name="PT_StdCost" ColumnName="PT_StdCost" />
+                <ScalarProperty Name="PT_Hazardous" ColumnName="PT_Hazardous" />
+                <ScalarProperty Name="PT_StdCostValue" ColumnName="PT_StdCostValue" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TLADM_QualityDefinition">
+            <EntityTypeMapping TypeName="TTI2Model.TLADM_QualityDefinition">
+              <MappingFragment StoreEntitySet="TLADM_QualityDefinition">
+                <ScalarProperty Name="QD_Pk" ColumnName="QD_Pk" />
+                <ScalarProperty Name="QD_ShortCode" ColumnName="QD_ShortCode" />
+                <ScalarProperty Name="QD_Description" ColumnName="QD_Description" />
+                <ScalarProperty Name="QD_RejectReasonFK" ColumnName="QD_RejectReasonFK" />
+                <ScalarProperty Name="QD_ReportingDept_FK" ColumnName="QD_ReportingDept_FK" />
+                <ScalarProperty Name="QD_OriginatingDept_FK" ColumnName="QD_OriginatingDept_FK" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TLADM_RejectReasons">
+            <EntityTypeMapping TypeName="TTI2Model.TLADM_RejectReasons">
+              <MappingFragment StoreEntitySet="TLADM_RejectReasons">
+                <ScalarProperty Name="RJR_Pk" ColumnName="RJR_Pk" />
+                <ScalarProperty Name="RJR_Description" ColumnName="RJR_Description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TLADM_Ribbing">
+            <EntityTypeMapping TypeName="TTI2Model.TLADM_Ribbing">
+              <MappingFragment StoreEntitySet="TLADM_Ribbing">
+                <ScalarProperty Name="RI_Id" ColumnName="RI_Id" />
+                <ScalarProperty Name="RI_Description" ColumnName="RI_Description" />
+                <ScalarProperty Name="RI_PowerN" ColumnName="RI_PowerN" />
+                <ScalarProperty Name="RI_Discontinued" ColumnName="RI_Discontinued" />
+                <ScalarProperty Name="RI_Discontinued_Date" ColumnName="RI_Discontinued_Date" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TLADM_Sizes">
+            <EntityTypeMapping TypeName="TTI2Model.TLADM_Sizes">
+              <MappingFragment StoreEntitySet="TLADM_Sizes">
+                <ScalarProperty Name="SI_id" ColumnName="SI_id" />
+                <ScalarProperty Name="SI_Description" ColumnName="SI_Description" />
+                <ScalarProperty Name="SI_PowerN" ColumnName="SI_PowerN" />
+                <ScalarProperty Name="SI_Discontinued" ColumnName="SI_Discontinued" />
+                <ScalarProperty Name="SI_Discontinued_Date" ColumnName="SI_Discontinued_Date" />
+                <ScalarProperty Name="SI_FinishedCode" ColumnName="SI_FinishedCode" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TLADM_StockTakeFreq">
+            <EntityTypeMapping TypeName="TTI2Model.TLADM_StockTakeFreq">
+              <MappingFragment StoreEntitySet="TLADM_StockTakeFreq">
+                <ScalarProperty Name="STF_Pk" ColumnName="STF_Pk" />
+                <ScalarProperty Name="STF_ShortCode" ColumnName="STF_ShortCode" />
+                <ScalarProperty Name="STF_Description" ColumnName="STF_Description" />
+                <ScalarProperty Name="STF_Period_Weeks" ColumnName="STF_Period_Weeks" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TLADM_StockTypes">
+            <EntityTypeMapping TypeName="TTI2Model.TLADM_StockTypes">
+              <MappingFragment StoreEntitySet="TLADM_StockTypes">
+                <ScalarProperty Name="ST_Id" ColumnName="ST_Id" />
+                <ScalarProperty Name="ST_ShortCode" ColumnName="ST_ShortCode" />
+                <ScalarProperty Name="ST_Description" ColumnName="ST_Description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TLADM_StoreTypes">
+            <EntityTypeMapping TypeName="TTI2Model.TLADM_StoreTypes">
+              <MappingFragment StoreEntitySet="TLADM_StoreTypes">
+                <ScalarProperty Name="StoreT_Id" ColumnName="StoreT_Id" />
+                <ScalarProperty Name="StoreT_ShortCode" ColumnName="StoreT_ShortCode" />
+                <ScalarProperty Name="StoreT_Description" ColumnName="StoreT_Description" />
+                <ScalarProperty Name="StoreT_UOMFK" ColumnName="StoreT_UOMFK" />
+                <ScalarProperty Name="StoreT_ProdTypeFK" ColumnName="StoreT_ProdTypeFK" />
+                <ScalarProperty Name="StoreT_Hazardous" ColumnName="StoreT_Hazardous" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TLADM_Styles">
+            <EntityTypeMapping TypeName="TTI2Model.TLADM_Styles">
+              <MappingFragment StoreEntitySet="TLADM_Styles">
+                <ScalarProperty Name="Sty_Id" ColumnName="Sty_Id" />
+                <ScalarProperty Name="Sty_Description" ColumnName="Sty_Description" />
+                <ScalarProperty Name="Sty_PowerN" ColumnName="Sty_PowerN" />
+                <ScalarProperty Name="Sty_Discontinued" ColumnName="Sty_Discontinued" />
+                <ScalarProperty Name="Sty_Discontinued_Date" ColumnName="Sty_Discontinued_Date" />
+                <ScalarProperty Name="Sty_Label_FK" ColumnName="Sty_Label_FK" />
+                <ScalarProperty Name="Sty_Size_PowerN" ColumnName="Sty_Size_PowerN" />
+                <ScalarProperty Name="Sty_Colour_PowerN" ColumnName="Sty_Colour_PowerN" />
+                <ScalarProperty Name="Sty_Ribbing_PowerN" ColumnName="Sty_Ribbing_PowerN" />
+                <ScalarProperty Name="Sty_Trims_PowerN" ColumnName="Sty_Trims_PowerN" />
+                <ScalarProperty Name="Sty_Fabric_PowerN" ColumnName="Sty_Fabric_PowerN" />
+                <ScalarProperty Name="Sty_FabricWeight_PowerN" ColumnName="Sty_FabricWeight_PowerN" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TLADM_Suppliers">
+            <EntityTypeMapping TypeName="TTI2Model.TLADM_Suppliers">
+              <MappingFragment StoreEntitySet="TLADM_Suppliers">
+                <ScalarProperty Name="Sup_Pk" ColumnName="Sup_Pk" />
+                <ScalarProperty Name="Sup_Code" ColumnName="Sup_Code" />
+                <ScalarProperty Name="Sup_Description" ColumnName="Sup_Description" />
+                <ScalarProperty Name="Sup_StdPayMentTerms" ColumnName="Sup_StdPayMentTerms" />
+                <ScalarProperty Name="Sup_DiscountStructure" ColumnName="Sup_DiscountStructure" />
+                <ScalarProperty Name="Sup_PostalAddress" ColumnName="Sup_PostalAddress" />
+                <ScalarProperty Name="Sup_Telephone" ColumnName="Sup_Telephone" />
+                <ScalarProperty Name="Sup_ContactPerson" ColumnName="Sup_ContactPerson" />
+                <ScalarProperty Name="Suip_ShippingAddress1" ColumnName="Suip_ShippingAddress1" />
+                <ScalarProperty Name="Sup_ShippingAddress2" ColumnName="Sup_ShippingAddress2" />
+                <ScalarProperty Name="Sup_ShippingAddress3" ColumnName="Sup_ShippingAddress3" />
+                <ScalarProperty Name="Sup_ShippingAddress4" ColumnName="Sup_ShippingAddress4" />
+                <ScalarProperty Name="Sup_Blocked" ColumnName="Sup_Blocked" />
+                <ScalarProperty Name="Sup_ProductTypes_FK" ColumnName="Sup_ProductTypes_FK" />
+                <ScalarProperty Name="Sup_AllowsConsignment" ColumnName="Sup_AllowsConsignment" />
+                <ScalarProperty Name="Sup_VatReference" ColumnName="Sup_VatReference" />
+                <ScalarProperty Name="Sup_EMailContact" ColumnName="Sup_EMailContact" />
+                <ScalarProperty Name="Sup_AllowsEMail" ColumnName="Sup_AllowsEMail" />
+                <ScalarProperty Name="Sup_Notes" ColumnName="Sup_Notes" />
+                <ScalarProperty Name="Sup_Fax" ColumnName="Sup_Fax" />
+                <ScalarProperty Name="Sup_ProductGroups_FK" ColumnName="Sup_ProductGroups_FK" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TLADM_Trims">
+            <EntityTypeMapping TypeName="TTI2Model.TLADM_Trims">
+              <MappingFragment StoreEntitySet="TLADM_Trims">
+                <ScalarProperty Name="TR_Id" ColumnName="TR_Id" />
+                <ScalarProperty Name="TR_Description" ColumnName="TR_Description" />
+                <ScalarProperty Name="TR_powerN" ColumnName="TR_powerN" />
+                <ScalarProperty Name="TR_Discontinued" ColumnName="TR_Discontinued" />
+                <ScalarProperty Name="TR_Discontinued_Date" ColumnName="TR_Discontinued_Date" />
+                <ScalarProperty Name="TR_Rating" ColumnName="TR_Rating" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TLADM_UOM">
+            <EntityTypeMapping TypeName="TTI2Model.TLADM_UOM">
+              <MappingFragment StoreEntitySet="TLADM_UOM">
+                <ScalarProperty Name="UOM_Pk" ColumnName="UOM_Pk" />
+                <ScalarProperty Name="UOM_ShortCode" ColumnName="UOM_ShortCode" />
+                <ScalarProperty Name="UOM_Description" ColumnName="UOM_Description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TLADM_WhseStore">
+            <EntityTypeMapping TypeName="TTI2Model.TLADM_WhseStore">
+              <MappingFragment StoreEntitySet="TLADM_WhseStore">
+                <ScalarProperty Name="WhStore_Id" ColumnName="WhStore_Id" />
+                <ScalarProperty Name="WhStore_Code" ColumnName="WhStore_Code" />
+                <ScalarProperty Name="WhStore_Description" ColumnName="WhStore_Description" />
+                <ScalarProperty Name="WhStore_DepartmentFK" ColumnName="WhStore_DepartmentFK" />
+                <ScalarProperty Name="WhStore_TypeFK" ColumnName="WhStore_TypeFK" />
+                <ScalarProperty Name="WhStore_Address1" ColumnName="WhStore_Address1" />
+                <ScalarProperty Name="WhStore_Address2" ColumnName="WhStore_Address2" />
+                <ScalarProperty Name="WhStore_Address3" ColumnName="WhStore_Address3" />
+                <ScalarProperty Name="WhStore_Address4" ColumnName="WhStore_Address4" />
+                <ScalarProperty Name="WhStore_Address5" ColumnName="WhStore_Address5" />
+                <ScalarProperty Name="WhStore_Contact" ColumnName="WhStore_Contact" />
+                <ScalarProperty Name="WhStore_Telephone" ColumnName="WhStore_Telephone" />
+                <ScalarProperty Name="WhStore_Email" ColumnName="WhStore_Email" />
+                <ScalarProperty Name="WhStore_Notes" ColumnName="WhStore_Notes" />
+                <ScalarProperty Name="WhStore_WhseOrStore" ColumnName="WhStore_WhseOrStore" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TLADM_Yarn">
+            <EntityTypeMapping TypeName="TTI2Model.TLADM_Yarn">
+              <MappingFragment StoreEntitySet="TLADM_Yarn">
+                <ScalarProperty Name="YA_Id" ColumnName="YA_Id" />
+                <ScalarProperty Name="YA_Description" ColumnName="YA_Description" />
+                <ScalarProperty Name="YA_PowerN" ColumnName="YA_PowerN" />
+                <ScalarProperty Name="YA_Discontinued" ColumnName="YA_Discontinued" />
+                <ScalarProperty Name="YA_Discontnued_Date" ColumnName="YA_Discontnued_Date" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TLCMT_ProductDefects">
+            <EntityTypeMapping TypeName="TTI2Model.TLCMT_ProductDefects">
+              <MappingFragment StoreEntitySet="TLCMT_ProductDefects">
+                <ScalarProperty Name="PD_Id" ColumnName="PD_Id" />
+                <ScalarProperty Name="PD_Description" ColumnName="PD_Description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

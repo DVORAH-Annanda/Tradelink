@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="DataSet14" targetNamespace="http://tempuri.org/DataSet14.xsd" xmlns:mstns="http://tempuri.org/DataSet14.xsd" xmlns="http://tempuri.org/DataSet14.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections />
+        <Tables />
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="DataSet14" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="DataSet14" msprop:Generator_UserDSName="DataSet14">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="DataTable1" msprop:Generator_TableClassName="DataTable1DataTable" msprop:Generator_TableVarName="tableDataTable1" msprop:Generator_RowChangedName="DataTable1RowChanged" msprop:Generator_TablePropName="DataTable1" msprop:Generator_RowDeletingName="DataTable1RowDeleting" msprop:Generator_RowChangingName="DataTable1RowChanging" msprop:Generator_RowEvHandlerName="DataTable1RowChangeEventHandler" msprop:Generator_RowDeletedName="DataTable1RowDeleted" msprop:Generator_RowClassName="DataTable1Row" msprop:Generator_UserTableName="DataTable1" msprop:Generator_RowEvArgName="DataTable1RowChangeEvent">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="CutSheet" msprop:Generator_ColumnVarNameInTable="columnCutSheet" msprop:Generator_ColumnPropNameInRow="CutSheet" msprop:Generator_ColumnPropNameInTable="CutSheetColumn" msprop:Generator_UserColumnName="CutSheet" type="xs:string" minOccurs="0" />
+              <xs:element name="DeliveryNumber" msprop:Generator_ColumnVarNameInTable="columnDeliveryNumber" msprop:Generator_ColumnPropNameInRow="DeliveryNumber" msprop:Generator_ColumnPropNameInTable="DeliveryNumberColumn" msprop:Generator_UserColumnName="DeliveryNumber" type="xs:int" minOccurs="0" />
+              <xs:element name="TransDate" msprop:Generator_ColumnVarNameInTable="columnTransDate" msprop:Generator_ColumnPropNameInRow="TransDate" msprop:Generator_ColumnPropNameInTable="TransDateColumn" msprop:Generator_UserColumnName="TransDate" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="OriginatingDept" msprop:Generator_ColumnVarNameInTable="columnOriginatingDept" msprop:Generator_ColumnPropNameInRow="OriginatingDept" msprop:Generator_ColumnPropNameInTable="OriginatingDeptColumn" msprop:Generator_UserColumnName="OriginatingDept" type="xs:string" minOccurs="0" />
+              <xs:element name="FromWhse" msprop:Generator_ColumnVarNameInTable="columnFromWhse" msprop:Generator_ColumnPropNameInRow="FromWhse" msprop:Generator_ColumnPropNameInTable="FromWhseColumn" msprop:Generator_UserColumnName="FromWhse" type="xs:string" minOccurs="0" />
+              <xs:element name="ToWhse" msprop:Generator_ColumnVarNameInTable="columnToWhse" msprop:Generator_ColumnPropNameInRow="ToWhse" msprop:Generator_ColumnPropNameInTable="ToWhseColumn" msprop:Generator_UserColumnName="ToWhse" type="xs:string" minOccurs="0" />
+              <xs:element name="AdultBoxes" msprop:Generator_ColumnVarNameInTable="columnAdultBoxes" msprop:Generator_ColumnPropNameInRow="AdultBoxes" msprop:Generator_ColumnPropNameInTable="AdultBoxesColumn" msprop:Generator_UserColumnName="AdultBoxes" type="xs:int" minOccurs="0" />
+              <xs:element name="KidsBoxes" msprop:Generator_ColumnVarNameInTable="columnKidsBoxes" msprop:Generator_ColumnPropNameInRow="KidsBoxes" msprop:Generator_ColumnPropNameInTable="KidsBoxesColumn" msprop:Generator_UserColumnName="KidsBoxes" type="xs:int" minOccurs="0" />
+              <xs:element name="ErrorLog" msprop:Generator_ColumnVarNameInTable="columnErrorLog" msprop:Generator_ColumnPropNameInRow="ErrorLog" msprop:Generator_ColumnPropNameInTable="ErrorLogColumn" msprop:Generator_UserColumnName="ErrorLog" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

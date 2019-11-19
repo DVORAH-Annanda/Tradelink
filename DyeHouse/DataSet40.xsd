@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="DataSet40" targetNamespace="http://tempuri.org/DataSet40.xsd" xmlns:mstns="http://tempuri.org/DataSet40.xsd" xmlns="http://tempuri.org/DataSet40.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections />
+        <Tables />
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="DataSet40" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="DataSet40" msprop:Generator_UserDSName="DataSet40">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="DataTable1" msprop:Generator_TableClassName="DataTable1DataTable" msprop:Generator_TableVarName="tableDataTable1" msprop:Generator_TablePropName="DataTable1" msprop:Generator_RowDeletingName="DataTable1RowDeleting" msprop:Generator_RowChangingName="DataTable1RowChanging" msprop:Generator_RowEvHandlerName="DataTable1RowChangeEventHandler" msprop:Generator_RowDeletedName="DataTable1RowDeleted" msprop:Generator_UserTableName="DataTable1" msprop:Generator_RowChangedName="DataTable1RowChanged" msprop:Generator_RowEvArgName="DataTable1RowChangeEvent" msprop:Generator_RowClassName="DataTable1Row">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="DyeBatchNo" msprop:Generator_ColumnVarNameInTable="columnDyeBatchNo" msprop:Generator_ColumnPropNameInRow="DyeBatchNo" msprop:Generator_ColumnPropNameInTable="DyeBatchNoColumn" msprop:Generator_UserColumnName="DyeBatchNo" type="xs:string" minOccurs="0" />
+              <xs:element name="DyeBatchDate" msprop:Generator_ColumnVarNameInTable="columnDyeBatchDate" msprop:Generator_ColumnPropNameInRow="DyeBatchDate" msprop:Generator_ColumnPropNameInTable="DyeBatchDateColumn" msprop:Generator_UserColumnName="DyeBatchDate" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="DyeBatchReqDate" msprop:Generator_ColumnVarNameInTable="columnDyeBatchReqDate" msprop:Generator_ColumnPropNameInRow="DyeBatchReqDate" msprop:Generator_ColumnPropNameInTable="DyeBatchReqDateColumn" msprop:Generator_UserColumnName="DyeBatchReqDate" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="DyeBatchWeight" msprop:Generator_ColumnVarNameInTable="columnDyeBatchWeight" msprop:Generator_ColumnPropNameInRow="DyeBatchWeight" msprop:Generator_ColumnPropNameInTable="DyeBatchWeightColumn" msprop:Generator_UserColumnName="DyeBatchWeight" type="xs:decimal" minOccurs="0" />
+              <xs:element name="DyeBatchClosed" msprop:Generator_ColumnVarNameInTable="columnDyeBatchClosed" msprop:Generator_ColumnPropNameInRow="DyeBatchClosed" msprop:Generator_ColumnPropNameInTable="DyeBatchClosedColumn" msprop:Generator_UserColumnName="DyeBatchClosed" type="xs:boolean" minOccurs="0" />
+              <xs:element name="DyeBatchTransfer" msprop:Generator_ColumnVarNameInTable="columnDyeBatchTransfer" msprop:Generator_ColumnPropNameInRow="DyeBatchTransfer" msprop:Generator_ColumnPropNameInTable="DyeBatchTransferColumn" msprop:Generator_UserColumnName="DyeBatchTransfer" type="xs:boolean" minOccurs="0" />
+              <xs:element name="DyeBatchAllocated" msprop:Generator_ColumnVarNameInTable="columnDyeBatchAllocated" msprop:Generator_ColumnPropNameInRow="DyeBatchAllocated" msprop:Generator_ColumnPropNameInTable="DyeBatchAllocatedColumn" msprop:Generator_UserColumnName="DyeBatchAllocated" type="xs:boolean" minOccurs="0" />
+              <xs:element name="DyeBatchStage1" msprop:Generator_ColumnVarNameInTable="columnDyeBatchStage1" msprop:Generator_ColumnPropNameInRow="DyeBatchStage1" msprop:Generator_ColumnPropNameInTable="DyeBatchStage1Column" msprop:Generator_UserColumnName="DyeBatchStage1" type="xs:boolean" minOccurs="0" />
+              <xs:element name="DyeBatchStage2" msprop:Generator_ColumnVarNameInTable="columnDyeBatchStage2" msprop:Generator_ColumnPropNameInRow="DyeBatchStage2" msprop:Generator_ColumnPropNameInTable="DyeBatchStage2Column" msprop:Generator_UserColumnName="DyeBatchStage2" type="xs:boolean" minOccurs="0" />
+              <xs:element name="DyeBatchStage3" msprop:Generator_ColumnVarNameInTable="columnDyeBatchStage3" msprop:Generator_ColumnPropNameInRow="DyeBatchStage3" msprop:Generator_ColumnPropNameInTable="DyeBatchStage3Column" msprop:Generator_UserColumnName="DyeBatchStage3" type="xs:boolean" minOccurs="0" />
+              <xs:element name="DyeBatchOutofProcess" msprop:Generator_ColumnVarNameInTable="columnDyeBatchOutofProcess" msprop:Generator_ColumnPropNameInRow="DyeBatchOutofProcess" msprop:Generator_ColumnPropNameInTable="DyeBatchOutofProcessColumn" msprop:Generator_UserColumnName="DyeBatchOutofProcess" type="xs:boolean" minOccurs="0" />
+              <xs:element name="DyeBatchQuality" msprop:Generator_ColumnVarNameInTable="columnDyeBatchQuality" msprop:Generator_ColumnPropNameInRow="DyeBatchQuality" msprop:Generator_ColumnPropNameInTable="DyeBatchQualityColumn" msprop:Generator_UserColumnName="DyeBatchQuality" type="xs:string" minOccurs="0" />
+              <xs:element name="DyeBatchColour" msprop:Generator_ColumnVarNameInTable="columnDyeBatchColour" msprop:Generator_ColumnPropNameInRow="DyeBatchColour" msprop:Generator_ColumnPropNameInTable="DyeBatchColourColumn" msprop:Generator_UserColumnName="DyeBatchColour" type="xs:string" minOccurs="0" />
+              <xs:element name="DyeBatchFabricStore" msprop:Generator_ColumnVarNameInTable="columnDyeBatchFabricStore" msprop:Generator_ColumnPropNameInRow="DyeBatchFabricStore" msprop:Generator_ColumnPropNameInTable="DyeBatchFabricStoreColumn" msprop:Generator_UserColumnName="DyeBatchFabricStore" type="xs:string" minOccurs="0" />
+              <xs:element name="DyeBatchSizes" msprop:Generator_ColumnVarNameInTable="columnDyeBatchSizes" msprop:Generator_ColumnPropNameInRow="DyeBatchSizes" msprop:Generator_ColumnPropNameInTable="DyeBatchSizesColumn" msprop:Generator_UserColumnName="DyeBatchSizes" type="xs:string" minOccurs="0" />
+              <xs:element name="DyeBatchStyles" msprop:Generator_ColumnVarNameInTable="columnDyeBatchStyles" msprop:Generator_ColumnPropNameInRow="DyeBatchStyles" msprop:Generator_ColumnPropNameInTable="DyeBatchStylesColumn" msprop:Generator_UserColumnName="DyeBatchStyles" type="xs:string" minOccurs="0" />
+              <xs:element name="DyeBatchUnits" msprop:Generator_ColumnVarNameInTable="columnDyeBatchUnits" msprop:Generator_ColumnPropNameInRow="DyeBatchUnits" msprop:Generator_ColumnPropNameInTable="DyeBatchUnitsColumn" msprop:Generator_UserColumnName="DyeBatchUnits" type="xs:int" minOccurs="0" />
+              <xs:element name="Col1" msprop:Generator_ColumnVarNameInTable="columnCol1" msprop:Generator_ColumnPropNameInRow="Col1" msprop:Generator_ColumnPropNameInTable="Col1Column" msprop:Generator_UserColumnName="Col1" type="xs:int" minOccurs="0" />
+              <xs:element name="Col2" msprop:Generator_ColumnVarNameInTable="columnCol2" msprop:Generator_ColumnPropNameInRow="Col2" msprop:Generator_ColumnPropNameInTable="Col2Column" msprop:Generator_UserColumnName="Col2" type="xs:int" minOccurs="0" />
+              <xs:element name="Col3" msprop:Generator_ColumnVarNameInTable="columnCol3" msprop:Generator_ColumnPropNameInRow="Col3" msprop:Generator_ColumnPropNameInTable="Col3Column" msprop:Generator_UserColumnName="Col3" type="xs:int" minOccurs="0" />
+              <xs:element name="Col4" msprop:Generator_ColumnVarNameInTable="columnCol4" msprop:Generator_ColumnPropNameInRow="Col4" msprop:Generator_ColumnPropNameInTable="Col4Column" msprop:Generator_UserColumnName="Col4" type="xs:int" minOccurs="0" />
+              <xs:element name="Col5" msprop:Generator_ColumnVarNameInTable="columnCol5" msprop:Generator_ColumnPropNameInRow="Col5" msprop:Generator_ColumnPropNameInTable="Col5Column" msprop:Generator_UserColumnName="Col5" type="xs:int" minOccurs="0" />
+              <xs:element name="Col6" msprop:Generator_ColumnVarNameInTable="columnCol6" msprop:Generator_ColumnPropNameInRow="Col6" msprop:Generator_ColumnPropNameInTable="Col6Column" msprop:Generator_UserColumnName="Col6" type="xs:int" minOccurs="0" />
+              <xs:element name="Col7" msprop:Generator_ColumnVarNameInTable="columnCol7" msprop:Generator_ColumnPropNameInRow="Col7" msprop:Generator_ColumnPropNameInTable="Col7Column" msprop:Generator_UserColumnName="Col7" type="xs:int" minOccurs="0" />
+              <xs:element name="Col8" msprop:Generator_ColumnVarNameInTable="columnCol8" msprop:Generator_ColumnPropNameInRow="Col8" msprop:Generator_ColumnPropNameInTable="Col8Column" msprop:Generator_UserColumnName="Col8" type="xs:int" minOccurs="0" />
+              <xs:element name="Col9" msprop:Generator_ColumnVarNameInTable="columnCol9" msprop:Generator_ColumnPropNameInRow="Col9" msprop:Generator_ColumnPropNameInTable="Col9Column" msprop:Generator_UserColumnName="Col9" type="xs:int" minOccurs="0" />
+              <xs:element name="Col10" msprop:Generator_ColumnVarNameInTable="columnCol10" msprop:Generator_ColumnPropNameInRow="Col10" msprop:Generator_ColumnPropNameInTable="Col10Column" msprop:Generator_UserColumnName="Col10" type="xs:int" minOccurs="0" />
+              <xs:element name="Col11" msprop:Generator_ColumnVarNameInTable="columnCol11" msprop:Generator_ColumnPropNameInRow="Col11" msprop:Generator_ColumnPropNameInTable="Col11Column" msprop:Generator_UserColumnName="Col11" type="xs:int" minOccurs="0" />
+              <xs:element name="Col12" msprop:Generator_ColumnVarNameInTable="columnCol12" msprop:Generator_ColumnPropNameInRow="Col12" msprop:Generator_ColumnPropNameInTable="Col12Column" msprop:Generator_UserColumnName="Col12" type="xs:int" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

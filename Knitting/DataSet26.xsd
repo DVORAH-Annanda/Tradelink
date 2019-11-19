@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="DataSet26" targetNamespace="http://tempuri.org/DataSet26.xsd" xmlns:mstns="http://tempuri.org/DataSet26.xsd" xmlns="http://tempuri.org/DataSet26.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections />
+        <Tables />
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="DataSet26" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="DataSet26" msprop:Generator_UserDSName="DataSet26">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="DataTable1" msprop:Generator_TableClassName="DataTable1DataTable" msprop:Generator_TableVarName="tableDataTable1" msprop:Generator_TablePropName="DataTable1" msprop:Generator_RowDeletingName="DataTable1RowDeleting" msprop:Generator_RowChangingName="DataTable1RowChanging" msprop:Generator_RowEvHandlerName="DataTable1RowChangeEventHandler" msprop:Generator_RowDeletedName="DataTable1RowDeleted" msprop:Generator_UserTableName="DataTable1" msprop:Generator_RowChangedName="DataTable1RowChanged" msprop:Generator_RowEvArgName="DataTable1RowChangeEvent" msprop:Generator_RowClassName="DataTable1Row">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Machine" msprop:Generator_ColumnVarNameInTable="columnMachine" msprop:Generator_ColumnPropNameInRow="Machine" msprop:Generator_ColumnPropNameInTable="MachineColumn" msprop:Generator_UserColumnName="Machine" type="xs:string" minOccurs="0" />
+              <xs:element name="AGradeKnitted" msprop:Generator_ColumnVarNameInTable="columnAGradeKnitted" msprop:Generator_ColumnPropNameInRow="AGradeKnitted" msprop:Generator_ColumnPropNameInTable="AGradeKnittedColumn" msprop:Generator_UserColumnName="AGradeKnitted" type="xs:decimal" minOccurs="0" />
+              <xs:element name="AGradePercent" msprop:Generator_ColumnVarNameInTable="columnAGradePercent" msprop:Generator_ColumnPropNameInRow="AGradePercent" msprop:Generator_ColumnPropNameInTable="AGradePercentColumn" msprop:Generator_UserColumnName="AGradePercent" type="xs:decimal" minOccurs="0" />
+              <xs:element name="AGradeKnittedWithWarning" msprop:Generator_ColumnVarNameInTable="columnAGradeKnittedWithWarning" msprop:Generator_ColumnPropNameInRow="AGradeKnittedWithWarning" msprop:Generator_ColumnPropNameInTable="AGradeKnittedWithWarningColumn" msprop:Generator_UserColumnName="AGradeKnittedWithWarning" type="xs:decimal" minOccurs="0" />
+              <xs:element name="AGradePercentWithWarning" msprop:Generator_ColumnVarNameInTable="columnAGradePercentWithWarning" msprop:Generator_ColumnPropNameInRow="AGradePercentWithWarning" msprop:Generator_ColumnPropNameInTable="AGradePercentWithWarningColumn" msprop:Generator_UserColumnName="AGradePercentWithWarning" type="xs:decimal" minOccurs="0" />
+              <xs:element name="BGradeKniited" msprop:Generator_ColumnVarNameInTable="columnBGradeKniited" msprop:Generator_ColumnPropNameInRow="BGradeKniited" msprop:Generator_ColumnPropNameInTable="BGradeKniitedColumn" msprop:Generator_UserColumnName="BGradeKniited" type="xs:decimal" minOccurs="0" />
+              <xs:element name="BGradePercent" msprop:Generator_ColumnVarNameInTable="columnBGradePercent" msprop:Generator_ColumnPropNameInRow="BGradePercent" msprop:Generator_ColumnPropNameInTable="BGradePercentColumn" msprop:Generator_UserColumnName="BGradePercent" type="xs:decimal" minOccurs="0" />
+              <xs:element name="CGradeKnitted" msprop:Generator_ColumnVarNameInTable="columnCGradeKnitted" msprop:Generator_ColumnPropNameInRow="CGradeKnitted" msprop:Generator_ColumnPropNameInTable="CGradeKnittedColumn" msprop:Generator_UserColumnName="CGradeKnitted" type="xs:decimal" minOccurs="0" />
+              <xs:element name="CGradePercent" msprop:Generator_ColumnVarNameInTable="columnCGradePercent" msprop:Generator_ColumnPropNameInRow="CGradePercent" msprop:Generator_ColumnPropNameInTable="CGradePercentColumn" msprop:Generator_UserColumnName="CGradePercent" type="xs:decimal" minOccurs="0" />
+              <xs:element name="TotalPieces" msprop:Generator_ColumnVarNameInTable="columnTotalPieces" msprop:Generator_ColumnPropNameInRow="TotalPieces" msprop:Generator_ColumnPropNameInTable="TotalPiecesColumn" msprop:Generator_UserColumnName="TotalPieces" type="xs:decimal" minOccurs="0" />
+              <xs:element name="TotalKgs" msprop:Generator_ColumnVarNameInTable="columnTotalKgs" msprop:Generator_ColumnPropNameInRow="TotalKgs" msprop:Generator_ColumnPropNameInTable="TotalKgsColumn" msprop:Generator_UserColumnName="TotalKgs" type="xs:decimal" minOccurs="0" />
+              <xs:element name="MaxCapacity" msprop:Generator_ColumnVarNameInTable="columnMaxCapacity" msprop:Generator_ColumnPropNameInRow="MaxCapacity" msprop:Generator_ColumnPropNameInTable="MaxCapacityColumn" msprop:Generator_UserColumnName="MaxCapacity" type="xs:decimal" minOccurs="0" />
+              <xs:element name="CapUtil" msprop:Generator_ColumnVarNameInTable="columnCapUtil" msprop:Generator_ColumnPropNameInRow="CapUtil" msprop:Generator_ColumnPropNameInTable="CapUtilColumn" msprop:Generator_UserColumnName="CapUtil" type="xs:decimal" minOccurs="0" />
+              <xs:element name="Key" msprop:Generator_ColumnVarNameInTable="columnKey" msprop:Generator_ColumnPropNameInRow="Key" msprop:Generator_ColumnPropNameInTable="KeyColumn" msprop:Generator_UserColumnName="Key" type="xs:int" minOccurs="0" />
+              <xs:element name="KRGradeKnitted" msprop:Generator_ColumnVarNameInTable="columnKRGradeKnitted" msprop:Generator_ColumnPropNameInRow="KRGradeKnitted" msprop:Generator_ColumnPropNameInTable="KRGradeKnittedColumn" msprop:Generator_UserColumnName="KRGradeKnitted" type="xs:decimal" minOccurs="0" />
+              <xs:element name="KRGradePercent" msprop:Generator_ColumnVarNameInTable="columnKRGradePercent" msprop:Generator_ColumnPropNameInRow="KRGradePercent" msprop:Generator_ColumnPropNameInTable="KRGradePercentColumn" msprop:Generator_UserColumnName="KRGradePercent" type="xs:decimal" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="DataTable2" msprop:Generator_TableClassName="DataTable2DataTable" msprop:Generator_TableVarName="tableDataTable2" msprop:Generator_TablePropName="DataTable2" msprop:Generator_RowDeletingName="DataTable2RowDeleting" msprop:Generator_RowChangingName="DataTable2RowChanging" msprop:Generator_RowEvHandlerName="DataTable2RowChangeEventHandler" msprop:Generator_RowDeletedName="DataTable2RowDeleted" msprop:Generator_UserTableName="DataTable2" msprop:Generator_RowChangedName="DataTable2RowChanged" msprop:Generator_RowEvArgName="DataTable2RowChangeEvent" msprop:Generator_RowClassName="DataTable2Row">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Key" msprop:Generator_ColumnVarNameInTable="columnKey" msprop:Generator_ColumnPropNameInRow="Key" msprop:Generator_ColumnPropNameInTable="KeyColumn" msprop:Generator_UserColumnName="Key" type="xs:int" minOccurs="0" />
+              <xs:element name="DateFrom" msprop:Generator_ColumnVarNameInTable="columnDateFrom" msprop:Generator_ColumnPropNameInRow="DateFrom" msprop:Generator_ColumnPropNameInTable="DateFromColumn" msprop:Generator_UserColumnName="DateFrom" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="DaeTo" msdata:Caption="DateTo" msprop:Generator_ColumnVarNameInTable="columnDaeTo" msprop:Generator_ColumnPropNameInRow="DaeTo" msprop:Generator_ColumnPropNameInTable="DaeToColumn" msprop:Generator_UserColumnName="DaeTo" type="xs:dateTime" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+  <xs:annotation>
+    <xs:appinfo>
+      <msdata:Relationship name="DataTable2_DataTable1" msdata:parent="DataTable2" msdata:child="DataTable1" msdata:parentkey="Key" msdata:childkey="Key" msprop:Generator_UserChildTable="DataTable1" msprop:Generator_ChildPropName="GetDataTable1Rows" msprop:Generator_UserRelationName="DataTable2_DataTable1" msprop:Generator_RelationVarName="relationDataTable2_DataTable1" msprop:Generator_UserParentTable="DataTable2" msprop:Generator_ParentPropName="DataTable2Row" />
+    </xs:appinfo>
+  </xs:annotation>
+</xs:schema>

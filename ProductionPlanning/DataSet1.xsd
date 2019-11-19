@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="DataSet1" targetNamespace="http://tempuri.org/DataSet1.xsd" xmlns:mstns="http://tempuri.org/DataSet1.xsd" xmlns="http://tempuri.org/DataSet1.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections />
+        <Tables />
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="DataSet1" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="DataSet1" msprop:Generator_UserDSName="DataSet1">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="DataTable1" msprop:Generator_TableClassName="DataTable1DataTable" msprop:Generator_TableVarName="tableDataTable1" msprop:Generator_RowChangedName="DataTable1RowChanged" msprop:Generator_TablePropName="DataTable1" msprop:Generator_RowDeletingName="DataTable1RowDeleting" msprop:Generator_RowChangingName="DataTable1RowChanging" msprop:Generator_RowEvHandlerName="DataTable1RowChangeEventHandler" msprop:Generator_RowDeletedName="DataTable1RowDeleted" msprop:Generator_RowClassName="DataTable1Row" msprop:Generator_UserTableName="DataTable1" msprop:Generator_RowEvArgName="DataTable1RowChangeEvent">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Customer" msprop:Generator_ColumnVarNameInTable="columnCustomer" msprop:Generator_ColumnPropNameInRow="Customer" msprop:Generator_ColumnPropNameInTable="CustomerColumn" msprop:Generator_UserColumnName="Customer" type="xs:string" minOccurs="0" />
+              <xs:element name="Style" msprop:Generator_ColumnVarNameInTable="columnStyle" msprop:Generator_ColumnPropNameInRow="Style" msprop:Generator_ColumnPropNameInTable="StyleColumn" msprop:Generator_UserColumnName="Style" type="xs:string" minOccurs="0" />
+              <xs:element name="Colour" msprop:Generator_ColumnVarNameInTable="columnColour" msprop:Generator_ColumnPropNameInRow="Colour" msprop:Generator_ColumnPropNameInTable="ColourColumn" msprop:Generator_UserColumnName="Colour" type="xs:string" minOccurs="0" />
+              <xs:element name="Size" msprop:Generator_ColumnVarNameInTable="columnSize" msprop:Generator_ColumnPropNameInRow="Size" msprop:Generator_ColumnPropNameInTable="SizeColumn" msprop:Generator_UserColumnName="Size" type="xs:string" minOccurs="0" />
+              <xs:element name="ExpectedSales" msprop:Generator_ColumnVarNameInTable="columnExpectedSales" msprop:Generator_ColumnPropNameInRow="ExpectedSales" msprop:Generator_ColumnPropNameInTable="ExpectedSalesColumn" msprop:Generator_UserColumnName="ExpectedSales" type="xs:int" minOccurs="0" />
+              <xs:element name="ReOrderLevel" msprop:Generator_ColumnVarNameInTable="columnReOrderLevel" msprop:Generator_ColumnPropNameInRow="ReOrderLevel" msprop:Generator_ColumnPropNameInTable="ReOrderLevelColumn" msprop:Generator_UserColumnName="ReOrderLevel" type="xs:int" minOccurs="0" />
+              <xs:element name="ReOrderQty" msprop:Generator_ColumnVarNameInTable="columnReOrderQty" msprop:Generator_ColumnPropNameInRow="ReOrderQty" msprop:Generator_ColumnPropNameInTable="ReOrderQtyColumn" msprop:Generator_UserColumnName="ReOrderQty" type="xs:int" minOccurs="0" />
+              <xs:element name="ErrorLog" msprop:Generator_ColumnVarNameInTable="columnErrorLog" msprop:Generator_ColumnPropNameInRow="ErrorLog" msprop:Generator_ColumnPropNameInTable="ErrorLogColumn" msprop:Generator_UserColumnName="ErrorLog" type="xs:string" minOccurs="0" />
+              <xs:element name="ReOrderLevelWeeks" msprop:Generator_ColumnVarNameInTable="columnReOrderLevelWeeks" msprop:Generator_ColumnPropNameInRow="ReOrderLevelWeeks" msprop:Generator_ColumnPropNameInTable="ReOrderLevelWeeksColumn" msprop:Generator_UserColumnName="ReOrderLevelWeeks" type="xs:int" minOccurs="0" />
+              <xs:element name="ReOrderQtyWeeks" msprop:Generator_ColumnVarNameInTable="columnReOrderQtyWeeks" msprop:Generator_ColumnPropNameInRow="ReOrderQtyWeeks" msprop:Generator_ColumnPropNameInTable="ReOrderQtyWeeksColumn" msprop:Generator_UserColumnName="ReOrderQtyWeeks" type="xs:int" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="DataSet15" targetNamespace="http://tempuri.org/DataSet15.xsd" xmlns:mstns="http://tempuri.org/DataSet15.xsd" xmlns="http://tempuri.org/DataSet15.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections />
+        <Tables />
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="DataSet15" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="DataSet15" msprop:Generator_UserDSName="DataSet15">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="DataTable1" msprop:Generator_TableClassName="DataTable1DataTable" msprop:Generator_TableVarName="tableDataTable1" msprop:Generator_RowChangedName="DataTable1RowChanged" msprop:Generator_TablePropName="DataTable1" msprop:Generator_RowDeletingName="DataTable1RowDeleting" msprop:Generator_RowChangingName="DataTable1RowChanging" msprop:Generator_RowEvHandlerName="DataTable1RowChangeEventHandler" msprop:Generator_RowDeletedName="DataTable1RowDeleted" msprop:Generator_RowClassName="DataTable1Row" msprop:Generator_UserTableName="DataTable1" msprop:Generator_RowEvArgName="DataTable1RowChangeEvent">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="DyeOrderNumber" msprop:Generator_ColumnVarNameInTable="columnDyeOrderNumber" msprop:Generator_ColumnPropNameInRow="DyeOrderNumber" msprop:Generator_ColumnPropNameInTable="DyeOrderNumberColumn" msprop:Generator_UserColumnName="DyeOrderNumber" type="xs:string" minOccurs="0" />
+              <xs:element name="Date" msprop:Generator_ColumnVarNameInTable="columnDate" msprop:Generator_ColumnPropNameInRow="Date" msprop:Generator_ColumnPropNameInTable="DateColumn" msprop:Generator_UserColumnName="Date" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="Quality" msprop:Generator_ColumnVarNameInTable="columnQuality" msprop:Generator_ColumnPropNameInRow="Quality" msprop:Generator_ColumnPropNameInTable="QualityColumn" msprop:Generator_UserColumnName="Quality" type="xs:string" minOccurs="0" />
+              <xs:element name="Colour" msprop:Generator_ColumnVarNameInTable="columnColour" msprop:Generator_ColumnPropNameInRow="Colour" msprop:Generator_ColumnPropNameInTable="ColourColumn" msprop:Generator_UserColumnName="Colour" type="xs:string" minOccurs="0" />
+              <xs:element name="Kgs" msprop:Generator_ColumnVarNameInTable="columnKgs" msprop:Generator_ColumnPropNameInRow="Kgs" msprop:Generator_ColumnPropNameInTable="KgsColumn" msprop:Generator_UserColumnName="Kgs" type="xs:decimal" minOccurs="0" />
+              <xs:element name="UnitsQty" msprop:Generator_ColumnVarNameInTable="columnUnitsQty" msprop:Generator_ColumnPropNameInRow="UnitsQty" msprop:Generator_ColumnPropNameInTable="UnitsQtyColumn" msprop:Generator_UserColumnName="UnitsQty" type="xs:decimal" minOccurs="0" />
+              <xs:element name="BatchedKgs" msprop:Generator_ColumnVarNameInTable="columnBatchedKgs" msprop:Generator_ColumnPropNameInRow="BatchedKgs" msprop:Generator_ColumnPropNameInTable="BatchedKgsColumn" msprop:Generator_UserColumnName="BatchedKgs" type="xs:decimal" minOccurs="0" />
+              <xs:element name="OutstandingKgs" msprop:Generator_ColumnVarNameInTable="columnOutstandingKgs" msprop:Generator_ColumnPropNameInRow="OutstandingKgs" msprop:Generator_ColumnPropNameInTable="OutstandingKgsColumn" msprop:Generator_UserColumnName="OutstandingKgs" type="xs:decimal" minOccurs="0" />
+              <xs:element name="DateDue" msprop:Generator_ColumnVarNameInTable="columnDateDue" msprop:Generator_ColumnPropNameInRow="DateDue" msprop:Generator_ColumnPropNameInTable="DateDueColumn" msprop:Generator_UserColumnName="DateDue" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="Customer" msprop:Generator_ColumnVarNameInTable="columnCustomer" msprop:Generator_ColumnPropNameInRow="Customer" msprop:Generator_ColumnPropNameInTable="CustomerColumn" msprop:Generator_UserColumnName="Customer" type="xs:string" minOccurs="0" />
+              <xs:element name="OrderNumber" msprop:Generator_ColumnVarNameInTable="columnOrderNumber" msprop:Generator_ColumnPropNameInRow="OrderNumber" msprop:Generator_ColumnPropNameInTable="OrderNumberColumn" msprop:Generator_UserColumnName="OrderNumber" type="xs:string" minOccurs="0" />
+              <xs:element name="BatchedUnitsQty" msprop:Generator_ColumnVarNameInTable="columnBatchedUnitsQty" msprop:Generator_ColumnPropNameInRow="BatchedUnitsQty" msprop:Generator_ColumnPropNameInTable="BatchedUnitsQtyColumn" msprop:Generator_UserColumnName="BatchedUnitsQty" type="xs:int" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

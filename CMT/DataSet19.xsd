@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="DataSet19" targetNamespace="http://tempuri.org/DataSet19.xsd" xmlns:mstns="http://tempuri.org/DataSet19.xsd" xmlns="http://tempuri.org/DataSet19.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections />
+        <Tables />
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="DataSet19" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="DataSet19" msprop:Generator_UserDSName="DataSet19">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="DataTable1" msprop:Generator_TableClassName="DataTable1DataTable" msprop:Generator_TableVarName="tableDataTable1" msprop:Generator_TablePropName="DataTable1" msprop:Generator_RowDeletingName="DataTable1RowDeleting" msprop:Generator_RowChangingName="DataTable1RowChanging" msprop:Generator_RowEvHandlerName="DataTable1RowChangeEventHandler" msprop:Generator_RowDeletedName="DataTable1RowDeleted" msprop:Generator_UserTableName="DataTable1" msprop:Generator_RowChangedName="DataTable1RowChanged" msprop:Generator_RowEvArgName="DataTable1RowChangeEvent" msprop:Generator_RowClassName="DataTable1Row">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="CMTDetails" msprop:Generator_ColumnVarNameInTable="columnCMTDetails" msprop:Generator_ColumnPropNameInRow="CMTDetails" msprop:Generator_ColumnPropNameInTable="CMTDetailsColumn" msprop:Generator_UserColumnName="CMTDetails" type="xs:string" minOccurs="0" />
+              <xs:element name="LineIssuedNo" msprop:Generator_ColumnVarNameInTable="columnLineIssuedNo" msprop:Generator_ColumnPropNameInRow="LineIssuedNo" msprop:Generator_ColumnPropNameInTable="LineIssuedNoColumn" msprop:Generator_UserColumnName="LineIssuedNo" type="xs:string" minOccurs="0" />
+              <xs:element name="LineDescription" msprop:Generator_ColumnVarNameInTable="columnLineDescription" msprop:Generator_ColumnPropNameInRow="LineDescription" msprop:Generator_ColumnPropNameInTable="LineDescriptionColumn" msprop:Generator_UserColumnName="LineDescription" type="xs:string" minOccurs="0" />
+              <xs:element name="Style" msprop:Generator_ColumnVarNameInTable="columnStyle" msprop:Generator_ColumnPropNameInRow="Style" msprop:Generator_ColumnPropNameInTable="StyleColumn" msprop:Generator_UserColumnName="Style" type="xs:string" minOccurs="0" />
+              <xs:element name="Colour" msprop:Generator_ColumnVarNameInTable="columnColour" msprop:Generator_ColumnPropNameInRow="Colour" msprop:Generator_ColumnPropNameInTable="ColourColumn" msprop:Generator_UserColumnName="Colour" type="xs:string" minOccurs="0" />
+              <xs:element name="Size" msprop:Generator_ColumnVarNameInTable="columnSize" msprop:Generator_ColumnPropNameInRow="Size" msprop:Generator_ColumnPropNameInTable="SizeColumn" msprop:Generator_UserColumnName="Size" type="xs:string" minOccurs="0" />
+              <xs:element name="ManuQty" msprop:Generator_ColumnVarNameInTable="columnManuQty" msprop:Generator_ColumnPropNameInRow="ManuQty" msprop:Generator_ColumnPropNameInTable="ManuQtyColumn" msprop:Generator_UserColumnName="ManuQty" type="xs:int" minOccurs="0" />
+              <xs:element name="ManuCost" msprop:Generator_ColumnVarNameInTable="columnManuCost" msprop:Generator_ColumnPropNameInRow="ManuCost" msprop:Generator_ColumnPropNameInTable="ManuCostColumn" msprop:Generator_UserColumnName="ManuCost" type="xs:decimal" minOccurs="0" />
+              <xs:element name="ManuTotal" msprop:Generator_ColumnVarNameInTable="columnManuTotal" msprop:Generator_ColumnPropNameInRow="ManuTotal" msprop:Generator_ColumnPropNameInTable="ManuTotalColumn" msprop:Generator_UserColumnName="ManuTotal" type="xs:decimal" minOccurs="0" />
+              <xs:element name="ManuFaultQty" msprop:Generator_ColumnVarNameInTable="columnManuFaultQty" msprop:Generator_ColumnPropNameInRow="ManuFaultQty" msprop:Generator_ColumnPropNameInTable="ManuFaultQtyColumn" msprop:Generator_UserColumnName="ManuFaultQty" type="xs:int" minOccurs="0" />
+              <xs:element name="ManuFaultCost" msprop:Generator_ColumnVarNameInTable="columnManuFaultCost" msprop:Generator_ColumnPropNameInRow="ManuFaultCost" msprop:Generator_ColumnPropNameInTable="ManuFaultCostColumn" msprop:Generator_UserColumnName="ManuFaultCost" type="xs:decimal" minOccurs="0" />
+              <xs:element name="ManuFaultTotal" msprop:Generator_ColumnVarNameInTable="columnManuFaultTotal" msprop:Generator_ColumnPropNameInRow="ManuFaultTotal" msprop:Generator_ColumnPropNameInTable="ManuFaultTotalColumn" msprop:Generator_UserColumnName="ManuFaultTotal" type="xs:decimal" minOccurs="0" />
+              <xs:element name="ManuShortQty" msprop:Generator_ColumnVarNameInTable="columnManuShortQty" msprop:Generator_ColumnPropNameInRow="ManuShortQty" msprop:Generator_ColumnPropNameInTable="ManuShortQtyColumn" msprop:Generator_UserColumnName="ManuShortQty" type="xs:int" minOccurs="0" />
+              <xs:element name="ManuShortCost" msprop:Generator_ColumnVarNameInTable="columnManuShortCost" msprop:Generator_ColumnPropNameInRow="ManuShortCost" msprop:Generator_ColumnPropNameInTable="ManuShortCostColumn" msprop:Generator_UserColumnName="ManuShortCost" type="xs:decimal" minOccurs="0" />
+              <xs:element name="ManuShortTotal" msprop:Generator_ColumnVarNameInTable="columnManuShortTotal" msprop:Generator_ColumnPropNameInRow="ManuShortTotal" msprop:Generator_ColumnPropNameInTable="ManuShortTotalColumn" msprop:Generator_UserColumnName="ManuShortTotal" type="xs:decimal" minOccurs="0" />
+              <xs:element name="Notes" msprop:Generator_ColumnVarNameInTable="columnNotes" msprop:Generator_ColumnPropNameInRow="Notes" msprop:Generator_ColumnPropNameInTable="NotesColumn" msprop:Generator_UserColumnName="Notes" type="xs:string" minOccurs="0" />
+              <xs:element name="ReportHeader" msprop:Generator_ColumnVarNameInTable="columnReportHeader" msprop:Generator_ColumnPropNameInRow="ReportHeader" msprop:Generator_ColumnPropNameInTable="ReportHeaderColumn" msprop:Generator_UserColumnName="ReportHeader" type="xs:dateTime" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
