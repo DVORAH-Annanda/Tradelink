@@ -258,7 +258,7 @@ namespace Cutting
                                                 decimal TrimKg = Math.Round(TrimWeight * (row.Value / Factor), 2);
 
                                                 var ExpectUnits = context.TLCUT_ExpectedUnits.FirstOrDefault(x => x.TLCUTE_CutSheet_FK == CutSheet.TLCutSH_Pk && x.TLCUTE_Size_FK == row.Key);
-                                                if(ExpectUnits != null)
+                                                if (ExpectUnits != null)
                                                 {
                                                     ExpectUnits.TLCUTE_EstNettWeight += EstKg;
                                                     ExpectUnits.TLCUTE_NoOfBinding += (int)(Yield / Rating) * BindKg;
@@ -272,6 +272,7 @@ namespace Cutting
                                         }
                                     }
                                 }
+
                             }
                             dr[1] = false;
                         }

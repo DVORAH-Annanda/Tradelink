@@ -86,6 +86,7 @@ namespace Cutting
 
         }
 
+
         private void btnSubmit_Click(object sender, EventArgs e)
         {
             Button oBtn = (Button)sender;
@@ -99,6 +100,7 @@ namespace Cutting
                         MessageBox.Show("Cut Sheet selected does not exist");
                         return;
                     }
+
 
                     var CutSheetReceipt = context.TLCUT_CutSheetReceipt.Where(x => x.TLCUTSHR_CutSheet_FK == CutSheet.TLCutSH_Pk).FirstOrDefault();
                     if (CutSheetReceipt == null)
