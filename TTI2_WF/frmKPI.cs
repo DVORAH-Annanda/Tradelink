@@ -1489,6 +1489,7 @@ namespace TTI2_WF
                     }
                 }
                 totalFabricDyedNormalised = normalised;
+
             }
 
             CreateFabricDyedNotFinishedGrossButton(totalFabricDyed);

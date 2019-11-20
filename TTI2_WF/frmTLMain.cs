@@ -5688,6 +5688,7 @@ namespace TTI2_WF
         private void cMTStockInDespatchCageFinishedGoodsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ToolStripMenuItem oTi = sender as ToolStripMenuItem;
+
             if (core.GetUserAuthorisation(ud, oTi.Name))
             {
                 try
@@ -5739,7 +5740,7 @@ namespace TTI2_WF
 
         private void ShowKPIs()
         {
-            TTI.frmKPI KPIs = new TTI.frmKPI();
+            frmKPI KPIs = new frmKPI();
             KPIs.Show();
         }
 
