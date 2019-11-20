@@ -16,14 +16,14 @@ using Cutting;
 using CMT;
 using Utilities;
 
-using TTI.KPIs.Spinning;
-using TTI.KPIs.Knitting;
+using TTI2_WF.KPIs.Spinning;
+using TTI2_WF.KPIs.Knitting;
 
 namespace TTI
 {
     public partial class frmKPI : Form
     {
-        KPIs.Spinning.YarnProduction yarnProduction;
+        TTI2_WF.KPIs.Spinning.YarnProduction yarnProduction;
         DateTime KPIFromDate;
         DateTime KPIToDate;
 
