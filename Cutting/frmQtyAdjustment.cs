@@ -76,13 +76,7 @@ namespace Cutting
             dataGridView1.Visible = false;
             txtCutSheet.Text = string.Empty;
 
-            using (var context = new TTI2Entities())
-            {
-                oCmboA.DataSource = context.TLADM_Sizes.Where(x=>!x.SI_Discontinued).OrderBy(x => x.SI_Description).ToList();
-                oCmboA.ValueMember = "SI_Id";
-                oCmboA.DisplayMember = "SI_Description";
-            }
-
+            
             txtAdultBoxes.Text = "0";
             txtBinding.Text = "0";
             txtKidsBoxes.Text = "0";
@@ -112,6 +106,15 @@ namespace Cutting
                         MessageBox.Show("Cut Sheet might not have been receipted yet");
                         return;
                     }
+
+                    var xSizes = (from EUnits in context.TLCUT_ExpectedUnits
+                                  join Sizes in context.TLADM_Sizes on EUnits.TLCUTE_Size_FK equals Sizes.SI_id
+                                  where EUnits.TLCUTE_CutSheet_FK == CutSheet.TLCutSH_Pk
+                                  select Sizes).ToList();
+
+                    oCmboA.DataSource = xSizes;
+                    oCmboA.ValueMember = "SI_Id";
+                    oCmboA.DisplayMember = "SI_Description";
 
                     dataGridView1.Rows.Clear();
 

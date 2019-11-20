@@ -273,6 +273,7 @@ namespace Cutting
                                     }
                                 }
                             }
+                            dr[1] = false;
                         }
                     }
                     try
