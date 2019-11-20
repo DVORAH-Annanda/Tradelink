@@ -13,12 +13,13 @@ using Spinning;
 using Knitting;
 using DyeHouse;
 using Cutting;
+using CMT;
 using Utilities;
 
-using TTI2_WF.KPIs.Spinning;
-using TTI2_WF.KPIs.Knitting;
+using TTI.KPIs.Spinning;
+using TTI.KPIs.Knitting;
 
-namespace TTI2_WF
+namespace TTI
 {
     public partial class frmKPI : Form
     {
@@ -31,7 +32,7 @@ namespace TTI2_WF
             InitializeComponent();            
 
             KPIFromDate = dtpDateFromKPI.Value = DateTime.Now.AddDays(-1).Date.AddHours(7);
-            //KPIFromDate = dtpDateFromKPI.Value = DateTime.Now.AddDays(-30).Date.AddHours(7); //Testing
+            KPIFromDate = dtpDateFromKPI.Value = DateTime.Now.AddDays(-7).Date.AddHours(7); //Testing
             KPIToDate = dtpDateToKPI.Value = DateTime.Now.Date.AddHours(7);
 
             cmbMachines.Items.Add("All Machines");
@@ -50,8 +51,6 @@ namespace TTI2_WF
             cmbMachines.SelectedItem = "All Machines";
         }
 
-
-
         private void btnTotalCuttingProduced_Click(object sender, EventArgs e)
         {
             this.Cursor = Cursors.WaitCursor;
@@ -62,24 +61,21 @@ namespace TTI2_WF
             if (oBtn != null)
             {
                 UpdateProgressBar("Cut Production Detail Report Data", 25);
-                using (var context = new TTI2Entities())
-                {
-                    UpdateProgressBar("Cut Production Detail Report Data", 45);
-                    CutReportOptions repOptions = new CutReportOptions();
+                CutReportOptions repOptions = new CutReportOptions();
+                repOptions.fromDate = KPIFromDate;
+                repOptions.toDate = KPIToDate;
+                //repOptions.toDate = repOptions.toDate.AddHours(23);
 
-                    repOptions.fromDate = KPIFromDate;
-                    repOptions.toDate = KPIToDate;
-                    //repOptions.toDate = repOptions.toDate.AddHours(23);
-                    UpdateProgressBar("Cut Production Detail Report Data", 50);
-                    frmCutViewRep vRep = new frmCutViewRep(5, repOptions);
-                    UpdateProgressBar("Cut Production Detail Report Data", 65);
-                    int h = Screen.PrimaryScreen.WorkingArea.Height;
-                    int w = Screen.PrimaryScreen.WorkingArea.Width;
-                    UpdateProgressBar("Cut Production Detail Report Data", 95);
-                    vRep.ClientSize = new Size(w, h);
-                    vRep.ShowDialog(this);
-                    repOptions = new CutReportOptions();
-                }
+                UpdateProgressBar("Cut Production Detail Report Data", 45);
+                frmCutViewRep vRep = new frmCutViewRep(5, repOptions);
+
+                UpdateProgressBar("Cut Production Detail Report Data", 65);
+                int h = Screen.PrimaryScreen.WorkingArea.Height;
+                int w = Screen.PrimaryScreen.WorkingArea.Width;
+
+                UpdateProgressBar("Cut Production Detail Report Data", 95);
+                vRep.ClientSize = new Size(w, h);
+                vRep.ShowDialog(this);                
             }
             UpdateProgressBar("Cut Production Detail Report Data", 100);
             lblDataLoading.Text = "Data Loaded";
@@ -576,20 +572,34 @@ namespace TTI2_WF
 
         private void btnCardProductionTotal_Click(object sender, EventArgs e)
         {
+            this.Cursor = Cursors.WaitCursor;
+            lblDataLoading.Text = "Loading Data...";
+            lblDataLoading.Refresh();
+            UpdateProgressBar("Sliver Production Detail Report Data", 18);
             Button oBtn = sender as Button;
             if (oBtn != null)
             {
+                UpdateProgressBar("Sliver Production Detail Report Data", 25);
                 SliverProductionSelection sliverProductionSelection = new SliverProductionSelection();
                 sliverProductionSelection.DateFrom = Convert.ToDateTime(KPIFromDate);
                 sliverProductionSelection.DateTo = Convert.ToDateTime(KPIToDate);
                 sliverProductionSelection.Detail = true;
 
+                UpdateProgressBar("Sliver Production Detail Report Data", 45);
                 frmViewReport vRep = new frmViewReport(24, sliverProductionSelection);
+
+                UpdateProgressBar("Sliver Production Detail Report Data", 65);
                 int h = Screen.PrimaryScreen.WorkingArea.Height;
                 int w = Screen.PrimaryScreen.WorkingArea.Width;
+
+                UpdateProgressBar("Sliver Production Detail Report Data", 95);
                 vRep.ClientSize = new Size(w, h);
                 vRep.ShowDialog(this);
             }
+            UpdateProgressBar("Sliver Production Detail Report Data", 100);
+            lblDataLoading.Text = "Data Loaded";
+            lblDataLoading.Refresh();
+            this.Cursor = Cursors.Arrow;
         }
 
         private void CreateRSBProductionTotalButton(decimal rsbTotal)
@@ -613,20 +623,34 @@ namespace TTI2_WF
 
         private void btnRSBProductionTotal_Click(object sender, EventArgs e)
         {
+            this.Cursor = Cursors.WaitCursor;
+            lblDataLoading.Text = "Loading Data...";
+            lblDataLoading.Refresh();
+            UpdateProgressBar("Sliver Production Summary Report Data", 18);
             Button oBtn = sender as Button;
             if (oBtn != null)
             {
+                UpdateProgressBar("Sliver Production Summary Report Data", 25);
                 SliverProductionSelection sliverProductionSelection = new SliverProductionSelection();
                 sliverProductionSelection.DateFrom = Convert.ToDateTime(KPIFromDate);
                 sliverProductionSelection.DateTo = Convert.ToDateTime(KPIToDate);
-                sliverProductionSelection.Detail = true;
+                sliverProductionSelection.Summary = true;
 
+                UpdateProgressBar("Sliver Production Summary Report Data", 65);
                 frmViewReport vRep = new frmViewReport(24, sliverProductionSelection);
+
+                UpdateProgressBar("Sliver Production Summary Report Data", 85);
                 int h = Screen.PrimaryScreen.WorkingArea.Height;
                 int w = Screen.PrimaryScreen.WorkingArea.Width;
+
+                UpdateProgressBar("Sliver Production Summary Report Data", 95);
                 vRep.ClientSize = new Size(w, h);
                 vRep.ShowDialog(this);
             }
+            UpdateProgressBar("Sliver Production Summary Report Data", 100);
+            lblDataLoading.Text = "Data Loaded";
+            lblDataLoading.Refresh();
+            this.Cursor = Cursors.Arrow;
         }
 
         private void CreateCardQAMeasurementTotalButton(decimal cardTotal)
@@ -708,22 +732,37 @@ namespace TTI2_WF
 
         private void btnTotalYarnProduced_Click(object sender, EventArgs e)
         {
+            this.Cursor = Cursors.WaitCursor;
+            lblDataLoading.Text = "Loading Data...";
+            lblDataLoading.Refresh();
+            UpdateProgressBar("Yarn Production Detail Report Data", 18);
             Button oBtn = sender as Button;
             if (oBtn != null)
             {
-
+                UpdateProgressBar("Yarn Production Detail Report Data", 25);
                 YarnProductionSel yarnProduction = new YarnProductionSel();
+
+                UpdateProgressBar("Yarn Production Detail Report Data", 45);
                 yarnProduction.fromDate = dtpDateFromKPI.Value; // Convert.ToDateTime(dtpDateFromKPI.Value.ToShortDateString());
                 yarnProduction.toDate = dtpDateToKPI.Value; // Convert.ToDateTime(dtpDateToKPI.Value.ToShortDateString());
 
-                yarnProduction.QASummary = true;
+                yarnProduction.QASummary = false;
 
+                UpdateProgressBar("Yarn Production Detail Report Data", 65);
                 frmViewReport vRep = new frmViewReport(16, yarnProduction);
+
+                UpdateProgressBar("Yarn Production Detail Report Data", 85);
                 int h = Screen.PrimaryScreen.WorkingArea.Height;
                 int w = Screen.PrimaryScreen.WorkingArea.Width;
+
+                UpdateProgressBar("Yarn Production Detail Report Data", 95);
                 vRep.ClientSize = new Size(w, h);
                 vRep.ShowDialog(this);
             }
+            UpdateProgressBar("Yarn Production Detail Report Data", 100);
+            lblDataLoading.Text = "Data Loaded";
+            lblDataLoading.Refresh();
+            this.Cursor = Cursors.Arrow;
         }
 
         public void ShowTotalYarnProducedPerMachineChart()
@@ -1197,9 +1236,14 @@ namespace TTI2_WF
 
         private void btnTotalGreigeProduced_Click(object sender, EventArgs e)
         {
+            this.Cursor = Cursors.WaitCursor;
+            lblDataLoading.Text = "Loading Data...";
+            lblDataLoading.Refresh();
+            UpdateProgressBar("Greige Production Detail Report Data", 18);
             Button oBtn = sender as Button;
             if (oBtn != null)
             {
+                UpdateProgressBar("Greige Production Detail Report Data", 25);
                 YarnReportOptions YarnOpts = new YarnReportOptions();
                 YarnOpts.K7rbQA1 = true;
 
@@ -1209,13 +1253,21 @@ namespace TTI2_WF
                 QueryParms.ToDate = dtpDateToKPI.Value; // Convert.ToDateTime(dtpDateToKPI.Value.ToShortDateString());
                                                         //QueryParms.ToDate = QueryParms.ToDate.AddHours(23.59);
 
+                UpdateProgressBar("Greige Production Detail Report Data", 65);
                 frmKnitViewRep vRep = new frmKnitViewRep(23, QueryParms, YarnOpts);
 
+                UpdateProgressBar("Greige Production Detail Report Data", 85);
                 int h = Screen.PrimaryScreen.WorkingArea.Height;
                 int w = Screen.PrimaryScreen.WorkingArea.Width;
+
+                UpdateProgressBar("Greige Production Detail Report Data", 95);
                 vRep.ClientSize = new Size(w, h);
                 vRep.ShowDialog(this);
             }
+            UpdateProgressBar("Greige Production Detail Report Data", 100);
+            lblDataLoading.Text = "Data Loaded";
+            lblDataLoading.Refresh();
+            this.Cursor = Cursors.Arrow;
         }
 
         private decimal[] TotalGreigeProducedPerGrade(string machine)
@@ -1623,6 +1675,75 @@ namespace TTI2_WF
 
         private void btnFabricDyedNotFinished_Click(object sender, EventArgs e)
         {
+            this.Cursor = Cursors.WaitCursor;
+            lblDataLoading.Text = "Loading Data...";
+            lblDataLoading.Refresh();
+            UpdateProgressBar("Total Fabric Dyed Not Finished Detail Report Data", 18);
+            Button oBtn = sender as Button;
+            if (oBtn != null)
+            {
+                UpdateProgressBar("Total Fabric Dyed Not Finished Detail Report Data", 25);
+                DyeReportOptions dyeReportOptions = new DyeReportOptions();
+
+                dyeReportOptions.fromDate = dtpDateFromKPI.Value; // Convert.ToDateTime(dtpDateFromKPI.Value.ToShortDateString());
+                dyeReportOptions.toDate = dtpDateToKPI.Value; // Convert.ToDateTime(dtpDateToKPI.Value.ToShortDateString());
+                                                              //QueryParms.ToDate = QueryParms.ToDate.AddHours(23.59);
+
+                dyeReportOptions.FabricNotFinished = true;
+
+                UpdateProgressBar("Total Fabric Dyed Not Finished Detail Report Data", 45);
+                frmDyeViewReport vRep = new frmDyeViewReport(31, dyeReportOptions);
+
+                UpdateProgressBar("Total Fabric Dyed Not Finished Detail Report Data", 65);
+                int h = Screen.PrimaryScreen.WorkingArea.Height;
+                int w = Screen.PrimaryScreen.WorkingArea.Width;
+                UpdateProgressBar("Total Fabric Dyed Not Finished Detail Report Data", 95);
+                vRep.ClientSize = new Size(w, h);
+                vRep.ShowDialog(this);
+            }
+            UpdateProgressBar("Total Fabric Dyed Not Finished Detail Report Data", 100);
+            lblDataLoading.Text = "Data Loaded";
+            lblDataLoading.Refresh();
+            this.Cursor = Cursors.Arrow;
+        }
+
+        private void btnFirstTimeQS_Click(object sender, EventArgs e)
+        {
+            this.Cursor = Cursors.WaitCursor;
+            lblDataLoading.Text = "Loading Data...";
+            lblDataLoading.Refresh();
+            UpdateProgressBar("Fabric to Quarantine Store First Time Detail Report Data", 18);
+            Button oBtn = sender as Button;
+            if (oBtn != null)
+            {
+                UpdateProgressBar("Fabric to Quarantine Store First Time Report Data", 25);
+                DyeReportOptions dyeReportOptions = new DyeReportOptions();
+
+                dyeReportOptions.fromDate = dtpDateFromKPI.Value; // Convert.ToDateTime(dtpDateFromKPI.Value.ToShortDateString());
+                dyeReportOptions.toDate = dtpDateToKPI.Value; // Convert.ToDateTime(dtpDateToKPI.Value.ToShortDateString());
+                                                              //QueryParms.ToDate = QueryParms.ToDate.AddHours(23.59);
+                dyeReportOptions.FabricToQ = true;
+                dyeReportOptions.FirstTime = true;
+
+                UpdateProgressBar("Fabric to Quarantine Store First Time Report Data", 65);
+                frmDyeViewReport vRep = new frmDyeViewReport(31, dyeReportOptions);
+
+                UpdateProgressBar("Fabric to Quarantine Store First Time Report Data", 85);
+                int h = Screen.PrimaryScreen.WorkingArea.Height;
+                int w = Screen.PrimaryScreen.WorkingArea.Width;
+
+                UpdateProgressBar("Fabric to Quarantine Store First Time Report Data", 95);
+                vRep.ClientSize = new Size(w, h);
+                vRep.ShowDialog(this);
+            }
+            UpdateProgressBar("Fabric to Quarantine Store First Time Report Data", 100);
+            lblDataLoading.Text = "Data Loaded";
+            lblDataLoading.Refresh();
+            this.Cursor = Cursors.Arrow;
+        }
+
+        private void btnReprocessedQS_Click(object sender, EventArgs e)
+        {
             Button oBtn = sender as Button;
             if (oBtn != null)
             {
@@ -1631,8 +1752,8 @@ namespace TTI2_WF
                 dyeReportOptions.fromDate = dtpDateFromKPI.Value; // Convert.ToDateTime(dtpDateFromKPI.Value.ToShortDateString());
                 dyeReportOptions.toDate = dtpDateToKPI.Value; // Convert.ToDateTime(dtpDateToKPI.Value.ToShortDateString());
                                                               //QueryParms.ToDate = QueryParms.ToDate.AddHours(23.59);
-
-                dyeReportOptions.FabricNotFinished = true;
+                dyeReportOptions.FabricToQ = true;
+                dyeReportOptions.FirstTime = false;
 
                 frmDyeViewReport vRep = new frmDyeViewReport(31, dyeReportOptions);
 
@@ -1643,64 +1764,42 @@ namespace TTI2_WF
             }
         }
 
-        private void btnFirstTimeQSGross_Click(object sender, EventArgs e)
+        private void btnFabricDyedToFabricStore_Click(object sender, EventArgs e)
         {
+            this.Cursor = Cursors.WaitCursor;
+            lblDataLoading.Text = "Loading Data...";
+            lblDataLoading.Refresh();
+            UpdateProgressBar("Fabric Dyed to Fabric Store Detail Report Data", 18);
             Button oBtn = sender as Button;
             if (oBtn != null)
             {
+                UpdateProgressBar("Fabric Dyed to Fabric Store Detail Report Data", 25);
                 DyeReportOptions dyeReportOptions = new DyeReportOptions();
 
+                UpdateProgressBar("Fabric Dyed to Fabric Store Detail Report Data", 45);
                 dyeReportOptions.fromDate = dtpDateFromKPI.Value; // Convert.ToDateTime(dtpDateFromKPI.Value.ToShortDateString());
                 dyeReportOptions.toDate = dtpDateToKPI.Value; // Convert.ToDateTime(dtpDateToKPI.Value.ToShortDateString());
                                                               //QueryParms.ToDate = QueryParms.ToDate.AddHours(23.59);
-                dyeReportOptions.FabricNotFinished = true;
+                dyeReportOptions.FabricNotFinished = false;
+                dyeReportOptions.FabricToStore = true;
 
+                UpdateProgressBar("Fabric Dyed to Fabric Store Detail Report Data", 65);
                 frmDyeViewReport vRep = new frmDyeViewReport(31, dyeReportOptions);
 
+                UpdateProgressBar("Fabric Dyed to Fabric Store Detail Report Data", 85);
                 int h = Screen.PrimaryScreen.WorkingArea.Height;
                 int w = Screen.PrimaryScreen.WorkingArea.Width;
+
+                UpdateProgressBar("Fabric Dyed to Fabric Store Detail Report Data", 95);
                 vRep.ClientSize = new Size(w, h);
                 vRep.ShowDialog(this);
             }
+            UpdateProgressBar("Fabric Dyed to Fabric Store Detail Report Data", 100);
+            lblDataLoading.Text = "Data Loaded";
+            lblDataLoading.Refresh();
+            this.Cursor = Cursors.Arrow;
         }
-
-        private decimal[] FabricDyedNotFinished()
-        {
-            KnitQueryParameters knitQryParams = new KnitQueryParameters();
-            knitQryParams.FromDate = dtpDateFromKPI.Value; // Convert.ToDateTime(dtpDateFromKPI.Value.ToShortDateString());
-            knitQryParams.ToDate = dtpDateToKPI.Value; // Convert.ToDateTime(dtpDateToKPI.Value.ToShortDateString());
-            knitQryParams.ToDate = knitQryParams.ToDate.AddHours(23.59);
-
-            IList<TLKNI_GreigeProduction> ProdGroups = null;
-            KnitRepository knitRepo = new KnitRepository();
-            decimal greigeProducedGradeA = 0;
-            decimal greigeProducedGradeB = 0;
-            decimal greigeProducedGradeC = 0;
-
-            using (var context = new TTI2Entities())
-            {
-
-                var Data = knitRepo.GreigeProduction(knitQryParams); // context.TLKNI_GreigeProduction.Where(x => x.GreigeP_PDate >= _opts.fromDate && x.GreigeP_PDate <= _opts.toDate).ToList();
-
-                ProdGroups = Data.Where(x => !x.GreigeP_CommisionCust).ToList();
-
-                foreach (var Greige in context.TLADM_Griege)
-                {
-                    var GProduced = ProdGroups.Where(x => x.GreigeP_Greige_Fk == Greige.TLGreige_Id).ToList();
-
-
-                        //greigeProducedGrade = totalGreigeProduced + GProduced.Sum(x => (decimal?)x.GreigeP_weight) ?? 0.00M;
-                        greigeProducedGradeA = greigeProducedGradeA + GProduced.Where(x => x.GreigeP_Grade == "A").Sum(x => (decimal?)x.GreigeP_weight) ?? 0.0M;
-                        greigeProducedGradeB = greigeProducedGradeB + GProduced.Where(x => x.GreigeP_Grade == "B").Sum(x => (decimal?)x.GreigeP_weight) ?? 0.0M;
-                        greigeProducedGradeC = greigeProducedGradeC + GProduced.Where(x => x.GreigeP_Grade == "C").Sum(x => (decimal?)x.GreigeP_weight) ?? 0.0M;
-
-                }
-            }
-            decimal[] greigeProducedPerGrade = { greigeProducedGradeA, greigeProducedGradeB, greigeProducedGradeC };
-            return greigeProducedPerGrade;
-        }
-
-
+                     
         private void CreateFabricDyedNotFinishedNormalisedButton(decimal totalFabricDyedNormalised)
         {
             foreach (Button btn in grpDyedFabricNotFinished.Controls.OfType<Button>())
@@ -1723,56 +1822,38 @@ namespace TTI2_WF
 
         private void btnFabricDyedNotFinishedNormalised_Click(object sender, EventArgs e)
         {
+            this.Cursor = Cursors.WaitCursor;
+            lblDataLoading.Text = "Loading Data...";
+            lblDataLoading.Refresh();
+            UpdateProgressBar("Fabric Dyed Not Finished Summary Report Data", 18);
             Button oBtn = sender as Button;
             if (oBtn != null)
             {
+                UpdateProgressBar("Fabric Dyed Not Finished Summary Report Data", 25);
                 DyeReportOptions dyeReportOptions = new DyeReportOptions();
+                dyeReportOptions.FabricNotFinished = true;
                 dyeReportOptions.QASummary = true;
                 dyeReportOptions.fromDate = dtpDateFromKPI.Value; // Convert.ToDateTime(dtpDateFromKPI.Value.ToShortDateString());
                 dyeReportOptions.toDate = dtpDateToKPI.Value; // Convert.ToDateTime(dtpDateToKPI.Value.ToShortDateString());
                                                               //QueryParms.ToDate = QueryParms.ToDate.AddHours(23.59);
 
+                UpdateProgressBar("Fabric Dyed Not Finished Summary Report Data", 65);
                 frmDyeViewReport vRep = new frmDyeViewReport(31, dyeReportOptions);
 
+                UpdateProgressBar("Fabric Dyed Not Finished Summary Report Data", 85);
                 int h = Screen.PrimaryScreen.WorkingArea.Height;
                 int w = Screen.PrimaryScreen.WorkingArea.Width;
+
+                UpdateProgressBar("Fabric Dyed Not Finished Summary Report Data", 95);
                 vRep.ClientSize = new Size(w, h);
                 vRep.ShowDialog(this);
             }
+            UpdateProgressBar("Fabric Dyed Not Finished Summary Report Data", 100);
+            lblDataLoading.Text = "Data Loaded";
+            lblDataLoading.Refresh();
+            this.Cursor = Cursors.Arrow;
         }
-
-        private decimal[] FabricDyedNotFinishedNormalised()
-        {
-            KnitQueryParameters knitQryParams = new KnitQueryParameters();
-            knitQryParams.FromDate = dtpDateFromKPI.Value; // Convert.ToDateTime(dtpDateFromKPI.Value.ToShortDateString());
-            knitQryParams.ToDate = dtpDateToKPI.Value; // Convert.ToDateTime(dtpDateToKPI.Value.ToShortDateString());
-            //knitQryParams.ToDate = knitQryParams.ToDate.AddHours(23.59);
-
-            IList<TLKNI_GreigeProduction> ProdGroups = null;
-            KnitRepository knitRepo = new KnitRepository();
-            decimal greigeProducedGradeA = 0;
-            decimal greigeProducedGradeB = 0;
-            decimal greigeProducedGradeC = 0;
-
-            using (var context = new TTI2Entities())
-            {
-                var Data = knitRepo.GreigeProduction(knitQryParams); // context.TLKNI_GreigeProduction.Where(x => x.GreigeP_PDate >= _opts.fromDate && x.GreigeP_PDate <= _opts.toDate).ToList();
-
-                ProdGroups = Data.Where(x => !x.GreigeP_CommisionCust).ToList();
-
-                foreach (var Greige in context.TLADM_Griege)
-                {
-                    var GProduced = ProdGroups.Where(x => x.GreigeP_Greige_Fk == Greige.TLGreige_Id).ToList();
-
-                    greigeProducedGradeA = greigeProducedGradeA + GProduced.Where(x => x.GreigeP_Grade == "A").Sum(x => (decimal?)x.GreigeP_weight) ?? 0.0M;
-                    greigeProducedGradeB = greigeProducedGradeB + GProduced.Where(x => x.GreigeP_Grade == "B").Sum(x => (decimal?)x.GreigeP_weight) ?? 0.0M;
-                    greigeProducedGradeC = greigeProducedGradeC + GProduced.Where(x => x.GreigeP_Grade == "C").Sum(x => (decimal?)x.GreigeP_weight) ?? 0.0M;
-                }
-            }
-            decimal[] greigeProducedPerGrade = { greigeProducedGradeA, greigeProducedGradeB, greigeProducedGradeC };
-            return greigeProducedPerGrade;
-        }
-
+        
         private void CreateFirstTimeQSGrossButton(decimal totalFabricDyed)
         {
             foreach (Button btn in grpQuarantineStore.Controls.OfType<Button>())
@@ -1788,7 +1869,7 @@ namespace TTI2_WF
                                                 "First Time Dyed (Gross kg)",
                                                 Math.Round(totalFabricDyed, MidpointRounding.AwayFromZero).ToString(), Brushes.Green);
 
-            btnFirstTimeQSGross.Click += new EventHandler(btnFirstTimeQSGross_Click);
+            btnFirstTimeQSGross.Click += new EventHandler(btnFirstTimeQS_Click);
             grpQuarantineStore.Controls.Add(btnFirstTimeQSGross);
         }
 
@@ -1808,7 +1889,7 @@ namespace TTI2_WF
                                                 "Reprocessed (Gross kg)",
                                                 Math.Round(totalReprocessedFabric, MidpointRounding.AwayFromZero).ToString(), Brushes.Red);
 
-            //btnFirstTimeQSGross.Click += new EventHandler(btnFirstTimeQSGross_Click);
+            btnReprocessedQSGross.Click += new EventHandler(btnReprocessedQS_Click);
             grpQuarantineStore.Controls.Add(btnReprocessedQSGross);
         }
 
@@ -1827,7 +1908,7 @@ namespace TTI2_WF
                                                 "First Time Dyed (Nett kg)",
                                                 Math.Round(totalFirstTimeDyed, MidpointRounding.AwayFromZero).ToString(), Brushes.Green);
 
-            //btnFirstTimeQSNett.Click += new EventHandler(btnFirstTimeQSNett_Click);
+            btnFirstTimeQSNett.Click += new EventHandler(btnFirstTimeQS_Click);
             grpQuarantineStore.Controls.Add(btnFirstTimeQSNett);
         }
 
@@ -1846,7 +1927,7 @@ namespace TTI2_WF
                                                 "Reprocessed (Nett kg)",
                                                 Math.Round(totalReprocessedNett, MidpointRounding.AwayFromZero).ToString(), Brushes.Red);
 
-            //btnFirstTimeQSNett.Click += new EventHandler(btnFirstTimeQSNett_Click);
+            btnReprocessedQSNett.Click += new EventHandler(btnReprocessedQS_Click);
             grpQuarantineStore.Controls.Add(btnReprocessedQSNett);
         }
 
@@ -1865,7 +1946,7 @@ namespace TTI2_WF
                                                 "First Time (Normalised)",
                                                 Math.Round(totalFabricDyed, MidpointRounding.AwayFromZero).ToString(), Brushes.Green);
 
-            //btnFirstTimeQSNormalised.Click += new EventHandler(btnFirstTimeQSNormalised_Click);
+            btnFirstTimeQSNormalised.Click += new EventHandler(btnFirstTimeQS_Click);
             grpQuarantineStore.Controls.Add(btnFirstTimeQSNormalised);
         }
 
@@ -1884,7 +1965,7 @@ namespace TTI2_WF
                                                 "Reprocessed (Normalised)",
                                                 Math.Round(totalReprocessedQSNormalised, MidpointRounding.AwayFromZero).ToString(), Brushes.Red);
 
-            //btnFirstTimeQSNormalised.Click += new EventHandler(btnFirstTimeQSNormalised_Click);
+            btnReprocessedQSNormalised.Click += new EventHandler(btnReprocessedQS_Click);
             grpQuarantineStore.Controls.Add(btnReprocessedQSNormalised);
         }
 
@@ -1903,7 +1984,7 @@ namespace TTI2_WF
                                                 "Total Production (Gross Kg)",
                                                 Math.Round(totalFabricStoreGross, MidpointRounding.AwayFromZero).ToString(), Brushes.Green);
 
-            //btnFirstTimeQSNormalised.Click += new EventHandler(btnFirstTimeQSNormalised_Click);
+            btnFabricStoreGross.Click += new EventHandler(btnFabricDyedToFabricStore_Click);
             grpFabricStore.Controls.Add(btnFabricStoreGross);
         }
 
@@ -1923,7 +2004,7 @@ namespace TTI2_WF
                                                 "Total Production (Nett Kg)",
                                                 Math.Round(totalReprocessedQSNormalised, MidpointRounding.AwayFromZero).ToString(), Brushes.Green);
 
-            //btnFirstTimeQSNormalised.Click += new EventHandler(btnFirstTimeQSNormalised_Click);
+            btnFabricStoreNett.Click += new EventHandler(btnFabricDyedToFabricStore_Click);
             grpFabricStore.Controls.Add(btnFabricStoreNett);
         }
 
@@ -1931,19 +2012,82 @@ namespace TTI2_WF
         {
             foreach (Button btn in grpFabricStore.Controls.OfType<Button>())
             {
-                if (btn.Name == "btnReprocessedQSNormalised")
+                if (btn.Name == "btnFabricStoreNormalised")
                 {
                     grpFabricStore.Controls.Remove(btn);
                 }
             }
 
-            Button btnReprocessedQSNormalised = CreateButton(
-                                                "btnReprocessedQSNormalised", 190, 50, 5, 115,
+            Button btnFabricStoreNormalised = CreateButton(
+                                                "btnFabricStoreNormalised", 190, 50, 5, 115,
                                                 "Total Production (Norm)",
                                                 Math.Round(totalReprocessedQSNormalised, MidpointRounding.AwayFromZero).ToString(), Brushes.Green);
 
-            //btnFirstTimeQSNormalised.Click += new EventHandler(btnFirstTimeQSNormalised_Click);
-            grpFabricStore.Controls.Add(btnReprocessedQSNormalised);
+            btnFabricStoreNormalised.Click += new EventHandler(btnFabricDyedToFabricStore_Click);
+            grpFabricStore.Controls.Add(btnFabricStoreNormalised);
+        }
+
+        private void GetCMTProductionTotals()
+        {
+
+            IList<TLCMT_CompletedWork> Completed = new List<TLCMT_CompletedWork>();
+
+            CMTRepository cmtRepo = new CMTRepository();
+
+            decimal garmentWeight = 0;
+            int garmentSum = 0;
+
+            using (var context = new TTI2Entities())
+            {
+
+                //var CompletedWork = context.TLCMT_CompletedWork.AsQueryable(); //.Where(x => x.TLCMTWC_TransactionDate >= KPIFromDate && x.TLCMTWC_TransactionDate <= KPIToDate);
+                var CompletedGrouped = context.TLCMT_CompletedWork.Where(x => x.TLCMTWC_TransactionDate >= KPIFromDate && x.TLCMTWC_TransactionDate <= KPIToDate).GroupBy(x => x.TLCMTWC_CutSheet_FK).ToList();
+
+                garmentWeight = context.TLCMT_CompletedWork.Where(x => x.TLCMTWC_TransactionDate >= KPIFromDate && x.TLCMTWC_TransactionDate <= KPIToDate).Sum(x => (decimal?)x.TLCMTWC_Weight) ?? 0;
+                garmentSum = context.TLCMT_CompletedWork.Where(x => x.TLCMTWC_TransactionDate >= KPIFromDate && x.TLCMTWC_TransactionDate <= KPIToDate).Sum(x => (int?)x.TLCMTWC_Qty) ?? 0;
+
+            }
+
+            CreateCMTProductionGarmentWeightButton(garmentWeight);
+            CreateCMTProductionGarmentUnitsButton(garmentSum);
+        }
+
+        private void CreateCMTProductionGarmentWeightButton(decimal cmtProduction)
+        {
+            foreach (Button btn in grpCMT.Controls.OfType<Button>())
+            {
+                if (btn.Name == "btnCMTProductionGarmentWeight")
+                {
+                    grpCMT.Controls.Remove(btn);
+                }
+            }
+
+            Button btnCMTProductionGarmentWeight = CreateButton(
+                                                "btnCMTProductionGarmentWeight", 190, 50, 5, 55,
+                                                "Garments Prod Weight (kg)",
+                                                Math.Round(cmtProduction, MidpointRounding.AwayFromZero).ToString(), Brushes.Green);
+
+            btnCMTProductionGarmentWeight.Click += new EventHandler(btnCMTProduction_Click);
+            grpCMT.Controls.Add(btnCMTProductionGarmentWeight);
+        }
+
+        private void CreateCMTProductionGarmentUnitsButton(int cmtProduction)
+        {
+            foreach (Button btn in grpCMT.Controls.OfType<Button>())
+            {
+                if (btn.Name == "btnCMTProductionGarmentUnits")
+                {
+                    grpCMT.Controls.Remove(btn);
+                }
+            }
+
+            Button btnCMTProductionGarmentUnits = CreateButton(
+                                                "btnCMTProductionGarmentUnits", 190, 50, 5, 105,
+                                                "Number of Garments (units)",
+                                                cmtProduction.ToString(), Brushes.Green);
+
+            btnCMTProductionGarmentUnits.Click += new EventHandler(btnCMTProduction_Click);
+            grpCMT.Controls.Add(btnCMTProductionGarmentUnits);
         }
 
         private void UpdateProgressBar(string message, int i)
@@ -1997,8 +2141,10 @@ namespace TTI2_WF
                     UpdateProgressBar("Dye Production", 45);
                     GetFabricDyedTotals();
                     //CreateFabricDyedTotalsNormalised();
-                    UpdateProgressBar("Cut Production", 95);
+                    UpdateProgressBar("Cut Production", 85);
                     GetTotalCuttingProduced();
+                    UpdateProgressBar("CMT Production", 95);
+                    GetCMTProductionTotals();
                     UpdateProgressBar("Data loaded", 100);
                 }
             }
@@ -2045,6 +2191,8 @@ namespace TTI2_WF
                     //CreateFabricDyedTotalsNormalised();
                     UpdateProgressBar("Cut Production", 95);
                     GetTotalCuttingProduced();
+                    UpdateProgressBar("CMT Production", 85);
+                    GetCMTProductionTotals();
                     UpdateProgressBar("Data loaded", 100);
                 }
             }
@@ -2055,5 +2203,23 @@ namespace TTI2_WF
                 lblDataLoading.Text = "Data Loading...";
             this.Cursor = Cursors.Arrow;
         }
+
+        private void btnCMTProduction_Click(object sender, EventArgs e)
+        {
+            CMTReportOptions cmtReportOptions = new CMTReportOptions();
+            cmtReportOptions.fromDate = KPIFromDate;
+            cmtReportOptions.toDate = KPIToDate;
+            //cmtReportOptions.toDate = cmtReportOptions.toDate.AddHours(23);
+            cmtReportOptions.NoOfGarments = true;
+
+            CMTQueryParameters QueryParms = new CMTQueryParameters();
+            frmCMTViewRep vRep = new frmCMTViewRep(13, QueryParms, cmtReportOptions);
+            int h = Screen.PrimaryScreen.WorkingArea.Height;
+            int w = Screen.PrimaryScreen.WorkingArea.Width;
+            vRep.ClientSize = new Size(w, h);
+            vRep.ShowDialog(this);
+        }
+
+
     }
 }

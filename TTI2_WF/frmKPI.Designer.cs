@@ -1,4 +1,4 @@
-﻿namespace TTI2_WF
+﻿namespace TTI
 {
     partial class frmKPI
     {
@@ -66,7 +66,7 @@
             this.grpCutting = new System.Windows.Forms.GroupBox();
             this.button4 = new System.Windows.Forms.Button();
             this.lblCutting = new System.Windows.Forms.Label();
-            this.grpbxCMT = new System.Windows.Forms.GroupBox();
+            this.grpCMT = new System.Windows.Forms.GroupBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.button15 = new System.Windows.Forms.Button();
             this.button17 = new System.Windows.Forms.Button();
@@ -108,7 +108,7 @@
             this.grpQuarantineStore.SuspendLayout();
             this.grpDyedFabricNotFinished.SuspendLayout();
             this.grpCutting.SuspendLayout();
-            this.grpbxCMT.SuspendLayout();
+            this.grpCMT.SuspendLayout();
             this.groupBox4.SuspendLayout();
             this.grpbxSpinning.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -495,17 +495,17 @@
             this.lblCutting.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lblCutting.UseMnemonic = false;
             // 
-            // grpbxCMT
+            // grpCMT
             // 
-            this.grpbxCMT.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.grpbxCMT.Controls.Add(this.groupBox4);
-            this.grpbxCMT.Controls.Add(this.button5);
-            this.grpbxCMT.Controls.Add(this.label1);
-            this.grpbxCMT.Location = new System.Drawing.Point(828, 103);
-            this.grpbxCMT.Name = "grpbxCMT";
-            this.grpbxCMT.Size = new System.Drawing.Size(200, 694);
-            this.grpbxCMT.TabIndex = 6;
-            this.grpbxCMT.TabStop = false;
+            this.grpCMT.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.grpCMT.Controls.Add(this.groupBox4);
+            this.grpCMT.Controls.Add(this.button5);
+            this.grpCMT.Controls.Add(this.label1);
+            this.grpCMT.Location = new System.Drawing.Point(828, 103);
+            this.grpCMT.Name = "grpCMT";
+            this.grpCMT.Size = new System.Drawing.Size(200, 694);
+            this.grpCMT.TabIndex = 6;
+            this.grpCMT.TabStop = false;
             // 
             // groupBox4
             // 
@@ -546,6 +546,7 @@
             this.button5.TabIndex = 6;
             this.button5.Text = "Production Total";
             this.button5.UseVisualStyleBackColor = true;
+            this.button5.Visible = false;
             // 
             // label1
             // 
@@ -869,7 +870,7 @@
             this.Controls.Add(this.grpKnitting);
             this.Controls.Add(this.grpDyeing);
             this.Controls.Add(this.grpCutting);
-            this.Controls.Add(this.grpbxCMT);
+            this.Controls.Add(this.grpCMT);
             this.Controls.Add(this.grpbxSpinning);
             this.Name = "frmKPI";
             this.Text = "Key Perfomance Indexes";
@@ -882,7 +883,7 @@
             this.grpQuarantineStore.ResumeLayout(false);
             this.grpDyedFabricNotFinished.ResumeLayout(false);
             this.grpCutting.ResumeLayout(false);
-            this.grpbxCMT.ResumeLayout(false);
+            this.grpCMT.ResumeLayout(false);
             this.groupBox4.ResumeLayout(false);
             this.grpbxSpinning.ResumeLayout(false);
             this.grpbxSpinning.PerformLayout();
@@ -913,7 +914,7 @@
         private System.Windows.Forms.GroupBox grpCutting;
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.Label lblCutting;
-        private System.Windows.Forms.GroupBox grpbxCMT;
+        private System.Windows.Forms.GroupBox grpCMT;
         private System.Windows.Forms.GroupBox groupBox4;
         private System.Windows.Forms.Button button15;
         private System.Windows.Forms.Button button17;
