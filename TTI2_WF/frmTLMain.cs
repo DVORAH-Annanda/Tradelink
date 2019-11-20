@@ -5739,7 +5739,7 @@ namespace TTI2_WF
 
         private void ShowKPIs()
         {
-            frmKPI KPIs = new frmKPI();
+            TTI.frmKPI KPIs = new TTI.frmKPI();
             KPIs.Show();
         }
 
