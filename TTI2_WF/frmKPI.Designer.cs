@@ -1,4 +1,4 @@
-﻿namespace TTI
+﻿namespace TTI2_WF
 {
     partial class frmKPI
     {

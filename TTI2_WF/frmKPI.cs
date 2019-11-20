@@ -19,7 +19,7 @@ using Utilities;
 using TTI2_WF.KPIs.Spinning;
 using TTI2_WF.KPIs.Knitting;
 
-namespace TTI
+namespace TTI2_WF
 {
     public partial class frmKPI : Form
     {
