@@ -1462,7 +1462,7 @@ namespace TTI2_WF
             {
                 var resultFabricNotFinished = (from t in context.TLDYE_DyeBatch
                                                join x in context.TLDYE_DyeTransactions on t.DYEB_Pk equals x.TLDYET_Batch_FK
-                                               where x.TLDYET_Date >= dyeReportOptions.fromDate && x.TLDYET_Date <= dyeReportOptions.toDate && x.TLDYET_Stage == 3
+                                               where x.TLDYET_Date >= dyeReportOptions.fromDate && x.TLDYET_Date <= dyeReportOptions.toDate && x.TLDYET_Stage == 3 && !t.DYEB_Closed 
                                                select new { t, x }).ToList();
 
                 decimal gross = 0;
@@ -1470,19 +1470,23 @@ namespace TTI2_WF
 
                 foreach (var row in resultFabricNotFinished)
                 {
-                    gross = context.TLDYE_DyeBatchDetails.Where(x => x.DYEBD_DyeBatch_FK == row.t.DYEB_Pk).Sum(x => (decimal?)x.DYEBD_GreigeProduction_Weight ?? 0.00M);
-                    var colourDyedFabricNotFinished = colours.FirstOrDefault(s => s.Col_Id == row.t.DYEB_Colour_FK);
-                    string colour = colourDyedFabricNotFinished.Col_Display;
-
-                    if (colourDyedFabricNotFinished.Col_StandardTime > 0)
+                    var DyeBatchDet = context.TLDYE_DyeBatchDetails.Where(x => x.DYEBD_DyeBatch_FK == row.t.DYEB_Pk).ToList();
+                    if (DyeBatchDet.Count > 0)
                     {
-                        var ratio = colourDyedFabricNotFinished.Col_StandardTime / colourBenchMark.Col_StandardTime;
-                        normalised = normalised + (gross * ratio);
-                    }
-                    else
-                        normalised = normalised + 0.00M;
+                        gross = DyeBatchDet.Sum(x => (decimal?)x.DYEBD_GreigeProduction_Weight ?? 0.00M);
+                        var colourDyedFabricNotFinished = colours.FirstOrDefault(s => s.Col_Id == row.t.DYEB_Colour_FK);
+                        string colour = colourDyedFabricNotFinished.Col_Display;
 
-                    totalFabricDyed = totalFabricDyed + gross;
+                        if (colourDyedFabricNotFinished.Col_StandardTime > 0)
+                        {
+                            var ratio = colourDyedFabricNotFinished.Col_StandardTime / colourBenchMark.Col_StandardTime;
+                            normalised = normalised + (gross * ratio);
+                        }
+                        else
+                            normalised = normalised + 0.00M;
+
+                        totalFabricDyed = totalFabricDyed + gross;
+                    }
                 }
                 totalFabricDyedNormalised = normalised;
             }
