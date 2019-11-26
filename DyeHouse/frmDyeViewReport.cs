@@ -1571,9 +1571,12 @@ namespace DyeHouse
             {
                 DataSet ds = new DataSet();
                 DataSet11.DataTable1DataTable datatable1 = new DataSet11.DataTable1DataTable();
+                var _repo = new DyeHouse.DyeRepository();
+                
+                var Existing = _repo.SelectActiveDyeOrders(_parms).ToList();
+
                 using (var context = new TTI2Entities())
                 {
-                    var Existing = context.TLDYE_DyeOrder.Where(x => !x.TLDYO_Closed).ToList();
                     foreach (var row in Existing)
                     {
                         var ExistDetails = context.TLDYE_DyeOrderDetails.Where(x => x.TLDYOD_DyeOrder_Fk == row.TLDYO_Pk && x.TLDYOD_BodyOrTrim).ToList();
@@ -1597,8 +1600,10 @@ namespace DyeHouse
 
                             nr.Style = context.TLADM_Styles.Find(row.TLDYO_Style_FK).Sty_Description;
 
+                            var ProdRating = context.TLADM_ProductRating.Find(Detailrow.TLDYOD_MarkerRating_FK);
+                            if(ProdRating != null)
+                                nr.Sizes = ProdRating.Pr_Display;
 
-                            nr.Sizes = core.DetermineSizes(Detailrow.TLDYOD_MarkerRating_FK);
                             nr.Units = Detailrow.TLDYOD_OriginalUnit;
                             nr.OrderKg = ExistDetails.Sum(x => (decimal ?) x.TLDYOD_Kgs) ?? 0.00M;
 

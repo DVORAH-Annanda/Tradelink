@@ -26,8 +26,7 @@ using Security;
 using System.Xml;
 using System.Net;
 using System.Net.Sockets;
-using EntityFramework.Extensions;
-
+using EntityFramework.Extensions; 
 
 namespace TTI2_WF
 {
@@ -3993,6 +3992,34 @@ namespace TTI2_WF
 
 
 
+        //private void outstandingDyeOrderReportToolStripMenuItem1_Click(object sender, EventArgs e)
+        //{
+        //    ToolStripMenuItem oTi = sender as ToolStripMenuItem;
+        //    if (core.GetUserAuthorisation(ud, oTi.Name))
+        //    {
+        //        try
+        //        {
+        //            frmDyeViewReport vRep = new frmDyeViewReport(10);
+        //            int h = Screen.PrimaryScreen.WorkingArea.Height;
+        //            int w = Screen.PrimaryScreen.WorkingArea.Width;
+        //            vRep.ClientSize = new Size(w, h);
+        //            vRep.ShowDialog(this);
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            MessageBox.Show(ex.Message);
+        //        }
+        //    }
+        //    else
+        //    {
+        //        using (DialogCenteringService centeringService = new DialogCenteringService(this)) // center message box
+        //        {
+        //            MessageBox.Show(ud._NotAuthorisedMessage, ud._UserName);
+        //        }
+        //    }
+
+        //}
+
         private void outstandingDyeOrderReportToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             ToolStripMenuItem oTi = sender as ToolStripMenuItem;
@@ -4000,11 +4027,8 @@ namespace TTI2_WF
             {
                 try
                 {
-                    frmDyeViewReport vRep = new frmDyeViewReport(10);
-                    int h = Screen.PrimaryScreen.WorkingArea.Height;
-                    int w = Screen.PrimaryScreen.WorkingArea.Width;
-                    vRep.ClientSize = new Size(w, h);
-                    vRep.ShowDialog(this);
+                    DyeHouse.frmDyeOrdersSelection repOps = new frmDyeOrdersSelection();
+                    repOps.ShowDialog(this);
                 }
                 catch (Exception ex)
                 {

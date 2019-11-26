@@ -622,6 +622,12 @@
     <Compile Include="frmDyeOrdersSel.Designer.cs">
       <DependentUpon>frmDyeOrdersSel.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmDyeOrdersSelection.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmDyeOrdersSelection.Designer.cs">
+      <DependentUpon>frmDyeOrdersSelection.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmDyeProcessOutput.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -1200,6 +1206,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmDyeOrdersSel.resx">
       <DependentUpon>frmDyeOrdersSel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmDyeOrdersSelection.resx">
+      <DependentUpon>frmDyeOrdersSelection.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmDyeProcessOutput.resx">
       <DependentUpon>frmDyeProcessOutput.cs</DependentUpon>

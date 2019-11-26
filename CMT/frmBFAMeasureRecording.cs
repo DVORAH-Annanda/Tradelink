@@ -386,7 +386,7 @@ namespace CMT
                             Existing = (from ADM_AuditM in context.TLADM_CMTMeasurementPoints
                                         join CMT_AuditM in context.TLCMT_AuditMeasurements on ADM_AuditM.CMTMP_Pk equals CMT_AuditM.CMTBFA_MeasureP_FK
                                         where CMT_AuditM.CMTBFA_Customer_FK == CS.TLCutSH_Customer_FK && CMT_AuditM.CMTBFA_Style_FK == CS.TLCutSH_Styles_FK && CMT_AuditM.CMTBFA_Size_FK == SizeSelected.SI_id
-                                        orderby ADM_AuditM.CMTMP_ShortCode
+                                        orderby ADM_AuditM.CMTMP_DisplayOrder
                                             select CMT_AuditM).ToList();
 
                             foreach (var Record in Existing)

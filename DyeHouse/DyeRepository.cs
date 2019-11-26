@@ -176,6 +176,59 @@ namespace DyeHouse
             return DO;
         }
 
+        public IQueryable<TLDYE_DyeOrder> SelectActiveDyeOrders(DyeQueryParameters parameters)
+        {
+            var DO = _context.TLDYE_DyeOrder.Where(x => !x.TLDYO_Closed).AsQueryable();
+            if (parameters.Customers.Count > 0)
+            {
+                var CustomerPredicate = PredicateBuilder.False<TLDYE_DyeOrder>();
+                foreach (var Customer in parameters.Customers)
+                {
+                    var temp = Customer;
+                    CustomerPredicate = CustomerPredicate.Or(s => s.TLDYO_Customer_FK == temp.Cust_Pk);
+                }
+
+                DO = DO.AsExpandable().Where(CustomerPredicate);
+            }
+            if (parameters.Colours.Count > 0)
+            {
+                var ColourPredicate = PredicateBuilder.False<TLDYE_DyeOrder>();
+
+                foreach (var colour in parameters.Colours)
+                {
+                    var temp = colour;
+                    ColourPredicate = ColourPredicate.Or(s => s.TLDYO_Colour_FK == temp.Col_Id);
+                }
+
+                DO = DO.AsExpandable().Where(ColourPredicate);
+            }
+            if (parameters.Styles.Count > 0)
+            {
+                var StylePredicate = PredicateBuilder.False<TLDYE_DyeOrder>();
+
+                foreach (var Style in parameters.Styles)
+                {
+                    var temp = Style;
+                    StylePredicate = StylePredicate.Or(s => s.TLDYO_Style_FK == temp.Sty_Id);
+                }
+
+                DO = DO.AsExpandable().Where(StylePredicate);
+            }
+            if (parameters.Qualities.Count > 0)
+            {
+                var QualityPredicate = PredicateBuilder.False<TLDYE_DyeOrder>();
+
+                foreach (var Quality in parameters.Qualities)
+                {
+                    var temp = Quality;
+                    QualityPredicate = QualityPredicate.Or(s => s.TLDYO_Greige_FK == temp.TLGreige_Id);
+                }
+
+                DO = DO.AsExpandable().Where(QualityPredicate);
+            }
+            return DO;
+        }
+
         public IQueryable<TLDYE_DyeBatch> SelectCommissionDyeBatches(DyeQueryParameters parameters)
         {
             var DB = _context.TLDYE_DyeBatch.Where(x =>x.DYEB_CommissinCust && x.DYEB_BatchDate >= parameters.FromDate && x.DYEB_BatchDate <= parameters.ToDate).AsQueryable();
@@ -225,16 +278,13 @@ namespace DyeHouse
             if (parameters.DyeBatches.Count > 0)
             {
                 var BatchesPredicate = PredicateBuilder.False<TLDYE_DyeBatch>();
-
                 foreach (var DyeBatch in parameters.DyeBatches)
                 {
                     var temp = DyeBatch;
                     BatchesPredicate = BatchesPredicate.Or(s => s.DYEB_Pk == temp.DYEB_Pk);
                 }
-
                 DB = DB.AsExpandable().Where(BatchesPredicate);
             }
-
             if (parameters.Customers.Count > 0)
             {
                 var CustomerPredicate = PredicateBuilder.False<TLDYE_DyeBatch>();
@@ -243,10 +293,19 @@ namespace DyeHouse
                     var temp = Customer;
                     CustomerPredicate = CustomerPredicate.Or(s => s.DYEB_Customer_FK == temp.Cust_Pk);
                  }
-
                 DB = DB.AsExpandable().Where(CustomerPredicate);
             }
+            if(parameters.Qualities.Count != 0)
+            {
+                var QualitiesPredicate = PredicateBuilder.False<TLDYE_DyeBatch>();
 
+                foreach(var Qual in parameters.Qualities)
+                {
+                    QualitiesPredicate = QualitiesPredicate.Or(s => s.DYEB_Greige_FK == Qual.TLGreige_Id);
+                }
+
+                DB.AsExpandable().Where(QualitiesPredicate);
+            }
             if (parameters.Colours.Count > 0)
             {
                 var ColourPredicate = PredicateBuilder.False<TLDYE_DyeBatch>();
@@ -261,7 +320,7 @@ namespace DyeHouse
             }
             return DB;
         }
-
+        
         public IQueryable<TLDYE_DyeBatch> SelectViewDyeBatches(DyeQueryParameters parameters)
         {
             var DB = _context.TLDYE_DyeBatch.Where(x => x.DYEB_BatchDate >= parameters.FromDate && x.DYEB_BatchDate <= parameters.ToDate && !x.DYEB_Closed && !x.DYEB_CommissinCust ).AsQueryable();

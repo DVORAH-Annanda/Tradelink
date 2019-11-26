@@ -76,7 +76,7 @@ namespace CMT
             _Reprint = Reprint;
         }
 
-        public frmCMTViewRep(int RepNo, CMTQueryParameters QueryParms, CMTReportOptions repOpts)
+        public /*frmCMTViewRep*/(int RepNo, CMTQueryParameters QueryParms, CMTReportOptions repOpts)
         {
             InitializeComponent();
             _RepNo = RepNo;
@@ -790,21 +790,28 @@ namespace CMT
                             nr.ReceiptCage = 0;
                             nr.Bags = Units_Per_Bag;
 
-                            if (!LineIssue.TLCMTLI_WorkCompleted)
+                            if (!LineIssue.TLCMTLI_OnHold)
                             {
-                                if (!LineIssue.TLCMTLI_IssuedToLine)
-                                    nr.ReceiptCage = nr.Total;
+                                if (!LineIssue.TLCMTLI_WorkCompleted)
+                                {
+                                    if (!LineIssue.TLCMTLI_IssuedToLine)
+                                        nr.ReceiptCage = nr.Total;
+                                    else
+                                        nr.Wip = nr.Total;
+                                }
                                 else
-                                    nr.Wip = nr.Total;
+                                {
+                                    var CompletedW = context.TLCMT_CompletedWork.Where(x => x.TLCMTWC_LineIssue_FK == LineIssue.TLCMTLI_Pk).ToList();
+                                    if (CompletedW.Count != 0)
+                                    {
+                                        if (!CompletedW.FirstOrDefault().TLCMTWC_Despatched)
+                                            nr.DespatchCage = CompletedW.Sum(x => (int?)x.TLCMTWC_Qty) ?? 0;
+                                    }
+                                }
                             }
                             else
                             {
-                                var CompletedW = context.TLCMT_CompletedWork.Where(x => x.TLCMTWC_LineIssue_FK == LineIssue.TLCMTLI_Pk).ToList();
-                                if (CompletedW.Count != 0)
-                                {
-                                    if (!CompletedW.FirstOrDefault().TLCMTWC_Despatched)
-                                        nr.DespatchCage = CompletedW.Sum(x => (int?)x.TLCMTWC_Qty) ?? 0;
-                                }
+                                nr.UnitsOnHold = nr.Total;
                             }
 
                             if (nr.Wip + nr.DespatchCage + nr.ReceiptCage == 0)
