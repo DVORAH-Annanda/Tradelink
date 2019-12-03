@@ -197,6 +197,7 @@
         <EntityTypeShape EntityType="TTI2Model.TLKNI_GreigeProduction" Width="1.5" PointX="25.375" PointY="43.75" />
         <EntityTypeShape EntityType="TTI2Model.TLADM_ProductRating" Width="1.5" PointX="44.375" PointY="35.75" />
         <EntityTypeShape EntityType="TTI2Model.TLCMT_AuditMeasurements" Width="1.5" PointX="8.375" PointY="11.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLCMT_HistoryBoxedQty" Width="1.5" PointX="45.375" PointY="31.75" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

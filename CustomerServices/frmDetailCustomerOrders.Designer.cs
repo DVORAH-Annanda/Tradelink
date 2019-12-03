@@ -46,6 +46,7 @@
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.rbStdOrdersOnly = new System.Windows.Forms.RadioButton();
             this.rbProvisionalOrdersOnly = new System.Windows.Forms.RadioButton();
+            this.rbBoth = new System.Windows.Forms.RadioButton();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -203,11 +204,12 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.rbBoth);
             this.groupBox2.Controls.Add(this.rbStdOrdersOnly);
             this.groupBox2.Controls.Add(this.rbProvisionalOrdersOnly);
             this.groupBox2.Location = new System.Drawing.Point(193, 403);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(200, 88);
+            this.groupBox2.Size = new System.Drawing.Size(200, 113);
             this.groupBox2.TabIndex = 12;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Order Class";
@@ -215,7 +217,7 @@
             // rbStdOrdersOnly
             // 
             this.rbStdOrdersOnly.AutoSize = true;
-            this.rbStdOrdersOnly.Location = new System.Drawing.Point(27, 19);
+            this.rbStdOrdersOnly.Location = new System.Drawing.Point(40, 19);
             this.rbStdOrdersOnly.Name = "rbStdOrdersOnly";
             this.rbStdOrdersOnly.Size = new System.Drawing.Size(126, 17);
             this.rbStdOrdersOnly.TabIndex = 1;
@@ -226,13 +228,24 @@
             // rbProvisionalOrdersOnly
             // 
             this.rbProvisionalOrdersOnly.AutoSize = true;
-            this.rbProvisionalOrdersOnly.Location = new System.Drawing.Point(27, 52);
+            this.rbProvisionalOrdersOnly.Location = new System.Drawing.Point(40, 49);
             this.rbProvisionalOrdersOnly.Name = "rbProvisionalOrdersOnly";
             this.rbProvisionalOrdersOnly.Size = new System.Drawing.Size(129, 17);
             this.rbProvisionalOrdersOnly.TabIndex = 0;
             this.rbProvisionalOrdersOnly.TabStop = true;
             this.rbProvisionalOrdersOnly.Text = "Provisional Order Only\r\n";
             this.rbProvisionalOrdersOnly.UseVisualStyleBackColor = true;
+            // 
+            // rbBoth
+            // 
+            this.rbBoth.AutoSize = true;
+            this.rbBoth.Location = new System.Drawing.Point(40, 79);
+            this.rbBoth.Name = "rbBoth";
+            this.rbBoth.Size = new System.Drawing.Size(47, 17);
+            this.rbBoth.TabIndex = 13;
+            this.rbBoth.TabStop = true;
+            this.rbBoth.Text = "Both";
+            this.rbBoth.UseVisualStyleBackColor = true;
             // 
             // frmDetailCustomerOrders
             // 
@@ -280,6 +293,7 @@
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.RadioButton rbStdOrdersOnly;
         private System.Windows.Forms.RadioButton rbProvisionalOrdersOnly;
+        private System.Windows.Forms.RadioButton rbBoth;
         // private System.Windows.Forms.ComboBox comboStyles;
     }
 }

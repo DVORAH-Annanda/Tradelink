@@ -253,6 +253,7 @@
             this.workCompletedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dateRequiredEditFacilityToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.placeCutSheetOnOffHoldToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.boxedQuantyAdjustmentToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.lineConfigurationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.lineConfigurationToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.stabilityCheckConfigurationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -2172,7 +2173,8 @@
             this.cutSheetDownSizeToolStripMenuItem,
             this.workCompletedToolStripMenuItem,
             this.dateRequiredEditFacilityToolStripMenuItem,
-            this.placeCutSheetOnOffHoldToolStripMenuItem});
+            this.placeCutSheetOnOffHoldToolStripMenuItem,
+            this.boxedQuantyAdjustmentToolStripMenuItem});
             this.cMTTransactionsToolStripMenuItem.Name = "cMTTransactionsToolStripMenuItem";
             this.cMTTransactionsToolStripMenuItem.Size = new System.Drawing.Size(213, 22);
             this.cMTTransactionsToolStripMenuItem.Text = "CMT Transactions";
@@ -2253,6 +2255,13 @@
             this.placeCutSheetOnOffHoldToolStripMenuItem.Size = new System.Drawing.Size(253, 22);
             this.placeCutSheetOnOffHoldToolStripMenuItem.Text = "Place CutSheet On / Off Hold";
             this.placeCutSheetOnOffHoldToolStripMenuItem.Click += new System.EventHandler(this.placeCutSheetOnOffHoldToolStripMenuItem_Click);
+            // 
+            // boxedQuantyAdjustmentToolStripMenuItem
+            // 
+            this.boxedQuantyAdjustmentToolStripMenuItem.Name = "boxedQuantyAdjustmentToolStripMenuItem";
+            this.boxedQuantyAdjustmentToolStripMenuItem.Size = new System.Drawing.Size(253, 22);
+            this.boxedQuantyAdjustmentToolStripMenuItem.Text = "Boxed Quanty Adjustment";
+            this.boxedQuantyAdjustmentToolStripMenuItem.Click += new System.EventHandler(this.boxedQuantyAdjustmentToolStripMenuItem_Click);
             // 
             // lineConfigurationToolStripMenuItem
             // 
@@ -2496,6 +2505,7 @@
             this.cMTCutSheetNonComplianceToolStripMenuItem.Name = "cMTCutSheetNonComplianceToolStripMenuItem";
             this.cMTCutSheetNonComplianceToolStripMenuItem.Size = new System.Drawing.Size(320, 22);
             this.cMTCutSheetNonComplianceToolStripMenuItem.Text = "CMT CutSheet Non Compliance ";
+            this.cMTCutSheetNonComplianceToolStripMenuItem.Click += new System.EventHandler(this.cMTCutSheetNonComplianceToolStripMenuItem_Click);
             // 
             // cMTCostingProfitabilityAnalysisToolStripMenuItem
             // 
@@ -4199,5 +4209,6 @@
         private System.Windows.Forms.ToolStripMenuItem sliverProductionReportToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem closeDyeBatchesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem recalculateExpectedUnitsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem boxedQuantyAdjustmentToolStripMenuItem;
     }
 }

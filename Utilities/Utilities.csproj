@@ -364,6 +364,9 @@
     <Compile Include="TLCMT_FactConfig.cs">
       <DependentUpon>TTI2Entities.tt</DependentUpon>
     </Compile>
+    <Compile Include="TLCMT_HistoryBoxedQty.cs">
+      <DependentUpon>TTI2Entities.tt</DependentUpon>
+    </Compile>
     <Compile Include="TLCMT_LineFeederBundleCheck.cs">
       <DependentUpon>TTI2Entities.tt</DependentUpon>
     </Compile>

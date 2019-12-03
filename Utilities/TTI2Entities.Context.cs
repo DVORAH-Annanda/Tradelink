@@ -206,6 +206,7 @@ namespace Utilities
         public virtual DbSet<TLKNI_GreigeProduction> TLKNI_GreigeProduction { get; set; }
         public virtual DbSet<TLADM_ProductRating> TLADM_ProductRating { get; set; }
         public virtual DbSet<TLCMT_AuditMeasurements> TLCMT_AuditMeasurements { get; set; }
+        public virtual DbSet<TLCMT_HistoryBoxedQty> TLCMT_HistoryBoxedQty { get; set; }
     
         public virtual int SelectCottonRecords(Nullable<int> contractNo, Nullable<int> supplierNo)
         {

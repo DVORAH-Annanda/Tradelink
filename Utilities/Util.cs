@@ -935,7 +935,7 @@ namespace Utilities
 
         public decimal CalculatePalletNett(TLKNI_YarnOrderPallets Pallet)
         {
-            Decimal NettValue = (Pallet.TLKNIOP_NettWeight + Pallet.TLKNIOP_AdditionalYarn) - (Pallet.TLKNIOP_NettWeightReturned + Pallet.TLKNIOP_NettWeightReserved);
+            Decimal NettValue = ((Pallet.TLKNIOP_NettWeight - Pallet.TLKNIOP_NettWeightReserved ) + Pallet.TLKNIOP_AdditionalYarn) + Pallet.TLKNIOP_NettWeightReturned;
             return  Math.Round(NettValue, 1);
         }
 

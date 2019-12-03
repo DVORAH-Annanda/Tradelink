@@ -68,6 +68,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BoxQtyHistory.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BoxQtyHistory.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="CheckComboBoxItem.cs" />
     <Compile Include="CMTCostAnalysis.cs">
       <AutoGen>True</AutoGen>
@@ -258,6 +264,19 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>DataSet34.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="DataSet35.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSet35.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="DataSet36.cs">
+      <DependentUpon>DataSet36.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="DataSet36.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSet36.xsd</DependentUpon>
     </Compile>
     <Compile Include="DatesRequired.cs">
       <AutoGen>True</AutoGen>
@@ -453,6 +472,12 @@
     <Compile Include="frmBFASel.Designer.cs">
       <DependentUpon>frmBFASel.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmCMTBoxedQtyAdjustment.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmCMTBoxedQtyAdjustment.Designer.cs">
+      <DependentUpon>frmCMTBoxedQtyAdjustment.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmCMTDateSelection.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -519,18 +544,16 @@
     <Compile Include="frmCMTView.Designer.cs">
       <DependentUpon>frmCMTView.cs</DependentUpon>
     </Compile>
-    <Compile Include="frmCMTViewRep.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmCMTViewRep.Designer.cs">
-      <DependentUpon>frmCMTViewRep.cs</DependentUpon>
-    </Compile>
     <Compile Include="frmCMTPanelIssue.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="frmCMTPanelIssue.Designer.cs">
       <DependentUpon>frmCMTPanelIssue.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmCMTViewRep.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmCMTViewRep.Designer.cs" />
     <Compile Include="frmCMTWip.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -614,6 +637,12 @@
     </Compile>
     <Compile Include="frmNCRByMonth.Designer.cs">
       <DependentUpon>frmNCRByMonth.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmNonComplianceSelection.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmNonComplianceSelection.Designer.cs">
+      <DependentUpon>frmNonComplianceSelection.cs</DependentUpon>
     </Compile>
     <Compile Include="frmOnOffHold.cs">
       <SubType>Form</SubType>
@@ -699,6 +728,12 @@
       <DependentUpon>NCRDetails.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="NonComplianceByCutSheet.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>NonComplianceByCutSheet.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="PanelReceipt.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -753,6 +788,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="BoxQtyHistory.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>BoxQtyHistory.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="CMTCostAnalysis.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>CMTCostAnalysis.cs</LastGenOutput>
@@ -872,6 +911,9 @@
     <EmbeddedResource Include="frmBFASel.resx">
       <DependentUpon>frmBFASel.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="frmCMTBoxedQtyAdjustment.resx">
+      <DependentUpon>frmCMTBoxedQtyAdjustment.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frmCMTDateSelection.resx">
       <DependentUpon>frmCMTDateSelection.cs</DependentUpon>
     </EmbeddedResource>
@@ -905,12 +947,10 @@
     <EmbeddedResource Include="frmCMTView.resx">
       <DependentUpon>frmCMTView.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="frmCMTViewRep.resx">
-      <DependentUpon>frmCMTViewRep.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="frmCMTPanelIssue.resx">
       <DependentUpon>frmCMTPanelIssue.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="frmCMTViewRep.resx" />
     <EmbeddedResource Include="frmCMTWip.resx">
       <DependentUpon>frmCMTWip.cs</DependentUpon>
     </EmbeddedResource>
@@ -952,6 +992,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmNCRByMonth.resx">
       <DependentUpon>frmNCRByMonth.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmNonComplianceSelection.resx">
+      <DependentUpon>frmNonComplianceSelection.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmOnOffHold.resx">
       <DependentUpon>frmOnOffHold.cs</DependentUpon>
@@ -998,6 +1041,10 @@
     <EmbeddedResource Include="NCRDetails.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>NCRDetails.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NonComplianceByCutSheet.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>NonComplianceByCutSheet.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="PanelReceipt.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
@@ -1333,6 +1380,28 @@
     </None>
     <None Include="DataSet34.xss">
       <DependentUpon>DataSet34.xsd</DependentUpon>
+    </None>
+    <None Include="DataSet35.xsc">
+      <DependentUpon>DataSet35.xsd</DependentUpon>
+    </None>
+    <None Include="DataSet35.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSet35.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="DataSet35.xss">
+      <DependentUpon>DataSet35.xsd</DependentUpon>
+    </None>
+    <None Include="DataSet36.xsc">
+      <DependentUpon>DataSet36.xsd</DependentUpon>
+    </None>
+    <None Include="DataSet36.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSet36.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="DataSet36.xss">
+      <DependentUpon>DataSet36.xsd</DependentUpon>
     </None>
     <None Include="DataSet4.xsc">
       <DependentUpon>DataSet4.xsd</DependentUpon>

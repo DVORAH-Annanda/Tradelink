@@ -100,15 +100,6 @@ namespace CMT
             Button oBtn = (Button)sender;
             if (oBtn != null && FormLoaded)
             {
-                var FromDate = Convert.ToDateTime(dtpFromDate.Value.ToShortDateString());
-                var ToDate   = Convert.ToDateTime(dtpToDate.Value.ToShortDateString());
-                ToDate = ToDate.AddHours(23);
-
-                QueryParms.FromDate = FromDate;
-                QueryParms.ToDate = ToDate;
-
-                QueryParms.Year = FromDate.Year;
-                
                 frmCMTViewRep vRep = new frmCMTViewRep(28, QueryParms, false);
                 int h = Screen.PrimaryScreen.WorkingArea.Height;
                 int w = Screen.PrimaryScreen.WorkingArea.Width;

@@ -1179,8 +1179,16 @@ namespace CustomerServices
         }
         public IQueryable<TLCSV_PurchaseOrder>PurchaseOrder(CustomerServicesParameters parameters)
         {
-            var PO = _context.TLCSV_PurchaseOrder.Where(x=>!x.TLCSVPO_Closeed && x.TLCSVPO_Provisional == parameters.IncludeProvisional).AsQueryable();
-                                   
+            IQueryable<TLCSV_PurchaseOrder> PO = null;
+            if (!parameters.Both)
+            {
+                PO = _context.TLCSV_PurchaseOrder.Where(x => !x.TLCSVPO_Closeed && x.TLCSVPO_Provisional == parameters.IncludeProvisional).AsQueryable();
+            }
+            else
+            {
+                PO = _context.TLCSV_PurchaseOrder.Where(x => !x.TLCSVPO_Closeed).AsQueryable();
+            }
+
             if (parameters.Customers.Count() > 0)
             {
                 var CustPredicate = PredicateBuilder.False<TLCSV_PurchaseOrder>();
@@ -1457,6 +1465,7 @@ namespace CustomerServices
         public bool Discontinued;
         public bool GroupByWeek;
         public bool IncludeProvisional;
+        public bool Both;
         public bool TransactHistory;
  
         public CustomerServicesParameters()
@@ -1496,6 +1505,8 @@ namespace CustomerServices
 
             GroupByWeek = false;
             IncludeProvisional = false;
+            Both = false;
+
         }
 
        

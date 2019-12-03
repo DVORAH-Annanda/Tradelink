@@ -83,13 +83,7 @@ namespace Administration
             this.DrawMode = DrawMode.OwnerDrawFixed;
             this.DrawItem += new DrawItemEventHandler(CheckComboBox_DrawItem);
             this.SelectedIndexChanged += new EventHandler(CheckComboBox_SelectedIndexChanged);
-            // this.DropDownClosed += new EventHandler(CheckComboBox_DropDownClosed);
             SelectedText = "Select Options";
-        }
-
-        void CheckComboBox_DropDownClosed(Object sender, EventArgs e)
-        { 
-           // MessageBox.Show("Closed");
         }
 
         /// <summary>
@@ -105,8 +99,6 @@ namespace Administration
             item.CheckState = !item.CheckState;
             if (CheckStateChanged != null)
                 CheckStateChanged(item, e);
-
-
         }
 
         /// <summary>

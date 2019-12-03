@@ -1145,6 +1145,19 @@
           <Property Name="TLCMTCFG_DisplayOrder" Type="int" Nullable="false" />
           <Property Name="TLCMTCFG_CurrentlyOperational" Type="bit" Nullable="false" />
         </EntityType>
+        <EntityType Name="TLCMT_HistoryBoxedQty">
+          <Key>
+            <PropertyRef Name="BoxHist_Pk" />
+          </Key>
+          <Property Name="BoxHist_Pk" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="BoxHist_CutSheet_FK" Type="int" Nullable="false" />
+          <Property Name="BoxHist_CompletedWork_FK" Type="int" Nullable="false" />
+          <Property Name="BoxHist_DateTime" Type="datetime" Nullable="false" />
+          <Property Name="BoxHist_Orignal_Qty" Type="int" Nullable="false" />
+          <Property Name="BoxHist_New_Qty" Type="int" Nullable="false" />
+          <Property Name="BoxHist_Size_FK" Type="int" Nullable="false" />
+          <Property Name="BoxHist_No" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
         <EntityType Name="TLCMT_LineFeederBundleCheck">
           <Key>
             <PropertyRef Name="TLCMTLF_Pk" />
@@ -2945,6 +2958,7 @@
           <EntitySet Name="TLCMT_CompletedWork" EntityType="Self.TLCMT_CompletedWork" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TLCMT_DeflectFlaw" EntityType="Self.TLCMT_DeflectFlaw" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TLCMT_FactConfig" EntityType="Self.TLCMT_FactConfig" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TLCMT_HistoryBoxedQty" EntityType="Self.TLCMT_HistoryBoxedQty" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TLCMT_LineFeederBundleCheck" EntityType="Self.TLCMT_LineFeederBundleCheck" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TLCMT_LineIssue" EntityType="Self.TLCMT_LineIssue" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TLCMT_NonCompliance" EntityType="Self.TLCMT_NonCompliance" Schema="dbo" store:Type="Tables" />
@@ -3712,6 +3726,7 @@
           <EntitySet Name="TLKNI_GreigeProduction" EntityType="TTI2Model.TLKNI_GreigeProduction" />
           <EntitySet Name="TLADM_ProductRating" EntityType="TTI2Model.TLADM_ProductRating" />
           <EntitySet Name="TLCMT_AuditMeasurements" EntityType="TTI2Model.TLCMT_AuditMeasurements" />
+          <EntitySet Name="TLCMT_HistoryBoxedQty" EntityType="TTI2Model.TLCMT_HistoryBoxedQty" />
           </EntityContainer>
         <EntityType Name="TLADM_FabricProduct">
           <Key>
@@ -6458,6 +6473,19 @@
           <Property Name="CMTBFA_Size_FK" Type="Int32" Nullable="false" />
           <Property Name="CMTBFA_MeasureP_FK" Type="Int32" Nullable="false" />
           <Property Name="CMTBFA_Measurement" Type="Decimal" Nullable="false" Precision="18" Scale="4" />
+        </EntityType>
+        <EntityType Name="TLCMT_HistoryBoxedQty">
+          <Key>
+            <PropertyRef Name="BoxHist_Pk" />
+          </Key>
+          <Property Name="BoxHist_Pk" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="BoxHist_CutSheet_FK" Type="Int32" Nullable="false" />
+          <Property Name="BoxHist_CompletedWork_FK" Type="Int32" Nullable="false" />
+          <Property Name="BoxHist_DateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="BoxHist_Orignal_Qty" Type="Int32" Nullable="false" />
+          <Property Name="BoxHist_New_Qty" Type="Int32" Nullable="false" />
+          <Property Name="BoxHist_Size_FK" Type="Int32" Nullable="false" />
+          <Property Name="BoxHist_No" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -9456,6 +9484,20 @@
                 <ScalarProperty Name="CMTBFA_Style_FK" ColumnName="CMTBFA_Style_FK" />
                 <ScalarProperty Name="CMTBFA_Customer_FK" ColumnName="CMTBFA_Customer_FK" />
                 <ScalarProperty Name="CMTBFA_Pk" ColumnName="CMTBFA_Pk" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TLCMT_HistoryBoxedQty">
+            <EntityTypeMapping TypeName="TTI2Model.TLCMT_HistoryBoxedQty">
+              <MappingFragment StoreEntitySet="TLCMT_HistoryBoxedQty">
+                <ScalarProperty Name="BoxHist_No" ColumnName="BoxHist_No" />
+                <ScalarProperty Name="BoxHist_Size_FK" ColumnName="BoxHist_Size_FK" />
+                <ScalarProperty Name="BoxHist_New_Qty" ColumnName="BoxHist_New_Qty" />
+                <ScalarProperty Name="BoxHist_Orignal_Qty" ColumnName="BoxHist_Orignal_Qty" />
+                <ScalarProperty Name="BoxHist_DateTime" ColumnName="BoxHist_DateTime" />
+                <ScalarProperty Name="BoxHist_CompletedWork_FK" ColumnName="BoxHist_CompletedWork_FK" />
+                <ScalarProperty Name="BoxHist_CutSheet_FK" ColumnName="BoxHist_CutSheet_FK" />
+                <ScalarProperty Name="BoxHist_Pk" ColumnName="BoxHist_Pk" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

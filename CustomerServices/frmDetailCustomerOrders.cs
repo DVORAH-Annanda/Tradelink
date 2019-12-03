@@ -213,6 +213,9 @@ namespace CustomerServices
                 if (chkGroupByWeek.Checked)
                     parms.GroupByWeek = true;
 
+                if (rbBoth.Checked)
+                    parms.Both = true;
+
                 frmCSViewRep VRep = new frmCSViewRep(8, parms, svcs);
                 int h = Screen.PrimaryScreen.WorkingArea.Height;
                 int w = Screen.PrimaryScreen.WorkingArea.Width;

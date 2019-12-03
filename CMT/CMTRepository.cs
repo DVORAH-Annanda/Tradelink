@@ -17,6 +17,11 @@ namespace CMT
                 _context = new TTI2Entities();
         }
 
+        public TLCUT_CutSheet LoadCutSheet(int Pk)
+        {
+            return _context.TLCUT_CutSheet.FirstOrDefault(s => s.TLCutSH_Pk == Pk);
+        }
+
         public TLADM_Departments LoadDepartment(int Pk)
         {
             return _context.TLADM_Departments.FirstOrDefault(s => s.Dep_Id == Pk);
@@ -105,8 +110,15 @@ namespace CMT
 
           public IQueryable<TLCMT_NonCompliance> CMTNonCompliance(CMTQueryParameters parameters)
           {
-              var NonCompliance = _context.TLCMT_NonCompliance.Where(x => x.CMTNCD_Year == parameters.Year).AsQueryable();
-
+              IQueryable<TLCMT_NonCompliance> NonComp = null;
+              if (!parameters.UseDatePicker)
+              {
+                  NonComp = _context.TLCMT_NonCompliance.Where(x => x.CMTNCD_Year == parameters.Year).AsQueryable();
+              }
+              else
+              {
+                NonComp = _context.TLCMT_NonCompliance.Where(x => x.CMTNCD_TransDate >= parameters.FromDate && x.CMTNCD_TransDate <= parameters.ToDate).AsQueryable();
+              }
               if (parameters.Styles.Count != 0)
               {
                   var NonCompliancePredicate = PredicateBuilder.False<TLCMT_NonCompliance>();
@@ -115,7 +127,7 @@ namespace CMT
                       NonCompliancePredicate = NonCompliancePredicate.Or(s => s.CMTNCD_Style_FK == Style.Sty_Id);
                   }
 
-                  NonCompliance = NonCompliance.AsExpandable().Where(NonCompliancePredicate);
+                  NonComp = NonComp.AsExpandable().Where(NonCompliancePredicate);
               }
 
               if (parameters.Lines.Count != 0)
@@ -126,10 +138,20 @@ namespace CMT
                       LineCompliancePredicate = LineCompliancePredicate.Or(s => s.CMTNCD_Style_FK == Line.TLCMTCFG_Pk);
                   }
 
-                  NonCompliance = NonCompliance.AsExpandable().Where(LineCompliancePredicate);
+                  NonComp = NonComp.AsExpandable().Where(LineCompliancePredicate);
               }
 
-              return NonCompliance;
+              if(parameters.CutSheets.Count != 0)
+              {
+                var CutSheetPredicate = PredicateBuilder.False<TLCMT_NonCompliance>();
+                foreach (var Line in parameters.CutSheets)
+                {
+                    CutSheetPredicate = CutSheetPredicate.Or(s => s.CMTNCD_CutSheet_Fk == Line.TLCutSH_Pk);
+                }
+
+                NonComp = NonComp.AsExpandable().Where(CutSheetPredicate);
+            }
+            return NonComp;
           }
 
          public IQueryable<TLADM_CMTMeasurementPoints> CMTMeasurementPoints(CMTQueryParameters parameters)
@@ -780,6 +802,7 @@ namespace CMT
         public List<TLADM_Sizes> Sizes;
         public List<TLADM_Colours> Colours;
         public List<TLADM_Styles> Styles;
+        public List<TLCUT_CutSheet> CutSheets;
         public List<TLADM_CustomerFile> Customers;
         public List<TLADM_Departments> Depts;
         public List<TLCMT_FactConfig> Lines;
@@ -790,15 +813,18 @@ namespace CMT
         public List<TLSEC_UserAccess> UserAccesses;
         public bool BillingRecords;
         public bool ViewDataByStyle;
-        public List<TLCMT_NonCompliance> NonCompliances;
+        public List<TLADM_CMTNonCompliance> NonADMCompliances;
         public DateTime FromDate;
         public DateTime ToDate;
         public int Year;
         public int FromStore_FK;
         public bool ProductionResults;
+        public bool UseDatePicker;
+
 
         public CMTQueryParameters()
         {
+            CutSheets = new List<TLCUT_CutSheet>();
             Sizes = new List<TLADM_Sizes>();
             Colours = new List<TLADM_Colours>();
             Styles = new List<TLADM_Styles>();
@@ -815,9 +841,11 @@ namespace CMT
             BillingRecords = false;
             ToDate = DateTime.Now;
             FromDate = DateTime.Now;
-            NonCompliances = new List<TLCMT_NonCompliance>();
+            NonADMCompliances = new List<TLADM_CMTNonCompliance>();
             Year = DateTime.Now.Year;
             ProductionResults = false;
+            UseDatePicker = false;
+
         }
 
     }

@@ -76,7 +76,7 @@ namespace CMT
             _Reprint = Reprint;
         }
 
-        public /*frmCMTViewRep*/(int RepNo, CMTQueryParameters QueryParms, CMTReportOptions repOpts)
+        public frmCMTViewRep(int RepNo, CMTQueryParameters QueryParms, CMTReportOptions repOpts)
         {
             InitializeComponent();
             _RepNo = RepNo;
@@ -639,6 +639,8 @@ namespace CMT
 
                 _repos = new CMTRepository();
                 var LineIssues = _repos.CMTLineIssue(_QueryParms);
+                var fnd = LineIssues.FirstOrDefault(s => s.TLCMTLI_CutSheet_FK == 8726);
+
                 var LineIssuesCw = _repos.CMTLineIssueCW(_QueryParms);
              
                 LineIssues = LineIssues.Concat(LineIssuesCw);
@@ -665,37 +667,11 @@ namespace CMT
                     {
                         ColumnNames[i++][1] = CName[1];
                     }
-                    /*
-                    var Sizes = context.TLADM_Sizes.Where(x => (bool)!x.SI_Discontinued).OrderBy(x => x.SI_DisplayOrder).GroupBy(x => x.SI_ColNumber).ToList();
-                    foreach (var xSize in Sizes)
-                    {
-                        xSize.OrderBy(x => x.SI_DisplayOrder);
-
-                        StringBuilder Sb = new StringBuilder();
-                        foreach (var Item in xSize)
-                        {
-                            Sb.Append(Item.SI_Description + Environment.NewLine);
-                        }
-
-                        foreach (var ColumnName in ColumnNames)
-                        {
-                            if (string.IsNullOrEmpty(ColumnName[1]))
-                            {
-                                ColumnName[1] = Sb.ToString();
-                                break;
-                            }
-                        }
-                    }
-                    */
+                  
 
                     foreach (var LineIssue in LineIssues)
                     {
                         int Units_Per_Bag = 0;
-
-                        if (LineIssue.TLCMTLI_CutSheet_FK == 12499 || LineIssue.TLCMTLI_CutSheet_FK == 10095)
-                        {
-                            int temp = 0;
-                        }
 
                         var CSReceipt = context.TLCUT_CutSheetReceipt.Where(x => x.TLCUTSHR_CutSheet_FK == LineIssue.TLCMTLI_CutSheet_FK).FirstOrDefault();
                         if (CSReceipt != null)
@@ -746,6 +722,8 @@ namespace CMT
                                 nr.Col10 = 0;
                                 nr.Col11 = 0;
                                 nr.Total = 0;
+                                nr.UnitsOnHold = 0;
+
                                 var ExpectedUnitsGrouped = CutSheetDet.GroupBy(x => x.TLCUTSHRD_Size_FK);
                                 foreach (var Group in ExpectedUnitsGrouped)
                                 {
@@ -814,7 +792,7 @@ namespace CMT
                                 nr.UnitsOnHold = nr.Total;
                             }
 
-                            if (nr.Wip + nr.DespatchCage + nr.ReceiptCage == 0)
+                            if (nr.Wip + nr.DespatchCage + nr.ReceiptCage == 0 && !LineIssue.TLCMTLI_OnHold)
                                 continue;
 
                             if (Units_Per_Bag != 0)
@@ -3199,8 +3177,6 @@ namespace CMT
                     var CutOffDate = DateTime.Now.AddDays(LstDayMnth - DateTime.Now.Day + 1).AddYears(-1);
 
                     NonCompliances = _repos.CMTNonCompliance(_QueryParms).ToList();
-                    NonCompliances = NonCompliances.Where(x => x.CMTNCD_TransDate >= _QueryParms.FromDate && x.CMTNCD_TransDate <= _QueryParms.ToDate).ToList();
-
                     var NCGroupedByStyle = NonCompliances.GroupBy(x=>x.CMTNCD_Style_FK);
                     foreach(var StyleGroup in NCGroupedByStyle)
                     {
@@ -3530,7 +3506,7 @@ namespace CMT
 
                 }
             }
-            else if(_RepNo == 33)
+            else if (_RepNo == 33)
             {
                 DataSet ds = new DataSet();
                 DataSet34.DataTable1DataTable dataTable1 = new DataSet34.DataTable1DataTable();
@@ -3555,7 +3531,7 @@ namespace CMT
                         new string[] {"Text30", string.Empty},
                         new string[] {"Text31", string.Empty},
                         new string[] {"Text32", string.Empty}
-                      
+
                     };
 
                     var CNames = core.CreateColumnNames();
@@ -3564,26 +3540,26 @@ namespace CMT
                     {
                         ColumnNames[i++][1] = CName[1];
                     }
-                    
-                    var CSR = _repos.CMTPlanedVsActual(_QueryParms).GroupBy(x=>x.TLCMTWC_CutSheet_FK).ToList() ;
- 
+
+                    var CSR = _repos.CMTPlanedVsActual(_QueryParms).GroupBy(x => x.TLCMTWC_CutSheet_FK).ToList();
+
                     foreach (var row in CSR)
                     {
                         DataSet34.DataTable1Row nr = dataTable1.NewDataTable1Row();
                         nr.Pk = 1;
-                        var CutSht_Pk = row.FirstOrDefault().TLCMTWC_CutSheet_FK; 
+                        var CutSht_Pk = row.FirstOrDefault().TLCMTWC_CutSheet_FK;
                         var CS = context.TLCUT_CutSheet.Find(CutSht_Pk);
                         if (CS != null)
                         {
-                           nr.CustSheet = CS.TLCutSH_No;
+                            nr.CustSheet = CS.TLCutSH_No;
                         }
 
-                        var CMT_Cut_Pk = row.FirstOrDefault().TLCMTWC_CMTFacility_FK; 
+                        var CMT_Cut_Pk = row.FirstOrDefault().TLCMTWC_CMTFacility_FK;
                         // nr.Customer = context.TLADM_WhseStore.Find(CMT_Cut_Pk).WhStore_Description;
                         try
                         {
                             var Colours_Pk = row.FirstOrDefault().TLCMTWC_Colour_FK;
-                            nr.Colour = _Colours.Where(x=>x.Col_Id == Colours_Pk).FirstOrDefault().Col_Display;
+                            nr.Colour = _Colours.Where(x => x.Col_Id == Colours_Pk).FirstOrDefault().Col_Display;
                         }
                         catch (Exception ex)
                         {
@@ -3595,7 +3571,7 @@ namespace CMT
                             nr.Style = _Styles.FirstOrDefault(s => s.Sty_Id == CS.TLCutSH_Styles_FK).Sty_Description;
                         }
 
-                        
+
                         nr.Col1 = 0;
                         nr.Col2 = 0;
                         nr.Col3 = 0;
@@ -3615,34 +3591,34 @@ namespace CMT
                             var Size = _Sizes.FirstOrDefault(s => s.SI_id == SizePk);
                             if (Size != null)
                             {
-                                    var EUnits = Group.Sum(x => (int ?)x.TLCMTWC_Qty ) ?? 0;
-                                    if (Size.SI_ColNumber == 1)
-                                        nr.Col1 += EUnits;
-                                    else if (Size.SI_ColNumber == 2)
-                                        nr.Col2 += EUnits;
-                                    else if (Size.SI_ColNumber == 3)
-                                        nr.Col3 += EUnits;
-                                    else if (Size.SI_ColNumber == 4)
-                                        nr.Col4 += EUnits;
-                                    else if (Size.SI_ColNumber == 5)
-                                        nr.Col5 += EUnits;
-                                    else if (Size.SI_ColNumber == 6)
-                                        nr.Col6 += EUnits;
-                                    else if (Size.SI_ColNumber == 7)
-                                        nr.Col7 += EUnits;
-                                    else if (Size.SI_ColNumber == 8)
-                                        nr.Col8 += EUnits;
-                                    else if (Size.SI_ColNumber == 9)
-                                        nr.Col9 += EUnits;
-                                    else if (Size.SI_ColNumber == 10)
-                                        nr.Col10 += EUnits;
-                                    else
-                                        nr.Col11 += EUnits;
-                                }
+                                var EUnits = Group.Sum(x => (int?)x.TLCMTWC_Qty) ?? 0;
+                                if (Size.SI_ColNumber == 1)
+                                    nr.Col1 += EUnits;
+                                else if (Size.SI_ColNumber == 2)
+                                    nr.Col2 += EUnits;
+                                else if (Size.SI_ColNumber == 3)
+                                    nr.Col3 += EUnits;
+                                else if (Size.SI_ColNumber == 4)
+                                    nr.Col4 += EUnits;
+                                else if (Size.SI_ColNumber == 5)
+                                    nr.Col5 += EUnits;
+                                else if (Size.SI_ColNumber == 6)
+                                    nr.Col6 += EUnits;
+                                else if (Size.SI_ColNumber == 7)
+                                    nr.Col7 += EUnits;
+                                else if (Size.SI_ColNumber == 8)
+                                    nr.Col8 += EUnits;
+                                else if (Size.SI_ColNumber == 9)
+                                    nr.Col9 += EUnits;
+                                else if (Size.SI_ColNumber == 10)
+                                    nr.Col10 += EUnits;
+                                else
+                                    nr.Col11 += EUnits;
+                            }
                         }
 
                         nr.Total = nr.Col1 + nr.Col2 + nr.Col3 + nr.Col4 + nr.Col5 + nr.Col6 + nr.Col7 + nr.Col8 + nr.Col9 + nr.Col10 + nr.Col11;
-                        
+
                         dataTable1.AddDataTable1Row(nr);
                     }
                 }
@@ -3658,13 +3634,13 @@ namespace CMT
                 DataView DataV = dataTable1.DefaultView;
                 DataV.Sort = "CustSheet";
                 ds.Tables.Add(DataV.ToTable());
-                
+
                 DataSet34.DataTable2Row hnr = dataTable2.NewDataTable2Row();
                 hnr.Pk = 1;
                 hnr.FromDate = _QueryParms.FromDate;
                 hnr.ToDate = _QueryParms.ToDate;
                 dataTable2.AddDataTable2Row(hnr);
- 
+
                 ds.Tables.Add(dataTable2);
 
                 CMTProdAnalysis fcon = new CMTProdAnalysis();
@@ -3688,9 +3664,92 @@ namespace CMT
                     }
                 }
             }
-            crystalReportViewer1.Refresh();
+            else if (_RepNo == 34)
+            {
+                DataSet ds = new DataSet();
+                DataSet35.DataTable1DataTable dataTable1 = new DataSet35.DataTable1DataTable();
+               
+                using (var context = new TTI2Entities())
+                {
+                    var CutSheet = context.TLCUT_CutSheet.Find(_RecKey);
+                    if (CutSheet != null)
+                    {
+                        var xStyle = context.TLADM_Styles.Find(CutSheet.TLCutSH_Styles_FK).Sty_Description;
+                        var xColour = context.TLADM_Colours.Find(CutSheet.TLCutSH_Colour_FK).Col_Display;
 
-       }
+                        var Items = context.TLCMT_HistoryBoxedQty.Where(x => x.BoxHist_CutSheet_FK == _RecKey);
+                        foreach (var Item in Items)
+                        {
+                            DataSet35.DataTable1Row nr = dataTable1.NewDataTable1Row();
+
+                            nr.CustSheet = CutSheet.TLCutSH_No;
+                            nr.Style = xStyle;
+                            nr.Colour = xColour;
+
+                            nr.Size = context.TLADM_Sizes.Find(Item.BoxHist_Size_FK).SI_Description;
+                            nr.Prev_Qty = Item.BoxHist_Orignal_Qty;
+                            nr.Current_Qty = Item.BoxHist_New_Qty;
+                            nr.Box_Number = Item.BoxHist_No;
+
+                            dataTable1.AddDataTable1Row(nr);
+
+                            
+                        }
+                    }
+                }
+
+                ds.Tables.Add(dataTable1);
+                BoxQtyHistory BoxH = new BoxQtyHistory();
+                BoxH.SetDataSource(ds);
+                crystalReportViewer1.ReportSource = BoxH;
+
+            }
+            else if (_RepNo == 35)
+            {
+                 DataSet ds = new DataSet();
+                 DataSet36.DataTable1DataTable dataTable1 = new DataSet36.DataTable1DataTable();
+                _repos = new CMTRepository();
+
+                var NCRs = _repos.CMTNonCompliance(_QueryParms);
+
+                using (var context = new TTI2Entities())
+                {
+                    foreach (var NCR in NCRs)
+                    {
+                        var CutSheet = context.TLCUT_CutSheet.Find(NCR.CMTNCD_CutSheet_Fk);
+                        if (CutSheet != null)
+                        {
+                            DataSet36.DataTable1Row nr = dataTable1.NewDataTable1Row();
+                            nr.CutSheetNo = CutSheet.TLCutSH_No;
+                            nr.Style = context.TLADM_Styles.Find(CutSheet.TLCutSH_Styles_FK).Sty_Description;
+                            nr.Colour = context.TLADM_Colours.Find(CutSheet.TLCutSH_Colour_FK).Col_Display;
+
+                            var NcomDesc = context.TLADM_CMTNonCompliance.Find(NCR.CMTNCD_NonCompliance_Fk);
+                            if(NcomDesc != null)
+                            {
+                                nr.NonCompliance = NcomDesc.CMTNC_Description;
+
+                                var FactConfic = context.TLCMT_FactConfig.Find(NCR.CMTNCD_Line_FK);
+                                if(FactConfic != null)
+                                {
+                                    nr.Line_Details = FactConfic.TLCMTCFG_Description;
+                                }
+                            }
+
+                            nr.Date = NCR.CMTNCD_TransDate;
+                            dataTable1.AddDataTable1Row(nr);
+                        }
+                    }
+                }
+
+                ds.Tables.Add(dataTable1);
+                NonComplianceByCutSheet BoxH = new NonComplianceByCutSheet();
+                BoxH.SetDataSource(ds);
+                crystalReportViewer1.ReportSource = BoxH;
+
+            }
+            crystalReportViewer1.Refresh();
+        }
 
         private void releaseObject(object obj)
         {
