@@ -324,6 +324,12 @@
       <DependentUpon>DespatchedNotReceipted.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="frmBillExtract.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmBillExtract.Designer.cs">
+      <DependentUpon>frmBillExtract.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmBoxesDespatchedNoReceipted.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -761,6 +767,9 @@
     <EmbeddedResource Include="DespatchedNotReceipted.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>DespatchedNotReceipted.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmBillExtract.resx">
+      <DependentUpon>frmBillExtract.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmBoxesDespatchedNoReceipted.resx">
       <DependentUpon>frmBoxesDespatchedNoReceipted.cs</DependentUpon>

@@ -64,6 +64,7 @@ namespace CustomerServices
         public frmCustomerOrders()
         {
             InitializeComponent();
+
         }
 
         private void frmCustomerOrders_Load(object sender, EventArgs e)
@@ -776,7 +777,8 @@ namespace CustomerServices
                                 {
                                     if (!String.IsNullOrEmpty(CustSelected.Cust_ContactPersonEmail))
                                     {
-                                        core.SendEmailtoContacts(CustSelected.Cust_ContactPersonEmail, dt , 1, dtp.Value, txtCustomerPO.Text,  txtTransNumber.Text);
+                                        core = new Util();
+                                        core.SendEmailtoContacts(CustSelected.Cust_ContactPersonEmail, dt , 1, DateTime.Now, txtCustomerPO.Text,  txtTransNumber.Text);
                                     }
                                     else
                                     {
@@ -819,104 +821,6 @@ namespace CustomerServices
         }
 
       
-        private void SendEmailtoContacts(string EMailAddress , DataTable _dt,  int MailNo, DateTime Date, string PO, String TransNo )
-        {
-            StringBuilder html = new StringBuilder();
-            string subjectEmail = String.Empty;
-            string bodyEmail = String.Empty;
-
-            if (MailNo == 1)
-            {
-                subjectEmail = "Confirmation of Purchase Order";
-                //Building an HTML string.
-
-                html.Append("<h5>");
-                html.Append("Please find set out below the items ordered as per your purchase order number ");
-                html.Append(PO);
-                html.Append(" dated ");
-                html.Append(Date.ToString("dd/MM/yyyy"));
-                html.Append("</h5>");
-                html.Append("Our reference number is " + TransNo.TrimEnd() + ".");
-                html.Append("<br>");
-                html.Append("Kindly qoute this number in all correspondence");
-                html.Append("</p>");
-                //---------------------------------------------------
-                //Table start.
-                html.Append("<table border = '1'>");
-            }
-            else
-            {
-                subjectEmail = "Confirmation of CMT Picking List Order";
-                html.Append("<h5>");
-                html.Append("Please find set out below the items picked ");
-                html.Append(txtCustomerPO.Text);
-                html.Append(" dated ");
-                html.Append(dtpCustOrderDate.Value.ToString("dd/MM/yyyy"));
-                html.Append("</h5>");
-                html.Append("Our transaction number is " + txtTransNumber.Text.Trim() + ".");
-                html.Append("<br>");
-                html.Append("</p>");
-                //---------------------------------------------------
-                //Table start.
-                html.Append("<table border = '1'>");
-            }
-            //---------------------------------------------
-            //Building the Header row.
-            //-----------------------------------------
-            html.Append("<tr>");
-            foreach (DataColumn column in _dt.Columns)
-            {
-                html.Append("<th>");
-                html.Append(column.ColumnName);
-                html.Append("</th>");
-            }
-            
-            html.Append("</tr>");
-
-            //Building the Data rows.
-            //------------------------------------------------------
-            foreach (DataRow row in _dt.Rows)
-            {
-                html.Append("<tr>");
-                foreach (DataColumn column in dt.Columns)
-                {
-                    html.Append("<td>");
-                    html.Append(row[column.ColumnName]);
-                    html.Append("</td>");
-                }
-                html.Append("</tr>");
-            }
-
-            //Table end.
-            //-----------------------------------------
-            html.Append("</table>");
-            if (MailNo == 1)
-            {
-                html.Append("<p>");
-                html.Append("Please verify the above mentioned details corresponds to your requirements");
-                html.Append("</p>");
-            
-            }
-            
-            bodyEmail = html.ToString();
-
-            core.CreateEmailItem(subjectEmail, EMailAddress , bodyEmail);
-        }
-      
-        private void CreateEmailItem(string subjectEmail, string toEmail, string bodyEmail)
-        {
-            Microsoft.Office.Interop.Outlook.Application app = new Microsoft.Office.Interop.Outlook.Application();
-            Microsoft.Office.Interop.Outlook.MailItem mailItem = app.CreateItem(Microsoft.Office.Interop.Outlook.OlItemType.olMailItem);
-
-            mailItem.Subject = subjectEmail;
-            mailItem.To = toEmail;
-            mailItem.HTMLBody = bodyEmail;
-            mailItem.Importance = Microsoft.Office.Interop.Outlook.OlImportance.olImportanceLow;
-            ((Microsoft.Office.Interop.Outlook._MailItem)mailItem).Send();
-
-        }
-     
-
         private void dataGridView1_RowLeave(object sender, DataGridViewCellEventArgs e)
         {
             DataGridView oDgv = sender as DataGridView;
@@ -1029,8 +933,6 @@ namespace CustomerServices
                                 MessageBox.Show("The Purchase order entered " + oTxt.Text.Trim() + " already exists on file. Please reenter");
                                 e.Cancel = true;
                             }
-
-
                         }
                     }
                     else
@@ -1050,7 +952,6 @@ namespace CustomerServices
                 if (dtpRequiredDate.Value < dtpCustOrderDate.Value)
                 {
                     MessageBox.Show("Required date must be at least one day more than order date");
-                    
                 }
             }
         }

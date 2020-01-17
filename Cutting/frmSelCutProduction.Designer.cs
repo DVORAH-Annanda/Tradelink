@@ -36,12 +36,16 @@
             this.cmboReportOptions = new System.Windows.Forms.ComboBox();
             this.btnSubmit = new System.Windows.Forms.Button();
             this.chkQAReport = new System.Windows.Forms.CheckBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.cmboStyles = new Cutting.CheckComboBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.cmboColours = new Cutting.CheckComboBox();
             this.SuspendLayout();
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(110, 29);
+            this.label1.Location = new System.Drawing.Point(109, 29);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(56, 13);
             this.label1.TabIndex = 0;
@@ -57,7 +61,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(110, 62);
+            this.label2.Location = new System.Drawing.Point(109, 62);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(46, 13);
             this.label2.TabIndex = 2;
@@ -73,7 +77,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(54, 150);
+            this.label3.Location = new System.Drawing.Point(54, 298);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(124, 13);
             this.label3.TabIndex = 4;
@@ -82,7 +86,7 @@
             // cmboReportOptions
             // 
             this.cmboReportOptions.FormattingEnabled = true;
-            this.cmboReportOptions.Location = new System.Drawing.Point(197, 147);
+            this.cmboReportOptions.Location = new System.Drawing.Point(197, 295);
             this.cmboReportOptions.Name = "cmboReportOptions";
             this.cmboReportOptions.Size = new System.Drawing.Size(159, 21);
             this.cmboReportOptions.TabIndex = 5;
@@ -90,7 +94,7 @@
             // 
             // btnSubmit
             // 
-            this.btnSubmit.Location = new System.Drawing.Point(496, 217);
+            this.btnSubmit.Location = new System.Drawing.Point(496, 350);
             this.btnSubmit.Name = "btnSubmit";
             this.btnSubmit.Size = new System.Drawing.Size(75, 23);
             this.btnSubmit.TabIndex = 6;
@@ -108,11 +112,55 @@
             this.chkQAReport.Text = "QA Summary";
             this.chkQAReport.UseVisualStyleBackColor = true;
             // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(96, 147);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(72, 13);
+            this.label4.TabIndex = 8;
+            this.label4.Text = "Select a Style";
+            // 
+            // cmboStyles
+            // 
+            this.cmboStyles.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cmboStyles.FormattingEnabled = true;
+            this.cmboStyles.Location = new System.Drawing.Point(197, 147);
+            this.cmboStyles.Name = "cmboStyles";
+            this.cmboStyles.Size = new System.Drawing.Size(159, 21);
+            this.cmboStyles.TabIndex = 9;
+            this.cmboStyles.Text = "Select Options";
+            this.cmboStyles.SelectedIndexChanged += new System.EventHandler(this.cmboStyles_SelectedIndexChanged);
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(96, 197);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(79, 13);
+            this.label5.TabIndex = 10;
+            this.label5.Text = "Select a Colour";
+            // 
+            // cmboColours
+            // 
+            this.cmboColours.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cmboColours.FormattingEnabled = true;
+            this.cmboColours.Location = new System.Drawing.Point(197, 194);
+            this.cmboColours.Name = "cmboColours";
+            this.cmboColours.Size = new System.Drawing.Size(159, 21);
+            this.cmboColours.TabIndex = 11;
+            this.cmboColours.Text = "Select Options";
+            this.cmboColours.SelectedIndexChanged += new System.EventHandler(this.cmboColours_SelectedIndexChanged);
+            // 
             // frmSelCutProduction
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(583, 261);
+            this.ClientSize = new System.Drawing.Size(583, 385);
+            this.Controls.Add(this.cmboColours);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.cmboStyles);
+            this.Controls.Add(this.label4);
             this.Controls.Add(this.chkQAReport);
             this.Controls.Add(this.btnSubmit);
             this.Controls.Add(this.cmboReportOptions);
@@ -139,5 +187,9 @@
         private System.Windows.Forms.ComboBox cmboReportOptions;
         private System.Windows.Forms.Button btnSubmit;
         private System.Windows.Forms.CheckBox chkQAReport;
+        private System.Windows.Forms.Label label4;
+        private Cutting.CheckComboBox cmboStyles;
+        private System.Windows.Forms.Label label5;
+        private Cutting.CheckComboBox cmboColours;
     }
 }

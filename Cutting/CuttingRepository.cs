@@ -324,6 +324,34 @@ namespace Cutting
             return CSRep;
         }
 
+        public IQueryable<TLCUT_CutSheetReceipt> SelectCutProduction(CuttingQueryParameters parameters)
+        {
+            var CSRep = _context.TLCUT_CutSheetReceipt.Where(x => x.TLCUTSHR_DateIntoPanelStore >= parameters.FromDate && x.TLCUTSHR_DateIntoPanelStore <= parameters.ToDate).AsQueryable();
+
+            if (parameters.Styles.Count != 0)
+            {
+                var CSPredicate = PredicateBuilder.False<TLCUT_CutSheetReceipt>();
+                foreach (var Style in parameters.Styles)
+                {
+                    var temp = Style;
+                    CSPredicate = CSPredicate.Or(s => s.TLCUTSHR_Style_FK == temp.Sty_Id);
+                }
+
+                CSRep = CSRep.AsExpandable().Where(CSPredicate);
+            }
+            if (parameters.Colours.Count != 0)
+            {
+                var ColourPredicate = PredicateBuilder.False<TLCUT_CutSheetReceipt>();
+                foreach (var Colour in parameters.Colours)
+                {
+                    var temp = Colour;
+                    ColourPredicate = ColourPredicate.Or(s => s.TLCUTSHR_Colour_FK == temp.Col_Id);
+                }
+
+                CSRep = CSRep.AsExpandable().Where(ColourPredicate);
+            }
+            return CSRep;
+        }
         public void Dispose()
         {
             if (_context != null)

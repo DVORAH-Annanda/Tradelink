@@ -33,7 +33,7 @@ namespace CustomerServices
             {
                 try
                 {
-                    cmboWareHouse.DataSource = context.TLCSV_BoxSelected.Where(x => !x.TLCSV_Receipted).GroupBy(g => new { g.TLCSV_DNTransNumber}).Select(s=>s.FirstOrDefault()).ToList();
+                    cmboWareHouse.DataSource = context.TLCSV_BoxSelected.Where(x => x.TLCSV_Despatched && !x.TLCSV_Receipted).GroupBy(g => new { g.TLCSV_DNTransNumber}).Select(s=>s.FirstOrDefault()).ToList();
                     cmboWareHouse.ValueMember = "TLCSV_Pk";
                     cmboWareHouse.DisplayMember = "TLCSV_DNDeails";
                     cmboWareHouse.SelectedValue = -1;

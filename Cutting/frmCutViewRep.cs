@@ -872,7 +872,7 @@ namespace Cutting
                 DataSet5.DataTable1DataTable dataTable1 = new DataSet5.DataTable1DataTable();
                 DataSet5.DataTable2DataTable dataTable2 = new DataSet5.DataTable2DataTable();
 
-                IList<TLCUT_CutSheetReceipt> Existing = new List<TLCUT_CutSheetReceipt>();
+                _repo = new CuttingRepository();
 
                 Util core = new Util();
 
@@ -899,17 +899,9 @@ namespace Cutting
                 dtr.ReportTitle = "Cut Production";
                 dataTable1.AddDataTable1Row(dtr);
 
+                var Existing = _repo.SelectCutProduction(_parms).AsQueryable();
                 using (var context = new TTI2Entities())
                 {
-                    try
-                    {
-                        Existing = context.TLCUT_CutSheetReceipt.Where(x => x.TLCUTSHR_DateIntoPanelStore != null && (x.TLCUTSHR_DateIntoPanelStore >= _repopts.fromDate && x.TLCUTSHR_DateIntoPanelStore <= _repopts.toDate)).ToList();
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.Message);
-                    }
-
                     foreach (var row in Existing)
                     {
                         DataRow dr = dt.NewRow();

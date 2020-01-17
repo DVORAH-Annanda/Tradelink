@@ -58,5 +58,7 @@ namespace Utilities
         public bool TLSOH_Is_A { get; set; }
         public Nullable<int> TLSOH_RePackConfig_Fk { get; set; }
         public int TLSOH_CutSheet_FK { get; set; }
+        public bool TLSOH_Invoiced { get; set; }
+        public Nullable<System.DateTime> TLSOH_InvDate { get; set; }
     }
 }

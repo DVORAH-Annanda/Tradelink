@@ -1482,7 +1482,8 @@ namespace TTI2_WF
                         {
                             frmTLADMGardProp aprop = new frmTLADMGardProp(Id, pn, selected.Cust_Pk);
                             aprop.ShowDialog();
-                            oDgv.CurrentCell.Value = aprop.TotalPN.ToString();
+                            if(!aprop.UserFormClosed)
+                               oDgv.CurrentCell.Value = aprop.TotalPN.ToString();
                         }
                     }
                    
@@ -1495,7 +1496,8 @@ namespace TTI2_WF
                             {
                                 frmTLADMGardProp aprop = new frmTLADMGardProp(Id, pn);
                                 aprop.ShowDialog();
-                                oDgv.CurrentCell.Value = aprop.TotalPN.ToString();
+                                if(!aprop.UserFormClosed)
+                                    oDgv.CurrentCell.Value = aprop.TotalPN.ToString();
                             }
                         }
                         else
@@ -1512,7 +1514,8 @@ namespace TTI2_WF
                             pn = Convert.ToInt32(oDgv.Rows[oDgv.CurrentCell.RowIndex].Cells[3].Value);
                             frmTLADMGardProp aprop = new frmTLADMGardProp(Id, pn);
                             aprop.ShowDialog();
-                            oDgv.CurrentCell.Value = aprop.TotalPN.ToString();
+                            if(!aprop.UserFormClosed)
+                                oDgv.CurrentCell.Value = aprop.TotalPN.ToString();
                             
                         }
                         
@@ -1526,7 +1529,8 @@ namespace TTI2_WF
                         {
                             frmTLADMGardProp aprop = new frmTLADMGardProp(Id, pn);
                             aprop.ShowDialog();
-                            oDgv.CurrentCell.Value = aprop.TotalPN.ToString();
+                            if(!aprop.UserFormClosed)
+                                oDgv.CurrentCell.Value = aprop.TotalPN.ToString();
                          }
                     }
                 }

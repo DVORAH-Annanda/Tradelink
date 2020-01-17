@@ -74,6 +74,7 @@
             this.Controls.Add(this.dataGridViewxx);
             this.Name = "frmTLADMGardProp";
             this.Text = "frmTLADMGardProp";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.frmTLADMGardProp_FormClosed);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewxx)).EndInit();
             this.ResumeLayout(false);
 

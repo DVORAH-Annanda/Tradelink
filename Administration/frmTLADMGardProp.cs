@@ -15,6 +15,10 @@ namespace TTI2_WF
     public partial class frmTLADMGardProp : Form
     {
         public int TotalPN;
+        public bool UserFormClosed;
+
+        bool SavedActioned;
+
         // bool nonNumeric;
         Util core = new Util();
         DataGridViewCheckBoxColumn selectedProperty;
@@ -25,7 +29,7 @@ namespace TTI2_WF
         int _CustFK;
         int _TotalPN = 0;
         int _Col = 0;
-        public int[] _TrimKeys = { 0, 0, 0};
+        public int[] _TrimKeys = { 0, 0, 0 };
 
         Administration.AdminQueryParameters Parms;
         Administration.AdminRepository repo;
@@ -35,7 +39,7 @@ namespace TTI2_WF
         public frmTLADMGardProp(int col, int powerN)
         {
             InitializeComponent();
-          
+
             _Col = col;
             _TotalPN = powerN;
             SetUp(col, powerN);
@@ -44,7 +48,7 @@ namespace TTI2_WF
         public frmTLADMGardProp(int col, int powerN, bool DoCheck)
         {
             InitializeComponent();
-          
+
             _Col = col;
             _TotalPN = powerN;
             _DoCheck = DoCheck;
@@ -60,7 +64,7 @@ namespace TTI2_WF
             SetUp(col, powerN);
 
         }
-        public frmTLADMGardProp(int col, int powerN, IList<TLADM_Sizes> sizes )
+        public frmTLADMGardProp(int col, int powerN, IList<TLADM_Sizes> sizes)
         {
             InitializeComponent();
             _Sizes = sizes;
@@ -75,7 +79,7 @@ namespace TTI2_WF
             //===========================================================
             // _TrimKeys  [0] = Style Pk
             //            [1] = Trims Pk
-                        
+
             //============================================================
             _Col = col;             // What part of the program to invoke
             _DoCheck = DoCheck;
@@ -188,19 +192,31 @@ namespace TTI2_WF
                 this.Text = "Please select the fabric attribute as appropriate to this panel ";
 
             }
-
             this.dataGridViewxx.AllowUserToAddRows = false;
             this.dataGridViewxx.AutoGenerateColumns = false;
 
-            if (col == 4020)
+            if (col == 1005 || col == 1006 || col == 1007 || col == 1015 || col == 4020)
             {
                 Parms = new Administration.AdminQueryParameters();
                 repo = new Administration.AdminRepository();
-                this.comboColours.CheckStateChanged += new System.EventHandler(this.cmboColours_CheckStateChanged);
-                
+                if (col == 1005)
+                {
+                    this.comboColours.CheckStateChanged += new System.EventHandler(this.cmboSizes_CheckStateChanged);
+                }
+                else if (col == 1006 || col == 4020)
+                {
+                    this.comboColours.CheckStateChanged += new System.EventHandler(this.cmboColours_CheckStateChanged);
+                }
+                else if (col == 1007)
+                {
+                    this.comboColours.CheckStateChanged += new System.EventHandler(this.cmboTrims_CheckStateChanged);
+                }
+                else
+                {
+                    this.comboColours.CheckStateChanged += new System.EventHandler(this.cmboLabels_CheckStateChanged);
+                }
                 comboColours.Visible = true;
                 this.dataGridViewxx.Visible = false;
-
             }
             else if (col != 2006)
             {
@@ -212,7 +228,7 @@ namespace TTI2_WF
                 powerNumber.HeaderText = "Power Number";
                 powerNumber.DataPropertyName = "Power_Number";
                 powerNumber.Visible = false;
-              
+
 
                 this.dataGridViewxx.Columns.Add(descriptiona);    //0
                 this.dataGridViewxx.Columns.Add(selectedProperty); //1
@@ -232,7 +248,7 @@ namespace TTI2_WF
                 ColourPk.HeaderText = "Colour Pk";
                 ColourPk.DataPropertyName = "Colour_Pk";
                 ColourPk.Visible = false;
-            
+
                 DataGridViewTextBoxColumn ShortCode = new DataGridViewTextBoxColumn();  // 2
                 ShortCode.HeaderText = "Short Code";
                 ShortCode.DataPropertyName = "Short_Code";
@@ -249,72 +265,82 @@ namespace TTI2_WF
                 this.dataGridViewxx.Columns.Add(Description);   //3
             }
 
-          
 
-          
+
+
             using (var context = new TTI2Entities())
             {
                 try
                 {
-
                     if (col == 1005)
                     {
                         IList<TLADM_Sizes> ExistingData;
 
                         if (_Sizes == null)
-                           ExistingData = context.TLADM_Sizes.Where(x => !(bool)x.SI_Discontinued).OrderBy(x => x.SI_DisplayOrder).ToList();
+                            ExistingData = context.TLADM_Sizes.Where(x => !(bool)x.SI_Discontinued).OrderBy(x => x.SI_DisplayOrder).ToList();
                         else
                             ExistingData = _Sizes.Where(x => !(bool)x.SI_Discontinued).OrderBy(x => x.SI_DisplayOrder).ToList();
-                                                                      
+
                         propertyValues = core.ExtrapNumber(powernumber, context.TLADM_Sizes.Count());
 
                         foreach (var row in ExistingData)
                         {
-                            var index = this.dataGridViewxx.Rows.Add();
-                            this.dataGridViewxx.Rows[index].Cells[0].Value = row.SI_Description;
+                            bool flag = false;
 
                             if (propertyValues.Contains((int)row.SI_PowerN))
                             {
-                                this.dataGridViewxx.Rows[index].Cells[1].Value = true;
-                            }
-                            else
-                            {
-                                this.dataGridViewxx.Rows[index].Cells[1].Value = false;
+                                flag = true;
+                                Parms.Sizes.Add(row);
                             }
 
-                            this.dataGridViewxx.Rows[index].Cells[2].Value = row.SI_PowerN;
+                            this.comboColours.Items.Add(new Administration.CheckComboBoxItem(row.SI_id, row.SI_Description, flag));
+
                         }
                     }
                     else if (col == 1006)
                     {
-                        var existingData = context.TLADM_Colours
-                                                       .OrderBy(x => x.Col_Display).ToList();
+                        var CurrentColours = context.TLADM_Colours.Where(x => !(bool)x.Col_Discontinued).OrderBy(x => x.Col_Display).ToList();
 
-                      
+                        var ExistingData = context.TLADM_StyleColour.Where(x => x.STYCOL_Style_FK == _TotalPN).ToList();
 
-                        // propertyValues = core.ExtrapNumber(powernumber, existingData.Count());
-
-                        foreach (var row in existingData)
+                        foreach (var row in CurrentColours)
                         {
-                            var index = this.dataGridViewxx.Rows.Add();
-                            this.dataGridViewxx.Rows[index].Cells[0].Value = row.Col_Display;
+                            bool flag = false;
 
-                            var StyleCol = context.TLADM_StyleColour.Where(x => x.STYCOL_Style_FK == powernumber && x.STYCOL_Colour_FK == row.Col_Id).FirstOrDefault();
-                            if(StyleCol != null)
+                            var GC = ExistingData.Where(x => x.STYCOL_Colour_FK == row.Col_Id).FirstOrDefault();
+
+                            if (GC != null)
                             {
-                                this.dataGridViewxx.Rows[index].Cells[1].Value = true;
-                            }
-                            else
-                            {
-                                this.dataGridViewxx.Rows[index].Cells[1].Value = false;
+                                flag = true;
+                                Parms.Colours.Add(row);
                             }
 
-                            this.dataGridViewxx.Rows[index].Cells[2].Value = row.Col_Id;
-                            
+                            this.comboColours.Items.Add(new Administration.CheckComboBoxItem(row.Col_Id, row.Col_Display, flag));
                         }
+
+
                     }
                     else if (col == 1007)
                     {
+                        var CurrentColours = context.TLADM_Trims.Where(x => !(bool)x.TR_Discontinued).OrderBy(x => x.TR_Description).ToList();
+
+                        var ExistingData = context.TLADM_StyleTrim.Where(x => x.StyTrim_Styles_Fk == _TotalPN).ToList();
+
+                        foreach (var row in CurrentColours)
+                        {
+                            bool flag = false;
+
+                            var GC = ExistingData.FirstOrDefault(x => x.StyTrim_Trim_Fk == row.TR_Id);
+                            if (GC != null)
+                            {
+                                flag = true;
+                                Parms.Trims.Add(row);
+                            }
+
+                            this.comboColours.Items.Add(new Administration.CheckComboBoxItem(row.TR_Id, row.TR_Description, flag));
+                        }
+
+                        /*
                         var Existing = context.TLADM_Trims.Where(x=>!(bool)x.TR_Discontinued).OrderBy(x => x.TR_Description).ToList();
                         foreach (var Row in Existing)
                         {
@@ -327,10 +353,11 @@ namespace TTI2_WF
                             }
                             this.dataGridViewxx.Rows[index].Cells[2].Value = Row.TR_Id;
                         }
+                        */
                     }
                     else if (col == 2006)
                     {
-                        var ExistingData = context.TLADM_AuxColours.Where(x => x.AuxCol_Colour_Fk ==  powernumber).ToList();
+                        var ExistingData = context.TLADM_AuxColours.Where(x => x.AuxCol_Colour_Fk == powernumber).ToList();
                         if (ExistingData.Count == 0)
                         {
                             var index = this.dataGridViewxx.Rows.Add();
@@ -341,7 +368,7 @@ namespace TTI2_WF
                         foreach (var row in ExistingData)
                         {
                             var index = this.dataGridViewxx.Rows.Add();
-                            this.dataGridViewxx.Rows[index].Cells[0].Value = row.AuxCol_Id ;
+                            this.dataGridViewxx.Rows[index].Cells[0].Value = row.AuxCol_Id;
                             this.dataGridViewxx.Rows[index].Cells[1].Value = row.AuxCol_Colour_Fk;
                             this.dataGridViewxx.Rows[index].Cells[2].Value = row.AuxCol_FinishedCode;
                             this.dataGridViewxx.Rows[index].Cells[3].Value = row.AuxCol_Description;
@@ -352,8 +379,8 @@ namespace TTI2_WF
                         var existingData = context.TLADM_AuxColours
                                                         .OrderBy(x => x.AuxCol_Id).ToList();
                     }
-                   else if (col == 1008)
-                   {
+                    else if (col == 1008)
+                    {
                         var existingData = context.TLADM_Griege
                                                        .OrderBy(x => x.TLGreige_Id).ToList();
 
@@ -445,7 +472,7 @@ namespace TTI2_WF
                             }
                             else
                             {
-                               this.dataGridViewxx.Rows[index].Cells[1].Value = false;
+                                this.dataGridViewxx.Rows[index].Cells[1].Value = false;
                             }
 
                             this.dataGridViewxx.Rows[index].Cells[2].Value = row.Pan_PowerN;
@@ -477,7 +504,22 @@ namespace TTI2_WF
                     }
                     else if (col == 1015)
                     {
-                        var existingData = context.TLADM_Labels.OrderBy(x => x.Lbl_Description).ToList();
+                        var ExistingData = context.TLADM_Labels.ToList();
+
+                        foreach (var row in ExistingData)
+                        {
+                            bool flag = false;
+
+                            if (_TotalPN == (int)row.Lbl_Id)
+                            {
+                                flag = true;
+                                Parms.Labels.Add(row);
+                            }
+
+                            this.comboColours.Items.Add(new Administration.CheckComboBoxItem(row.Lbl_Id, row.Lbl_Description, flag));
+                        }
+
+                        /*var existingData = context.TLADM_Labels.OrderBy(x => x.Lbl_Description).ToList();
 
                         foreach (var row in existingData)
                         {
@@ -494,7 +536,8 @@ namespace TTI2_WF
                             }
 
                             this.dataGridViewxx.Rows[index].Cells[2].Value = row.Lbl_Id;
-                        }
+                        }*/
+
                     }
                     else if (col == 4005)
                     {
@@ -565,7 +608,7 @@ namespace TTI2_WF
                             }
                             else
                             {
-                               this.dataGridViewxx.Rows[index].Cells[1].Value = false;
+                                this.dataGridViewxx.Rows[index].Cells[1].Value = false;
                             }
 
                             this.dataGridViewxx.Rows[index].Cells[2].Value = row.FWW_PowerN;
@@ -574,17 +617,17 @@ namespace TTI2_WF
                     }
                     else if (col == 4020)
                     {
-                        var CurrentColours = context.TLADM_Colours.Where(x => !(bool)x.Col_Discontinued).OrderBy(x=>x.Col_Display).ToList();
+                        var CurrentColours = context.TLADM_Colours.Where(x => !(bool)x.Col_Discontinued).OrderBy(x => x.Col_Display).ToList();
 
                         var ExistingData = context.TLADM_GreigeColour.Where(x => x.Grcl_Greige_FK == _TotalPN).ToList();
-                        
+
                         foreach (var row in CurrentColours)
                         {
                             bool flag = false;
 
-                            var GC = ExistingData.Where(x=>x.Grlc_Colour_FK == row.Col_Id).FirstOrDefault();
+                            var GC = ExistingData.Where(x => x.Grlc_Colour_FK == row.Col_Id).FirstOrDefault();
 
-                            if(GC != null)
+                            if (GC != null)
                             {
                                 flag = true;
                                 Parms.Colours.Add(row);
@@ -593,7 +636,7 @@ namespace TTI2_WF
                             this.comboColours.Items.Add(new Administration.CheckComboBoxItem(row.Col_Id, row.Col_Display, flag));
                         }
 
-                        
+
                     }
                     else if (col == 5000)
                     {
@@ -679,8 +722,7 @@ namespace TTI2_WF
                     {
                         var existingData = context.TLADM_FabricAttributes
                                                        .OrderBy(x => x.FbAtrib_Description).ToList();
-
-
+                        
                         propertyValues = core.ExtrapNumber(powernumber, existingData.Count());
 
                         foreach (var row in existingData)
@@ -702,7 +744,7 @@ namespace TTI2_WF
 
                     }
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     MessageBox.Show(ex.Message);
                 }
@@ -714,18 +756,16 @@ namespace TTI2_WF
         //--------------------------------------------------------------------------------------
         private void cmboColours_CheckStateChanged(object sender, EventArgs e)
         {
-
             if (sender is Administration.CheckComboBoxItem)
             {
                 Administration.CheckComboBoxItem item = (Administration.CheckComboBoxItem)sender;
                 if (item.CheckState)
                 {
                     Parms.Colours.Add(repo.LoadColour(item._Pk));
-
-                    var value = Parms.ColoursForDeletion.Find(it => it.Col_Id == item._Pk);
+                    var value = Parms.Colours.Find(it => it.Col_Id == item._Pk);
                     if (value != null)
                     {
-                        Parms.ColoursForDeletion.Remove(value);
+                        value.Col_Added_InSession = true;
                     }
                 }
                 else
@@ -733,24 +773,100 @@ namespace TTI2_WF
                     var value = Parms.Colours.Find(it => it.Col_Id == item._Pk);
                     if (value != null)
                     {
-                        Parms.Colours.Remove(value);
-                        value = Parms.ColoursForDeletion.Find(it => it.Col_Id == item._Pk);
+                        value.Col_Removed_InSession = true;
+
+                    }
+                }
+            }
+        }
+
+        private void cmboLabels_CheckStateChanged(object sender, EventArgs e)
+        {
+            if (sender is Administration.CheckComboBoxItem)
+            {
+                Administration.CheckComboBoxItem item = (Administration.CheckComboBoxItem)sender;
+                if (item.CheckState)
+                {
+                    Parms.Labels.Add(repo.LoadLabels(item._Pk));
+                }
+                else
+                {
+                    var value = Parms.Labels.Find(it => it.Lbl_Id == item._Pk);
+                    if (value != null)
+                    {
+                        Parms.Labels.Remove(value);
+                    }
+                }
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------
+        // this message handler gets called when the user checks/unchecks an item the combo box
+        //--------------------------------------------------------------------------------------
+        private void cmboTrims_CheckStateChanged(object sender, EventArgs e)
+        {
+
+            if (sender is Administration.CheckComboBoxItem)
+            {
+                Administration.CheckComboBoxItem item = (Administration.CheckComboBoxItem)sender;
+                if (item.CheckState)
+                {
+                    Parms.Trims.Add(repo.LoadTrims(item._Pk));
+                    var value = Parms.Trims.Find(it => it.TR_Id == item._Pk);
+                    if (value != null)
+                    {
+                        value.TR_Added_ThisSession = true;
+                    }
+
+                }
+                else
+                {
+                    var value = Parms.Trims.Find(it => it.TR_Id == item._Pk);
+                    if (value != null)
+                    {
+                        Parms.Trims.Remove(value);
+                        value = Parms.Trims.Find(it => it.TR_Id == item._Pk);
                         if (value == null)
                         {
-                            Parms.ColoursForDeletion.Add(value);
+                            value.TR_Removed_ThisSession = true;
                         }
                     }
                 }
             }
         }
 
+        //-------------------------------------------------------------------------------------------
+        // this message handler gets called when the user checks/unchecks an item the combo box
+        //--------------------------------------------------------------------------------------
+        private void cmboSizes_CheckStateChanged(object sender, EventArgs e)
+        {
+
+            if (sender is Administration.CheckComboBoxItem)
+            {
+                Administration.CheckComboBoxItem item = (Administration.CheckComboBoxItem)sender;
+                if (item.CheckState)
+                {
+                    Parms.Sizes.Add(repo.LoadSizes(item._Pk));
+                }
+                else
+                {
+                    var value = Parms.Sizes.Find(it => it.SI_id == item._Pk);
+                    if (value != null)
+                    {
+                        Parms.Sizes.Remove(value);
+                    }
+                }
+            }
+        }
         private void btnSave_Click(object sender, EventArgs e)
         {
             Button oBtn = sender as Button;
-          
+
+            SavedActioned = false;
+
             if (oBtn != null)
             {
-                if (_Col != 1006 && _Col != 1007 && _Col != 2006 && _Col != 4020)
+                if (_Col != 1005 && _Col != 1006 && _Col != 1007 && _Col != 1015 && _Col != 2006 && _Col != 4020)
                 {
                     TotalPN = 0;
                     foreach (DataGridViewRow row in dataGridViewxx.Rows)
@@ -763,55 +879,49 @@ namespace TTI2_WF
                             }
                         }
                     }
-
                 }
-                else if (_Col == 1006)
+                else if (_Col == 1005) // Sizes
+                {
+                    TotalPN = 0;
+                    foreach (var Element in Parms.Sizes)
+                    {
+                        TotalPN += Element.SI_PowerN;
+                    }
+                    SavedActioned = true;
+                }
+                else if (_Col == 1006) // Colours
                 {
                     TLADM_StyleColour StyCol = null;
                     using (var context = new TTI2Entities())
                     {
-                        foreach (DataGridViewRow row in this.dataGridViewxx.Rows)
+                        foreach (var Element in Parms.Colours)
                         {
-                            if ((bool)row.Cells[1].Value == false)
+                            if (Element.Col_Added_InSession)
                             {
-                                if (row.Cells[0].Value != null)
+                                StyCol = context.TLADM_StyleColour.Where(x => x.STYCOL_Style_FK == _TotalPN && x.STYCOL_Colour_FK == Element.Col_Id).FirstOrDefault();
+                                if (StyCol == null)
                                 {
-                                    var index = (int)row.Cells[2].Value;
+                                    StyCol = new TLADM_StyleColour();
+                                    StyCol.STYCOL_Colour_FK = Element.Col_Id;
+                                    StyCol.STYCOL_Style_FK = _TotalPN;
 
-                                    StyCol = context.TLADM_StyleColour.Where(x => x.STYCOL_Style_FK == _TotalPN && x.STYCOL_Colour_FK == index).FirstOrDefault();
-                                    if (StyCol != null)
-                                    {
-                                        if ((bool)row.Cells[1].Value == false)
-                                        {
-                                            context.TLADM_StyleColour.Remove(StyCol);
-                                        }
-                                       
-                                    }
+                                    context.TLADM_StyleColour.Add(StyCol);
                                 }
-                                continue;
                             }
-                            else
+                            if (Element.Col_Removed_InSession)
                             {
-                                if (row.Cells[0].Value != null)
+                                StyCol = context.TLADM_StyleColour.Where(x => x.STYCOL_Style_FK == _TotalPN && x.STYCOL_Colour_FK == Element.Col_Id).FirstOrDefault();
+                                if (StyCol != null)
                                 {
-                                    var index = (int)row.Cells[2].Value;
-
-                                    StyCol = context.TLADM_StyleColour.Where(x => x.STYCOL_Style_FK == _TotalPN && x.STYCOL_Colour_FK == index).FirstOrDefault();
-                                    if (StyCol == null)
-                                    {
-                                            StyCol = new TLADM_StyleColour();
-                                            StyCol.STYCOL_Colour_FK = index;
-                                            StyCol.STYCOL_Style_FK = _TotalPN;
-
-                                            context.TLADM_StyleColour.Add(StyCol);
-                                  
-                                    }
+                                    context.TLADM_StyleColour.Remove(StyCol);
                                 }
                             }
                         }
+
                         try
                         {
                             context.SaveChanges();
+                            SavedActioned = true;
                         }
                         catch (Exception ex)
                         {
@@ -820,28 +930,67 @@ namespace TTI2_WF
                     }
 
                 }
-                else if (_Col == 1007)
+                else if (_Col == 1007) // Ribbing and Trims 
                 {
-                   TLADM_StyleTrim STrim = null;
-                   using (var context = new TTI2Entities())
+                    TLADM_StyleTrim StyTrim = null;
+                    using (var context = new TTI2Entities())
                     {
-                        var SingleRow = (from Rows in dataGridViewxx.Rows.Cast<DataGridViewRow>()
-                                         where (bool)Rows.Cells[1].Value == true
-                                         select Rows).FirstOrDefault();
-                                              
+                        foreach (var Element in Parms.Trims)
+                        {
+
+                            if (Element.TR_Added_ThisSession)
+                            {
+                                StyTrim = context.TLADM_StyleTrim.Where(x => x.StyTrim_Styles_Fk == _TotalPN && x.StyTrim_Pk == Element.TR_Id).FirstOrDefault();
+                                if (StyTrim == null)
+                                {
+                                    StyTrim = new TLADM_StyleTrim();
+                                    StyTrim.StyTrim_Trim_Fk = Element.TR_Id;
+                                    StyTrim.StyTrim_Styles_Fk = _TotalPN;
+
+                                    context.TLADM_StyleTrim.Add(StyTrim);
+                                }
+                            }
+                            if (Element.TR_Removed_ThisSession)
+                            {
+                                StyTrim = context.TLADM_StyleTrim.Where(x => x.StyTrim_Styles_Fk == _TotalPN && x.StyTrim_Pk == Element.TR_Id).FirstOrDefault();
+                                if (StyTrim != null)
+                                {
+                                    context.TLADM_StyleTrim.Remove(StyTrim);
+
+                                    var ProdRating = context.TLADM_ProductRating.FirstOrDefault(s => s.Pr_Style_FK == _TotalPN && s.Pr_Trim_FK == StyTrim.StyTrim_Trim_Fk);
+                                    if (ProdRating != null)
+                                    {
+                                        ProdRating.Pr_Discontinued = true;
+                                        ProdRating.PR_Discontinued_Date = DateTime.Now;
+                                    }
+                                    context.TLADM_StyleTrim.Add(StyTrim);
+                                }
+                            }
+                        }
+                        SavedActioned = true;
                     }
+
+                }
+                else if (_Col == 1015) // Labels 
+                {
+                    TotalPN = 0;
+                    foreach (var Element in Parms.Labels)
+                    {
+                        TotalPN = Element.Lbl_Id;
+                    }
+                    SavedActioned = true;
                 }
                 else if (_Col == 2006)
                 {
                     using (var context = new TTI2Entities())
                     {
-                    
+
                         foreach (DataGridViewRow Row in this.dataGridViewxx.Rows)
                         {
                             TLADM_AuxColours AuxColours = new TLADM_AuxColours();
                             bool Add = false;
 
-                            if(Row.Cells[2].Value == null)
+                            if (Row.Cells[2].Value == null)
                                 continue;
 
                             if (Row.Cells[0].Value == null)
@@ -871,6 +1020,8 @@ namespace TTI2_WF
                         try
                         {
                             context.SaveChanges();
+                            SavedActioned = true;
+
                         }
                         catch (Exception ex)
                         {
@@ -883,30 +1034,33 @@ namespace TTI2_WF
                 {
                     using (var context = new TTI2Entities())
                     {
-                        var ExistingItems = context.TLADM_GreigeColour.Where(x => x.Grcl_Greige_FK == _TotalPN).ToList();
-                        foreach (var Item in Parms.ColoursForDeletion )
-                        {
-                            var DelColour = context.TLADM_GreigeColour.Where(x => x.Grcl_Greige_FK == _TotalPN && x.Grlc_Colour_FK == Item.Col_Id).FirstOrDefault();
-                            if (DelColour != null)
-                                    context.TLADM_GreigeColour.Remove(DelColour);
-
-                        }
                         foreach (var Clr in Parms.Colours)
                         {
-                           var Existing = context.TLADM_GreigeColour.Where(x => x.Grcl_Greige_FK == _TotalPN && x.Grlc_Colour_FK == Clr.Col_Id).FirstOrDefault();
-                           if (Existing != null)
-                               continue;
-                   
-                            var GColour = new TLADM_GreigeColour();
-                            GColour.Grcl_Greige_FK = _TotalPN;
-                            GColour.Grlc_Colour_FK = Clr.Col_Id;
+                            if (Clr.Col_Removed_InSession)
+                            {
+                                var DelColour = context.TLADM_GreigeColour.Where(x => x.Grcl_Greige_FK == _TotalPN && x.Grlc_Colour_FK == Clr.Col_Id).FirstOrDefault();
+                                if (DelColour != null)
+                                    context.TLADM_GreigeColour.Remove(DelColour);
+                            }
+                            if (Clr.Col_Added_InSession)
+                            {
+                                var Existing = context.TLADM_GreigeColour.Where(x => x.Grcl_Greige_FK == _TotalPN && x.Grlc_Colour_FK == Clr.Col_Id).FirstOrDefault();
+                                if (Existing != null)
+                                    continue;
 
-                            context.TLADM_GreigeColour.Add(GColour);
+                                var GColour = new TLADM_GreigeColour();
+                                GColour.Grcl_Greige_FK = _TotalPN;
+                                GColour.Grlc_Colour_FK = Clr.Col_Id;
+
+                                context.TLADM_GreigeColour.Add(GColour);
+                            }
                         }
 
                         try
                         {
                             context.SaveChanges();
+                            SavedActioned = true;
+
                         }
                         catch (Exception ex)
                         {
@@ -916,7 +1070,7 @@ namespace TTI2_WF
 
                 }
             }
-            
+
             this.Close();
         }
 
@@ -968,7 +1122,7 @@ namespace TTI2_WF
                             {
                                 if (CurrentRow.Index == Row.Index)
                                 {
-                                    _TrimKeys[1] = (int)CurrentRow.Cells[2].Value; 
+                                    _TrimKeys[1] = (int)CurrentRow.Cells[2].Value;
                                     continue;
                                 }
 
@@ -977,7 +1131,7 @@ namespace TTI2_WF
 
                             dataGridViewxx.Refresh();
                         }
-                            
+
                     }
                 }
                 else if (_Col == 1015)
@@ -998,7 +1152,15 @@ namespace TTI2_WF
         {
             ComboBox oCmbo = (ComboBox)sender;
             if (oCmbo != null && !oCmbo.DroppedDown)
-                oCmbo.DroppedDown = true; 
+                oCmbo.DroppedDown = true;
+        }
+
+        private void frmTLADMGardProp_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            if (e.CloseReason == CloseReason.UserClosing && !SavedActioned)
+            {
+                this.UserFormClosed = true;
+            }
         }
     }
 }

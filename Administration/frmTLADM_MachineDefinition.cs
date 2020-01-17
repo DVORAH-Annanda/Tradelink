@@ -231,6 +231,7 @@ namespace TTI2_WF
             if (sender is Administration.CheckComboBoxItem && formloaded)
             {
                 Administration.CheckComboBoxItem item = (Administration.CheckComboBoxItem)sender;
+               
                 if (item.CheckState)
                 {
                      DialogResult res = MessageBox.Show("Please confirm wanting to add this record to the database", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
@@ -1138,12 +1139,10 @@ namespace TTI2_WF
                              {
                                  MessageBox.Show(ex.Message);
                              }
-
                          }
                     }
                 }
             }
         }
-   
     }
 }

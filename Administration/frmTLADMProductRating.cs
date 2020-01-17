@@ -793,7 +793,13 @@ namespace TTI2_WF
                         {
                             pr = context.TLADM_ProductRating.Find(DRow.Field<int>(0));
                         }
-                       
+
+                        var Style = (TLADM_Styles)cmbStyles.SelectedItem;
+                        if (Style != null)
+                        {
+                            pr.Pr_Style_FK = Style.Sty_Id;
+                        }
+
                         if (rbBody.Checked)
                         {
                             pr.Pr_BodyorRibbing = 1;
@@ -803,16 +809,20 @@ namespace TTI2_WF
                         {
                             pr.Pr_BodyorRibbing = 0;
                             pr.Pr_Trim_FK = DRow.Field<int>(11);
+
+                            if (!DRow.Field<bool>(10))
+                            {
+                                var StyTrim = context.TLADM_StyleTrim.FirstOrDefault(x => x.StyTrim_Styles_Fk == pr.Pr_Style_FK && x.StyTrim_Trim_Fk == pr.Pr_Trim_FK);
+                                if (StyTrim != null && StyTrim.StyTrim_ProdRating_FK != pr.Pr_Id)
+                                    StyTrim.StyTrim_ProdRating_FK = pr.Pr_Id;
+                            }
                         }
                        
                         var Cust = (TLADM_CustomerFile)cmbLabels.SelectedItem;
                         if (Cust != null)
                             pr.Pr_Customer_FK = Cust.Cust_Pk;
 
-                        var Style = (TLADM_Styles)cmbStyles.SelectedItem;
-                        if (Style != null)
-                            pr.Pr_Style_FK = Style.Sty_Id;
-
+                    
                         pr.Pr_PowerN        = DRow.Field<int>(9);
                         pr.Pr_Discontinued  = DRow.Field<bool>(2);
                         pr.Pr_MultiMarker   = DRow.Field<bool>(8);
@@ -833,6 +843,20 @@ namespace TTI2_WF
                         if (DRow.Field<bool>(10))
                         {
                             context.TLADM_ProductRating.Add(pr);
+                            try
+                            {
+                                context.SaveChanges();
+                                var StyTrim = context.TLADM_StyleTrim.FirstOrDefault(x => x.StyTrim_Styles_Fk == pr.Pr_Style_FK && x.StyTrim_Trim_Fk == pr.Pr_Trim_FK);
+                                if (StyTrim != null)
+                                {
+                                    if (StyTrim.StyTrim_ProdRating_FK != pr.Pr_Id)
+                                        StyTrim.StyTrim_ProdRating_FK = pr.Pr_Id;
+                                }
+                            }
+                            catch(Exception ex)
+                            {
+
+                            }
                         }
                     }
 

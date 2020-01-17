@@ -26,5 +26,7 @@ namespace Utilities
         public bool TR_IsBinding { get; set; }
         public Nullable<int> TR_Size_FK { get; set; }
         public bool TR_IsSizes { get; set; }
+        public bool TR_Added_ThisSession { get; set; }
+        public bool TR_Removed_ThisSession { get; set; }
     }
 }

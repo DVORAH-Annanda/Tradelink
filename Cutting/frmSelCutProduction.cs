@@ -17,9 +17,20 @@ namespace Cutting
         int RepSortOption;
         bool formloaded;
 
+        CutReportOptions repOptions;
+
+        Cutting.CuttingRepository repo;
+        Cutting.CuttingQueryParameters QueryParms;
+
         public frmSelCutProduction()
         {
             InitializeComponent();
+            repo = new CuttingRepository();
+
+            this.cmboStyles.CheckStateChanged += new System.EventHandler(this.cmboStyles_CheckStateChanged);
+            this.cmboColours.CheckStateChanged += new System.EventHandler(this.cmboColours_CheckStateChanged);
+
+          
         }
 
         private void frmSelCutProduction_Load(object sender, EventArgs e)
@@ -38,10 +49,74 @@ namespace Cutting
             cmboReportOptions.DisplayMember = "Value";
             cmboReportOptions.SelectedIndex = -1;
 
+            repOptions = new CutReportOptions();
+
+            QueryParms = new CuttingQueryParameters();
+
             formloaded = true;
 
+            using (var context = new TTI2Entities())
+            {
+                var Styles = context.TLADM_Styles.OrderBy(x => x.Sty_Description).ToList();
+                foreach (var Style in Styles)
+                {
+                    cmboStyles.Items.Add(new Cutting.CheckComboBoxItem(Style.Sty_Id, Style.Sty_Description, false));
+                }
+
+                var Colours = context.TLADM_Colours.Where(x => !(bool)x.Col_Discontinued).OrderBy(x => x.Col_Display).ToList();
+                foreach (var Colour in Colours)
+                {
+                    cmboColours.Items.Add(new Cutting.CheckComboBoxItem(Colour.Col_Id, Colour.Col_Display, false));
+                }
+            }
         }
 
+        //-------------------------------------------------------------------------------------
+        // this message handler gets called when the user checks/unchecks an item the combo box
+        //----------------------------------------------------------------------------------------
+        private void cmboStyles_CheckStateChanged(object sender, EventArgs e)
+        {
+
+            if (sender is Cutting.CheckComboBoxItem && formloaded)
+            {
+                Cutting.CheckComboBoxItem item = (Cutting.CheckComboBoxItem)sender;
+                if (item.CheckState)
+                {
+                    QueryParms.Styles.Add(repo.LoadStyle(item._Pk));
+
+                }
+                else
+                {
+                    var value = QueryParms.Styles.Find(it => it.Sty_Id == item._Pk);
+                    if (value != null)
+                        QueryParms.Styles.Remove(value);
+
+                }
+            }
+        }
+
+        //-------------------------------------------------------------------------------------
+        // this message handler gets called when the user checks/unchecks an item the combo box
+        //----------------------------------------------------------------------------------------
+        private void cmboColours_CheckStateChanged(object sender, EventArgs e)
+        {
+            if (sender is Cutting.CheckComboBoxItem && formloaded)
+            {
+                Cutting.CheckComboBoxItem item = (Cutting.CheckComboBoxItem)sender;
+                if (item.CheckState)
+                {
+                    QueryParms.Colours.Add(repo.LoadColour(item._Pk));
+
+                }
+                else
+                {
+                    var value = QueryParms.Colours.Find(it => it.Col_Id == item._Pk);
+                    if (value != null)
+                        QueryParms.Colours.Remove(value);
+
+                }
+            }
+        }
         private void btnSubmit_Click(object sender, EventArgs e)
         {
             Button oBtn = sender as Button;
@@ -49,7 +124,7 @@ namespace Cutting
             {
                 using (var context = new TTI2Entities())
                 {
-                    CutReportOptions repOptions = new CutReportOptions();
+                   
                     if (chkQAReport.Checked)
                         repOptions.QAReport = true;
 
@@ -58,12 +133,21 @@ namespace Cutting
                     repOptions.toDate = repOptions.toDate.AddHours(23);
                     repOptions.C4SortOption = RepSortOption;
 
-                    frmCutViewRep vRep = new frmCutViewRep(5, repOptions);
+                    QueryParms.FromDate = repOptions.fromDate;
+                    QueryParms.ToDate = repOptions.toDate;
+
+                    frmCutViewRep vRep = new frmCutViewRep(5, repOptions, QueryParms);
                     int h = Screen.PrimaryScreen.WorkingArea.Height;
                     int w = Screen.PrimaryScreen.WorkingArea.Width;
                     vRep.ClientSize = new Size(w, h);
                     vRep.ShowDialog(this);
-                    repOptions = new CutReportOptions();
+                   
+
+                    cmboStyles.Items.Clear();
+                    cmboColours.Items.Clear();
+
+                    frmSelCutProduction_Load(this, null);
+
                 }
             }
         }
@@ -75,6 +159,20 @@ namespace Cutting
             {
                 RepSortOption = Convert.ToInt32(oCmbo.SelectedValue);
             }
+        }
+
+        private void cmboStyles_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ComboBox oCmbo = (ComboBox)sender;
+            if (oCmbo != null && !oCmbo.DroppedDown)
+                oCmbo.DroppedDown = true;
+        }
+
+        private void cmboColours_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ComboBox oCmbo = (ComboBox)sender;
+            if (oCmbo != null && !oCmbo.DroppedDown)
+                oCmbo.DroppedDown = true;
         }
     }
 }

@@ -221,10 +221,13 @@ namespace DyeHouse
                     context.TLDYE_DyeTransactions.Add(tt);
                     try
                     {
-                            context.SaveChanges();
-                            MessageBox.Show("Data succesfully saved to database");
-                            
-                            
+                        context.SaveChanges();
+                        formloaded = false;
+                        dataGridView1.Rows.Clear();
+                        cmboCustomers.SelectedValue = -1;
+                        cmboGreige.SelectedValue = -1;
+                        formloaded = true;
+                        MessageBox.Show("Data succesfully saved to database");
                     }
                     catch (Exception ex)
                     {

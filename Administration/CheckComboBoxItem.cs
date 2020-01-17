@@ -21,17 +21,15 @@ namespace Administration
             _Pk = Pk;
             _checkState = initialCheckState;
             _text = text;
-            _MarkForDeletion = false;
         }
 
         public int _Pk { get; set; }
-
-        public bool _MarkForDeletion { get; set; }
-
+   
         private bool _checkState = false;
         /// <summary>
         /// Gets the check value (true=checked)
         /// </summary>
+               
         public bool CheckState
         {
             get { return _checkState; }
@@ -100,10 +98,10 @@ namespace Administration
             if (CheckStateChanged != null)
                 CheckStateChanged(item, e);
         }
-
+       
         /// <summary>
         /// Invoked when the ComboBox has to render the drop-down items.
-         /// </summary>
+        /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         void CheckComboBox_DrawItem(object sender, DrawItemEventArgs e)

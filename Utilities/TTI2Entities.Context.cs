@@ -134,7 +134,6 @@ namespace Utilities
         public virtual DbSet<TLADM_CutAreaLocations> TLADM_CutAreaLocations { get; set; }
         public virtual DbSet<TLADM_CutMeasureStandards> TLADM_CutMeasureStandards { get; set; }
         public virtual DbSet<TLCUT_QAResults> TLCUT_QAResults { get; set; }
-        public virtual DbSet<TLADM_Trims> TLADM_Trims { get; set; }
         public virtual DbSet<TLADM_Sizes> TLADM_Sizes { get; set; }
         public virtual DbSet<TLCSV_MergePODetail> TLCSV_MergePODetail { get; set; }
         public virtual DbSet<TLADM_WareHouseAssociation> TLADM_WareHouseAssociation { get; set; }
@@ -207,6 +206,7 @@ namespace Utilities
         public virtual DbSet<TLADM_ProductRating> TLADM_ProductRating { get; set; }
         public virtual DbSet<TLCMT_AuditMeasurements> TLCMT_AuditMeasurements { get; set; }
         public virtual DbSet<TLCMT_HistoryBoxedQty> TLCMT_HistoryBoxedQty { get; set; }
+        public virtual DbSet<TLADM_Trims> TLADM_Trims { get; set; }
     
         public virtual int SelectCottonRecords(Nullable<int> contractNo, Nullable<int> supplierNo)
         {

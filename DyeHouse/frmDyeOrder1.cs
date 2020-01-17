@@ -1764,7 +1764,7 @@ namespace DyeHouse
                             dataGridView2.Rows[index].Cells[0].Value = row.TLDYOD_Pk;
                             //==============================================================
                             // because of a change in the way we store the Trims key data 
-                            var StyTrim = context.TLADM_StyleTrim.Where(x => x.StyTrim_Styles_Fk == selected.TLDYO_Style_FK && x.StyTrim_Trim_Fk == row.TLDYOD_Trims_FK).FirstOrDefault();
+                            var StyTrim = context.TLADM_StyleTrim.Where(x => x.StyTrim_Styles_Fk == selected.TLDYO_Style_FK && x.StyTrim_Trim_Fk == row.TLDYOD_Trims_FK && x.StyTrim_ProdRating_FK != 0).FirstOrDefault();
                             if(StyTrim != null)
                                 dataGridView2.Rows[index].Cells[1].Value = StyTrim.StyTrim_ProdRating_FK;
 

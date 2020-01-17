@@ -78,6 +78,8 @@
           <Property Name="Col_Display" Type="varchar" MaxLength="50" />
           <Property Name="Col_StandardTime" Type="decimal" Precision="18" Scale="4" Nullable="false" />
           <Property Name="Col_Benchmark" Type="bit" Nullable="false" />
+          <Property Name="Col_Removed_InSession" Type="bit" Nullable="false" />
+          <Property Name="Col_Added_InSession" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="TLADM_CompanyDetails">
           <Key>
@@ -972,6 +974,8 @@
           <Property Name="TR_IsBinding" Type="bit" Nullable="false" />
           <Property Name="TR_Size_FK" Type="int" />
           <Property Name="TR_IsSizes" Type="bit" Nullable="false" />
+          <Property Name="TR_Added_ThisSession" Type="bit" Nullable="false" />
+          <Property Name="TR_Removed_ThisSession" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="TLADM_UOM">
           <Key>
@@ -1533,6 +1537,8 @@
           <Property Name="TLSOH_Is_A" Type="bit" Nullable="false" />
           <Property Name="TLSOH_RePackConfig_Fk" Type="int" />
           <Property Name="TLSOH_CutSheet_FK" Type="int" Nullable="false" />
+          <Property Name="TLSOH_Invoiced" Type="bit" Nullable="false" />
+          <Property Name="TLSOH_InvDate" Type="datetime" />
         </EntityType>
         <EntityType Name="TLCSV_WhseTransfer">
           <Key>
@@ -3609,7 +3615,6 @@
           <EntitySet Name="TLADM_CutAreaLocations" EntityType="TTI2Model.TLADM_CutAreaLocations" />
           <EntitySet Name="TLADM_CutMeasureStandards" EntityType="TTI2Model.TLADM_CutMeasureStandards" />
           <EntitySet Name="TLCUT_QAResults" EntityType="TTI2Model.TLCUT_QAResults" />
-          <EntitySet Name="TLADM_Trims" EntityType="TTI2Model.TLADM_Trims" />
           <EntitySet Name="TLADM_Sizes" EntityType="TTI2Model.TLADM_Sizes" />
           <AssociationSet Name="FK_TLADM_ConsumablesOther_TLADM_Sizes" Association="TTI2Model.FK_TLADM_ConsumablesOther_TLADM_Sizes">
             <End Role="TLADM_Sizes" EntitySet="TLADM_Sizes" />
@@ -3727,6 +3732,7 @@
           <EntitySet Name="TLADM_ProductRating" EntityType="TTI2Model.TLADM_ProductRating" />
           <EntitySet Name="TLCMT_AuditMeasurements" EntityType="TTI2Model.TLCMT_AuditMeasurements" />
           <EntitySet Name="TLCMT_HistoryBoxedQty" EntityType="TTI2Model.TLCMT_HistoryBoxedQty" />
+          <EntitySet Name="TLADM_Trims" EntityType="TTI2Model.TLADM_Trims" />
           </EntityContainer>
         <EntityType Name="TLADM_FabricProduct">
           <Key>
@@ -5089,23 +5095,6 @@
           <Property Name="TLCUTQA_Col3" Type="Decimal" Nullable="false" Precision="18" Scale="4" />
           <Property Name="TLCUTQA_Col4" Type="Decimal" Nullable="false" Precision="18" Scale="4" />
         </EntityType>
-        <EntityType Name="TLADM_Trims">
-          <Key>
-            <PropertyRef Name="TR_Id" />
-          </Key>
-          <Property Name="TR_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="TR_Description" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="TR_powerN" Type="Int32" Nullable="false" />
-          <Property Name="TR_Discontinued" Type="Boolean" />
-          <Property Name="TR_Discontinued_Date" Type="DateTime" Precision="0" />
-          <Property Name="Tr_Body" Type="Boolean" Nullable="false" />
-          <Property Name="TR_Weight" Type="Int32" Nullable="false" />
-          <Property Name="TR_Width" Type="Int32" Nullable="false" />
-          <Property Name="TR_Greige_FK" Type="Int32" />
-          <Property Name="TR_IsBinding" Type="Boolean" Nullable="false" />
-          <Property Name="TR_Size_FK" Type="Int32" />
-          <Property Name="TR_IsSizes" Type="Boolean" Nullable="false" />
-        </EntityType>
         <EntityType Name="TLADM_Sizes">
           <Key>
             <PropertyRef Name="SI_id" />
@@ -5926,6 +5915,8 @@
           <Property Name="Col_Display" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Col_StandardTime" Type="Decimal" Nullable="false" Precision="18" Scale="4" />
           <Property Name="Col_Benchmark" Type="Boolean" Nullable="false" />
+          <Property Name="Col_Added_InSession" Type="Boolean" Nullable="false" />
+          <Property Name="Col_Removed_InSession" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="TLCSV_PurchaseOrder">
           <Key>
@@ -5991,6 +5982,8 @@
           <Property Name="TLSOH_Is_A" Type="Boolean" Nullable="false" />
           <Property Name="TLSOH_RePackConfig_Fk" Type="Int32" />
           <Property Name="TLSOH_CutSheet_FK" Type="Int32" Nullable="false" />
+          <Property Name="TLSOH_Invoiced" Type="Boolean" Nullable="false" />
+          <Property Name="TLSOH_InvDate" Type="DateTime" Precision="3" />
         </EntityType>
         <EntityType Name="TLADM_Griege">
           <Key>
@@ -6486,6 +6479,25 @@
           <Property Name="BoxHist_New_Qty" Type="Int32" Nullable="false" />
           <Property Name="BoxHist_Size_FK" Type="Int32" Nullable="false" />
           <Property Name="BoxHist_No" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="TLADM_Trims">
+          <Key>
+            <PropertyRef Name="TR_Id" />
+          </Key>
+          <Property Name="TR_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TR_Description" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="TR_powerN" Type="Int32" Nullable="false" />
+          <Property Name="TR_Discontinued" Type="Boolean" />
+          <Property Name="TR_Discontinued_Date" Type="DateTime" Precision="0" />
+          <Property Name="Tr_Body" Type="Boolean" Nullable="false" />
+          <Property Name="TR_Weight" Type="Int32" Nullable="false" />
+          <Property Name="TR_Width" Type="Int32" Nullable="false" />
+          <Property Name="TR_Greige_FK" Type="Int32" />
+          <Property Name="TR_IsBinding" Type="Boolean" Nullable="false" />
+          <Property Name="TR_Size_FK" Type="Int32" />
+          <Property Name="TR_IsSizes" Type="Boolean" Nullable="false" />
+          <Property Name="TR_Added_ThisSession" Type="Boolean" Nullable="false" />
+          <Property Name="TR_Removed_ThisSession" Type="Boolean" Nullable="false" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -8143,24 +8155,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="TLADM_Trims">
-            <EntityTypeMapping TypeName="TTI2Model.TLADM_Trims">
-              <MappingFragment StoreEntitySet="TLADM_Trims">
-                <ScalarProperty Name="TR_IsSizes" ColumnName="TR_IsSizes" />
-                <ScalarProperty Name="TR_Size_FK" ColumnName="TR_Size_FK" />
-                <ScalarProperty Name="TR_IsBinding" ColumnName="TR_IsBinding" />
-                <ScalarProperty Name="TR_Greige_FK" ColumnName="TR_Greige_FK" />
-                <ScalarProperty Name="TR_Width" ColumnName="TR_Width" />
-                <ScalarProperty Name="TR_Weight" ColumnName="TR_Weight" />
-                <ScalarProperty Name="Tr_Body" ColumnName="Tr_Body" />
-                <ScalarProperty Name="TR_Discontinued_Date" ColumnName="TR_Discontinued_Date" />
-                <ScalarProperty Name="TR_Discontinued" ColumnName="TR_Discontinued" />
-                <ScalarProperty Name="TR_powerN" ColumnName="TR_powerN" />
-                <ScalarProperty Name="TR_Description" ColumnName="TR_Description" />
-                <ScalarProperty Name="TR_Id" ColumnName="TR_Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="TLADM_Sizes">
             <EntityTypeMapping TypeName="TTI2Model.TLADM_Sizes">
               <MappingFragment StoreEntitySet="TLADM_Sizes">
@@ -8996,6 +8990,8 @@
           <EntitySetMapping Name="TLADM_Colours">
             <EntityTypeMapping TypeName="TTI2Model.TLADM_Colours">
               <MappingFragment StoreEntitySet="TLADM_Colours">
+                <ScalarProperty Name="Col_Removed_InSession" ColumnName="Col_Removed_InSession" />
+                <ScalarProperty Name="Col_Added_InSession" ColumnName="Col_Added_InSession" />
                 <ScalarProperty Name="Col_Benchmark" ColumnName="Col_Benchmark" />
                 <ScalarProperty Name="Col_StandardTime" ColumnName="Col_StandardTime" />
                 <ScalarProperty Name="Col_Display" ColumnName="Col_Display" />
@@ -9030,6 +9026,8 @@
           <EntitySetMapping Name="TLCSV_StockOnHand">
             <EntityTypeMapping TypeName="TTI2Model.TLCSV_StockOnHand">
               <MappingFragment StoreEntitySet="TLCSV_StockOnHand">
+                <ScalarProperty Name="TLSOH_InvDate" ColumnName="TLSOH_InvDate" />
+                <ScalarProperty Name="TLSOH_Invoiced" ColumnName="TLSOH_Invoiced" />
                 <ScalarProperty Name="TLSOH_CutSheet_FK" ColumnName="TLSOH_CutSheet_FK" />
                 <ScalarProperty Name="TLSOH_RePackConfig_Fk" ColumnName="TLSOH_RePackConfig_Fk" />
                 <ScalarProperty Name="TLSOH_Is_A" ColumnName="TLSOH_Is_A" />
@@ -9498,6 +9496,26 @@
                 <ScalarProperty Name="BoxHist_CompletedWork_FK" ColumnName="BoxHist_CompletedWork_FK" />
                 <ScalarProperty Name="BoxHist_CutSheet_FK" ColumnName="BoxHist_CutSheet_FK" />
                 <ScalarProperty Name="BoxHist_Pk" ColumnName="BoxHist_Pk" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TLADM_Trims">
+            <EntityTypeMapping TypeName="TTI2Model.TLADM_Trims">
+              <MappingFragment StoreEntitySet="TLADM_Trims">
+                <ScalarProperty Name="TR_Removed_ThisSession" ColumnName="TR_Removed_ThisSession" />
+                <ScalarProperty Name="TR_Added_ThisSession" ColumnName="TR_Added_ThisSession" />
+                <ScalarProperty Name="TR_IsSizes" ColumnName="TR_IsSizes" />
+                <ScalarProperty Name="TR_Size_FK" ColumnName="TR_Size_FK" />
+                <ScalarProperty Name="TR_IsBinding" ColumnName="TR_IsBinding" />
+                <ScalarProperty Name="TR_Greige_FK" ColumnName="TR_Greige_FK" />
+                <ScalarProperty Name="TR_Width" ColumnName="TR_Width" />
+                <ScalarProperty Name="TR_Weight" ColumnName="TR_Weight" />
+                <ScalarProperty Name="Tr_Body" ColumnName="Tr_Body" />
+                <ScalarProperty Name="TR_Discontinued_Date" ColumnName="TR_Discontinued_Date" />
+                <ScalarProperty Name="TR_Discontinued" ColumnName="TR_Discontinued" />
+                <ScalarProperty Name="TR_powerN" ColumnName="TR_powerN" />
+                <ScalarProperty Name="TR_Description" ColumnName="TR_Description" />
+                <ScalarProperty Name="TR_Id" ColumnName="TR_Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

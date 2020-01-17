@@ -87,8 +87,6 @@
             this.btnMaintenance = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
-        //    this.cmbGreigeProductType = new System.Windows.Forms.ComboBox();
-            // this.cmbGreigeProductType = new Administration.ColourCombo();
             this.cmbGreigeProductType = new Administration.CheckComboBox();
             this.btnDelete = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
@@ -672,12 +670,15 @@
             // 
             // cmbGreigeProductType
             // 
+            this.cmbGreigeProductType.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
             this.cmbGreigeProductType.FormattingEnabled = true;
             this.cmbGreigeProductType.Location = new System.Drawing.Point(595, 89);
             this.cmbGreigeProductType.Name = "cmbGreigeProductType";
             this.cmbGreigeProductType.Size = new System.Drawing.Size(164, 21);
             this.cmbGreigeProductType.TabIndex = 24;
+            this.cmbGreigeProductType.Text = "Select Options";
             this.cmbGreigeProductType.SelectedIndexChanged += new System.EventHandler(this.cmbGreigeProductType_SelectedIndexChanged);
+           // this.cmbGreigeProductType.MouseUp += new System.Windows.Forms.MouseEventHandler(this.cmbGreigeProductType_MouseUp);
             // 
             // btnDelete
             // 

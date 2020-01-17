@@ -251,22 +251,44 @@ namespace Cutting
                                             var Factor = Math.Round(Yield / Rating * NettWeight, 0);
                                             var tst = core.CalculateRatios(ProdFK, (int)Factor);
 
+                                            bool Add = false;
+
                                             foreach (var row in tst)
                                             {
+                                                Add = false;
+
                                                 decimal EstKg = Math.Round(NettWeight * (row.Value / Factor), 2);
                                                 decimal BindKg = Math.Round(BindWeight * (row.Value / Factor), 2);
                                                 decimal TrimKg = Math.Round(TrimWeight * (row.Value / Factor), 2);
 
                                                 var ExpectUnits = context.TLCUT_ExpectedUnits.FirstOrDefault(x => x.TLCUTE_CutSheet_FK == CutSheet.TLCutSH_Pk && x.TLCUTE_Size_FK == row.Key);
-                                                if (ExpectUnits != null)
+                                                if (ExpectUnits == null)
                                                 {
-                                                    ExpectUnits.TLCUTE_EstNettWeight += EstKg;
-                                                    ExpectUnits.TLCUTE_NoOfBinding += (int)(Yield / Rating) * BindKg;
-                                                    ExpectUnits.TLCUTE_NoOfTrims += (int)(Yield / Rating) * TrimKg;
-                                                    ExpectUnits.TLCUTE_NoofGarments += (int)((Yield / Rating) * EstKg);
-                                                    if (ExpectUnits.TLCUTE_MarkerRatio == 0.00M)
+                                                    ExpectUnits = new TLCUT_ExpectedUnits();
+                                                    ExpectUnits.TLCUTE_CutSheet_FK = CutSheetIndex;
+                                                    ExpectUnits.TLCUTE_Size_FK = row.Key;
+                                                    Add = true;
+                                                }
+
+                                                ExpectUnits.TLCUTE_EstNettWeight += EstKg;
+                                                ExpectUnits.TLCUTE_NoOfBinding += (int)(Yield / Rating) * BindKg;
+                                                ExpectUnits.TLCUTE_NoOfTrims += (int)(Yield / Rating) * TrimKg;
+                                                ExpectUnits.TLCUTE_NoofGarments += (int)((Yield / Rating) * EstKg);
+                                                if (ExpectUnits.TLCUTE_MarkerRatio == 0.00M)
                                                         ExpectUnits.TLCUTE_MarkerRatio = row.Value;
 
+                                                if(Add)
+                                                {
+                                                    context.TLCUT_ExpectedUnits.Add(ExpectUnits);
+
+                                                    try
+                                                    {
+                                                        context.SaveChanges();
+                                                    }
+                                                    catch (Exception ex)
+                                                    {
+                                                        MessageBox.Show(ex.Message);
+                                                    }
                                                 }
                                             }
                                         }
@@ -275,6 +297,7 @@ namespace Cutting
                             }
                             dr[1] = false;
                         }
+                      
                     }
                     try
                     {
@@ -286,6 +309,19 @@ namespace Cutting
                         MessageBox.Show(ex.InnerException.Message);
                     }
                 }
+            }
+        }
+
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            var oDlg = (DataGridView)sender;
+
+            foreach(DataGridViewRow row in dataGridView1.Rows)
+            {
+                if (row.Index == oDlg.CurrentRow.Index)
+                    continue;
+
+                row.Cells[1].Value = false;
             }
         }
     }

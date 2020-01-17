@@ -25,5 +25,7 @@ namespace Utilities
         public string Col_Display { get; set; }
         public decimal Col_StandardTime { get; set; }
         public bool Col_Benchmark { get; set; }
+        public bool Col_Added_InSession { get; set; }
+        public bool Col_Removed_InSession { get; set; }
     }
 }
