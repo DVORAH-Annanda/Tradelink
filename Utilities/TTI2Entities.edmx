@@ -546,6 +546,7 @@
           <Property Name="TLGreige_Meters" Type="int" Nullable="false" />
           <Property Name="TLGreige_FaultsAllowed" Type="int" Nullable="false" />
           <Property Name="TLGreige_IsBoughtIn" Type="bit" Nullable="false" />
+          <Property Name="TLGreige_IsLining" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="TLADM_Labels">
           <Key>
@@ -6012,6 +6013,7 @@
           <Property Name="TLGreige_Meters" Type="Int32" Nullable="false" />
           <Property Name="TLGreige_FaultsAllowed" Type="Int32" Nullable="false" />
           <Property Name="TLGreige_IsBoughtIn" Type="Boolean" Nullable="false" />
+          <Property Name="TLGreige_IsLining" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="TLADM_FabWidth">
           <Key>
@@ -9078,6 +9080,7 @@
           <EntitySetMapping Name="TLADM_Griege">
             <EntityTypeMapping TypeName="TTI2Model.TLADM_Griege">
               <MappingFragment StoreEntitySet="TLADM_Griege">
+                <ScalarProperty Name="TLGreige_IsLining" ColumnName="TLGreige_IsLining" />
                 <ScalarProperty Name="TLGreige_IsBoughtIn" ColumnName="TLGreige_IsBoughtIn" />
                 <ScalarProperty Name="TLGreige_FaultsAllowed" ColumnName="TLGreige_FaultsAllowed" />
                 <ScalarProperty Name="TLGreige_Meters" ColumnName="TLGreige_Meters" />

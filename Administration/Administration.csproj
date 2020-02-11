@@ -212,6 +212,12 @@
     <Compile Include="frmGreigeDefinition.Designer.cs">
       <DependentUpon>frmGreigeDefinition.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmSelectProductRating.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmSelectProductRating.Designer.cs">
+      <DependentUpon>frmSelectProductRating.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmShiftDefinition.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -442,6 +448,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmGreigeDefinition.resx">
       <DependentUpon>frmGreigeDefinition.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmSelectProductRating.resx">
+      <DependentUpon>frmSelectProductRating.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmShiftDefinition.resx">
       <DependentUpon>frmShiftDefinition.cs</DependentUpon>

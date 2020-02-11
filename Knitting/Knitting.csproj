@@ -129,6 +129,12 @@
     <Compile Include="frmYarnReceiptTrans.Designer.cs">
       <DependentUpon>frmYarnReceiptTrans.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmLiningTransaction.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmLiningTransaction.Designer.cs">
+      <DependentUpon>frmLiningTransaction.cs</DependentUpon>
+    </Compile>
     <Compile Include="QualityDescription.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -728,6 +734,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmYarnReceiptTrans.resx">
       <DependentUpon>frmYarnReceiptTrans.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmLiningTransaction.resx">
+      <DependentUpon>frmLiningTransaction.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="QualityDescription.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>

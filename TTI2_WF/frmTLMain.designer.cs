@@ -444,6 +444,7 @@
             this.dataClearDownToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.inUseResetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
+            this.greigeStockLiningsTransactionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             this.SuspendLayout();
@@ -932,7 +933,8 @@
             this.greigeStockAdjustmentsToolStripMenuItem,
             this.greigeReceivedFrom3rdPartiesToolStripMenuItem,
             this.greigeConversionOldSystemToolStripMenuItem,
-            this.greigeStockWriteOffToolStripMenuItem});
+            this.greigeStockWriteOffToolStripMenuItem,
+            this.greigeStockLiningsTransactionsToolStripMenuItem});
             this.greigeTransactionsToolStripMenuItem.Name = "greigeTransactionsToolStripMenuItem";
             this.greigeTransactionsToolStripMenuItem.Size = new System.Drawing.Size(223, 22);
             this.greigeTransactionsToolStripMenuItem.Text = "Knitting Greige Transactions";
@@ -940,21 +942,21 @@
             // greigeProductionRecordingToolStripMenuItem
             // 
             this.greigeProductionRecordingToolStripMenuItem.Name = "greigeProductionRecordingToolStripMenuItem";
-            this.greigeProductionRecordingToolStripMenuItem.Size = new System.Drawing.Size(245, 22);
+            this.greigeProductionRecordingToolStripMenuItem.Size = new System.Drawing.Size(251, 22);
             this.greigeProductionRecordingToolStripMenuItem.Text = "Greige Production & Recording";
             this.greigeProductionRecordingToolStripMenuItem.Click += new System.EventHandler(this.greigeProductionRecordingToolStripMenuItem_Click);
             // 
             // greigeInspectionResultsToolStripMenuItem
             // 
             this.greigeInspectionResultsToolStripMenuItem.Name = "greigeInspectionResultsToolStripMenuItem";
-            this.greigeInspectionResultsToolStripMenuItem.Size = new System.Drawing.Size(245, 22);
+            this.greigeInspectionResultsToolStripMenuItem.Size = new System.Drawing.Size(251, 22);
             this.greigeInspectionResultsToolStripMenuItem.Text = "Greige Inspection Results";
             this.greigeInspectionResultsToolStripMenuItem.Click += new System.EventHandler(this.greigeInspectionResultsToolStripMenuItem_Click);
             // 
             // greigeStockAdjustmentsToolStripMenuItem
             // 
             this.greigeStockAdjustmentsToolStripMenuItem.Name = "greigeStockAdjustmentsToolStripMenuItem";
-            this.greigeStockAdjustmentsToolStripMenuItem.Size = new System.Drawing.Size(245, 22);
+            this.greigeStockAdjustmentsToolStripMenuItem.Size = new System.Drawing.Size(251, 22);
             this.greigeStockAdjustmentsToolStripMenuItem.Text = "Greige Stock Adjustments";
             this.greigeStockAdjustmentsToolStripMenuItem.Click += new System.EventHandler(this.greigeStockAdjustmentsToolStripMenuItem_Click);
             // 
@@ -964,7 +966,7 @@
             this.thirdPartyGreigeReceivedForCommissionDyeingToolStripMenuItem,
             this.thirdPartyGreigeStockAdjustmentsToolStripMenuItem});
             this.greigeReceivedFrom3rdPartiesToolStripMenuItem.Name = "greigeReceivedFrom3rdPartiesToolStripMenuItem";
-            this.greigeReceivedFrom3rdPartiesToolStripMenuItem.Size = new System.Drawing.Size(245, 22);
+            this.greigeReceivedFrom3rdPartiesToolStripMenuItem.Size = new System.Drawing.Size(251, 22);
             this.greigeReceivedFrom3rdPartiesToolStripMenuItem.Text = "Greige Received from 3rd Parties";
             // 
             // thirdPartyGreigeReceivedForCommissionDyeingToolStripMenuItem
@@ -984,14 +986,14 @@
             // greigeConversionOldSystemToolStripMenuItem
             // 
             this.greigeConversionOldSystemToolStripMenuItem.Name = "greigeConversionOldSystemToolStripMenuItem";
-            this.greigeConversionOldSystemToolStripMenuItem.Size = new System.Drawing.Size(245, 22);
+            this.greigeConversionOldSystemToolStripMenuItem.Size = new System.Drawing.Size(251, 22);
             this.greigeConversionOldSystemToolStripMenuItem.Text = "Greige Stock Write On";
             this.greigeConversionOldSystemToolStripMenuItem.Click += new System.EventHandler(this.greigeConversionOldSystemToolStripMenuItem_Click);
             // 
             // greigeStockWriteOffToolStripMenuItem
             // 
             this.greigeStockWriteOffToolStripMenuItem.Name = "greigeStockWriteOffToolStripMenuItem";
-            this.greigeStockWriteOffToolStripMenuItem.Size = new System.Drawing.Size(245, 22);
+            this.greigeStockWriteOffToolStripMenuItem.Size = new System.Drawing.Size(251, 22);
             this.greigeStockWriteOffToolStripMenuItem.Text = "Greige Stock Write Off";
             this.greigeStockWriteOffToolStripMenuItem.Click += new System.EventHandler(this.greigeStockWriteOffToolStripMenuItem_Click);
             // 
@@ -3774,6 +3776,13 @@
             // 
             this.errorProvider1.ContainerControl = this;
             // 
+            // greigeStockLiningsTransactionsToolStripMenuItem
+            // 
+            this.greigeStockLiningsTransactionsToolStripMenuItem.Name = "greigeStockLiningsTransactionsToolStripMenuItem";
+            this.greigeStockLiningsTransactionsToolStripMenuItem.Size = new System.Drawing.Size(251, 22);
+            this.greigeStockLiningsTransactionsToolStripMenuItem.Text = "Greige Stock Linings Transactions";
+            this.greigeStockLiningsTransactionsToolStripMenuItem.Click += new System.EventHandler(this.greigeStockLiningsTransactionsToolStripMenuItem_Click);
+            // 
             // frmTLMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -4210,5 +4219,6 @@
         private System.Windows.Forms.ToolStripMenuItem closeDyeBatchesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem recalculateExpectedUnitsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem boxedQuantyAdjustmentToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem greigeStockLiningsTransactionsToolStripMenuItem;
     }
 }

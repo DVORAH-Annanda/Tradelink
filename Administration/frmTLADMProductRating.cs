@@ -370,7 +370,7 @@ namespace TTI2_WF
                         formloaded = false;
                         cmbStyles.DataSource = context.TLADM_Styles
                                                .Where(x => x.Sty_Label_FK == lblSelected.Cust_Pk)
-                                               .OrderBy(X => X.Sty_Id).ToList();
+                                               .OrderBy(X => X.Sty_Description).ToList();
                         cmbStyles.ValueMember = "Sty_Id";
                         cmbStyles.DisplayMember = "Sty_Description";
                         formloaded = true;

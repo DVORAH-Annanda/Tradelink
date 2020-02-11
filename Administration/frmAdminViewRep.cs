@@ -14,12 +14,20 @@ namespace Administration
     public partial class frmAdminViewRep : Form
     {
         int _RepNo;
-
+        int _RatingsReport;
         public frmAdminViewRep(int RepNo)
         {
             InitializeComponent();
             _RepNo = RepNo;
         }
+
+        public frmAdminViewRep(int RepNo, int Rating)
+        {
+            InitializeComponent();
+            _RepNo = RepNo;
+            _RatingsReport = Rating;
+        }
+
 
         private void ViewLoad(object sender, EventArgs e)
         {
@@ -556,11 +564,21 @@ namespace Administration
                 DataSet12.DataTable1DataTable dataTable1 = new DataSet12.DataTable1DataTable();
                 DataSet12.DataTable2DataTable dataTable2 = new DataSet12.DataTable2DataTable();
                 Util core = new Util();
-                IList<int> Sizes = null;
+                // IList<int> Sizes = null;
+                IList<TLADM_ProductRating> ProductRatings = null;
 
                 using (var context = new TTI2Entities())
                 {
-                    var ProductRatings = context.TLADM_ProductRating.OrderBy(x => x.Pr_Customer_FK).ToList();
+                    ProductRatings = context.TLADM_ProductRating.OrderBy(x => x.Pr_Customer_FK).ToList();
+                    if (_RatingsReport == 1)
+                    {
+                        ProductRatings = ProductRatings.Where(x=>!(bool)x.Pr_Discontinued).ToList();
+                    }
+                    else if(_RatingsReport == 2)
+                    {
+                        ProductRatings = ProductRatings.Where(x => (bool)x.Pr_Discontinued).ToList();
+                    }
+                    
                     ProductRatings = ProductRatings.OrderByDescending(x => x.Pr_BodyorRibbing).ToList();
 
                     foreach (var ProductRating in ProductRatings)

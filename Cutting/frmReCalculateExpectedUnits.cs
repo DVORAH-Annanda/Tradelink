@@ -175,7 +175,11 @@ namespace Cutting
                             if (CutSheet != null)
                             {
                                 context.TLCUT_ExpectedUnits.Where(x => x.TLCUTE_CutSheet_FK == CutSheet.TLCutSH_Pk)
-                                                           .Update(x => new TLCUT_ExpectedUnits() { TLCUTE_EstNettWeight = 0, TLCUTE_NoOfBinding = 0, TLCUTE_NoofGarments = 0, TLCUTE_NoOfTrims = 0 , TLCUTE_MarkerRatio = 0});
+                                                           .Update(x => new TLCUT_ExpectedUnits() { TLCUTE_EstNettWeight = 0, 
+                                                                                                    TLCUTE_NoOfBinding = 0, 
+                                                                                                    TLCUTE_NoofGarments = 0, 
+                                                                                                    TLCUTE_NoOfTrims = 0 , 
+                                                                                                    TLCUTE_MarkerRatio = 0});
                                 
                                 var DBDetails = (from DBatch in context.TLDYE_DyeBatch
                                                  join DBatchDetails in context.TLDYE_DyeBatchDetails on DBatch.DYEB_Pk equals DBatchDetails.DYEBD_DyeBatch_FK
@@ -186,6 +190,10 @@ namespace Cutting
                                 {
                                     if (dbd != null)
                                     {
+                                        var CutSheetDet = context.TLCUT_CutSheetDetail.FirstOrDefault(x => x.TLCutSHD_CutSheet_FK == CutSheetIndex && x.TLCutSHD_DyeBatchDet_FK == dbd.DYEBD_Pk);
+                                        if (CutSheetDet == null)
+                                            continue;
+
                                         //Is a body or is it a Trim Record
                                         //===================================================
                                         if (dbd.DYEBD_BodyTrim)
@@ -248,11 +256,10 @@ namespace Cutting
                                             var Rating = context.TLADM_ProductRating.Find(ProdFK).Pr_numeric_Rating;
                                             var NoOfGarments = Math.Round(Yield / Rating * NettWeight);
 
-                                            var Factor = Math.Round(Yield / Rating * NettWeight, 0);
+                                            var Factor = Yield / Rating * NettWeight;
                                             var tst = core.CalculateRatios(ProdFK, (int)Factor);
 
                                             bool Add = false;
-
                                             foreach (var row in tst)
                                             {
                                                 Add = false;
@@ -271,12 +278,17 @@ namespace Cutting
                                                 }
 
                                                 ExpectUnits.TLCUTE_EstNettWeight += EstKg;
-                                                ExpectUnits.TLCUTE_NoOfBinding += (int)(Yield / Rating) * BindKg;
-                                                ExpectUnits.TLCUTE_NoOfTrims += (int)(Yield / Rating) * TrimKg;
+                                                ExpectUnits.TLCUTE_NoOfBinding += BindKg;
+                                                ExpectUnits.TLCUTE_NoOfTrims += TrimKg;
                                                 ExpectUnits.TLCUTE_NoofGarments += (int)((Yield / Rating) * EstKg);
                                                 if (ExpectUnits.TLCUTE_MarkerRatio == 0.00M)
-                                                        ExpectUnits.TLCUTE_MarkerRatio = row.Value;
-
+                                                {
+                                                    var ProdRatingDetail = context.TLADM_ProductRating_Detail.FirstOrDefault(x => x.prd_Parent_FK == ProdFK && x.Prd_SizePN == row.Key);
+                                                    if (ProdRatingDetail != null)
+                                                    {
+                                                        ExpectUnits.TLCUTE_MarkerRatio = ProdRatingDetail.Prd_MarkerRatio;
+                                                    }
+                                                }
                                                 if(Add)
                                                 {
                                                     context.TLCUT_ExpectedUnits.Add(ExpectUnits);

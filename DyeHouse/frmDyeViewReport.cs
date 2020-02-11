@@ -3353,7 +3353,9 @@ namespace DyeHouse
                                     nr.BodyKg = DBBatches.Where(x => x.DYEBD_DyeBatch_FK == DBBatch.DYEB_Pk && x.DYEBD_BodyTrim && x.DYEBO_CurrentStore_FK == DBatchGroup.DYEBO_CurrentStore_FK).Sum(x => (decimal?)x.DYEBO_Nett) ?? 0.00M;
                                     nr.TrimKg = DBBatches.Where(x => x.DYEBD_DyeBatch_FK == DBBatch.DYEB_Pk && !x.DYEBD_BodyTrim && x.DYEBO_CurrentStore_FK == DBatchGroup.DYEBO_CurrentStore_FK).Sum(x => (decimal?)x.DYEBO_Nett) ?? 0.00M;
                                     nr.Pieces = DBBatches.Where(x => x.DYEBD_DyeBatch_FK == DBBatch.DYEB_Pk && x.DYEBO_CurrentStore_FK == DBatchGroup.DYEBO_CurrentStore_FK).Count();
-                                    nr.CurrentStore = WhseStores.FirstOrDefault(x => x.WhStore_Id == DBatchGroup.DYEBO_CurrentStore_FK).WhStore_Description;
+                                    var WStore = WhseStores.FirstOrDefault(x => x.WhStore_Id == DBatchGroup.DYEBO_CurrentStore_FK);
+                                    if(WStore != null)
+                                        nr.CurrentStore = WStore.WhStore_Description;
 
                                     dataTable1.AddDataTable1Row(nr);
                                 }

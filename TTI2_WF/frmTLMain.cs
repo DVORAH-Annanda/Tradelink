@@ -9664,11 +9664,18 @@ namespace TTI2_WF
             {
                 try
                 {
+                    frmSelectProductRating SelectProdRating = new frmSelectProductRating();
+                    SelectProdRating.ShowDialog();
+
+                    /*
                     frmAdminViewRep vRep = new frmAdminViewRep(12);
                     int h = Screen.PrimaryScreen.WorkingArea.Height;
                     int w = Screen.PrimaryScreen.WorkingArea.Width;
                     vRep.ClientSize = new Size(w, h);
                     vRep.ShowDialog(this);
+                    */
+
+
                 }
                 catch (Exception ex)
                 {
@@ -9823,6 +9830,32 @@ namespace TTI2_WF
                 {
                     CMT.frmNonComplianceSelection NonComSel = new CMT.frmNonComplianceSelection();
                     NonComSel.ShowDialog();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+            else
+            {
+                using (DialogCenteringService centeringService = new DialogCenteringService(this)) // center message box
+                {
+                    MessageBox.Show(ud._NotAuthorisedMessage, ud._UserName);
+                }
+
+            }
+        }
+
+        private void greigeStockLiningsTransactionsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ToolStripMenuItem oTi = sender as ToolStripMenuItem;
+
+            if (core.GetUserAuthorisation(ud, oTi.Name))
+            {
+                try
+                {
+                    Knitting.frmLiningTransaction LiningTrans = new Knitting.frmLiningTransaction();
+                    LiningTrans.ShowDialog();
                 }
                 catch (Exception ex)
                 {
