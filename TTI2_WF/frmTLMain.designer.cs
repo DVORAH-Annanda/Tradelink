@@ -96,6 +96,7 @@
             this.thirdPartyGreigeStockAdjustmentsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.greigeConversionOldSystemToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.greigeStockWriteOffToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.greigeStockLiningsTransactionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.productionPlanningToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.yarnStockOnHandByStoreOwnYarnToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.yarnStockOnHandByStoreToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
@@ -444,7 +445,7 @@
             this.dataClearDownToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.inUseResetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
-            this.greigeStockLiningsTransactionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.interCMTTransfersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             this.SuspendLayout();
@@ -996,6 +997,13 @@
             this.greigeStockWriteOffToolStripMenuItem.Size = new System.Drawing.Size(251, 22);
             this.greigeStockWriteOffToolStripMenuItem.Text = "Greige Stock Write Off";
             this.greigeStockWriteOffToolStripMenuItem.Click += new System.EventHandler(this.greigeStockWriteOffToolStripMenuItem_Click);
+            // 
+            // greigeStockLiningsTransactionsToolStripMenuItem
+            // 
+            this.greigeStockLiningsTransactionsToolStripMenuItem.Name = "greigeStockLiningsTransactionsToolStripMenuItem";
+            this.greigeStockLiningsTransactionsToolStripMenuItem.Size = new System.Drawing.Size(251, 22);
+            this.greigeStockLiningsTransactionsToolStripMenuItem.Text = "Greige Stock Linings Transactions";
+            this.greigeStockLiningsTransactionsToolStripMenuItem.Click += new System.EventHandler(this.greigeStockLiningsTransactionsToolStripMenuItem_Click);
             // 
             // productionPlanningToolStripMenuItem
             // 
@@ -2176,7 +2184,8 @@
             this.workCompletedToolStripMenuItem,
             this.dateRequiredEditFacilityToolStripMenuItem,
             this.placeCutSheetOnOffHoldToolStripMenuItem,
-            this.boxedQuantyAdjustmentToolStripMenuItem});
+            this.boxedQuantyAdjustmentToolStripMenuItem,
+            this.interCMTTransfersToolStripMenuItem});
             this.cMTTransactionsToolStripMenuItem.Name = "cMTTransactionsToolStripMenuItem";
             this.cMTTransactionsToolStripMenuItem.Size = new System.Drawing.Size(213, 22);
             this.cMTTransactionsToolStripMenuItem.Text = "CMT Transactions";
@@ -3776,12 +3785,12 @@
             // 
             this.errorProvider1.ContainerControl = this;
             // 
-            // greigeStockLiningsTransactionsToolStripMenuItem
+            // interCMTTransfersToolStripMenuItem
             // 
-            this.greigeStockLiningsTransactionsToolStripMenuItem.Name = "greigeStockLiningsTransactionsToolStripMenuItem";
-            this.greigeStockLiningsTransactionsToolStripMenuItem.Size = new System.Drawing.Size(251, 22);
-            this.greigeStockLiningsTransactionsToolStripMenuItem.Text = "Greige Stock Linings Transactions";
-            this.greigeStockLiningsTransactionsToolStripMenuItem.Click += new System.EventHandler(this.greigeStockLiningsTransactionsToolStripMenuItem_Click);
+            this.interCMTTransfersToolStripMenuItem.Name = "interCMTTransfersToolStripMenuItem";
+            this.interCMTTransfersToolStripMenuItem.Size = new System.Drawing.Size(253, 22);
+            this.interCMTTransfersToolStripMenuItem.Text = "Inter CMT Transfers";
+            this.interCMTTransfersToolStripMenuItem.Click += new System.EventHandler(this.interCMTTransfersToolStripMenuItem_Click);
             // 
             // frmTLMain
             // 
@@ -4220,5 +4229,6 @@
         private System.Windows.Forms.ToolStripMenuItem recalculateExpectedUnitsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem boxedQuantyAdjustmentToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem greigeStockLiningsTransactionsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem interCMTTransfersToolStripMenuItem;
     }
 }

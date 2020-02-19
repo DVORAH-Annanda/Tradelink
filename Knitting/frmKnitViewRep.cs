@@ -2708,6 +2708,7 @@ namespace Knitting
                         if (row.GreigeP_BoughtIn)
                         {
                             nr.DataColumn7 = context.TLADM_Colours.Find(row.GreigeP_BIFColour_FK).Col_Display;
+                            nr.DataColumn3 += " Their No : " + context.TLKNI_BoughtInFabric.Find(row.GreigeP_BoughtIn_Fk).TLBIN_Their_PN;
                         }
                         else
                         {
@@ -3136,59 +3137,16 @@ namespace Knitting
                         nr.Pending_Ins = Group.Where(x => !x.GreigeP_Inspected).Sum(x => (decimal?)x.GreigeP_weight) ?? 0.00M;
                         nr.Qualified = 0.0M;
 
-                        var Available_To_Batch = Group.Sum(x => (decimal?)x.GreigeP_weightAvail) ?? 0.00M;
+                        var Available_To_Batch = Group.Where(x=>x.GreigeP_Captured && x.GreigeP_Inspected).Sum(x => (decimal?)x.GreigeP_weightAvail) ?? 0.00M;
                         if (_QueryParms.GradeAwithWarnings)
                         {
                             nr.Qualified = Group.Where(x=>x.GreigeP_WarningMessage).Sum(x=> (decimal ?)x.GreigeP_weightAvail) ?? 0.00M;
                         }
+                      
                         nr.Available_ToBatch = Available_To_Batch - nr.Qualified;
-                        nr.DO_LT8 = 0.00M;
-                        nr.DO_GT8 = 0.00M;
-
-                        int ThisWeek = core.GetIso8601WeekOfYear(DateTime.Now);
-
-                        var LessThan = from DO in context.TLDYE_DyeOrder
-                                       join DOD in context.TLDYE_DyeOrderDetails on DO.TLDYO_Pk equals DOD.TLDYOD_DyeOrder_Fk
-                                       where DOD.TLDYOD_BodyOrTrim && !DO.TLDYO_Closed && 
-                                       DO.TLDYO_DyeReqWeek <= (ThisWeek + 8) && DO.TLDYO_Greige_FK == Pk
-                                       select new { DO, DOD};
-                        
-                        if (LessThan.Count() != 0)
-                        {
-                            nr.DO_LT8 = (decimal)LessThan.Sum(x => (decimal?)x.DOD.TLDYOD_Kgs ?? 0.00M);
-
-                            var AlreadyBatched = from LTH in LessThan
-                                     join DB in context.TLDYE_DyeBatch on LTH.DO.TLDYO_Pk equals DB.DYEB_DyeOrder_FK
-                                     where DB.DYEB_Allocated 
-                                     select DB;
-
-                            if (AlreadyBatched.Count() != 0)
-                            {
-                                nr.DO_LT8 -= (decimal)AlreadyBatched.Sum(x => (decimal?)x.DYEB_BatchKG ?? 0.00M);
-                            }
-                        }
-                        
-
-                        var GreaterThan = (from DO in context.TLDYE_DyeOrder
-                                           join DOD in context.TLDYE_DyeOrderDetails on DO.TLDYO_Pk equals DOD.TLDYOD_DyeOrder_Fk
-                                           where DOD.TLDYOD_BodyOrTrim && !DO.TLDYO_Closed && DO.TLDYO_DyeReqWeek > (ThisWeek + 8) && DO.TLDYO_Greige_FK == Pk
-                                           select new { DO, DOD });
-                        
-                        if(GreaterThan.Count() > 0)
-                        {
-                            nr.DO_GT8 = (decimal)GreaterThan.Sum(x => (decimal?)x.DOD.TLDYOD_Kgs ?? 0.00M);
-                            var AlreadyBatched = from GT in GreaterThan
-                                                 join DB in context.TLDYE_DyeBatch on GT.DO.TLDYO_Pk equals DB.DYEB_DyeOrder_FK
-                                                 where DB.DYEB_Allocated
-                                                 select DB;
-
-                            if (AlreadyBatched.Count() != 0)
-                            {
-                                nr.DO_GT8 -= (decimal)AlreadyBatched.Sum(x => (decimal?)x.DYEB_BatchKG ?? 0.00M);
-                            }
-                        }
-                        
-
+                        nr.DO_LT8 = core.DyeOrdersLT8Weeks(Greige.TLGreige_Id);
+                        nr.DO_GT8 = core.DyeOrdersGT8Weeks(Greige.TLGreige_Id);
+                             
                         dataTable1.AddDataTable1Row(nr);
                     }
 

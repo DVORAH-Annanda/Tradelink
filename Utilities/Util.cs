@@ -814,6 +814,76 @@ namespace Utilities
 
         bool nonNumeric;
         
+        public decimal DyeOrdersLT8Weeks(int Pk)
+        {
+            var Result = 0.00M;
+            using(var context = new TTI2Entities())
+            {
+                int ThisWeek = GetIso8601WeekOfYear(DateTime.Now);
+                ThisWeek += 8;
+
+                int ThisYear = DateTime.Now.Year;
+                int PrevYear = -1 + ThisYear;
+
+                var LessThan = from DO in context.TLDYE_DyeOrder
+                               join DOD in context.TLDYE_DyeOrderDetails on DO.TLDYO_Pk equals DOD.TLDYOD_DyeOrder_Fk
+                               where DOD.TLDYOD_BodyOrTrim && !DO.TLDYO_Closed && 
+                               ((DO.TLDYO_OrderDate.Year == ThisYear && DO.TLDYO_DyeReqWeek <= ThisWeek) ||
+                               (DO.TLDYO_OrderDate.Year <= PrevYear)) && DO.TLDYO_Greige_FK == Pk
+                               select new { DO, DOD };
+
+                if (LessThan.Count() != 0)
+                {
+                    Result = (decimal)LessThan.Sum(x => (decimal?)x.DOD.TLDYOD_Kgs ?? 0.00M);
+
+                    var AlreadyBatched = from LTH in LessThan
+                                         join DB in context.TLDYE_DyeBatch on LTH.DO.TLDYO_Pk equals DB.DYEB_DyeOrder_FK
+                                         where DB.DYEB_Allocated
+                                         select DB;
+
+                    if (AlreadyBatched.Count() != 0)
+                    {
+                        Result  -= (decimal)AlreadyBatched.Sum(x => (decimal?)x.DYEB_BatchKG ?? 0.00M);
+                    }
+                }
+
+
+                
+            }
+            return Result;
+        }
+
+        public decimal DyeOrdersGT8Weeks(int Pk)
+        {
+            var Result = 0.00M;
+            int ThisWeek = GetIso8601WeekOfYear(DateTime.Now);
+            int ThisYear = DateTime.Now.Year; 
+
+            using ( var context = new TTI2Entities())
+            {
+                var GreaterThan = (from DO in context.TLDYE_DyeOrder
+                                   join DOD in context.TLDYE_DyeOrderDetails on DO.TLDYO_Pk equals DOD.TLDYOD_DyeOrder_Fk
+                                   where DOD.TLDYOD_BodyOrTrim && !DO.TLDYO_Closed && DO.TLDYO_DyeReqWeek > (ThisWeek + 8) && DO.TLDYO_OrderDate.Year >= ThisYear && DO.TLDYO_Greige_FK == Pk
+                                   select new { DO, DOD });
+
+                if (GreaterThan.Count() > 0)
+                {
+                    Result = (decimal)GreaterThan.Sum(x => (decimal?)x.DOD.TLDYOD_Kgs ?? 0.00M);
+                    var AlreadyBatched = from GT in GreaterThan
+                                         join DB in context.TLDYE_DyeBatch on GT.DO.TLDYO_Pk equals DB.DYEB_DyeOrder_FK
+                                         where DB.DYEB_Allocated
+                                         select DB;
+
+                    if (AlreadyBatched.Count() != 0)
+                    {
+                        Result -= (decimal)AlreadyBatched.Sum(x => (decimal?)x.DYEB_BatchKG ?? 0.00M);
+                    }
+                }
+            }
+
+            return Result;
+        }
+
         public bool CheckActiveRatings(int RatingKey)
         {
             bool ReturnVal = false;

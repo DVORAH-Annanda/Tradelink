@@ -152,6 +152,8 @@ namespace ProductionPlanning
                 // 1st Course of action is to get all the Greige Items 
                 //----------------------------------------------------------
 
+                var EightWeeks = DateTime.Now.AddDays(56);
+
                 var GreigeItems = repo.GreigeQuery(_ProdQParms).OrderBy(x => x.TLGreige_Description);
 
                 using (var context = new TTI2Entities())
@@ -163,20 +165,26 @@ namespace ProductionPlanning
                         DataRow Row = dt.NewRow();
                         Row[0] = GreigeItem.TLGreige_Description;
                         var GreigeP = context.TLKNI_GreigeProduction.Where(x => x.GreigeP_Greige_Fk == GreigeItem.TLGreige_Id && !x.GreigeP_Dye).ToList();
-                        if(!_ProdQParms.IncludeGradeAWithwarnings)
-                            GreigeP = GreigeP.Where(x => !x.GreigeP_WarningMessage).ToList();
-                        
+                        if (_ProdQParms.GradeType == 1)
+                        {
+                            GreigeP = GreigeP.Where(x => x.GreigeP_Grade != null && x.GreigeP_Grade.Trim() == "A").ToList();
+                            if (!_ProdQParms.IncludeGradeAWithwarnings)
+                                GreigeP = GreigeP.Where(x => !x.GreigeP_WarningMessage).ToList();
+                        }
+                        else if (_ProdQParms.GradeType == 2)
+                        {
+                            GreigeP = GreigeP.Where(x => x.GreigeP_Grade != null &&  x.GreigeP_Grade.Trim() == "B").ToList();
+                        }
+                        else
+                        {
+                            GreigeP = GreigeP.Where(x => x.GreigeP_Grade != null && x.GreigeP_Grade.Trim() == "C").ToList();
+                        }
                         Row[1] = GreigeP.Where(x => x.GreigeP_Captured && x.GreigeP_Inspected).Sum(x => (int?)x.GreigeP_weight) ?? 0;
                         Row[2] = GreigeP.Where(x => !x.GreigeP_Inspected).Sum(x => (int?)x.GreigeP_weight) ?? 0;
                         Row[3] = context.TLKNI_Order.Where(x => x.KnitO_Product_FK == GreigeItem.TLGreige_Id && !x.KnitO_Closed).Sum(x => (int?)x.KnitO_Weight) ?? 0;
-
-                        var DBOrders = from T1 in context.TLDYE_DyeOrder
-                                       join T2 in context.TLDYE_DyeOrderDetails on T1.TLDYO_Pk equals T2.TLDYOD_DyeOrder_Fk
-                                       where !T1.TLDYO_Closed && T1.TLDYO_Greige_FK == GreigeItem.TLGreige_Id
-                                       select new { T1.TLDYO_DyeReqWeek, T2 };
-
-                        Row[4] = DBOrders.Where(x => x.TLDYO_DyeReqWeek <= (ThisWeekNo + 8)).Sum(x => (int?)x.T2.TLDYOD_Kgs) ?? 0;
-                        Row[5] = DBOrders.Where(x => x.TLDYO_DyeReqWeek > (ThisWeekNo + 8)).Sum(x => (int?)x.T2.TLDYOD_Kgs) ?? 0;
+                        
+                        Row[4] = core.DyeOrdersLT8Weeks(GreigeItem.TLGreige_Id);
+                        Row[5] = core.DyeOrdersGT8Weeks(GreigeItem.TLGreige_Id);
                         Row[6] = Convert.ToInt32(Row[1].ToString()) + Convert.ToInt32(Row[2].ToString()) - Convert.ToInt32(Row[4].ToString()) - Convert.ToInt32(Row[5].ToString());
                         Row[7] = GreigeItem.TLGreige_ROL;
                         Row[8] = Convert.ToInt32(Row[7].ToString()) - Convert.ToInt32(Row[6].ToString());
@@ -202,7 +210,7 @@ namespace ProductionPlanning
                 {
                     DataSet3.DataTable1Row nr = dataTable1.NewDataTable1Row();
                     nr.Item = row[0].ToString();
-                    nr.AvailToBatch = Convert.ToInt32(row[1].ToString());
+                    nr.AvailToBatch = row.Field<int>(1); //  Convert.ToInt32(row[1].ToString());
                     nr.Pending = Convert.ToInt32(row[2].ToString());
                     nr.KnitOrders = Convert.ToInt32(row[3].ToString());
                     nr.DyeOrdersT8 = Convert.ToInt32(row[4].ToString());

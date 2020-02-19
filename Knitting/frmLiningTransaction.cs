@@ -231,5 +231,12 @@ namespace Knitting
                 }
             }
         }
+
+        private void cmboGreige_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ComboBox oCmbo = (ComboBox)sender;
+            if (oCmbo != null && !oCmbo.DroppedDown)
+                oCmbo.DroppedDown = true;
+        }
     }
 }

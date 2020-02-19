@@ -608,6 +608,12 @@
     <Compile Include="frmFinalStab.Designer.cs">
       <DependentUpon>frmFinalStab.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmInterCMTTransfer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmInterCMTTransfer.Designer.cs">
+      <DependentUpon>frmInterCMTTransfer.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmLineConfiguration.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -977,6 +983,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmFinalStab.resx">
       <DependentUpon>frmFinalStab.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmInterCMTTransfer.resx">
+      <DependentUpon>frmInterCMTTransfer.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmLineConfiguration.resx">
       <DependentUpon>frmLineConfiguration.cs</DependentUpon>

@@ -163,7 +163,23 @@ namespace ProductionPlanning
             Button oBth = sender as Button;
             if (oBth != null && FormLoaded)
             {
-                QueryParms.IncludeGradeAWithwarnings = (bool)cbIncudeWithWarnings.Checked;
+                if(RadGradeA.Checked)
+                {
+                    QueryParms.GradeType = 1;
+                }
+                else if(RadGradeB.Checked)
+                {
+                    QueryParms.GradeType = 2;
+                }
+                else
+                {
+                    QueryParms.GradeType = 3;
+                }
+                
+                QueryParms.IncludeGradeAWithwarnings = (bool)cbIncludeWithWarnings.Checked;
+                if (QueryParms.GradeType != 1)
+                    QueryParms.IncludeGradeAWithwarnings = false;
+
                 frmPPSViewRep vRep = new frmPPSViewRep(2, QueryParms);
                 vRep.ShowDialog();
 

@@ -101,6 +101,7 @@
             this.cmboGreige.Size = new System.Drawing.Size(227, 21);
             this.cmboGreige.TabIndex = 5;
             this.cmboGreige.Text = "Select Options";
+            this.cmboGreige.SelectedIndexChanged += new System.EventHandler(this.cmboGreige_SelectedIndexChanged);
             // 
             // frmLiningTransaction
             // 

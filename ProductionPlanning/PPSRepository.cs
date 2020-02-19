@@ -282,6 +282,7 @@ namespace ProductionPlanning
         public int TopSellers;
         public bool[] QAReportingDepts;
         public bool IncludeGradeAWithwarnings;
+        public int GradeType;
 
         public ProdQueryParameters()
         {
@@ -297,6 +298,7 @@ namespace ProductionPlanning
             TopSellers = 0;
             QAReportingDepts = new bool[4] { false, false, false, false };
             IncludeGradeAWithwarnings = false;
+            GradeType = 0;
         }
 
     }
