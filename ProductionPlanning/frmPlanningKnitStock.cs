@@ -15,6 +15,7 @@ namespace ProductionPlanning
     {
         ProdQueryParameters QueryParms;
         PPSRepository repo;
+        Util core;
 
         bool FormLoaded;
 
@@ -23,6 +24,8 @@ namespace ProductionPlanning
             InitializeComponent();
             
             repo = new PPSRepository();
+            core = new Util();
+
             //--------------------------------------------------------
             // wire up the check state changed event
             //--------------------------------------------------------------------------------------------------------
@@ -77,7 +80,10 @@ namespace ProductionPlanning
                     }
                                    
                 }
-             
+
+                chkGradeA.Checked = true;
+                chkGradeB.Checked = false;
+                chkGradeC.Checked = false;
 
                 FormLoaded = true;
             }
@@ -163,23 +169,16 @@ namespace ProductionPlanning
             Button oBth = sender as Button;
             if (oBth != null && FormLoaded)
             {
-                if(RadGradeA.Checked)
-                {
-                    QueryParms.GradeType = 1;
-                }
-                else if(RadGradeB.Checked)
-                {
-                    QueryParms.GradeType = 2;
-                }
-                else
-                {
-                    QueryParms.GradeType = 3;
-                }
-                
-                QueryParms.IncludeGradeAWithwarnings = (bool)cbIncludeWithWarnings.Checked;
-                if (QueryParms.GradeType != 1)
-                    QueryParms.IncludeGradeAWithwarnings = false;
+                bool[] BoxChecked = new bool[3];
 
+                BoxChecked[0] = chkGradeA.Checked;
+                BoxChecked[1] = chkGradeB.Checked;
+                BoxChecked[2] = chkGradeC.Checked;
+
+                QueryParms.GradeType = core.CalculateSelection(BoxChecked);
+
+                QueryParms.IncludeGradeAWithwarnings = (bool)cbIncludeWithWarnings.Checked;
+                
                 frmPPSViewRep vRep = new frmPPSViewRep(2, QueryParms);
                 vRep.ShowDialog();
 
@@ -187,8 +186,6 @@ namespace ProductionPlanning
                 cmboGreigeQuality.Items.Clear();
 
                 PlanningKnitStock_Load(this, null);
-            
-
             }
         }
 

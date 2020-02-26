@@ -30,8 +30,6 @@
         {
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
             this.chkBoughtInFabric = new System.Windows.Forms.CheckBox();
@@ -42,8 +40,15 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.rbDetail = new System.Windows.Forms.RadioButton();
             this.rbBIFSummarised = new System.Windows.Forms.RadioButton();
-            this.cmboGrade = new System.Windows.Forms.ComboBox();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.cbGradeA = new System.Windows.Forms.CheckBox();
+            this.cbGradeB = new System.Windows.Forms.CheckBox();
+            this.cbGradeC = new System.Windows.Forms.CheckBox();
+            this.cbIncludeGradweAWithWarnings = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
+            this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -64,28 +69,10 @@
             this.label2.TabIndex = 2;
             this.label2.Text = "Grade";
             // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(144, 132);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(39, 13);
-            this.label3.TabIndex = 4;
-            this.label3.Text = "Quality";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(144, 175);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(71, 13);
-            this.label4.TabIndex = 6;
-            this.label4.Text = "Quality Group\r\n";
-            // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(144, 218);
+            this.label5.Location = new System.Drawing.Point(144, 290);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(116, 13);
             this.label5.TabIndex = 8;
@@ -93,7 +80,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(555, 433);
+            this.button1.Location = new System.Drawing.Point(555, 491);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 10;
@@ -104,7 +91,7 @@
             // chkBoughtInFabric
             // 
             this.chkBoughtInFabric.AutoSize = true;
-            this.chkBoughtInFabric.Location = new System.Drawing.Point(277, 261);
+            this.chkBoughtInFabric.Location = new System.Drawing.Point(277, 341);
             this.chkBoughtInFabric.Name = "chkBoughtInFabric";
             this.chkBoughtInFabric.Size = new System.Drawing.Size(104, 17);
             this.chkBoughtInFabric.TabIndex = 11;
@@ -115,7 +102,7 @@
             // 
             this.cmboStockTake.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
             this.cmboStockTake.FormattingEnabled = true;
-            this.cmboStockTake.Location = new System.Drawing.Point(277, 218);
+            this.cmboStockTake.Location = new System.Drawing.Point(277, 290);
             this.cmboStockTake.Name = "cmboStockTake";
             this.cmboStockTake.Size = new System.Drawing.Size(121, 21);
             this.cmboStockTake.TabIndex = 9;
@@ -126,7 +113,7 @@
             // 
             this.cmboProductGroup.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
             this.cmboProductGroup.FormattingEnabled = true;
-            this.cmboProductGroup.Location = new System.Drawing.Point(277, 174);
+            this.cmboProductGroup.Location = new System.Drawing.Point(277, 246);
             this.cmboProductGroup.Name = "cmboProductGroup";
             this.cmboProductGroup.Size = new System.Drawing.Size(226, 21);
             this.cmboProductGroup.TabIndex = 7;
@@ -137,7 +124,7 @@
             // 
             this.cmboProduct.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
             this.cmboProduct.FormattingEnabled = true;
-            this.cmboProduct.Location = new System.Drawing.Point(277, 130);
+            this.cmboProduct.Location = new System.Drawing.Point(277, 202);
             this.cmboProduct.Name = "cmboProduct";
             this.cmboProduct.Size = new System.Drawing.Size(226, 21);
             this.cmboProduct.TabIndex = 5;
@@ -159,7 +146,7 @@
             // 
             this.groupBox1.Controls.Add(this.rbDetail);
             this.groupBox1.Controls.Add(this.rbBIFSummarised);
-            this.groupBox1.Location = new System.Drawing.Point(249, 289);
+            this.groupBox1.Location = new System.Drawing.Point(249, 375);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(254, 64);
             this.groupBox1.TabIndex = 12;
@@ -187,30 +174,93 @@
             this.rbBIFSummarised.Text = "Summarised";
             this.rbBIFSummarised.UseVisualStyleBackColor = true;
             // 
-            // cmboGrade
+            // groupBox2
             // 
-            this.cmboGrade.FormattingEnabled = true;
-            this.cmboGrade.Location = new System.Drawing.Point(277, 87);
-            this.cmboGrade.Name = "cmboGrade";
-            this.cmboGrade.Size = new System.Drawing.Size(79, 21);
-            this.cmboGrade.TabIndex = 14;
-            this.cmboGrade.SelectedIndexChanged += new System.EventHandler(this.cmboGrade_SelectedIndexChanged);
+            this.groupBox2.Controls.Add(this.cbIncludeGradweAWithWarnings);
+            this.groupBox2.Controls.Add(this.cbGradeC);
+            this.groupBox2.Controls.Add(this.cbGradeB);
+            this.groupBox2.Controls.Add(this.cbGradeA);
+            this.groupBox2.Location = new System.Drawing.Point(277, 72);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(226, 115);
+            this.groupBox2.TabIndex = 13;
+            this.groupBox2.TabStop = false;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(152, 210);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(39, 13);
+            this.label6.TabIndex = 4;
+            this.label6.Text = "Quality";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(152, 249);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(71, 13);
+            this.label7.TabIndex = 6;
+            this.label7.Text = "Quality Group\r\n";
+            // 
+            // cbGradeA
+            // 
+            this.cbGradeA.AutoSize = true;
+            this.cbGradeA.Checked = true;
+            this.cbGradeA.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbGradeA.Location = new System.Drawing.Point(59, 13);
+            this.cbGradeA.Name = "cbGradeA";
+            this.cbGradeA.Size = new System.Drawing.Size(65, 17);
+            this.cbGradeA.TabIndex = 0;
+            this.cbGradeA.Text = "Grade A";
+            this.cbGradeA.UseVisualStyleBackColor = true;
+            // 
+            // cbGradeB
+            // 
+            this.cbGradeB.AutoSize = true;
+            this.cbGradeB.Location = new System.Drawing.Point(59, 36);
+            this.cbGradeB.Name = "cbGradeB";
+            this.cbGradeB.Size = new System.Drawing.Size(65, 17);
+            this.cbGradeB.TabIndex = 1;
+            this.cbGradeB.Text = "Grade B";
+            this.cbGradeB.UseVisualStyleBackColor = true;
+            // 
+            // cbGradeC
+            // 
+            this.cbGradeC.AutoSize = true;
+            this.cbGradeC.Location = new System.Drawing.Point(59, 59);
+            this.cbGradeC.Name = "cbGradeC";
+            this.cbGradeC.Size = new System.Drawing.Size(65, 17);
+            this.cbGradeC.TabIndex = 2;
+            this.cbGradeC.Text = "Grade C";
+            this.cbGradeC.UseVisualStyleBackColor = true;
+            // 
+            // cbIncludeGradweAWithWarnings
+            // 
+            this.cbIncludeGradweAWithWarnings.AutoSize = true;
+            this.cbIncludeGradweAWithWarnings.Location = new System.Drawing.Point(59, 82);
+            this.cbIncludeGradweAWithWarnings.Name = "cbIncludeGradweAWithWarnings";
+            this.cbIncludeGradweAWithWarnings.Size = new System.Drawing.Size(138, 17);
+            this.cbIncludeGradweAWithWarnings.TabIndex = 3;
+            this.cbIncludeGradweAWithWarnings.Text = "Grade A With Warnings\r\n";
+            this.cbIncludeGradweAWithWarnings.UseVisualStyleBackColor = true;
             // 
             // frmK10ReportSel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(642, 468);
-            this.Controls.Add(this.cmboGrade);
+            this.ClientSize = new System.Drawing.Size(642, 535);
+            this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.chkBoughtInFabric);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.cmboStockTake);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.cmboProductGroup);
-            this.Controls.Add(this.label4);
+            this.Controls.Add(this.label7);
+            this.Controls.Add(this.label6);
             this.Controls.Add(this.cmboProduct);
-            this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.cmboStore);
             this.Controls.Add(this.label1);
@@ -219,6 +269,8 @@
             this.Load += new System.EventHandler(this.Form_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -238,14 +290,18 @@
         private Knitting.CheckComboBox cmboStockTake;
 
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.CheckBox chkBoughtInFabric;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.RadioButton rbDetail;
         private System.Windows.Forms.RadioButton rbBIFSummarised;
-        private System.Windows.Forms.ComboBox cmboGrade;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.CheckBox cbIncludeGradweAWithWarnings;
+        private System.Windows.Forms.CheckBox cbGradeC;
+        private System.Windows.Forms.CheckBox cbGradeB;
+        private System.Windows.Forms.CheckBox cbGradeA;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label label7;
     }
 }

@@ -814,6 +814,65 @@ namespace Utilities
 
         bool nonNumeric;
         
+        public int CalculateSelection(bool[] SelectionMade)
+        {
+            int Res = 0;
+            int Seed = 0;
+            foreach (var item in SelectionMade)
+            {
+                if(item.Equals(true))
+                {
+                    Res += (int)Math.Pow(2.000, (double)Seed);
+                }
+                Seed += 1;
+            }
+            return Res;
+        }
+        public List<TLKNI_GreigeProduction> CalculateAvailableToBatch(int GradeSelection, int Greige, bool IncludeWarn)
+        {
+            using (var context = new TTI2Entities())
+            {
+                var GreigeP = context.TLKNI_GreigeProduction.Where(x => x.GreigeP_Greige_Fk == Greige && !x.GreigeP_Dye).ToList();
+
+                if (GradeSelection == 1)
+                {
+                    GreigeP = GreigeP.Where(x => x.GreigeP_Grade != null && x.GreigeP_Grade.Trim() == "A").ToList();
+                }
+                else if (GradeSelection == 2)
+                {
+                    GreigeP = GreigeP.Where(x => x.GreigeP_Grade != null && x.GreigeP_Grade.Trim() == "B").ToList();
+                }
+                else if (GradeSelection == 3)
+                {
+                    GreigeP = GreigeP.Where(x => x.GreigeP_Grade != null && (x.GreigeP_Grade.Trim() == "A"
+                                     || x.GreigeP_Grade.Trim() == "B")).ToList();
+                }
+                else if (GradeSelection == 4)
+                {
+                    GreigeP = GreigeP.Where(x => x.GreigeP_Grade != null && x.GreigeP_Grade.Trim() == "C").ToList();
+                }
+                else if (GradeSelection == 5)
+                {
+                    GreigeP = GreigeP.Where(x => x.GreigeP_Grade != null && (x.GreigeP_Grade.Trim() == "A" ||
+                             x.GreigeP_Grade.Trim() == "C")).ToList();
+                }
+                else if (GradeSelection == 6)
+                {
+                    GreigeP = GreigeP.Where(x => x.GreigeP_Grade != null && (x.GreigeP_Grade.Trim() == "B" || x.GreigeP_Grade.Trim() == "C")).ToList();
+                }
+                
+
+                if (GradeSelection == 1 || GradeSelection == 3 ||
+                    GradeSelection == 5 || GradeSelection == 7)
+                {
+                    if (!IncludeWarn)
+                        GreigeP = GreigeP.Where(x => !x.GreigeP_WarningMessage).ToList();
+                }
+
+                return GreigeP;
+
+            }
+        }
         public decimal DyeOrdersLT8Weeks(int Pk)
         {
             var Result = 0.00M;

@@ -623,12 +623,11 @@ namespace TTI2_WF
                     {
                         foreach (DataGridViewRow row in dataGridView1.Rows)
                         {
-                            if (row.Cells[1].Value == null)
+                            if (row.Cells[2].Value == null && row.Cells[3].Value == null)
+                            {
                                 continue;
-
-                            if (row.Cells[1].Value.ToString() == string.Empty)
-                                continue;
-
+                            }
+                       
                             lAdd = false;
 
                             TLADM_MachineOperators dpt = new TLADM_MachineOperators();
@@ -636,14 +635,15 @@ namespace TTI2_WF
                             if (row.Cells[0].Value == null)
                             {
                                 lAdd = true;
+                                dpt.MachOp_Discontinued = false;
                             }
                             else
                             {
                                 int pk = Convert.ToInt32(row.Cells[0].Value.ToString());
                                 dpt = context.TLADM_MachineOperators.Find(pk);
+                                dpt.MachOp_Discontinued = (bool)row.Cells[1].Value;
                             }
 
-                            dpt.MachOp_Discontinued = (bool)row.Cells[1].Value;
                             if (dpt.MachOp_Discontinued && dpt.MachOp_Discontinued_Date == null)
                                 dpt.MachOp_Discontinued_Date = DateTime.Now.Date;
 
@@ -656,10 +656,13 @@ namespace TTI2_WF
                                 dpt.MachOp_Inspector = false;
                             }
                             else
-                                dpt.MachOp_Inspector =  Convert.ToBoolean(row.Cells[6].Value.ToString());
-                           
+                            {
+                                dpt.MachOp_Inspector = Convert.ToBoolean(row.Cells[6].Value.ToString());
+                            }
                             if (lAdd)
+                            {
                                 context.TLADM_MachineOperators.Add(dpt);
+                            }
 
                             try
                             {

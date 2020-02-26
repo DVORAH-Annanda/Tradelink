@@ -27,10 +27,10 @@ namespace DyeHouse
             repOps = new DyeReportOptions();
 
             var reportOptions = new BindingList<KeyValuePair<string, string>>();
-            reportOptions.Add(new KeyValuePair<string, string>("0", "Customer , Quality , Batch Number"));
-            reportOptions.Add(new KeyValuePair<string, string>("1", "Store, Customer, Quality"));
+            reportOptions.Add(new KeyValuePair<string, string>("0", "Batch Number"));
+            /*reportOptions.Add(new KeyValuePair<string, string>("1", "Store, Customer, Quality"));
             reportOptions.Add(new KeyValuePair<string, string>("2", "Store, Colour, Quality"));
-            reportOptions.Add(new KeyValuePair<string, string>("3", "Quality, Colour, Customer"));
+            reportOptions.Add(new KeyValuePair<string, string>("3", "Quality, Colour, Customer"));*/
             cmboReportOptions.DataSource = reportOptions;
             cmboReportOptions.ValueMember = "Key";
             cmboReportOptions.DisplayMember = "Value";

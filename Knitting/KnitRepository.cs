@@ -280,25 +280,65 @@ namespace Knitting
            return YarnOP;
        }
 
-       public IQueryable<TLKNI_GreigeProduction> SOHGreigeProduction(KnitQueryParameters parameters)
-       {
-           IQueryable<TLKNI_GreigeProduction> GreigeProduction;
-           if (!parameters.BoughtInFabric)
-           {
-               GreigeProduction = _context.TLKNI_GreigeProduction.Where(x => x.GreigeP_Captured && !x.GreigeP_Dye && x.GreigeP_weightAvail > 0 && !x.GreigeP_BoughtIn).AsQueryable();
-           }
-           else
-           {
-               GreigeProduction = _context.TLKNI_GreigeProduction.Where(x => x.GreigeP_Captured && !x.GreigeP_Dye && x.GreigeP_weightAvail > 0 && x.GreigeP_BoughtIn).AsQueryable();
-           }
+        public IQueryable<TLKNI_GreigeProduction> SOHGreigeProduction(KnitQueryParameters parameters)
+        {
+            IQueryable<TLKNI_GreigeProduction> GreigeProduction;
+            if (!parameters.BoughtInFabric)
+            {
+                GreigeProduction = _context.TLKNI_GreigeProduction.Where(x => x.GreigeP_Captured && !x.GreigeP_Dye && x.GreigeP_weightAvail > 0 && !x.GreigeP_BoughtIn).AsQueryable();
+            }
+            else
+            {
+                GreigeProduction = _context.TLKNI_GreigeProduction.Where(x => x.GreigeP_Captured && !x.GreigeP_Dye && x.GreigeP_weightAvail > 0 && x.GreigeP_BoughtIn).AsQueryable();
+            }
 
-           if (parameters.Grade.Length != 0)
-           {
-               var GradePredicate = PredicateBuilder.False<TLKNI_GreigeProduction>();
-               GreigeProduction = GreigeProduction.AsExpandable().Where(x => x.GreigeP_Grade.Contains(parameters.Grade.ToUpper()));
-           }
-                     
-           if (parameters.Greiges.Count > 0)
+            if (parameters.GradeSelectionTotal == 1)
+            {
+                GreigeProduction = GreigeProduction.Where(x => x.GreigeP_Grade != null && x.GreigeP_Grade.Trim() == "A").AsQueryable();
+                if (!parameters.GradeAwithWarnings)
+                {
+                    GreigeProduction = GreigeProduction.Where(x => !x.GreigeP_WarningMessage).AsQueryable();
+                }
+            }
+            else if (parameters.GradeSelectionTotal == 2)
+            {
+                GreigeProduction = GreigeProduction.Where(x => x.GreigeP_Grade != null && x.GreigeP_Grade.Trim() == "B").AsQueryable();
+            }
+            else if (parameters.GradeSelectionTotal == 3)
+            {
+                GreigeProduction = GreigeProduction.Where(x => x.GreigeP_Grade != null && (x.GreigeP_Grade.Trim() == "A"
+                                 || x.GreigeP_Grade.Trim() == "B")).AsQueryable();
+                if (!parameters.GradeAwithWarnings)
+                {
+                    GreigeProduction = GreigeProduction.Where(x => !x.GreigeP_WarningMessage).AsQueryable();
+                }
+            }
+            else if (parameters.GradeSelectionTotal == 4)
+            {
+                GreigeProduction = GreigeProduction.Where(x => x.GreigeP_Grade != null && x.GreigeP_Grade.Trim() == "C").AsQueryable();
+            }
+            else if (parameters.GradeSelectionTotal == 5)
+            {
+                GreigeProduction = GreigeProduction.Where(x => x.GreigeP_Grade != null && (x.GreigeP_Grade.Trim() == "A" ||
+                         x.GreigeP_Grade.Trim() == "C")).AsQueryable();
+                if (!parameters.GradeAwithWarnings)
+                {
+                    GreigeProduction = GreigeProduction.Where(x => !x.GreigeP_WarningMessage).AsQueryable();
+                }
+            }
+            else if (parameters.GradeSelectionTotal == 6)
+            {
+                GreigeProduction = GreigeProduction.Where(x => x.GreigeP_Grade != null && (x.GreigeP_Grade.Trim() == "B" || x.GreigeP_Grade.Trim() == "C")).AsQueryable();
+            }
+            else if (parameters.GradeSelectionTotal == 7)
+            {
+                if (!parameters.GradeAwithWarnings)
+                {
+                    GreigeProduction = GreigeProduction.Where(x => !x.GreigeP_WarningMessage).AsQueryable();
+                }
+            }
+
+            if (parameters.Greiges.Count > 0)
            {
                var GreigePredicate = PredicateBuilder.False<TLKNI_GreigeProduction>();
                foreach (var Greige in parameters.Greiges)
@@ -480,7 +520,7 @@ namespace Knitting
         public List<TLSPN_YarnOrder> YarnOrders;
         public bool BoughtInFabric;
         public bool GradeAwithWarnings;
-
+        public int GradeSelectionTotal;
 
         public KnitQueryParameters()
         {
@@ -499,6 +539,7 @@ namespace Knitting
             YarnOrders = new List<TLSPN_YarnOrder>();
             BoughtInFabric = false;
             GradeAwithWarnings = false;
+            GradeSelectionTotal = 0;
         }
 
     }

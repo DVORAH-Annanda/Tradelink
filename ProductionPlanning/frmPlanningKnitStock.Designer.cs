@@ -34,16 +34,16 @@
             this.label2 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.cbIncludeWithWarnings = new System.Windows.Forms.CheckBox();
+            this.chkGradeA = new System.Windows.Forms.CheckBox();
+            this.chkGradeB = new System.Windows.Forms.CheckBox();
+            this.chkGradeC = new System.Windows.Forms.CheckBox();
             this.cmboStore = new ProductionPlanning.CheckComboBox();
             this.cmboFabWidth = new ProductionPlanning.CheckComboBox();
             this.cmboFabWeight = new ProductionPlanning.CheckComboBox();
             this.cmboGreigeQuality = new ProductionPlanning.CheckComboBox();
             this.cmboGreige = new ProductionPlanning.CheckComboBox();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.RadGradeA = new System.Windows.Forms.RadioButton();
-            this.RadGradeB = new System.Windows.Forms.RadioButton();
-            this.RadGradeC = new System.Windows.Forms.RadioButton();
-            this.cbIncludeWithWarnings = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -102,6 +102,59 @@
             this.label1.TabIndex = 22;
             this.label1.Text = "Store";
             // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.chkGradeC);
+            this.groupBox1.Controls.Add(this.chkGradeB);
+            this.groupBox1.Controls.Add(this.chkGradeA);
+            this.groupBox1.Location = new System.Drawing.Point(234, 305);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(180, 125);
+            this.groupBox1.TabIndex = 25;
+            this.groupBox1.TabStop = false;
+            // 
+            // cbIncludeWithWarnings
+            // 
+            this.cbIncludeWithWarnings.AutoSize = true;
+            this.cbIncludeWithWarnings.Location = new System.Drawing.Point(234, 452);
+            this.cbIncludeWithWarnings.Name = "cbIncludeWithWarnings";
+            this.cbIncludeWithWarnings.Size = new System.Drawing.Size(173, 17);
+            this.cbIncludeWithWarnings.TabIndex = 26;
+            this.cbIncludeWithWarnings.Text = "Include Grade A with Warnings";
+            this.cbIncludeWithWarnings.UseVisualStyleBackColor = true;
+            // 
+            // chkGradeA
+            // 
+            this.chkGradeA.AutoSize = true;
+            this.chkGradeA.Checked = true;
+            this.chkGradeA.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkGradeA.Location = new System.Drawing.Point(45, 20);
+            this.chkGradeA.Name = "chkGradeA";
+            this.chkGradeA.Size = new System.Drawing.Size(65, 17);
+            this.chkGradeA.TabIndex = 0;
+            this.chkGradeA.Text = "Grade A";
+            this.chkGradeA.UseVisualStyleBackColor = true;
+            // 
+            // chkGradeB
+            // 
+            this.chkGradeB.AutoSize = true;
+            this.chkGradeB.Location = new System.Drawing.Point(45, 54);
+            this.chkGradeB.Name = "chkGradeB";
+            this.chkGradeB.Size = new System.Drawing.Size(65, 17);
+            this.chkGradeB.TabIndex = 1;
+            this.chkGradeB.Text = "Grade B";
+            this.chkGradeB.UseVisualStyleBackColor = true;
+            // 
+            // chkGradeC
+            // 
+            this.chkGradeC.AutoSize = true;
+            this.chkGradeC.Location = new System.Drawing.Point(45, 83);
+            this.chkGradeC.Name = "chkGradeC";
+            this.chkGradeC.Size = new System.Drawing.Size(65, 17);
+            this.chkGradeC.TabIndex = 2;
+            this.chkGradeC.Text = "Grade C";
+            this.chkGradeC.UseVisualStyleBackColor = true;
+            // 
             // cmboStore
             // 
             this.cmboStore.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
@@ -157,59 +210,6 @@
             this.cmboGreige.Text = "Select Options";
             this.cmboGreige.SelectedIndexChanged += new System.EventHandler(this.cmboGreige_SelectedIndexChanged);
             // 
-            // groupBox1
-            // 
-            this.groupBox1.Controls.Add(this.RadGradeC);
-            this.groupBox1.Controls.Add(this.RadGradeB);
-            this.groupBox1.Controls.Add(this.RadGradeA);
-            this.groupBox1.Location = new System.Drawing.Point(234, 305);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(180, 100);
-            this.groupBox1.TabIndex = 25;
-            this.groupBox1.TabStop = false;
-            // 
-            // RadGradeA
-            // 
-            this.RadGradeA.AutoSize = true;
-            this.RadGradeA.Checked = true;
-            this.RadGradeA.Location = new System.Drawing.Point(56, 17);
-            this.RadGradeA.Name = "RadGradeA";
-            this.RadGradeA.Size = new System.Drawing.Size(64, 17);
-            this.RadGradeA.TabIndex = 0;
-            this.RadGradeA.TabStop = true;
-            this.RadGradeA.Text = "Grade A";
-            this.RadGradeA.UseVisualStyleBackColor = true;
-            // 
-            // RadGradeB
-            // 
-            this.RadGradeB.AutoSize = true;
-            this.RadGradeB.Location = new System.Drawing.Point(56, 44);
-            this.RadGradeB.Name = "RadGradeB";
-            this.RadGradeB.Size = new System.Drawing.Size(64, 17);
-            this.RadGradeB.TabIndex = 1;
-            this.RadGradeB.Text = "Grade B";
-            this.RadGradeB.UseVisualStyleBackColor = true;
-            // 
-            // RadGradeC
-            // 
-            this.RadGradeC.AutoSize = true;
-            this.RadGradeC.Location = new System.Drawing.Point(56, 71);
-            this.RadGradeC.Name = "RadGradeC";
-            this.RadGradeC.Size = new System.Drawing.Size(64, 17);
-            this.RadGradeC.TabIndex = 2;
-            this.RadGradeC.Text = "Grade C";
-            this.RadGradeC.UseVisualStyleBackColor = true;
-            // 
-            // cbIncludeWithWarnings
-            // 
-            this.cbIncludeWithWarnings.AutoSize = true;
-            this.cbIncludeWithWarnings.Location = new System.Drawing.Point(234, 436);
-            this.cbIncludeWithWarnings.Name = "cbIncludeWithWarnings";
-            this.cbIncludeWithWarnings.Size = new System.Drawing.Size(173, 17);
-            this.cbIncludeWithWarnings.TabIndex = 26;
-            this.cbIncludeWithWarnings.Text = "Include Grade A with Warnings";
-            this.cbIncludeWithWarnings.UseVisualStyleBackColor = true;
-            // 
             // frmPlanningKnitStock
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -259,9 +259,9 @@
         // private System.Windows.Forms.ComboBox cmboStore;
         private ProductionPlanning.CheckComboBox cmboStore;
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.RadioButton RadGradeC;
-        private System.Windows.Forms.RadioButton RadGradeB;
-        private System.Windows.Forms.RadioButton RadGradeA;
         private System.Windows.Forms.CheckBox cbIncludeWithWarnings;
+        private System.Windows.Forms.CheckBox chkGradeC;
+        private System.Windows.Forms.CheckBox chkGradeB;
+        private System.Windows.Forms.CheckBox chkGradeA;
     }
 }

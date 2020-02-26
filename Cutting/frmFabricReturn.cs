@@ -214,6 +214,22 @@ namespace Cutting
                                 DyeBatchDetail.DYEBO_CutSheet = false;
                                 DyeBatchDetail.DYEBO_QAApproved = false;
 
+                                if(row.Cells[7].Value != null)
+                                {
+                                    DyeBatchDetail.DYEBO_CurrentStore_FK = (int)row.Cells[7].Value;
+                                }
+                                else
+                                {
+                                    var Dept = context.TLADM_Departments.FirstOrDefault(x => x.Dep_ShortCode == "CUT");
+                                    if(Dept != null)
+                                    {
+                                        var TranType = context.TLADM_TranactionType.FirstOrDefault(x => x.TrxT_Department_FK == Dept.Dep_Id && x.TrxT_Number == 100);
+                                        if(TranType != null)
+                                        {
+                                            DyeBatchDetail.DYEBO_CurrentStore_FK = (int)TranType.TrxT_ToWhse_FK;
+                                        }
+                                    }
+                                }
                                 var DyeBatch = context.TLDYE_DyeBatch.Find(DyeBatchDetail.DYEBD_DyeBatch_FK);
                                 if (DyeBatch != null && DyeBatch.DYEB_Closed)
                                 {

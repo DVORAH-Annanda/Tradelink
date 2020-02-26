@@ -98,8 +98,9 @@ namespace ProductionPlanning
                 DataSet ds = new DataSet();
                 PPSRepository repo = new PPSRepository();
                 DataSet3.DataTable1DataTable dataTable1 = new DataSet3.DataTable1DataTable();
-
+                DataSet3.DataTable2DataTable dataTable2 = new DataSet3.DataTable2DataTable();
                 Util core = new Util();
+                string Title = string.Empty;
 
                 System.Data.DataTable dt = new System.Data.DataTable();
                 DataColumn[] keys = new DataColumn[1];
@@ -164,21 +165,38 @@ namespace ProductionPlanning
                     {
                         DataRow Row = dt.NewRow();
                         Row[0] = GreigeItem.TLGreige_Description;
-                        var GreigeP = context.TLKNI_GreigeProduction.Where(x => x.GreigeP_Greige_Fk == GreigeItem.TLGreige_Id && !x.GreigeP_Dye).ToList();
+
+                        var GreigeP = core.CalculateAvailableToBatch(_ProdQParms.GradeType, GreigeItem.TLGreige_Id, _ProdQParms.IncludeGradeAWithwarnings);
+                        
                         if (_ProdQParms.GradeType == 1)
                         {
-                            GreigeP = GreigeP.Where(x => x.GreigeP_Grade != null && x.GreigeP_Grade.Trim() == "A").ToList();
-                            if (!_ProdQParms.IncludeGradeAWithwarnings)
-                                GreigeP = GreigeP.Where(x => !x.GreigeP_WarningMessage).ToList();
+                            Title = "Grade A Selected";
                         }
                         else if (_ProdQParms.GradeType == 2)
                         {
-                            GreigeP = GreigeP.Where(x => x.GreigeP_Grade != null &&  x.GreigeP_Grade.Trim() == "B").ToList();
+                            Title = "Grade B Selected";
                         }
-                        else
+                        else if (_ProdQParms.GradeType == 3)
                         {
-                            GreigeP = GreigeP.Where(x => x.GreigeP_Grade != null && x.GreigeP_Grade.Trim() == "C").ToList();
+                            Title = "Grade A, B Selected";
                         }
+                        else if(_ProdQParms.GradeType == 4)
+                        {
+                            Title = "Grade C Selected";
+                        }
+                        else if (_ProdQParms.GradeType == 5)
+                        {
+                             Title = "Grade A, C Selected";
+                        }
+                        else if (_ProdQParms.GradeType == 6)
+                        {
+                             Title = "Grade B, C Selected";
+                        }
+                        else if (_ProdQParms.GradeType == 7)
+                        {
+                             Title = "Grade A, B and C Selected";
+                        }
+
                         Row[1] = GreigeP.Where(x => x.GreigeP_Captured && x.GreigeP_Inspected).Sum(x => (int?)x.GreigeP_weight) ?? 0;
                         Row[2] = GreigeP.Where(x => !x.GreigeP_Inspected).Sum(x => (int?)x.GreigeP_weight) ?? 0;
                         Row[3] = context.TLKNI_Order.Where(x => x.KnitO_Product_FK == GreigeItem.TLGreige_Id && !x.KnitO_Closed).Sum(x => (int?)x.KnitO_Weight) ?? 0;
@@ -209,6 +227,7 @@ namespace ProductionPlanning
                 foreach (DataRow row in dt.Rows)
                 {
                     DataSet3.DataTable1Row nr = dataTable1.NewDataTable1Row();
+                    nr.Pk = 1;
                     nr.Item = row[0].ToString();
                     nr.AvailToBatch = row.Field<int>(1); //  Convert.ToInt32(row[1].ToString());
                     nr.Pending = Convert.ToInt32(row[2].ToString());
@@ -223,7 +242,14 @@ namespace ProductionPlanning
                     dataTable1.AddDataTable1Row(nr);
                 }
 
+                DataSet3.DataTable2Row xnr = dataTable2.NewDataTable2Row();
+                xnr.Pk = 1;
+                xnr.Title = Title;
+                dataTable2.AddDataTable2Row(xnr);
+
                 ds.Tables.Add(dataTable1);
+                ds.Tables.Add(dataTable2);
+
                 PKnitStock PKnitStock = new PKnitStock();
                 PKnitStock.SetDataSource(ds);
                 crystalReportViewer1.ReportSource = PKnitStock;

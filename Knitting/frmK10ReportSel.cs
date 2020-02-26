@@ -167,19 +167,6 @@ namespace Knitting
                     cmboProduct.Items.Add(new Knitting.CheckComboBoxItem(Greige.TLGreige_Id, Greige.TLGreige_Description, false));
                 }
 
-                var GradeOptions = new BindingList<KeyValuePair<int, string>>();
-
-                formloaded = false;
-                               
-                GradeOptions.Add(new KeyValuePair<int, string>(1, "A"));
-                GradeOptions.Add(new KeyValuePair<int, string>(2, "B"));
-                GradeOptions.Add(new KeyValuePair<int, string>(3, "C"));
-        
-                cmboGrade.DataSource = GradeOptions;
-                cmboGrade.ValueMember = "Key";
-                cmboGrade.DisplayMember = "Value";
-                cmboGrade.SelectedIndex = -1;
-
                 chkBoughtInFabric.Checked = false;
 
                 var Dept = context.TLADM_Departments.Where(x => x.Dep_ShortCode.Contains("KNIT")).FirstOrDefault();
@@ -203,8 +190,6 @@ namespace Knitting
                 {
                     cmboProductGroup.Items.Add(new Knitting.CheckComboBoxItem(Quality.GQ_Pk, Quality.GQ_Description, false));
                 }
-                
-
             }
 
             MandSelected = core.PopulateArray(MandatoryFields.Length, false);
@@ -281,7 +266,16 @@ namespace Knitting
                 }
 
                 // QueryParms.GradeAwithWarnings = (bool)cbIncludeWarnings.Checked;
+                
+                bool[] BoxChecked = new bool[3];
 
+                BoxChecked[0] = cbGradeA.Checked;
+                BoxChecked[1] = cbGradeB.Checked;
+                BoxChecked[2] = cbGradeC.Checked;
+
+                QueryParms.GradeSelectionTotal = core.CalculateSelection(BoxChecked);
+
+                QueryParms.GradeAwithWarnings = (bool)cbIncludeGradweAWithWarnings.Checked;
                 if (!rbBIFSummarised.Checked)
                 {
                     frmKnitViewRep vRep = new frmKnitViewRep(24, QueryParms, YarnOpts);
