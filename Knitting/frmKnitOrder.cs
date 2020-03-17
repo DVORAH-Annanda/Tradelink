@@ -261,7 +261,7 @@ namespace Knitting
                 cmbKnitted.Visible = false;
 
             
-                cmbFabricType.DataSource = context.TLADM_Griege.OrderBy(x => x.TLGreige_Description).ToList();
+                cmbFabricType.DataSource = context.TLADM_Griege.Where(x=>!(bool)x.TLGriege_Discontinued) .OrderBy(x => x.TLGreige_Description).ToList();
                 cmbFabricType.ValueMember = "TLGreige_Id";
                 cmbFabricType.DisplayMember = "TLGreige_Description";
                 cmbFabricType.SelectedValue = 0;

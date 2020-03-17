@@ -37,5 +37,6 @@ namespace Utilities
         public bool TLCUTSH_OnHold { get; set; }
         public Nullable<System.DateTime> TLCUTSH_OnHoldDate { get; set; }
         public string TLCUTSH_OnHold_Reasons { get; set; }
+        public bool TLCUTSH_Priority { get; set; }
     }
 }

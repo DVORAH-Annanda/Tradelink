@@ -746,6 +746,7 @@
           </Key>
           <Property Name="TLQADPF_Pk" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="TLQADPF_Process_FK" Type="int" Nullable="false" />
+          <Property Name="TLQADPF_ShortCode" Type="varchar" MaxLength="5" />
           <Property Name="TLQADPF_Description" Type="varchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="TLADM_QualityDefinition">
@@ -1619,6 +1620,7 @@
           <Property Name="TLCUTSH_OnHold" Type="bit" Nullable="false" />
           <Property Name="TLCUTSH_OnHoldDate" Type="date" />
           <Property Name="TLCUTSH_OnHold_Reasons" Type="varchar" MaxLength="50" />
+          <Property Name="TLCUTSH_Priority" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="TLCUT_CutSheetDetail">
           <Key>
@@ -2087,6 +2089,7 @@
           <Property Name="TLDyeIns_Quantity" Type="int" Nullable="false" />
           <Property Name="TLDyeIns_QADyeProcessField_Fk" Type="int" Nullable="false" />
           <Property Name="TLDyeIns_TransactionDate" Type="date" Nullable="false" />
+          <Property Name="TLDyeIns_GriegeProduct_Fk" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="TLDYE_ReceipeGreigeQual">
           <Key>
@@ -3707,7 +3710,6 @@
           </FunctionImport>
           <EntitySet Name="TLCMT_LineIssue" EntityType="TTI2Model.TLCMT_LineIssue" />
           <EntitySet Name="TLADM_CottonOrigin" EntityType="TTI2Model.TLADM_CottonOrigin" />
-          <EntitySet Name="TLCUT_CutSheet" EntityType="TTI2Model.TLCUT_CutSheet" />
           <EntitySet Name="TLDYE_DyeBatch" EntityType="TTI2Model.TLDYE_DyeBatch" />
           <FunctionImport Name="CottonAdjustments" ReturnType="Collection(TTI2Model.CottonAdjustments_Result)">
           <Parameter Name="ReturnNo" Mode="In" Type="Int32" />
@@ -3734,6 +3736,7 @@
           <EntitySet Name="TLCMT_AuditMeasurements" EntityType="TTI2Model.TLCMT_AuditMeasurements" />
           <EntitySet Name="TLCMT_HistoryBoxedQty" EntityType="TTI2Model.TLCMT_HistoryBoxedQty" />
           <EntitySet Name="TLADM_Trims" EntityType="TTI2Model.TLADM_Trims" />
+          <EntitySet Name="TLCUT_CutSheet" EntityType="TTI2Model.TLCUT_CutSheet" />
           </EntityContainer>
         <EntityType Name="TLADM_FabricProduct">
           <Key>
@@ -4312,6 +4315,7 @@
           <Property Name="TLQADPF_Pk" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="TLQADPF_Process_FK" Type="Int32" Nullable="false" />
           <Property Name="TLQADPF_Description" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="TLQADPF_ShortCode" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="TLDYE_NonComplianceDetail">
           <Key>
@@ -5825,6 +5829,7 @@
           <Property Name="TLDyeIns_Quantity" Type="Int32" Nullable="false" />
           <Property Name="TLDyeIns_QADyeProcessField_Fk" Type="Int32" Nullable="false" />
           <Property Name="TLDyeIns_TransactionDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="TLDyeIns_GriegeProduct_Fk" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="TLSEC_UserAccess">
           <Key>
@@ -6161,34 +6166,6 @@
           <Property Name="CottonOrigin_Description" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="CottonOrigin_LastNumber" Type="Int32" Nullable="false" />
         </EntityType>
-        <EntityType Name="TLCUT_CutSheet">
-          <Key>
-            <PropertyRef Name="TLCutSH_Pk" />
-          </Key>
-          <Property Name="TLCutSH_Pk" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="TLCutSH_No" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="TLCutSH_Date" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="TLCutSH_DyeBatch_FK" Type="Int32" Nullable="false" />
-          <Property Name="TLCutSH_Size_FK" Type="Int32" Nullable="false" />
-          <Property Name="TLCutSH_Notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="TLCutSH_Size_PN" Type="Int32" Nullable="false" />
-          <Property Name="TLCutSH_Accepted" Type="Boolean" Nullable="false" />
-          <Property Name="TLCutSH_WIPComplete" Type="Boolean" Nullable="false" />
-          <Property Name="TLCutSH_Quality_FK" Type="Int32" Nullable="false" />
-          <Property Name="TLCutSH_Styles_FK" Type="Int32" Nullable="false" />
-          <Property Name="TLCutSH_Colour_FK" Type="Int32" Nullable="false" />
-          <Property Name="TLCutSH_Customer_FK" Type="Int32" Nullable="false" />
-          <Property Name="TLCutSH_Department_FK" Type="Int32" Nullable="false" />
-          <Property Name="TLCutSH_Closed" Type="Boolean" Nullable="false" />
-          <Property Name="TLCutSH_ClosedDate" Type="DateTime" Precision="0" />
-          <Property Name="TLCUTSH_RequiredDate" Type="DateTime" Precision="0" />
-          <Property Name="TLCUTSH_Completed_Date" Type="DateTime" Precision="0" />
-          <Property Name="TLCUTSH_MarkedForDeletion" Type="Boolean" Nullable="false" />
-          <Property Name="TLCUTSH_AddNotes" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="TLCUTSH_OnHold" Type="Boolean" Nullable="false" />
-          <Property Name="TLCUTSH_OnHoldDate" Type="DateTime" Precision="0" />
-          <Property Name="TLCUTSH_OnHold_Reasons" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-        </EntityType>
         <EntityType Name="TLDYE_DyeBatch">
           <Key>
             <PropertyRef Name="DYEB_Pk" />
@@ -6500,6 +6477,35 @@
           <Property Name="TR_IsSizes" Type="Boolean" Nullable="false" />
           <Property Name="TR_Added_ThisSession" Type="Boolean" Nullable="false" />
           <Property Name="TR_Removed_ThisSession" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TLCUT_CutSheet">
+          <Key>
+            <PropertyRef Name="TLCutSH_Pk" />
+          </Key>
+          <Property Name="TLCutSH_Pk" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TLCutSH_No" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="TLCutSH_Date" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="TLCutSH_DyeBatch_FK" Type="Int32" Nullable="false" />
+          <Property Name="TLCutSH_Size_FK" Type="Int32" Nullable="false" />
+          <Property Name="TLCutSH_Notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="TLCutSH_Size_PN" Type="Int32" Nullable="false" />
+          <Property Name="TLCutSH_Accepted" Type="Boolean" Nullable="false" />
+          <Property Name="TLCutSH_WIPComplete" Type="Boolean" Nullable="false" />
+          <Property Name="TLCutSH_Quality_FK" Type="Int32" Nullable="false" />
+          <Property Name="TLCutSH_Styles_FK" Type="Int32" Nullable="false" />
+          <Property Name="TLCutSH_Colour_FK" Type="Int32" Nullable="false" />
+          <Property Name="TLCutSH_Customer_FK" Type="Int32" Nullable="false" />
+          <Property Name="TLCutSH_Department_FK" Type="Int32" Nullable="false" />
+          <Property Name="TLCutSH_Closed" Type="Boolean" Nullable="false" />
+          <Property Name="TLCutSH_ClosedDate" Type="DateTime" Precision="0" />
+          <Property Name="TLCUTSH_RequiredDate" Type="DateTime" Precision="0" />
+          <Property Name="TLCUTSH_Completed_Date" Type="DateTime" Precision="0" />
+          <Property Name="TLCUTSH_MarkedForDeletion" Type="Boolean" Nullable="false" />
+          <Property Name="TLCUTSH_AddNotes" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="TLCUTSH_OnHold" Type="Boolean" Nullable="false" />
+          <Property Name="TLCUTSH_OnHoldDate" Type="DateTime" Precision="0" />
+          <Property Name="TLCUTSH_OnHold_Reasons" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="TLCUTSH_Priority" Type="Boolean" Nullable="false" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -7313,6 +7319,7 @@
           <EntitySetMapping Name="TLADM_QADyeProcessFields">
             <EntityTypeMapping TypeName="TTI2Model.TLADM_QADyeProcessFields">
               <MappingFragment StoreEntitySet="TLADM_QADyeProcessFields">
+                <ScalarProperty Name="TLQADPF_ShortCode" ColumnName="TLQADPF_ShortCode" />
                 <ScalarProperty Name="TLQADPF_Description" ColumnName="TLQADPF_Description" />
                 <ScalarProperty Name="TLQADPF_Process_FK" ColumnName="TLQADPF_Process_FK" />
                 <ScalarProperty Name="TLQADPF_Pk" ColumnName="TLQADPF_Pk" />
@@ -8901,6 +8908,7 @@
           <EntitySetMapping Name="TLDye_QualityException">
             <EntityTypeMapping TypeName="TTI2Model.TLDye_QualityException">
               <MappingFragment StoreEntitySet="TLDye_QualityException">
+                <ScalarProperty Name="TLDyeIns_GriegeProduct_Fk" ColumnName="TLDyeIns_GriegeProduct_Fk" />
                 <ScalarProperty Name="TLDyeIns_TransactionDate" ColumnName="TLDyeIns_TransactionDate" />
                 <ScalarProperty Name="TLDyeIns_QADyeProcessField_Fk" ColumnName="TLDyeIns_QADyeProcessField_Fk" />
                 <ScalarProperty Name="TLDyeIns_Quantity" ColumnName="TLDyeIns_Quantity" />
@@ -9171,35 +9179,6 @@
                 <ScalarProperty Name="CottonOrigin_Description" ColumnName="CottonOrigin_Description" />
                 <ScalarProperty Name="CottonOrigin_ShortCode" ColumnName="CottonOrigin_ShortCode" />
                 <ScalarProperty Name="CottonOrigin_Pk" ColumnName="CottonOrigin_Pk" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="TLCUT_CutSheet">
-            <EntityTypeMapping TypeName="TTI2Model.TLCUT_CutSheet">
-              <MappingFragment StoreEntitySet="TLCUT_CutSheet">
-                <ScalarProperty Name="TLCUTSH_OnHold_Reasons" ColumnName="TLCUTSH_OnHold_Reasons" />
-                <ScalarProperty Name="TLCUTSH_OnHoldDate" ColumnName="TLCUTSH_OnHoldDate" />
-                <ScalarProperty Name="TLCUTSH_OnHold" ColumnName="TLCUTSH_OnHold" />
-                <ScalarProperty Name="TLCUTSH_AddNotes" ColumnName="TLCUTSH_AddNotes" />
-                <ScalarProperty Name="TLCUTSH_MarkedForDeletion" ColumnName="TLCUTSH_MarkedForDeletion" />
-                <ScalarProperty Name="TLCUTSH_Completed_Date" ColumnName="TLCUTSH_Completed_Date" />
-                <ScalarProperty Name="TLCUTSH_RequiredDate" ColumnName="TLCUTSH_RequiredDate" />
-                <ScalarProperty Name="TLCutSH_ClosedDate" ColumnName="TLCutSH_ClosedDate" />
-                <ScalarProperty Name="TLCutSH_Closed" ColumnName="TLCutSH_Closed" />
-                <ScalarProperty Name="TLCutSH_Department_FK" ColumnName="TLCutSH_Department_FK" />
-                <ScalarProperty Name="TLCutSH_Customer_FK" ColumnName="TLCutSH_Customer_FK" />
-                <ScalarProperty Name="TLCutSH_Colour_FK" ColumnName="TLCutSH_Colour_FK" />
-                <ScalarProperty Name="TLCutSH_Styles_FK" ColumnName="TLCutSH_Styles_FK" />
-                <ScalarProperty Name="TLCutSH_Quality_FK" ColumnName="TLCutSH_Quality_FK" />
-                <ScalarProperty Name="TLCutSH_WIPComplete" ColumnName="TLCutSH_WIPComplete" />
-                <ScalarProperty Name="TLCutSH_Accepted" ColumnName="TLCutSH_Accepted" />
-                <ScalarProperty Name="TLCutSH_Size_PN" ColumnName="TLCutSH_Size_PN" />
-                <ScalarProperty Name="TLCutSH_Notes" ColumnName="TLCutSH_Notes" />
-                <ScalarProperty Name="TLCutSH_Size_FK" ColumnName="TLCutSH_Size_FK" />
-                <ScalarProperty Name="TLCutSH_DyeBatch_FK" ColumnName="TLCutSH_DyeBatch_FK" />
-                <ScalarProperty Name="TLCutSH_Date" ColumnName="TLCutSH_Date" />
-                <ScalarProperty Name="TLCutSH_No" ColumnName="TLCutSH_No" />
-                <ScalarProperty Name="TLCutSH_Pk" ColumnName="TLCutSH_Pk" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -9519,6 +9498,36 @@
                 <ScalarProperty Name="TR_powerN" ColumnName="TR_powerN" />
                 <ScalarProperty Name="TR_Description" ColumnName="TR_Description" />
                 <ScalarProperty Name="TR_Id" ColumnName="TR_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TLCUT_CutSheet">
+            <EntityTypeMapping TypeName="TTI2Model.TLCUT_CutSheet">
+              <MappingFragment StoreEntitySet="TLCUT_CutSheet">
+                <ScalarProperty Name="TLCUTSH_Priority" ColumnName="TLCUTSH_Priority" />
+                <ScalarProperty Name="TLCUTSH_OnHold_Reasons" ColumnName="TLCUTSH_OnHold_Reasons" />
+                <ScalarProperty Name="TLCUTSH_OnHoldDate" ColumnName="TLCUTSH_OnHoldDate" />
+                <ScalarProperty Name="TLCUTSH_OnHold" ColumnName="TLCUTSH_OnHold" />
+                <ScalarProperty Name="TLCUTSH_AddNotes" ColumnName="TLCUTSH_AddNotes" />
+                <ScalarProperty Name="TLCUTSH_MarkedForDeletion" ColumnName="TLCUTSH_MarkedForDeletion" />
+                <ScalarProperty Name="TLCUTSH_Completed_Date" ColumnName="TLCUTSH_Completed_Date" />
+                <ScalarProperty Name="TLCUTSH_RequiredDate" ColumnName="TLCUTSH_RequiredDate" />
+                <ScalarProperty Name="TLCutSH_ClosedDate" ColumnName="TLCutSH_ClosedDate" />
+                <ScalarProperty Name="TLCutSH_Closed" ColumnName="TLCutSH_Closed" />
+                <ScalarProperty Name="TLCutSH_Department_FK" ColumnName="TLCutSH_Department_FK" />
+                <ScalarProperty Name="TLCutSH_Customer_FK" ColumnName="TLCutSH_Customer_FK" />
+                <ScalarProperty Name="TLCutSH_Colour_FK" ColumnName="TLCutSH_Colour_FK" />
+                <ScalarProperty Name="TLCutSH_Styles_FK" ColumnName="TLCutSH_Styles_FK" />
+                <ScalarProperty Name="TLCutSH_Quality_FK" ColumnName="TLCutSH_Quality_FK" />
+                <ScalarProperty Name="TLCutSH_WIPComplete" ColumnName="TLCutSH_WIPComplete" />
+                <ScalarProperty Name="TLCutSH_Accepted" ColumnName="TLCutSH_Accepted" />
+                <ScalarProperty Name="TLCutSH_Size_PN" ColumnName="TLCutSH_Size_PN" />
+                <ScalarProperty Name="TLCutSH_Notes" ColumnName="TLCutSH_Notes" />
+                <ScalarProperty Name="TLCutSH_Size_FK" ColumnName="TLCutSH_Size_FK" />
+                <ScalarProperty Name="TLCutSH_DyeBatch_FK" ColumnName="TLCutSH_DyeBatch_FK" />
+                <ScalarProperty Name="TLCutSH_Date" ColumnName="TLCutSH_Date" />
+                <ScalarProperty Name="TLCutSH_No" ColumnName="TLCutSH_No" />
+                <ScalarProperty Name="TLCutSH_Pk" ColumnName="TLCutSH_Pk" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

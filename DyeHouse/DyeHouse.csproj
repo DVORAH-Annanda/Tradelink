@@ -344,6 +344,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DataSet48.xsd</DependentUpon>
     </Compile>
+    <Compile Include="DataSet49.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSet49.xsd</DependentUpon>
+    </Compile>
     <Compile Include="DataSet5.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -1913,6 +1918,17 @@
     </None>
     <None Include="DataSet48.xss">
       <DependentUpon>DataSet48.xsd</DependentUpon>
+    </None>
+    <None Include="DataSet49.xsc">
+      <DependentUpon>DataSet49.xsd</DependentUpon>
+    </None>
+    <None Include="DataSet49.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSet49.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="DataSet49.xss">
+      <DependentUpon>DataSet49.xsd</DependentUpon>
     </None>
     <None Include="DataSet5.xsc">
       <DependentUpon>DataSet5.xsd</DependentUpon>

@@ -41,7 +41,9 @@ namespace ProductionPlanning
             FormLoaded = false;
 
             QueryParms = new ProdQueryParameters();
-        
+
+         
+
             using (var context = new TTI2Entities())
             {
                 var Dept = context.TLADM_Departments.Where(x => x.Dep_ShortCode.Contains("KNIT")).FirstOrDefault();
@@ -53,7 +55,6 @@ namespace ProductionPlanning
                         cmboGreige.Items.Add(new ProductionPlanning.CheckComboBoxItem(record.TLGreige_Id, record.TLGreige_Description, false));
                     }
                 
-
                     var ExistQuality = context.TLADM_GreigeQuality.ToList();
                     foreach (var record in ExistQuality)
                     {
@@ -84,6 +85,7 @@ namespace ProductionPlanning
                 chkGradeA.Checked = true;
                 chkGradeB.Checked = false;
                 chkGradeC.Checked = false;
+                chkExcludeDiscontinued.Checked = false;
 
                 FormLoaded = true;
             }
@@ -174,6 +176,8 @@ namespace ProductionPlanning
                 BoxChecked[0] = chkGradeA.Checked;
                 BoxChecked[1] = chkGradeB.Checked;
                 BoxChecked[2] = chkGradeC.Checked;
+
+                QueryParms.ExcludeDiscontinued = (bool)chkExcludeDiscontinued.Checked;
 
                 QueryParms.GradeType = core.CalculateSelection(BoxChecked);
 

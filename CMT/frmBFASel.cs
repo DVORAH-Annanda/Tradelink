@@ -55,6 +55,7 @@ namespace CMT
                 }
 
                 frmCMTViewRep vRep = new frmCMTViewRep(5, selected.TLCutSH_Pk);
+                //frmCMTViewRep vRep = new frmCMTViewRep(5, 73677);
                 int h = Screen.PrimaryScreen.WorkingArea.Height;
                 int w = Screen.PrimaryScreen.WorkingArea.Width;
                 vRep.ClientSize = new Size(w, h);

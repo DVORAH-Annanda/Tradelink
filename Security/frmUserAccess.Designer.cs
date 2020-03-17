@@ -43,10 +43,10 @@
             this.chkDiscontinue = new System.Windows.Forms.CheckBox();
             this.txtDiscontinuedReason = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.chkQAFunction = new System.Windows.Forms.CheckBox();
             this.txtEMail_Address = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.chkExternalUser = new System.Windows.Forms.CheckBox();
-            this.chkQAFunction = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -193,6 +193,16 @@
             this.groupBox1.TabIndex = 12;
             this.groupBox1.TabStop = false;
             // 
+            // chkQAFunction
+            // 
+            this.chkQAFunction.AutoSize = true;
+            this.chkQAFunction.Location = new System.Drawing.Point(484, 23);
+            this.chkQAFunction.Name = "chkQAFunction";
+            this.chkQAFunction.Size = new System.Drawing.Size(85, 17);
+            this.chkQAFunction.TabIndex = 14;
+            this.chkQAFunction.Text = "QA Function";
+            this.chkQAFunction.UseVisualStyleBackColor = true;
+            // 
             // txtEMail_Address
             // 
             this.txtEMail_Address.Location = new System.Drawing.Point(134, 56);
@@ -218,16 +228,6 @@
             this.chkExternalUser.TabIndex = 11;
             this.chkExternalUser.Text = "External User";
             this.chkExternalUser.UseVisualStyleBackColor = true;
-            // 
-            // chkQAFunction
-            // 
-            this.chkQAFunction.AutoSize = true;
-            this.chkQAFunction.Location = new System.Drawing.Point(484, 23);
-            this.chkQAFunction.Name = "chkQAFunction";
-            this.chkQAFunction.Size = new System.Drawing.Size(85, 17);
-            this.chkQAFunction.TabIndex = 14;
-            this.chkQAFunction.Text = "QA Function";
-            this.chkQAFunction.UseVisualStyleBackColor = true;
             // 
             // frmUserAccess
             // 

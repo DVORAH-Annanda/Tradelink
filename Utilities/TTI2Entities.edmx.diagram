@@ -184,7 +184,6 @@
         <AssociationConnector Association="TTI2Model.FK_TLADM_QualityDefinition_TLADM_RejectReasons1" />
         <EntityTypeShape EntityType="TTI2Model.TLCMT_LineIssue" Width="1.5" PointX="44.375" PointY="41.75" />
         <EntityTypeShape EntityType="TTI2Model.TLADM_CottonOrigin" Width="1.5" PointX="6.375" PointY="0.75" />
-        <EntityTypeShape EntityType="TTI2Model.TLCUT_CutSheet" Width="1.5" PointX="45.375" PointY="20.75" />
         <EntityTypeShape EntityType="TTI2Model.TLDYE_DyeBatch" Width="1.5" PointX="45.375" PointY="12.75" />
         <EntityTypeShape EntityType="TTI2Model.TLCMT_CompletedWork" Width="1.5" PointX="43.375" PointY="28.75" />
         <EntityTypeShape EntityType="TTI2Model.TLADM_GreigeColour" Width="1.5" PointX="22.375" PointY="39.75" />
@@ -198,6 +197,7 @@
         <EntityTypeShape EntityType="TTI2Model.TLCMT_AuditMeasurements" Width="1.5" PointX="8.375" PointY="11.75" />
         <EntityTypeShape EntityType="TTI2Model.TLCMT_HistoryBoxedQty" Width="1.5" PointX="45.375" PointY="31.75" />
         <EntityTypeShape EntityType="TTI2Model.TLADM_Trims" Width="1.5" PointX="40.375" PointY="45.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLCUT_CutSheet" Width="1.5" PointX="45.375" PointY="20.75" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

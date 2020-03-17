@@ -300,7 +300,7 @@ namespace DyeHouse
                 cmboCustomer.DisplayMember = "Cust_Description";
                 cmboCustomer.SelectedValue = 0;
 
-                cmboFabric.DataSource = context.TLADM_Griege.OrderBy(x => x.TLGreige_Description).ToList();
+                cmboFabric.DataSource = context.TLADM_Griege.Where(x=>!(bool)x.TLGriege_Discontinued).OrderBy(x => x.TLGreige_Description).ToList();
                 cmboFabric.ValueMember = "TLGreige_Id";
                 cmboFabric.DisplayMember = "TLGreige_Description";
                 cmboFabric.SelectedValue = 0;

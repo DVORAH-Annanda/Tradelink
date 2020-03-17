@@ -29,6 +29,10 @@
         private void InitializeComponent()
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.cmboQEMeasurements = new System.Windows.Forms.ComboBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.txtDyeMachine = new System.Windows.Forms.TextBox();
+            this.txtKnittingMachine = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.txtQuality = new System.Windows.Forms.TextBox();
@@ -39,8 +43,6 @@
             this.cmboBatchNumber = new System.Windows.Forms.ComboBox();
             this.dtpStability = new System.Windows.Forms.DateTimePicker();
             this.label1 = new System.Windows.Forms.Label();
-            this.txtKnittingMachine = new System.Windows.Forms.TextBox();
-            this.txtDyeMachine = new System.Windows.Forms.TextBox();
             this.btnSave = new System.Windows.Forms.Button();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.label7 = new System.Windows.Forms.Label();
@@ -51,6 +53,8 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.cmboQEMeasurements);
+            this.groupBox1.Controls.Add(this.label8);
             this.groupBox1.Controls.Add(this.txtDyeMachine);
             this.groupBox1.Controls.Add(this.txtKnittingMachine);
             this.groupBox1.Controls.Add(this.label6);
@@ -65,14 +69,48 @@
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Location = new System.Drawing.Point(48, 64);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(521, 231);
+            this.groupBox1.Size = new System.Drawing.Size(521, 281);
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
+            // 
+            // cmboQEMeasurements
+            // 
+            this.cmboQEMeasurements.FormattingEnabled = true;
+            this.cmboQEMeasurements.Location = new System.Drawing.Point(219, 88);
+            this.cmboQEMeasurements.Name = "cmboQEMeasurements";
+            this.cmboQEMeasurements.Size = new System.Drawing.Size(157, 21);
+            this.cmboQEMeasurements.TabIndex = 14;
+            this.cmboQEMeasurements.SelectedIndexChanged += new System.EventHandler(this.cmboPieceNumbers_SelectedIndexChanged);
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(65, 97);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(76, 13);
+            this.label8.TabIndex = 13;
+            this.label8.Text = "Measurements";
+            // 
+            // txtDyeMachine
+            // 
+            this.txtDyeMachine.Location = new System.Drawing.Point(219, 238);
+            this.txtDyeMachine.Name = "txtDyeMachine";
+            this.txtDyeMachine.ReadOnly = true;
+            this.txtDyeMachine.Size = new System.Drawing.Size(263, 20);
+            this.txtDyeMachine.TabIndex = 12;
+            // 
+            // txtKnittingMachine
+            // 
+            this.txtKnittingMachine.Location = new System.Drawing.Point(219, 203);
+            this.txtKnittingMachine.Name = "txtKnittingMachine";
+            this.txtKnittingMachine.ReadOnly = true;
+            this.txtKnittingMachine.Size = new System.Drawing.Size(263, 20);
+            this.txtKnittingMachine.TabIndex = 11;
             // 
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(62, 197);
+            this.label6.Location = new System.Drawing.Point(62, 245);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(105, 13);
             this.label6.TabIndex = 10;
@@ -81,7 +119,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(62, 163);
+            this.label5.Location = new System.Drawing.Point(62, 211);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(86, 13);
             this.label5.TabIndex = 8;
@@ -89,7 +127,7 @@
             // 
             // txtQuality
             // 
-            this.txtQuality.Location = new System.Drawing.Point(219, 120);
+            this.txtQuality.Location = new System.Drawing.Point(219, 168);
             this.txtQuality.Name = "txtQuality";
             this.txtQuality.ReadOnly = true;
             this.txtQuality.Size = new System.Drawing.Size(263, 20);
@@ -98,7 +136,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(62, 129);
+            this.label4.Location = new System.Drawing.Point(62, 177);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(66, 13);
             this.label4.TabIndex = 6;
@@ -106,7 +144,7 @@
             // 
             // txtColour
             // 
-            this.txtColour.Location = new System.Drawing.Point(219, 85);
+            this.txtColour.Location = new System.Drawing.Point(219, 133);
             this.txtColour.Name = "txtColour";
             this.txtColour.ReadOnly = true;
             this.txtColour.Size = new System.Drawing.Size(263, 20);
@@ -115,7 +153,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(62, 95);
+            this.label3.Location = new System.Drawing.Point(62, 143);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(37, 13);
             this.label3.TabIndex = 4;
@@ -155,25 +193,9 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "Date";
             // 
-            // txtKnittingMachine
-            // 
-            this.txtKnittingMachine.Location = new System.Drawing.Point(219, 155);
-            this.txtKnittingMachine.Name = "txtKnittingMachine";
-            this.txtKnittingMachine.ReadOnly = true;
-            this.txtKnittingMachine.Size = new System.Drawing.Size(263, 20);
-            this.txtKnittingMachine.TabIndex = 11;
-            // 
-            // txtDyeMachine
-            // 
-            this.txtDyeMachine.Location = new System.Drawing.Point(219, 190);
-            this.txtDyeMachine.Name = "txtDyeMachine";
-            this.txtDyeMachine.ReadOnly = true;
-            this.txtDyeMachine.Size = new System.Drawing.Size(263, 20);
-            this.txtDyeMachine.TabIndex = 12;
-            // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(539, 524);
+            this.btnSave.Location = new System.Drawing.Point(539, 551);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(75, 23);
             this.btnSave.TabIndex = 2;
@@ -184,7 +206,7 @@
             // dataGridView1
             // 
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(48, 318);
+            this.dataGridView1.Location = new System.Drawing.Point(48, 351);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.Size = new System.Drawing.Size(521, 171);
             this.dataGridView1.TabIndex = 3;
@@ -194,7 +216,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(113, 524);
+            this.label7.Location = new System.Drawing.Point(110, 557);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(37, 13);
             this.label7.TabIndex = 4;
@@ -202,7 +224,7 @@
             // 
             // txtCauses
             // 
-            this.txtCauses.Location = new System.Drawing.Point(173, 521);
+            this.txtCauses.Location = new System.Drawing.Point(177, 554);
             this.txtCauses.Name = "txtCauses";
             this.txtCauses.Size = new System.Drawing.Size(336, 20);
             this.txtCauses.TabIndex = 5;
@@ -211,7 +233,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(626, 568);
+            this.ClientSize = new System.Drawing.Size(626, 612);
             this.Controls.Add(this.txtCauses);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.dataGridView1);
@@ -247,5 +269,7 @@
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.TextBox txtCauses;
+        private System.Windows.Forms.ComboBox cmboQEMeasurements;
+        private System.Windows.Forms.Label label8;
     }
 }

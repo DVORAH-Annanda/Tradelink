@@ -23,45 +23,101 @@ namespace DyeHouse
         Util core;
        UserDetails _UserAccess;
 
+        DataTable dt;
+        DataColumn column;
+        BindingSource BindingSrc;
+
         public frmInsAfterDrying(UserDetails UserAc)
         {
             InitializeComponent();
 
             core = new Util();
 
+            dt = new DataTable();
+            BindingSrc = new BindingSource();
+
             _UserAccess = UserAc;
-            
+
+            //==========================================================================================
+            // 1st task is to create the data table
+            // Col 0
+            //=====================================================================
+            column = new DataColumn();
+            column.DataType = typeof(int);
+            column.ColumnName = "Measurement_Pk";
+            column.Caption = "Measuement key";
+            column.DefaultValue = 0;
+            dt.Columns.Add(column);
+           
+            //----------------------------------------------
+            // Col1 
+            //-----------------------------------------------
+            column = new DataColumn();
+            column.DataType = typeof(int);
+            column.ColumnName = "GreigeProduction_Pk";
+            column.Caption = "GreigeProduction Pk";
+            column.DefaultValue = 0;
+            dt.Columns.Add(column);
+
+            //--------------------------------------------------------
+            // Col 2
+            //----------------------------------------------------------
+            column = new DataColumn();
+            column.DataType = typeof(string);
+            column.ColumnName = "PieceNo";
+            column.Caption = "Piece Number";
+            column.DefaultValue = string.Empty ;
+            dt.Columns.Add(column);
+
+            //-----------------------
+            // Col 3
+            //-----------------------------------------------
+            column = new DataColumn();
+            column.DataType = typeof(string);
+            column.ColumnName = "FabWidth_Pk";
+            column.Caption = "Quantity";
+            column.DefaultValue = string.Empty;
+            dt.Columns.Add(column);
+
+
             oTxtBoxA = new DataGridViewTextBoxColumn();
             oTxtBoxA.ValueType = typeof(Int32);
             oTxtBoxA.Visible = false;
+            oTxtBoxA.Name = "MeasurementIndex";
+            oTxtBoxA.DataPropertyName = dt.Columns[0].ColumnName;
             oTxtBoxA.HeaderText = "Pk";
             dataGridView1.Columns.Add(oTxtBoxA);
-
-
-            oChkA = new DataGridViewCheckBoxColumn();
-            oChkA.HeaderText = "Select";
-            oChkA.ValueType = typeof(bool);
-            dataGridView1.Columns.Add(oChkA);
+            dataGridView1.Columns["MeasurementIndex"].DisplayIndex = 0;
 
             oTxtBoxB = new DataGridViewTextBoxColumn();
             oTxtBoxB.ValueType = typeof(Int32);
-            oTxtBoxB.HeaderText = "Number Of";
+            oTxtBoxB.Visible = false;
+            oTxtBoxB.Name = "GreigeIndex";
+            oTxtBoxB.DataPropertyName = dt.Columns[1].ColumnName;
+            oTxtBoxB.HeaderText = "Pk";
             dataGridView1.Columns.Add(oTxtBoxB);
+            dataGridView1.Columns["GreigeIndex"].DisplayIndex = 1;
 
             oTxtBoxC = new DataGridViewTextBoxColumn();
-            oTxtBoxC.ReadOnly = true;
-            oTxtBoxC.ValueType = typeof(string);
-            oTxtBoxC.HeaderText = "Concerns";
-            oTxtBoxC.Width = 200;
+            oTxtBoxC.ValueType = typeof(Int32);
+            oTxtBoxC.Visible = true;
+            oTxtBoxC.ReadOnly = true; 
+            oTxtBoxC.Name = "PieceNumber";
+            oTxtBoxC.DataPropertyName = dt.Columns[2].ColumnName;
+            oTxtBoxC.HeaderText = "Piece Number";
             dataGridView1.Columns.Add(oTxtBoxC);
-
+            dataGridView1.Columns["PieceNumber"].DisplayIndex = 2;
 
             oTxtBoxD = new DataGridViewTextBoxColumn();
             oTxtBoxD.ValueType = typeof(Int32);
-            oTxtBoxD.Visible = false;
-            oTxtBoxD.HeaderText = "Pk";
+            oTxtBoxD.Visible = true;
+            oTxtBoxD.Name = "Quantity";
+            oTxtBoxD.DataPropertyName = dt.Columns[3].ColumnName;
+            oTxtBoxD.HeaderText = "Quantity";
             dataGridView1.Columns.Add(oTxtBoxD);
+            dataGridView1.Columns["Quantity"].DisplayIndex = 3;
 
+            
             if (_UserAccess._QAFunction)
             {
                 dataGridView1.Enabled = false;
@@ -74,11 +130,24 @@ namespace DyeHouse
                 label7.Visible = false;
  
             }
+
             dataGridView1.AllowUserToAddRows = false;
             dataGridView1.AllowUserToDeleteRows = false;
             dataGridView1.AllowUserToOrderColumns = false;
 
+            BindingSrc.DataSource = dt;
+            dataGridView1.DataSource = BindingSrc;
 
+            int idx = -1;
+
+            foreach (DataColumn col in dt.Columns)
+            {
+                if (++idx == 0 || idx == 1)
+                    dataGridView1.Columns[idx].Visible = false;
+                else
+                    dataGridView1.Columns[idx].HeaderText = col.Caption;
+
+            }
         }
 
         private void frmInsAfterDrying_Load(object sender, EventArgs e)
@@ -112,19 +181,11 @@ namespace DyeHouse
                 cmboBatchNumber.ValueMember = "DYEB_Pk";
                 cmboBatchNumber.DisplayMember = "DYEB_BatchNo";
                 cmboBatchNumber.SelectedValue = 0;
-                
 
-                var QAProcessItems = context.TLADM_QADyeProcessFields.Where(x => x.TLQADPF_Process_FK == 4).ToList();
-                foreach (var Record in QAProcessItems)
-                {
-                    var index = dataGridView1.Rows.Add();
-                    dataGridView1.Rows[index].Cells[0].Value = Record.TLQADPF_Pk;
-                    dataGridView1.Rows[index].Cells[1].Value = false;
-                    dataGridView1.Rows[index].Cells[2].Value = 0;
-                    dataGridView1.Rows[index].Cells[3].Value = Record.TLQADPF_Description;
-                    dataGridView1.Rows[index].Cells[4].Value = null;
-                }
-
+                cmboQEMeasurements.DataSource = context.TLADM_QADyeProcessFields.Where(x => x.TLQADPF_Process_FK == 4).ToList();
+                cmboQEMeasurements.ValueMember = "TLQADPF_Process_FK";
+                cmboQEMeasurements.DisplayMember = "TLQADPF_Description";
+                cmboQEMeasurements.SelectedValue = -1;
             }
           
             formloaded = true;
@@ -142,48 +203,50 @@ namespace DyeHouse
                     return;
                 }
 
+                var Fields = (TLADM_QADyeProcessFields)cmboQEMeasurements.SelectedItem;
+                if (Fields == null)
+                {
+                    MessageBox.Show("Please select a measurement from the drop down box provided");
+                    return;
+                }        
                 using ( var context = new TTI2Entities())
                 {
-                    if (!_UserAccess._QAFunction)
+                    
+                    foreach (DataRow Row in dt.Rows)
                     {
-                        foreach (DataGridViewRow Row in dataGridView1.Rows)
-                        {
-                            if ((bool)Row.Cells[1].Value == false)
-                                continue;
-
                             TLDye_QualityException QualExp = new TLDye_QualityException();
-                            if (Row.Cells[4].Value != null)
+                            if(Row.Field<int>(0) > 0)
                             {
-                                QualExp = context.TLDye_QualityException.Find((int)Row.Cells[4].Value);
+                                QualExp = context.TLDye_QualityException.Find(Row.Field<int>(0));
                                 if (QualExp != null)
-                                    QualExp.TLDyeIns_Quantity = (int)Row.Cells[2].Value;
+                                    QualExp.TLDyeIns_Quantity = Row.Field<int>(3);
                             }
                             else
                             {
-                                QualExp.TLDyeIns_QADyeProcessField_Fk = (int)Row.Cells[0].Value;
+                                QualExp.TLDyeIns_QADyeProcessField_Fk = Fields.TLQADPF_Process_FK ;
                                 QualExp.TLDyeIns_DyeBatch_Fk = DBatch.DYEB_Pk;
-                                QualExp.TLDyeIns_Quantity = (int)Row.Cells[2].Value;
+                                QualExp.TLDyeIns_Quantity = Row.Field<int>(3);
                                 QualExp.TLDyeIns_TransactionDate = dtpStability.Value;
+                                QualExp.TLDyeIns_GriegeProduct_Fk = Row.Field<int>(1);
 
                                 context.TLDye_QualityException.Add(QualExp);
                             }
-                        }
                     }
-                    else
-                    {
-                        var DB = context.TLDYE_DyeBatch.Find(DBatch.DYEB_Pk);
-                        if (DB != null)
-                        {
-                            DB.DYEB_QExceptionCause = txtCauses.Text;
-                        }
-                    }
+                    
                     try
                     {
                         context.SaveChanges();
                         MessageBox.Show("Data successfully saved to the database");
                         dataGridView1.Rows.Clear();
                         this.frmInsAfterDrying_Load(this, null);
+                        foreach (DataGridViewRow row in dataGridView1.Rows)
+                        {
+                            if (row.Cells[0].Value == null)
+                                continue;
 
+                            row.Cells[1].Value = false;
+                            row.Cells[2].Value = 0;
+                        }
                     }
                     catch (Exception ex)
                     {
@@ -199,6 +262,8 @@ namespace DyeHouse
             {
                 using (var context = new TTI2Entities())
                 {
+                    dt.Rows.Clear();
+
                     var DyeBatch = (TLDYE_DyeBatch)oCmbo.SelectedItem;
                     if (DyeBatch != null)
                     {
@@ -213,42 +278,54 @@ namespace DyeHouse
                             txtDyeMachine.Text = string.Empty;
 
                         txtQuality.Text = context.TLADM_Griege.Find(DyeBatch.DYEB_Greige_FK).TLGreige_Description;
-
-                        var DyeBatchDetail = context.TLDYE_DyeBatchDetails.Where(x=>x.DYEBD_DyeBatch_FK == DyeBatch.DYEB_Pk).FirstOrDefault();
-                        if (DyeBatchDetail != null)
-                        {
-                            var GriegeProd = context.TLKNI_GreigeProduction.Find(DyeBatchDetail.DYEBD_GreigeProduction_FK);
-                            if (GriegeProd != null && GriegeProd.GreigeP_Machine_FK != null)
-                            {
-                                txtKnittingMachine.Text = context.TLADM_MachineDefinitions.Find(GriegeProd.GreigeP_Machine_FK).MD_Description;
-                            }
-                            else
-                                txtKnittingMachine.Text = string.Empty;
-                        }
-                    }
-
-                    // We need to see whether an existing record exists in TLDYE
-                    //===========================================================
-
-                    var Existing = context.TLDye_QualityException.Where(x => x.TLDyeIns_DyeBatch_Fk == DyeBatch.DYEB_Pk).ToList();
-                    foreach (var Item in Existing)
-                    {
-                        var SingleRow = (from Rows in dataGridView1.Rows.Cast<DataGridViewRow>()
-                                         where (int)Rows.Cells[0].Value == Item.TLDyeIns_QADyeProcessField_Fk
-                                         select Rows).FirstOrDefault();
-
-                        if (SingleRow != null)
-                        {
-                            SingleRow.Cells[1].Value = true;
-                            SingleRow.Cells[2].Value = Item.TLDyeIns_Quantity;
-                            SingleRow.Cells[4].Value = Item.TLDyeIns_Pk;
-                         
-                        }
                     }
                 }
             }
         }
 
+        private void cmboPieceNumbers_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ComboBox oCmbo = (ComboBox)sender;
+            if (oCmbo != null && formloaded)
+            {
+                var DyeBatch = (TLDYE_DyeBatch)cmboBatchNumber.SelectedItem;
+                if (DyeBatch != null)
+                {
+                    var SelectedItem = (TLADM_QADyeProcessFields)oCmbo.SelectedItem;
+                    if (SelectedItem != null)
+                    {
+                        dt.Rows.Clear();
+                        using (var context = new TTI2Entities())
+                        {
+                            var Records = (from GProd in context.TLKNI_GreigeProduction
+                                     join DBatch in context.TLDYE_DyeBatchDetails
+                                     on GProd.GreigeP_Pk equals DBatch.DYEBD_GreigeProduction_FK
+                                     where DyeBatch.DYEB_Pk == GProd.GreigeP_DyeBatch_FK
+                                     select GProd).OrderBy(x => x.GreigeP_PieceNo).ToList();
+
+                            foreach(var Record in Records)
+                            {
+                                DataRow dr = dt.NewRow();
+
+                                dr[0] = 0;
+                                dr[1] = Record.GreigeP_Pk;
+                                dr[2] = Record.GreigeP_PieceNo;
+                                dr[3] = 0;
+
+                                var QualExp = context.TLDye_QualityException.FirstOrDefault(x=>x.TLDyeIns_GriegeProduct_Fk == Record.GreigeP_Pk);
+                                if(QualExp != null)
+                                {
+                                    dr[0] = QualExp.TLDyeIns_Pk;
+                                    dr[3] = QualExp.TLDyeIns_Quantity; 
+                                }
+                                dt.Rows.Add(dr);
+                            }
+                        
+                        }
+                    }
+                }
+            }
+        }
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             var oDgv = sender as DataGridView;
@@ -294,7 +371,7 @@ namespace DyeHouse
                 {
                     var Cell = oDgv.CurrentCell;
 
-                    if (Cell.ColumnIndex == 2 )
+                    if (Cell.ColumnIndex == 3 )
                     {
                         e.Control.KeyDown -= new KeyEventHandler(core.txtWin_KeyDownJI);
                         e.Control.KeyDown += new KeyEventHandler(core.txtWin_KeyDownJI);
@@ -309,5 +386,7 @@ namespace DyeHouse
                 }
             }
         }
+
+        
     }
 }

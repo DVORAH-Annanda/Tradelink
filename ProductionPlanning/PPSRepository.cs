@@ -62,8 +62,14 @@ namespace ProductionPlanning
 
          public IQueryable<TLADM_Griege> GreigeQuery(ProdQueryParameters parameters)
          {
-             var GreigeItems = _context.TLADM_Griege.OrderBy(x=>x.TLGreige_Description).AsQueryable();
-             if (parameters.Greiges.Count > 0)
+            IQueryable<TLADM_Griege> GreigeItems = null;
+
+            GreigeItems = _context.TLADM_Griege.OrderBy(x => x.TLGreige_Description).AsQueryable();
+
+            if (parameters.ExcludeDiscontinued)
+               GreigeItems = GreigeItems.Where(x=>!(bool)x.TLGriege_Discontinued).AsQueryable();
+            
+            if (parameters.Greiges.Count > 0)
              {
                  var GreigePredicate = PredicateBuilder.False<TLADM_Griege>();
                  foreach (var Greige in parameters.Greiges)
@@ -283,6 +289,7 @@ namespace ProductionPlanning
         public bool[] QAReportingDepts;
         public bool IncludeGradeAWithwarnings;
         public int GradeType;
+        public bool ExcludeDiscontinued;
 
         public ProdQueryParameters()
         {
@@ -299,6 +306,7 @@ namespace ProductionPlanning
             QAReportingDepts = new bool[4] { false, false, false, false };
             IncludeGradeAWithwarnings = false;
             GradeType = 0;
+            ExcludeDiscontinued = false;
         }
 
     }

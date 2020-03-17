@@ -19,5 +19,6 @@ namespace Utilities
         public int TLDyeIns_Quantity { get; set; }
         public int TLDyeIns_QADyeProcessField_Fk { get; set; }
         public System.DateTime TLDyeIns_TransactionDate { get; set; }
+        public int TLDyeIns_GriegeProduct_Fk { get; set; }
     }
 }

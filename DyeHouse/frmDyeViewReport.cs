@@ -3252,30 +3252,12 @@ namespace DyeHouse
                     Colours = context.TLADM_Colours.ToList();
                     WhseStores = context.TLADM_WhseStore.ToList();
 
-                    if (_repOps.FabricStore)
-                    {
-                        DBBatches = (from T1 in context.TLDYE_DyeOrder
+                    DBBatches = (from T1 in context.TLDYE_DyeOrder
                                      join T2 in context.TLDYE_DyeBatch on T1.TLDYO_Pk equals T2.DYEB_DyeOrder_FK
                                      join T3 in context.TLDYE_DyeBatchDetails on T2.DYEB_Pk equals T3.DYEBD_DyeBatch_FK
-                                     where !T2.DYEB_CommissinCust && T2.DYEB_Allocated && T2.DYEB_OutProcess && T3.DYEBO_QAApproved && !T3.DYEBO_Sold && !T3.DYEBO_Rejected && !T3.DYEBO_CutSheet
+                                     where T2.DYEB_OutProcess && !T3.DYEBO_WriteOff && !T3.DYEBO_CutSheet && !T3.DYEBO_Sold && T3.DYEBO_CurrentStore_FK  == _repOps.FabricStoreSelected   
                                      select T3).ToList();
-                    }
-                    else if (_repOps.FabricRejectStore)
-                    {
-                        DBBatches = (from T1 in context.TLDYE_DyeOrder
-                                     join T2 in context.TLDYE_DyeBatch on T1.TLDYO_Pk equals T2.DYEB_DyeOrder_FK
-                                     join T3 in context.TLDYE_DyeBatchDetails on T2.DYEB_Pk equals T3.DYEBD_DyeBatch_FK
-                                     where T2.DYEB_Allocated && T2.DYEB_OutProcess && !T3.DYEBO_QAApproved && !T3.DYEBO_Sold && T3.DYEBO_Rejected && !T3.DYEBO_CutSheet
-                                     select T3).ToList();
-                    }
-                    else if (_repOps.FabricQSStore)
-                    {
-                        DBBatches = (from T1 in context.TLDYE_DyeOrder
-                                     join T2 in context.TLDYE_DyeBatch on T1.TLDYO_Pk equals T2.DYEB_DyeOrder_FK
-                                     join T3 in context.TLDYE_DyeBatchDetails on T2.DYEB_Pk equals T3.DYEBD_DyeBatch_FK
-                                     where T2.DYEB_Allocated && T2.DYEB_OutProcess && !T3.DYEBO_QAApproved && !T3.DYEBO_Sold && !T3.DYEBO_Rejected && !T3.DYEBO_CutSheet
-                                     select T3).ToList();
-                    }
+                                  
 
                     //---------------------------------------------------------------------
                     // We have the concept of bought in Fabric 
@@ -3300,7 +3282,7 @@ namespace DyeHouse
                     // First Group into Store
                     // This is due to the likelyhood that one particlar batch may have pieces that are rejected as an example
                     //==========================================
-                    var GroupedByStore = DBBatches.GroupBy(x => x.DYEBO_CurrentStore_FK).ToList();
+                    var GroupedByStore = DBBatches.GroupBy(x => _repOps.FabricStoreSelected).ToList();
                     foreach (var StoreGroup in GroupedByStore)
                     {
                         // With in Store group into DyeBatch 
@@ -4233,110 +4215,42 @@ namespace DyeHouse
             else if (_RepNo == 32)  //Shade Results straight after drying   
             {
                 DataSet ds = new DataSet();
-                DataSet42.DataTable1DataTable dataTable1 = new DataSet42.DataTable1DataTable();
-                DataSet42.DataTable2DataTable dataTable2 = new DataSet42.DataTable2DataTable();
+                DataSet49.DataTable1DataTable dataTable1 = new DataSet49.DataTable1DataTable();
+                DataSet49.DataTable2DataTable dataTable2 = new DataSet49.DataTable2DataTable();
 
-                string[][] ColumnNames = null;
-
-                ColumnNames = new string[][]
-                    {   new string[] {"Text8", "Batch No"},
-                        new string[] {"Text3", "Piece No"},
-                        new string[] {"Text5", string.Empty},
-                        new string[] {"Text9", string.Empty},
-                        new string[] {"Text10", string.Empty},
-                        new string[] {"Text11", string.Empty},
-                        new string[] {"Text12", string.Empty},
-                        new string[] {"Text13", string.Empty},
-                        new string[] {"Text14", string.Empty}
-                    };
-
-                IList<TLDYE_DyeTransactions> DyeTrans = new List<TLDYE_DyeTransactions>();
-                TLDYE_DyeBatch DyeBatches = new TLDYE_DyeBatch();
-
-                TLDYE_NonCompliance nonC = new TLDYE_NonCompliance();
-                TLDYE_NonComplianceDetail nonCD = new TLDYE_NonComplianceDetail();
-
+                DataSet49.DataTable1Row nr = dataTable1.NewDataTable1Row();
+                nr.Pk = 1;
+                nr.FromDate = _parms.FromDate ;
+                nr.ToDate = _parms.ToDate;
+                nr.Title = "QA Exception Reporting  ";
+                dataTable1.AddDataTable1Row(nr);
+                
                 using (var context = new TTI2Entities())
                 {
-                    var QAProcessItems = context.TLADM_QADyeProcessFields.Where(x => x.TLQADPF_Process_FK == 2).ToList();
-                    foreach (var QAProcessItem in QAProcessItems)
+                    var Records = context.TLDye_QualityException.Where(x => x.TLDyeIns_TransactionDate >= _parms.FromDate && x.TLDyeIns_TransactionDate <= _parms.ToDate).ToList();
+                    foreach(var Record in Records)
                     {
-                        foreach (var Column in ColumnNames)
-                        {
-                            if (String.IsNullOrEmpty(Column[1]))
-                            {
-                                Column[1] = QAProcessItem.TLQADPF_Description;
-                                break;
-                            }
-                        }
-                    }
+                        DataSet49.DataTable2Row hnr = dataTable2.NewDataTable2Row();
+                        hnr.Pk = 1;
+                        hnr.DyeBatch = context.TLDYE_DyeBatch.Find(Record.TLDyeIns_DyeBatch_Fk).DYEB_BatchNo;
+                        hnr.Measurement = context.TLADM_QADyeProcessFields.Find(Record.TLDyeIns_QADyeProcessField_Fk).TLQADPF_Description;
+                        hnr.Qty = Record.TLDyeIns_Quantity;
+                        if (Record.TLDyeIns_GriegeProduct_Fk == 0)
+                            continue;
 
-                    DataSet42.DataTable1Row nr = dataTable1.NewDataTable1Row();
-                    nr.NCRPk = 1;
-                    nr.NCRFromDate = _parms.FromDate;
-                    nr.NCRToDate = _parms.ToDate;
-                    nr.NCReportTitle = "Report on results measurements after Drying from ";
-                    nr.NCRSelection = string.Empty;
-                    nr.NCRSorted = string.Empty;
-                    dataTable1.AddDataTable1Row(nr);
+                        hnr.PieceNumber = context.TLKNI_GreigeProduction.Find(Record.TLDyeIns_GriegeProduct_Fk).GreigeP_PieceNo;
 
-                    var DyeBatchGroups = context.TLDYE_NonComplianceAnalysis.Where(x => x.TLDYEDC_Date>= _parms.FromDate && x.TLDYEDC_Date <= _parms.ToDate && x.TLDYEDC_NCStage == 4 & x.TLDYEDC_Pass).GroupBy(x=> new { x.TLDYEDC_BatchNo, x.TLDYEDC_PieceNo_FK}).ToList();
-                    foreach (var DyeBatchGroup in DyeBatchGroups)
-                    {
-                        var DB = context.TLDYE_DyeBatch.Find(DyeBatchGroup.FirstOrDefault().TLDYEDC_BatchNo);
-                        if (DB != null)
-                        {
-                            DataSet42.DataTable2Row xnr = dataTable2.NewDataTable2Row();
-                            xnr.NCRPk = 1;
-                            xnr.NCRBatchNo = DB.DYEB_BatchNo;
-                            var index = DyeBatchGroup.FirstOrDefault().TLDYEDC_PieceNo_FK;
-                            xnr.NCRPieceNo = context.TLKNI_GreigeProduction.Find(index).GreigeP_PieceNo;
-                            
-                            foreach (var DyePiece in DyeBatchGroup)
-                            {
-                               if(DyePiece.TLDYEDC_Code_FK == 1)
-                                    xnr.NCRFabricWidth = DyePiece.TLDYEDC_Value;
-                               else if(DyePiece.TLDYEDC_Code_FK == 2)
-                                    xnr.NCRFabricWeight = DyePiece.TLDYEDC_Value;
-                               else if(DyePiece.TLDYEDC_Code_FK == 3)
-                                    xnr.NCRLengthShrinkage = DyePiece.TLDYEDC_Value;
-                               else if(DyePiece.TLDYEDC_Code_FK == 5)
-                                    xnr.NCRWidthShrinkage = DyePiece.TLDYEDC_Value;
-                               else if(DyePiece.TLDYEDC_Code_FK == 6)
-                                    xnr.NCRSpiral = DyePiece.TLDYEDC_Value;
-                               else if(DyePiece.TLDYEDC_Code_FK == 7)
-                                    xnr.NCRCourse = DyePiece.TLDYEDC_Value;
-                               else if(DyePiece.TLDYEDC_Code_FK == 8)
-                                    xnr.NCRWales = DyePiece.TLDYEDC_Value;
-                            }
-
-                            dataTable2.AddDataTable2Row(xnr);
-                        }
+                        dataTable2.AddDataTable2Row(hnr);
                     }
                 }
 
                 ds.Tables.Add(dataTable1);
                 ds.Tables.Add(dataTable2);
 
-                ShadeAfterDrying sad = new ShadeAfterDrying();
-                sad.SetDataSource(ds);
-                crystalReportViewer1.ReportSource = sad;
-                
-                IEnumerator ie = sad.Section2.ReportObjects.GetEnumerator();
-                while (ie.MoveNext())
-                {
-                    if (ie.Current != null && ie.Current.GetType().ToString().Equals("CrystalDecisions.CrystalReports.Engine.TextObject"))
-                    {
-                        CrystalDecisions.CrystalReports.Engine.TextObject to = (CrystalDecisions.CrystalReports.Engine.TextObject)ie.Current;
+                DyeQAException QAExcept = new DyeQAException();
+                QAExcept.SetDataSource(ds);
+                crystalReportViewer1.ReportSource = QAExcept;
 
-                        var result = (from u in ColumnNames
-                                      where u[0] == to.Name
-                                      select u).FirstOrDefault();
-
-                        if (result != null)
-                            to.Text = result[1];
-                    }
-                }
             }
             else if (_RepNo == 33)  //Stability check results after compacting   
             {
@@ -4367,7 +4281,7 @@ namespace DyeHouse
 
                 using (var context = new TTI2Entities())
                 {
-                    var QAProcessItems = context.TLADM_QADyeProcessFields.Where(x => x.TLQADPF_Process_FK == 2).ToList();
+                    var QAProcessItems = context.TLADM_QADyeProcessFields.Where(x => x.TLQADPF_Process_FK == 4).ToList();
                     foreach (var QAProcessItem in QAProcessItems)
                     {
                         foreach (var Column in ColumnNames)

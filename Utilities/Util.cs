@@ -583,6 +583,8 @@ namespace Utilities
         public bool BothTypes { get; set; }
 
         public bool FabricStore { get; set; }
+
+        public int FabricStoreSelected { get; set; }
         public bool FabricQSStore { get; set; }
         public bool FabricRejectStore { get; set; }
         public bool AllFabricStores { get; set; }

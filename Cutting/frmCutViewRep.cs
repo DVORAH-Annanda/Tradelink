@@ -708,7 +708,9 @@ namespace Cutting
                         nr.CutSheetNo = row.TLCutSH_No;
                         nr.Style = _Styles.FirstOrDefault(s=>s.Sty_Id == row.TLCutSH_Styles_FK).Sty_Description;
                         nr.Colour = _Colours.FirstOrDefault(s=>s.Col_Id == row.TLCutSH_Colour_FK).Col_Display;
-
+                        nr.Priority = row.TLCUTSH_Priority;
+                        nr.OnHold = row.TLCUTSH_OnHold;
+                        
                         var xSizes = context.TLCUT_ExpectedUnits.Where(x => x.TLCUTE_CutSheet_FK == row.TLCutSH_Pk).ToList();
                         foreach (var xSize in xSizes)
                         {
@@ -772,17 +774,19 @@ namespace Cutting
                                 nr.ErrorLog   = dr.Field<String>(4);
                                 nr.Style      = dr.Field<String>(5);
                                 nr.Department = dr.Field<String>(6);
-                                nr.Col1       = dr.Field<int>(7);
-                                nr.Col2       = dr.Field<int>(8);
-                                nr.Col3       = dr.Field<int>(9);
-                                nr.Col4       = dr.Field<int>(10);
-                                nr.Col5       = dr.Field<int>(11);
-                                nr.Col6       = dr.Field<int>(12);
-                                nr.Col7       = dr.Field<int>(13);
-                                nr.Col8       = dr.Field<int>(14);
-                                nr.Col9       = dr.Field<int>(15);
-                                nr.Col10      = dr.Field<int>(16);
-                                nr.Col11      = dr.Field<int>(17);
+                                nr.OnHold = dr.Field<bool>(7);
+                                nr.Priority = dr.Field<bool>(8);
+                                nr.Col1       = dr.Field<int>(9);
+                                nr.Col2       = dr.Field<int>(10);
+                                nr.Col3       = dr.Field<int>(11);
+                                nr.Col4       = dr.Field<int>(12);
+                                nr.Col5       = dr.Field<int>(13);
+                                nr.Col6       = dr.Field<int>(14);
+                                nr.Col7       = dr.Field<int>(15);
+                                nr.Col8       = dr.Field<int>(16);
+                                nr.Col9       = dr.Field<int>(17);
+                                nr.Col10      = dr.Field<int>(18);
+                                nr.Col11      = dr.Field<int>(19);
 
                                 dataTable1.AddDataTable1Row(nr);
                             }

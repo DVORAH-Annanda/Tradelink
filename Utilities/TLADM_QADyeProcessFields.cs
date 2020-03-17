@@ -17,5 +17,6 @@ namespace Utilities
         public int TLQADPF_Pk { get; set; }
         public int TLQADPF_Process_FK { get; set; }
         public string TLQADPF_Description { get; set; }
+        public string TLQADPF_ShortCode { get; set; }
     }
 }

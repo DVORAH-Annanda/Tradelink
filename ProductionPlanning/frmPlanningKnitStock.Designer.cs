@@ -35,15 +35,16 @@
             this.button1 = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.cbIncludeWithWarnings = new System.Windows.Forms.CheckBox();
-            this.chkGradeA = new System.Windows.Forms.CheckBox();
-            this.chkGradeB = new System.Windows.Forms.CheckBox();
             this.chkGradeC = new System.Windows.Forms.CheckBox();
+            this.chkGradeB = new System.Windows.Forms.CheckBox();
+            this.chkGradeA = new System.Windows.Forms.CheckBox();
+            this.cbIncludeWithWarnings = new System.Windows.Forms.CheckBox();
             this.cmboStore = new ProductionPlanning.CheckComboBox();
             this.cmboFabWidth = new ProductionPlanning.CheckComboBox();
             this.cmboFabWeight = new ProductionPlanning.CheckComboBox();
             this.cmboGreigeQuality = new ProductionPlanning.CheckComboBox();
             this.cmboGreige = new ProductionPlanning.CheckComboBox();
+            this.chkExcludeDiscontinued = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -113,15 +114,25 @@
             this.groupBox1.TabIndex = 25;
             this.groupBox1.TabStop = false;
             // 
-            // cbIncludeWithWarnings
+            // chkGradeC
             // 
-            this.cbIncludeWithWarnings.AutoSize = true;
-            this.cbIncludeWithWarnings.Location = new System.Drawing.Point(234, 452);
-            this.cbIncludeWithWarnings.Name = "cbIncludeWithWarnings";
-            this.cbIncludeWithWarnings.Size = new System.Drawing.Size(173, 17);
-            this.cbIncludeWithWarnings.TabIndex = 26;
-            this.cbIncludeWithWarnings.Text = "Include Grade A with Warnings";
-            this.cbIncludeWithWarnings.UseVisualStyleBackColor = true;
+            this.chkGradeC.AutoSize = true;
+            this.chkGradeC.Location = new System.Drawing.Point(45, 83);
+            this.chkGradeC.Name = "chkGradeC";
+            this.chkGradeC.Size = new System.Drawing.Size(65, 17);
+            this.chkGradeC.TabIndex = 2;
+            this.chkGradeC.Text = "Grade C";
+            this.chkGradeC.UseVisualStyleBackColor = true;
+            // 
+            // chkGradeB
+            // 
+            this.chkGradeB.AutoSize = true;
+            this.chkGradeB.Location = new System.Drawing.Point(45, 54);
+            this.chkGradeB.Name = "chkGradeB";
+            this.chkGradeB.Size = new System.Drawing.Size(65, 17);
+            this.chkGradeB.TabIndex = 1;
+            this.chkGradeB.Text = "Grade B";
+            this.chkGradeB.UseVisualStyleBackColor = true;
             // 
             // chkGradeA
             // 
@@ -135,25 +146,15 @@
             this.chkGradeA.Text = "Grade A";
             this.chkGradeA.UseVisualStyleBackColor = true;
             // 
-            // chkGradeB
+            // cbIncludeWithWarnings
             // 
-            this.chkGradeB.AutoSize = true;
-            this.chkGradeB.Location = new System.Drawing.Point(45, 54);
-            this.chkGradeB.Name = "chkGradeB";
-            this.chkGradeB.Size = new System.Drawing.Size(65, 17);
-            this.chkGradeB.TabIndex = 1;
-            this.chkGradeB.Text = "Grade B";
-            this.chkGradeB.UseVisualStyleBackColor = true;
-            // 
-            // chkGradeC
-            // 
-            this.chkGradeC.AutoSize = true;
-            this.chkGradeC.Location = new System.Drawing.Point(45, 83);
-            this.chkGradeC.Name = "chkGradeC";
-            this.chkGradeC.Size = new System.Drawing.Size(65, 17);
-            this.chkGradeC.TabIndex = 2;
-            this.chkGradeC.Text = "Grade C";
-            this.chkGradeC.UseVisualStyleBackColor = true;
+            this.cbIncludeWithWarnings.AutoSize = true;
+            this.cbIncludeWithWarnings.Location = new System.Drawing.Point(234, 452);
+            this.cbIncludeWithWarnings.Name = "cbIncludeWithWarnings";
+            this.cbIncludeWithWarnings.Size = new System.Drawing.Size(173, 17);
+            this.cbIncludeWithWarnings.TabIndex = 26;
+            this.cbIncludeWithWarnings.Text = "Include Grade A with Warnings";
+            this.cbIncludeWithWarnings.UseVisualStyleBackColor = true;
             // 
             // cmboStore
             // 
@@ -210,11 +211,22 @@
             this.cmboGreige.Text = "Select Options";
             this.cmboGreige.SelectedIndexChanged += new System.EventHandler(this.cmboGreige_SelectedIndexChanged);
             // 
+            // chkExcludeDiscontinued
+            // 
+            this.chkExcludeDiscontinued.AutoSize = true;
+            this.chkExcludeDiscontinued.Location = new System.Drawing.Point(234, 493);
+            this.chkExcludeDiscontinued.Name = "chkExcludeDiscontinued";
+            this.chkExcludeDiscontinued.Size = new System.Drawing.Size(157, 17);
+            this.chkExcludeDiscontinued.TabIndex = 27;
+            this.chkExcludeDiscontinued.Text = "Exclude Discontinued Items";
+            this.chkExcludeDiscontinued.UseVisualStyleBackColor = true;
+            // 
             // frmPlanningKnitStock
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(592, 565);
+            this.Controls.Add(this.chkExcludeDiscontinued);
             this.Controls.Add(this.cbIncludeWithWarnings);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.cmboStore);
@@ -263,5 +275,6 @@
         private System.Windows.Forms.CheckBox chkGradeC;
         private System.Windows.Forms.CheckBox chkGradeB;
         private System.Windows.Forms.CheckBox chkGradeA;
+        private System.Windows.Forms.CheckBox chkExcludeDiscontinued;
     }
 }

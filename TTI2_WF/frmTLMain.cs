@@ -324,7 +324,7 @@ namespace TTI2_WF
                 {
                     TreeNode node = new TreeNode(((ToolStripDropDownItem)item).Text);
                     tn.Nodes.Add(node);
-
+                 
                     var Existing = Sect.FirstOrDefault(s => s.TLSECSect_Name == item.Name);
                     if (Existing != null)
                     {
@@ -1092,6 +1092,13 @@ namespace TTI2_WF
                 try
                 {
                     frmTLADM_QualityDefinition qd = new frmTLADM_QualityDefinition(5);
+                    
+                    var myScreen = Screen.FromControl(this);
+                    var mySecondScreen = Screen.AllScreens.FirstOrDefault(s => !s.Equals(myScreen)) ?? myScreen;
+                    qd.Left = mySecondScreen.Bounds.Left;
+                    qd.Top = mySecondScreen.Bounds.Top;
+                    qd.StartPosition = FormStartPosition.Manual;
+                    qd.Width = 900;
                     qd.ShowDialog(this);
                 }
                 catch (Exception ex)
@@ -6604,7 +6611,7 @@ namespace TTI2_WF
             {
                 try
                 {
-                    frmUserAccess userAccess = new frmUserAccess();
+                    frmUserAccess userAccess = new frmUserAccess(ud);
                     userAccess.ShowDialog(this);
                 }
                 catch (Exception ex)

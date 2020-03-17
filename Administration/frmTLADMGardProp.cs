@@ -871,14 +871,14 @@ namespace TTI2_WF
                     TotalPN = 0;
                     foreach (DataGridViewRow row in dataGridViewxx.Rows)
                     {
-                        if (row.Cells[0].Value != null)
-                        {
-                            if (row.Cells[1].Value.ToString() == bool.TrueString)
-                            {
+                       
+                       if (row.Cells[1].Value != null && row.Cells[1].Value.ToString() == bool.TrueString)
+                       {
                                 TotalPN += Convert.ToInt32(row.Cells[2].Value.ToString());
-                            }
-                        }
+                       }
+                       
                     }
+                    SavedActioned = true;
                 }
                 else if (_Col == 1005) // Sizes
                 {
@@ -1161,6 +1161,7 @@ namespace TTI2_WF
             {
                 this.UserFormClosed = true;
             }
+          
         }
     }
 }
