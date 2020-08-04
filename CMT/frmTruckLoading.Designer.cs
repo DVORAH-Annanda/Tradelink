@@ -34,12 +34,14 @@
             this.dtpLoadDate = new System.Windows.Forms.DateTimePicker();
             this.label2 = new System.Windows.Forms.Label();
             this.cbReprint = new System.Windows.Forms.CheckBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.cmboDepartments = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(98, 27);
+            this.label1.Location = new System.Drawing.Point(95, 84);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(65, 13);
             this.label1.TabIndex = 0;
@@ -48,7 +50,7 @@
             // cmboCurrentPI
             // 
             this.cmboCurrentPI.FormattingEnabled = true;
-            this.cmboCurrentPI.Location = new System.Drawing.Point(203, 24);
+            this.cmboCurrentPI.Location = new System.Drawing.Point(236, 79);
             this.cmboCurrentPI.Name = "cmboCurrentPI";
             this.cmboCurrentPI.Size = new System.Drawing.Size(170, 21);
             this.cmboCurrentPI.TabIndex = 1;
@@ -65,7 +67,7 @@
             // 
             // dtpLoadDate
             // 
-            this.dtpLoadDate.Location = new System.Drawing.Point(203, 82);
+            this.dtpLoadDate.Location = new System.Drawing.Point(236, 128);
             this.dtpLoadDate.Name = "dtpLoadDate";
             this.dtpLoadDate.Size = new System.Drawing.Size(170, 20);
             this.dtpLoadDate.TabIndex = 3;
@@ -73,7 +75,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(98, 82);
+            this.label2.Location = new System.Drawing.Point(95, 135);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(57, 13);
             this.label2.TabIndex = 4;
@@ -82,7 +84,7 @@
             // cbReprint
             // 
             this.cbReprint.AutoSize = true;
-            this.cbReprint.Location = new System.Drawing.Point(203, 146);
+            this.cbReprint.Location = new System.Drawing.Point(236, 207);
             this.cbReprint.Name = "cbReprint";
             this.cbReprint.Size = new System.Drawing.Size(60, 17);
             this.cbReprint.TabIndex = 5;
@@ -90,11 +92,31 @@
             this.cbReprint.UseVisualStyleBackColor = true;
             this.cbReprint.CheckedChanged += new System.EventHandler(this.cbReprint_CheckedChanged);
             // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(95, 33);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(104, 13);
+            this.label3.TabIndex = 6;
+            this.label3.Text = "Current Departments";
+            // 
+            // cmboDepartments
+            // 
+            this.cmboDepartments.FormattingEnabled = true;
+            this.cmboDepartments.Location = new System.Drawing.Point(236, 30);
+            this.cmboDepartments.Name = "cmboDepartments";
+            this.cmboDepartments.Size = new System.Drawing.Size(170, 21);
+            this.cmboDepartments.TabIndex = 7;
+            this.cmboDepartments.SelectedIndexChanged += new System.EventHandler(this.cmboDepartments_SelectedIndexChanged);
+            // 
             // frmTruckLoading
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(618, 355);
+            this.Controls.Add(this.cmboDepartments);
+            this.Controls.Add(this.label3);
             this.Controls.Add(this.cbReprint);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.dtpLoadDate);
@@ -117,5 +139,7 @@
         private System.Windows.Forms.DateTimePicker dtpLoadDate;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.CheckBox cbReprint;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.ComboBox cmboDepartments;
     }
 }

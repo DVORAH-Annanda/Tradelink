@@ -198,6 +198,7 @@
         <EntityTypeShape EntityType="TTI2Model.TLCMT_HistoryBoxedQty" Width="1.5" PointX="45.375" PointY="31.75" />
         <EntityTypeShape EntityType="TTI2Model.TLADM_Trims" Width="1.5" PointX="40.375" PointY="45.75" />
         <EntityTypeShape EntityType="TTI2Model.TLCUT_CutSheet" Width="1.5" PointX="45.375" PointY="20.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLPPS_InterDept" Width="1.5" PointX="39.375" PointY="35.75" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -42,7 +42,7 @@ namespace DyeHouse
             //Query by color.
            if (parameters.Colors.Count > 0)
            {
-               var colorPredicate = PredicateBuilder.False<TLADM_Colours>();
+               var colorPredicate = PredicateBuilder.New<TLADM_Colours>();
  
               foreach (var color in parameters.Colors)
               {

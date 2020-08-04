@@ -403,7 +403,8 @@ namespace Knitting
                         var fabwidth = context.TLADM_FabWidth.Where(x => x.FW_Id == Greige.TLGreige_FabricWidth_FK).FirstOrDefault();
                         if (fabwidth != null)
                             txtFabricWidth.Text = fabwidth.FW_Description;
-                        
+
+                        var cnt = 0;
                         var GreigePN = Core.ExtrapNumber(Greige.TLGreige_YarnPowerN, context.TLADM_Yarn.Count()).ToList();
                         foreach (var Number in GreigePN)
                         {
@@ -434,6 +435,9 @@ namespace Knitting
 
                                if (PalletStack.Count == 0)
                                {
+                                    if (++cnt < GreigePN.Count())
+                                        continue;
+
                                    using (DialogCenteringService centeringService = new DialogCenteringService(this)) // center message box
                                    {
                                       MessageBox.Show("There are no pallets conforming to the specifications as selected");

@@ -88,7 +88,9 @@ namespace Cutting
 
             if (parameters.Styles.Count() > 0)
             {
-                var stylePredicate = PredicateBuilder.False<TLCSV_StockOnHand>();
+                var stylePredicate = PredicateBuilder.New<TLCSV_StockOnHand>();
+
+               //  var stylePredicate = PredicateBuilder.New<TLCSV_StockOnHand>();
                 foreach (var style in parameters.Styles)
                 {
                     var temp = style;
@@ -97,10 +99,10 @@ namespace Cutting
 
                 FmWhse = FmWhse.AsExpandable().Where(stylePredicate);
             }
-
+              
             if (parameters.Colours.Count() > 0)
             {
-                var colourPredicate = PredicateBuilder.False<TLCSV_StockOnHand>();
+                var colourPredicate = PredicateBuilder.New<TLCSV_StockOnHand>();
                 foreach (var style in parameters.Colours)
                 {
                     var temp = style;
@@ -112,7 +114,7 @@ namespace Cutting
 
             if (parameters.Sizes.Count() > 0)
             {
-                var sizePredicate = PredicateBuilder.False<TLCSV_StockOnHand>();
+                var sizePredicate = PredicateBuilder.New<TLCSV_StockOnHand>();
                 foreach (var style in parameters.Sizes)
                 {
                     var temp = style;
@@ -129,7 +131,7 @@ namespace Cutting
             var CS = _context.TLCUT_CutSheet.AsQueryable();
             if (parameters.Departments.Count != 0)
             {
-                var DeptPredicate = PredicateBuilder.False<TLCUT_CutSheet>();
+                var DeptPredicate = PredicateBuilder.New<TLCUT_CutSheet>();
                 foreach (var Dept in parameters.Departments)
                 {
                     var temp = Dept;
@@ -145,7 +147,7 @@ namespace Cutting
             var CS = _context.TLCUT_CutSheet.Where(x=>x.TLCutSH_Date >= parameters.FromDate && x.TLCutSH_Date <= parameters.ToDate).AsQueryable();
             if (parameters.Departments.Count != 0)
             {
-                var DeptPredicate = PredicateBuilder.False<TLCUT_CutSheet>();
+                var DeptPredicate = PredicateBuilder.New<TLCUT_CutSheet>();
                 foreach (var Dept in parameters.Departments)
                 {
                     var temp = Dept;
@@ -161,7 +163,7 @@ namespace Cutting
             var CutRec = _context.TLCUT_CutSheetReceipt.Where(x=>!x.TLCUTSHR_Issued && x.TLCUTSHR_InPanelStore).AsQueryable();
             if (parameters.WareHouses.Count != 0)
             {
-                var WhsePredicate = PredicateBuilder.False<TLCUT_CutSheetReceipt>();
+                var WhsePredicate = PredicateBuilder.New<TLCUT_CutSheetReceipt>();
 
                 foreach (var Whse in parameters.WareHouses)
                 {
@@ -189,7 +191,7 @@ namespace Cutting
                                                               x.TLQCFB_Measure9 != 0).AsQueryable();
              if (parameters.CutSheetReceipts.Count != 0)
              {
-                 var CutSheetPredicate = PredicateBuilder.False<TLCUT_QCBerrie>();
+                 var CutSheetPredicate = PredicateBuilder.New<TLCUT_QCBerrie>();
                  foreach (var Receipt in parameters.CutSheetReceipts)
                  {
                      var temp = Receipt;
@@ -201,7 +203,7 @@ namespace Cutting
              
              if (parameters.Operators.Count != 0)
              {
-                 var OperatorsPredicate = PredicateBuilder.False<TLCUT_QCBerrie>();
+                 var OperatorsPredicate = PredicateBuilder.New<TLCUT_QCBerrie>();
                  foreach (var Operator in parameters.Operators)
                  {
                      var temp = Operator;
@@ -223,7 +225,7 @@ namespace Cutting
 
             if (parameters.QAResults.Count != 0)
             {
-                var CSPredicate = PredicateBuilder.False<TLCUT_QAResults>();
+                var CSPredicate = PredicateBuilder.New<TLCUT_QAResults>();
                 foreach (var CSR in parameters.QAResults)
                 {
                     var temp = CSR;
@@ -248,7 +250,7 @@ namespace Cutting
 
             if (parameters.GreigeProd.Count != 0)
             {
-                var GriegePredicate = PredicateBuilder.False<TLKNI_GreigeProduction>();
+                var GriegePredicate = PredicateBuilder.New<TLKNI_GreigeProduction>();
                 foreach (var Prod in parameters.GreigeProd)
                 {
                     var temp = Prod;
@@ -270,7 +272,7 @@ namespace Cutting
 
             if (parameters.Departments.Count != 0)
             {
-                var DeptPredicate = PredicateBuilder.False<TLCUT_CutSheet>();
+                var DeptPredicate = PredicateBuilder.New<TLCUT_CutSheet>();
                 foreach (var Dept in parameters.Departments)
                 {
                     var temp = Dept;
@@ -282,7 +284,7 @@ namespace Cutting
 
             if (parameters.Qualities.Count != 0)
             {
-                var CSPredicate = PredicateBuilder.False<TLCUT_CutSheet>();
+                var CSPredicate = PredicateBuilder.New<TLCUT_CutSheet>();
                 foreach (var CSR in parameters.Qualities)
                 {
                     var temp = CSR;
@@ -294,7 +296,7 @@ namespace Cutting
 
             if (parameters.Colours.Count != 0)
             {
-                var CSColourPredicate = PredicateBuilder.False<TLCUT_CutSheet>();
+                var CSColourPredicate = PredicateBuilder.New<TLCUT_CutSheet>();
                 foreach (var Colour in parameters.Colours)
                 {
                     var temp = Colour;
@@ -312,7 +314,7 @@ namespace Cutting
      
             if (parameters.CutSheetReceipts.Count > 0)
             {
-                var CSPredicate = PredicateBuilder.False<TLCUT_CutSheetReceipt>();
+                var CSPredicate = PredicateBuilder.New<TLCUT_CutSheetReceipt>();
                 foreach (var CSR in parameters.CutSheetReceipts)
                 {
                     var temp = CSR;
@@ -330,7 +332,7 @@ namespace Cutting
 
             if (parameters.Styles.Count != 0)
             {
-                var CSPredicate = PredicateBuilder.False<TLCUT_CutSheetReceipt>();
+                var CSPredicate = PredicateBuilder.New<TLCUT_CutSheetReceipt>();
                 foreach (var Style in parameters.Styles)
                 {
                     var temp = Style;
@@ -341,7 +343,7 @@ namespace Cutting
             }
             if (parameters.Colours.Count != 0)
             {
-                var ColourPredicate = PredicateBuilder.False<TLCUT_CutSheetReceipt>();
+                var ColourPredicate = PredicateBuilder.New<TLCUT_CutSheetReceipt>();
                 foreach (var Colour in parameters.Colours)
                 {
                     var temp = Colour;

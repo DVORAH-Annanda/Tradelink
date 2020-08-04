@@ -11,6 +11,7 @@ using Utilities;
 using Microsoft.Office.Interop.Excel;
 using System.IO;
 using System.Collections;
+using System.Net.Mime;
 
 namespace ProductionPlanning
 {
@@ -21,6 +22,12 @@ namespace ProductionPlanning
         ProdQueryParameters _ProdQParms;
         Util core;
         bool[] _Selected;
+
+        public frmPPSViewRep()
+        {
+            InitializeComponent();
+        }
+
         public frmPPSViewRep(int RepNo)
         {
             InitializeComponent();
@@ -49,7 +56,8 @@ namespace ProductionPlanning
             _Selected = Select;
 
         }
-        private void crystalReportViewer1_Load(object sender, EventArgs e)
+
+        private void frmPPSViewRep_Load(object sender, EventArgs e)
         {
             if (_RepNo == 1) // Printing of Replenishment Levels 
             {
@@ -167,7 +175,7 @@ namespace ProductionPlanning
                         Row[0] = GreigeItem.TLGreige_Description;
 
                         var GreigeP = core.CalculateAvailableToBatch(_ProdQParms.GradeType, GreigeItem.TLGreige_Id, _ProdQParms.IncludeGradeAWithwarnings);
-                        
+
                         if (_ProdQParms.GradeType == 1)
                         {
                             Title = "Grade A Selected";
@@ -180,27 +188,27 @@ namespace ProductionPlanning
                         {
                             Title = "Grade A, B Selected";
                         }
-                        else if(_ProdQParms.GradeType == 4)
+                        else if (_ProdQParms.GradeType == 4)
                         {
                             Title = "Grade C Selected";
                         }
                         else if (_ProdQParms.GradeType == 5)
                         {
-                             Title = "Grade A, C Selected";
+                            Title = "Grade A, C Selected";
                         }
                         else if (_ProdQParms.GradeType == 6)
                         {
-                             Title = "Grade B, C Selected";
+                            Title = "Grade B, C Selected";
                         }
                         else if (_ProdQParms.GradeType == 7)
                         {
-                             Title = "Grade A, B and C Selected";
+                            Title = "Grade A, B and C Selected";
                         }
 
                         Row[1] = GreigeP.Where(x => x.GreigeP_Captured && x.GreigeP_Inspected).Sum(x => (int?)x.GreigeP_weight) ?? 0;
                         Row[2] = GreigeP.Where(x => !x.GreigeP_Inspected).Sum(x => (int?)x.GreigeP_weight) ?? 0;
                         Row[3] = context.TLKNI_Order.Where(x => x.KnitO_Product_FK == GreigeItem.TLGreige_Id && !x.KnitO_Closed).Sum(x => (int?)x.KnitO_Weight) ?? 0;
-                        
+
                         Row[4] = core.DyeOrdersLT8Weeks(GreigeItem.TLGreige_Id);
                         Row[5] = core.DyeOrdersGT8Weeks(GreigeItem.TLGreige_Id);
                         Row[6] = Convert.ToInt32(Row[1].ToString()) + Convert.ToInt32(Row[2].ToString()) - Convert.ToInt32(Row[4].ToString()) - Convert.ToInt32(Row[5].ToString());
@@ -445,7 +453,7 @@ namespace ProductionPlanning
                         new string[] {"Text14", string.Empty},
                         new string[] {"Text15", string.Empty},
                         new string[] {"Text16", string.Empty}
-                      
+
                     };
 
 
@@ -458,7 +466,7 @@ namespace ProductionPlanning
                 {
                     ColumnNames[i++][1] = CName[1];
                 }
-                
+
                 using (var context = new TTI2Entities())
                 {
                     foreach (var Style in _ProdQParms.Styles)
@@ -1396,7 +1404,7 @@ namespace ProductionPlanning
                     new string[] {"Text14", string.Empty},
                     new string[] {"Text15", string.Empty},
                     new string[] {"Text16", string.Empty}
-                      
+
                 };
 
                 var CNames = core.CreateColumnNames();
@@ -1416,14 +1424,14 @@ namespace ProductionPlanning
                     var PPSSales = repo.PPSSales(_ProdQParms).AsEnumerable()
                                    .Select(x => new { x.TLSOH_Style_FK, x.TLSOH_Colour_FK, x.TLSOH_BoxedQty })
                                    .GroupBy(x => new { x.TLSOH_Style_FK, x.TLSOH_Colour_FK })
-                                   .Select(g => new { g.Key.TLSOH_Style_FK, g.Key.TLSOH_Colour_FK, TotalBoxedQty = g.Sum(x => x.TLSOH_BoxedQty) }).OrderByDescending(x=>x.TotalBoxedQty);
+                                   .Select(g => new { g.Key.TLSOH_Style_FK, g.Key.TLSOH_Colour_FK, TotalBoxedQty = g.Sum(x => x.TLSOH_BoxedQty) }).OrderByDescending(x => x.TotalBoxedQty);
 
                     var GrandTotal = PPSSales.Sum(x => x.TotalBoxedQty);
 
                     foreach (var PPSSale in PPSSales)
                     {
                         //if(++TSCnt > _ProdQParms.TopSellers)
-                           // continue;
+                        // continue;
 
                         //Create a new table row  
                         //==========================================================
@@ -1432,10 +1440,10 @@ namespace ProductionPlanning
                         nr.Pk = 1;
                         nr.Style = context.TLADM_Styles.Find(PPSSale.TLSOH_Style_FK).Sty_Description;
                         nr.Colour = context.TLADM_Colours.Find(PPSSale.TLSOH_Colour_FK).Col_Display;
-                        
+
                         var SBySize = SalesBySize.AsEnumerable()
                                         .Where(x => x.TLSOH_Style_FK == PPSSale.TLSOH_Style_FK && x.TLSOH_Colour_FK == PPSSale.TLSOH_Colour_FK)
-                                        .Select(x => new { x.TLSOH_Size_FK, x.TLSOH_BoxedQty }).GroupBy(x => new { x.TLSOH_Size_FK }).Select(g => new { g.Key.TLSOH_Size_FK, TotalSizeSales = g.Sum(x => x.TLSOH_BoxedQty) }).Distinct();           
+                                        .Select(x => new { x.TLSOH_Size_FK, x.TLSOH_BoxedQty }).GroupBy(x => new { x.TLSOH_Size_FK }).Select(g => new { g.Key.TLSOH_Size_FK, TotalSizeSales = g.Sum(x => x.TLSOH_BoxedQty) }).Distinct();
 
                         foreach (var Si in SBySize)
                         {
@@ -1492,13 +1500,13 @@ namespace ProductionPlanning
                         //========================================
                         var Tot = nr.Col1 + nr.Col2 + nr.Col3 + nr.Col4 + nr.Col5 + nr.Col6 + nr.Col7 + nr.Col8 + nr.Col9 + nr.Col10 + nr.Col11;
                         if (Tot == 0)
-                                continue;
+                            continue;
 
                         nr.Total = Tot;
                         nr.Percentage = (decimal)Tot / (decimal)GrandTotal * 100;
 
                         dataTable1.AddDataTable1Row(nr);
-                        
+
                     }
 
                     DataSet4.DataTable2Row hnr = dataTable2.NewDataTable2Row();
@@ -1516,7 +1524,7 @@ namespace ProductionPlanning
 
                     }
                     dataTable2.AddDataTable2Row(hnr);
-                    
+
                     ds.Tables.Add(dataTable1);
                     ds.Tables.Add(dataTable2);
                     DaysOfSales SItem = new DaysOfSales();
@@ -1543,10 +1551,6 @@ namespace ProductionPlanning
             }
             else if (_RepNo == 6)  // Production Days  
             {
-                // ReportDepts = new bool[3] { false, false, false };
-                // 1st Element = DyeHouse Prep 
-                // 2nd Element = Cutting 
-                // 3rd Element = CMT 
 
                 DataSet ds = new DataSet();
                 DataSet5.DataTable1DataTable dataTable1 = new DataSet5.DataTable1DataTable();
@@ -1575,10 +1579,10 @@ namespace ProductionPlanning
                             // 1st Task is to get the transfer info
                             //===================================================
                             DataSet5.DataTable2Row nr = dataTable2.NewDataTable2Row();
-                            
+
                             nr.Pk = 1;
                             nr.Creation_Date = (DateTime)DyeBatch.DYEB_BatchDate;
-                            nr.Transaction_Date = (DateTime)DyeBatch.DYEB_TransferDate ;
+                            nr.Transaction_Date = (DateTime)DyeBatch.DYEB_TransferDate;
                             nr.Batch_No = DyeBatch.DYEB_BatchNo;
                             nr.Description = "DyeHouse Prep";
                             nr.Department = "Dyeing Department";
@@ -1613,7 +1617,7 @@ namespace ProductionPlanning
                                 }
 
                             }
-                              // 3rd Task is to get the Completed Information info
+                            // 3rd Task is to get the Completed Information info
                             //===================================================
                             if (DyeBatch.DYEB_OutProcess)
                             {
@@ -1642,26 +1646,26 @@ namespace ProductionPlanning
                                 var TransType = context.TLADM_TranactionType.Where(x => x.TrxT_Department_FK == Dept.Dep_Id && x.TrxT_Number == 700).FirstOrDefault();
                                 if (TransType != null)
                                 {
-                                    var DyeTrans = context.TLDYE_DyeTransactions.Where(x => x.TLDYET_Batch_FK == DyeBatch.DYEB_Pk ).FirstOrDefault();
-                                    if(DyeTrans != null)
+                                    var DyeTrans = context.TLDYE_DyeTransactions.Where(x => x.TLDYET_Batch_FK == DyeBatch.DYEB_Pk).FirstOrDefault();
+                                    if (DyeTrans != null)
                                     {
-                                       nr = dataTable2.NewDataTable2Row();
-                                       nr.Pk = 1;
-                                       nr.Creation_Date = TAllocatedDate;
-                                       nr.Transaction_Date = (DateTime)DyeTrans.TLDYET_Date;
-                                       nr.Batch_No = DyeBatch.DYEB_BatchNo;
-                                       nr.Sector = 1;
-                                       nr.WorkSector = 4;
-                                       nr.Description = "DyeHouse QA Final Approval";
-                                       nr.Department = "Dyeing Department";
-                                       nr.Days = core.GetWorkingDays(nr.Creation_Date, nr.Transaction_Date);
-                                       dataTable2.AddDataTable2Row(nr);
+                                        nr = dataTable2.NewDataTable2Row();
+                                        nr.Pk = 1;
+                                        nr.Creation_Date = TAllocatedDate;
+                                        nr.Transaction_Date = (DateTime)DyeTrans.TLDYET_Date;
+                                        nr.Batch_No = DyeBatch.DYEB_BatchNo;
+                                        nr.Sector = 1;
+                                        nr.WorkSector = 4;
+                                        nr.Description = "DyeHouse QA Final Approval";
+                                        nr.Department = "Dyeing Department";
+                                        nr.Days = core.GetWorkingDays(nr.Creation_Date, nr.Transaction_Date);
+                                        dataTable2.AddDataTable2Row(nr);
                                     }
                                 }
                             }
                         }
                     }
-                   
+
                     if (_ProdQParms.QAReportingDepts[1] == true)
                     {
                         var CutSheets = context.TLCUT_CutSheet.Where(x => x.TLCutSH_Date >= _ProdQParms.FromDate && x.TLCutSH_Date <= _ProdQParms.ToDate && x.TLCutSH_Accepted).ToList();
@@ -1713,11 +1717,11 @@ namespace ProductionPlanning
                                 if (CutSheetReceipt.TLCUTSHR_Issued)
                                 {
                                     var PIDet = (from PanIssue in context.TLCMT_PanelIssue
-                                                join PanIssueDet in context.TLCMT_PanelIssueDetail on PanIssue.CMTPI_Pk equals PanIssueDet.CMTPID_PI_FK
-                                                where PanIssueDet.CMTPID_CutSheet_FK == CutSheetReceipt.TLCUTSHR_Pk
-                                                select PanIssue).FirstOrDefault();
- 
-                                    if(PIDet != null)
+                                                 join PanIssueDet in context.TLCMT_PanelIssueDetail on PanIssue.CMTPI_Pk equals PanIssueDet.CMTPID_PI_FK
+                                                 where PanIssueDet.CMTPID_CutSheet_FK == CutSheetReceipt.TLCUTSHR_Pk
+                                                 select PanIssue).FirstOrDefault();
+
+                                    if (PIDet != null)
                                     {
                                         DataSet5.DataTable2Row bnr = dataTable2.NewDataTable2Row();
                                         bnr.Pk = 1;
@@ -1736,7 +1740,7 @@ namespace ProductionPlanning
                             }
                         }
                     }
-                    
+
                     if (_ProdQParms.QAReportingDepts[2] == true)
                     {
                         //CMT Trans
@@ -1751,7 +1755,7 @@ namespace ProductionPlanning
                                 bnr.Pk = 1;
                                 bnr.Creation_Date = (DateTime)CMTLineIssue.TLCMTLI_Date;
                                 bnr.Transaction_Date = (DateTime)CMTLineIssue.TLCMTLI_TransferDate;
-                                bnr.Batch_No = context.TLCUT_CutSheet.Find(CMTLineIssue.TLCMTLI_CutSheet_FK).TLCutSH_No ;
+                                bnr.Batch_No = context.TLCUT_CutSheet.Find(CMTLineIssue.TLCMTLI_CutSheet_FK).TLCutSH_No;
                                 bnr.Sector = 3;
                                 bnr.WorkSector = 1;
                                 bnr.Description = "Issued To Line";
@@ -1820,13 +1824,153 @@ namespace ProductionPlanning
                 SItem.SetDataSource(ds);
                 crystalReportViewer1.ReportSource = SItem;
             }
+            else if (_RepNo == 7) //  
+            {
+                DataSet ds = new DataSet();
+                DataSet6.DataTable1DataTable dataTable1 = new DataSet6.DataTable1DataTable();
+                DataSet6.DataTable2DataTable dataTable2 = new DataSet6.DataTable2DataTable();
+                core = new Util();
 
+                List<TLKNI_GreigeProduction> GreigePieces = null;
+
+                //===================================================== 
+                // 0 = Piece Number
+                // 1 = Knit Order 
+                // 2 = Dye Batch 
+                // 3 = Cut Sheet 
+                //============================
+                // QueryParms.RecordKeys = RecordKey;
+                // QueryParms.SelectedOptions = SelectedOption;
+
+                DataSet6.DataTable1Row hrw = dataTable1.NewDataTable1Row();
+                hrw.Pk = 1;
+                hrw.Title = "Inter Departmental Faults Analysis";
+                hrw.FromDate = _ProdQParms.FromDate;
+                hrw.ToDate = _ProdQParms.ToDate;
+                dataTable1.AddDataTable1Row(hrw);
+
+                using (var context = new TTI2Entities())
+                {
+                    if (_ProdQParms.SelectedOptions[3])
+                    {
+                        var SelectedOpt = context.TLPPS_InterDept.Find(_ProdQParms.InterDeptOption);
+
+                        var RecKey = _ProdQParms.RecordKeys[3];
+
+                        var LineIssue = context.TLCMT_LineIssue.Find(RecKey);
+                        if (LineIssue != null)
+                        {
+                            DataSet6.DataTable2Row nr = dataTable2.NewDataTable2Row();
+                            nr.Pk = 1;
+                            nr.CutSheet = LineIssue.TLCMTLI_CutSheetDetails;
+
+                            var ProdF = context.TLCMT_ProductionFaults.Where(x => x.TLCMTPF_PanelIssue_FK == RecKey && x.TLCMTPF_Fault_FK == SelectedOpt.TLInter_CMT_Fk).FirstOrDefault();
+                            if (ProdF != null)
+                            {
+                                nr.Measurement1 = 0;
+                                nr.Measurement2 = 0;
+                                nr.Measurement3 = ProdF.TLCMTPF_Qty;
+                                nr.MeasurementDescrip = SelectedOpt.TLInter_Description;
+                                nr.PieceNo = "Total For CMT";
+                                dataTable2.AddDataTable2Row(nr);
+
+                                var CSheet = context.TLCUT_CutSheet.Find(LineIssue.TLCMTLI_CutSheet_FK);
+                                if (CSheet != null)
+                                {
+                                    var DbDetails = (from DB in context.TLDYE_DyeBatch
+                                                     join DBD in context.TLDYE_DyeBatchDetails on DB.DYEB_Pk equals DBD.DYEBD_DyeBatch_FK
+                                                     where CSheet.TLCutSH_DyeBatch_FK == DB.DYEB_Pk
+                                                     select DBD).ToList();
+
+                                    foreach (var DbDetail in DbDetails)
+                                    {
+                                        nr = dataTable2.NewDataTable2Row();
+                                        nr.Pk = 1;
+                                        nr.MeasurementDescrip = SelectedOpt.TLInter_Description;
+                                        nr.Measurement1 = 0;
+                                        nr.Measurement2 = 0;
+                                        nr.Measurement3 = 0;
+
+                                        var GriegeProd = context.TLKNI_GreigeProduction.Find(DbDetail.DYEBD_GreigeProduction_FK);
+                                        if (GriegeProd != null)
+                                        {
+                                            nr.PieceNo = GriegeProd.GreigeP_PieceNo;
+
+                                            var tst = context.TLADM_QualityDefinition.Find(SelectedOpt.TLInter_Knitting_Fk);
+                                            if (tst != null)
+                                            {
+                                                if (tst.QD_ColumnIndex == 1)
+                                                {
+                                                    nr.Measurement1 = GriegeProd.GreigeP_Meas1;
+                                                }
+                                                else if (tst.QD_ColumnIndex == 2)
+                                                {
+                                                    nr.Measurement1 = GriegeProd.GreigeP_Meas2;
+                                                }
+                                                else if (tst.QD_ColumnIndex == 3)
+                                                {
+                                                    nr.Measurement1 = GriegeProd.GreigeP_Meas3;
+                                                }
+                                                else if (tst.QD_ColumnIndex == 4)
+                                                {
+                                                    nr.Measurement1 = GriegeProd.GreigeP_Meas4;
+                                                }
+                                                else if (tst.QD_ColumnIndex == 5)
+                                                {
+                                                    nr.Measurement1 = GriegeProd.GreigeP_Meas5;
+                                                }
+                                                else if (tst.QD_ColumnIndex == 6)
+                                                {
+                                                    nr.Measurement1 = GriegeProd.GreigeP_Meas6;
+                                                }
+                                                else if (tst.QD_ColumnIndex == 7)
+                                                {
+                                                    nr.Measurement1 = GriegeProd.GreigeP_Meas7;
+                                                }
+                                                else
+                                                {
+                                                    nr.Measurement1 = GriegeProd.GreigeP_Meas8;
+                                                }
+
+                                            }
+                                        }
+
+                                        var QualExp = context.TLDye_QualityException.Where(x => x.TLDyeIns_GriegeProduct_Fk == DbDetail.DYEBD_GreigeProduction_FK && x.TLDyeIns_QADyeProcessField_Fk == SelectedOpt.TLInter_Dying_Fk).FirstOrDefault();
+                                        if (QualExp != null)
+                                        {
+                                            nr.Measurement2 = QualExp.TLDyeIns_Quantity;
+                                        }
+
+
+
+                                        dataTable2.AddDataTable2Row(nr);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                ds.Tables.Add(dataTable1);
+                if (dataTable2.Rows.Count == 0)
+                {
+                    DataSet6.DataTable2Row bnr = dataTable2.NewDataTable2Row();
+                    bnr.Pk = 1;
+                    bnr.ErrorLog = " No Records Found matching dates selection ";
+                    dataTable2.AddDataTable2Row(bnr);
+                }
+                ds.Tables.Add(dataTable2);
+
+                InterDeptComparison SItem = new InterDeptComparison();
+                SItem.SetDataSource(ds);
+                crystalReportViewer1.ReportSource = SItem;
+
+            }
             crystalReportViewer1.Refresh();
         }
 
         public class TopSellers
         {
-            public TopSellers(int Styles, int Clrs, int Szs, int TBoxQty , int BoxQty)
+            public TopSellers(int Styles, int Clrs, int Szs, int TBoxQty, int BoxQty)
             {
                 _Styles = Styles;
                 _Colours = Clrs;

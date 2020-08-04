@@ -207,6 +207,7 @@ namespace Utilities
         public virtual DbSet<TLCMT_HistoryBoxedQty> TLCMT_HistoryBoxedQty { get; set; }
         public virtual DbSet<TLADM_Trims> TLADM_Trims { get; set; }
         public virtual DbSet<TLCUT_CutSheet> TLCUT_CutSheet { get; set; }
+        public virtual DbSet<TLPPS_InterDept> TLPPS_InterDept { get; set; }
     
         public virtual int SelectCottonRecords(Nullable<int> contractNo, Nullable<int> supplierNo)
         {

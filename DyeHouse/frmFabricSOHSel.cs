@@ -58,11 +58,36 @@ namespace DyeHouse
             Button oBtn = sender as Button;
             if (oBtn != null && FormLoad)
             {
-                if((int)cmboWhseStore.SelectedValue <= 0)
+
+                var SelectedItem = (TLADM_WhseStore)cmboWhseStore.SelectedItem;
+
+                if (SelectedItem == null)
                 {
                     MessageBox.Show("Please select a store from the drop down list provided");
                     return;
                 }
+
+                if (SelectedItem.WhStore_Code.Contains("FS"))
+                {
+                    repOps.FabricStore = true;
+                }
+                else if (SelectedItem.WhStore_Code.Contains("FQS"))
+                {
+                    repOps.FabricQSStore = true;
+                }
+                else if (SelectedItem.WhStore_Code.Contains("FRJS"))
+                {
+                    repOps.FabricRejectStore = true;
+                }
+                else
+                {
+                    MessageBox.Show("Please select either Fabric store, Fabric Quarantine Store or Reject Store");
+                    return;
+                }
+
+                if (rbStandard.Checked)
+                    repOps.FabricType = true;
+
 
                 repOps.FabricStoreSelected = (int)cmboWhseStore.SelectedValue;
 
@@ -72,6 +97,8 @@ namespace DyeHouse
                 }
                 else
                     repOps.DO_OptionSelected = 0;
+
+          
 
                 repOps.ShowIndvidualNo = false;
 

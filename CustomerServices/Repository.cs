@@ -108,7 +108,7 @@ namespace CustomerServices
 
             if (parameters.Styles.Count() > 0)
             {
-                var stylePredicate = PredicateBuilder.False<TLCSV_StockOnHand>();
+                var stylePredicate = PredicateBuilder.New<TLCSV_StockOnHand>();
                 foreach (var style in parameters.Styles)
                 {
                     var temp = style;
@@ -127,7 +127,7 @@ namespace CustomerServices
 
             if (parameters.Styles.Count() > 0)
             {
-                var stylePredicate = PredicateBuilder.False<TLCSV_StockOnHand>();
+                var stylePredicate = PredicateBuilder.New<TLCSV_StockOnHand>();
                 foreach (var style in parameters.Styles)
                 {
                     var temp = style;
@@ -139,7 +139,7 @@ namespace CustomerServices
 
             if (parameters.Colours.Count() > 0)
             {
-                var colourPredicate = PredicateBuilder.False<TLCSV_StockOnHand>();
+                var colourPredicate = PredicateBuilder.New<TLCSV_StockOnHand>();
                 foreach (var style in parameters.Colours)
                 {
                     var temp = style;
@@ -151,7 +151,7 @@ namespace CustomerServices
 
             if (parameters.Sizes.Count() > 0)
             {
-                var sizePredicate = PredicateBuilder.False<TLCSV_StockOnHand>();
+                var sizePredicate = PredicateBuilder.New<TLCSV_StockOnHand>();
                 foreach (var style in parameters.Sizes)
                 {
                     var temp = style;
@@ -168,7 +168,7 @@ namespace CustomerServices
             var OrderAlloc = _context.TLCSV_OrderAllocated.Where(x=>x.TLORDA_PickListPrint && !x.TLORDA_Delivered).AsQueryable();
             if (parameters.Customers.Count() > 0)
             {
-                var custPredicate = PredicateBuilder.False<TLCSV_OrderAllocated>();
+                var custPredicate = PredicateBuilder.New<TLCSV_OrderAllocated>();
                 foreach (var cust in parameters.Customers)
                 {
                     var temp = cust;
@@ -183,7 +183,7 @@ namespace CustomerServices
             if (parameters.Whses.Count() > 0)
             {
 
-                var whsePredicate = PredicateBuilder.False<TLCSV_OrderAllocated>();
+                var whsePredicate = PredicateBuilder.New<TLCSV_OrderAllocated>();
                 foreach (var whse in parameters.Whses)
                 {
                     var temp = whse;
@@ -196,7 +196,7 @@ namespace CustomerServices
 
             if (parameters.OrdersAllocated.Count() > 0)
             {
-                var orderPredicate = PredicateBuilder.False<TLCSV_OrderAllocated>();
+                var orderPredicate = PredicateBuilder.New<TLCSV_OrderAllocated>();
                 foreach (var orderp in parameters.OrdersAllocated)
                 {
                     var temp = orderp;
@@ -215,7 +215,7 @@ namespace CustomerServices
 
             if (parameters.Whses.Count != 0)
             {
-                var WhsePredicate = PredicateBuilder.False<TLCMT_CompletedWork>();
+                var WhsePredicate = PredicateBuilder.New<TLCMT_CompletedWork>();
 
                 foreach (var Whse in parameters.Whses)
                 {
@@ -240,7 +240,7 @@ namespace CustomerServices
 
             if (parameters.Customers.Count() > 0)
             {
-                var custPredicate = PredicateBuilder.False<TLCSV_PuchaseOrderDetail>();
+                var custPredicate = PredicateBuilder.New<TLCSV_PuchaseOrderDetail>();
                 foreach(var cust in parameters.Customers)
                 {
                     var temp = cust;
@@ -251,7 +251,7 @@ namespace CustomerServices
 
             if (parameters.Styles.Count() > 0)
             {
-                var stylePredicate = PredicateBuilder.False<TLCSV_PuchaseOrderDetail>();
+                var stylePredicate = PredicateBuilder.New<TLCSV_PuchaseOrderDetail>();
                 foreach (var style in parameters.Styles)
                 {
                     var temp = style;
@@ -263,7 +263,7 @@ namespace CustomerServices
 
             if (parameters.Colours.Count() > 0)
             {
-                var colourPredicate = PredicateBuilder.False<TLCSV_PuchaseOrderDetail>();
+                var colourPredicate = PredicateBuilder.New<TLCSV_PuchaseOrderDetail>();
                 foreach (var style in parameters.Colours)
                 {
                     var temp = style;
@@ -275,7 +275,7 @@ namespace CustomerServices
 
             if (parameters.Sizes.Count() > 0)
             {
-                var sizePredicate = PredicateBuilder.False<TLCSV_PuchaseOrderDetail>();
+                var sizePredicate = PredicateBuilder.New<TLCSV_PuchaseOrderDetail>();
                 foreach (var style in parameters.Sizes)
                 {
                     var temp = style;
@@ -303,7 +303,7 @@ namespace CustomerServices
             
             if (parameters.Customers.Count() > 0)
             {
-                var custPredicate = PredicateBuilder.False<TLCSV_PuchaseOrderDetail>();
+                var custPredicate = PredicateBuilder.New<TLCSV_PuchaseOrderDetail>();
                 foreach (var cust in parameters.Customers)
                 {
                     var temp = cust;
@@ -314,7 +314,7 @@ namespace CustomerServices
 
             if (parameters.Styles.Count() > 0)
             {
-                var stylePredicate = PredicateBuilder.False<TLCSV_PuchaseOrderDetail>();
+                var stylePredicate = PredicateBuilder.New<TLCSV_PuchaseOrderDetail>();
                 foreach (var style in parameters.Styles)
                 {
                     var temp = style;
@@ -325,7 +325,7 @@ namespace CustomerServices
 
             if (parameters.Colours.Count() > 0)
             {
-                var colourPredicate = PredicateBuilder.False<TLCSV_PuchaseOrderDetail>();
+                var colourPredicate = PredicateBuilder.New<TLCSV_PuchaseOrderDetail>();
                 foreach (var style in parameters.Colours)
                 {
                     var temp = style;
@@ -336,7 +336,7 @@ namespace CustomerServices
 
             if (parameters.Sizes.Count() > 0)
             {
-                var sizePredicate = PredicateBuilder.False<TLCSV_PuchaseOrderDetail>();
+                var sizePredicate = PredicateBuilder.New<TLCSV_PuchaseOrderDetail>();
                 foreach (var style in parameters.Sizes)
                 {
                     var temp = style;
@@ -359,7 +359,7 @@ namespace CustomerServices
 
             if (parameters.Customers.Count() > 0)
             {
-                var custPredicate = PredicateBuilder.False<TLCSV_PuchaseOrderDetail>();
+                var custPredicate = PredicateBuilder.New<TLCSV_PuchaseOrderDetail>();
                 foreach (var cust in parameters.Customers)
                 {
                     var temp = cust;
@@ -370,7 +370,7 @@ namespace CustomerServices
 
             if (parameters.Styles.Count() > 0)
             {
-                var stylePredicate = PredicateBuilder.False<TLCSV_PuchaseOrderDetail>();
+                var stylePredicate = PredicateBuilder.New<TLCSV_PuchaseOrderDetail>();
                 foreach (var style in parameters.Styles)
                 {
                     var temp = style;
@@ -381,7 +381,7 @@ namespace CustomerServices
 
             if (parameters.Colours.Count() > 0)
             {
-                var colourPredicate = PredicateBuilder.False<TLCSV_PuchaseOrderDetail>();
+                var colourPredicate = PredicateBuilder.New<TLCSV_PuchaseOrderDetail>();
                 foreach (var style in parameters.Colours)
                 {
                     var temp = style;
@@ -392,7 +392,7 @@ namespace CustomerServices
 
             if (parameters.Sizes.Count() > 0)
             {
-                var sizePredicate = PredicateBuilder.False<TLCSV_PuchaseOrderDetail>();
+                var sizePredicate = PredicateBuilder.New<TLCSV_PuchaseOrderDetail>();
                 foreach (var style in parameters.Sizes)
                 {
                     var temp = style;
@@ -411,7 +411,7 @@ namespace CustomerServices
             var Whse = _context.TLADM_WhseStore.Where(x => x.WhStore_WhseOrStore && x.WhStore_GradeA == parameters.GradeA).AsQueryable();
             if (parameters.Whses.Count() > 0)
             {
-                var whsePredicate = PredicateBuilder.False<TLADM_WhseStore>();
+                var whsePredicate = PredicateBuilder.New<TLADM_WhseStore>();
                 foreach (var whse in parameters.Whses)
                 {
                     var temp = whse;
@@ -429,7 +429,7 @@ namespace CustomerServices
 
             if (parameters.Whses.Count() > 0)
             {
-                var whsePredicate = PredicateBuilder.False<TLCSV_StockOnHand>();
+                var whsePredicate = PredicateBuilder.New<TLCSV_StockOnHand>();
                 foreach (var whse in parameters.Whses)
                 {
                     var temp = whse;
@@ -441,7 +441,7 @@ namespace CustomerServices
 
             if (parameters.Customers.Count() > 0)
             {
-                var CustPredicate = PredicateBuilder.False<TLCSV_StockOnHand>();
+                var CustPredicate = PredicateBuilder.New<TLCSV_StockOnHand>();
                 foreach (var cust in parameters.Customers)
                 {
                     var temp = cust;
@@ -453,7 +453,7 @@ namespace CustomerServices
 
             if (parameters.Styles.Count() > 0)
             {
-                var stylePredicate = PredicateBuilder.False<TLCSV_StockOnHand>();
+                var stylePredicate = PredicateBuilder.New<TLCSV_StockOnHand>();
                 foreach (var style in parameters.Styles)
                 {
                     var temp = style;
@@ -465,7 +465,7 @@ namespace CustomerServices
 
             if (parameters.Colours.Count() > 0)
             {
-                var colourPredicate = PredicateBuilder.False<TLCSV_StockOnHand>();
+                var colourPredicate = PredicateBuilder.New<TLCSV_StockOnHand>();
                 foreach (var style in parameters.Colours)
                 {
                     var temp = style;
@@ -477,7 +477,7 @@ namespace CustomerServices
 
             if (parameters.Sizes.Count() > 0)
             {
-                var sizePredicate = PredicateBuilder.False<TLCSV_StockOnHand>();
+                var sizePredicate = PredicateBuilder.New<TLCSV_StockOnHand>();
                 foreach (var Size in parameters.Sizes)
                 {
                     var temp = Size;
@@ -497,7 +497,7 @@ namespace CustomerServices
 
             if (parameters.Whses.Count() > 0)
             {
-                var whsePredicate = PredicateBuilder.False<TLCSV_StockOnHand>();
+                var whsePredicate = PredicateBuilder.New<TLCSV_StockOnHand>();
                 foreach (var whse in parameters.Whses)
                 {
                     var temp = whse;
@@ -509,7 +509,7 @@ namespace CustomerServices
 
             if (parameters.Customers.Count() > 0)
             {
-                var CustPredicate = PredicateBuilder.False<TLCSV_StockOnHand>();
+                var CustPredicate = PredicateBuilder.New<TLCSV_StockOnHand>();
                 foreach (var cust in parameters.Customers)
                 {
                     var temp = cust;
@@ -521,7 +521,7 @@ namespace CustomerServices
 
             if (parameters.Styles.Count() > 0)
             {
-                var stylePredicate = PredicateBuilder.False<TLCSV_StockOnHand>();
+                var stylePredicate = PredicateBuilder.New<TLCSV_StockOnHand>();
                 foreach (var style in parameters.Styles)
                 {
                     var temp = style;
@@ -533,7 +533,7 @@ namespace CustomerServices
 
             if (parameters.Colours.Count() > 0)
             {
-                var colourPredicate = PredicateBuilder.False<TLCSV_StockOnHand>();
+                var colourPredicate = PredicateBuilder.New<TLCSV_StockOnHand>();
                 foreach (var style in parameters.Colours)
                 {
                     var temp = style;
@@ -545,7 +545,7 @@ namespace CustomerServices
 
             if (parameters.Sizes.Count() > 0)
             {
-                var sizePredicate = PredicateBuilder.False<TLCSV_StockOnHand>();
+                var sizePredicate = PredicateBuilder.New<TLCSV_StockOnHand>();
                 foreach (var Size in parameters.Sizes)
                 {
                     var temp = Size;
@@ -563,7 +563,7 @@ namespace CustomerServices
 
             if (parameters.Whses.Count() > 0)
             {
-                var whsePredicate = PredicateBuilder.False<TLCSV_StockOnHand>();
+                var whsePredicate = PredicateBuilder.New<TLCSV_StockOnHand>();
                 foreach (var whse in parameters.Whses)
                 {
                     var temp = whse;
@@ -575,7 +575,7 @@ namespace CustomerServices
 
             if (parameters.Customers.Count() > 0)
             {
-                var CustPredicate = PredicateBuilder.False<TLCSV_StockOnHand>();
+                var CustPredicate = PredicateBuilder.New<TLCSV_StockOnHand>();
                 foreach (var cust in parameters.Customers)
                 {
                     var temp = cust;
@@ -587,7 +587,7 @@ namespace CustomerServices
 
             if (parameters.Styles.Count() > 0)
             {
-                var stylePredicate = PredicateBuilder.False<TLCSV_StockOnHand>();
+                var stylePredicate = PredicateBuilder.New<TLCSV_StockOnHand>();
                 foreach (var style in parameters.Styles)
                 {
                     var temp = style;
@@ -599,7 +599,7 @@ namespace CustomerServices
 
             if (parameters.Colours.Count() > 0)
             {
-                var colourPredicate = PredicateBuilder.False<TLCSV_StockOnHand>();
+                var colourPredicate = PredicateBuilder.New<TLCSV_StockOnHand>();
                 foreach (var style in parameters.Colours)
                 {
                     var temp = style;
@@ -611,7 +611,7 @@ namespace CustomerServices
 
             if (parameters.Sizes.Count() > 0)
             {
-                var sizePredicate = PredicateBuilder.False<TLCSV_StockOnHand>();
+                var sizePredicate = PredicateBuilder.New<TLCSV_StockOnHand>();
                 foreach (var style in parameters.Sizes)
                 {
                     var temp = style;
@@ -630,7 +630,7 @@ namespace CustomerServices
 
             if (parameters.Whses.Count() > 0)
             {
-                var whsePredicate = PredicateBuilder.False<TLCSV_StockOnHand>();
+                var whsePredicate = PredicateBuilder.New<TLCSV_StockOnHand>();
                 foreach (var whse in parameters.Whses)
                 {
                     var temp = whse;
@@ -642,7 +642,7 @@ namespace CustomerServices
 
             if (parameters.Customers.Count() > 0)
             {
-                var CustPredicate = PredicateBuilder.False<TLCSV_StockOnHand>();
+                var CustPredicate = PredicateBuilder.New<TLCSV_StockOnHand>();
                 foreach (var cust in parameters.Customers)
                 {
                     var temp = cust;
@@ -654,7 +654,7 @@ namespace CustomerServices
 
             if (parameters.Styles.Count() > 0)
             {
-                var stylePredicate = PredicateBuilder.False<TLCSV_StockOnHand>();
+                var stylePredicate = PredicateBuilder.New<TLCSV_StockOnHand>();
                 foreach (var style in parameters.Styles)
                 {
                     var temp = style;
@@ -666,7 +666,7 @@ namespace CustomerServices
 
             if (parameters.Colours.Count() > 0)
             {
-                var colourPredicate = PredicateBuilder.False<TLCSV_StockOnHand>();
+                var colourPredicate = PredicateBuilder.New<TLCSV_StockOnHand>();
                 foreach (var style in parameters.Colours)
                 {
                     var temp = style;
@@ -678,7 +678,7 @@ namespace CustomerServices
 
             if (parameters.Sizes.Count() > 0)
             {
-                var sizePredicate = PredicateBuilder.False<TLCSV_StockOnHand>();
+                var sizePredicate = PredicateBuilder.New<TLCSV_StockOnHand>();
                 foreach (var style in parameters.Sizes)
                 {
                     var temp = style;
@@ -697,7 +697,7 @@ namespace CustomerServices
            
             if (parameters.Whses.Count() > 0)
             {
-                var whsePredicate = PredicateBuilder.False<TLCSV_StockOnHand>();
+                var whsePredicate = PredicateBuilder.New<TLCSV_StockOnHand>();
                 foreach (var whse in parameters.Whses)
                 {
                     var temp = whse;
@@ -710,7 +710,7 @@ namespace CustomerServices
             /*
             if (parameters.Customers.Count() > 0)
             {
-                var CustPredicate = PredicateBuilder.False<TLCSV_StockOnHand>();
+                var CustPredicate = PredicateBuilder.New<TLCSV_StockOnHand>();
                 foreach (var cust in parameters.Customers)
                 {
                     var temp = cust;
@@ -723,7 +723,7 @@ namespace CustomerServices
  
             if (parameters.Styles.Count() > 0)
             {
-                var stylePredicate = PredicateBuilder.False<TLCSV_StockOnHand>();
+                var stylePredicate = PredicateBuilder.New<TLCSV_StockOnHand>();
                 foreach (var style in parameters.Styles)
                 {
                     var temp = style;
@@ -735,7 +735,7 @@ namespace CustomerServices
 
             if (parameters.Colours.Count() > 0)
             {
-                var colourPredicate = PredicateBuilder.False<TLCSV_StockOnHand>();
+                var colourPredicate = PredicateBuilder.New<TLCSV_StockOnHand>();
                 foreach (var style in parameters.Colours)
                 {
                     var temp = style;
@@ -747,7 +747,7 @@ namespace CustomerServices
 
             if (parameters.Sizes.Count() > 0)
             {
-                var sizePredicate = PredicateBuilder.False<TLCSV_StockOnHand>();
+                var sizePredicate = PredicateBuilder.New<TLCSV_StockOnHand>();
                 foreach (var style in parameters.Sizes)
                 {
                     var temp = style;
@@ -766,7 +766,7 @@ namespace CustomerServices
 
             if (parameters.Whses.Count() > 0)
             {
-                var whsePredicate = PredicateBuilder.False<TLCSV_StockOnHand>();
+                var whsePredicate = PredicateBuilder.New<TLCSV_StockOnHand>();
                 foreach (var whse in parameters.Whses)
                 {
                     var temp = whse;
@@ -778,7 +778,7 @@ namespace CustomerServices
 
             if (parameters.Customers.Count() > 0)
             {
-                var CustPredicate = PredicateBuilder.False<TLCSV_StockOnHand>();
+                var CustPredicate = PredicateBuilder.New<TLCSV_StockOnHand>();
                 foreach (var cust in parameters.Customers)
                 {
                     var temp = cust;
@@ -790,7 +790,7 @@ namespace CustomerServices
 
             if (parameters.Styles.Count() > 0)
             {
-                var stylePredicate = PredicateBuilder.False<TLCSV_StockOnHand>();
+                var stylePredicate = PredicateBuilder.New<TLCSV_StockOnHand>();
                 foreach (var style in parameters.Styles)
                 {
                     var temp = style;
@@ -802,7 +802,7 @@ namespace CustomerServices
 
             if (parameters.Colours.Count() > 0)
             {
-                var colourPredicate = PredicateBuilder.False<TLCSV_StockOnHand>();
+                var colourPredicate = PredicateBuilder.New<TLCSV_StockOnHand>();
                 foreach (var style in parameters.Colours)
                 {
                     var temp = style;
@@ -814,7 +814,7 @@ namespace CustomerServices
 
             if (parameters.Sizes.Count() > 0)
             {
-                var sizePredicate = PredicateBuilder.False<TLCSV_StockOnHand>();
+                var sizePredicate = PredicateBuilder.New<TLCSV_StockOnHand>();
                 foreach (var style in parameters.Sizes)
                 {
                     var temp = style;
@@ -831,7 +831,7 @@ namespace CustomerServices
             var SOH = _context.TLCSV_StockOnHand.Where(x => !x.TLSOH_Sold && !x.TLSOH_Split && !x.TLSOH_Write_Off).AsQueryable();
             if (parameters.Whses.Count() > 0)
             {
-                var whsePredicate = PredicateBuilder.False<TLCSV_StockOnHand>();
+                var whsePredicate = PredicateBuilder.New<TLCSV_StockOnHand>();
                 foreach (var whse in parameters.Whses)
                 {
                     var temp = whse;
@@ -842,7 +842,7 @@ namespace CustomerServices
 
             if (parameters.Customers.Count() > 0)
             {
-                var CustPredicate = PredicateBuilder.False<TLCSV_StockOnHand>();
+                var CustPredicate = PredicateBuilder.New<TLCSV_StockOnHand>();
                 foreach (var cust in parameters.Customers)
                 {
                     var temp = cust;
@@ -853,7 +853,7 @@ namespace CustomerServices
 
             if (parameters.Styles.Count() > 0)
             {
-                var stylePredicate = PredicateBuilder.False<TLCSV_StockOnHand>();
+                var stylePredicate = PredicateBuilder.New<TLCSV_StockOnHand>();
                 foreach (var style in parameters.Styles)
                 {
                     var temp = style;
@@ -864,7 +864,7 @@ namespace CustomerServices
 
             if (parameters.Colours.Count() > 0)
             {
-                var colourPredicate = PredicateBuilder.False<TLCSV_StockOnHand>();
+                var colourPredicate = PredicateBuilder.New<TLCSV_StockOnHand>();
                 foreach (var style in parameters.Colours)
                 {
                     var temp = style;
@@ -875,7 +875,7 @@ namespace CustomerServices
 
             if (parameters.Sizes.Count() > 0)
             {
-                var sizePredicate = PredicateBuilder.False<TLCSV_StockOnHand>();
+                var sizePredicate = PredicateBuilder.New<TLCSV_StockOnHand>();
                 foreach (var style in parameters.Sizes)
                 {
                     var temp = style;
@@ -891,7 +891,7 @@ namespace CustomerServices
             var SOH = _context.TLCSV_StockOnHand.Where(x => !x.TLSOH_Picked && !x.TLSOH_Split).AsQueryable();
             if (parameters.Whses.Count() > 0)
             {
-                var whsePredicate = PredicateBuilder.False<TLCSV_StockOnHand>();
+                var whsePredicate = PredicateBuilder.New<TLCSV_StockOnHand>();
                 foreach (var whse in parameters.Whses)
                 {
                     var temp = whse;
@@ -903,7 +903,7 @@ namespace CustomerServices
 
             if (parameters.Customers.Count() > 0)
             {
-                var CustPredicate = PredicateBuilder.False<TLCSV_StockOnHand>();
+                var CustPredicate = PredicateBuilder.New<TLCSV_StockOnHand>();
                 foreach (var cust in parameters.Customers)
                 {
                     var temp = cust;
@@ -915,7 +915,7 @@ namespace CustomerServices
 
             if (parameters.Styles.Count() > 0)
             {
-                var stylePredicate = PredicateBuilder.False<TLCSV_StockOnHand>();
+                var stylePredicate = PredicateBuilder.New<TLCSV_StockOnHand>();
                 foreach (var style in parameters.Styles)
                 {
                     var temp = style;
@@ -927,7 +927,7 @@ namespace CustomerServices
 
             if (parameters.Colours.Count() > 0)
             {
-                var colourPredicate = PredicateBuilder.False<TLCSV_StockOnHand>();
+                var colourPredicate = PredicateBuilder.New<TLCSV_StockOnHand>();
                 foreach (var style in parameters.Colours)
                 {
                     var temp = style;
@@ -939,7 +939,7 @@ namespace CustomerServices
 
             if (parameters.Sizes.Count() > 0)
             {
-                var sizePredicate = PredicateBuilder.False<TLCSV_StockOnHand>();
+                var sizePredicate = PredicateBuilder.New<TLCSV_StockOnHand>();
                 foreach (var style in parameters.Sizes)
                 {
                     var temp = style;
@@ -957,7 +957,7 @@ namespace CustomerServices
             var SOH = _context.TLCSV_StockOnHand.Where(x =>x.TLSOH_Sold && x.TLSOH_SoldDate >= parameters.FromDate && x.TLSOH_SoldDate <= parameters.ToDate).AsQueryable();
             if (parameters.Styles.Count() > 0)
             {
-                var stylePredicate = PredicateBuilder.False<TLCSV_StockOnHand>();
+                var stylePredicate = PredicateBuilder.New<TLCSV_StockOnHand>();
                 foreach (var style in parameters.Styles)
                 {
                     var temp = style;
@@ -969,7 +969,7 @@ namespace CustomerServices
             
             if (parameters.Customers.Count() > 0)
             {
-                var CustomerPredicate = PredicateBuilder.False<TLCSV_StockOnHand>();
+                var CustomerPredicate = PredicateBuilder.New<TLCSV_StockOnHand>();
                 foreach (var Customer in parameters.Customers)
                 {
                     var temp = Customer;
@@ -994,7 +994,7 @@ namespace CustomerServices
 
             if (parameters.Whses.Count() > 0)
             {
-                var whsePredicate = PredicateBuilder.False<TLCSV_StockOnHand>();
+                var whsePredicate = PredicateBuilder.New<TLCSV_StockOnHand>();
                 foreach (var whse in parameters.Whses)
                 {
                     var temp = whse;
@@ -1006,7 +1006,7 @@ namespace CustomerServices
 
             if (parameters.Customers.Count() > 0)
             {
-                var CustPredicate = PredicateBuilder.False<TLCSV_StockOnHand>();
+                var CustPredicate = PredicateBuilder.New<TLCSV_StockOnHand>();
                 foreach (var cust in parameters.Customers)
                 {
                     var temp = cust;
@@ -1018,7 +1018,7 @@ namespace CustomerServices
 
             if (parameters.Styles.Count() > 0)
             {
-                var stylePredicate = PredicateBuilder.False<TLCSV_StockOnHand>();
+                var stylePredicate = PredicateBuilder.New<TLCSV_StockOnHand>();
                 foreach (var style in parameters.Styles)
                 {
                     var temp = style;
@@ -1030,7 +1030,7 @@ namespace CustomerServices
 
             if (parameters.Colours.Count() > 0)
             {
-                var colourPredicate = PredicateBuilder.False<TLCSV_StockOnHand>();
+                var colourPredicate = PredicateBuilder.New<TLCSV_StockOnHand>();
                 foreach (var style in parameters.Colours)
                 {
                     var temp = style;
@@ -1042,7 +1042,7 @@ namespace CustomerServices
 
             if (parameters.Sizes.Count() > 0)
             {
-                var sizePredicate = PredicateBuilder.False<TLCSV_StockOnHand>();
+                var sizePredicate = PredicateBuilder.New<TLCSV_StockOnHand>();
                 foreach (var style in parameters.Sizes)
                 {
                     var temp = style;
@@ -1068,7 +1068,7 @@ namespace CustomerServices
             var SOH = SOHSortOrder.AsQueryable();
             if (parameters.Whses.Count() > 0)
             {
-                var whsePredicate = PredicateBuilder.False<TLCSV_StockOnHand>();
+                var whsePredicate = PredicateBuilder.New<TLCSV_StockOnHand>();
                 foreach (var whse in parameters.Whses)
                 {
                     var temp = whse;
@@ -1080,7 +1080,7 @@ namespace CustomerServices
 
             if (parameters.Customers.Count() > 0)
             {
-                var CustPredicate = PredicateBuilder.False<TLCSV_StockOnHand>();
+                var CustPredicate = PredicateBuilder.New<TLCSV_StockOnHand>();
                 foreach (var cust in parameters.Customers)
                 {
                     var temp = cust;
@@ -1092,7 +1092,7 @@ namespace CustomerServices
 
             if (parameters.Styles.Count() > 0)
             {
-                var stylePredicate = PredicateBuilder.False<TLCSV_StockOnHand>();
+                var stylePredicate = PredicateBuilder.New<TLCSV_StockOnHand>();
                 foreach (var style in parameters.Styles)
                 {
                     var temp = style;
@@ -1104,7 +1104,7 @@ namespace CustomerServices
 
             if (parameters.Colours.Count() > 0)
             {
-                var colourPredicate = PredicateBuilder.False<TLCSV_StockOnHand>();
+                var colourPredicate = PredicateBuilder.New<TLCSV_StockOnHand>();
                 foreach (var style in parameters.Colours)
                 {
                     var temp = style;
@@ -1116,7 +1116,7 @@ namespace CustomerServices
 
             if (parameters.Sizes.Count() > 0)
             {
-                var sizePredicate = PredicateBuilder.False<TLCSV_StockOnHand>();
+                var sizePredicate = PredicateBuilder.New<TLCSV_StockOnHand>();
                 foreach (var style in parameters.Sizes)
                 {
                     var temp = style;
@@ -1134,7 +1134,7 @@ namespace CustomerServices
             var SOH = _context.TLCSV_StockOnHand.Where(x=>!x.TLSOH_Picked || (x.TLSOH_Returned && !x.TLSOH_Sold)).AsQueryable();
             if (parameters.Whses.Count() > 0)
             {
-                var whsePredicate = PredicateBuilder.False<TLCSV_StockOnHand>();
+                var whsePredicate = PredicateBuilder.New<TLCSV_StockOnHand>();
                 foreach (var whse in parameters.Whses)
                 {
                     var temp = whse;
@@ -1153,7 +1153,7 @@ namespace CustomerServices
 
             if (parameters.Customers.Count() > 0)
             {
-                var CustPredicate = PredicateBuilder.False<TLCSV_PuchaseOrderDetail>();
+                var CustPredicate = PredicateBuilder.New<TLCSV_PuchaseOrderDetail>();
                 foreach (var Cust in parameters.Customers)
                 {
                     var temp = Cust;
@@ -1165,7 +1165,7 @@ namespace CustomerServices
 
             if (parameters.Styles.Count() > 0)
             {
-                var StylePredicate = PredicateBuilder.False<TLCSV_PuchaseOrderDetail>();
+                var StylePredicate = PredicateBuilder.New<TLCSV_PuchaseOrderDetail>();
                 foreach (var Style in parameters.Styles)
                 {
                     var temp = Style;
@@ -1191,7 +1191,7 @@ namespace CustomerServices
 
             if (parameters.Customers.Count() > 0)
             {
-                var CustPredicate = PredicateBuilder.False<TLCSV_PurchaseOrder>();
+                var CustPredicate = PredicateBuilder.New<TLCSV_PurchaseOrder>();
                 foreach (var Cust in parameters.Customers)
                 {
                     var temp = Cust;
@@ -1210,7 +1210,7 @@ namespace CustomerServices
 
             if (parameters.Customers.Count() > 0)
             {
-                var CustPredicate = PredicateBuilder.False<TLCSV_PuchaseOrderDetail>();
+                var CustPredicate = PredicateBuilder.New<TLCSV_PuchaseOrderDetail>();
                 foreach (var Cust in parameters.Customers)
                 {
                     var temp = Cust;
@@ -1222,7 +1222,7 @@ namespace CustomerServices
 
             if (parameters.Styles.Count() > 0)
             {
-                var StylePredicate = PredicateBuilder.False<TLCSV_PuchaseOrderDetail>();
+                var StylePredicate = PredicateBuilder.New<TLCSV_PuchaseOrderDetail>();
                 foreach (var Style in parameters.Styles)
                 {
                     var temp = Style;
@@ -1234,7 +1234,7 @@ namespace CustomerServices
 
             if (parameters.Colours.Count() > 0)
             {
-                var ColourPredicate = PredicateBuilder.False<TLCSV_PuchaseOrderDetail>();
+                var ColourPredicate = PredicateBuilder.New<TLCSV_PuchaseOrderDetail>();
                 foreach (var Colour in parameters.Colours)
                 {
                     var temp = Colour;
@@ -1246,7 +1246,7 @@ namespace CustomerServices
 
             if (parameters.Sizes.Count() > 0)
             {
-                var SizesPredicate = PredicateBuilder.False<TLCSV_PuchaseOrderDetail>();
+                var SizesPredicate = PredicateBuilder.New<TLCSV_PuchaseOrderDetail>();
                 foreach (var xSize in parameters.Sizes)
                 {
                     var temp = xSize;
@@ -1264,7 +1264,7 @@ namespace CustomerServices
             
             if (parameters.Whses.Count() > 0)
             {
-                var StylePredicate = PredicateBuilder.False<TLCSV_StockOnHand>();
+                var StylePredicate = PredicateBuilder.New<TLCSV_StockOnHand>();
                 foreach (var Whse in parameters.Whses)
                 {
                     var temp = Whse;
@@ -1276,7 +1276,7 @@ namespace CustomerServices
 
             if (parameters.Styles.Count() > 0)
             {
-                var StylePredicate = PredicateBuilder.False<TLCSV_StockOnHand>();
+                var StylePredicate = PredicateBuilder.New<TLCSV_StockOnHand>();
                 foreach (var Style in parameters.Styles)
                 {
                     var temp = Style;
@@ -1288,7 +1288,7 @@ namespace CustomerServices
 
             if (parameters.Colours.Count() > 0)
             {
-                var ColourPredicate = PredicateBuilder.False<TLCSV_StockOnHand>();
+                var ColourPredicate = PredicateBuilder.New<TLCSV_StockOnHand>();
                 foreach (var Colour in parameters.Colours)
                 {
                     var temp = Colour;
@@ -1300,7 +1300,7 @@ namespace CustomerServices
 
             if (parameters.Sizes.Count() > 0)
             {
-                var SizesPredicate = PredicateBuilder.False<TLCSV_StockOnHand>();
+                var SizesPredicate = PredicateBuilder.New<TLCSV_StockOnHand>();
                 foreach (var xSize in parameters.Sizes)
                 {
                     var temp = xSize;
@@ -1321,7 +1321,7 @@ namespace CustomerServices
 
             if (parameters.Sizes.Count() > 0)
             {
-                var sizePredicate = PredicateBuilder.False<TLCMT_CompletedWork>();
+                var sizePredicate = PredicateBuilder.New<TLCMT_CompletedWork>();
                 foreach (var size in parameters.Sizes)
                 {
                     var temp = size;
@@ -1333,7 +1333,7 @@ namespace CustomerServices
 
             if (parameters.Colours.Count > 0)
             {
-                var colourPredicate = PredicateBuilder.False<TLCMT_CompletedWork>();
+                var colourPredicate = PredicateBuilder.New<TLCMT_CompletedWork>();
                 foreach (var colour in parameters.Colours)
                 {
                     var temp = colour;
@@ -1345,7 +1345,7 @@ namespace CustomerServices
 
             if (parameters.Styles.Count > 0)
             {
-                var stylePredicate = PredicateBuilder.False<TLCMT_CompletedWork>();
+                var stylePredicate = PredicateBuilder.New<TLCMT_CompletedWork>();
                 foreach (var style in parameters.Styles)
                 {
                     var temp = style;
@@ -1358,7 +1358,7 @@ namespace CustomerServices
             
             if (parameters.Whses.Count > 0)
             {
-                var whsePredicate = PredicateBuilder.False<TLCMT_CompletedWork>();
+                var whsePredicate = PredicateBuilder.New<TLCMT_CompletedWork>();
                 foreach (var whse in parameters.Whses)
                 {
                     var temp = whse;
@@ -1371,7 +1371,7 @@ namespace CustomerServices
 
             if (parameters.Depts.Count > 0)
             {
-                var deptPredicate = PredicateBuilder.False<TLCMT_CompletedWork>();
+                var deptPredicate = PredicateBuilder.New<TLCMT_CompletedWork>();
                 foreach (var dept in parameters.Depts)
                 {
                     var temp = dept;

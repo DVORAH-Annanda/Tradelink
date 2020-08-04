@@ -326,6 +326,7 @@ namespace TTI2_WF
 
                         var ExistingData = context.TLADM_StyleTrim.Where(x => x.StyTrim_Styles_Fk == _TotalPN).ToList();
 
+                 
                         foreach (var row in CurrentColours)
                         {
                             bool flag = false;
@@ -333,12 +334,16 @@ namespace TTI2_WF
                             var GC = ExistingData.FirstOrDefault(x => x.StyTrim_Trim_Fk == row.TR_Id);
                             if (GC != null)
                             {
-                                flag = true;
+                                if (!GC.StyTrim_Discontinued)
+                                {
+                                    flag = true;
+                                }
                                 Parms.Trims.Add(row);
                             }
 
                             this.comboColours.Items.Add(new Administration.CheckComboBoxItem(row.TR_Id, row.TR_Description, flag));
                         }
+                       
 
                         /*
                         var Existing = context.TLADM_Trims.Where(x=>!(bool)x.TR_Discontinued).OrderBy(x => x.TR_Description).ToList();
@@ -824,12 +829,8 @@ namespace TTI2_WF
                     var value = Parms.Trims.Find(it => it.TR_Id == item._Pk);
                     if (value != null)
                     {
-                        Parms.Trims.Remove(value);
-                        value = Parms.Trims.Find(it => it.TR_Id == item._Pk);
-                        if (value == null)
-                        {
-                            value.TR_Removed_ThisSession = true;
-                        }
+                        value.TR_Removed_ThisSession = true;
+  
                     }
                 }
             }
@@ -938,9 +939,11 @@ namespace TTI2_WF
                         foreach (var Element in Parms.Trims)
                         {
 
+                            _TrimKeys[1] = Element.TR_Id;
+                            
                             if (Element.TR_Added_ThisSession)
                             {
-                                StyTrim = context.TLADM_StyleTrim.Where(x => x.StyTrim_Styles_Fk == _TotalPN && x.StyTrim_Pk == Element.TR_Id).FirstOrDefault();
+                                StyTrim = context.TLADM_StyleTrim.Where(x => x.StyTrim_Styles_Fk == _TotalPN && x.StyTrim_Trim_Fk == Element.TR_Id).FirstOrDefault();
                                 if (StyTrim == null)
                                 {
                                     StyTrim = new TLADM_StyleTrim();
@@ -949,25 +952,44 @@ namespace TTI2_WF
 
                                     context.TLADM_StyleTrim.Add(StyTrim);
                                 }
+                                else
+                                {
+                                    if (StyTrim.StyTrim_Discontinued)
+                                    {
+                                        StyTrim.StyTrim_Discontinued = false;
+                                    }
+
+                                    if (StyTrim.StyTrim_ProdRating_FK != 0)
+                                    {
+                                        var ProdRating = context.TLADM_ProductRating.Find(StyTrim.StyTrim_ProdRating_FK);
+                                        if (ProdRating != null && ProdRating.Pr_Discontinued)
+                                        {
+                                            ProdRating.Pr_Discontinued = false;
+                                            ProdRating.PR_Discontinued_Date = null;
+                                        }
+
+                                    }
+                                }
                             }
                             if (Element.TR_Removed_ThisSession)
                             {
-                                StyTrim = context.TLADM_StyleTrim.Where(x => x.StyTrim_Styles_Fk == _TotalPN && x.StyTrim_Pk == Element.TR_Id).FirstOrDefault();
-                                if (StyTrim != null)
+                                StyTrim = context.TLADM_StyleTrim.FirstOrDefault(x => x.StyTrim_Styles_Fk == _TotalPN && x.StyTrim_Trim_Fk == Element.TR_Id);
+                                // StyTrim = context.TLADM_StyleTrim.Where(x => x.StyTrim_Styles_Fk == _TotalPN && x.StyTrim_Pk == Element.TR_Id).FirstOrDefault();
+                                if (StyTrim != null && StyTrim.StyTrim_ProdRating_FK != 0)
                                 {
-                                    context.TLADM_StyleTrim.Remove(StyTrim);
-
-                                    var ProdRating = context.TLADM_ProductRating.FirstOrDefault(s => s.Pr_Style_FK == _TotalPN && s.Pr_Trim_FK == StyTrim.StyTrim_Trim_Fk);
-                                    if (ProdRating != null)
+                                    var ProdRating = context.TLADM_ProductRating.Find(StyTrim.StyTrim_ProdRating_FK );
+                                    if (ProdRating != null && !ProdRating.Pr_Discontinued)
                                     {
                                         ProdRating.Pr_Discontinued = true;
                                         ProdRating.PR_Discontinued_Date = DateTime.Now;
                                     }
-                                    context.TLADM_StyleTrim.Add(StyTrim);
+                                    
                                 }
                             }
                         }
+                        context.SaveChanges();
                         SavedActioned = true;
+                         
                     }
 
                 }

@@ -47,7 +47,7 @@ namespace Spinning
 
             if (parameters.YarnOrders.Count > 0)
             {
-                var yarnOrderPredicate = PredicateBuilder.False<TLSPN_YarnOrder>();
+                var yarnOrderPredicate = PredicateBuilder.New<TLSPN_YarnOrder>();
                 foreach (var yarnOrder in parameters.YarnOrders)
                 {
                     var temp = yarnOrder;
@@ -60,7 +60,7 @@ namespace Spinning
 
             if (parameters.YarnTypes.Count > 0)
             {
-                var yarnTypePredicate = PredicateBuilder.False<TLSPN_YarnOrder>();
+                var yarnTypePredicate = PredicateBuilder.New<TLSPN_YarnOrder>();
                 foreach (var yarnType in parameters.YarnTypes)
                 {
                     var temp = yarnType;
@@ -95,7 +95,7 @@ namespace Spinning
             
             if (parameters.Machines.Count > 0)
             {
-                var MeasurementPredicate = PredicateBuilder.False<TLSPN_QAMeasurements>();
+                var MeasurementPredicate = PredicateBuilder.New<TLSPN_QAMeasurements>();
                 foreach (var Machine in parameters.Machines)
                 {
                      var temp = Machine;

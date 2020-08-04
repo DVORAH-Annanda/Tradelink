@@ -109,7 +109,7 @@ namespace DyeHouse
 
             if (parameters.Consummables.Count > 0)
             {
-                var ConsumablesPredicate = PredicateBuilder.False<TLADM_ConsumablesDC>();
+                var ConsumablesPredicate = PredicateBuilder.New<TLADM_ConsumablesDC>();
                 foreach (var Consumable in parameters.Consummables)
                 {
                     var temp = Consumable;
@@ -128,7 +128,7 @@ namespace DyeHouse
 
             if (parameters.Customers.Count > 0)
             {
-                var CustomerPredicate = PredicateBuilder.False<TLDYE_DyeOrder>();
+                var CustomerPredicate = PredicateBuilder.New<TLDYE_DyeOrder>();
                 foreach (var Customer in parameters.Customers)
                 {
                     var temp = Customer;
@@ -139,7 +139,7 @@ namespace DyeHouse
             }
             if (parameters.Colours.Count > 0)
             {
-                var ColourPredicate = PredicateBuilder.False<TLDYE_DyeOrder>();
+                var ColourPredicate = PredicateBuilder.New<TLDYE_DyeOrder>();
 
                 foreach (var colour in parameters.Colours)
                 {
@@ -151,7 +151,7 @@ namespace DyeHouse
             }
             if (parameters.Styles.Count > 0)
             {
-                var StylePredicate = PredicateBuilder.False<TLDYE_DyeOrder>();
+                var StylePredicate = PredicateBuilder.New<TLDYE_DyeOrder>();
 
                 foreach (var Style in parameters.Styles)
                 {
@@ -163,7 +163,7 @@ namespace DyeHouse
             }
             if (parameters.Qualities.Count > 0)
             {
-                var QualityPredicate = PredicateBuilder.False<TLDYE_DyeOrder>();
+                var QualityPredicate = PredicateBuilder.New<TLDYE_DyeOrder>();
 
                 foreach (var Quality in parameters.Qualities)
                 {
@@ -181,7 +181,7 @@ namespace DyeHouse
             var DO = _context.TLDYE_DyeOrder.Where(x => !x.TLDYO_Closed).AsQueryable();
             if (parameters.Customers.Count > 0)
             {
-                var CustomerPredicate = PredicateBuilder.False<TLDYE_DyeOrder>();
+                var CustomerPredicate = PredicateBuilder.New<TLDYE_DyeOrder>();
                 foreach (var Customer in parameters.Customers)
                 {
                     var temp = Customer;
@@ -192,7 +192,7 @@ namespace DyeHouse
             }
             if (parameters.Colours.Count > 0)
             {
-                var ColourPredicate = PredicateBuilder.False<TLDYE_DyeOrder>();
+                var ColourPredicate = PredicateBuilder.New<TLDYE_DyeOrder>();
 
                 foreach (var colour in parameters.Colours)
                 {
@@ -204,7 +204,7 @@ namespace DyeHouse
             }
             if (parameters.Styles.Count > 0)
             {
-                var StylePredicate = PredicateBuilder.False<TLDYE_DyeOrder>();
+                var StylePredicate = PredicateBuilder.New<TLDYE_DyeOrder>();
 
                 foreach (var Style in parameters.Styles)
                 {
@@ -216,7 +216,7 @@ namespace DyeHouse
             }
             if (parameters.Qualities.Count > 0)
             {
-                var QualityPredicate = PredicateBuilder.False<TLDYE_DyeOrder>();
+                var QualityPredicate = PredicateBuilder.New<TLDYE_DyeOrder>();
 
                 foreach (var Quality in parameters.Qualities)
                 {
@@ -235,7 +235,7 @@ namespace DyeHouse
             
             if (parameters.Customers.Count > 0)
             {
-                var CustomerPredicate = PredicateBuilder.False<TLDYE_DyeBatch>();
+                var CustomerPredicate = PredicateBuilder.New<TLDYE_DyeBatch>();
                 foreach (var Customer in parameters.Customers)
                 {
                     var temp = Customer;
@@ -247,7 +247,7 @@ namespace DyeHouse
 
             if (parameters.Colours.Count > 0)
             {
-                var ColourPredicate = PredicateBuilder.False<TLDYE_DyeBatch>();
+                var ColourPredicate = PredicateBuilder.New<TLDYE_DyeBatch>();
 
                 foreach (var colour in parameters.Colours)
                 {
@@ -260,7 +260,7 @@ namespace DyeHouse
 
             if (parameters.Qualities.Count > 0)
             {
-                var QualityPredicate = PredicateBuilder.False<TLDYE_DyeBatch>();
+                var QualityPredicate = PredicateBuilder.New<TLDYE_DyeBatch>();
 
                 foreach (var Quality in parameters.Qualities)
                 {
@@ -277,7 +277,7 @@ namespace DyeHouse
             var DB = _context.TLDYE_DyeBatch.Where(x=>!x.DYEB_Transfered).AsQueryable();
             if (parameters.DyeBatches.Count > 0)
             {
-                var BatchesPredicate = PredicateBuilder.False<TLDYE_DyeBatch>();
+                var BatchesPredicate = PredicateBuilder.New<TLDYE_DyeBatch>();
                 foreach (var DyeBatch in parameters.DyeBatches)
                 {
                     var temp = DyeBatch;
@@ -287,7 +287,7 @@ namespace DyeHouse
             }
             if (parameters.Customers.Count > 0)
             {
-                var CustomerPredicate = PredicateBuilder.False<TLDYE_DyeBatch>();
+                var CustomerPredicate = PredicateBuilder.New<TLDYE_DyeBatch>();
                 foreach (var Customer in parameters.Customers)
                 {
                     var temp = Customer;
@@ -297,7 +297,7 @@ namespace DyeHouse
             }
             if(parameters.Qualities.Count != 0)
             {
-                var QualitiesPredicate = PredicateBuilder.False<TLDYE_DyeBatch>();
+                var QualitiesPredicate = PredicateBuilder.New<TLDYE_DyeBatch>();
 
                 foreach(var Qual in parameters.Qualities)
                 {
@@ -308,7 +308,7 @@ namespace DyeHouse
             }
             if (parameters.Colours.Count > 0)
             {
-                var ColourPredicate = PredicateBuilder.False<TLDYE_DyeBatch>();
+                var ColourPredicate = PredicateBuilder.New<TLDYE_DyeBatch>();
 
                 foreach (var colour in parameters.Colours)
                 {
@@ -326,7 +326,7 @@ namespace DyeHouse
             var DB = _context.TLDYE_DyeBatch.Where(x => x.DYEB_BatchDate >= parameters.FromDate && x.DYEB_BatchDate <= parameters.ToDate && !x.DYEB_Closed && !x.DYEB_CommissinCust ).AsQueryable();
             if (parameters.FabricQualities.Count > 0)
             {
-                var QualityPredicate = PredicateBuilder.False<TLDYE_DyeBatch>();
+                var QualityPredicate = PredicateBuilder.New<TLDYE_DyeBatch>();
 
                 foreach (var Quality in parameters.FabricQualities)
                 {
@@ -339,7 +339,7 @@ namespace DyeHouse
 
             if (parameters.Customers.Count > 0)
             {
-                var CustomerPredicate = PredicateBuilder.False<TLDYE_DyeBatch>();
+                var CustomerPredicate = PredicateBuilder.New<TLDYE_DyeBatch>();
                 foreach (var Customer in parameters.Customers)
                 {
                     var temp = Customer;
@@ -351,7 +351,7 @@ namespace DyeHouse
 
             if (parameters.Colours.Count > 0)
             {
-                var ColourPredicate = PredicateBuilder.False<TLDYE_DyeBatch>();
+                var ColourPredicate = PredicateBuilder.New<TLDYE_DyeBatch>();
 
                 foreach (var colour in parameters.Colours)
                 {
@@ -369,7 +369,7 @@ namespace DyeHouse
             var DBDetails = _context.TLDYE_DyeBatchDetails.AsQueryable();
             if (parameters.DyeBatchDetails.Count > 0)
             {
-                var DyeBatchDetPredicate = PredicateBuilder.False<TLDYE_DyeBatchDetails>();
+                var DyeBatchDetPredicate = PredicateBuilder.New<TLDYE_DyeBatchDetails>();
                 foreach (var BatchDetail in parameters.DyeBatchDetails)
                 {
                     var Temp = BatchDetail;
@@ -385,7 +385,7 @@ namespace DyeHouse
 
             if (parameters.Qualities.Count > 0)
             {
-                var ReceipePredicate = PredicateBuilder.False<TLADM_Griege>();
+                var ReceipePredicate = PredicateBuilder.New<TLADM_Griege>();
                 foreach (var Quality in parameters.Qualities)
                 {
                     var temp = Quality;
@@ -404,7 +404,7 @@ namespace DyeHouse
 
             if (parameters.Colours.Count > 0)
             {
-                var ReceipePredicate = PredicateBuilder.False<TLADM_Colours>();
+                var ReceipePredicate = PredicateBuilder.New<TLADM_Colours>();
                 foreach (var Quality in parameters.Colours)
                 {
                     var temp = Quality;
@@ -422,7 +422,7 @@ namespace DyeHouse
             var Transactions = _context.TLKNI_GreigeCommissionTransctions.Where(x=>x.GreigeCom_Transdate >= parameters.FromDate && x.GreigeCom_Transdate <= parameters.ToDate).OrderBy(x => x.GreigeCom_GrnNo).AsQueryable();
             if (parameters.Customers.Count > 0)
             {
-                var CustomerPredicate = PredicateBuilder.False<TLKNI_GreigeCommissionTransctions>();
+                var CustomerPredicate = PredicateBuilder.New<TLKNI_GreigeCommissionTransctions>();
                 foreach (var Customer in parameters.Customers)
                 {
                     var temp = Customer;
@@ -434,7 +434,7 @@ namespace DyeHouse
 
             if (parameters.FabricQualities.Count > 0)
             {
-                var QualityPredicate = PredicateBuilder.False<TLKNI_GreigeCommissionTransctions>();
+                var QualityPredicate = PredicateBuilder.New<TLKNI_GreigeCommissionTransctions>();
                 foreach (var Quality in parameters.FabricQualities)
                 {
                     var temp = Quality;
@@ -453,7 +453,7 @@ namespace DyeHouse
             if (parameters.Colours.Count > 0)
             {
                
-                var ReceipePredicate = PredicateBuilder.False<TLDYE_RecipeDefinition>();
+                var ReceipePredicate = PredicateBuilder.New<TLDYE_RecipeDefinition>();
                 foreach (var Colour in parameters.Colours)
                 {
                     var temp = Colour;
@@ -466,7 +466,7 @@ namespace DyeHouse
 
             if (parameters.RecDefinitions.Count > 0)
             {
-                var RecDefPredicate = PredicateBuilder.False<TLDYE_RecipeDefinition>();
+                var RecDefPredicate = PredicateBuilder.New<TLDYE_RecipeDefinition>();
                 foreach (var Definition in parameters.RecDefinitions)
                 {
                     var temp = Definition;
@@ -478,7 +478,7 @@ namespace DyeHouse
 
             if (parameters.Qualities.Count > 0)
             {
-                var QualPredicate = PredicateBuilder.False<TLDYE_RecipeDefinition>();
+                var QualPredicate = PredicateBuilder.New<TLDYE_RecipeDefinition>();
                 foreach (var Quality in parameters.Qualities)
                 {
                     var temp = Quality;

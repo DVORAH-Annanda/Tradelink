@@ -28,16 +28,43 @@ namespace CMT
             {
                 cbReprint.Checked = false;
 
-                cmboCurrentPI.Text = string.Empty;
+                cmboDepartments.DataSource = context.TLADM_Departments.Where(x => x.Dep_IsCMT).ToList();
+                cmboDepartments.ValueMember = "Dep_Id";
+                cmboDepartments.DisplayMember = "Dep_Description";
+                cmboDepartments.SelectedValue = -1;
+
+                cmboCurrentPI.DataSource = null;
+
+                /*cmboCurrentPI.Text = string.Empty;
                 cmboCurrentPI.DataSource = context.TLCMT_PanelIssue.Where(x=>!x.CMTPI_Closed).ToList();
                 cmboCurrentPI.ValueMember = "CMTPI_Pk";
                 cmboCurrentPI.DisplayMember = "CMTPI_Number";
-                cmboCurrentPI.SelectedValue = -1;
+                cmboCurrentPI.SelectedValue = -1;*/
+
             }
             formloaded = true;
         }
 
-     
+        private void cmboDepartments_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            var oCmbo = sender as ComboBox;
+            if(oCmbo != null && formloaded)
+            {
+                var SelectedItem = (TLADM_Departments)oCmbo.SelectedItem;
+                if (SelectedItem != null)
+                {
+                    using (var context = new TTI2Entities())
+                    {
+                        cmboCurrentPI.DataSource = null;
+                        cmboCurrentPI.DataSource = context.TLCMT_PanelIssue.Where(x => !x.CMTPI_Closed && x.CMTPI_Department_FK == SelectedItem.Dep_Id).OrderBy(x=>x.CMTPI_Number).ToList();
+                        cmboCurrentPI.ValueMember = "CMTPI_Pk";
+                        cmboCurrentPI.DisplayMember = "CMTPI_Number";
+                        cmboCurrentPI.SelectedValue = -1;
+                    }
+                }
+            }
+
+        }
 
         private void btnPrint_Click(object sender, EventArgs e)
         {
@@ -51,18 +78,25 @@ namespace CMT
                     return;
                 }
 
-                frmCMTViewRep vRep = new frmCMTViewRep(1, selected.CMTPI_Pk);
-                int h = Screen.PrimaryScreen.WorkingArea.Height;
-                int w = Screen.PrimaryScreen.WorkingArea.Width;
-                vRep.ClientSize = new Size(w, h);
-                vRep.ShowDialog();
+                try
+                {
+                    CMT.frmCMTViewRep vRep = new CMT.frmCMTViewRep(1, selected.CMTPI_Pk);
+                    int h = Screen.PrimaryScreen.WorkingArea.Height;
+                    int w = Screen.PrimaryScreen.WorkingArea.Width;
+                    vRep.ClientSize = new Size(w, h);
+                    vRep.ShowDialog();
+                }
+                catch(Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
 
                 DialogResult Res = MessageBox.Show("Do you wish to reprint the Cut Sheet Summary Report", "Option", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (Res == DialogResult.Yes)
                 {
                     Cutting.frmCutViewRep vRepx = new Cutting.frmCutViewRep(12, selected.CMTPI_Pk);
-                    h = Screen.PrimaryScreen.WorkingArea.Height;
-                    w = Screen.PrimaryScreen.WorkingArea.Width;
+                    int h = Screen.PrimaryScreen.WorkingArea.Height;
+                    int w = Screen.PrimaryScreen.WorkingArea.Width;
                     vRepx.ClientSize = new Size(w, h);
                     vRepx.ShowDialog(); 
                 }
@@ -89,13 +123,22 @@ namespace CMT
             if (ocbBox != null && ocbBox.Checked)
             {
                 formloaded = false;
-                using (var context = new TTI2Entities())
+                var SelectedItem = (TLADM_Departments)cmboDepartments.SelectedItem;
+                if (SelectedItem != null)
                 {
-                    cmboCurrentPI.DataSource = null;
-                    cmboCurrentPI.DataSource = context.TLCMT_PanelIssue.Where(x => x.CMTPI_Closed).ToList();
-                    cmboCurrentPI.ValueMember = "CMTPI_Pk";
-                    cmboCurrentPI.DisplayMember = "CMTPI_Number";
-                    cmboCurrentPI.SelectedValue = -1;
+                    using (var context = new TTI2Entities())
+                    {
+                        cmboCurrentPI.DataSource = null;
+                        cmboCurrentPI.DataSource = context.TLCMT_PanelIssue.Where(x => x.CMTPI_Closed && x.CMTPI_Department_FK == SelectedItem.Dep_Id).ToList();
+                        cmboCurrentPI.ValueMember = "CMTPI_Pk";
+                        cmboCurrentPI.DisplayMember = "CMTPI_Number";
+                        cmboCurrentPI.SelectedValue = -1;
+                    }
+                }
+                else 
+                {
+                    MessageBox.Show("Please select a department ");
+                    return;
                 }
                 formloaded = true;
             }
@@ -114,6 +157,6 @@ namespace CMT
             }
         }
 
-
+      
     }
 }

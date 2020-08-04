@@ -56,7 +56,7 @@ namespace ProductionPlanning
             var UserSecs = _context.TLSEC_UserSections.AsQueryable();
             if(parameters.UserSections.Count != 0)
             {
-                var UserSectionsPredicate = PredicateBuilder.False<TLSEC_UserSections>();
+                var UserSectionsPredicate = PredicateBuilder.New<TLSEC_UserSections>();
                 foreach (var UserSection in parameters.UserSections)
                 {
                     var temp = UserSection;

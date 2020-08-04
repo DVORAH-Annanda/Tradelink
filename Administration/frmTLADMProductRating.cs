@@ -558,40 +558,48 @@ namespace TTI2_WF
                     else if (rbTrims.Checked)
                     {
                       
-                        var StyleSelected = (TLADM_Styles)cmbStyles.SelectedItem;
+                        /* var StyleSelected = (TLADM_Styles)cmbStyles.SelectedItem;
                         if (StyleSelected != null)
                         {
-                            var Id = 1007;
-                            int[] TrimKeys = new int[2];
-                            // First Element is the style
-                            //======================================
-                            TrimKeys[0] = StyleSelected.Sty_Id;
-                            // Second element is the Primary Key of the Trim
-                            //===============================================
-                            TrimKeys[1] = (int)oDgv.Rows[e.RowIndex].Cells[11].Value;
-
-                            var RowPos = oDgv.CurrentRow.Index;
-                            pn = int.Parse(oDgv.CurrentRow.Cells[9].Value.ToString());
-                            frmTLADMGardProp aprop = new frmTLADMGardProp(Id, TrimKeys, true );
-                            aprop.ShowDialog();
-                            var sizes = aprop._TrimKeys;
-                            oDgv.CurrentRow.Cells[8].Value = false;
-
-                            oDgv.CurrentRow.Cells[10].Value = false;
-                            if ((int)oDgv.CurrentRow.Cells[0].Value == 0)
+                            if ((int)oDgv.Rows[e.RowIndex].Cells[11].Value == 0) 
                             {
-                               oDgv.CurrentRow.Cells[10].Value = true;
-                            }
+                                var Id = 1007;
+                                int[] TrimKeys = new int[2];
+                                // First Element is the style
+                                //======================================
+                                TrimKeys[0] = StyleSelected.Sty_Id;
+                                // Second element is the Primary Key of the Trim
+                                //===============================================
+                                TrimKeys[1] = (int)oDgv.Rows[e.RowIndex].Cells[11].Value;
 
-                            oDgv.CurrentRow.Cells[11].Value = sizes[1];
-                            using (var context = new TTI2Entities())
-                            {
-                                oDgv.CurrentRow.Cells[1].Value = context.TLADM_Trims.Find(sizes[1]).TR_Description;
-                            }
+                                var RowPos = oDgv.CurrentRow.Index;
+                                pn = int.Parse(oDgv.CurrentRow.Cells[9].Value.ToString());
+                                frmTLADMGardProp aprop = new frmTLADMGardProp(Id, TrimKeys, true);
+                                aprop.ShowDialog();
+                                var sizes = aprop._TrimKeys;
+                                oDgv.CurrentRow.Cells[8].Value = false;
 
-                            oDgv.CurrentRow.Cells[7].Value = "Ratio";
-                            oDgv.CurrentRow.Cells[9].Value = 0;
-                        }
+                                oDgv.CurrentRow.Cells[10].Value = false;
+                                if ((int)oDgv.CurrentRow.Cells[0].Value == 0)
+                                {
+                                    oDgv.CurrentRow.Cells[10].Value = true;
+                                }
+
+
+                                if (sizes[1] > 0)
+                                {
+                                    oDgv.CurrentRow.Cells[11].Value = sizes[1];
+
+                                    using (var context = new TTI2Entities())
+                                    {
+                                        oDgv.CurrentRow.Cells[1].Value = context.TLADM_Trims.Find(sizes[1]).TR_Description;
+                                    }
+                                }
+                                oDgv.CurrentRow.Cells[7].Value = "Ratio";
+                                oDgv.CurrentRow.Cells[9].Value = 0;
+                            }
+                            
+                        }*/
                     }
                 }
                 else
@@ -719,10 +727,64 @@ namespace TTI2_WF
                 if (oRb.Checked)
                 {
                     ProductRating.Rows.Clear(); 
+
                     dataGridView1.Columns[1].HeaderText  = "Trims";
+
+                    var Selected = (TLADM_Styles)cmbStyles.SelectedItem;
+
+                    if (Selected != null)
+                    {
+                        using (var context = new TTI2Entities())
+                        {
+                            int DummyRecord = 91200;
+
+                            var AvailTrims = (from styT in context.TLADM_StyleTrim
+                                              join Styles in context.TLADM_Styles on styT.StyTrim_Styles_Fk equals Styles.Sty_Id
+                                              where Styles.Sty_Id == Selected.Sty_Id
+                                              select styT).ToList();
+                            foreach(var Trim in AvailTrims)
+                            {
+                                DataRow nRow = ProductRating.NewRow();
+                                if(Trim.StyTrim_ProdRating_FK > 0)
+                                {
+                                    nRow[0] = Trim.StyTrim_ProdRating_FK;
+                                    nRow[10] = false;
+
+                                    var ProdRating = context.TLADM_ProductRating.Find(Trim.StyTrim_ProdRating_FK);
+                                    if(ProdRating != null)
+                                    {
+                                        nRow[2] = ProdRating.Pr_Discontinued;
+                                        nRow[3] = ProdRating.PR_FabricWidth;
+                                        nRow[4] = ProdRating.Pr_Ratio;
+                                        nRow[5] = Math.Round(ProdRating.Pr_Marker_Length, 4);
+                                        nRow[6] = Math.Round(ProdRating.Pr_numeric_Rating, 4);
+                                    }
+                                }
+                                else
+                                {
+                                    nRow[0] = ++DummyRecord;
+                                    nRow[2] = false;
+                                    nRow[3] = 0;
+                                    nRow[4] = 1.0000M;
+                                    nRow[5] = 0.00M;
+                                    nRow[6] = 0.00M;
+                                    nRow[10] = true;
+                                }
+
+                                nRow[1] = context.TLADM_Trims.Find(Trim.StyTrim_Trim_Fk).TR_Description;
+                                nRow[7] = string.Empty;
+                                nRow[8] = false;
+                                nRow[9] = 0;
+                                nRow[11] = Trim.StyTrim_Trim_Fk;
+                               
+                                ProductRating.Rows.Add(nRow);
+                            }
+
+                         }
+                    }
                     dataGridView1.Refresh();
-                    cmbStyles.SelectedIndexChanged -= new EventHandler(rbTrims_Click);
-                    cmbStyles.SelectedIndexChanged += new EventHandler(rbTrims_Click);
+                   // cmbStyles.SelectedIndexChanged -= new EventHandler(rbTrims_Click);
+                   // cmbStyles.SelectedIndexChanged += new EventHandler(rbTrims_Click);
                 }
             }
         }
@@ -733,14 +795,14 @@ namespace TTI2_WF
 
             if (formloaded && oRb != null)
             {
-                cmbTrims_SelectedIndexChanged(cmbStyles, null);
+               // cmbTrims_SelectedIndexChanged(cmbStyles, null);
             }
         }
 
         private void cmbTrims_SelectedIndexChanged(object sender, EventArgs e)
         {
             ComboBox oCmb = new ComboBox();
-
+           
             if (formloaded && oCmb != null)
             {
                 using (var context = new TTI2Entities())
@@ -774,6 +836,7 @@ namespace TTI2_WF
                     }
                 }
             }
+            
         }
 
         private void btnSaveTrims_Click(object sender, EventArgs e)

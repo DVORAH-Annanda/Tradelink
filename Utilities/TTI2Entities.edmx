@@ -914,6 +914,7 @@
           <Property Name="StyTrim_Styles_Fk" Type="int" Nullable="false" />
           <Property Name="StyTrim_Trim_Fk" Type="int" Nullable="false" />
           <Property Name="StyTrim_ProdRating_FK" Type="int" Nullable="false" />
+          <Property Name="StyTrim_Discontinued" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="TLADM_Suppliers">
           <Key>
@@ -2406,6 +2407,16 @@
           <Property Name="KnitYD_YarnReturned" Type="bit" Nullable="false" />
           <Property Name="KnitYD_YarnWithDrew" Type="bit" Nullable="false" />
         </EntityType>
+        <EntityType Name="TLPPS_InterDept">
+          <Key>
+            <PropertyRef Name="TLInter_Pk" />
+          </Key>
+          <Property Name="TLInter_Pk" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TLInter_Description" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="TLInter_Knitting_Fk" Type="int" Nullable="false" />
+          <Property Name="TLInter_Dying_Fk" Type="int" Nullable="false" />
+          <Property Name="TLInter_CMT_Fk" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="TLPPS_ProductionLeadTime">
           <Key>
             <PropertyRef Name="TLPDL_Pk" />
@@ -3043,6 +3054,7 @@
           <EntitySet Name="TLKNI_YarnOrderPallets" EntityType="Self.TLKNI_YarnOrderPallets" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TLKNI_YarnTransaction" EntityType="Self.TLKNI_YarnTransaction" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TLKNI_YarnTransactionDetails" EntityType="Self.TLKNI_YarnTransactionDetails" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TLPPS_InterDept" EntityType="Self.TLPPS_InterDept" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TLPPS_ProductionLeadTime" EntityType="Self.TLPPS_ProductionLeadTime" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TLPPS_Replenishment" EntityType="Self.TLPPS_Replenishment" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TLSEC_Departments" EntityType="Self.TLSEC_Departments" Schema="dbo" store:Type="Tables" />
@@ -3737,6 +3749,7 @@
           <EntitySet Name="TLCMT_HistoryBoxedQty" EntityType="TTI2Model.TLCMT_HistoryBoxedQty" />
           <EntitySet Name="TLADM_Trims" EntityType="TTI2Model.TLADM_Trims" />
           <EntitySet Name="TLCUT_CutSheet" EntityType="TTI2Model.TLCUT_CutSheet" />
+          <EntitySet Name="TLPPS_InterDept" EntityType="TTI2Model.TLPPS_InterDept" />
           </EntityContainer>
         <EntityType Name="TLADM_FabricProduct">
           <Key>
@@ -5210,6 +5223,7 @@
           <Property Name="StyTrim_Styles_Fk" Type="Int32" Nullable="false" />
           <Property Name="StyTrim_Trim_Fk" Type="Int32" Nullable="false" />
           <Property Name="StyTrim_ProdRating_FK" Type="Int32" Nullable="false" />
+          <Property Name="StyTrim_Discontinued" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="TLDYE_ConsumableSOH">
           <Key>
@@ -6506,6 +6520,16 @@
           <Property Name="TLCUTSH_OnHoldDate" Type="DateTime" Precision="0" />
           <Property Name="TLCUTSH_OnHold_Reasons" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="TLCUTSH_Priority" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TLPPS_InterDept">
+          <Key>
+            <PropertyRef Name="TLInter_Pk" />
+          </Key>
+          <Property Name="TLInter_Pk" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TLInter_Description" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="TLInter_Knitting_Fk" Type="Int32" Nullable="false" />
+          <Property Name="TLInter_Dying_Fk" Type="Int32" Nullable="false" />
+          <Property Name="TLInter_CMT_Fk" Type="Int32" Nullable="false" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -8264,6 +8288,7 @@
           <EntitySetMapping Name="TLADM_StyleTrim">
             <EntityTypeMapping TypeName="TTI2Model.TLADM_StyleTrim">
               <MappingFragment StoreEntitySet="TLADM_StyleTrim">
+                <ScalarProperty Name="StyTrim_Discontinued" ColumnName="StyTrim_Discontinued" />
                 <ScalarProperty Name="StyTrim_ProdRating_FK" ColumnName="StyTrim_ProdRating_FK" />
                 <ScalarProperty Name="StyTrim_Trim_Fk" ColumnName="StyTrim_Trim_Fk" />
                 <ScalarProperty Name="StyTrim_Styles_Fk" ColumnName="StyTrim_Styles_Fk" />
@@ -9528,6 +9553,17 @@
                 <ScalarProperty Name="TLCutSH_Date" ColumnName="TLCutSH_Date" />
                 <ScalarProperty Name="TLCutSH_No" ColumnName="TLCutSH_No" />
                 <ScalarProperty Name="TLCutSH_Pk" ColumnName="TLCutSH_Pk" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TLPPS_InterDept">
+            <EntityTypeMapping TypeName="TTI2Model.TLPPS_InterDept">
+              <MappingFragment StoreEntitySet="TLPPS_InterDept">
+                <ScalarProperty Name="TLInter_CMT_Fk" ColumnName="TLInter_CMT_Fk" />
+                <ScalarProperty Name="TLInter_Dying_Fk" ColumnName="TLInter_Dying_Fk" />
+                <ScalarProperty Name="TLInter_Knitting_Fk" ColumnName="TLInter_Knitting_Fk" />
+                <ScalarProperty Name="TLInter_Description" ColumnName="TLInter_Description" />
+                <ScalarProperty Name="TLInter_Pk" ColumnName="TLInter_Pk" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

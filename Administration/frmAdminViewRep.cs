@@ -15,6 +15,12 @@ namespace Administration
     {
         int _RepNo;
         int _RatingsReport;
+
+        public frmAdminViewRep()
+        {
+            InitializeComponent();
+        }
+
         public frmAdminViewRep(int RepNo)
         {
             InitializeComponent();
@@ -28,8 +34,7 @@ namespace Administration
             _RatingsReport = Rating;
         }
 
-
-        private void ViewLoad(object sender, EventArgs e)
+        private void frmAdminViewRep_Load(object sender, EventArgs e)
         {
             if (_RepNo == 1)
             {
@@ -37,7 +42,7 @@ namespace Administration
                 DataSet1.TLADM_CustomerTypesDataTable typesTable = new DataSet1.TLADM_CustomerTypesDataTable();
                 using (var context = new TTI2Entities())
                 {
-                    var Data = context.TLADM_CustomerTypes.OrderBy(x=>x.CT_Description).ToList();
+                    var Data = context.TLADM_CustomerTypes.OrderBy(x => x.CT_Description).ToList();
                     foreach (var record in Data)
                     {
                         DataSet1.TLADM_CustomerTypesRow tr = typesTable.NewTLADM_CustomerTypesRow();
@@ -50,7 +55,7 @@ namespace Administration
                 }
 
                 ds.Tables.Add(typesTable);
-             
+
                 CustomerCategories xtst = new CustomerCategories();
                 xtst.SetDataSource(ds);
                 crystalReportViewer1.ReportSource = xtst;
@@ -380,13 +385,13 @@ namespace Administration
                                 if (fab != null)
                                     mr.MD_SubCode = fab.FP_Description;
                             }
-                            else if (dpt.Dep_ShortCode.Contains("KNIT")) 
+                            else if (dpt.Dep_ShortCode.Contains("KNIT"))
                             {
                                 var greig = context.TLADM_Griege.Find(record.MD_GreigeType_FK);
                                 if (greig != null)
                                 {
                                     mr.MD_SubCode = greig.TLGreige_Description;
-                                    
+
                                 }
                             }
                             else if (dpt.Dep_ShortCode.Contains("SPIN"))
@@ -396,17 +401,17 @@ namespace Administration
                                     mr.MD_SubCode = fab.FP_Description;
                             }
                         }
-                        
+
                         mr.MD_CapacityMax = record.MD_MaxCapacity;
                         mr.MD_CapacityRealistic = record.MD_Realistic;
                         mr.MD_UOM = "Kg";
                         mr.MD_Measure1 = (int)record.MD_FirstMeasure_Qty;
-                        if(record.MD_SecMeasure_Qty != null)
-                        mr.MD_Measure2 = (int)record.MD_SecMeasure_Qty;
-                        if(record.MD_ThirdMeasure_Qty != null)
+                        if (record.MD_SecMeasure_Qty != null)
+                            mr.MD_Measure2 = (int)record.MD_SecMeasure_Qty;
+                        if (record.MD_ThirdMeasure_Qty != null)
                             mr.MD_Measure3 = (int)record.MD_ThirdMeasure_Qty;
 
-                       // mr.MD_SerialNo = record.MD_SerialNo;
+                        // mr.MD_SerialNo = record.MD_SerialNo;
 
                         mr.MD_SerialNo = record.MD_LastNumberUsed.ToString();
 
@@ -430,7 +435,7 @@ namespace Administration
 
                 using (var context = new TTI2Entities())
                 {
-                    var ExistingData = context.TLADM_ConsumablesDC.OrderBy(x=>x.ConsDC_Code).ToList();
+                    var ExistingData = context.TLADM_ConsumablesDC.OrderBy(x => x.ConsDC_Code).ToList();
                     foreach (var row in ExistingData)
                     {
                         DataSet9.TLADM_ConsumablesDCRow dcr = dataTable.NewTLADM_ConsumablesDCRow();
@@ -450,7 +455,7 @@ namespace Administration
                     }
 
                     var UOM = context.TLADM_UOM.ToList();
-                    foreach (var row in UOM) 
+                    foreach (var row in UOM)
                     {
                         DataSet9.TLADM_UOMRow ur = uomTable.NewTLADM_UOMRow();
                         ur.UOM_Description = row.UOM_Description;
@@ -494,7 +499,7 @@ namespace Administration
                         cor.ConsOther_UOM_FK = row.ConsOther_UOM_FK;
 
                         dataTable.AddTLADM_ConsumablesOtherRow(cor);
-                       
+
                     }
 
                     var UOM = context.TLADM_UOM.ToList();
@@ -538,7 +543,7 @@ namespace Administration
 
                 using (var context = new TTI2Entities())
                 {
-                    var Existing = context.TLADM_TranactionType.OrderBy(x => x.TrxT_Department_FK).ThenBy(x=>x.TrxT_Number).ToList();
+                    var Existing = context.TLADM_TranactionType.OrderBy(x => x.TrxT_Department_FK).ThenBy(x => x.TrxT_Number).ToList();
 
                     foreach (var Department in Existing)
                     {
@@ -572,32 +577,32 @@ namespace Administration
                     ProductRatings = context.TLADM_ProductRating.OrderBy(x => x.Pr_Customer_FK).ToList();
                     if (_RatingsReport == 1)
                     {
-                        ProductRatings = ProductRatings.Where(x=>!(bool)x.Pr_Discontinued).ToList();
+                        ProductRatings = ProductRatings.Where(x => !(bool)x.Pr_Discontinued).ToList();
                     }
-                    else if(_RatingsReport == 2)
+                    else if (_RatingsReport == 2)
                     {
                         ProductRatings = ProductRatings.Where(x => (bool)x.Pr_Discontinued).ToList();
                     }
-                    
+
                     ProductRatings = ProductRatings.OrderByDescending(x => x.Pr_BodyorRibbing).ToList();
 
                     foreach (var ProductRating in ProductRatings)
                     {
                         DataSet12.DataTable1Row nr = dataTable1.NewDataTable1Row();
                         nr.Pk = ProductRating.Pr_Id;
-                        var Customer  = context.TLADM_CustomerFile.Find(ProductRating.Pr_Customer_FK);
+                        var Customer = context.TLADM_CustomerFile.Find(ProductRating.Pr_Customer_FK);
                         if (Customer == null)
                             continue;
-                        
+
                         nr.Customer = Customer.Cust_Description;
-                        
+
                         nr.Style = context.TLADM_Styles.Find(ProductRating.Pr_Style_FK).Sty_Description;
 
                         if (ProductRating.Pr_BodyorRibbing == 1)
                         {
                             StringBuilder sb = new StringBuilder();
                             int cnt = 0;
-                            
+
                             List<int> xx = core.ExtrapNumber(ProductRating.Pr_PowerN, context.TLADM_Sizes.Count());
                             xx.Sort();
 
@@ -618,7 +623,7 @@ namespace Administration
                         }
                         else
                         {
-                            nr.Display = context.TLADM_Trims.Find(ProductRating.Pr_Trim_FK).TR_Description;  
+                            nr.Display = context.TLADM_Trims.Find(ProductRating.Pr_Trim_FK).TR_Description;
                         }
 
                         nr.Ratio = ProductRating.Pr_Ratio;
@@ -655,6 +660,7 @@ namespace Administration
 
             }
             crystalReportViewer1.Refresh();
+
         }
     }
 }

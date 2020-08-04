@@ -73,10 +73,10 @@ namespace DyeHouse
             // Col 3
             //-----------------------------------------------
             column = new DataColumn();
-            column.DataType = typeof(string);
+            column.DataType = typeof(int);
             column.ColumnName = "FabWidth_Pk";
             column.Caption = "Quantity";
-            column.DefaultValue = string.Empty;
+            column.DefaultValue = 0;
             dt.Columns.Add(column);
 
 
@@ -204,7 +204,7 @@ namespace DyeHouse
                 }
 
                 var Fields = (TLADM_QADyeProcessFields)cmboQEMeasurements.SelectedItem;
-                if (Fields == null)
+                if (Fields == null || Fields.TLQADPF_Pk != 28)
                 {
                     MessageBox.Show("Please select a measurement from the drop down box provided");
                     return;
@@ -223,7 +223,7 @@ namespace DyeHouse
                             }
                             else
                             {
-                                QualExp.TLDyeIns_QADyeProcessField_Fk = Fields.TLQADPF_Process_FK ;
+                                QualExp.TLDyeIns_QADyeProcessField_Fk = Fields.TLQADPF_Pk ;
                                 QualExp.TLDyeIns_DyeBatch_Fk = DBatch.DYEB_Pk;
                                 QualExp.TLDyeIns_Quantity = Row.Field<int>(3);
                                 QualExp.TLDyeIns_TransactionDate = dtpStability.Value;
@@ -237,16 +237,9 @@ namespace DyeHouse
                     {
                         context.SaveChanges();
                         MessageBox.Show("Data successfully saved to the database");
-                        dataGridView1.Rows.Clear();
-                        this.frmInsAfterDrying_Load(this, null);
-                        foreach (DataGridViewRow row in dataGridView1.Rows)
-                        {
-                            if (row.Cells[0].Value == null)
-                                continue;
-
-                            row.Cells[1].Value = false;
-                            row.Cells[2].Value = 0;
-                        }
+                        dt.Rows.Clear();
+                       
+                       
                     }
                     catch (Exception ex)
                     {

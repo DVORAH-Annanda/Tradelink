@@ -9904,6 +9904,84 @@ namespace TTI2_WF
 
             }
         }
+
+        private void interDepartmentalFaultsComparisonToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ToolStripMenuItem oTi = sender as ToolStripMenuItem;
+
+            if (core.GetUserAuthorisation(ud, oTi.Name))
+            {
+                try
+                {
+                   ProductionPlanning.frmInterDeptFaults  InterCMTTrnsfr = new ProductionPlanning.frmInterDeptFaults();
+                    InterCMTTrnsfr.ShowDialog();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+            else
+            {
+                using (DialogCenteringService centeringService = new DialogCenteringService(this)) // center message box
+                {
+                    MessageBox.Show(ud._NotAuthorisedMessage, ud._UserName);
+                }
+
+            }
+        }
+
+        private void interDepartmentalAnalysisDefinitionToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ToolStripMenuItem oTi = sender as ToolStripMenuItem;
+
+            if (core.GetUserAuthorisation(ud, oTi.Name))
+            {
+                try
+                {
+                    ProductionPlanning.frmInterDept CMTTrnsfr = new ProductionPlanning.frmInterDept();
+                    CMTTrnsfr.ShowDialog();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+            else
+            {
+                using (DialogCenteringService centeringService = new DialogCenteringService(this)) // center message box
+                {
+                    MessageBox.Show(ud._NotAuthorisedMessage, ud._UserName);
+                }
+
+            }
+        }
+
+        private void reOpenClosedOrdersToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ToolStripMenuItem oTi = sender as ToolStripMenuItem;
+
+            if (core.GetUserAuthorisation(ud, oTi.Name))
+            {
+                try
+                {
+                    CustomerServices.frmPOReversal CMTTrnsfr = new CustomerServices.frmPOReversal();
+                    CMTTrnsfr.ShowDialog();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+            else
+            {
+                using (DialogCenteringService centeringService = new DialogCenteringService(this)) // center message box
+                {
+                    MessageBox.Show(ud._NotAuthorisedMessage, ud._UserName);
+                }
+
+            }
+        }
     }
        
 }

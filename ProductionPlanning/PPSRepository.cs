@@ -71,7 +71,7 @@ namespace ProductionPlanning
             
             if (parameters.Greiges.Count > 0)
              {
-                 var GreigePredicate = PredicateBuilder.False<TLADM_Griege>();
+                 var GreigePredicate = PredicateBuilder.New<TLADM_Griege>();
                  foreach (var Greige in parameters.Greiges)
                  {
                      var temp = Greige;
@@ -83,7 +83,7 @@ namespace ProductionPlanning
 
              if (parameters.GreigeQualities.Count > 0)
              {
-                 var GreigeQualityPredicate = PredicateBuilder.False<TLADM_Griege>();
+                 var GreigeQualityPredicate = PredicateBuilder.New<TLADM_Griege>();
                  foreach (var Greige in parameters.GreigeQualities)
                  {
                      var temp = Greige;
@@ -95,7 +95,7 @@ namespace ProductionPlanning
 
              if (parameters.KnitMachines.Count > 0)
              {
-                 var KnitMachinePredicate = PredicateBuilder.False<TLADM_Griege>();
+                 var KnitMachinePredicate = PredicateBuilder.New<TLADM_Griege>();
                  foreach (var Machine in parameters.KnitMachines)
                  {
                      var temp = Machine;
@@ -123,7 +123,7 @@ namespace ProductionPlanning
              var PO = _context.TLCSV_PurchaseOrder.Where(x => !x.TLCSVPO_Closeed).AsQueryable();
              if (parameters.Customers.Count() != 0)
              {
-                 var CustomerPredicate = PredicateBuilder.False<TLCSV_PurchaseOrder>();
+                 var CustomerPredicate = PredicateBuilder.New<TLCSV_PurchaseOrder>();
                  foreach (var Customer in parameters.Customers)
                  {
                      var temp = Customer;
@@ -145,7 +145,7 @@ namespace ProductionPlanning
              /*
              if (parameters.Styles.Count() != 0)
              {
-                 var StylePredicate = PredicateBuilder.False<TLCSV_StockOnHand>();
+                 var StylePredicate = PredicateBuilder.New<TLCSV_StockOnHand>();
                  foreach (var Style in parameters.Styles)
                  {
                      var temp = Style;
@@ -157,7 +157,7 @@ namespace ProductionPlanning
              
              if (parameters.Colours.Count() != 0)
              {
-                 var ColourPredicate = PredicateBuilder.False<TLCSV_StockOnHand>();
+                 var ColourPredicate = PredicateBuilder.New<TLCSV_StockOnHand>();
                  foreach (var Colour in parameters.Colours)
                  {
                      var temp = Colour;
@@ -168,7 +168,7 @@ namespace ProductionPlanning
 
              if (parameters.Sizes.Count() != 0)
              {
-                 var SizePredicate = PredicateBuilder.False<TLCSV_StockOnHand>();
+                 var SizePredicate = PredicateBuilder.New<TLCSV_StockOnHand>();
                  foreach (var Size in parameters.Sizes)
                  {
                      var temp = Size;
@@ -186,7 +186,7 @@ namespace ProductionPlanning
              var IS = _context.TLPPS_Replenishment.AsQueryable();
              if (parameters.Styles.Count() > 0)
              {
-                 var stylePredicate = PredicateBuilder.False<TLPPS_Replenishment>();
+                 var stylePredicate = PredicateBuilder.New<TLPPS_Replenishment>();
                  foreach (var style in parameters.Styles)
                  {
                      var temp = style;
@@ -198,7 +198,7 @@ namespace ProductionPlanning
 
              if (parameters.Colours.Count() > 0)
              {
-                 var colourPredicate = PredicateBuilder.False<TLPPS_Replenishment>();
+                 var colourPredicate = PredicateBuilder.New<TLPPS_Replenishment>();
                  foreach (var style in parameters.Colours)
                  {
                      var temp = style;
@@ -210,7 +210,7 @@ namespace ProductionPlanning
 
              if (parameters.Sizes.Count() > 0)
              {
-                 var sizePredicate = PredicateBuilder.False<TLPPS_Replenishment>();
+                 var sizePredicate = PredicateBuilder.New<TLPPS_Replenishment>();
                  foreach (var style in parameters.Sizes)
                  {
                      var temp = style;
@@ -236,7 +236,7 @@ namespace ProductionPlanning
 
              if (parameters.Styles.Count() > 0)
              {
-                 var stylePredicate = PredicateBuilder.False<TLPPS_Replenishment>();
+                 var stylePredicate = PredicateBuilder.New<TLPPS_Replenishment>();
                  foreach (var style in parameters.Styles)
                  {
                      var temp = style;
@@ -248,7 +248,7 @@ namespace ProductionPlanning
 
              if (parameters.Colours.Count() > 0)
              {
-                var colourPredicate = PredicateBuilder.False<TLPPS_Replenishment>();
+                var colourPredicate = PredicateBuilder.New<TLPPS_Replenishment>();
                 foreach (var style in parameters.Colours)
                 {
                         var temp = style;
@@ -260,7 +260,7 @@ namespace ProductionPlanning
 
              if (parameters.Sizes.Count() > 0)
              {
-                    var sizePredicate = PredicateBuilder.False<TLPPS_Replenishment>();
+                    var sizePredicate = PredicateBuilder.New<TLPPS_Replenishment>();
                     foreach (var style in parameters.Sizes)
                     {
                         var temp = style;
@@ -290,6 +290,9 @@ namespace ProductionPlanning
         public bool IncludeGradeAWithwarnings;
         public int GradeType;
         public bool ExcludeDiscontinued;
+        public bool[] SelectedOptions;
+        public int[] RecordKeys;
+        public int InterDeptOption;
 
         public ProdQueryParameters()
         {
@@ -307,6 +310,9 @@ namespace ProductionPlanning
             IncludeGradeAWithwarnings = false;
             GradeType = 0;
             ExcludeDiscontinued = false;
+            SelectedOptions = new bool[4] { false, false, false, false};
+            RecordKeys = new int[4];
+            InterDeptOption = 0;
         }
 
     }

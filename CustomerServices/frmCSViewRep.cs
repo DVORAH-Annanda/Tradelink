@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -9,10 +8,10 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Utilities;
+using System.Collections;
 
 namespace CustomerServices
 {
-
     public partial class frmCSViewRep : Form
     {
         int _RepNo;
@@ -24,7 +23,12 @@ namespace CustomerServices
         IList<TLADM_Colours> _Colours;
         IList<TLADM_Sizes> _Sizes;
         IList<TLADM_CustomerFile> _Customers;
-       
+
+        public frmCSViewRep()
+        {
+            InitializeComponent();
+        }
+
         public frmCSViewRep(int RepNo)
         {
             InitializeComponent();
@@ -68,7 +72,7 @@ namespace CustomerServices
             _QueryParms = QParms;
         }
 
-        private void crystalReportViewer1_Load(object sender, EventArgs e)
+        private void frmCSViewRep_Load(object sender, EventArgs e)
         {
             using (var context = new TTI2Entities())
             {
@@ -114,9 +118,9 @@ namespace CustomerServices
                             row.BoxNumber = Record.TLCMTWC_BoxNumber;
                             row.BoxQty = Record.TLCMTWC_Qty;
                             row.Weight = Record.TLCMTWC_Weight;
-                            row.Style = _Styles.FirstOrDefault(s=>s.Sty_Id == Record.TLCMTWC_Style_FK).Sty_Description;
-                            row.Colour = _Colours.FirstOrDefault(s=>s.Col_Id == Record.TLCMTWC_Colour_FK).Col_Display;
-                            row.Size =  _Sizes.FirstOrDefault(s=>s.SI_id == Record.TLCMTWC_Size_FK).SI_Description;
+                            row.Style = _Styles.FirstOrDefault(s => s.Sty_Id == Record.TLCMTWC_Style_FK).Sty_Description;
+                            row.Colour = _Colours.FirstOrDefault(s => s.Col_Id == Record.TLCMTWC_Colour_FK).Col_Display;
+                            row.Size = _Sizes.FirstOrDefault(s => s.SI_id == Record.TLCMTWC_Size_FK).SI_Description;
                             row.BoxQty = Record.TLCMTWC_Qty;
 
                             dataTable2.AddDataTable2Row(row);
@@ -189,9 +193,9 @@ namespace CustomerServices
                             row.BoxNumber = Record.TLCMTWC_BoxNumber;
                             row.BoxQty = Record.TLCMTWC_Qty;
                             row.Weight = Record.TLCMTWC_Weight;
-                            row.Style = _Styles.FirstOrDefault(s=>s.Sty_Id == Record.TLCMTWC_Style_FK).Sty_Description;
-                            row.Colour = _Colours.FirstOrDefault(s=>s.Col_Id == Record.TLCMTWC_Colour_FK).Col_Display;
-                            row.Size = _Sizes.FirstOrDefault(s=>s.SI_id == Record.TLCMTWC_Size_FK).SI_Description;
+                            row.Style = _Styles.FirstOrDefault(s => s.Sty_Id == Record.TLCMTWC_Style_FK).Sty_Description;
+                            row.Colour = _Colours.FirstOrDefault(s => s.Col_Id == Record.TLCMTWC_Colour_FK).Col_Display;
+                            row.Size = _Sizes.FirstOrDefault(s => s.SI_id == Record.TLCMTWC_Size_FK).SI_Description;
                             row.BoxQty = Record.TLCMTWC_Qty;
                             row.PLDetails = context.TLCSV_BoxSelected.Find(Record.TLCMTWC_PickList_FK).TLCSV_PLDetails;
                             dataTable2.AddDataTable2Row(row);
@@ -310,7 +314,7 @@ namespace CustomerServices
                             var PODetail = context.TLCSV_PuchaseOrderDetail.Find(Merge.TLMerge_PoDetail_FK);
                             if (PODetail != null)
                             {
-                                var CustomerFile = _Customers.FirstOrDefault(s=>s.Cust_Pk == _Svces.POCustomer_PK);
+                                var CustomerFile = _Customers.FirstOrDefault(s => s.Cust_Pk == _Svces.POCustomer_PK);
                                 if (CustomerFile != null)
                                 {
                                     nr.CustomerName = CustomerFile.Cust_Description;
@@ -330,9 +334,9 @@ namespace CustomerServices
                                     }
                                 }
 
-                                nr.Style = _Styles.FirstOrDefault(s=>s.Sty_Id == Item.TLSOH_Style_FK).Sty_Description;
-                                nr.Colour = _Colours.FirstOrDefault(s=>s.Col_Id == Item.TLSOH_Colour_FK).Col_Description;
-                                nr.Size = _Sizes.FirstOrDefault(s=>s.SI_id == Item.TLSOH_Size_FK).SI_Description;
+                                nr.Style = _Styles.FirstOrDefault(s => s.Sty_Id == Item.TLSOH_Style_FK).Sty_Description;
+                                nr.Colour = _Colours.FirstOrDefault(s => s.Col_Id == Item.TLSOH_Colour_FK).Col_Description;
+                                nr.Size = _Sizes.FirstOrDefault(s => s.SI_id == Item.TLSOH_Size_FK).SI_Description;
                                 nr.BoxNumber = Item.TLSOH_BoxNumber;
                                 nr.BoxQty = Item.TLSOH_BoxedQty;
                                 nr.Weight = Item.TLSOH_Weight;
@@ -388,9 +392,9 @@ namespace CustomerServices
                         if (PO != null)
                         {
                             nr.Customer = context.TLADM_CustomerFile.Find(PO.TLCSVPO_Customer_FK).Cust_Description;
-                            nr.Style = _Styles.FirstOrDefault(s=>s.Sty_Id == Row.TLCUSTO_Style_FK).Sty_Description;
-                            nr.Colour = _Colours.FirstOrDefault(s=>s.Col_Id == Row.TLCUSTO_Colour_FK).Col_Description;
-                            nr.Size = _Sizes.FirstOrDefault(s=>s.SI_id == Row.TLCUSTO_Size_FK).SI_Description;
+                            nr.Style = _Styles.FirstOrDefault(s => s.Sty_Id == Row.TLCUSTO_Style_FK).Sty_Description;
+                            nr.Colour = _Colours.FirstOrDefault(s => s.Col_Id == Row.TLCUSTO_Colour_FK).Col_Description;
+                            nr.Size = _Sizes.FirstOrDefault(s => s.SI_id == Row.TLCUSTO_Size_FK).SI_Description;
                             nr.OrderDate = PO.TLCSVPO_TransDate;
                             nr.PONumber = PO.TLCSVPO_PurchaseOrder;
                             nr.Qty = Row.TLCUSTO_Qty;
@@ -540,6 +544,10 @@ namespace CustomerServices
                             if (record != null)
                             {
                                 var index = record.WareHouseColNo;
+                                if (index == 10)
+                                {
+                                    continue;
+                                }
                                 drow[index + 2] = BoxedQty;
                                 drow[12] = BoxedQty;
                             }
@@ -555,6 +563,9 @@ namespace CustomerServices
                             if (record != null)
                             {
                                 var index = record.WareHouseColNo;
+                                if (index + 3 > 10)
+                                    continue;
+
                                 drow[index + 2] = Convert.ToInt32(drow[index + 3].ToString()) + BoxedQty;
                                 drow[12] = Convert.ToInt32(drow[12].ToString()) + BoxedQty;
                             }
@@ -582,9 +593,9 @@ namespace CustomerServices
                     foreach (DataRow row in dt.Rows)
                     {
                         DataSet5.DataTable1Row nr = datatable1.NewDataTable1Row();
-                        nr.Style =  _Styles.FirstOrDefault(s=>s.Sty_Id == (int)row[0]).Sty_Description;
-                        nr.Colour = _Colours.FirstOrDefault(s=>s.Col_Id == (int)row[1]).Col_Display;
-                        nr.Size = _Sizes.FirstOrDefault(s=>s.SI_id == (int)row[2]).SI_Description;
+                        nr.Style = _Styles.FirstOrDefault(s => s.Sty_Id == (int)row[0]).Sty_Description;
+                        nr.Colour = _Colours.FirstOrDefault(s => s.Col_Id == (int)row[1]).Col_Display;
+                        nr.Size = _Sizes.FirstOrDefault(s => s.SI_id == (int)row[2]).SI_Description;
                         nr.Col1 = (int)row[3];
                         nr.Col2 = (int)row[4];
                         nr.Col3 = (int)row[5];
@@ -711,11 +722,11 @@ namespace CustomerServices
                         DataSet6.DataTable2Row n2r = dataTable2.NewDataTable2Row();
                         n2r.Pk = 1;
                         n2r.WareHouse = context.TLADM_WhseStore.Find(SItem.TLSOH_WareHouse_FK).WhStore_Description;
-                        n2r.Product = _Styles.FirstOrDefault(s=>s.Sty_Id == SItem.TLSOH_Style_FK).Sty_Description;
-                        n2r.Colour = _Colours.FirstOrDefault(s=>s.Col_Id == SItem.TLSOH_Colour_FK).Col_Display;
-                        n2r.Size = _Sizes.FirstOrDefault(s=>s.SI_id == SItem.TLSOH_Size_FK).SI_Description;
+                        n2r.Product = _Styles.FirstOrDefault(s => s.Sty_Id == SItem.TLSOH_Style_FK).Sty_Description;
+                        n2r.Colour = _Colours.FirstOrDefault(s => s.Col_Id == SItem.TLSOH_Colour_FK).Col_Display;
+                        n2r.Size = _Sizes.FirstOrDefault(s => s.SI_id == SItem.TLSOH_Size_FK).SI_Description;
                         n2r.BoxNumber = SItem.TLSOH_BoxNumber;
-                        n2r.SizeDisplayOrder = _Sizes.FirstOrDefault(s=>s.SI_id == SItem.TLSOH_Size_FK).SI_DisplayOrder;
+                        n2r.SizeDisplayOrder = _Sizes.FirstOrDefault(s => s.SI_id == SItem.TLSOH_Size_FK).SI_DisplayOrder;
                         n2r.Status = string.Empty;
 
                         if (!_Svces.SOHBoxReturned)
@@ -730,7 +741,7 @@ namespace CustomerServices
                             n2r.BoxQty = SItem.TLSOH_ReturnedBoxQty;
 
                         n2r.Grade = SItem.TLSOH_Grade;
-                        
+
                         dataTable2.AddDataTable2Row(n2r);
                     }
                 }
@@ -808,7 +819,7 @@ namespace CustomerServices
 
                             DataSet8.DataTable1Row nr = datatable1.NewDataTable1Row();
                             nr.OrderNo = POrder.TLCSVPO_PurchaseOrder;
-                            nr.Customer = _Customers.FirstOrDefault(s=>s.Cust_Pk == POrder.TLCSVPO_Customer_FK).Cust_Description;
+                            nr.Customer = _Customers.FirstOrDefault(s => s.Cust_Pk == POrder.TLCSVPO_Customer_FK).Cust_Description;
                             nr.OrderDate = (DateTime)POrder.TLCSVPO_TransDate;
 
                             if (PODetail.TLCUSTO_DateRequired != null)
@@ -827,11 +838,11 @@ namespace CustomerServices
                             }
 
                             StringBuilder sb = new StringBuilder();
-                            sb.Append(_Styles.FirstOrDefault(s=>s.Sty_Id == PODetail.TLCUSTO_Style_FK).Sty_Description + ' ');
-                            sb.Append(_Colours.FirstOrDefault(s=>s.Col_Id == PODetail.TLCUSTO_Colour_FK).Col_Display + ' ');
-                            sb.Append(_Sizes.FirstOrDefault(s=>s.SI_id == PODetail.TLCUSTO_Size_FK).SI_Description);
+                            sb.Append(_Styles.FirstOrDefault(s => s.Sty_Id == PODetail.TLCUSTO_Style_FK).Sty_Description + ' ');
+                            sb.Append(_Colours.FirstOrDefault(s => s.Col_Id == PODetail.TLCUSTO_Colour_FK).Col_Display + ' ');
+                            sb.Append(_Sizes.FirstOrDefault(s => s.SI_id == PODetail.TLCUSTO_Size_FK).SI_Description);
 
-                            nr.DisplayOrder = _Sizes.FirstOrDefault(s=>s.SI_id == PODetail.TLCUSTO_Size_FK).SI_DisplayOrder;
+                            nr.DisplayOrder = _Sizes.FirstOrDefault(s => s.SI_id == PODetail.TLCUSTO_Size_FK).SI_DisplayOrder;
 
                             nr.StyleDescription = sb.ToString();
                             nr.OrderQty = PODetail.TLCUSTO_Qty;
@@ -918,9 +929,9 @@ namespace CustomerServices
                         }
 
                         StringBuilder sb = new StringBuilder();
-                        sb.Append( _Styles.FirstOrDefault(s=>s.Sty_Id == Item.TLSOH_Style_FK).Sty_Description + " ");
-                        sb.Append( _Colours.FirstOrDefault(s=>s.Col_Id == Item.TLSOH_Colour_FK).Col_Display + " ");
-                        sb.Append( _Sizes.FirstOrDefault(s=>s.SI_id == Item.TLSOH_Size_FK).SI_Description);
+                        sb.Append(_Styles.FirstOrDefault(s => s.Sty_Id == Item.TLSOH_Style_FK).Sty_Description + " ");
+                        sb.Append(_Colours.FirstOrDefault(s => s.Col_Id == Item.TLSOH_Colour_FK).Col_Display + " ");
+                        sb.Append(_Sizes.FirstOrDefault(s => s.SI_id == Item.TLSOH_Size_FK).SI_Description);
 
                         nr.Style = sb.ToString();
                         nr.BoxedValue = Item.TLSOH_BoxedQty;
@@ -929,7 +940,7 @@ namespace CustomerServices
                         var POOrder = context.TLCSV_PurchaseOrder.Find(Item.TLSOH_POOrder_FK);
                         if (POOrder != null)
                         {
-                            nr.Customer = _Customers.FirstOrDefault(s=>s.Cust_Pk == POOrder.TLCSVPO_Customer_FK).Cust_Description;
+                            nr.Customer = _Customers.FirstOrDefault(s => s.Cust_Pk == POOrder.TLCSVPO_Customer_FK).Cust_Description;
                         }
 
                         nr.BoxNumber = Item.TLSOH_BoxNumber;
@@ -1034,9 +1045,9 @@ namespace CustomerServices
                                         nr.BoxNumber = Row.TLSOH_BoxNumber;
 
                                         //-------------------------------------------------------------
-                                        nr.Style = _Styles.FirstOrDefault(s=>s.Sty_Id == Row.TLSOH_Style_FK).Sty_Description;
-                                        nr.Colour = _Colours.FirstOrDefault(s=>s.Col_Id == Row.TLSOH_Colour_FK).Col_Display;
-                                        nr.Size = _Sizes.FirstOrDefault(s=>s.SI_id == Row.TLSOH_Size_FK).SI_Description;
+                                        nr.Style = _Styles.FirstOrDefault(s => s.Sty_Id == Row.TLSOH_Style_FK).Sty_Description;
+                                        nr.Colour = _Colours.FirstOrDefault(s => s.Col_Id == Row.TLSOH_Colour_FK).Col_Display;
+                                        nr.Size = _Sizes.FirstOrDefault(s => s.SI_id == Row.TLSOH_Size_FK).SI_Description;
                                         nr.BoxedQty = Row.TLSOH_BoxedQty;
                                         nr.Weight = Row.TLSOH_Weight;
 
@@ -1077,8 +1088,8 @@ namespace CustomerServices
                                             String PastelNumber = String.Empty; // SOH.TLSOH_PastelNumber;
                                             String DeliverNumber = SOH.TLSOH_DNListNo.ToString();
                                             string PODetail = context.TLCSV_PurchaseOrder.Find(OrderAlloc.TLORDA_POOrder_FK).TLCSVPO_PurchaseOrder;
-                                            String Style = _Styles.FirstOrDefault(s=>s.Sty_Id == MasterGroup.PORConfig_Style_FK).Sty_Description;
-                                            String Colour = _Colours.FirstOrDefault(s=>s.Col_Id == MasterGroup.PORConfig_Colour_FK).Col_Display;
+                                            String Style = _Styles.FirstOrDefault(s => s.Sty_Id == MasterGroup.PORConfig_Style_FK).Sty_Description;
+                                            String Colour = _Colours.FirstOrDefault(s => s.Col_Id == MasterGroup.PORConfig_Colour_FK).Col_Display;
                                             string Size = "ALL";
 
                                             var TotalBoxed = BoxGroup.Sum(x => (int?)x.PORConfig_SizeBoxQty) ?? 0;
@@ -1111,7 +1122,7 @@ namespace CustomerServices
                             var POrder = context.TLCSV_PurchaseOrder.Find(OrderAlloc.TLORDA_POOrder_FK);
 
                             TLADM_CustomerFile CustDetail = null;
-                            CustDetail = _Customers.FirstOrDefault(s=>s.Cust_Pk == OrderAlloc.TLORDA_Customer_FK);
+                            CustDetail = _Customers.FirstOrDefault(s => s.Cust_Pk == OrderAlloc.TLORDA_Customer_FK);
                             if (CustDetail != null)
                             {
                                 DataSet10.DataTable2Row dtTable2 = dataTable2.NewDataTable2Row();
@@ -1139,9 +1150,9 @@ namespace CustomerServices
                                         if (PODetail != null)
                                             nr.OrderNumber = context.TLCSV_PurchaseOrder.Find(PODetail.TLCUSTO_PurchaseOrder_FK).TLCSVPO_PurchaseOrder;
                                         nr.BoxNumber = Row.TLSOH_BoxNumber;
-                                        nr.Style = _Styles.FirstOrDefault(s=>s.Sty_Id == Row.TLSOH_Style_FK).Sty_Description;
-                                        nr.Colour = _Colours.FirstOrDefault(s=>s.Col_Id == Row.TLSOH_Colour_FK).Col_Display;
-                                        nr.Size = _Sizes.FirstOrDefault(s=>s.SI_id == Row.TLSOH_Size_FK).SI_Description;
+                                        nr.Style = _Styles.FirstOrDefault(s => s.Sty_Id == Row.TLSOH_Style_FK).Sty_Description;
+                                        nr.Colour = _Colours.FirstOrDefault(s => s.Col_Id == Row.TLSOH_Colour_FK).Col_Display;
+                                        nr.Size = _Sizes.FirstOrDefault(s => s.SI_id == Row.TLSOH_Size_FK).SI_Description;
                                         nr.BoxedQty = Row.TLSOH_BoxedQty;
                                         nr.Weight = Row.TLSOH_Weight;
                                         nr.WareHouseDeliveryNo = Row.TLSOH_WareHouseDeliveryNo;
@@ -1170,8 +1181,8 @@ namespace CustomerServices
                                             String PastelNumber = String.Empty; // SOH.TLSOH_PastelNumber;
                                             String DeliverNumber = SOH.TLSOH_DNListNo.ToString();
                                             string PODetail = context.TLCSV_PurchaseOrder.Find(OrderAlloc.TLORDA_POOrder_FK).TLCSVPO_PurchaseOrder;
-                                            String Style = _Styles.FirstOrDefault(s=>s.Sty_Id == MasterGroup.PORConfig_Style_FK).Sty_Description;
-                                            String Colour = _Colours.FirstOrDefault(s=>s.Col_Id == MasterGroup.PORConfig_Colour_FK).Col_Display;
+                                            String Style = _Styles.FirstOrDefault(s => s.Sty_Id == MasterGroup.PORConfig_Style_FK).Sty_Description;
+                                            String Colour = _Colours.FirstOrDefault(s => s.Col_Id == MasterGroup.PORConfig_Colour_FK).Col_Display;
                                             string Size = "ALL";
 
                                             var TotalBoxed = BoxGroup.Sum(x => (int?)x.PORConfig_SizeBoxQty) ?? 0;
@@ -1274,9 +1285,9 @@ namespace CustomerServices
                                 t2Rw.Pk = 1;
                                 t2Rw.BoxNumber = Exist.TLSOH_BoxNumber;
                                 StringBuilder sb = new StringBuilder();
-                                sb.Append( _Styles.FirstOrDefault(s=>s.Sty_Id == Exist.TLSOH_Style_FK).Sty_Description + " ");
-                                sb.Append( _Colours.FirstOrDefault(s=>s.Col_Id == Exist.TLSOH_Colour_FK).Col_Description + " ");
-                                sb.Append( _Sizes.FirstOrDefault(s=>s.SI_id == Exist.TLSOH_Size_FK).SI_Description);
+                                sb.Append(_Styles.FirstOrDefault(s => s.Sty_Id == Exist.TLSOH_Style_FK).Sty_Description + " ");
+                                sb.Append(_Colours.FirstOrDefault(s => s.Col_Id == Exist.TLSOH_Colour_FK).Col_Description + " ");
+                                sb.Append(_Sizes.FirstOrDefault(s => s.SI_id == Exist.TLSOH_Size_FK).SI_Description);
                                 t2Rw.Style = sb.ToString();
                                 t2Rw.PurchaseOrder = context.TLCSV_PurchaseOrder.Find(Exist.TLSOH_POOrder_FK).TLCSVPO_PurchaseOrder;
                                 t2Rw.BoxedQty = Exist.TLSOH_ReturnedBoxQty;
@@ -1319,9 +1330,9 @@ namespace CustomerServices
                             DataSet12.DataTable2Row tr = dataTable2.NewDataTable2Row();
                             tr.Pk = 1;
                             tr.BoxNumber = Record.TLSOH_BoxNumber;
-                            tr.Style = _Styles.FirstOrDefault(s=>s.Sty_Id == Record.TLSOH_Style_FK).Sty_Description;
-                            tr.Colour = _Colours.FirstOrDefault(s=>s.Col_Id == Record.TLSOH_Colour_FK).Col_Description;
-                            tr.Size = _Sizes.FirstOrDefault(s=>s.SI_id == Record.TLSOH_Size_FK).SI_Description;
+                            tr.Style = _Styles.FirstOrDefault(s => s.Sty_Id == Record.TLSOH_Style_FK).Sty_Description;
+                            tr.Colour = _Colours.FirstOrDefault(s => s.Col_Id == Record.TLSOH_Colour_FK).Col_Description;
+                            tr.Size = _Sizes.FirstOrDefault(s => s.SI_id == Record.TLSOH_Size_FK).SI_Description;
                             if (Record.TLSOH_QtyAdjusted < 0)
                             {
                                 tr.OrigBoxQty = Record.TLSOH_BoxedQty + Record.TLSOH_QtyAdjusted;
@@ -1354,7 +1365,7 @@ namespace CustomerServices
                 DataSet13.DataTable1DataTable dataTable1 = new DataSet13.DataTable1DataTable();
                 DataSet13.DataTable2DataTable dataTable2 = new DataSet13.DataTable2DataTable();
                 DataSet13.DataTable3DataTable dataTable3 = new DataSet13.DataTable3DataTable();
-               
+
                 Repository repo = new Repository();
 
                 //--------------------------------------------
@@ -1369,8 +1380,8 @@ namespace CustomerServices
 
                 using (var context = new TTI2Entities())
                 {
-                    if (!_QueryParms.RankedByStyleColour && 
-                        !_QueryParms.RankedByStyleColourSize && 
+                    if (!_QueryParms.RankedByStyleColour &&
+                        !_QueryParms.RankedByStyleColourSize &&
                         !_QueryParms.RankedByStyleSize)
                     {
                         foreach (var Item in SOH)
@@ -1378,11 +1389,11 @@ namespace CustomerServices
                             DataSet13.DataTable2Row t2r = dataTable2.NewDataTable2Row();
                             t2r.Pk = 1;
 
-                            t2r.Style = _Styles.FirstOrDefault(s=>s.Sty_Id == Item.TLSOH_Style_FK).Sty_Description;
-                            t2r.Colour = _Colours.FirstOrDefault(s=>s.Col_Id == Item.TLSOH_Colour_FK).Col_Display;
-                            t2r.Size =  _Sizes.FirstOrDefault(s=>s.SI_id == Item.TLSOH_Size_FK).SI_Description;
-                            t2r.SizeDisplayOrder = _Sizes.FirstOrDefault(s=>s.SI_id == Item.TLSOH_Size_FK).SI_DisplayOrder;
-                            t2r.Customer = _Customers.FirstOrDefault(s=>s.Cust_Pk == Item.TLSOH_Customer_Fk).Cust_Description;
+                            t2r.Style = _Styles.FirstOrDefault(s => s.Sty_Id == Item.TLSOH_Style_FK).Sty_Description;
+                            t2r.Colour = _Colours.FirstOrDefault(s => s.Col_Id == Item.TLSOH_Colour_FK).Col_Display;
+                            t2r.Size = _Sizes.FirstOrDefault(s => s.SI_id == Item.TLSOH_Size_FK).SI_Description;
+                            t2r.SizeDisplayOrder = _Sizes.FirstOrDefault(s => s.SI_id == Item.TLSOH_Size_FK).SI_DisplayOrder;
+                            t2r.Customer = _Customers.FirstOrDefault(s => s.Cust_Pk == Item.TLSOH_Customer_Fk).Cust_Description;
                             t2r.BoxedQty = Item.TLSOH_BoxedQty;
                             t2r.BoxNumber = Item.TLSOH_BoxNumber;
                             var POD = context.TLCSV_PuchaseOrderDetail.Find(Item.TLSOH_POOrderDetail_FK);
@@ -1431,9 +1442,9 @@ namespace CustomerServices
                                 dataTable2.AddDataTable2Row(t2r);
                             }
                         }
-                        else if(_QueryParms.RankedByStyleColourSize)
+                        else if (_QueryParms.RankedByStyleColourSize)
                         {
-                            var SOHGrouped = SOH.GroupBy(x => new { x.TLSOH_Style_FK, x.TLSOH_Colour_FK});
+                            var SOHGrouped = SOH.GroupBy(x => new { x.TLSOH_Style_FK, x.TLSOH_Colour_FK });
                             foreach (var Item in SOHGrouped)
                             {
                                 var SizeGrouped = Item.GroupBy(x => x.TLSOH_Size_FK);
@@ -1442,7 +1453,7 @@ namespace CustomerServices
                                     var StylePk = Item.FirstOrDefault().TLSOH_Style_FK;
                                     var ColourPk = Item.FirstOrDefault().TLSOH_Colour_FK;
                                     var SizePk = Size.FirstOrDefault().TLSOH_Size_FK;
-                                    
+
                                     DataSet13.DataTable3Row t3r = dataTable3.NewDataTable3Row();
                                     t3r.Pk = 1;
 
@@ -1462,26 +1473,26 @@ namespace CustomerServices
 
                         else if (_QueryParms.RankedByStyleSize)
                         {
-                            var SOHGrouped = SOH.GroupBy(x => new { x.TLSOH_Style_FK, x.TLSOH_Size_FK});
+                            var SOHGrouped = SOH.GroupBy(x => new { x.TLSOH_Style_FK, x.TLSOH_Size_FK });
                             foreach (var Item in SOHGrouped)
                             {
                                 var StylePk = Item.FirstOrDefault().TLSOH_Style_FK;
                                 var ColourPk = Item.FirstOrDefault().TLSOH_Colour_FK;
                                 var SizePk = Item.FirstOrDefault().TLSOH_Size_FK;
 
-                                 DataSet13.DataTable3Row t3r = dataTable3.NewDataTable3Row();
-                                    t3r.Pk = 1;
+                                DataSet13.DataTable3Row t3r = dataTable3.NewDataTable3Row();
+                                t3r.Pk = 1;
 
-                                    t3r.Style = context.TLADM_Styles.Find(StylePk).Sty_Description;
-                                    t3r.Colour = _Colours.FirstOrDefault(s => s.Col_Id == ColourPk).Col_Display;
+                                t3r.Style = context.TLADM_Styles.Find(StylePk).Sty_Description;
+                                t3r.Colour = _Colours.FirstOrDefault(s => s.Col_Id == ColourPk).Col_Display;
 
-                                    t3r.Size = _Sizes.FirstOrDefault(s => s.SI_id == SizePk).SI_Description;
-                                    t3r.DisplayOrder = _Sizes.FirstOrDefault(s => s.SI_id == SizePk).SI_DisplayOrder;
-                                    t3r.BoxedQty = Item.Sum(x => x.TLSOH_BoxedQty);
-                                    t3r.Total_BoxedQty = Item.Sum(x => x.TLSOH_BoxedQty);
+                                t3r.Size = _Sizes.FirstOrDefault(s => s.SI_id == SizePk).SI_Description;
+                                t3r.DisplayOrder = _Sizes.FirstOrDefault(s => s.SI_id == SizePk).SI_DisplayOrder;
+                                t3r.BoxedQty = Item.Sum(x => x.TLSOH_BoxedQty);
+                                t3r.Total_BoxedQty = Item.Sum(x => x.TLSOH_BoxedQty);
 
-                                    dataTable3.AddDataTable3Row(t3r);
-                                
+                                dataTable3.AddDataTable3Row(t3r);
+
                             }
 
                         }
@@ -1508,10 +1519,10 @@ namespace CustomerServices
                 ds.Tables.Add(dataTable2);
                 ds.Tables.Add(dataTable3);
 
-                if (!_QueryParms.SummarisedSalesByCompany && 
-                    !_QueryParms.SummarisedSalesByCustomer && 
-                    !_QueryParms.RankedByStyleColour && 
-                    !_QueryParms.RankedByStyleColourSize && 
+                if (!_QueryParms.SummarisedSalesByCompany &&
+                    !_QueryParms.SummarisedSalesByCustomer &&
+                    !_QueryParms.RankedByStyleColour &&
+                    !_QueryParms.RankedByStyleColourSize &&
                     !_QueryParms.RankedByStyleSize)
                 {
                     CustomerSales CustSales = new CustomerSales();
@@ -1569,9 +1580,9 @@ namespace CustomerServices
                         DataSet14.DataTable1Row t2r = dataTable1.NewDataTable1Row();
 
                         t2r.STList_BoxedQty = Record.TLSOH_BoxedQty;
-                        t2r.StList_Style = _Styles.FirstOrDefault(s=>s.Sty_Id == Record.TLSOH_Style_FK).Sty_Description;
-                        t2r.STList_Colour =  _Colours.FirstOrDefault(s=>s.Col_Id == Record.TLSOH_Colour_FK).Col_Display;
-                        t2r.STList_Size = _Sizes.FirstOrDefault(s=>s.SI_id == Record.TLSOH_Size_FK).SI_Description;
+                        t2r.StList_Style = _Styles.FirstOrDefault(s => s.Sty_Id == Record.TLSOH_Style_FK).Sty_Description;
+                        t2r.STList_Colour = _Colours.FirstOrDefault(s => s.Col_Id == Record.TLSOH_Colour_FK).Col_Display;
+                        t2r.STList_Size = _Sizes.FirstOrDefault(s => s.SI_id == Record.TLSOH_Size_FK).SI_Description;
                         t2r.STList_BoxNumber = Record.TLSOH_BoxNumber;
                         t2r.STList_BoxedQty = Record.TLSOH_BoxedQty;
                         t2r.STList_WareHouse = context.TLADM_WhseStore.Find(Record.TLSOH_WareHouse_FK).WhStore_Description;
@@ -1621,7 +1632,7 @@ namespace CustomerServices
                                 if (PO != null)
                                 {
                                     nr.PurchaseOrder = PO.TLCSVPO_PurchaseOrder;
-                                    nr.Customer = _Customers.FirstOrDefault(s=>s.Cust_Pk == PO.TLCSVPO_Customer_FK).Cust_Description;
+                                    nr.Customer = _Customers.FirstOrDefault(s => s.Cust_Pk == PO.TLCSVPO_Customer_FK).Cust_Description;
                                 }
                                 else
                                 {
@@ -1659,7 +1670,7 @@ namespace CustomerServices
                                 if (PO != null)
                                 {
                                     nr.PurchaseOrder = PO.TLCSVPO_PurchaseOrder;
-                                    nr.Customer = _Customers.FirstOrDefault(s=>s.Cust_Pk == PO.TLCSVPO_Customer_FK).Cust_Description;
+                                    nr.Customer = _Customers.FirstOrDefault(s => s.Cust_Pk == PO.TLCSVPO_Customer_FK).Cust_Description;
                                 }
 
                                 dataTable1.AddDataTable1Row(nr);
@@ -1689,9 +1700,9 @@ namespace CustomerServices
                         nr.BoxNumber = Record.TLCMTWC_BoxNumber;
                         nr.BoxQty = Record.TLCMTWC_Qty;
                         nr.BoxWeight = Record.TLCMTWC_Weight;
-                        nr.Colour = _Colours.FirstOrDefault(s=>s.Col_Id ==  Record.TLCMTWC_Colour_FK).Col_Display;
-                        nr.Style = _Styles.FirstOrDefault(s=>s.Sty_Id == Record.TLCMTWC_Style_FK).Sty_Description;
-                        nr.Size =  _Sizes.FirstOrDefault(s=>s.SI_id == Record.TLCMTWC_Size_FK).SI_Description;
+                        nr.Colour = _Colours.FirstOrDefault(s => s.Col_Id == Record.TLCMTWC_Colour_FK).Col_Display;
+                        nr.Style = _Styles.FirstOrDefault(s => s.Sty_Id == Record.TLCMTWC_Style_FK).Sty_Description;
+                        nr.Size = _Sizes.FirstOrDefault(s => s.SI_id == Record.TLCMTWC_Size_FK).SI_Description;
                         nr.ToWhse = context.TLADM_WhseStore.Find(Record.TLCMTWC_ToWhse_FK).WhStore_Description;
                         if (Record.TLCMTWC_PickList_FK != null)
                         {
@@ -1780,7 +1791,7 @@ namespace CustomerServices
                         //==========================================================================
                         // Group into Months 
                         //=======================================================
-                        var GroupedByMonth = Group.GroupBy(x => x.TLCUSTO_DateRequired.Value.Month );
+                        var GroupedByMonth = Group.GroupBy(x => x.TLCUSTO_DateRequired.Value.Month);
                         foreach (var Mnth in GroupedByMonth)
                         {
                             string Mth = Mnth.FirstOrDefault().TLCUSTO_DateRequired.Value.Month.ToString().PadLeft(2, '0');
@@ -1791,9 +1802,9 @@ namespace CustomerServices
                             var ColIndex = dt.Columns.IndexOf(Mth);
                             if (ColIndex != 0 && (Ordered - Picked > 0))
                             {
-                                  Row[ColIndex] = Row.Field<int>(ColIndex) + (Ordered - Picked);
+                                Row[ColIndex] = Row.Field<int>(ColIndex) + (Ordered - Picked);
                             }
-           
+
                         }
 
                         dt.Rows.Add(Row);
@@ -1802,9 +1813,9 @@ namespace CustomerServices
                     foreach (DataRow Row in dt.Rows)
                     {
                         DataSet17.DataTable1Row nr = dataTable1.NewDataTable1Row();
-                        nr.Style = _Styles.FirstOrDefault(s=>s.Sty_Id == Row.Field<int>(0)).Sty_Description;
-                        nr.Colour = _Colours.FirstOrDefault(s=>s.Col_Id == Row.Field<int>(1)).Col_Display;
-                        nr.Size = _Sizes.FirstOrDefault(s=>s.SI_id == Row.Field<int>(2)).SI_Description;
+                        nr.Style = _Styles.FirstOrDefault(s => s.Sty_Id == Row.Field<int>(0)).Sty_Description;
+                        nr.Colour = _Colours.FirstOrDefault(s => s.Col_Id == Row.Field<int>(1)).Col_Display;
+                        nr.Size = _Sizes.FirstOrDefault(s => s.SI_id == Row.Field<int>(2)).SI_Description;
                         nr.Jan = Row.Field<int>(3);
                         nr.Feb = Row.Field<int>(4);
                         nr.Mar = Row.Field<int>(5);
@@ -1870,9 +1881,9 @@ namespace CustomerServices
                             if (SOH != null)
                             {
                                 nrd.BoxNumber = SOH.TLSOH_BoxNumber;
-                                nrd.Style =  _Styles.FirstOrDefault(s=>s.Sty_Id == SOH.TLSOH_Style_FK).Sty_Description;
-                                nrd.Colour = _Colours.FirstOrDefault(s=>s.Col_Id == SOH.TLSOH_Colour_FK).Col_Display;
-                                nrd.Size = _Sizes.FirstOrDefault(s=>s.SI_id == SOH.TLSOH_Size_FK).SI_Description;
+                                nrd.Style = _Styles.FirstOrDefault(s => s.Sty_Id == SOH.TLSOH_Style_FK).Sty_Description;
+                                nrd.Colour = _Colours.FirstOrDefault(s => s.Col_Id == SOH.TLSOH_Colour_FK).Col_Display;
+                                nrd.Size = _Sizes.FirstOrDefault(s => s.SI_id == SOH.TLSOH_Size_FK).SI_Description;
                                 nrd.Boxed_Qty = SOH.TLSOH_BoxedQty;
                                 nrd.Weight = SOH.TLSOH_Weight;
 
@@ -1963,7 +1974,7 @@ namespace CustomerServices
                     foreach (DataRow Row in dt.Rows)
                     {
                         DataSet19.DataTable1Row nr = dataTable1.NewDataTable1Row();
-                        nr.Style = _Styles.FirstOrDefault(s=>s.Sty_Id == Row.Field<int>(0)).Sty_Description;
+                        nr.Style = _Styles.FirstOrDefault(s => s.Sty_Id == Row.Field<int>(0)).Sty_Description;
                         nr.Pk = 1;
                         nr.Jan = Row.Field<int>(2);
                         nr.Feb = Row.Field<int>(3);
@@ -2064,7 +2075,7 @@ namespace CustomerServices
                                 {
                                     if (ColumnName[1] == null)
                                     {
-                                        ColumnName[1] = _Customers.FirstOrDefault(s=>s.Cust_Pk == Customer.Key).Cust_Description;
+                                        ColumnName[1] = _Customers.FirstOrDefault(s => s.Cust_Pk == Customer.Key).Cust_Description;
                                         break;
                                     }
                                 }
@@ -2096,7 +2107,7 @@ namespace CustomerServices
                             if (CustKey == null)
                                 continue;
 
-                            var MthKey = _Customers.FirstOrDefault(s=>s.Cust_Pk == CustKey).Cust_Code;
+                            var MthKey = _Customers.FirstOrDefault(s => s.Cust_Pk == CustKey).Cust_Code;
                             var ColIndex = dt.Columns.IndexOf(MthKey);
                             if (ColIndex != 0)
                                 Row[ColIndex] = Row.Field<int>(ColIndex) + Record.Sum(x => (int?)x.TLSOH_BoxedQty) ?? 0;
@@ -2108,7 +2119,7 @@ namespace CustomerServices
                     foreach (DataRow Row in dt.Rows)
                     {
                         DataSet20.DataTable2Row nr = dataTable2.NewDataTable2Row();
-                        nr.Style = _Styles.FirstOrDefault(s=>s.Sty_Id == Row.Field<int>(0)).Sty_Description;
+                        nr.Style = _Styles.FirstOrDefault(s => s.Sty_Id == Row.Field<int>(0)).Sty_Description;
                         nr.Pk = 1;
                         nr.Col1 = Row.Field<int>(2);
                         nr.Col2 = Row.Field<int>(3);
@@ -2182,7 +2193,7 @@ namespace CustomerServices
                         new string[] {"Text11", string.Empty},
                         new string[] {"Text12", string.Empty},
                         new string[] {"Text13", string.Empty}
-                      
+
                     };
 
                 var CNames = core.CreateColumnNames();
@@ -2190,7 +2201,7 @@ namespace CustomerServices
 
                 foreach (var CName in CNames)
                 {
-                    ColumnNames[i++][1] = CName[1]; 
+                    ColumnNames[i++][1] = CName[1];
                 }
 
                 using (var context = new TTI2Entities())
@@ -2334,10 +2345,10 @@ namespace CustomerServices
                             var SOH = context.TLCSV_StockOnHand.Find(RePackTran.REPACT_StockOnHand_FK);
                             if (SOH != null)
                             {
-                                TRow.BoxStyle =  _Styles.FirstOrDefault(s=>s.Sty_Id == SOH.TLSOH_Style_FK).Sty_Description;
+                                TRow.BoxStyle = _Styles.FirstOrDefault(s => s.Sty_Id == SOH.TLSOH_Style_FK).Sty_Description;
                                 TRow.BoxNumber = SOH.TLSOH_BoxNumber;
-                                TRow.BoxColor = _Colours.FirstOrDefault(s=>s.Col_Id == SOH.TLSOH_Colour_FK).Col_Display;
-                                TRow.BoxSize = _Sizes.FirstOrDefault(s=>s.SI_id == SOH.TLSOH_Size_FK).SI_Description;
+                                TRow.BoxColor = _Colours.FirstOrDefault(s => s.Col_Id == SOH.TLSOH_Colour_FK).Col_Display;
+                                TRow.BoxSize = _Sizes.FirstOrDefault(s => s.SI_id == SOH.TLSOH_Size_FK).SI_Description;
                                 TRow.BoxedQty = RePackTran.REPACT_BoxedQty;
                                 TRow.BoxLineConfig = context.TLCSV_RePackConfig.Find(RePackTran.REPACT_RePackConfig_FK).PORConfig_BoxNumber;
                             }
@@ -2392,9 +2403,9 @@ namespace CustomerServices
                             {
                                 DataSet22.DataTable1Row nr = dataTable1.NewDataTable1Row();
                                 nr.BoxNumber = Entry.TLSOH_BoxNumber;
-                                nr.Style = _Styles.FirstOrDefault(s=>s.Sty_Id == Entry.TLSOH_Style_FK).Sty_Description;
-                                nr.Colour = _Colours.FirstOrDefault(s=>s.Col_Id == Entry.TLSOH_Colour_FK).Col_Display;
-                                nr.Size = _Sizes.FirstOrDefault(s=>s.SI_id == Entry.TLSOH_Size_FK).SI_Description;
+                                nr.Style = _Styles.FirstOrDefault(s => s.Sty_Id == Entry.TLSOH_Style_FK).Sty_Description;
+                                nr.Colour = _Colours.FirstOrDefault(s => s.Col_Id == Entry.TLSOH_Colour_FK).Col_Display;
+                                nr.Size = _Sizes.FirstOrDefault(s => s.SI_id == Entry.TLSOH_Size_FK).SI_Description;
                                 nr.Weight = Entry.TLSOH_Weight;
                                 nr.Units = Entry.TLSOH_BoxedQty;
                                 dataTable1.AddDataTable1Row(nr);
@@ -2531,7 +2542,7 @@ namespace CustomerServices
                 DataSet24.DataTable1DataTable dataTable1 = new DataSet24.DataTable1DataTable();
 
                 IList<TLADM_Styles> _xStyles = null;
-                IList<TLADM_Colours> _xColours = null; 
+                IList<TLADM_Colours> _xColours = null;
 
                 DateTime ToDay = DateTime.Now;
 
@@ -2567,7 +2578,7 @@ namespace CustomerServices
 
                 using (var context = new TTI2Entities())
                 {
-                    _xStyles = context.TLADM_Styles.Where(x=>!(bool)x.Sty_Discontinued).ToList();
+                    _xStyles = context.TLADM_Styles.Where(x => !(bool)x.Sty_Discontinued).ToList();
                     _xColours = context.TLADM_Colours.Where(x => !(bool)x.Col_Discontinued).ToList();
 
                     foreach (var Style in _QueryParms.Styles)
@@ -2575,8 +2586,8 @@ namespace CustomerServices
                         foreach (var xColour in _QueryParms.Colours)
                         {
                             DataSet24.DataTable1Row nr = dataTable1.NewDataTable1Row();
-                            nr.Style = _Styles.FirstOrDefault(s=>s.Sty_Id == Style.Sty_Id).Sty_Description;
-                            nr.Colour = _Colours.FirstOrDefault(s=>s.Col_Id == xColour.Col_Id).Col_Display;
+                            nr.Style = _Styles.FirstOrDefault(s => s.Sty_Id == Style.Sty_Id).Sty_Description;
+                            nr.Colour = _Colours.FirstOrDefault(s => s.Col_Id == xColour.Col_Id).Col_Display;
 
                             nr.Col1 = nr.Col2 = nr.Col3 = nr.Col4 = nr.Col5 = nr.Col6 = nr.Col7 = nr.Col8 = nr.Col9 = nr.Col10 = nr.Col11 = 0;
 
@@ -2584,13 +2595,13 @@ namespace CustomerServices
                             foreach (var SizeGrp in SalesBySize)
                             {
                                 var SizePk = SizeGrp.FirstOrDefault().TLSOH_Size_FK;
-                                var Size = _Sizes.FirstOrDefault(s=>s.SI_id == SizePk);
+                                var Size = _Sizes.FirstOrDefault(s => s.SI_id == SizePk);
                                 if (Size != null)
                                 {
                                     var TotalSales = SizeGrp.Sum(x => (int?)x.TLSOH_BoxedQty) ?? 0;
                                     decimal DaysSale = TotalSales / WorkingDays;
 
-                                    int StockOnHand = context.TLCSV_StockOnHand.Where(x => x.TLSOH_Style_FK == Style.Sty_Id && x.TLSOH_Colour_FK == xColour.Col_Id && x.TLSOH_Size_FK == SizePk && !x.TLSOH_Sold && !x.TLSOH_Picked && !x.TLSOH_Write_Off && !x.TLSOH_Split && x.TLSOH_Grade == "A").Sum(x =>(int ?) x.TLSOH_BoxedQty) ?? 0;
+                                    int StockOnHand = context.TLCSV_StockOnHand.Where(x => x.TLSOH_Style_FK == Style.Sty_Id && x.TLSOH_Colour_FK == xColour.Col_Id && x.TLSOH_Size_FK == SizePk && !x.TLSOH_Sold && !x.TLSOH_Picked && !x.TLSOH_Write_Off && !x.TLSOH_Split && x.TLSOH_Grade == "A").Sum(x => (int?)x.TLSOH_BoxedQty) ?? 0;
                                     decimal AvailDaysStock = 0.0M;
 
                                     if (DaysSale != 0)
@@ -2663,7 +2674,7 @@ namespace CustomerServices
                 string[][] ColumnNames = null;
 
                 ColumnNames = new string[][]
-                 {   new string[] {"Text4", string.Empty},        
+                 {   new string[] {"Text4", string.Empty},
                         new string[] {"Text5", string.Empty},
                         new string[] {"Text6", string.Empty},
                         new string[] {"Text7", string.Empty},
@@ -2674,7 +2685,7 @@ namespace CustomerServices
                         new string[] {"Text12", string.Empty},
                         new string[] {"Text13", string.Empty},
                         new string[] {"Text14", string.Empty}
-                      
+
                  };
 
                 var CNames = core.CreateColumnNames();
@@ -2682,7 +2693,7 @@ namespace CustomerServices
                 int i = 0;
                 foreach (var CName in CNames)
                 {
-                    ColumnNames[i++][1] =  CName[1]; 
+                    ColumnNames[i++][1] = CName[1];
                 }
                 //================================================================
                 System.Data.DataTable dt = new System.Data.DataTable();
@@ -2693,23 +2704,23 @@ namespace CustomerServices
                 dt.Columns.Add("Colour", typeof(int));       // 2
                 dt.Columns["Colour"].DefaultValue = 0;
 
-                dt.Columns.Add("01",  typeof(int));        // 3
+                dt.Columns.Add("01", typeof(int));        // 3
                 dt.Columns["01"].DefaultValue = 0;
-                dt.Columns.Add("02",  typeof(int));        // 4
+                dt.Columns.Add("02", typeof(int));        // 4
                 dt.Columns["02"].DefaultValue = 0;
-                dt.Columns.Add("03",  typeof(int));        // 5
+                dt.Columns.Add("03", typeof(int));        // 5
                 dt.Columns["03"].DefaultValue = 0;
-                dt.Columns.Add("04",  typeof(int));        // 6
+                dt.Columns.Add("04", typeof(int));        // 6
                 dt.Columns["04"].DefaultValue = 0;
-                dt.Columns.Add("05",  typeof(int));        // 7
+                dt.Columns.Add("05", typeof(int));        // 7
                 dt.Columns["05"].DefaultValue = 0;
-                dt.Columns.Add("06",  typeof(int));        // 8
+                dt.Columns.Add("06", typeof(int));        // 8
                 dt.Columns["06"].DefaultValue = 0;
-                dt.Columns.Add("07",  typeof(int));        // 9
+                dt.Columns.Add("07", typeof(int));        // 9
                 dt.Columns["07"].DefaultValue = 0;
-                dt.Columns.Add("08",  typeof(int));        // 10
+                dt.Columns.Add("08", typeof(int));        // 10
                 dt.Columns["08"].DefaultValue = 0;
-                dt.Columns.Add("09",  typeof(int));        // 11
+                dt.Columns.Add("09", typeof(int));        // 11
                 dt.Columns["09"].DefaultValue = 0;
                 dt.Columns.Add("10", typeof(int));        // 12
                 dt.Columns["10"].DefaultValue = 0;
@@ -2719,9 +2730,9 @@ namespace CustomerServices
                 using (var context = new TTI2Entities())
                 {
                     soh = repo.SOHOnHand(_QueryParms).ToList();
-                    soh =soh.Where(x => x.TLSOH_Grade == "A").ToList();
-                    var GroupedOutSOrders = repo.WholeSaleOutStandingOrders(_QueryParms).GroupBy(x => new { x.TLCUSTO_Customer_FK, x.TLCUSTO_Style_FK, x.TLCUSTO_Colour_FK});
-                  
+                    soh = soh.Where(x => x.TLSOH_Grade == "A").ToList();
+                    var GroupedOutSOrders = repo.WholeSaleOutStandingOrders(_QueryParms).GroupBy(x => new { x.TLCUSTO_Customer_FK, x.TLCUSTO_Style_FK, x.TLCUSTO_Colour_FK });
+
                     foreach (var CustoGroup in GroupedOutSOrders)
                     {
                         var CustoFK = CustoGroup.FirstOrDefault().TLCUSTO_Customer_FK;
@@ -2744,7 +2755,7 @@ namespace CustomerServices
                         {
                             var SizeFK = SG.FirstOrDefault().TLCUSTO_Size_FK;
                             var SOH = soh.Where(x => x.TLSOH_Style_FK == StyleFK && x.TLSOH_Colour_FK == ColourFK && x.TLSOH_Size_FK == SizeFK).Count();
-                            
+
                             var SizeDetail = context.TLADM_Sizes.Find(SizeFK);
                             if (SizeDetail != null)
                             {
@@ -2753,32 +2764,32 @@ namespace CustomerServices
                                 var Ind = dt.Columns.IndexOf(ColPos);
                                 if (Ind > 0)
                                 {
-                                    var QtyPicked  = SG.Sum(x => (int ?) x.TLCUSTO_QtyPicked_ToDate - x.TLCUSTO_QtyDelivered_ToDate) ?? 0;
-                                    var QtyDlivered = SG.Sum(x=>(int ?)x.TLCUSTO_QtyDelivered_ToDate) ?? 0;
-                                    var QtyOrdered = SG.Sum(x=> (int ?)x.TLCUSTO_Qty)?? 0;
+                                    var QtyPicked = SG.Sum(x => (int?)x.TLCUSTO_QtyPicked_ToDate - x.TLCUSTO_QtyDelivered_ToDate) ?? 0;
+                                    var QtyDlivered = SG.Sum(x => (int?)x.TLCUSTO_QtyDelivered_ToDate) ?? 0;
+                                    var QtyOrdered = SG.Sum(x => (int?)x.TLCUSTO_Qty) ?? 0;
                                     var QtyOutStanding = QtyOrdered - QtyPicked - QtyDlivered;
 
                                     var BoxedQty = soh.Where(x => x.TLSOH_Style_FK == StyleFK && x.TLSOH_Colour_FK == ColourFK & x.TLSOH_Size_FK == SizeFK).Sum(x => (int?)x.TLSOH_BoxedQty) ?? 0;
                                     if (QtyOutStanding > 0 && BoxedQty < QtyOutStanding)
                                     {
-                                            dr[Ind] = QtyOutStanding;
-                                            AddRow = true;
+                                        dr[Ind] = QtyOutStanding;
+                                        AddRow = true;
                                     }
                                 }
                             }
                         }
-                        
 
-                        if(AddRow) 
-                          dt.Rows.Add(dr);
+
+                        if (AddRow)
+                            dt.Rows.Add(dr);
                     }
 
                     foreach (DataRow dr in dt.Rows)
                     {
                         DataSet25.DataTable1Row nr = dataTable1.NewDataTable1Row();
-                        nr.CustomerName = _Customers.FirstOrDefault(s=>s.Cust_Pk ==  (int)dr[0]).Cust_Description;
-                        nr.Style = _Styles.FirstOrDefault(s=>s.Sty_Id == (int)dr[1]).Sty_Description;
-                        nr.Colour = _Colours.FirstOrDefault(s=>s.Col_Id == (int)dr[2]).Col_Display;
+                        nr.CustomerName = _Customers.FirstOrDefault(s => s.Cust_Pk == (int)dr[0]).Cust_Description;
+                        nr.Style = _Styles.FirstOrDefault(s => s.Sty_Id == (int)dr[1]).Sty_Description;
+                        nr.Colour = _Colours.FirstOrDefault(s => s.Col_Id == (int)dr[2]).Col_Display;
                         nr.Col1 = (int)dr[3];
                         nr.Col2 = (int)dr[4];
                         nr.Col3 = (int)dr[5];
@@ -2794,9 +2805,9 @@ namespace CustomerServices
                         dataTable1.AddDataTable1Row(nr);
 
                     }
-                    
 
-                    ds.Tables.Add(dataTable1); 
+
+                    ds.Tables.Add(dataTable1);
 
                     NegativeOrder OnHand = new NegativeOrder();
                     IEnumerator ie = OnHand.Section2.ReportObjects.GetEnumerator();
@@ -2806,7 +2817,7 @@ namespace CustomerServices
                         {
                             CrystalDecisions.CrystalReports.Engine.TextObject to = (CrystalDecisions.CrystalReports.Engine.TextObject)ie.Current;
 
-                            var result = (from u in                                                         ColumnNames
+                            var result = (from u in ColumnNames
                                           where u[0] == to.Name
                                           select u).FirstOrDefault();
 
@@ -2829,7 +2840,7 @@ namespace CustomerServices
                 Repository repo = new Repository();
                 // IList<TLCSV_StockOnHand> sohs = null;
 
-                var sohs = repo.PastelRecon(_QueryParms).GroupBy(x=>x.TLSOH_Style_FK).ToList();
+                var sohs = repo.PastelRecon(_QueryParms).GroupBy(x => x.TLSOH_Style_FK).ToList();
                 using (var context = new TTI2Entities())
                 {
                     foreach (var soh in sohs)
@@ -2838,7 +2849,7 @@ namespace CustomerServices
                         nr.Key = 1;
                         var Style = soh.FirstOrDefault().TLSOH_Style_FK;
                         nr.Description = context.TLADM_Styles.Where(x => x.Sty_Id == Style).FirstOrDefault().Sty_Description;
-                        nr.BoxedQty = soh.Sum(x=>x.TLSOH_BoxedQty);
+                        nr.BoxedQty = soh.Sum(x => x.TLSOH_BoxedQty);
 
 
                         dataTable2.AddDataTable2Row(nr);
@@ -2863,36 +2874,36 @@ namespace CustomerServices
             }
             crystalReportViewer1.Refresh();
         }
-    }
 
-    public struct WhseDATA
-    {
-        public int Whse_FK;            // Warehouse Foreign Key
-        public int PickingListNo;      // LastPickingList
-        public bool Selected;
-        public WhseDATA(int WhseKey, int PLNumber, bool Sel )
+        public struct WhseDATA
         {
-            this.Whse_FK = WhseKey;
-            this.PickingListNo = PLNumber;
-            this.Selected = Sel;
+            public int Whse_FK;            // Warehouse Foreign Key
+            public int PickingListNo;      // LastPickingList
+            public bool Selected;
+            public WhseDATA(int WhseKey, int PLNumber, bool Sel)
+            {
+                this.Whse_FK = WhseKey;
+                this.PickingListNo = PLNumber;
+                this.Selected = Sel;
+            }
         }
-    }
 
-    public class SOHDetails
-    {
-        public int Whse { get; set; }
-        public int Style { get; set; }
-        public int Colour { get; set; }
-        public int Size { get; set; }
+        public class SOHDetails
+        {
+            public int Whse { get; set; }
+            public int Style { get; set; }
+            public int Colour { get; set; }
+            public int Size { get; set; }
 
-        public int BoxedQty { get; set; }  
+            public int BoxedQty { get; set; }
 
-    }
+        }
 
-    public class WhseDetail
-    {
-        public string WareHouseDescrip { get; set; }
-        public int WareHousePk { get; set; }
-        public int WareHouseColNo { get; set; } 
+        public class WhseDetail
+        {
+            public string WareHouseDescrip { get; set; }
+            public int WareHousePk { get; set; }
+            public int WareHouseColNo { get; set; }
+        }
     }
 }

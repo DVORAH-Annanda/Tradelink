@@ -629,6 +629,11 @@ namespace Knitting
 
                                 _LastNumber = LastNumber;
                             }
+                            else
+                            {
+                                MessageBox.Show("Machine Details no longer exist ?????? ");
+                                return;
+                            }
                         }
                     }
                 }

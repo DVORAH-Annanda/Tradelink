@@ -96,7 +96,7 @@ namespace CMT
               var PanelIssue = _context.TLCMT_PanelIssue.AsQueryable();
               if (parameters.PanelIssue.Count > 0)
               {
-                  var PIPredicate = PredicateBuilder.False<TLCMT_PanelIssue>();
+                  var PIPredicate = PredicateBuilder.New<TLCMT_PanelIssue>();
                   foreach (var PI in parameters.PanelIssue)
                   {
                       PIPredicate = PIPredicate.Or(s => s.CMTPI_Pk == PI.CMTPI_Pk);
@@ -121,7 +121,7 @@ namespace CMT
               }
               if (parameters.Styles.Count != 0)
               {
-                  var NonCompliancePredicate = PredicateBuilder.False<TLCMT_NonCompliance>();
+                  var NonCompliancePredicate = PredicateBuilder.New<TLCMT_NonCompliance>();
                   foreach (var Style in parameters.Styles)
                   {
                       NonCompliancePredicate = NonCompliancePredicate.Or(s => s.CMTNCD_Style_FK == Style.Sty_Id);
@@ -132,7 +132,7 @@ namespace CMT
 
               if (parameters.Lines.Count != 0)
               {
-                  var LineCompliancePredicate = PredicateBuilder.False<TLCMT_NonCompliance>();
+                  var LineCompliancePredicate = PredicateBuilder.New<TLCMT_NonCompliance>();
                   foreach (var Line in parameters.Lines)
                   {
                       LineCompliancePredicate = LineCompliancePredicate.Or(s => s.CMTNCD_Style_FK == Line.TLCMTCFG_Pk);
@@ -143,7 +143,7 @@ namespace CMT
 
               if(parameters.CutSheets.Count != 0)
               {
-                var CutSheetPredicate = PredicateBuilder.False<TLCMT_NonCompliance>();
+                var CutSheetPredicate = PredicateBuilder.New<TLCMT_NonCompliance>();
                 foreach (var Line in parameters.CutSheets)
                 {
                     CutSheetPredicate = CutSheetPredicate.Or(s => s.CMTNCD_CutSheet_Fk == Line.TLCutSH_Pk);
@@ -160,7 +160,7 @@ namespace CMT
 
              if (parameters.MeasurementPoints.Count > 0)
              {
-                 var MeasurePredicate = PredicateBuilder.False<TLADM_CMTMeasurementPoints>();
+                 var MeasurePredicate = PredicateBuilder.New<TLADM_CMTMeasurementPoints>();
                  foreach (var Measure in parameters.MeasurementPoints)
                  {
                      MeasurePredicate = MeasurePredicate.Or(s => s.CMTMP_Pk == Measure.CMTMP_Pk);
@@ -178,7 +178,7 @@ namespace CMT
 
              if (parameters.MeasurementPoints.Count > 0)
              {
-                 var MeasurePredicate = PredicateBuilder.False<TLCMT_AuditMeasureRecorded>();
+                 var MeasurePredicate = PredicateBuilder.New<TLCMT_AuditMeasureRecorded>();
                  foreach (var Measure in parameters.MeasurementPoints)
                  {
                      MeasurePredicate = MeasurePredicate.Or(s => s.TLBFAR_AuditMeasure_FK == Measure.CMTMP_Pk);
@@ -189,7 +189,7 @@ namespace CMT
 
              if (parameters.Depts.Count > 0)
              {
-                 var DeptPredicate = PredicateBuilder.False<TLCMT_AuditMeasureRecorded>();
+                 var DeptPredicate = PredicateBuilder.New<TLCMT_AuditMeasureRecorded>();
                  foreach (var Dept in parameters.Depts)
                  {
                      DeptPredicate = DeptPredicate.Or(s => s.TLBFAR_Department_FK == Dept.Dep_Id);
@@ -206,7 +206,7 @@ namespace CMT
 
              if (parameters.Styles.Count > 0)
              {
-                 var StylePredicate = PredicateBuilder.False<TLCMT_ProductionCosts>();
+                 var StylePredicate = PredicateBuilder.New<TLCMT_ProductionCosts>();
                  foreach (var Style in parameters.Styles)
                  {
                      StylePredicate = StylePredicate.Or(s => s.CMTP_Style_FK == Style.Sty_Id);
@@ -217,7 +217,7 @@ namespace CMT
 
              if (parameters.Depts.Count > 0)
              {
-                 var DeptPredicate = PredicateBuilder.False<TLCMT_ProductionCosts>();
+                 var DeptPredicate = PredicateBuilder.New<TLCMT_ProductionCosts>();
                  foreach (var Dept in parameters.Depts)
                  {
                      DeptPredicate = DeptPredicate.Or(s => s.CMTP_CMTFacility_FK  == Dept.Dep_Id);
@@ -231,7 +231,7 @@ namespace CMT
              //------------------------------------------------------------
              if (parameters.Colours.Count > 0)
              {
-                 var ColourPredicate = PredicateBuilder.False<TLCMT_ProductionCosts>();
+                 var ColourPredicate = PredicateBuilder.New<TLCMT_ProductionCosts>();
                  foreach (var Colour in parameters.Colours)
                  {
                      var temp = Colour;
@@ -246,7 +246,7 @@ namespace CMT
              //------------------------------------------------------------
              if (parameters.Sizes.Count > 0)
              {
-                 var SizePredicate = PredicateBuilder.False<TLCMT_ProductionCosts>();
+                 var SizePredicate = PredicateBuilder.New<TLCMT_ProductionCosts>();
                  foreach (var Size in parameters.Sizes)
                  {
                      var temp = Size;
@@ -270,7 +270,7 @@ namespace CMT
              //------------------------------------------------------------
              if (parameters.Depts.Count > 0)
              {
-                 var DepartmentPredicate = PredicateBuilder.False<TLCMT_CompletedWork>();
+                 var DepartmentPredicate = PredicateBuilder.New<TLCMT_CompletedWork>();
                  foreach (var Dept in parameters.Depts)
                  {
                      var temp = Dept;
@@ -288,7 +288,7 @@ namespace CMT
              //------------------------------------------------------------
              if (parameters.Styles.Count > 0)
              {
-                 var StylePredicate = PredicateBuilder.False<TLCMT_CompletedWork>();
+                 var StylePredicate = PredicateBuilder.New<TLCMT_CompletedWork>();
                  foreach (var Style in parameters.Styles)
                  {
                      var temp = Style;
@@ -303,7 +303,7 @@ namespace CMT
              //------------------------------------------------------------
              if (parameters.Colours.Count > 0)
              {
-                 var ColourPredicate = PredicateBuilder.False<TLCMT_CompletedWork>();
+                 var ColourPredicate = PredicateBuilder.New<TLCMT_CompletedWork>();
                  foreach (var Colour in parameters.Colours)
                  {
                      var temp = Colour;
@@ -317,7 +317,7 @@ namespace CMT
              //------------------------------------------------------------
              if (parameters.Sizes.Count > 0)
              {
-                 var SizePredicate = PredicateBuilder.False<TLCMT_CompletedWork>();
+                 var SizePredicate = PredicateBuilder.New<TLCMT_CompletedWork>();
                  foreach (var Size in parameters.Sizes)
                  {
                      var temp = Size;
@@ -342,7 +342,7 @@ namespace CMT
              //------------------------------------------------------------
              if (parameters.Styles.Count > 0)
              {
-                 var StylePredicate = PredicateBuilder.False<TLCMT_CompletedWork>();
+                 var StylePredicate = PredicateBuilder.New<TLCMT_CompletedWork>();
                  foreach (var Style in parameters.Styles)
                  {
                      var temp = Style;
@@ -356,7 +356,7 @@ namespace CMT
              //------------------------------------------------------------
              if (parameters.Colours.Count > 0)
              {
-                 var ColourPredicate = PredicateBuilder.False<TLCMT_CompletedWork>();
+                 var ColourPredicate = PredicateBuilder.New<TLCMT_CompletedWork>();
                  foreach (var Colour in parameters.Colours)
                  {
                      var temp = Colour;
@@ -371,7 +371,7 @@ namespace CMT
              //------------------------------------------------------------
              if (parameters.Sizes.Count > 0)
              {
-                 var SizePredicate = PredicateBuilder.False<TLCMT_CompletedWork>();
+                 var SizePredicate = PredicateBuilder.New<TLCMT_CompletedWork>();
                  foreach (var Size in parameters.Sizes)
                  {
                      var temp = Size;
@@ -393,7 +393,7 @@ namespace CMT
              //------------------------------------------------------------
              if (parameters.Depts.Count > 0)
              {
-                 var DepartmentPredicate = PredicateBuilder.False<TLCMT_LineIssue>();
+                 var DepartmentPredicate = PredicateBuilder.New<TLCMT_LineIssue>();
                  foreach (var Dept in parameters.Depts)
                  {
                      var temp = Dept;
@@ -408,7 +408,7 @@ namespace CMT
              //------------------------------------------------------------
              if (parameters.Lines.Count > 0)
              {
-                 var StylePredicate = PredicateBuilder.False<TLCMT_LineIssue>();
+                 var StylePredicate = PredicateBuilder.New<TLCMT_LineIssue>();
                  foreach (var Style in parameters.Lines)
                  {
                      var temp = Style;
@@ -429,7 +429,7 @@ namespace CMT
            //------------------------------------------------------------
            if (parameters.Depts.Count > 0)
            {
-               var DepartmentPredicate = PredicateBuilder.False<TLCMT_CompletedWork>();
+               var DepartmentPredicate = PredicateBuilder.New<TLCMT_CompletedWork>();
                foreach (var Dept in parameters.Depts)
                {
                    var temp = Dept;
@@ -451,7 +451,7 @@ namespace CMT
              //------------------------------------------------------------
              if (parameters.Depts.Count > 0)
              {
-                 var DepartmentPredicate = PredicateBuilder.False<TLCMT_CompletedWork>();
+                 var DepartmentPredicate = PredicateBuilder.New<TLCMT_CompletedWork>();
                  foreach (var Dept in parameters.Depts)
                  {
                      var temp = Dept;
@@ -466,7 +466,7 @@ namespace CMT
              //------------------------------------------------------------
              if (parameters.Styles.Count > 0)
              {
-                 var StylePredicate = PredicateBuilder.False<TLCMT_CompletedWork>();
+                 var StylePredicate = PredicateBuilder.New<TLCMT_CompletedWork>();
                  foreach (var Style in parameters.Styles)
                  {
                      var temp = Style;
@@ -481,7 +481,7 @@ namespace CMT
              //------------------------------------------------------------
              if (parameters.Colours.Count > 0)
              {
-                 var ColourPredicate = PredicateBuilder.False<TLCMT_CompletedWork>();
+                 var ColourPredicate = PredicateBuilder.New<TLCMT_CompletedWork>();
                  foreach (var Colour in parameters.Colours)
                  {
                      var temp = Colour;
@@ -495,7 +495,7 @@ namespace CMT
              //------------------------------------------------------------
              if (parameters.Sizes.Count > 0)
              {
-                 var SizePredicate = PredicateBuilder.False<TLCMT_CompletedWork>();
+                 var SizePredicate = PredicateBuilder.New<TLCMT_CompletedWork>();
                  foreach (var Size in parameters.Sizes)
                  {
                      var temp = Size;
@@ -517,7 +517,7 @@ namespace CMT
              //------------------------------------------------------------
              if (parameters.Depts.Count > 0)
              {
-                 var DepartmentPredicate = PredicateBuilder.False<TLCMT_LineIssue>();
+                 var DepartmentPredicate = PredicateBuilder.New<TLCMT_LineIssue>();
                  foreach (var Dept in parameters.Depts)
                  {
                      var temp = Dept;
@@ -529,7 +529,7 @@ namespace CMT
 
              if (parameters.Styles.Count > 0)
              {
-                 var StylesPredicate = PredicateBuilder.False<TLCMT_LineIssue>();
+                 var StylesPredicate = PredicateBuilder.New<TLCMT_LineIssue>();
              }
 
              return LineIssues;
@@ -546,7 +546,7 @@ namespace CMT
              //------------------------------------------------------------
              if (parameters.Depts.Count > 0)
              {
-                 var DepartmentPredicate = PredicateBuilder.False<TLCMT_LineIssue>();
+                 var DepartmentPredicate = PredicateBuilder.New<TLCMT_LineIssue>();
                  foreach (var Dept in parameters.Depts)
                  {
                      var temp = Dept;
@@ -567,7 +567,7 @@ namespace CMT
              //------------------------------------------------------------
              if (parameters.Depts.Count > 0)
              {
-                 var DepartmentPredicate = PredicateBuilder.False<TLCMT_LineIssue>();
+                 var DepartmentPredicate = PredicateBuilder.New<TLCMT_LineIssue>();
                  foreach (var Dept in parameters.Depts)
                  {
                      var temp = Dept;
@@ -580,7 +580,7 @@ namespace CMT
              /*
              if (parameters.Styles.Count > 0)
              {
-                 var StylePredicate = PredicateBuilder.False<TLCMT_LineIssue>();
+                 var StylePredicate = PredicateBuilder.New<TLCMT_LineIssue>();
                  foreach (var Style in parameters.Styles)
                  {
                      var temp = Style;
@@ -592,7 +592,7 @@ namespace CMT
              
              if (parameters.Colours.Count > 0)
              {
-                 var ColourPredicate = PredicateBuilder.False<TLCUT_CutSheetReceipt>();
+                 var ColourPredicate = PredicateBuilder.New<TLCUT_CutSheetReceipt>();
                  foreach (var Colour in parameters.Colours)
                  {
                      var temp = Colour;
@@ -613,7 +613,7 @@ namespace CMT
 
              if (parameters.Styles.Count > 0)
              {
-                 var StylePredicate = PredicateBuilder.False<TLCUT_CutSheetReceipt>();
+                 var StylePredicate = PredicateBuilder.New<TLCUT_CutSheetReceipt>();
                  foreach (var CutSheet in CutSheets)
                  {
                      var temp = CutSheet;
@@ -625,7 +625,7 @@ namespace CMT
 
              if (parameters.Colours.Count > 0)
              {
-                 var ColourPredicate = PredicateBuilder.False<TLCUT_CutSheetReceipt>();
+                 var ColourPredicate = PredicateBuilder.New<TLCUT_CutSheetReceipt>();
                  foreach (var Colour in parameters.Colours)
                  {
                      var temp = Colour;
@@ -647,7 +647,7 @@ namespace CMT
 
              if (parameters.Sizes.Count > 0)
              {
-                 var SizePredicate = PredicateBuilder.False<TLCUT_CutSheetReceiptDetail>();
+                 var SizePredicate = PredicateBuilder.New<TLCUT_CutSheetReceiptDetail>();
                  foreach (var Size in parameters.Sizes)
                  {
                      var temp = Size;
@@ -668,7 +668,7 @@ namespace CMT
              //------------------------------------------------------------
              if (parameters.Customers.Count > 0)
              {
-                 var CustomerPredicate = PredicateBuilder.False<TLADM_CustomerFile>();
+                 var CustomerPredicate = PredicateBuilder.New<TLADM_CustomerFile>();
                  foreach (var Customer in parameters.Customers)
                  {
                      var temp = Customer;
@@ -689,7 +689,7 @@ namespace CMT
              //------------------------------------------------------------
              if (parameters.Customers.Count > 0)
              {
-                 var CustomerPredicate = PredicateBuilder.False<TLADM_Styles>();
+                 var CustomerPredicate = PredicateBuilder.New<TLADM_Styles>();
                  foreach (var Customer in parameters.Customers)
                  {
                      var temp = Customer;
@@ -700,7 +700,7 @@ namespace CMT
              }
              if (parameters.Styles.Count != 0)
              {
-                 var StylePredicate = PredicateBuilder.False<TLADM_Styles>();
+                 var StylePredicate = PredicateBuilder.New<TLADM_Styles>();
                  foreach (var Style in parameters.Styles)
                  {
                      var temp = Style;
@@ -720,7 +720,7 @@ namespace CMT
              //------------------------------------------------------------
              if (parameters.Styles.Count > 0)
              {
-                 var StylePredicate = PredicateBuilder.False<TLADM_Styles>();
+                 var StylePredicate = PredicateBuilder.New<TLADM_Styles>();
                  foreach (var Style in parameters.Styles)
                  {
                      var temp = Style;
@@ -738,7 +738,7 @@ namespace CMT
              var CutSheetReceipts = _context.TLCUT_CutSheetReceipt.Where(X=>!X.TLCUTSHR_Issued && X.TLCUTSHR_InPanelStore).AsQueryable();
              if (parameters.WhseStores.Count != 0)
              {
-                 var WhsePredicate = PredicateBuilder.False<TLCUT_CutSheetReceipt>();
+                 var WhsePredicate = PredicateBuilder.New<TLCUT_CutSheetReceipt>();
 
                  foreach (var Whse in parameters.WhseStores)
                  {
@@ -759,7 +759,7 @@ namespace CMT
              //------------------------------------------------------------
              if (parameters.Colours.Count > 0)
              {
-                 var ColourPredicate = PredicateBuilder.False<TLADM_Colours>();
+                 var ColourPredicate = PredicateBuilder.New<TLADM_Colours>();
                  foreach (var Colour in parameters.Colours)
                  {
                      var temp = Colour;
@@ -779,7 +779,7 @@ namespace CMT
              //------------------------------------------------------------
              if (parameters.Sizes.Count > 0)
              {
-                 var SizePredicate = PredicateBuilder.False<TLADM_Sizes>();
+                 var SizePredicate = PredicateBuilder.New<TLADM_Sizes>();
                  foreach (var Size in parameters.Sizes)
                  {
                      var temp = Size;

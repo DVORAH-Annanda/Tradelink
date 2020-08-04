@@ -18,5 +18,6 @@ namespace Utilities
         public int StyTrim_Styles_Fk { get; set; }
         public int StyTrim_Trim_Fk { get; set; }
         public int StyTrim_ProdRating_FK { get; set; }
+        public bool StyTrim_Discontinued { get; set; }
     }
 }

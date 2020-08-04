@@ -86,7 +86,7 @@ namespace Knitting
 
            if (parameters.YarnTypes.Count != 0)
            {
-               var YarnPredicate = PredicateBuilder.False<TLSPN_YarnOrder>();
+               var YarnPredicate = PredicateBuilder.New<TLSPN_YarnOrder>();
 
                foreach (var Yt in parameters.YarnTypes)
                {
@@ -96,7 +96,7 @@ namespace Knitting
 
                YarnOrders = YarnOrders.AsExpandable().Where(YarnPredicate);
 
-               var KnitOrderPredicate = PredicateBuilder.False<TLKNI_Order>();
+               var KnitOrderPredicate = PredicateBuilder.New<TLKNI_Order>();
 
                foreach (var YarnOrder in YarnOrders)
                {
@@ -106,7 +106,7 @@ namespace Knitting
 
                KnitOrders = KnitOrders.AsExpandable().Where(KnitOrderPredicate);
 
-               var GPPredicate = PredicateBuilder.False<TLKNI_GreigeProduction>();
+               var GPPredicate = PredicateBuilder.New<TLKNI_GreigeProduction>();
 
                foreach (var Ko in KnitOrders)
                {
@@ -118,7 +118,7 @@ namespace Knitting
 
            if (parameters.Customers.Count != 0)
            {
-               var CustomerPredicate = PredicateBuilder.False<TLKNI_GreigeProduction>();
+               var CustomerPredicate = PredicateBuilder.New<TLKNI_GreigeProduction>();
                foreach (var Customer in parameters.Customers)
                {
                    var temp = Customer;
@@ -130,13 +130,13 @@ namespace Knitting
 
            if (parameters.Grade.Length != 0)
            {
-               var GradePredicate = PredicateBuilder.False<TLKNI_GreigeProduction>();
+               var GradePredicate = PredicateBuilder.New<TLKNI_GreigeProduction>();
                GriegeProd = GriegeProd.AsExpandable().Where(x=>x.GreigeP_Grade == parameters.Grade.ToUpper());
            }
 
            if (parameters.Greiges.Count != 0)
            {
-               var GreigePredicate = PredicateBuilder.False<TLKNI_GreigeProduction>();
+               var GreigePredicate = PredicateBuilder.New<TLKNI_GreigeProduction>();
                foreach (var Greige in parameters.Greiges)
                {
                    var temp = Greige;
@@ -149,7 +149,7 @@ namespace Knitting
 
            if (parameters.Operators.Count != 0)
            {
-               var OperatorPredicate = PredicateBuilder.False<TLKNI_GreigeProduction>();
+               var OperatorPredicate = PredicateBuilder.New<TLKNI_GreigeProduction>();
                foreach (var Operator in parameters.Operators)
                {
                    var temp = Operator;
@@ -161,7 +161,7 @@ namespace Knitting
 
            if (parameters.Machines.Count != 0)
            {
-               var MachinePredicate = PredicateBuilder.False<TLKNI_GreigeProduction>();
+               var MachinePredicate = PredicateBuilder.New<TLKNI_GreigeProduction>();
                foreach (var Machine in parameters.Machines)
                {
                    var temp = Machine;
@@ -183,7 +183,7 @@ namespace Knitting
 
            if (parameters.YarnTypes.Count != 0)
            {
-               var YarnPredicate = PredicateBuilder.False<TLSPN_YarnOrder>();
+               var YarnPredicate = PredicateBuilder.New<TLSPN_YarnOrder>();
 
                foreach (var Yt in parameters.YarnTypes)
                {
@@ -193,7 +193,7 @@ namespace Knitting
 
                YarnOrders = YarnOrders.AsExpandable().Where(YarnPredicate);
 
-               var KnitOrderPredicate = PredicateBuilder.False<TLKNI_Order>();
+               var KnitOrderPredicate = PredicateBuilder.New<TLKNI_Order>();
 
                foreach (var YarnOrder in YarnOrders)
                {
@@ -203,7 +203,7 @@ namespace Knitting
 
                KnitOrders = KnitOrders.AsExpandable().Where(KnitOrderPredicate);
 
-               var GPPredicate = PredicateBuilder.False<TLKNI_GreigeProduction>();
+               var GPPredicate = PredicateBuilder.New<TLKNI_GreigeProduction>();
 
                foreach (var Ko in KnitOrders)
                {
@@ -215,7 +215,7 @@ namespace Knitting
 
            if (parameters.Greiges.Count > 0)
            {
-               var GreigePredicate = PredicateBuilder.False<TLKNI_GreigeProduction>();
+               var GreigePredicate = PredicateBuilder.New<TLKNI_GreigeProduction>();
                foreach (var Greige in parameters.Greiges)
                {
                    var temp = Greige;
@@ -227,7 +227,7 @@ namespace Knitting
 
            if (parameters.Operators.Count > 0)
            {
-               var OperatorPredicate = PredicateBuilder.False<TLKNI_GreigeProduction>();
+               var OperatorPredicate = PredicateBuilder.New<TLKNI_GreigeProduction>();
                foreach (var Operator in parameters.Operators)
                {
                    var temp = Operator;
@@ -239,7 +239,7 @@ namespace Knitting
 
            if (parameters.Machines.Count > 0)
            {
-               var MachinePredicate = PredicateBuilder.False<TLKNI_GreigeProduction>();
+               var MachinePredicate = PredicateBuilder.New<TLKNI_GreigeProduction>();
                foreach (var Machine in parameters.Machines)
                {
                    var temp = Machine;
@@ -259,7 +259,7 @@ namespace Knitting
 
            if (parameters.YarnTypes.Count != 0)
            {
-               var YarnTypePredicate = PredicateBuilder.False<TLKNI_YarnOrderPallets>();
+               var YarnTypePredicate = PredicateBuilder.New<TLKNI_YarnOrderPallets>();
                foreach (var YarnType in parameters.YarnTypes)
                {
                    var temp = YarnType;
@@ -268,7 +268,7 @@ namespace Knitting
            }
            if (parameters.YarnOrders.Count > 0)
            {
-               var YarnPredicate = PredicateBuilder.False<TLKNI_YarnOrderPallets>();
+               var YarnPredicate = PredicateBuilder.New<TLKNI_YarnOrderPallets>();
                foreach (var YarnOrder in parameters.YarnOrders)
                {
                    var temp = YarnOrder;
@@ -340,7 +340,7 @@ namespace Knitting
 
             if (parameters.Greiges.Count > 0)
            {
-               var GreigePredicate = PredicateBuilder.False<TLKNI_GreigeProduction>();
+               var GreigePredicate = PredicateBuilder.New<TLKNI_GreigeProduction>();
                foreach (var Greige in parameters.Greiges)
                {
                    var temp = Greige;
@@ -352,7 +352,7 @@ namespace Knitting
 
            if (parameters.WhseStores.Count > 0)
            {
-               var WhsePredicate = PredicateBuilder.False<TLKNI_GreigeProduction>();
+               var WhsePredicate = PredicateBuilder.New<TLKNI_GreigeProduction>();
                foreach (var whse in parameters.WhseStores)
                {
                    var temp = whse;
@@ -372,7 +372,7 @@ namespace Knitting
 
            if (parameters.Greiges.Count > 0)
            {
-               var GreigePredicate = PredicateBuilder.False<TLKNI_GreigeProduction>();
+               var GreigePredicate = PredicateBuilder.New<TLKNI_GreigeProduction>();
                foreach (var Greige in parameters.Greiges)
                {
                    var temp = Greige;
@@ -385,7 +385,7 @@ namespace Knitting
 
            if (parameters.Operators.Count > 0)
            {
-               var OperatorPredicate = PredicateBuilder.False<TLKNI_GreigeProduction>();
+               var OperatorPredicate = PredicateBuilder.New<TLKNI_GreigeProduction>();
                foreach (var Operator in parameters.Operators)
                {
                    var temp = Operator;
@@ -397,7 +397,7 @@ namespace Knitting
 
            if (parameters.Machines.Count > 0)
            {
-               var MachinePredicate = PredicateBuilder.False<TLKNI_GreigeProduction>();
+               var MachinePredicate = PredicateBuilder.New<TLKNI_GreigeProduction>();
                foreach (var Machine in parameters.Machines)
                {
                    var temp = Machine;
@@ -419,7 +419,7 @@ namespace Knitting
            //------------------------------------------------------------
            if (parameters.YarnTypes.Count != 0)
            {
-               var YarnPredicate = PredicateBuilder.False<TLSPN_YarnOrder>();
+               var YarnPredicate = PredicateBuilder.New<TLSPN_YarnOrder>();
 
                foreach(var Yt in parameters.YarnTypes)
                {
@@ -429,7 +429,7 @@ namespace Knitting
 
                YarnOrders = YarnOrders.AsExpandable().Where(YarnPredicate);
 
-               var KnitOrderPredicate = PredicateBuilder.False<TLKNI_Order>();
+               var KnitOrderPredicate = PredicateBuilder.New<TLKNI_Order>();
 
                foreach (var YarnOrder in YarnOrders)
                {
@@ -442,7 +442,7 @@ namespace Knitting
 
            if (parameters.KnitOrderPk.Count > 0)
            {
-               var PkPredicate = PredicateBuilder.False<TLKNI_Order>();
+               var PkPredicate = PredicateBuilder.New<TLKNI_Order>();
                foreach (var Pk in parameters.KnitOrderPk)
                {
                    var temp = Pk;
@@ -457,7 +457,7 @@ namespace Knitting
            //------------------------------------------------------------
            if (parameters.Greiges.Count > 0)
            {
-               var GreigePredicate = PredicateBuilder.False<TLKNI_Order>();
+               var GreigePredicate = PredicateBuilder.New<TLKNI_Order>();
                foreach (var Greige in parameters.Greiges)
                {
                    var temp = Greige;
@@ -472,7 +472,7 @@ namespace Knitting
            //------------------------------------------------------------
            if (parameters.Customers.Count > 0)
            {
-               var CustomerPredicate = PredicateBuilder.False<TLKNI_Order>();
+               var CustomerPredicate = PredicateBuilder.New<TLKNI_Order>();
                foreach (var Customer in parameters.Customers)
                {
                    var temp = Customer;
@@ -487,7 +487,7 @@ namespace Knitting
            //------------------------------------------------------------
            if (parameters.Machines.Count > 0)
            {
-               var MachinePredicate = PredicateBuilder.False<TLKNI_Order>();
+               var MachinePredicate = PredicateBuilder.New<TLKNI_Order>();
                foreach (var Machine in parameters.Machines)
                {
                    var temp = Machine;
