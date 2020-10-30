@@ -146,6 +146,7 @@
             this.cmboBatchesReprint.Size = new System.Drawing.Size(211, 21);
             this.cmboBatchesReprint.TabIndex = 11;
             this.cmboBatchesReprint.Text = "Select Options";
+            this.cmboBatchesReprint.SelectedIndexChanged += new System.EventHandler(this.cmboBatchesReprint_SelectedIndexChanged);
             // 
             // groupBox2
             // 

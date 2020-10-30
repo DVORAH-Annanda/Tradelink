@@ -35,25 +35,35 @@
     <StartupObject />
   </PropertyGroup>
   <PropertyGroup>
-    <SignAssembly>true</SignAssembly>
+    <SignAssembly>false</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
     <AssemblyOriginatorKeyFile>Cutting.pfx</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CrystalDecisions.CrystalReports.Engine, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
-    <Reference Include="CrystalDecisions.Enterprise.Framework, Version=10.5.3700.0, Culture=neutral, PublicKeyToken=692fbea5521e1304">
-      <EmbedInteropTypes>True</EmbedInteropTypes>
+    <Reference Include="CrystalDecisions.CrystalReports.Engine, Version=13.0.4000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\TradeLink_Source_BU\TradeLink_Source\CustomerServices\bin\Debug\CrystalDecisions.CrystalReports.Engine.dll</HintPath>
     </Reference>
-    <Reference Include="CrystalDecisions.Enterprise.InfoStore, Version=10.5.3700.0, Culture=neutral, PublicKeyToken=692fbea5521e1304">
-      <EmbedInteropTypes>True</EmbedInteropTypes>
+    <Reference Include="CrystalDecisions.ReportSource, Version=13.0.4000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\TradeLink_Source_BU\TradeLink_Source\CustomerServices\bin\Debug\CrystalDecisions.ReportSource.dll</HintPath>
     </Reference>
-    <Reference Include="CrystalDecisions.ReportSource, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
-    <Reference Include="CrystalDecisions.Shared, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
-    <Reference Include="CrystalDecisions.Windows.Forms, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
+    <Reference Include="CrystalDecisions.Shared, Version=13.0.4000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\TradeLink_Source_BU\TradeLink_Source\CustomerServices\bin\Debug\CrystalDecisions.Shared.dll</HintPath>
+    </Reference>
+    <Reference Include="CrystalDecisions.Windows.Forms, Version=13.0.4000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\TradeLink_Source_BU\TradeLink_Source\CustomerServices\bin\Debug\CrystalDecisions.Windows.Forms.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
       <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.Extended, Version=6.0.0.0, Culture=neutral, PublicKeyToken=05b7e29bdd433584, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EntityFramework.Extended.6.1.0.168\lib\net45\EntityFramework.Extended.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
@@ -101,9 +111,7 @@
       <DependentUpon>BIFTickets.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="CheckComboBoxItem.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="CheckComboBoxItem.cs" />
     <Compile Include="CRListSummary.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -160,7 +168,6 @@
     </Compile>
     <Compile Include="DataSet10.cs">
       <DependentUpon>DataSet10.xsd</DependentUpon>
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="DataSet10.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -234,7 +241,6 @@
     </Compile>
     <Compile Include="DataSet5.cs">
       <DependentUpon>DataSet5.xsd</DependentUpon>
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="DataSet5.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -258,7 +264,6 @@
     </Compile>
     <Compile Include="DataSet9.cs">
       <DependentUpon>DataSet9.xsd</DependentUpon>
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="DataSet9.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -409,6 +414,12 @@
     <Compile Include="frmQtyAdjustment.Designer.cs">
       <DependentUpon>frmQtyAdjustment.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmReCalculateExpectedUnits.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmReCalculateExpectedUnits.designer.cs">
+      <DependentUpon>frmReCalculateExpectedUnits.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmRejectReasons.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -468,6 +479,12 @@
     </Compile>
     <Compile Include="frmSelWipCutting.Designer.cs">
       <DependentUpon>frmSelWipCutting.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmSetCuttingPriorities.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmSetCuttingPriorities.Designer.cs">
+      <DependentUpon>frmSetCuttingPriorities.cs</DependentUpon>
     </Compile>
     <Compile Include="frmSplitCutSheet.cs">
       <SubType>Form</SubType>
@@ -663,6 +680,9 @@
     <EmbeddedResource Include="frmQtyAdjustment.resx">
       <DependentUpon>frmQtyAdjustment.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="frmReCalculateExpectedUnits.resx">
+      <DependentUpon>frmReCalculateExpectedUnits.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frmRejectReasons.resx">
       <DependentUpon>frmRejectReasons.cs</DependentUpon>
     </EmbeddedResource>
@@ -692,6 +712,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmSelWipCutting.resx">
       <DependentUpon>frmSelWipCutting.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmSetCuttingPriorities.resx">
+      <DependentUpon>frmSetCuttingPriorities.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmSplitCutSheet.resx">
       <DependentUpon>frmSplitCutSheet.cs</DependentUpon>

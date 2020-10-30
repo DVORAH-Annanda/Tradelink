@@ -128,7 +128,7 @@ namespace DyeHouse
                 cmboGreige.DisplayMember = "TLGreige_Description";
                 cmboGreige.SelectedValue = -1;
 
-                cmboCustomers.DataSource = context.TLADM_CustomerFile.OrderBy(x => x.Cust_Description).ToList();
+                cmboCustomers.DataSource = context.TLADM_CustomerFile.OrderBy(x => x.Cust_Description).Where(x=>!x.Cust_CommissionCust).OrderBy(x=>x.Cust_Description).ToList();
                 cmboCustomers.ValueMember = "Cust_Pk";
                 cmboCustomers.DisplayMember = "Cust_Description";
                 cmboCustomers.SelectedValue = -1;

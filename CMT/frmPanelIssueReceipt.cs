@@ -123,14 +123,22 @@ namespace CMT
                             }
                         }
 
-                        cmboStoreFacilities.DataSource = context.TLADM_WhseStore.Where(x => x.WhStore_DepartmentFK == selected.CMTPI_Department_FK).ToList();
-                        cmboStoreFacilities.ValueMember = "WhStore_Id";
-                        cmboStoreFacilities.DisplayMember = "WhStore_Description";
-                        cmboStoreFacilities.Enabled = true;
-                        cmboStoreFacilities.SelectedIndex = -1;
+                        var StoreFacilities = context.TLADM_WhseStore.Where(x => x.WhStore_DepartmentFK == selected.CMTPI_Department_FK).ToList();
+                        if (StoreFacilities.Count != 0)
+                        {
+                            cmboStoreFacilities.DataSource = StoreFacilities;
+                            cmboStoreFacilities.ValueMember = "WhStore_Id";
+                            cmboStoreFacilities.DisplayMember = "WhStore_Description";
+                            cmboStoreFacilities.Enabled = true;
+                            cmboStoreFacilities.SelectedIndex = -1;
+
+                        }
+                        else
+                        {
+                            MessageBox.Show("There appears to be a problem with the definition of this CMT");
+                        }
                         formloaded = true;
                     }
-                 
                 }
             }
         }
@@ -144,15 +152,28 @@ namespace CMT
 
             if (oBtn != null && formloaded)
             {
-                var LNSelected = (TLADM_WhseStore)cmboStoreFacilities.SelectedItem;
-                if (LNSelected == null)
+                var Depts = (TLADM_Departments)cmboCMT.SelectedItem;
+                if(Depts == null)
                 {
-                    MessageBox.Show("Please select a store");
+                    MessageBox.Show("Please select a CMT to work with");
+                    return;
+                                    }
+                              
+                TLCMT_PanelIssue PIselected = (TLCMT_PanelIssue)cmboDelivery.SelectedItem;
+                if(PIselected == null)
+                {
+                    MessageBox.Show("Please select a delivery number");
                     return;
                 }
-                
-                TLCMT_PanelIssue PIselected = (TLCMT_PanelIssue)cmboDelivery.SelectedItem;
-               
+
+                if(cmboStoreFacilities.Items.Count == 0)
+                {
+                    MessageBox.Show("There appears to be a problem with the definition of this CMT");
+                    return;
+                }
+
+                var LNSelected = (TLADM_WhseStore)cmboStoreFacilities.SelectedItem;
+
                 using (var context = new TTI2Entities())
                 {
                     foreach (DataGridViewRow row in dataGridView1.Rows)

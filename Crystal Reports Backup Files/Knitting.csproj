@@ -35,7 +35,7 @@
     <StartupObject />
   </PropertyGroup>
   <PropertyGroup>
-    <SignAssembly>true</SignAssembly>
+    <SignAssembly>false</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
     <AssemblyOriginatorKeyFile>Knitting.pfx</AssemblyOriginatorKeyFile>
@@ -44,16 +44,22 @@
     <Reference Include="Barcodes.Barcode">
       <HintPath>..\..\..\..\..\..\..\Program Files (x86)\RKD\BarCode_NET_2_0\Barcodes.Barcode.dll</HintPath>
     </Reference>
-    <Reference Include="CrystalDecisions.CrystalReports.Engine, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
-    <Reference Include="CrystalDecisions.Enterprise.Framework, Version=10.5.3700.0, Culture=neutral, PublicKeyToken=692fbea5521e1304">
-      <EmbedInteropTypes>True</EmbedInteropTypes>
+    <Reference Include="CrystalDecisions.CrystalReports.Engine, Version=13.0.4000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\TradeLink_Source_BU\TradeLink_Source\CustomerServices\bin\Debug\CrystalDecisions.CrystalReports.Engine.dll</HintPath>
     </Reference>
-    <Reference Include="CrystalDecisions.Enterprise.InfoStore, Version=10.5.3700.0, Culture=neutral, PublicKeyToken=692fbea5521e1304">
-      <EmbedInteropTypes>True</EmbedInteropTypes>
+    <Reference Include="CrystalDecisions.ReportSource, Version=13.0.4000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\TradeLink_Source_BU\TradeLink_Source\CustomerServices\bin\Debug\CrystalDecisions.ReportSource.dll</HintPath>
     </Reference>
-    <Reference Include="CrystalDecisions.ReportSource, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
-    <Reference Include="CrystalDecisions.Shared, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
-    <Reference Include="CrystalDecisions.Windows.Forms, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
+    <Reference Include="CrystalDecisions.Shared, Version=13.0.4000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\TradeLink_Source_BU\TradeLink_Source\CustomerServices\bin\Debug\CrystalDecisions.Shared.dll</HintPath>
+    </Reference>
+    <Reference Include="CrystalDecisions.Windows.Forms, Version=13.0.4000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\TradeLink_Source_BU\TradeLink_Source\CustomerServices\bin\Debug\CrystalDecisions.Windows.Forms.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
       <Private>True</Private>
@@ -65,6 +71,9 @@
     <Reference Include="LinqKit, Version=1.1.15.0, Culture=neutral, PublicKeyToken=bc217f8844052a91, processorArchitecture=MSIL">
       <HintPath>..\packages\LinqKit.1.1.15\lib\net45\LinqKit.dll</HintPath>
       <Private>True</Private>
+    </Reference>
+    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.1.2.10\lib\2.0\log4net.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -86,6 +95,9 @@
     <Compile Include="BoughtInFabric.Designer.cs">
       <DependentUpon>BoughtInFabric.cs</DependentUpon>
     </Compile>
+    <Compile Include="DataSet25.cs">
+      <DependentUpon>DataSet25.xsd</DependentUpon>
+    </Compile>
     <Compile Include="DataSet33.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -96,11 +108,29 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DataSet34.xsd</DependentUpon>
     </Compile>
+    <Compile Include="frmCloseYarnPsallet.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmCloseYarnPsallet.Designer.cs">
+      <DependentUpon>frmCloseYarnPsallet.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmGreigeMeasurementSel.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="frmGreigeMeasurementSel.Designer.cs">
       <DependentUpon>frmGreigeMeasurementSel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmSelectStore.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmSelectStore.Designer.cs">
+      <DependentUpon>frmSelectStore.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmStoreToStoreTransfer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmStoreToStoreTransfer.Designer.cs">
+      <DependentUpon>frmStoreToStoreTransfer.cs</DependentUpon>
     </Compile>
     <Compile Include="frmWhiteOnly.cs">
       <SubType>Form</SubType>
@@ -113,6 +143,12 @@
     </Compile>
     <Compile Include="frmYarnReceiptTrans.Designer.cs">
       <DependentUpon>frmYarnReceiptTrans.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmLiningTransaction.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmLiningTransaction.Designer.cs">
+      <DependentUpon>frmLiningTransaction.cs</DependentUpon>
     </Compile>
     <Compile Include="QualityDescription.cs">
       <AutoGen>True</AutoGen>
@@ -150,9 +186,7 @@
       <DependentUpon>CGradeByYarnOrder.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="CheckComboBoxItem.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="CheckComboBoxItem.cs" />
     <Compile Include="ComKnitting.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -248,7 +282,6 @@
     </Compile>
     <Compile Include="DataSet23.cs">
       <DependentUpon>DataSet23.xsd</DependentUpon>
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="DataSet23.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -272,7 +305,6 @@
     </Compile>
     <Compile Include="DataSet27.cs">
       <DependentUpon>DataSet27.xsd</DependentUpon>
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="DataSet27.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -700,14 +732,26 @@
     <EmbeddedResource Include="BoughtInFabric.resx">
       <DependentUpon>BoughtInFabric.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="frmCloseYarnPsallet.resx">
+      <DependentUpon>frmCloseYarnPsallet.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frmGreigeMeasurementSel.resx">
       <DependentUpon>frmGreigeMeasurementSel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmSelectStore.resx">
+      <DependentUpon>frmSelectStore.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmStoreToStoreTransfer.resx">
+      <DependentUpon>frmStoreToStoreTransfer.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmWhiteOnly.resx">
       <DependentUpon>frmWhiteOnly.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmYarnReceiptTrans.resx">
       <DependentUpon>frmYarnReceiptTrans.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmLiningTransaction.resx">
+      <DependentUpon>frmLiningTransaction.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="QualityDescription.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>

@@ -173,7 +173,7 @@ namespace DyeHouse
                                 var DyeBatches = (from DyeBatch in context.TLDYE_DyeBatch
                                                   join DyeBatchDetails in context.TLDYE_DyeBatchDetails on DyeBatch.DYEB_Pk equals DyeBatchDetails.DYEBD_DyeBatch_FK
                                                   where DyeBatch.DYEB_Customer_FK == Selected.Cust_Pk && !DyeBatch.DYEB_FabricMode
-                                                  && DyeBatchDetails.DYEBO_QAApproved && !DyeBatchDetails.DYEBO_Sold
+                                                  && DyeBatchDetails.DYEBO_QAApproved && !DyeBatchDetails.DYEBO_Sold && DyeBatch.DYEB_CommissinCust
                                                   select DyeBatch).GroupBy(x => x.DYEB_BatchNo);
 
                                 foreach (var Group in DyeBatches)
@@ -218,9 +218,10 @@ namespace DyeHouse
                         }
                         else
                         {
-                           
+                            DateTime dtTime = DateTime.Now.AddDays(-30);
 
-                            var DyeTrans = context.TLDYE_DyeTransactions.Where(x => x.TLDYET_Customer_FK == Selected.Cust_Pk && x.TLDYET_FabricSales).GroupBy(x=>x.TLDYET_TransactionNumber) .ToList();
+
+                            var DyeTrans = context.TLDYE_DyeTransactions.Where(x => x.TLDYET_Customer_FK == Selected.Cust_Pk && x.TLDYET_FabricSales && x.TLDYET_Date >= dtTime).GroupBy(x=>x.TLDYET_TransactionNumber) .ToList();
                             foreach (var DyeTran in DyeTrans)
                             {
                                 var Key = DyeTran.FirstOrDefault().TLDYET_Pk;
@@ -440,7 +441,7 @@ namespace DyeHouse
                         var DyeBatches = (from DyeBatch in context.TLDYE_DyeBatch
                                           join DyeBatchDetails in context.TLDYE_DyeBatchDetails on DyeBatch.DYEB_Pk equals DyeBatchDetails.DYEBD_DyeBatch_FK
                                           where DyeBatch.DYEB_Customer_FK == Selected.Cust_Pk && !DyeBatch.DYEB_FabricMode
-                                          && DyeBatchDetails.DYEBO_QAApproved && !DyeBatchDetails.DYEBO_Sold
+                                          && DyeBatchDetails.DYEBO_QAApproved && !DyeBatchDetails.DYEBO_Sold && DyeBatch.DYEB_CommissinCust
                                           select DyeBatch).GroupBy(x => x.DYEB_BatchNo);
 
                         foreach (var Group in DyeBatches)
@@ -468,7 +469,7 @@ namespace DyeHouse
                     {
                         var DyeBatches = (from DyeBatch in context.TLDYE_DyeBatch
                                           join DyeBatchDetails in context.TLDYE_DyeBatchDetails on DyeBatch.DYEB_Pk equals DyeBatchDetails.DYEBD_DyeBatch_FK
-                                          where DyeBatch.DYEB_Customer_FK == Selected.Cust_Pk && DyeBatchDetails.DYEBO_Sold
+                                          where DyeBatch.DYEB_Customer_FK == Selected.Cust_Pk && DyeBatchDetails.DYEBO_Sold && DyeBatch.DYEB_CommissinCust 
                                           select DyeBatchDetails).GroupBy(x => x.DYEBO_TransactionNo);
 
                         foreach (var Group in DyeBatches)
@@ -486,6 +487,11 @@ namespace DyeHouse
 
                 }
             }
+        }
+
+        private void cmboBatchesReprint_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

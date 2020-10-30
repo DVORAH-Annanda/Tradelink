@@ -191,7 +191,7 @@ namespace CMT
                 using (var context = new TTI2Entities())
                 {
                     int Number = Convert.ToInt32(label1.Text);
-                    pi = context.TLCMT_PanelIssue.Where(x => x.CMTPI_Number == Number).FirstOrDefault();
+                    pi = context.TLCMT_PanelIssue.Where(x => x.CMTPI_Department_FK == selected.Dep_Id &&x.CMTPI_Number == Number).FirstOrDefault();
                     if (pi == null)
                     {
                         pi = new TLCMT_PanelIssue();
@@ -505,6 +505,14 @@ namespace CMT
                         {
                             label1.Text = LNU.col1.ToString();
                         }
+
+                        formloaded = false;
+                        cmboCurrentPI.DataSource = null;
+                        cmboCurrentPI.DataSource = context.TLCMT_PanelIssue.Where(x => x.CMTPI_Department_FK == selected.Dep_Id && !x.CMTPI_Receipted).ToList();
+                        cmboCurrentPI.ValueMember = "CMTPI_Pk";
+                        cmboCurrentPI.DisplayMember = "CMTPI_Number";
+                        cmboCurrentPI.SelectedValue = 1;
+                        formloaded = true;
                     }
                 }
             }

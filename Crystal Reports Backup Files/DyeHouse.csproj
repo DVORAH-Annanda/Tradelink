@@ -52,16 +52,28 @@
     <StartupObject />
   </PropertyGroup>
   <PropertyGroup>
-    <SignAssembly>true</SignAssembly>
+    <SignAssembly>false</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
     <AssemblyOriginatorKeyFile>DyeHouse.pfx</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CrystalDecisions.CrystalReports.Engine, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
-    <Reference Include="CrystalDecisions.ReportSource, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
-    <Reference Include="CrystalDecisions.Shared, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
-    <Reference Include="CrystalDecisions.Windows.Forms, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
+    <Reference Include="CrystalDecisions.CrystalReports.Engine, Version=13.0.4000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\TradeLink_Source_BU\TradeLink_Source\CustomerServices\bin\Debug\CrystalDecisions.CrystalReports.Engine.dll</HintPath>
+    </Reference>
+    <Reference Include="CrystalDecisions.ReportSource, Version=13.0.4000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\TradeLink_Source_BU\TradeLink_Source\CustomerServices\bin\Debug\CrystalDecisions.ReportSource.dll</HintPath>
+    </Reference>
+    <Reference Include="CrystalDecisions.Shared, Version=13.0.4000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\TradeLink_Source_BU\TradeLink_Source\CustomerServices\bin\Debug\CrystalDecisions.Shared.dll</HintPath>
+    </Reference>
+    <Reference Include="CrystalDecisions.Windows.Forms, Version=13.0.4000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\TradeLink_Source_BU\TradeLink_Source\CustomerServices\bin\Debug\CrystalDecisions.Windows.Forms.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
       <Private>True</Private>
@@ -100,9 +112,7 @@
       <DependentUpon>CCDeliveryNoteSummary.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="CheckComboBoxItem.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="CheckComboBoxItem.cs" />
     <Compile Include="ComDelivery.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -137,7 +147,6 @@
     </Compile>
     <Compile Include="DataSet13.cs">
       <DependentUpon>DataSet13.xsd</DependentUpon>
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="DataSet13.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -161,7 +170,6 @@
     </Compile>
     <Compile Include="DataSet17.cs">
       <DependentUpon>DataSet17.xsd</DependentUpon>
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="DataSet17.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -175,7 +183,6 @@
     </Compile>
     <Compile Include="DataSet19.cs">
       <DependentUpon>DataSet19.xsd</DependentUpon>
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="DataSet19.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -199,7 +206,6 @@
     </Compile>
     <Compile Include="DataSet23.cs">
       <DependentUpon>DataSet23.xsd</DependentUpon>
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="DataSet23.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -238,7 +244,6 @@
     </Compile>
     <Compile Include="DataSet3.cs">
       <DependentUpon>DataSet3.xsd</DependentUpon>
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="DataSet3.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -262,7 +267,6 @@
     </Compile>
     <Compile Include="DataSet33.cs">
       <DependentUpon>DataSet33.xsd</DependentUpon>
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="DataSet33.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -291,7 +295,6 @@
     </Compile>
     <Compile Include="DataSet38.cs">
       <DependentUpon>DataSet38.xsd</DependentUpon>
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="DataSet38.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -352,6 +355,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>DataSet48.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="DataSet49.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSet49.xsd</DependentUpon>
     </Compile>
     <Compile Include="DataSet5.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -529,6 +537,18 @@
     <Compile Include="frmAllocateToMachine.Designer.cs">
       <DependentUpon>frmAllocateToMachine.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmCloseDyeBatches.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmCloseDyeBatches.designer.cs">
+      <DependentUpon>frmCloseDyeBatches.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmCloseDyeOrders.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmCloseDyeOrders.Designer.cs">
+      <DependentUpon>frmCloseDyeOrders.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmCommissionDeliveries.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -618,6 +638,12 @@
     </Compile>
     <Compile Include="frmDyeOrdersSel.Designer.cs">
       <DependentUpon>frmDyeOrdersSel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmDyeOrdersSelection.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmDyeOrdersSelection.Designer.cs">
+      <DependentUpon>frmDyeOrdersSelection.cs</DependentUpon>
     </Compile>
     <Compile Include="frmDyeProcessOutput.cs">
       <SubType>Form</SubType>
@@ -1146,6 +1172,12 @@
     <EmbeddedResource Include="frmAllocateToMachine.resx">
       <DependentUpon>frmAllocateToMachine.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="frmCloseDyeBatches.resx">
+      <DependentUpon>frmCloseDyeBatches.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmCloseDyeOrders.resx">
+      <DependentUpon>frmCloseDyeOrders.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frmCommissionDeliveries.resx">
       <DependentUpon>frmCommissionDeliveries.cs</DependentUpon>
     </EmbeddedResource>
@@ -1191,6 +1223,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmDyeOrdersSel.resx">
       <DependentUpon>frmDyeOrdersSel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmDyeOrdersSelection.resx">
+      <DependentUpon>frmDyeOrdersSelection.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmDyeProcessOutput.resx">
       <DependentUpon>frmDyeProcessOutput.cs</DependentUpon>
@@ -1895,6 +1930,17 @@
     </None>
     <None Include="DataSet48.xss">
       <DependentUpon>DataSet48.xsd</DependentUpon>
+    </None>
+    <None Include="DataSet49.xsc">
+      <DependentUpon>DataSet49.xsd</DependentUpon>
+    </None>
+    <None Include="DataSet49.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSet49.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="DataSet49.xss">
+      <DependentUpon>DataSet49.xsd</DependentUpon>
     </None>
     <None Include="DataSet5.xsc">
       <DependentUpon>DataSet5.xsd</DependentUpon>

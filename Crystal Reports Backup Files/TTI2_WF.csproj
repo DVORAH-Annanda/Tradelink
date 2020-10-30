@@ -28,8 +28,8 @@
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
-    <ApplicationRevision>545</ApplicationRevision>
-    <ApplicationVersion>2.0.0.%2a</ApplicationVersion>
+    <ApplicationRevision>1</ApplicationRevision>
+    <ApplicationVersion>4.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -58,10 +58,10 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
-    <SignManifests>true</SignManifests>
+    <SignManifests>false</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <SignAssembly>true</SignAssembly>
+    <SignAssembly>false</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
     <ManifestCertificateThumbprint>DE7A5983812B2CAFE97BCD7C44DE2A9B02BEF626</ManifestCertificateThumbprint>
@@ -84,9 +84,22 @@
   <PropertyGroup />
   <PropertyGroup />
   <ItemGroup>
-    <Reference Include="CrystalDecisions.CrystalReports.Engine, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
-    <Reference Include="CrystalDecisions.ReportSource, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
-    <Reference Include="CrystalDecisions.Shared, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
+    <Reference Include="CrystalDecisions.CrystalReports.Engine, Version=10.5.3700.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\TradeLink_Source_BU\TradeLink_Source\CustomerServices\bin\Debug\CrystalDecisions.CrystalReports.Engine.dll</HintPath>
+    </Reference>
+    <Reference Include="CrystalDecisions.ReportSource, Version=10.5.3700.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\TradeLink_Source_BU\TradeLink_Source\CustomerServices\bin\Debug\CrystalDecisions.ReportSource.dll</HintPath>
+    </Reference>
+    <Reference Include="CrystalDecisions.Shared, Version=10.5.3700.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\TradeLink_Source_BU\TradeLink_Source\CustomerServices\bin\Debug\CrystalDecisions.Shared.dll</HintPath>
+    </Reference>
+    <Reference Include="CrystalDecisions.Windows.Forms, Version=10.5.3700.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\TradeLink_Source_BU\TradeLink_Source\CustomerServices\bin\Debug\CrystalDecisions.Windows.Forms.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
       <Private>True</Private>
@@ -109,6 +122,8 @@
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
     <Reference Include="System.Web.Services" />
+    <Reference Include="System.Windows.Forms.DataVisualization" />
+    <Reference Include="System.Windows.Forms.DataVisualization.Design" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -160,6 +175,12 @@
     </Compile>
     <Compile Include="frmExecProdPerf.Designer.cs">
       <DependentUpon>frmExecProdPerf.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmKPI.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmKPI.Designer.cs">
+      <DependentUpon>frmKPI.cs</DependentUpon>
     </Compile>
     <Compile Include="frmQACMTSel.cs">
       <SubType>Form</SubType>
@@ -215,6 +236,15 @@
     <Compile Include="frmTLMain.Designer.cs">
       <DependentUpon>frmTLMain.cs</DependentUpon>
     </Compile>
+    <Compile Include="KPIs\Knitting\frmGreigeProduced.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="KPIs\Knitting\frmGreigeProduced.Designer.cs" />
+    <Compile Include="KPIs\Spinning\frmYarnProduced.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="KPIs\Spinning\frmYarnProduced.Designer.cs" />
+    <Compile Include="KPIs\Spinning\YarnProduction.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="frmCuttingSelProcess.resx">
@@ -237,6 +267,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmExecProdPerf.resx">
       <DependentUpon>frmExecProdPerf.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmKPI.resx">
+      <DependentUpon>frmKPI.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmQACMTSel.resx">
       <DependentUpon>frmQACMTSel.cs</DependentUpon>
@@ -265,6 +298,7 @@
     <EmbeddedResource Include="frmTLMain.resx">
       <DependentUpon>frmTLMain.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="KPIs\Knitting\frmGreigeProduced.resx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -336,10 +370,6 @@
     <ProjectReference Include="..\DyeHouse\DyeHouse.csproj">
       <Project>{0d996896-10f0-44f7-bc41-82085f696571}</Project>
       <Name>DyeHouse</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ExecutiveReporting\ExecutiveReporting.csproj">
-      <Project>{46daa6ea-3291-4b79-bc22-6e2d94d5a3ce}</Project>
-      <Name>ExecutiveReporting</Name>
     </ProjectReference>
     <ProjectReference Include="..\Knitting\Knitting.csproj">
       <Project>{312d5072-83ac-4fd4-8eef-c50d519857fb}</Project>
