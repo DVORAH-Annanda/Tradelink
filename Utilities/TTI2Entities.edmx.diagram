@@ -178,7 +178,6 @@
         <EntityTypeShape EntityType="TTI2Model.TLADM_Colours" Width="1.5" PointX="28.375" PointY="25.75" />
         <EntityTypeShape EntityType="TTI2Model.TLCSV_PurchaseOrder" Width="1.5" PointX="30.375" PointY="38.75" />
         <EntityTypeShape EntityType="TTI2Model.TLCSV_StockOnHand" Width="1.5" PointX="36.375" PointY="41.75" />
-        <EntityTypeShape EntityType="TTI2Model.TLADM_Griege" Width="1.5" PointX="38.375" PointY="44.75" />
         <EntityTypeShape EntityType="TTI2Model.TLADM_FabWidth" Width="1.5" PointX="12.375" PointY="16.75" />
         <EntityTypeShape EntityType="TTI2Model.TLADM_QualityDefinition" Width="1.5" PointX="18" PointY="7.75" />
         <AssociationConnector Association="TTI2Model.FK_TLADM_QualityDefinition_TLADM_RejectReasons1" />
@@ -199,6 +198,7 @@
         <EntityTypeShape EntityType="TTI2Model.TLADM_Trims" Width="1.5" PointX="40.375" PointY="45.75" />
         <EntityTypeShape EntityType="TTI2Model.TLCUT_CutSheet" Width="1.5" PointX="45.375" PointY="20.75" />
         <EntityTypeShape EntityType="TTI2Model.TLPPS_InterDept" Width="1.5" PointX="39.375" PointY="35.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_Griege" Width="1.5" PointX="46.375" PointY="35.75" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

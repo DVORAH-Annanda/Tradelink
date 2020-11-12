@@ -1365,6 +1365,7 @@ namespace Utilities
         {
             bool[] complete = PopulateArray(MandatoryFields.Count(), false);
 
+
             foreach (DataGridViewCell cell in row.Cells)
             {
                 var result = (from u in MandatoryFields

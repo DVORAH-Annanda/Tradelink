@@ -279,12 +279,14 @@ namespace Security
 
                 Dept = (TLSEC_Departments)cmboDepartments.SelectedItem;
 
-                if (Object.Equals(Dept, null))
+                if (EditMode && !chkDiscontinue.Checked && !chkExternalUser.Checked && !chkQAFunction.Checked && !chkResetPassword.Checked && !chkSuperUser.Checked)
                 {
-                   MessageBox.Show("Please select a valid department");
-                   return;
+                    if (Object.Equals(Dept, null))
+                    {
+                        MessageBox.Show("Please select a valid department");
+                        return;
+                    }
                 }
-
                 using (var context = new TTI2Entities())
                 {
                     //----------------------------------------------------------

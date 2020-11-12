@@ -37,12 +37,12 @@
             this.label4 = new System.Windows.Forms.Label();
             this.txtOrderNumber = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.cmboGreige = new System.Windows.Forms.ComboBox();
+            this.label5 = new System.Windows.Forms.Label();
             this.rbRejectStore = new System.Windows.Forms.RadioButton();
             this.rbFabricStore = new System.Windows.Forms.RadioButton();
             this.btnSave = new System.Windows.Forms.Button();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.label5 = new System.Windows.Forms.Label();
-            this.cmboGreige = new System.Windows.Forms.ComboBox();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
@@ -86,7 +86,7 @@
             this.cmboCustomers.FormattingEnabled = true;
             this.cmboCustomers.Location = new System.Drawing.Point(247, 104);
             this.cmboCustomers.Name = "cmboCustomers";
-            this.cmboCustomers.Size = new System.Drawing.Size(121, 21);
+            this.cmboCustomers.Size = new System.Drawing.Size(214, 21);
             this.cmboCustomers.TabIndex = 4;
             this.cmboCustomers.SelectedIndexChanged += new System.EventHandler(this.cmboCustomers_SelectedIndexChanged);
             // 
@@ -130,6 +130,23 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Fabric Location";
             // 
+            // cmboGreige
+            // 
+            this.cmboGreige.FormattingEnabled = true;
+            this.cmboGreige.Location = new System.Drawing.Point(164, 37);
+            this.cmboGreige.Name = "cmboGreige";
+            this.cmboGreige.Size = new System.Drawing.Size(183, 21);
+            this.cmboGreige.TabIndex = 3;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(59, 40);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(63, 13);
+            this.label5.TabIndex = 2;
+            this.label5.Text = "Fabric Type";
+            // 
             // rbRejectStore
             // 
             this.rbRejectStore.AutoSize = true;
@@ -171,23 +188,6 @@
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.Size = new System.Drawing.Size(557, 174);
             this.dataGridView1.TabIndex = 10;
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(59, 40);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(63, 13);
-            this.label5.TabIndex = 2;
-            this.label5.Text = "Fabric Type";
-            // 
-            // cmboGreige
-            // 
-            this.cmboGreige.FormattingEnabled = true;
-            this.cmboGreige.Location = new System.Drawing.Point(164, 37);
-            this.cmboGreige.Name = "cmboGreige";
-            this.cmboGreige.Size = new System.Drawing.Size(183, 21);
-            this.cmboGreige.TabIndex = 3;
             // 
             // frmFabricSales
             // 

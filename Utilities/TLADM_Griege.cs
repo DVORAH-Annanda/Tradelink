@@ -38,5 +38,6 @@ namespace Utilities
         public int TLGreige_FaultsAllowed { get; set; }
         public bool TLGreige_IsBoughtIn { get; set; }
         public bool TLGreige_IsLining { get; set; }
+        public int TLGreige_CubicWeight { get; set; }
     }
 }

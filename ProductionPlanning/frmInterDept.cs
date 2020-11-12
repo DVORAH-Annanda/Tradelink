@@ -107,7 +107,7 @@ namespace ProductionPlanning
                 oCmboA.Name = "SelKnitting";
                 oCmboA.HeaderText = "Select Knitting Measurement";  // 2
                 oCmboA.Width = 100; 
-                oCmboA.DataSource = context.TLADM_QualityDefinition.Where(x => x.QD_OriginatingDept_FK == 11).OrderBy(x => x.QD_ColumnIndex).ToList();
+                oCmboA.DataSource = context.TLADM_QualityDefinition.Where(x => x.QD_ReportingDept_FK == 11).OrderBy(x => x.QD_ColumnIndex).ToList();
                 oCmboA.ValueMember = "QD_Pk";
                 oCmboA.DisplayMember = "QD_Description";
                 oCmboA.DataPropertyName = dt.Columns[2].ColumnName;

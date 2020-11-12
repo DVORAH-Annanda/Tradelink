@@ -2178,13 +2178,15 @@ namespace DyeHouse
                                     if (CommissionCust != null)
                                     {
                                         DataSet17.DataTable2Row tr2 = datatable2.NewDataTable2Row();
+                                        
                                         tr2.Pk = 1;
                                         tr2.YourOrderRef = CommissionCust.GreigeCom_CustOrderNo;
                                         tr2.YourRef = CommissionCust.GreigeCom_Custdoc;
                                         tr2.TotalPieces = Grp.Count();
                                         tr2.ColourCode = context.TLADM_Colours.Find(DB.DYEB_Colour_FK).Col_FinishedCode;
                                         tr2.ColourDescription = context.TLADM_Colours.Find(DB.DYEB_Colour_FK).Col_Description;
-                                        tr2.Quality = context.TLADM_Griege.Find(Grp.First().DYEBD_QualityKey).TLGreige_Description;
+                                        var QKey = Grp.First().DYEBD_QualityKey;
+                                        tr2.Quality = context.TLADM_Griege.Find(QKey).TLGreige_Description;
                                         tr2.Gross = Grp.Sum(x => x.DYEBD_GreigeProduction_Weight);
                                         tr2.Nett = Grp.Sum(x => x.DYEBO_Nett);
                                         tr2.Meters = Grp.Sum(x => x.DYEBO_Meters);
@@ -2462,11 +2464,14 @@ namespace DyeHouse
                     }
                     else    // This is for Fabric Sales 
                     {
+                        var PrimeKey = 0;
+
                         foreach (var DBTran in _parms.DyeTransactions)
                         {
                             // 1st Find the batch in the Dye Tranaction 
                             // remember this is fabrics sales
                             //-----------------------------------------------------------------------
+                          
                             var DyeTran = context.TLDYE_DyeTransactions.Find(DBTran.TLDYET_Pk);
                             if (DyeTran != null)
                             {
@@ -2477,7 +2482,7 @@ namespace DyeHouse
                                 {
                                     first = !first;
                                     DataSet17.DataTable1Row tr = datatable1.NewDataTable1Row();
-                                    tr.Pk = 1;
+                                    tr.Pk = ++PrimeKey;
                                     tr.CustomerAddress = Customer.Cust_Address1;
                                     tr.CustomerName = Customer.Cust_Description;
                                     tr.CustomerPhone = Customer.Cust_Telephone;
@@ -2494,7 +2499,7 @@ namespace DyeHouse
                                         var xDB = context.TLDYE_DyeBatch.Find(DBDetail.DYEBD_DyeBatch_FK);
 
                                         DataSet17.DataTable2Row tr2 = datatable2.NewDataTable2Row();
-                                        tr2.Pk = 1;
+                                        tr2.Pk = PrimeKey;
                                         tr2.YourOrderRef = DyeTran.TLDYET_CustomerOrderNo;
                                         tr2.YourRef = "";
                                         tr2.YourDeliveryNo = 0;

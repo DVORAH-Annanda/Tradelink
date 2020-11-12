@@ -2000,8 +2000,6 @@ namespace Knitting
                 ds.Tables.Add(yarnTable);
                 ds.Tables.Add(palletsTable);
 
-                
-
                 YarnSOHOwnYarn PLoss = new YarnSOHOwnYarn();
                 PLoss.SetDataSource(ds);
                 crystalReportViewer1.ReportSource = PLoss;

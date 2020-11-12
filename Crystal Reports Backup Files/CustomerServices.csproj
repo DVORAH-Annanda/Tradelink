@@ -50,16 +50,28 @@
     <StartupObject />
   </PropertyGroup>
   <PropertyGroup>
-    <SignAssembly>true</SignAssembly>
+    <SignAssembly>false</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
     <AssemblyOriginatorKeyFile>CustomerServices.pfx</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CrystalDecisions.CrystalReports.Engine, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
-    <Reference Include="CrystalDecisions.ReportSource, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
-    <Reference Include="CrystalDecisions.Shared, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
-    <Reference Include="CrystalDecisions.Windows.Forms, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
+    <Reference Include="CrystalDecisions.CrystalReports.Engine, Version=13.0.4000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\TradeLink_Source_BU\TradeLink_Source\CustomerServices\bin\Debug\CrystalDecisions.CrystalReports.Engine.dll</HintPath>
+    </Reference>
+    <Reference Include="CrystalDecisions.ReportSource, Version=13.0.4000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\TradeLink_Source_BU\TradeLink_Source\CustomerServices\bin\Debug\CrystalDecisions.ReportSource.dll</HintPath>
+    </Reference>
+    <Reference Include="CrystalDecisions.Shared, Version=13.0.4000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\TradeLink_Source_BU\TradeLink_Source\CustomerServices\bin\Debug\CrystalDecisions.Shared.dll</HintPath>
+    </Reference>
+    <Reference Include="CrystalDecisions.Windows.Forms, Version=13.0.4000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\TradeLink_Source_BU\TradeLink_Source\CustomerServices\bin\Debug\CrystalDecisions.Windows.Forms.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
       <Private>True</Private>
@@ -112,9 +124,7 @@
       <DependentUpon>CDNoteRegister.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="CheckComboBoxItem.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="CheckComboBoxItem.cs" />
     <Compile Include="CMTDeliveryNote.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -170,7 +180,6 @@
     </Compile>
     <Compile Include="DataSet10.cs">
       <DependentUpon>DataSet10.xsd</DependentUpon>
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="DataSet10.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -179,7 +188,6 @@
     </Compile>
     <Compile Include="DataSet11.cs">
       <DependentUpon>DataSet11.xsd</DependentUpon>
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="DataSet11.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -193,7 +201,6 @@
     </Compile>
     <Compile Include="DataSet13.cs">
       <DependentUpon>DataSet13.xsd</DependentUpon>
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="DataSet13.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -237,7 +244,6 @@
     </Compile>
     <Compile Include="DataSet20.cs">
       <DependentUpon>DataSet20.xsd</DependentUpon>
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="DataSet20.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -246,7 +252,6 @@
     </Compile>
     <Compile Include="DataSet21.cs">
       <DependentUpon>DataSet21.xsd</DependentUpon>
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="DataSet21.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -285,7 +290,6 @@
     </Compile>
     <Compile Include="DataSet4.cs">
       <DependentUpon>DataSet4.xsd</DependentUpon>
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="DataSet4.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -299,7 +303,6 @@
     </Compile>
     <Compile Include="DataSet6.cs">
       <DependentUpon>DataSet6.xsd</DependentUpon>
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="DataSet6.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -332,6 +335,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DespatchedNotReceipted.rpt</DependentUpon>
       <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="frmBillExtract.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmBillExtract.Designer.cs">
+      <DependentUpon>frmBillExtract.cs</DependentUpon>
     </Compile>
     <Compile Include="frmBoxesDespatchedNoReceipted.cs">
       <SubType>Form</SubType>
@@ -476,6 +485,12 @@
     </Compile>
     <Compile Include="frmPivotTables.Designer.cs">
       <DependentUpon>frmPivotTables.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmPOReversal.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmPOReversal.Designer.cs">
+      <DependentUpon>frmPOReversal.cs</DependentUpon>
     </Compile>
     <Compile Include="frmPOSearch.cs">
       <SubType>Form</SubType>
@@ -771,6 +786,9 @@
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>DespatchedNotReceipted.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="frmBillExtract.resx">
+      <DependentUpon>frmBillExtract.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frmBoxesDespatchedNoReceipted.resx">
       <DependentUpon>frmBoxesDespatchedNoReceipted.cs</DependentUpon>
     </EmbeddedResource>
@@ -842,6 +860,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmPivotTables.resx">
       <DependentUpon>frmPivotTables.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmPOReversal.resx">
+      <DependentUpon>frmPOReversal.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmPOSearch.resx">
       <DependentUpon>frmPOSearch.cs</DependentUpon>

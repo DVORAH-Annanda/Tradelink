@@ -1367,7 +1367,7 @@ namespace TTI2_WF
         private void definitionToolStripMenuItem_Click(object sender, EventArgs e)
         {
             MessageBox.Show("This Facility is No Longer Required");
-            /*
+
             try
             {
                 frmTLADMGardDef gd = new frmTLADMGardDef(16);
@@ -1377,7 +1377,7 @@ namespace TTI2_WF
             {
                 MessageBox.Show(ex.Message);
             }
-             */
+
         }
 
         private void panelsToolStripMenuItem_Click(object sender, EventArgs e)
@@ -9981,6 +9981,31 @@ namespace TTI2_WF
                 }
 
             }
+        }
+
+        private void dyeHouseProcessingStandardsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ToolStripMenuItem oTi = sender as ToolStripMenuItem;
+            if (core.GetUserAuthorisation(ud, oTi.Name))
+            {
+                try
+                {
+                    frmTLADMDyeHouseProcessingStandards ps = new frmTLADMDyeHouseProcessingStandards(CompayNoSelected);
+                    ps.ShowDialog(this);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message.ToString());
+                }
+            }
+            else
+            {
+                using (DialogCenteringService centeringService = new DialogCenteringService(this)) // center message box
+                {
+                    MessageBox.Show(ud._NotAuthorisedMessage, ud._UserName);
+                }
+            }
+
         }
     }
        

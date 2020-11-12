@@ -35,16 +35,31 @@
     <StartupObject />
   </PropertyGroup>
   <PropertyGroup>
-    <SignAssembly>true</SignAssembly>
+    <SignAssembly>false</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
     <AssemblyOriginatorKeyFile>Spinning.pfx</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CrystalDecisions.CrystalReports.Engine, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
-    <Reference Include="CrystalDecisions.ReportSource, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
-    <Reference Include="CrystalDecisions.Shared, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
-    <Reference Include="CrystalDecisions.Windows.Forms, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
+    <Reference Include="CrystalDecisions.CrystalReports.Engine, Version=13.0.4000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\TradeLink_Source_BU\TradeLink_Source\CustomerServices\bin\Debug\CrystalDecisions.CrystalReports.Engine.dll</HintPath>
+    </Reference>
+    <Reference Include="CrystalDecisions.ReportSource, Version=13.0.4000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\TradeLink_Source_BU\TradeLink_Source\CustomerServices\bin\Debug\CrystalDecisions.ReportSource.dll</HintPath>
+    </Reference>
+    <Reference Include="CrystalDecisions.Shared, Version=13.0.4000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\TradeLink_Source_BU\TradeLink_Source\CustomerServices\bin\Debug\CrystalDecisions.Shared.dll</HintPath>
+    </Reference>
+    <Reference Include="CrystalDecisions.Windows.Forms, Version=13.0.4000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\TradeLink_Source_BU\TradeLink_Source\CustomerServices\bin\Debug\CrystalDecisions.Windows.Forms.dll</HintPath>
+    </Reference>
+    <Reference Include="CustomerServices">
+      <HintPath>..\..\TradeLink_Source_BU\TradeLink_Source\CustomerServices\bin\Debug\CustomerServices.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
       <Private>True</Private>
@@ -54,6 +69,9 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="FlashControlV71, Version=1.0.3187.32366, Culture=neutral, PublicKeyToken=692fbea5521e1304" />
+    <Reference Include="FluentValidation, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7de548da2fbae0f0, processorArchitecture=MSIL">
+      <HintPath>..\packages\FluentValidation.8.5.0\lib\net45\FluentValidation.dll</HintPath>
+    </Reference>
     <Reference Include="LinqKit, Version=1.1.15.0, Culture=neutral, PublicKeyToken=bc217f8844052a91, processorArchitecture=MSIL">
       <HintPath>..\packages\LinqKit.1.1.15\lib\net45\LinqKit.dll</HintPath>
       <Private>True</Private>
@@ -82,9 +100,7 @@
       <DependentUpon>BlowRoom.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="CheckComboBoxItem.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="CheckComboBoxItem.cs" />
     <Compile Include="ConttonContractSummary.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -146,16 +162,13 @@
     </Compile>
     <Compile Include="DataSet10.cs">
       <DependentUpon>DataSet10.xsd</DependentUpon>
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="DataSet10.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>DataSet10.xsd</DependentUpon>
     </Compile>
-    <Compile Include="DataSet11.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="DataSet11.cs" />
     <Compile Include="DataSet111.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -213,7 +226,6 @@
     </Compile>
     <Compile Include="DataSet21.cs">
       <DependentUpon>DataSet21.xsd</DependentUpon>
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="DataSet21.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -227,7 +239,6 @@
     </Compile>
     <Compile Include="DataSet4.cs">
       <DependentUpon>DataSet4.xsd</DependentUpon>
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="DataSet4.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -258,6 +269,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>DataSet9.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="DataSetSliverProduction1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSetSliverProduction.xsd</DependentUpon>
     </Compile>
     <Compile Include="frmCloseYarnOrder.cs">
       <SubType>Form</SubType>
@@ -331,6 +347,10 @@
     <Compile Include="frmCottonWaste.Designer.cs">
       <DependentUpon>frmCottonWaste.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmDailyProduction.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmDailyProduction.Designer.cs" />
     <Compile Include="frmDateSelectselection.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -354,6 +374,18 @@
     </Compile>
     <Compile Include="frmQAReportSelection.Designer.cs">
       <DependentUpon>frmQAReportSelection.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmSliverProduction.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmSliverProduction.Designer.cs">
+      <DependentUpon>frmSliverProduction.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmSliverProductionSelection.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmSliverProductionSelection.Designer.cs">
+      <DependentUpon>frmSliverProductionSelection.cs</DependentUpon>
     </Compile>
     <Compile Include="frmStockStatusSelection.cs">
       <SubType>Form</SubType>
@@ -483,7 +515,20 @@
       <DependentUpon>RawCottonStock.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="SliverProductionDetail.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SliverProductionDetail.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="SliverProductionSummary.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SliverProductionSummary.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="SpinningRepository.cs" />
+    <Compile Include="Validators\MachineProductionTotalValidator.cs" />
     <Compile Include="YarnCapacityUtil.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -683,6 +728,12 @@
     <EmbeddedResource Include="frmQAReportSelection.resx">
       <DependentUpon>frmQAReportSelection.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="frmSliverProduction.resx">
+      <DependentUpon>frmSliverProduction.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmSliverProductionSelection.resx">
+      <DependentUpon>frmSliverProductionSelection.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frmStockStatusSelection.resx">
       <DependentUpon>frmStockStatusSelection.cs</DependentUpon>
     </EmbeddedResource>
@@ -760,6 +811,14 @@
     <EmbeddedResource Include="RawCottonStock.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>RawCottonStock.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SliverProductionDetail.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>SliverProductionDetail.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SliverProductionSummary.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>SliverProductionSummary.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="YarnCapacityUtil.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
@@ -1066,6 +1125,17 @@
     </None>
     <None Include="DataSet9.xss">
       <DependentUpon>DataSet9.xsd</DependentUpon>
+    </None>
+    <None Include="DataSetSliverProduction.xsc">
+      <DependentUpon>DataSetSliverProduction.xsd</DependentUpon>
+    </None>
+    <None Include="DataSetSliverProduction.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSetSliverProduction1.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="DataSetSliverProduction.xss">
+      <DependentUpon>DataSetSliverProduction.xsd</DependentUpon>
     </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
