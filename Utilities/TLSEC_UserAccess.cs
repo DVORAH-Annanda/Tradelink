@@ -25,5 +25,6 @@ namespace Utilities
         public bool TLSECUA_External { get; set; }
         public string TLSUCUA_EmailAddress { get; set; }
         public bool TLSECUA_QAFunction { get; set; }
+        public bool TLSECUA_DownSizeAuthority { get; set; }
     }
 }

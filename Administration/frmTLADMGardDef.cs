@@ -36,6 +36,7 @@ namespace TTI2_WF
         DataGridViewTextBoxColumn oTxtBoxR;
         DataGridViewTextBoxColumn oTxtBoxS;
         DataGridViewTextBoxColumn oTxtBoxT;
+        DataGridViewTextBoxColumn oTxtBoxU;
         /******************************************************************/
         /// <summary>
         /// Check Box objects for general use in the program 
@@ -75,7 +76,8 @@ namespace TTI2_WF
         DataGridViewButtonColumn oBtnD;
         DataGridViewButtonColumn oBtnE;
         /**********************************************************************/
-            
+        DataTable dataT = new DataTable();
+        
         //-----------------------------------------------------------------------------------------------------------------
         // Used by the following modules        Yarn(3)           Greige(4)           Fabric(16)             Panels(17)
         //-------------------------------------------------------------------------------------------------------------------
@@ -450,17 +452,22 @@ namespace TTI2_WF
                 oTxtBoxF.ValueType = typeof(decimal);
 
                 oBtnA = new DataGridViewButtonColumn();
-                oBtnA.HeaderText = "Mesured Colour";
+                oBtnA.HeaderText = "Measured Colour";
 
                 oChkBoxB = new DataGridViewCheckBoxColumn();
-                
+                oChkBoxB.HeaderText = "Benchmark";
+
+                oChkBoxC = new DataGridViewCheckBoxColumn();
+                oChkBoxC.HeaderText = "Padding Y/N";
+
                 dataGridView1.Columns.Add(oTxtBoxD);    //5
                 dataGridView1.Columns.Add(oTxtBoxE);    //6
                 dataGridView1.Columns.Add(oBtnA);       //7
                 dataGridView1.Columns.Add(oChkBoxB);    //8
                 dataGridView1.Columns.Add(oTxtBoxF);    //9
-                
-          }
+                dataGridView1.Columns.Add(oChkBoxC);    //10
+
+            }
           else if (frmNumber == 3)    // Yarn Definition 
           {
               oTxtBoxD = new DataGridViewTextBoxColumn();
@@ -577,7 +584,7 @@ namespace TTI2_WF
               oTxtBoxS = new DataGridViewTextBoxColumn();    // Meters to measure
               oTxtBoxS.HeaderText = "Meters Measured";
               oTxtBoxS.ValueType = typeof(Int32);
-              oTxtBoxT = new DataGridViewTextBoxColumn();    // Meters to measure
+              oTxtBoxT = new DataGridViewTextBoxColumn();    // Faults Allowed
               oTxtBoxT.HeaderText = "Faults Allowed";
               oTxtBoxT.ValueType = typeof(Int32);
               oBtnB = new DataGridViewButtonColumn();        // Colours abal to select 
@@ -585,8 +592,13 @@ namespace TTI2_WF
               oChkBoxD = new DataGridViewCheckBoxColumn();
               oChkBoxD.HeaderText = "Bought In";
               oChkBoxD.ValueType = typeof(bool);
+              oTxtBoxU = new DataGridViewTextBoxColumn();    // Faults Allowed
+              oTxtBoxU.HeaderText = "Dsk Weight";
+              
+              dataT = new DataTable();
 
-             
+              DataColumn column = new DataColumn();
+
 
               //---- Retrieve data from database-----------------------------------------------------------------
               using (var context = new TTI2Entities())
@@ -638,6 +650,7 @@ namespace TTI2_WF
               dataGridView1.Columns.Add(oTxtBoxT);  //19 Faults Allowed
               dataGridView1.Columns.Add(oBtnB);     // 20 Colour
               dataGridView1.Columns.Add(oChkBoxD);  // 21 Bought In Fabric for which we are going to knit the trims
+              dataGridView1.Columns.Add(oTxtBoxU);  // 22 Dsk Weight
               //-------------------------------------------------------------------------------------------------
               // This is the row leave event that only needs to be fired for a select group of modules
               //------------------------------------------------------------------------------------------------------

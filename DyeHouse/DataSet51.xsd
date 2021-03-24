@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="DataSet51" targetNamespace="http://tempuri.org/DataSet51.xsd" xmlns:mstns="http://tempuri.org/DataSet51.xsd" xmlns="http://tempuri.org/DataSet51.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections />
+        <Tables />
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="DataSet51" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="DataSet51" msprop:Generator_UserDSName="DataSet51">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="DataTable1" msprop:Generator_TableClassName="DataTable1DataTable" msprop:Generator_TableVarName="tableDataTable1" msprop:Generator_TablePropName="DataTable1" msprop:Generator_RowDeletingName="DataTable1RowDeleting" msprop:Generator_RowChangingName="DataTable1RowChanging" msprop:Generator_RowEvHandlerName="DataTable1RowChangeEventHandler" msprop:Generator_RowDeletedName="DataTable1RowDeleted" msprop:Generator_UserTableName="DataTable1" msprop:Generator_RowChangedName="DataTable1RowChanged" msprop:Generator_RowEvArgName="DataTable1RowChangeEvent" msprop:Generator_RowClassName="DataTable1Row">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Transdate" msprop:Generator_ColumnVarNameInTable="columnTransdate" msprop:Generator_ColumnPropNameInRow="Transdate" msprop:Generator_ColumnPropNameInTable="TransdateColumn" msprop:Generator_UserColumnName="Transdate" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="TransNumber" msprop:Generator_ColumnVarNameInTable="columnTransNumber" msprop:Generator_ColumnPropNameInRow="TransNumber" msprop:Generator_ColumnPropNameInTable="TransNumberColumn" msprop:Generator_UserColumnName="TransNumber" type="xs:string" minOccurs="0" />
+              <xs:element name="Pk" msprop:Generator_ColumnVarNameInTable="columnPk" msprop:Generator_ColumnPropNameInRow="Pk" msprop:Generator_ColumnPropNameInTable="PkColumn" msprop:Generator_UserColumnName="Pk" type="xs:int" minOccurs="0" />
+              <xs:element name="WareHouse" msprop:Generator_ColumnVarNameInTable="columnWareHouse" msprop:Generator_ColumnPropNameInRow="WareHouse" msprop:Generator_ColumnPropNameInTable="WareHouseColumn" msprop:Generator_UserColumnName="WareHouse" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="DataTable2" msprop:Generator_TableClassName="DataTable2DataTable" msprop:Generator_TableVarName="tableDataTable2" msprop:Generator_TablePropName="DataTable2" msprop:Generator_RowDeletingName="DataTable2RowDeleting" msprop:Generator_RowChangingName="DataTable2RowChanging" msprop:Generator_RowEvHandlerName="DataTable2RowChangeEventHandler" msprop:Generator_RowDeletedName="DataTable2RowDeleted" msprop:Generator_UserTableName="DataTable2" msprop:Generator_RowChangedName="DataTable2RowChanged" msprop:Generator_RowEvArgName="DataTable2RowChangeEvent" msprop:Generator_RowClassName="DataTable2Row">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Pk" msprop:Generator_ColumnVarNameInTable="columnPk" msprop:Generator_ColumnPropNameInRow="Pk" msprop:Generator_ColumnPropNameInTable="PkColumn" msprop:Generator_UserColumnName="Pk" type="xs:int" minOccurs="0" />
+              <xs:element name="Consumable" msprop:Generator_ColumnVarNameInTable="columnConsumable" msprop:Generator_ColumnPropNameInRow="Consumable" msprop:Generator_ColumnPropNameInTable="ConsumableColumn" msprop:Generator_UserColumnName="Consumable" type="xs:string" minOccurs="0" />
+              <xs:element name="Supplier" msprop:Generator_ColumnVarNameInTable="columnSupplier" msprop:Generator_ColumnPropNameInRow="Supplier" msprop:Generator_ColumnPropNameInTable="SupplierColumn" msprop:Generator_UserColumnName="Supplier" type="xs:string" minOccurs="0" />
+              <xs:element name="Volume" msprop:Generator_ColumnVarNameInTable="columnVolume" msprop:Generator_ColumnPropNameInRow="Volume" msprop:Generator_ColumnPropNameInTable="VolumeColumn" msprop:Generator_UserColumnName="Volume" type="xs:decimal" minOccurs="0" />
+              <xs:element name="UOM" msprop:Generator_ColumnVarNameInTable="columnUOM" msprop:Generator_ColumnPropNameInRow="UOM" msprop:Generator_ColumnPropNameInTable="UOMColumn" msprop:Generator_UserColumnName="UOM" type="xs:string" minOccurs="0" />
+              <xs:element name="OrderNo" msprop:Generator_ColumnVarNameInTable="columnOrderNo" msprop:Generator_ColumnPropNameInRow="OrderNo" msprop:Generator_ColumnPropNameInTable="OrderNoColumn" msprop:Generator_UserColumnName="OrderNo" type="xs:string" minOccurs="0" />
+              <xs:element name="ContainetId" msprop:Generator_ColumnVarNameInTable="columnContainetId" msprop:Generator_ColumnPropNameInRow="ContainetId" msprop:Generator_ColumnPropNameInTable="ContainetIdColumn" msprop:Generator_UserColumnName="ContainetId" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+  <xs:annotation>
+    <xs:appinfo>
+      <msdata:Relationship name="DataTable1_DataTable2" msdata:parent="DataTable1" msdata:child="DataTable2" msdata:parentkey="Pk" msdata:childkey="Pk" msprop:Generator_UserChildTable="DataTable2" msprop:Generator_ChildPropName="GetDataTable2Rows" msprop:Generator_UserRelationName="DataTable1_DataTable2" msprop:Generator_ParentPropName="DataTable1Row" msprop:Generator_RelationVarName="relationDataTable1_DataTable2" msprop:Generator_UserParentTable="DataTable1" />
+    </xs:appinfo>
+  </xs:annotation>
+</xs:schema>

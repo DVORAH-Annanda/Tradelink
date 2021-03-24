@@ -85,6 +85,11 @@ namespace CMT
                     int w = Screen.PrimaryScreen.WorkingArea.Width;
                     vRep.ClientSize = new Size(w, h);
                     vRep.ShowDialog();
+                    if (vRep != null)
+                    {
+                        vRep.Close();
+                        vRep.Dispose();
+                    }
                 }
                 catch(Exception ex)
                 {
@@ -98,7 +103,12 @@ namespace CMT
                     int h = Screen.PrimaryScreen.WorkingArea.Height;
                     int w = Screen.PrimaryScreen.WorkingArea.Width;
                     vRepx.ClientSize = new Size(w, h);
-                    vRepx.ShowDialog(); 
+                    vRepx.ShowDialog();
+                    if (vRepx != null)
+                    {
+                        vRepx.Close();
+                        vRepx.Dispose();
+                    }
                 }
 
                 /*

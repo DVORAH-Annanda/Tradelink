@@ -50,6 +50,8 @@
             this.txtNoOfPieces = new System.Windows.Forms.TextBox();
             this.label10 = new System.Windows.Forms.Label();
             this.txtPieceNo = new System.Windows.Forms.TextBox();
+            this.label9 = new System.Windows.Forms.Label();
+            this.txtDskWeight = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -75,10 +77,10 @@
             // 
             this.dataGridView1.AllowUserToAddRows = false;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(98, 277);
+            this.dataGridView1.Location = new System.Drawing.Point(101, 294);
             this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(480, 194);
-            this.dataGridView1.TabIndex = 2;
+            this.dataGridView1.Size = new System.Drawing.Size(480, 219);
+            this.dataGridView1.TabIndex = 9;
             this.dataGridView1.CellLeave += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellLeave);
             this.dataGridView1.CellValidating += new System.Windows.Forms.DataGridViewCellValidatingEventHandler(this.dataGridView1_CellValidating);
             this.dataGridView1.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellValueChanged);
@@ -87,10 +89,10 @@
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(500, 563);
+            this.btnSave.Location = new System.Drawing.Point(503, 595);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(75, 23);
-            this.btnSave.TabIndex = 3;
+            this.btnSave.TabIndex = 12;
             this.btnSave.Text = "Save";
             this.btnSave.UseVisualStyleBackColor = true;
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
@@ -109,7 +111,7 @@
             this.dtpProduction.Location = new System.Drawing.Point(297, 78);
             this.dtpProduction.Name = "dtpProduction";
             this.dtpProduction.Size = new System.Drawing.Size(136, 20);
-            this.dtpProduction.TabIndex = 5;
+            this.dtpProduction.TabIndex = 2;
             // 
             // label3
             // 
@@ -125,12 +127,12 @@
             this.dtpTime.Location = new System.Drawing.Point(297, 116);
             this.dtpTime.Name = "dtpTime";
             this.dtpTime.Size = new System.Drawing.Size(136, 20);
-            this.dtpTime.TabIndex = 7;
+            this.dtpTime.TabIndex = 3;
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(95, 514);
+            this.label4.Location = new System.Drawing.Point(98, 546);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(106, 13);
             this.label4.TabIndex = 8;
@@ -138,7 +140,7 @@
             // 
             // txtBalance
             // 
-            this.txtBalance.Location = new System.Drawing.Point(297, 507);
+            this.txtBalance.Location = new System.Drawing.Point(300, 539);
             this.txtBalance.Name = "txtBalance";
             this.txtBalance.ReadOnly = true;
             this.txtBalance.Size = new System.Drawing.Size(100, 20);
@@ -147,10 +149,10 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(500, 525);
+            this.button1.Location = new System.Drawing.Point(503, 557);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 10;
+            this.button1.TabIndex = 11;
             this.button1.Text = "Report";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
@@ -178,7 +180,7 @@
             this.cmboDefaultShift.Location = new System.Drawing.Point(181, 184);
             this.cmboDefaultShift.Name = "cmboDefaultShift";
             this.cmboDefaultShift.Size = new System.Drawing.Size(121, 21);
-            this.cmboDefaultShift.TabIndex = 13;
+            this.cmboDefaultShift.TabIndex = 4;
             // 
             // cmboDefaultOperator
             // 
@@ -186,7 +188,7 @@
             this.cmboDefaultOperator.Location = new System.Drawing.Point(431, 184);
             this.cmboDefaultOperator.Name = "cmboDefaultOperator";
             this.cmboDefaultOperator.Size = new System.Drawing.Size(121, 21);
-            this.cmboDefaultOperator.TabIndex = 14;
+            this.cmboDefaultOperator.TabIndex = 5;
             // 
             // label6
             // 
@@ -208,10 +210,10 @@
             // 
             // btnPieces
             // 
-            this.btnPieces.Location = new System.Drawing.Point(500, 487);
+            this.btnPieces.Location = new System.Drawing.Point(503, 519);
             this.btnPieces.Name = "btnPieces";
             this.btnPieces.Size = new System.Drawing.Size(75, 23);
-            this.btnPieces.TabIndex = 17;
+            this.btnPieces.TabIndex = 10;
             this.btnPieces.Text = "Pieces";
             this.btnPieces.UseVisualStyleBackColor = true;
             this.btnPieces.Click += new System.EventHandler(this.btnPieces_Click);
@@ -219,7 +221,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(361, 242);
+            this.label8.Location = new System.Drawing.Point(361, 234);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(113, 13);
             this.label8.TabIndex = 18;
@@ -227,16 +229,16 @@
             // 
             // txtNoOfPieces
             // 
-            this.txtNoOfPieces.Location = new System.Drawing.Point(480, 235);
+            this.txtNoOfPieces.Location = new System.Drawing.Point(480, 227);
             this.txtNoOfPieces.Name = "txtNoOfPieces";
             this.txtNoOfPieces.Size = new System.Drawing.Size(72, 20);
-            this.txtNoOfPieces.TabIndex = 19;
+            this.txtNoOfPieces.TabIndex = 7;
             this.txtNoOfPieces.Leave += new System.EventHandler(this.txtNoOfPieces_Leave);
             // 
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(95, 242);
+            this.label10.Location = new System.Drawing.Point(95, 234);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(150, 13);
             this.label10.TabIndex = 22;
@@ -244,16 +246,34 @@
             // 
             // txtPieceNo
             // 
-            this.txtPieceNo.Location = new System.Drawing.Point(251, 235);
+            this.txtPieceNo.Location = new System.Drawing.Point(251, 227);
             this.txtPieceNo.Name = "txtPieceNo";
             this.txtPieceNo.Size = new System.Drawing.Size(98, 20);
-            this.txtPieceNo.TabIndex = 23;
+            this.txtPieceNo.TabIndex = 6;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(165, 271);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(87, 13);
+            this.label9.TabIndex = 24;
+            this.label9.Text = "Shift Dsk Weight";
+            // 
+            // txtDskWeight
+            // 
+            this.txtDskWeight.Location = new System.Drawing.Point(269, 268);
+            this.txtDskWeight.Name = "txtDskWeight";
+            this.txtDskWeight.Size = new System.Drawing.Size(100, 20);
+            this.txtDskWeight.TabIndex = 8;
             // 
             // frmGreigeRecordOfProd
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(641, 601);
+            this.ClientSize = new System.Drawing.Size(641, 640);
+            this.Controls.Add(this.txtDskWeight);
+            this.Controls.Add(this.label9);
             this.Controls.Add(this.txtPieceNo);
             this.Controls.Add(this.label10);
             this.Controls.Add(this.txtNoOfPieces);
@@ -308,5 +328,7 @@
         private System.Windows.Forms.TextBox txtNoOfPieces;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.TextBox txtPieceNo;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.TextBox txtDskWeight;
     }
 }

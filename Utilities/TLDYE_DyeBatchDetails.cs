@@ -44,5 +44,6 @@ namespace Utilities
         public decimal DYEBO_AdjustedWeight { get; set; }
         public bool DYEBO_BIFInTransit { get; set; }
         public bool DYEBO_WasRejected { get; set; }
+        public string DYEBO_Notes { get; set; }
     }
 }

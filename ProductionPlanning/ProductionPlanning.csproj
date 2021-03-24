@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -11,6 +11,7 @@
     <AssemblyName>ProductionPlanning</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -135,17 +136,40 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DataSet6.xsd</DependentUpon>
     </Compile>
+    <Compile Include="DataSet7.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSet7.xsd</DependentUpon>
+    </Compile>
     <Compile Include="DaysOfSales.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>DaysOfSales.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="DskDeviation.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DskDeviation.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="frmDailyLog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmDailyLog.Designer.cs">
+      <DependentUpon>frmDailyLog.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmInterDept.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="frmInterDept.Designer.cs">
       <DependentUpon>frmInterDept.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmInterDeptDskAnalysis.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmInterDeptDskAnalysis.Designer.cs">
+      <DependentUpon>frmInterDeptDskAnalysis.cs</DependentUpon>
     </Compile>
     <Compile Include="frmInterDeptFaults.cs">
       <SubType>Form</SubType>
@@ -244,8 +268,18 @@
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>DaysOfSales.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="DskDeviation.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>DskDeviation.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmDailyLog.resx">
+      <DependentUpon>frmDailyLog.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frmInterDept.resx">
       <DependentUpon>frmInterDept.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmInterDeptDskAnalysis.resx">
+      <DependentUpon>frmInterDeptDskAnalysis.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmInterDeptFaults.resx">
       <DependentUpon>frmInterDeptFaults.cs</DependentUpon>
@@ -295,6 +329,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <EmbeddedResource Include="ReOrderDetails.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
@@ -373,6 +408,17 @@
     </None>
     <None Include="DataSet6.xss">
       <DependentUpon>DataSet6.xsd</DependentUpon>
+    </None>
+    <None Include="DataSet7.xsc">
+      <DependentUpon>DataSet7.xsd</DependentUpon>
+    </None>
+    <None Include="DataSet7.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSet7.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="DataSet7.xss">
+      <DependentUpon>DataSet7.xsd</DependentUpon>
     </None>
     <None Include="packages.config" />
     <None Include="ProdPlanning.pfx" />

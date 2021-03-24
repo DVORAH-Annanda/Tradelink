@@ -38,5 +38,6 @@ namespace Utilities
         public bool WhStore_BundleStore { get; set; }
         public bool WhStore_PanelStore { get; set; }
         public bool WhStore_RePack { get; set; }
+        public bool WhStore_Default { get; set; }
     }
 }

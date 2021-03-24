@@ -69,6 +69,9 @@
             this.chkReset = new System.Windows.Forms.CheckBox();
             this.cmboMachines = new System.Windows.Forms.ComboBox();
             this.label4 = new System.Windows.Forms.Label();
+            this.chkSearch = new System.Windows.Forms.CheckBox();
+            this.txtPrevCutSheet = new System.Windows.Forms.TextBox();
+            this.label18 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -444,11 +447,41 @@
             this.label4.TabIndex = 21;
             this.label4.Text = "Machines";
             // 
+            // chkSearch
+            // 
+            this.chkSearch.AutoSize = true;
+            this.chkSearch.Location = new System.Drawing.Point(240, 48);
+            this.chkSearch.Name = "chkSearch";
+            this.chkSearch.Size = new System.Drawing.Size(102, 17);
+            this.chkSearch.TabIndex = 22;
+            this.chkSearch.Text = "Execute Search";
+            this.chkSearch.UseVisualStyleBackColor = true;
+            this.chkSearch.CheckedChanged += new System.EventHandler(this.chkSearch_CheckedChanged);
+            // 
+            // txtPrevCutSheet
+            // 
+            this.txtPrevCutSheet.Location = new System.Drawing.Point(72, 46);
+            this.txtPrevCutSheet.Name = "txtPrevCutSheet";
+            this.txtPrevCutSheet.Size = new System.Drawing.Size(121, 20);
+            this.txtPrevCutSheet.TabIndex = 23;
+            // 
+            // label18
+            // 
+            this.label18.AutoSize = true;
+            this.label18.Location = new System.Drawing.Point(19, 51);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(48, 13);
+            this.label18.TabIndex = 24;
+            this.label18.Text = "Previous";
+            // 
             // frmCutSheetReceipt
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(901, 631);
+            this.Controls.Add(this.label18);
+            this.Controls.Add(this.txtPrevCutSheet);
+            this.Controls.Add(this.chkSearch);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.cmboMachines);
             this.Controls.Add(this.chkReset);
@@ -523,5 +556,8 @@
         private System.Windows.Forms.CheckBox chkReset;
         private System.Windows.Forms.ComboBox cmboMachines;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.CheckBox chkSearch;
+        private System.Windows.Forms.TextBox txtPrevCutSheet;
+        private System.Windows.Forms.Label label18;
     }
 }

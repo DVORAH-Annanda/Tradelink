@@ -55,7 +55,7 @@ namespace TTI2_WF
             {
                 try
                 {
-                    Knitting.frmK07ReportSel greigeP = new Knitting.frmK07ReportSel();
+                    Knitting.frmK07ReportSel greigeP = new Knitting.frmK07ReportSel(true);
                     greigeP.ShowDialog(this);
                 }
                 catch (Exception ex)

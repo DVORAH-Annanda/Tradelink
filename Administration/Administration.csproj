@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -11,6 +11,7 @@
     <AssemblyName>Administration</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -149,6 +150,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DataSet12.xsd</DependentUpon>
     </Compile>
+    <Compile Include="DataSet13.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSet13.xsd</DependentUpon>
+    </Compile>
     <Compile Include="DataSet2.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -189,6 +195,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DataSet9.xsd</DependentUpon>
     </Compile>
+    <Compile Include="DyeStandards.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DyeStandards.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="frmAdminViewRep.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -224,6 +236,12 @@
     </Compile>
     <Compile Include="frmDepartmentAreas.Designer.cs">
       <DependentUpon>frmDepartmentAreas.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmFabricDyingStandards.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmFabricDyingStandards.Designer.cs">
+      <DependentUpon>frmFabricDyingStandards.cs</DependentUpon>
     </Compile>
     <Compile Include="frmGreigeDefinition.cs">
       <SubType>Form</SubType>
@@ -447,6 +465,10 @@
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>CustomerCategories.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="DyeStandards.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>DyeStandards.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="frmAdminViewRep.resx">
       <DependentUpon>frmAdminViewRep.cs</DependentUpon>
     </EmbeddedResource>
@@ -464,6 +486,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmDepartmentAreas.resx">
       <DependentUpon>frmDepartmentAreas.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmFabricDyingStandards.resx">
+      <DependentUpon>frmFabricDyingStandards.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmGreigeDefinition.resx">
       <DependentUpon>frmGreigeDefinition.cs</DependentUpon>
@@ -564,6 +589,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <EmbeddedResource Include="frmTLADM_AdditionalAddress.resx">
       <DependentUpon>frmTLADM_AdditionalAddress.cs</DependentUpon>
@@ -628,6 +654,17 @@
     </None>
     <None Include="DataSet12.xss">
       <DependentUpon>DataSet12.xsd</DependentUpon>
+    </None>
+    <None Include="DataSet13.xsc">
+      <DependentUpon>DataSet13.xsd</DependentUpon>
+    </None>
+    <None Include="DataSet13.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSet13.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="DataSet13.xss">
+      <DependentUpon>DataSet13.xsd</DependentUpon>
     </None>
     <None Include="DataSet2.xsc">
       <DependentUpon>DataSet2.xsd</DependentUpon>

@@ -118,12 +118,15 @@ namespace CMT
                 QueryParms.ToDate = Convert.ToDateTime(ToDate.Value.ToShortDateString()).AddHours(23) ;
 
                 frmCMTViewRep vRep = new frmCMTViewRep(33, QueryParms, repOpts);
-
                 int h = Screen.PrimaryScreen.WorkingArea.Height;
                 int w = Screen.PrimaryScreen.WorkingArea.Width;
                 vRep.ClientSize = new Size(w, h);
                 vRep.ShowDialog(this);
-
+                if (vRep != null)
+                {
+                    vRep.Close();
+                    vRep.Dispose();
+                }
                 cmboColours.Items.Clear();
                 cmboStyles.Items.Clear();
 

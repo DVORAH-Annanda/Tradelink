@@ -105,7 +105,11 @@ namespace CMT
                 int w = Screen.PrimaryScreen.WorkingArea.Width;
                 vRep.ClientSize = new Size(w, h);
                 vRep.ShowDialog();
-
+                if (vRep != null)
+                {
+                    vRep.Close();
+                    vRep.Dispose();
+                }
                 cmboStyles.Items.Clear();
                 frmNCRByMonth_Load(this, null);
             }

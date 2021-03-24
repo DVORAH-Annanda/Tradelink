@@ -218,7 +218,7 @@ namespace DyeHouse
                         }
                         else
                         {
-                            DateTime dtTime = DateTime.Now.AddDays(-30);
+                            DateTime dtTime = DateTime.Now.AddDays(-60);
 
 
                             var DyeTrans = context.TLDYE_DyeTransactions.Where(x => x.TLDYET_Customer_FK == Selected.Cust_Pk && x.TLDYET_FabricSales && x.TLDYET_Date >= dtTime).GroupBy(x=>x.TLDYET_TransactionNumber) .ToList();

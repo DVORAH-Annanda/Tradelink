@@ -31,12 +31,21 @@ namespace Cutting
                     int w = Screen.PrimaryScreen.WorkingArea.Width;
                     vRep.ClientSize = new Size(w, h);
                     vRep.ShowDialog(this);
-
+                    if (vRep != null)
+                    {
+                        vRep.Close();
+                        vRep.Dispose();
+                    }
                     vRep = new frmCutViewRep(2, selected.TLCutSH_Pk);
                     h = Screen.PrimaryScreen.WorkingArea.Height;
                     w = Screen.PrimaryScreen.WorkingArea.Width;
                     vRep.ClientSize = new Size(w, h);
                     vRep.ShowDialog(this);
+                    if (vRep != null)
+                    {
+                        vRep.Close();
+                        vRep.Dispose();
+                    }
                 }
                 else
                 {

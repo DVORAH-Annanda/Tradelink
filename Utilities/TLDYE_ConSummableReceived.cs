@@ -20,5 +20,10 @@ namespace Utilities
         public int DYECON_WhseStore_FK { get; set; }
         public decimal DYECON_Amount { get; set; }
         public int DYECON_UOM_FK { get; set; }
+        public int DYECON_Supplier_FK { get; set; }
+        public string DYECON_OrderNo { get; set; }
+        public string DYECON_ContainerId { get; set; }
+        public bool DYECON_Pass { get; set; }
+        public int DYECON_TransNumber { get; set; }
     }
 }

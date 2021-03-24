@@ -74,7 +74,7 @@ namespace TTI2_WF
             txtTelephone.Text   = string.Empty;
             txtContact.Text     = string.Empty;
             txtCountryOfOrigin.Text = string.Empty;
-
+            chkDefault.Checked = false;
             rbChemicalStoreNo.Checked = true;
             rbBundleStoreNo.Checked = true;
             rbPanelStoreNo.Checked = true;
@@ -237,7 +237,14 @@ namespace TTI2_WF
                    else
                        whse.WhStore_RePack = false;
 
-
+                   if(chkDefault.Checked)
+                    {
+                        whse.WhStore_Default = true;
+                    }
+                    else
+                    {
+                        whse.WhStore_Default = false;
+                    }
                    whse.WhStore_Address1 = txtAddress1.Text;
                    whse.WhStore_Address2 = txtAddress2.Text;
                    whse.WhStore_Address3 = txtAddress3.Text;
@@ -347,6 +354,14 @@ namespace TTI2_WF
                         else
                             rbRepackNo.Checked = false;
  
+                        if(whse.WhStore_Default)
+                        {
+                            chkDefault.Checked = true;
+                        }
+                        else
+                        {
+                            chkDefault.Checked = false;
+                        }
 
                         txtAddress1.Text = whse.WhStore_Address1;
                         txtAddress2.Text = whse.WhStore_Address2;

@@ -137,8 +137,11 @@ namespace ProductionPlanning
             if (oBtn != null && formloaded)
             {
                 frmPPSViewRep vRep = new frmPPSViewRep(3, QueryParms);
-                vRep.ShowDialog();
-
+                int h = Screen.PrimaryScreen.WorkingArea.Height;
+                int w = Screen.PrimaryScreen.WorkingArea.Width;
+                vRep.ClientSize = new Size(w, h);
+                vRep.ShowDialog(this);
+               
                 cmboGreige.Items.Clear();
                 cmboGreigeQuality.Items.Clear();
                 cmboMachine.Items.Clear();

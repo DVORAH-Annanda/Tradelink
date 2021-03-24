@@ -1965,6 +1965,62 @@ namespace ProductionPlanning
                 crystalReportViewer1.ReportSource = SItem;
 
             }
+            else if (_RepNo == 8) //  
+            {
+                DataSet ds = new DataSet();
+                DataSet7.DataTable1DataTable dataTable1 = new DataSet7.DataTable1DataTable();
+                DataSet7.DataTable2DataTable dataTable2 = new DataSet7.DataTable2DataTable();
+                core = new Util();
+
+                DataSet7.DataTable2Row Tab2 = dataTable2.NewDataTable2Row();
+                Tab2.FromDate = _ProdQParms.FromDate;
+                Tab2.ToDate = _ProdQParms.ToDate;
+                Tab2.Pk = 1;
+                dataTable2.Rows.Add(Tab2);
+
+
+                using ( var context = new TTI2Entities())
+                {
+                    var DyeBatchDetail = context.TLDYE_DyeBatchDetails.Where(x => x.DYEBO_QAApproved && x.DYEBO_TransDate >= _ProdQParms.FromDate && x.DYEBO_TransDate <= _ProdQParms.ToDate && x.DYEBO_DiskWeight != 0).ToList(); 
+                    foreach(var Item in DyeBatchDetail)
+                    {
+                        DataSet7.DataTable1Row Tab1 = dataTable1.NewDataTable1Row();
+                        Tab1.Pk = 1;
+                        Tab1.DyeDsk = Item.DYEBO_DiskWeight;
+                        Tab1.DyeMeters = Item.DYEBO_Meters;
+                        Tab1.KnittingMeters = 0.00M;
+                        Tab1.TransDate = (DateTime)Item.DYEBO_TransDate;
+                        Tab1.DevDyeing = 0.00M;
+                        Tab1.DevKnitting = 0.00M;
+                        Tab1.StdDsk = 0.00M;
+                        var Quality = context.TLADM_Griege.Find(Item.DYEBD_QualityKey);
+                        if (Quality != null && Quality.TLGreige_CubicWeight != 0 && Item.DYEBO_DiskWeight!= 0)
+                        {
+                            Tab1.Quality = Quality.TLGreige_Description;
+                            Tab1.StdDsk = Quality.TLGreige_CubicWeight;
+                            Tab1.DevDyeing = core.CalculateDskVariance(Quality.TLGreige_CubicWeight, Item.DYEBO_DiskWeight);
+                            
+                            var GP = context.TLKNI_GreigeProduction.Find(Item.DYEBD_GreigeProduction_FK);
+                            if (GP != null && GP.GreigeP_DskWeight != 0)
+                            {
+                                Tab1.PieceNo = GP.GreigeP_PieceNo;
+                                Tab1.KnittingDsk = GP.GreigeP_DskWeight;
+                                Tab1.KnittingMeters = GP.GreigeP_Meters;
+                                Tab1.DevKnitting = core.CalculateDskVariance(Quality.TLGreige_CubicWeight, GP.GreigeP_DskWeight);
+                                
+                                dataTable1.Rows.Add(Tab1);
+                            }
+                        }
+                    }
+                }
+
+                ds.Tables.Add(dataTable1);
+                ds.Tables.Add(dataTable2);
+                DskDeviation SItem = new DskDeviation();
+                SItem.SetDataSource(ds);
+                crystalReportViewer1.ReportSource = SItem;
+
+            }
             crystalReportViewer1.Refresh();
         }
 

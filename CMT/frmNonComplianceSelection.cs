@@ -137,6 +137,11 @@ namespace CMT
                 int w = Screen.PrimaryScreen.WorkingArea.Width;
                 vRep.ClientSize = new Size(w, h);
                 vRep.ShowDialog(this);
+                if (vRep != null)
+                {
+                    vRep.Close();
+                    vRep.Dispose();
+                }
             }
         }
     }

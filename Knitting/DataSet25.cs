@@ -1,6 +1,8 @@
-﻿namespace Knitting {
-    
-    
-    public partial class DataSet25 {
+﻿namespace Knitting
+{
+
+
+    public partial class DataSet25
+    {
     }
 }

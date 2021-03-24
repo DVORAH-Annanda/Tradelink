@@ -19,5 +19,6 @@ namespace Utilities
         public string CMTMP_Description { get; set; }
         public bool CMTMP_B2MRawPanels { get; set; }
         public int CMTMP_DisplayOrder { get; set; }
+        public bool CMTMP_Active { get; set; }
     }
 }

@@ -2555,9 +2555,10 @@ namespace Spinning
             {
                 DataSet ds = new DataSet();
                 DataSet19.DataTable1DataTable dataTable1 = new DataSet19.DataTable1DataTable();
+                _Repo = new SpinningRepository();
                 using (var context = new TTI2Entities())
                 {
-                    var Existing = context.TLSPN_CottonReceivedBales.Where(x => x.CotBales_LotNo == _RepOpt.Cotton_LotNo && !x.CoBales_IssuedToProd).ToList();
+                    var Existing = _Repo.CottonReceivedLots(_QueryParms);
                     foreach (var row in Existing)
                     {
                         DataSet19.DataTable1Row nRow = dataTable1.NewDataTable1Row();
@@ -2573,6 +2574,10 @@ namespace Spinning
 
                     ds.Tables.Add(dataTable1);
                     CottonBalesInStock pprod = new CottonBalesInStock();
+                    if (_QueryParms.CottonRecSummarised)
+                    {
+                        pprod.ReportDefinition.Sections["Section3"].SectionFormat.EnableSuppress = true;
+                    }
                     pprod.SetDataSource(ds);
                     crystalReportViewer1.ReportSource = pprod;
                 }

@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -26,6 +26,7 @@
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -517,6 +518,12 @@
     <Compile Include="frmRepackCenterStatus.Designer.cs">
       <DependentUpon>frmRepackCenterStatus.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmReprintWareHouse.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmReprintWareHouse.Designer.cs">
+      <DependentUpon>frmReprintWareHouse.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmResetPickingList.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -880,6 +887,9 @@
     <EmbeddedResource Include="frmRepackCenterStatus.resx">
       <DependentUpon>frmRepackCenterStatus.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="frmReprintWareHouse.resx">
+      <DependentUpon>frmReprintWareHouse.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frmResetPickingList.resx">
       <DependentUpon>frmResetPickingList.cs</DependentUpon>
     </EmbeddedResource>
@@ -976,6 +986,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <EmbeddedResource Include="RePackDeliveryNote.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>

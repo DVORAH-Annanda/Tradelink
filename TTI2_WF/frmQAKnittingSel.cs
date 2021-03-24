@@ -109,7 +109,7 @@ namespace TTI2_WF
             {
                 try
                 {
-                    frmK07ReportSel greigeP = new frmK07ReportSel();
+                    frmK07ReportSel greigeP = new frmK07ReportSel(true);
                     greigeP.ShowDialog(this);
                 }
                 catch (Exception ex)

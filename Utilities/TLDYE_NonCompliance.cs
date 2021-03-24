@@ -24,5 +24,6 @@ namespace Utilities
         public int TLDYE_Operator_FK { get; set; }
         public int TLDYE_NCStage { get; set; }
         public bool TLDYE_RemedyApplied { get; set; }
+        public Nullable<int> TLDYE_PortStatus { get; set; }
     }
 }

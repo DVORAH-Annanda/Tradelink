@@ -56,6 +56,8 @@ namespace Knitting
 
                 rbQA5.Enabled = false;
                 rbQA6.Enabled = false;
+                rbQA7.Enabled = true;
+                rbQA8.Enabled = true;
 
                 MandFieldsSelected = core.PopulateArray(MandatoryFields.Length, false);
 
@@ -245,6 +247,10 @@ namespace Knitting
                     YarnOpts.K8rbQA3 = true;
                 else if (rbQA4.Checked)
                     YarnOpts.K8rbQA4 = true;
+                else if (rbQA7.Checked)
+                    YarnOpts.K8rbQA7 = true;
+                else if (rbQA8.Checked)
+                    YarnOpts.K8rbQA8 = true;
 
                 if (rbExcludeCommission.Checked)
                 {
@@ -257,7 +263,12 @@ namespace Knitting
                 int w = Screen.PrimaryScreen.WorkingArea.Width;
                 vRep.ClientSize = new Size(w, h);
                 vRep.ShowDialog(this);
-                
+                if (vRep != null)
+                {
+                    vRep.Close();
+                    vRep.Dispose();
+                   
+                }
                 MandFieldsSelected = core.PopulateArray(MandatoryFields.Length, false);
             }
         }
@@ -342,6 +353,12 @@ namespace Knitting
                 if (oCmbo != null && !oCmbo.DroppedDown)
                     oCmbo.DroppedDown = true;
             }
+        }
+
+        private void frmK08ReportSel_FormClosing(object sender, FormClosingEventArgs e)
+        {
+                
+            
         }
     }
 }

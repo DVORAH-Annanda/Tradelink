@@ -386,6 +386,12 @@ namespace DyeHouse
             {
                 if (oRad.Checked)
                 {
+                    if(!rbPortA.Checked && !rbPortB.Checked && !rbBothPorts.Checked )
+                    {
+                        MessageBox.Show("Please select a Port status");
+                        rbBtnNo.Checked = true;
+                        return;
+                    }
                     var selected = (TLDYE_DyeBatch)cmboBatchNo.SelectedItem;
                     if (selected != null)
                     {
@@ -397,7 +403,19 @@ namespace DyeHouse
                             return;
                         }
 
-                        frmDye_NonCompliance nonCom = new frmDye_NonCompliance(selected.DYEB_Pk, machop.MachOp_Pk, 1);
+                        var PortStatus = 0;
+                        if(rbPortA.Checked)
+                        {
+                            PortStatus = 1;
+                        }
+                        else if(rbPortB.Checked)
+                        {
+                            PortStatus = 2;                        }
+                        else
+                        {
+                            PortStatus = 3;
+                        }
+                        frmDye_NonCompliance nonCom = new frmDye_NonCompliance(selected.DYEB_Pk, machop.MachOp_Pk, 1, PortStatus);
                         nonCom.ShowDialog(this);
                     }
                     else

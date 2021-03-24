@@ -104,7 +104,13 @@ namespace Knitting
                             vRep.ClientSize = new Size(w, h);
                             vRep.ShowDialog(this);
                             this.Close();
-                        }
+                            if (vRep != null)
+                            {
+                                vRep.Close();
+                                vRep.Dispose();
+
+                            }
+                    }
                         catch (Exception ex)
                         {
                             MessageBox.Show(ex.Message);

@@ -221,7 +221,11 @@ namespace CustomerServices
                 int w = Screen.PrimaryScreen.WorkingArea.Width;
                 VRep.ClientSize = new Size(w, h);
                 VRep.ShowDialog(this);
-
+                if (VRep != null)
+                {
+                    VRep.Close();
+                    VRep.Dispose();
+                }
                 comboCustomers.Items.Clear();
                 comboColours.Items.Clear();
                 comboSizes.Items.Clear();

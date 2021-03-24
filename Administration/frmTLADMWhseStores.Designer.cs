@@ -77,6 +77,7 @@
             this.groupBox9 = new System.Windows.Forms.GroupBox();
             this.rbRepackNo = new System.Windows.Forms.RadioButton();
             this.rbRepacYes = new System.Windows.Forms.RadioButton();
+            this.chkDefault = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -437,11 +438,12 @@
             // 
             // groupBox6
             // 
+            this.groupBox6.Controls.Add(this.chkDefault);
             this.groupBox6.Controls.Add(this.rbChemicalStoreNo);
             this.groupBox6.Controls.Add(this.rbChemicalStoreYes);
-            this.groupBox6.Location = new System.Drawing.Point(131, 272);
+            this.groupBox6.Location = new System.Drawing.Point(101, 272);
             this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(200, 46);
+            this.groupBox6.Size = new System.Drawing.Size(230, 46);
             this.groupBox6.TabIndex = 19;
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "Chemical Store";
@@ -567,6 +569,16 @@
             this.rbRepacYes.Text = "Yes";
             this.rbRepacYes.UseVisualStyleBackColor = true;
             // 
+            // chkDefault
+            // 
+            this.chkDefault.AutoSize = true;
+            this.chkDefault.Location = new System.Drawing.Point(165, 19);
+            this.chkDefault.Name = "chkDefault";
+            this.chkDefault.Size = new System.Drawing.Size(60, 17);
+            this.chkDefault.TabIndex = 19;
+            this.chkDefault.Text = "Default";
+            this.chkDefault.UseVisualStyleBackColor = true;
+            // 
             // frmTLADMWhseStores
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -672,5 +684,6 @@
         private System.Windows.Forms.GroupBox groupBox9;
         private System.Windows.Forms.RadioButton rbRepackNo;
         private System.Windows.Forms.RadioButton rbRepacYes;
+        private System.Windows.Forms.CheckBox chkDefault;
     }
 }

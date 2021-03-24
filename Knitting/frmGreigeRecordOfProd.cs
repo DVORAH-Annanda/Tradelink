@@ -62,6 +62,9 @@ namespace Knitting
             txtNoOfPieces.KeyPress += core.txtWin_KeyPress;
             txtNoOfPieces.KeyDown += core.txtWin_KeyDownJI;
 
+            txtDskWeight.KeyPress += core.txtWin_KeyPress;
+            txtDskWeight.KeyDown += core.txtWin_KeyDownOEM;
+
             txtPieceNo.KeyPress += core.txtWin_KeyPress;
             txtPieceNo.KeyDown += core.txtWin_KeyDownJI;
  
@@ -86,6 +89,9 @@ namespace Knitting
             BalanceOutstanding = 0.00M;
             txtBalance.Text = BalanceOutstanding.ToString();
             txtNoOfPieces.Text = "0";
+            txtDskWeight.Text = "0.0";
+
+
             _LastNumber = 0;
 
             txtPieceNo.Text = _LastNumber.ToString();
@@ -169,11 +175,25 @@ namespace Knitting
             Decimal YarnTex = 0.00M;
             TLADM_Yarn YarnType = null;
             string MergeDetails = string.Empty;
-
+            Decimal DskWght = 0.0M;
             IList<TLKNI_YarnAllocTransctions> PalletTrans = null; 
 
             if (oBtn != null && formloaded)
             {
+                try
+                {
+                    DskWght = decimal.Parse(txtDskWeight.Text);
+                    if(DskWght <= 0 )
+                    {
+                        MessageBox.Show("Please enter a proper dsk weight");
+                        return;
+                    }
+                }
+                catch (Exception ex)
+                { 
+                    MessageBox.Show( ex.Message + " Please enter a Dsk Weight for this shift");
+                    return;
+                }
                 using ( var context = new TTI2Entities())
                 {
                     var KO = (TLKNI_Order)cmboKnitOrders.SelectedItem;
@@ -228,6 +248,8 @@ namespace Knitting
 
                         PalletTrans = context.TLKNI_YarnAllocTransctions.Where( x=>x.TLKYT_KnitOrder_FK == KO.KnitO_Pk && x.TLKYT_TranType == 1).ToList();
 
+                        var TLADMGreige = context.TLADM_Griege.Find(KO.KnitO_Product_FK);
+
                         foreach (DataGridViewRow row in oDgv.Rows)
                         {
                             if ((decimal)row.Cells[3].Value > 0)
@@ -253,8 +275,6 @@ namespace Knitting
                                         griegP.GreigeP_Size_Fk = (int)KO.KnitO_Size_Fk;
                                     if(KO.KnitO_Colour_Fk != null)
                                         griegP.GreigeP_BIFColour_FK = (int)KO.KnitO_Colour_Fk;
-
-
                                 }
 
                                 griegP.GreigeP_MergeDetail = MergeDetails;
@@ -276,8 +296,12 @@ namespace Knitting
                                 griegP.GreigeP_PalletNo = PalletNo;
                                 griegP.GreigeP_YarnSupplier = YarnSupplier;
                                 griegP.GreigeP_YarnTex = YarnTex;
+                                griegP.GreigeP_DskWeight = DskWght;
+                                if (TLADMGreige.TLGreige_CubicWeight != 0 && DskWght != 0)
+                                {
+                                    griegP.GreigeP_VarianceDiskWeight = core.CalculateDskVariance(TLADMGreige.TLGreige_CubicWeight, DskWght);
+                                }
 
-                                var TLADMGreige = context.TLADM_Griege.Find(griegP.GreigeP_Greige_Fk);
                                 if (TLADMGreige != null)
                                 {
                                     // We need to start storing the meters knitted for statistical purposes
@@ -430,6 +454,12 @@ namespace Knitting
                 int w = Screen.PrimaryScreen.WorkingArea.Width;
                 vRep.ClientSize = new Size(w, h);
                 vRep.ShowDialog(this);
+                if (vRep != null)
+                {
+                    vRep.Close();
+                    vRep.Dispose();
+
+                }
 
             }
         }

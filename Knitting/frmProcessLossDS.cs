@@ -44,6 +44,11 @@ namespace Knitting
 
                 frmKnitViewRep vRep = new frmKnitViewRep(18, repOts);
                 vRep.ShowDialog(this);
+                if (vRep != null)
+                {
+                    vRep.Close();
+                    vRep.Dispose();
+                }
             }
         }
     }

@@ -81,18 +81,24 @@
             this.cmboDepartment = new System.Windows.Forms.ComboBox();
             this.label19 = new System.Windows.Forms.Label();
             this.chkSample = new System.Windows.Forms.CheckBox();
+            this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.cmboDownSize = new System.Windows.Forms.ComboBox();
+            this.label22 = new System.Windows.Forms.Label();
+            this.chkDownSize = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
             this.groupBox3.SuspendLayout();
             this.groupBox4.SuspendLayout();
+            this.groupBox5.SuspendLayout();
             this.SuspendLayout();
             // 
             // txtLastNumber
             // 
             this.txtLastNumber.Location = new System.Drawing.Point(962, 7);
             this.txtLastNumber.Name = "txtLastNumber";
+            this.txtLastNumber.ReadOnly = true;
             this.txtLastNumber.Size = new System.Drawing.Size(151, 20);
             this.txtLastNumber.TabIndex = 0;
             // 
@@ -113,15 +119,15 @@
             this.groupBox1.Controls.Add(this.label10);
             this.groupBox1.Controls.Add(this.label9);
             this.groupBox1.Controls.Add(this.label8);
-            this.groupBox1.Location = new System.Drawing.Point(912, 83);
+            this.groupBox1.Location = new System.Drawing.Point(883, 83);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(214, 109);
+            this.groupBox1.Size = new System.Drawing.Size(243, 109);
             this.groupBox1.TabIndex = 2;
             this.groupBox1.TabStop = false;
             // 
             // txtNoBinding
             // 
-            this.txtNoBinding.Location = new System.Drawing.Point(99, 48);
+            this.txtNoBinding.Location = new System.Drawing.Point(114, 48);
             this.txtNoBinding.Name = "txtNoBinding";
             this.txtNoBinding.ReadOnly = true;
             this.txtNoBinding.Size = new System.Drawing.Size(100, 20);
@@ -130,7 +136,7 @@
             // 
             // txtNoTrims
             // 
-            this.txtNoTrims.Location = new System.Drawing.Point(99, 76);
+            this.txtNoTrims.Location = new System.Drawing.Point(114, 76);
             this.txtNoTrims.Name = "txtNoTrims";
             this.txtNoTrims.ReadOnly = true;
             this.txtNoTrims.Size = new System.Drawing.Size(100, 20);
@@ -139,7 +145,7 @@
             // 
             // txtNoGarments
             // 
-            this.txtNoGarments.Location = new System.Drawing.Point(99, 20);
+            this.txtNoGarments.Location = new System.Drawing.Point(114, 20);
             this.txtNoGarments.Name = "txtNoGarments";
             this.txtNoGarments.ReadOnly = true;
             this.txtNoGarments.Size = new System.Drawing.Size(100, 20);
@@ -260,9 +266,9 @@
             this.groupBox2.Controls.Add(this.cmboStyles);
             this.groupBox2.Controls.Add(this.label11);
             this.groupBox2.Controls.Add(this.label7);
-            this.groupBox2.Location = new System.Drawing.Point(12, 382);
+            this.groupBox2.Location = new System.Drawing.Point(17, 399);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(190, 164);
+            this.groupBox2.Size = new System.Drawing.Size(190, 137);
             this.groupBox2.TabIndex = 12;
             this.groupBox2.TabStop = false;
             // 
@@ -285,11 +291,12 @@
             this.cmboLabels.Size = new System.Drawing.Size(127, 21);
             this.cmboLabels.TabIndex = 5;
             this.cmboLabels.Visible = false;
+            this.cmboLabels.SelectedIndexChanged += new System.EventHandler(this.cmboLabels_SelectedIndexChanged);
             // 
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(12, 96);
+            this.label12.Location = new System.Drawing.Point(9, 96);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(33, 13);
             this.label12.TabIndex = 4;
@@ -340,7 +347,7 @@
             this.dataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView2.Location = new System.Drawing.Point(229, 396);
             this.dataGridView2.Name = "dataGridView2";
-            this.dataGridView2.Size = new System.Drawing.Size(524, 150);
+            this.dataGridView2.Size = new System.Drawing.Size(524, 189);
             this.dataGridView2.TabIndex = 14;
             this.dataGridView2.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView2_CellValueChanged);
             // 
@@ -591,11 +598,53 @@
             this.chkSample.UseVisualStyleBackColor = true;
             this.chkSample.CheckedChanged += new System.EventHandler(this.chkBIF_CheckedChanged);
             // 
+            // groupBox5
+            // 
+            this.groupBox5.Controls.Add(this.cmboDownSize);
+            this.groupBox5.Controls.Add(this.label22);
+            this.groupBox5.Location = new System.Drawing.Point(17, 559);
+            this.groupBox5.Name = "groupBox5";
+            this.groupBox5.Size = new System.Drawing.Size(190, 67);
+            this.groupBox5.TabIndex = 29;
+            this.groupBox5.TabStop = false;
+            // 
+            // cmboDownSize
+            // 
+            this.cmboDownSize.Enabled = false;
+            this.cmboDownSize.FormattingEnabled = true;
+            this.cmboDownSize.Location = new System.Drawing.Point(51, 30);
+            this.cmboDownSize.Name = "cmboDownSize";
+            this.cmboDownSize.Size = new System.Drawing.Size(127, 21);
+            this.cmboDownSize.TabIndex = 6;
+            this.cmboDownSize.SelectedIndexChanged += new System.EventHandler(this.cmboDownSize_SelectedIndexChanged);
+            // 
+            // label22
+            // 
+            this.label22.AutoSize = true;
+            this.label22.Location = new System.Drawing.Point(9, 34);
+            this.label22.Name = "label22";
+            this.label22.Size = new System.Drawing.Size(27, 13);
+            this.label22.TabIndex = 0;
+            this.label22.Text = "Size";
+            // 
+            // chkDownSize
+            // 
+            this.chkDownSize.AutoSize = true;
+            this.chkDownSize.Location = new System.Drawing.Point(17, 542);
+            this.chkDownSize.Name = "chkDownSize";
+            this.chkDownSize.Size = new System.Drawing.Size(113, 17);
+            this.chkDownSize.TabIndex = 30;
+            this.chkDownSize.Text = "Re Size Cut Sheet";
+            this.chkDownSize.UseVisualStyleBackColor = true;
+            this.chkDownSize.CheckedChanged += new System.EventHandler(this.chkDownSize_CheckedChanged);
+            // 
             // frmCutSheet
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1137, 578);
+            this.ClientSize = new System.Drawing.Size(1137, 638);
+            this.Controls.Add(this.chkDownSize);
+            this.Controls.Add(this.groupBox5);
             this.Controls.Add(this.chkSample);
             this.Controls.Add(this.label19);
             this.Controls.Add(this.cmboDepartment);
@@ -634,6 +683,8 @@
             this.groupBox3.PerformLayout();
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
+            this.groupBox5.ResumeLayout(false);
+            this.groupBox5.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -694,6 +745,10 @@
         private System.Windows.Forms.ComboBox cmboDepartment;
         private System.Windows.Forms.Label label19;
         private System.Windows.Forms.CheckBox chkSample;
+        private System.Windows.Forms.GroupBox groupBox5;
+        private System.Windows.Forms.ComboBox cmboDownSize;
+        private System.Windows.Forms.Label label22;
+        private System.Windows.Forms.CheckBox chkDownSize;
     }
 }
 

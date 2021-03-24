@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -11,6 +11,7 @@
     <AssemblyName>CMT</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -617,6 +618,12 @@
     <Compile Include="frmCutSheetPriority.Designer.cs">
       <DependentUpon>frmCutSheetPriority.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmCutSheetReturn.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmCutSheetReturn.Designer.cs">
+      <DependentUpon>frmCutSheetReturn.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmDateRequired.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -1000,6 +1007,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmCutSheetPriority.resx">
       <DependentUpon>frmCutSheetPriority.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmCutSheetReturn.resx">
+      <DependentUpon>frmCutSheetReturn.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmDateRequired.resx">
       <DependentUpon>frmDateRequired.cs</DependentUpon>

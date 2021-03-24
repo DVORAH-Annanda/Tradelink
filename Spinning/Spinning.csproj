@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -11,6 +11,7 @@
     <AssemblyName>Spinning</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -298,6 +299,12 @@
     </Compile>
     <Compile Include="frmCottonBalesInStock.Designer.cs">
       <DependentUpon>frmCottonBalesInStock.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmCottonDespatchedInspection.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmCottonDespatchedInspection.Designer.cs">
+      <DependentUpon>frmCottonDespatchedInspection.cs</DependentUpon>
     </Compile>
     <Compile Include="frmCottonIssueToProd.cs">
       <SubType>Form</SubType>
@@ -698,6 +705,9 @@
     <EmbeddedResource Include="frmCottonBalesInStock.resx">
       <DependentUpon>frmCottonBalesInStock.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="frmCottonDespatchedInspection.resx">
+      <DependentUpon>frmCottonDespatchedInspection.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frmCottonIssueToProd.resx">
       <DependentUpon>frmCottonIssueToProd.cs</DependentUpon>
     </EmbeddedResource>
@@ -797,6 +807,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <EmbeddedResource Include="QARSBMeasurements.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>

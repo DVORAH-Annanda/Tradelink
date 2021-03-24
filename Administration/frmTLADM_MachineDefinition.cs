@@ -101,7 +101,10 @@ namespace TTI2_WF
         {
             formloaded = false;
             IList<TLADM_Griege> GreigeItems = new List<TLADM_Griege>();
-           
+
+            
+
+
             using (var context = new TTI2Entities())
             {
                 cmbCodeSelection.DataSource = context.TLADM_MachineDefinitions.OrderBy(x => x.MD_MachineCode).GroupBy(x=>x.MD_MachineCode).Select(grp=>grp.FirstOrDefault()).ToList();
@@ -207,6 +210,7 @@ namespace TTI2_WF
 
             label5.Visible = false;
             cmbGreigeProductType.Visible = false;
+           
 
             foreach (Administration.CheckComboBoxItem item in cmbGreigeProductType.Items)
             {
@@ -408,12 +412,15 @@ namespace TTI2_WF
                              cmbGreigeProductType.Visible = true;
                              IsKnitting = true;
                          }
-                         else
+                         else 
                          {
                              label5.Visible = false;
                              cmbGreigeProductType.Visible = false;
                          }
-                     }
+
+
+
+                    }
                      using (var context = new TTI2Entities())
                      {
                          var ft = (TLADM_FabricProduct)cmbFabricProdType.SelectedItem;
@@ -649,7 +656,8 @@ namespace TTI2_WF
                                 machdef = new TLADM_MachineDefinitions();
                         }
                     }
-                                               
+                     
+                    
                     //-----------------------------------------------------
                     machdef.MD_AssetRegNo = txtAssetRegNo.Text;
                     machdef.MD_Department_FK = Convert.ToInt32(cmbDepartmentSelect.SelectedValue.ToString());
@@ -664,7 +672,7 @@ namespace TTI2_WF
                     machdef.MD_Realistic = Convert.ToDecimal(txtRealistic.Text);
                     machdef.MD_SerialNo = txtSerialNo.Text;
                     machdef.MD_LastNumberUsed = Int32.Parse(txtLastNumberUsed.Text);
-
+                   
                     if (isKnitting)
                     {
                         var gt = (Administration.CheckComboBoxItem)cmbGreigeProductType.SelectedItem;
@@ -782,8 +790,9 @@ namespace TTI2_WF
                         formloaded = true;
 
                         MeasSelected = core.PopulateArray(MeasElements.Length, false);
-                        SetUp(false);
                         MessageBox.Show(core.SuccessFullTransAction());
+                        SetUp(false);
+
                     }
                     catch (Exception ex)
                     {
@@ -836,7 +845,7 @@ namespace TTI2_WF
                     MandSelected[2] = true;
                     txtMachineCode.Text = Selected.MD_MachineCode;
                     MeasSelected = core.PopulateArray(MeasElements.Length, false);
-
+                    
                     try
                     {
                         cmbDepartmentSelect.SelectedValue = Selected.MD_Department_FK;

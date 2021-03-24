@@ -18,17 +18,13 @@ namespace Cutting
         object[] ColumnHeadings;
         int BatchKey;
 
+        DataTable UpperTable = null;
+        DataTable LowerTable = null;
+
         Util core;
+        UserDetails UDet = null ;
 
-        DataGridViewTextBoxColumn oTxtZA;  // Size index 
-        DataGridViewTextBoxColumn oTxtZB;  // Size 
-        DataGridViewTextBoxColumn oTxtZC;  // Ratio 
-        DataGridViewTextBoxColumn oTxtZD;  // Garments 
-        DataGridViewTextBoxColumn oTxtZE;  // Trims 
-        DataGridViewTextBoxColumn oTxtZF;  // Binding 
-        DataGridViewTextBoxColumn oTxtZG;  // The size power Number 
-        DataGridViewTextBoxColumn oTxtZH;  // The Estimated Weight after binding taken off
-
+      
         DataGridViewTextBoxColumn oTxtA = new DataGridViewTextBoxColumn();   // Primary Key (DYE Batch)          0
         DataGridViewTextBoxColumn oTxtB = new DataGridViewTextBoxColumn();   // Primary Key (Greige Production)  1 
         DataGridViewCheckBoxColumn oChkA = new DataGridViewCheckBoxColumn(); // Check box                        2
@@ -40,7 +36,6 @@ namespace Cutting
         DataGridViewTextBoxColumn oTxtH = new DataGridViewTextBoxColumn();   // K/Order                          9
         DataGridViewTextBoxColumn oTxtJ = new DataGridViewTextBoxColumn();   // Colour;                         10
         DataGridViewTextBoxColumn oTxtK = new DataGridViewTextBoxColumn();   // Grade                           11
-
         DataGridViewTextBoxColumn oTxtL = new DataGridViewTextBoxColumn();   // Piece Remarks     3             12
         DataGridViewTextBoxColumn oTxtR = new DataGridViewTextBoxColumn();   // No 1              4             13
         DataGridViewTextBoxColumn oTxt1 = new DataGridViewTextBoxColumn();   // No 2              5             14
@@ -54,6 +49,7 @@ namespace Cutting
  
         IList<TLADM_ProductRating> prodRatingBody;
         IList<TLADM_ProductRating> prodRatingTrims;
+        BindingSource BindingSrc = null;        
 
         IList<TLADM_Sizes> Listsizes = null;
         IList<TLADM_Trims> Trimsizes = null;
@@ -68,12 +64,15 @@ namespace Cutting
         BindingList<KeyValuePair<int, decimal>> CurrentRatios;
 
                
-        public frmCutSheet()
+        public frmCutSheet(UserDetails ud)
         {
             InitializeComponent();
 
             core = new Util();
 
+
+            UDet = ud;
+            
             ColumnHeadings = new Object[21];
 
             ColumnHeadings[0] = oTxtA;  //  Primary Key (DYE Batch Detail)
@@ -97,7 +96,14 @@ namespace Cutting
             ColumnHeadings[18] = oTxt6; //  measur7
             ColumnHeadings[19] = oTxt7; //  measur8
             ColumnHeadings[20] = oTxt8; //  measur9
+
+            groupBox4.Visible = false;
+            groupBox5.Visible = false;
+
+          
+           
         }
+
 
         private void frmCutSheet_Load(object sender, EventArgs e)
         {
@@ -106,68 +112,114 @@ namespace Cutting
             PrevCSSelected = false;
 
             ChkAccepted.Checked = false;
-       
 
-            oTxtZA = new DataGridViewTextBoxColumn();     // 0  
-            oTxtZA.ValueType = typeof(int);
-            oTxtZA.Visible = false;
-            oTxtZA.ReadOnly = true;
 
-            oTxtZB = new DataGridViewTextBoxColumn();     // 1
-            oTxtZB.HeaderText = "Size";
-            oTxtZB.ValueType = typeof(string);
-            oTxtZB.ReadOnly = true;
+            groupBox5.Visible = false;
+            cmboDownSize.Visible = false;
+            chkDownSize.Visible = false;
+            label22.Visible = false;
 
-            oTxtZC = new DataGridViewTextBoxColumn();     // 2
-            oTxtZC.HeaderText = "Ratio";
-            oTxtZC.ValueType = typeof(string);
-           // oTxtZC.ReadOnly = true;
+            CreateDataStuctures DStructures = new CreateDataStuctures();
 
-            oTxtZD = new DataGridViewTextBoxColumn();     // 3
-            oTxtZD.HeaderText = "Garments";
-            oTxtZD.ValueType = typeof(int);
-            oTxtZD.ReadOnly = true;
+            UpperTable = DStructures.CreateDataTAB1();
 
-            oTxtZE = new DataGridViewTextBoxColumn();      // 4
-            oTxtZE.HeaderText = "Binding(Kg)";
-            oTxtZE.ValueType = typeof(Decimal);
-            oTxtZE.ReadOnly = true;
+            LowerTable = DStructures.CreateDataTAB2();
 
-            oTxtZF = new DataGridViewTextBoxColumn();      // 5
-            oTxtZF.HeaderText = "Trim(Kg)";
-            oTxtZF.ValueType = typeof(Decimal);
-            oTxtZF.ReadOnly = true;
+            DataGridViewTextBoxColumn gc = new DataGridViewTextBoxColumn();     // 0  
+            gc.ValueType = typeof(int);
+            gc.DataPropertyName = LowerTable.Columns[0].ColumnName;
+            gc.Visible = false;
+            gc.ReadOnly = true;
+            this.dataGridView2.Columns.Add(gc);
 
-            oTxtZG = new DataGridViewTextBoxColumn();     //  6
-            oTxtZG.HeaderText = "Power";
-            oTxtZG.Visible = false;
-            oTxtZG.ValueType = typeof(int);
-            oTxtZG.ReadOnly = true;
+            gc = new DataGridViewTextBoxColumn();     // 1
+            gc.HeaderText = "Size";
+            gc.ValueType = typeof(string);
+            gc.DataPropertyName = LowerTable.Columns[1].ColumnName;
+            gc.ReadOnly = true;
+            this.dataGridView2.Columns.Add(gc);
 
-            oTxtZH = new DataGridViewTextBoxColumn();     //  7
-            oTxtZH.HeaderText = "Estimated Nett Kg";
-            oTxtZH.Visible = false;
-            oTxtZH.ValueType = typeof(decimal);
-            oTxtZH.ReadOnly = true;
+            gc = new DataGridViewTextBoxColumn();     // 2
+            gc.HeaderText = "Ratio";
+            gc.ValueType = typeof(decimal);
+            gc.DataPropertyName = LowerTable.Columns[2].ColumnName;
+            this.dataGridView2.Columns.Add(gc);
+            // oTxtZC.ReadOnly = true;
+
+            gc = new DataGridViewTextBoxColumn();     // 3
+            gc.HeaderText = "Garments";
+            gc.ValueType = typeof(int);
+            gc.DataPropertyName = LowerTable.Columns[3].ColumnName;
+            gc.ReadOnly = true;
+            this.dataGridView2.Columns.Add(gc);
+
+            gc = new DataGridViewTextBoxColumn();      // 4
+            gc.HeaderText = "Binding(Kg)";
+            gc.ValueType = typeof(Decimal);
+            gc.DataPropertyName = LowerTable.Columns[4].ColumnName;
+            gc.ReadOnly = true;
+            this.dataGridView2.Columns.Add(gc);
+
+            gc = new DataGridViewTextBoxColumn();      // 5
+            gc.HeaderText = "Trims (Kg)";
+            gc.ValueType = typeof(Decimal);
+            gc.DataPropertyName = LowerTable.Columns[5].ColumnName;
+            gc.ReadOnly = true;
+            this.dataGridView2.Columns.Add(gc);
+
+            gc = new DataGridViewTextBoxColumn();     //  6
+            gc.HeaderText = "Power";
+            gc.Visible = false;
+            gc.ValueType = typeof(int);
+            gc.DataPropertyName = LowerTable.Columns[6].ColumnName;
+            gc.ReadOnly = true;
+            this.dataGridView2.Columns.Add(gc);
+
+            gc = new DataGridViewTextBoxColumn();     //  7
+            gc.HeaderText = "Estimated Nett Kg";
+            gc.Visible = false;
+            gc.ValueType = typeof(decimal);
+            gc.DataPropertyName = LowerTable.Columns[7].ColumnName;
+            gc.ReadOnly = true;
+            this.dataGridView2.Columns.Add(gc);
+
+            gc = new DataGridViewTextBoxColumn();     //  8
+            gc.HeaderText = "Active";
+            gc.Visible = false;
+            gc.ValueType = typeof(Boolean);
+            gc.DataPropertyName = LowerTable.Columns[8].ColumnName;
+            gc.ReadOnly = true;
+            this.dataGridView2.Columns.Add(gc);
+
+            this.dataGridView2.AllowUserToAddRows = false;
+            this.dataGridView2.AutoGenerateColumns = false;
+            this.dataGridView2.AllowUserToOrderColumns = false;
+            this.dataGridView2.AutoGenerateColumns = false;
+
+            this.BindingSrc = new BindingSource();
+            this.BindingSrc.DataSource = LowerTable;
+            this.dataGridView2.DataSource = BindingSrc;
+
+            var idx = -1;
+
+            foreach (DataColumn col in LowerTable.Columns)
+            {
+                if (++idx == 0 || idx > 5)
+                    dataGridView2.Columns[idx].Visible = false;
+                else
+                    dataGridView2.Columns[idx].HeaderText = col.Caption;
+
+            }
+
+            this.dataGridView1.AllowUserToAddRows = false;
+            this.dataGridView1.AutoGenerateColumns = false;
+            this.dataGridView1.AllowUserToOrderColumns = false;
 
             this.dataGridView2.AllowUserToAddRows = false;
             this.dataGridView2.AutoGenerateColumns = false;
             this.dataGridView2.AllowUserToOrderColumns = false;
             this.dataGridView2.EditingControlShowing += new DataGridViewEditingControlShowingEventHandler(dataGridView2_EditingControlShowing);
-            
-            this.dataGridView1.AllowUserToAddRows = false;
-            this.dataGridView1.AutoGenerateColumns = false;
-            this.dataGridView1.AllowUserToOrderColumns = false;
-
-            dataGridView2.Columns.Add(oTxtZA);
-            dataGridView2.Columns.Add(oTxtZB);
-            dataGridView2.Columns.Add(oTxtZC);
-            dataGridView2.Columns.Add(oTxtZD);
-            dataGridView2.Columns.Add(oTxtZE);
-            dataGridView2.Columns.Add(oTxtZF);
-            dataGridView2.Columns.Add(oTxtZG);
-            dataGridView2.Columns.Add(oTxtZH);
-
+                  
             txtNoGarments.Text = "0";
             txtNoBinding.Text = "0";
             txtNoTrims.Text = "0";
@@ -181,17 +233,17 @@ namespace Cutting
             txtTrimRating.KeyDown += core.txtWin_KeyDownOEM;
             txtTrimRating.KeyPress += core.txtWin_KeyPress;
 
-          
             using (var context = new TTI2Entities())
             {
                 Listsizes = context.TLADM_Sizes.Where(x=>!(bool)x.SI_Discontinued).ToList();
                 Trimsizes = context.TLADM_Trims.ToList();
+                txtLastNumber.Text = "Pending";
 
-                var LNU = context.TLADM_LastNumberUsed.Find(4);
+                /*var LNU = context.TLADM_LastNumberUsed.Find(4);
                 if (LNU != null)
                 {
                     txtLastNumber.Text = "CS" + LNU.col1.ToString().PadLeft(5, '0');
-                }
+                }*/
 
                 var h2 = (DataGridViewTextBoxColumn)ColumnHeadings[0];
                 h2.HeaderText = "Primary Key (DYE Batch)";
@@ -319,36 +371,58 @@ namespace Cutting
                 }
             }
 
-          
-
             this.dataGridView1.EditingControlShowing += new DataGridViewEditingControlShowingEventHandler(dataGridView1_EditingControlShowing);
             formloaded = true;
         }
 
-        void SetUp()
+        void SetUp(bool Onload)
         {
             formloaded = false;
-            dataGridView1.Rows.Clear();
-            dataGridView2.Rows.Clear();
+          
 
-            txtNoGarments.Text  = "0";
-            txtNoBinding.Text   = "0";
-            txtNoTrims.Text     = "0";
-            txtQtyKg.Text       = "0.00";
-            txtTrimKg.Text      = "0.00";
-
-            ChkAccepted.Checked = false;
-
-            using (var context = new TTI2Entities())
+            foreach (DataRow row in LowerTable.Rows)
             {
-                var LNU = context.TLADM_LastNumberUsed.Find(4);
-                if (LNU != null)
-                {
-                    txtLastNumber.Text = "CS" + LNU.col1.ToString().PadLeft(5, '0');
-                }
+                row.SetField("Ratio", 0.00M);
+                row.SetField("Garments", 0);
+                row.SetField("Binding", 0.00M);
+                row.SetField("Trims", 0.00M);
+               // row.SetField("Size_Pn", 0);
+                row.SetField("Estimated_Weight", 0.00M);
+                row.SetField("Active", false);
             }
 
-            cmboCutSheet.SelectedValue = -1;
+            txtNoGarments.Text = "0";
+            txtNoBinding.Text = "0.00";
+            txtNoTrims.Text = "0.00";
+            txtQtyKg.Text = "0.00";
+            txtTrimKg.Text = "0.00";
+
+            if (Onload)
+            {
+                label22.Visible = false;
+                chkDownSize.Checked = false;
+                chkDownSize.Visible = false;
+                groupBox5.Visible   = false;
+
+
+                dataGridView1.Rows.Clear();
+
+                ChkAccepted.Checked = false;
+
+
+                txtLastNumber.Text = "Pending";
+                /*using (var context = new TTI2Entities())
+                 {
+                    var LNU = context.TLADM_LastNumberUsed.Find(4);
+                    if (LNU != null)
+                    {
+                        txtLastNumber.Text = "CS" + LNU.col1.ToString().PadLeft(5, '0');
+                    }
+                 }*/
+
+
+                cmboCutSheet.SelectedValue = -1;
+            }
             formloaded = true;
         }
 
@@ -412,8 +486,7 @@ namespace Cutting
             if (sender is Button && formloaded)
             {
                 dataGridView1.Rows.Clear();
-                dataGridView2.Rows.Clear();
-
+            
                 txtNoGarments.Text = "0";
                 txtNoTrims.Text = "0";
                 txtNoBinding.Text = "0";
@@ -490,101 +563,7 @@ namespace Cutting
                         txtCustomer.Text = context.TLADM_CustomerFile.Find(DO.TLDYO_Customer_FK).Cust_Description;
                         txtCustomerOrder.Text = DO.TLDYO_OrderNum;
                         txtDyeBatchNumber.Text = DB.DYEB_BatchNo;
-
-                        /*var OrderDetails = context.TLDYE_DyeOrderDetails.Where(x => x.TLDYOD_DyeOrder_Fk == DO.TLDYO_Pk).ToList();
-                        var cnt = 0;
-                        foreach (var row in OrderDetails)
-                        {
-                            if (row.TLDYOD_BodyOrTrim)
-                            {
-                                if (cnt == 0)
-                                {
-                                    txtQualBody.Text = context.TLADM_Griege.Find(row.TLDYOD_Greige_FK).TLGreige_Description;
-                                    var PRating = context.TLADM_ProductRating.Find(row.TLDYOD_MarkerRating_FK);
-                                    if(PRating != null)
-                                        txtBodyRating.Text = PRating.Pr_numeric_Rating.ToString();
-                                    
-                                    prodRatingBody = context.TLADM_ProductRating.Where(x => x.Pr_Customer_FK == DO.TLDYO_Customer_FK && x.Pr_Style_FK == DO.TLDYO_Style_FK && x.Pr_BodyorRibbing == 1).ToList();
-                                    foreach (var rowx in prodRatingBody)
-                                    {
-                                        StringBuilder description = new StringBuilder();
-                                        List<int> xx = core.ExtrapNumber(rowx.Pr_PowerN, context.TLADM_Sizes.Count());
-                                        // List<int> xx = core.ExtrapNumber(rowx.Pr_PowerN, context.TLADM_Sizes.Where(x=>(bool)!x.SI_Discontinued).Count());
-                                        xx.Sort();
-
-                                        foreach (var rw in xx)
-                                        {
-                                            foreach (var dd in Listsizes)
-                                            {
-                                                if (dd.SI_PowerN == rw)
-                                                {
-                                                    if (description.Length == 0)
-                                                        description.Append(dd.SI_Description);
-                                                    else
-                                                        description.Append(", " + dd.SI_Description);
-                                                }
-                                            }
-                                        }
-
-                                        rowx.Pr_Display = description.ToString();
-                                        formloaded = false;
-                                        cmboRating.Items.Add(rowx);
-                                       
-                                        formloaded = true;
-                                    }
-                                 
-                                }
-                                cmboRating.SelectedValue = row.TLDYOD_MarkerRating_FK;
-                            }
-                            else
-                            {
-                                if (cnt > 0)
-                                {
-                                    if (cnt == 1)
-                                    {
-                                        txtQualTrim1.Text = context.TLADM_Griege.Find(row.TLDYOD_Greige_FK).TLGreige_Description;
-                                    }
-                                    else
-                                    {
-                                        txtQualTrim2.Text = context.TLADM_Griege.Find(row.TLDYOD_Greige_FK).TLGreige_Description;
-                                    }
-
-                                    txtTrimRating.Text = row.TLDYOD_Rating.ToString();
-                                    prodRatingTrims = context.TLADM_ProductRating.Where(x => x.Pr_Id == row.TLDYOD_MarkerRating_FK).ToList();
-                                    foreach (var rowx in prodRatingTrims)
-                                    {
-                                        StringBuilder description = new StringBuilder();
-                                        List<int> xx = core.ExtrapNumber(rowx.Pr_PowerN, context.TLADM_Trims.Count());
-                                        xx.Sort();
-
-                                        foreach (var rw in xx)
-                                        {
-                                            foreach (var dd in Trimsizes)
-                                            {
-                                                if (dd.TR_powerN == rw)
-                                                {
-                                                    if (description.Length == 0)
-                                                        description.Append(dd.TR_Description);
-                                                    else
-                                                        description.Append(", " + dd.TR_Description);
-                                                }
-
-
-                                            }
-                                        }
-
-                                        rowx.Pr_Display = description.ToString();
-                                        cmboRatingTrims.Items.Add(rowx);
-                                    }
-
-                                    cmboRatingTrims.SelectedValue = row.TLDYOD_MarkerRating_FK; 
-                                }
-
-                            }
-                            ++cnt;
-                        }
-                        */
-
+                        
                     }
 
                     // txtColour.Text = context.TLADM_Colours.Find(DB.DYEB_Colour_FK).Col_Display;
@@ -599,39 +578,20 @@ namespace Cutting
                     else
                       DbDetails = context.TLDYE_DyeBatchDetails.Where(x => x.DYEBD_DyeBatch_FK == DB.DYEB_Pk  && x.DYEBO_QAApproved && !x.DYEBO_CutSheet && !x.DYEBO_Sold && !x.DYEBO_WriteOff).OrderByDescending(x=>x.DYEBD_BodyTrim).ToList();
                     
-                    bool first = true;
                     foreach (var dbDetail in DbDetails)
                     {
-                        if (first && dbDetail.DYEBD_BodyTrim)
+                        // We may have situation where a dybatch is spli
+                        if (dbDetail.DYEBO_CutSheet)
                         {
-                            formloaded = false;
-
-                             CurrentRatios = core.ReturnRatios((int)dbDetail.DYEBO_ProductRating_FK);
-
-                            var Sizes = context.TLADM_Sizes.Where(x=>(bool)!x.SI_Discontinued).OrderBy(x=>x.SI_DisplayOrder).ToList();
-                            foreach (var Size in Sizes)
+                            var tst = (from CSD in context.TLCUT_CutSheetDetail
+                                       join DBD in context.TLDYE_DyeBatchDetails
+                                       on CSD.TLCutSHD_DyeBatchDet_FK equals DBD.DYEBD_Pk
+                                       where CSD.TLCutSHD_DyeBatchDet_FK == dbDetail.DYEBD_Pk 
+                                       select CSD).FirstOrDefault();
+                            if (tst == null)
                             {
-                                var SizeIndex = dataGridView2.Rows.Add();
-                                dataGridView2.Rows[SizeIndex].Cells[0].Value = Size.SI_id;
-                                dataGridView2.Rows[SizeIndex].Cells[1].Value = Size.SI_Description;
-                                dataGridView2.Rows[SizeIndex].Cells[2].Value = String.Empty;
-                              
-                                foreach (var row in CurrentRatios)
-                                {
-                                    if (row.Key == Size.SI_id)
-                                    {
-                                        dataGridView2.Rows[SizeIndex].Cells[2].Value = row.Value.ToString();
-                                        dataGridView2.Rows[SizeIndex].Cells[3].Value = 0; // row.Value.ToString();
-                                        dataGridView2.Rows[SizeIndex].Cells[4].Value = 0; // row.Value.ToString();
-                                        dataGridView2.Rows[SizeIndex].Cells[5].Value = 0; // row.Value.ToString();
-                                        dataGridView2.Rows[SizeIndex].Cells[6].Value = Size.SI_PowerN; // row.Value.ToString();
-                                        dataGridView2.Rows[SizeIndex].Cells[7].Value = 0.00M; // row.Value.ToString();
-                                    }
-                                }
+                                continue;
                             }
-                            
-                            formloaded = true;
-                            first = !first;
                         }
                         // Knitting Production
                         var GP = context.TLKNI_GreigeProduction.Find(dbDetail.DYEBD_GreigeProduction_FK);
@@ -662,7 +622,7 @@ namespace Cutting
 
                             dataGridView1.Rows[DetIndex].Cells[9].Value = "Greige";
                             dataGridView1.Rows[DetIndex].Cells[10].Value = GP.GreigeP_Grade;
-                            dataGridView1.Rows[DetIndex].Cells[11].Value = GP.GreigeP_Remarks;
+                            dataGridView1.Rows[DetIndex].Cells[11].Value = GP.GreigeP_Remarks + " " + dbDetail.DYEBO_Notes;
                             dataGridView1.Rows[DetIndex].Cells[12].Value = GP.GreigeP_Meas1;
                             dataGridView1.Rows[DetIndex].Cells[13].Value = GP.GreigeP_Meas2;
                             dataGridView1.Rows[DetIndex].Cells[14].Value = GP.GreigeP_Meas3;
@@ -704,7 +664,7 @@ namespace Cutting
                                  //------------------------------------------------------------------
                                  var Yield = core.FabricYield(dbd.DYEBO_DiskWeight, dbd.DYEBO_Width);
                                  
-                                 if (Yield == 0)
+                                 if (Yield <= 0)
                                  {
                                      MessageBox.Show("Yield Factor is incorrect", "Error Message Fabric Weight " + dbd.DYEBO_DiskWeight.ToString() + " Fabric Width " + dbd.DYEBO_Width.ToString());
                                      return;
@@ -741,6 +701,11 @@ namespace Cutting
                                  {
                                      BindWeight = NettWeight * ISBinding.Pr_numeric_Rating;
                                      NettWeight -= BindWeight;
+                                    if(NettWeight <= 0)
+                                    {
+                                        MessageBox.Show("Warning Product Rating table may not have been set up correctly", "Error - Binding Weight", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                                        return; 
+                                    }
                                  }
 
                                  var ISTrim = (from stytrim in context.TLADM_StyleTrim
@@ -751,8 +716,13 @@ namespace Cutting
                                  
                                  if (ISTrim != null)
                                  {
-                                     TrimWeight = dbd.DYEBO_Nett * ISTrim.Pr_numeric_Rating;
-                                 }
+                                    TrimWeight = dbd.DYEBO_Nett * ISTrim.Pr_numeric_Rating;
+                                    if(TrimWeight <= 0)
+                                    {
+                                        MessageBox.Show("Warning Product Rating table may not have been set up correctly", "Error - Trim Weight  ", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                                        return;
+                                    }
+                                }
 
                                // select trims.TR_Description , pr.Pr_numeric_Rating 
                                // from TLADM_StyleTrim strim
@@ -762,11 +732,22 @@ namespace Cutting
                                // on pr.Pr_Id = strim.StyTrim_ProdRating_FK 
                                // where trims.TR_IsBinding = 1 and strim.StyTrim_Styles_Fk = 34
                                //-------------------------------------------------
-                                 var ProdFK = dbd.DYEBO_ProductRating_FK;
- 
-                                 var Rating = context.TLADM_ProductRating.Find(ProdFK).Pr_numeric_Rating;
-                                 var TotalQtyKg = Convert.ToDecimal(txtQtyKg.Text);
-                                 var NoOfGarments = Convert.ToDecimal(txtNoGarments.Text);
+                                var ProdFK = dbd.DYEBO_ProductRating_FK;
+                                var Rating = 0.0M;
+                                var RatingDetails = context.TLADM_ProductRating.Find(ProdFK);
+                                if(RatingDetails == null)
+                                {
+                                    MessageBox.Show("No Rating Details found for Style selected");
+                                    return;
+
+                                }
+
+                                Rating = RatingDetails.Pr_numeric_Rating;
+                                Decimal TotalQtyKg = 0.00M;
+                                Decimal.TryParse(txtQtyKg.Text, out TotalQtyKg);
+                                // var TotalQtyKg = Decimal.Parse(txtQtyKg.Text);
+                                var NoOfGarments = Convert.ToDecimal(txtNoGarments.Text);
+
 
                                  if (e.ColumnIndex != 9999)
                                  {
@@ -781,12 +762,14 @@ namespace Cutting
                                      }
                                      else
                                      {
-                                         dbd.DYEBO_CutSheet = false;
+                                       
+                                            dbd.DYEBO_CutSheet = false;
 
-                                         CurrentRow.Cells[4].ReadOnly = false;
-                                         NoOfGarments -= Math.Round(Yield / Rating * NettWeight /*dbd.DYEBO_Nett*/, 0);
-                                         txtQtyKg.Text = (TotalQtyKg - dbd.DYEBO_Nett).ToString();
-                                         txtNoGarments.Text = NoOfGarments.ToString();
+                                            CurrentRow.Cells[4].ReadOnly = false;
+                                            NoOfGarments -= Math.Round(Yield / Rating * NettWeight /*dbd.DYEBO_Nett*/, 0);
+                                            txtQtyKg.Text = (TotalQtyKg - dbd.DYEBO_Nett).ToString();
+                                            txtNoGarments.Text = NoOfGarments.ToString();
+                                       
                                      }
                                  }
                                  else
@@ -799,62 +782,59 @@ namespace Cutting
                                  
                                  var Factor = Math.Round(Yield / Rating * NettWeight, 0);
                                  var tst = core.CalculateRatios(ProdFK, (int)Factor);
-                                 foreach (DataGridViewRow dr in dataGridView2.Rows)
-                                 {
-                                     foreach (var row in tst)
-                                     {
-                                         if ((int)dr.Cells[0].Value == row.Key)
-                                         {
-                                             decimal EstKg = 0.00M;
-                                             decimal BindKg = 0.00M;
-                                             decimal TrimKg = 0.00M;
 
-                                             if (row.Value != 0 && Yield != 0)
-                                             {
-                                                 EstKg = Math.Round(NettWeight * (row.Value / Factor), 2);
-                                                 BindKg = Math.Round(BindWeight * (row.Value / Factor), 2);
-                                                 TrimKg = Math.Round(TrimWeight * (row.Value / Factor), 2);
-                                             }
-                                             
-                                             if (dr.Cells[3].Value == null)
-                                             {
-                                                 dr.Cells[3].Value = row.Value;
-                                                 dr.Cells[4].Value = BindKg;
-                                                 txtNoBinding.Text = (Convert.ToDecimal(txtNoBinding.Text.ToString()) + BindKg).ToString();
-                                                 dr.Cells[5].Value = TrimKg;
-                                                 txtNoTrims.Text = (Convert.ToDecimal(txtNoTrims.Text.ToString()) + TrimKg).ToString();
-                                                 dr.Cells[7].Value = EstKg;
-                                             }
-                                             else
-                                             {
-                                                 if ((bool)oDgv.CurrentCell.EditedFormattedValue)
-                                                 {
-                                                    dr.Cells[3].Value = int.Parse(dr.Cells[3].Value.ToString()) + row.Value;
-                                                    dr.Cells[4].Value = Decimal.Parse(dr.Cells[4].Value.ToString()) + BindKg;
-                                                    txtNoBinding.Text = (Convert.ToDecimal(txtNoBinding.Text.ToString()) + BindKg).ToString();
-                                                    dr.Cells[5].Value = Decimal.Parse(dr.Cells[5].Value.ToString()) + TrimKg;
-                                                    txtNoTrims.Text = (Convert.ToDecimal(txtNoTrims.Text.ToString()) + TrimKg).ToString();
-                                                    if (dr.Cells[7].Value == null)
-                                                        dr.Cells[7].Value = 0.00M;
-                                                    dr.Cells[7].Value = Decimal.Parse(dr.Cells[7].Value.ToString()) + EstKg;
-                                                  }
-                                                  else
-                                                  {
-                                                     dr.Cells[3].Value = int.Parse(dr.Cells[3].Value.ToString()) - row.Value;
-                                                     dr.Cells[4].Value = Decimal.Parse(dr.Cells[4].Value.ToString()) - BindKg;
-                                                     txtNoBinding.Text = (Convert.ToDecimal(txtNoBinding.Text.ToString()) - BindKg).ToString();
-                                                     dr.Cells[5].Value = Decimal.Parse(dr.Cells[5].Value.ToString()) - TrimKg;
-                                                     txtNoTrims.Text = (Convert.ToDecimal(txtNoTrims.Text.ToString()) - TrimKg).ToString();
-                                                     if (dr.Cells[7].Value == null)
-                                                         dr.Cells[7].Value = 0.00M;
+                                decimal EstKg = 0.00M;
+                                decimal BindKg = 0.00M;
+                                decimal TrimKg = 0.00M;
 
-                                                     dr.Cells[7].Value = Decimal.Parse(dr.Cells[7].Value.ToString()) - EstKg;
-                                                  }
-                                                 
-                                             }
-                                         }
-                                     }
-                                 }
+                                foreach(var row in tst)
+                                {
+                                    var TableRow = LowerTable.Rows.Find(row.Key);
+
+                                    if(TableRow != null)
+                                    {
+                                        EstKg = Math.Round(NettWeight * (row.Value / Factor), 2);
+                                        BindKg = Math.Round(BindWeight * (row.Value / Factor), 2);
+                                        TrimKg = Math.Round(TrimWeight * (row.Value / Factor), 2);
+
+                                        
+                                        if ((bool)oDgv.CurrentCell.EditedFormattedValue)
+                                        {
+                                            TableRow[2] = RatingDetails.Pr_Ratio;
+                                            TableRow[3] = TableRow.Field<Int32>(3) + row.Value;
+                                            TableRow[4] = TableRow.Field<Decimal>(4) + BindKg;
+                                            TableRow[5] = TableRow.Field<Decimal>(5) + TrimKg;
+                                            TableRow[6] = TableRow.Field<Int32>(6);
+                                            TableRow[7] = TableRow.Field<decimal>(7) + EstKg;
+                                            TableRow[8] = true;
+                                        }
+                                        else
+                                        {
+                                            TableRow[3] = TableRow.Field<Int32>(3) - row.Value;
+                                            TableRow[4] = TableRow.Field<Decimal>(4) - BindKg;
+                                            TableRow[5] = TableRow.Field<Decimal>(5) - TrimKg;
+                                            TableRow[7] = TableRow.Field<Decimal>(7) - EstKg;
+                                            if(TableRow.Field<Int32>(3) == 0)
+                                            {
+                                                TableRow[8] = false;
+                                            }
+                                        }
+                                    }
+                                }
+
+                                var sum = LowerTable.AsEnumerable()
+                                         .Sum(r => r.Field<decimal>(4));
+                                txtNoBinding.Text = sum.ToString();
+
+                                sum = LowerTable.AsEnumerable()
+                                         .Sum(r => r.Field<decimal>(5));
+                                txtNoTrims.Text = sum.ToString();
+
+                                sum = LowerTable.AsEnumerable()
+                                         .Sum(r => r.Field<decimal>(7));
+                                txtQtyKg.Text = sum.ToString();
+                                
+                               
                              }
                              else
                              {
@@ -865,7 +845,9 @@ namespace Cutting
                                  {
                                      if ((bool)oDgv.CurrentCell.EditedFormattedValue)
                                      {
-                                         var CurrentTotal = decimal.Parse(txtTrimKg.Text.ToString());
+                                        Decimal CurrentTotal = 0.00M;
+                                        Decimal.TryParse(txtTrimKg.Text, out CurrentTotal);
+                                        //var CurrentTotal = decimal.Parse(txtTrimKg.Text.ToString());
                                          txtTrimKg.Text = (Math.Round(CurrentTotal + dbd.DYEBO_Nett, 1)).ToString();
                                      }
                                      else
@@ -935,9 +917,8 @@ namespace Cutting
                                 cutSheet = new TLCUT_CutSheet();
                         }
                     }
-                    
+                                       
                     cutSheet.TLCutSH_Date = DateTime.Now;
-                    cutSheet.TLCutSH_No = txtLastNumber.Text;
                     cutSheet.TLCutSH_DyeBatch_FK = BatchKey;
                     cutSheet.TLCutSH_Notes = rtbNotes.Text;
                     cutSheet.TLCutSH_Size_PN = 0;
@@ -961,26 +942,35 @@ namespace Cutting
                     //This takes care of the Size variable;
                     //-------------------------------------------------------
                     bool lFirst = true;
-                    foreach (DataGridViewRow row in dataGridView2.Rows)
+                    foreach (DataRow Row in LowerTable.Rows)
                     {
-                        if (!String.IsNullOrEmpty(row.Cells[2].Value.ToString()))
+                        if(!Row.Field<Boolean>(8))
                         {
-                            if (lFirst)
-                            {
-                                lFirst = !lFirst;
-                                cutSheet.TLCutSH_Size_FK = (int)row.Cells[0].Value;
-                            }
-                            cutSheet.TLCutSH_Size_PN += (int)row.Cells[6].Value;
+                            continue;     
                         }
+
+                        if (lFirst)
+                        {
+                            lFirst = !lFirst;
+                            cutSheet.TLCutSH_Size_FK = Row.Field<Int32>(0);
+                        }
+
+                        cutSheet.TLCutSH_Size_PN += Row.Field<Int32>(6);
+                    
                     }
 
                     if (!PrevCSSelected)
                     {
-                        context.TLCUT_CutSheet.Add(cutSheet);
-
+                        cutSheet.TLCutSH_No = String.Empty;
                         var LNU = context.TLADM_LastNumberUsed.Find(4);
                         if (LNU != null)
+                        {
+                            cutSheet.TLCutSH_No = "CS" + LNU.col1.ToString().PadLeft(5, '0');
                             LNU.col1 += 1;
+                        }
+                        context.TLCUT_CutSheet.Add(cutSheet);
+
+                     
                     }
                     else
                     {
@@ -1036,31 +1026,39 @@ namespace Cutting
                             if (Add)
                                context.TLCUT_CutSheetDetail.Add(cutSheetDetail);
                         }
-
-                        foreach (DataGridViewRow row in dataGridView2.Rows)
+                        
+                        foreach (DataRow Row in LowerTable.Rows)
                         {
-                            bool Add = true;
-                            if (!String.IsNullOrEmpty(row.Cells[2].Value.ToString()))
+                            var lAdd = true;
+
+                            if (!Row.Field<Boolean>(8))
                             {
-                                TLCUT_ExpectedUnits eUnits = new TLCUT_ExpectedUnits();
-                                if (PrevCSSelected && selected != null)
+                                continue;
+                            }
+                            var sz = Row.Field<Int32>(0);
+                            TLCUT_ExpectedUnits eUnits = new TLCUT_ExpectedUnits();
+                            if(PrevCSSelected)
+                            {
+                                eUnits = context.TLCUT_ExpectedUnits.Where(x => x.TLCUTE_CutSheet_FK == selected.TLCutSH_Pk && x.TLCUTE_Size_FK == sz).FirstOrDefault();
+                                if (eUnits != null)
                                 {
-                                    var sz = (int)row.Cells[0].Value;
-                                    eUnits = context.TLCUT_ExpectedUnits.Where(x => x.TLCUTE_CutSheet_FK == selected.TLCutSH_Pk && x.TLCUTE_Size_FK == sz).FirstOrDefault();
-                                    if (eUnits == null)
-                                        eUnits = new TLCUT_ExpectedUnits();
-                                    else
-                                        Add = false;
+                                    lAdd = false;
                                 }
-                                eUnits.TLCUTE_CutSheet_FK = cutSheet.TLCutSH_Pk;
-                                eUnits.TLCUTE_Size_FK = (int)row.Cells[0].Value;
-                                eUnits.TLCUTE_MarkerRatio = Convert.ToDecimal(row.Cells[2].Value.ToString());
-                                eUnits.TLCUTE_NoofGarments = (Int32)row.Cells[3].Value;
-                                eUnits.TLCUTE_NoOfBinding = decimal.Parse(row.Cells[4].Value.ToString());
-                                eUnits.TLCUTE_NoOfTrims = decimal.Parse(row.Cells[5].Value.ToString());
-                                eUnits.TLCUTE_EstNettWeight = decimal.Parse(row.Cells[7].Value.ToString());
-                                if(Add)
-                                   context.TLCUT_ExpectedUnits.Add(eUnits);
+                                else
+                                {
+                                    eUnits = new TLCUT_ExpectedUnits();
+                                }
+                            }
+                            eUnits.TLCUTE_CutSheet_FK = cutSheet.TLCutSH_Pk;
+                            eUnits.TLCUTE_Size_FK = sz;
+                            eUnits.TLCUTE_MarkerRatio = Row.Field<decimal>(2);
+                            eUnits.TLCUTE_NoofGarments = Row.Field<Int32>(3);
+                            eUnits.TLCUTE_NoOfBinding =  Row.Field<decimal>(4);
+                            eUnits.TLCUTE_NoOfTrims = Row.Field<Decimal>(5);
+                            eUnits.TLCUTE_EstNettWeight = Row.Field<decimal>(7);
+                            if (lAdd)
+                            {
+                                context.TLCUT_ExpectedUnits.Add(eUnits);
                             }
                         }
 
@@ -1073,16 +1071,25 @@ namespace Cutting
                             int w = Screen.PrimaryScreen.WorkingArea.Width;
                             vRep.ClientSize = new Size(w, h);
                             vRep.ShowDialog(this);
-
+                            if (vRep != null)
+                            {
+                                vRep.Close();
+                                vRep.Dispose();
+                            }
                             vRep = new frmCutViewRep(2, cutSheet.TLCutSH_Pk);
                             h = Screen.PrimaryScreen.WorkingArea.Height;
                             w = Screen.PrimaryScreen.WorkingArea.Width;
                             vRep.ClientSize = new Size(w, h);
                             vRep.ShowDialog(this);
+                            if (vRep != null)
+                            {
+                                vRep.Close();
+                                vRep.Dispose();
+                            }
                         }
 
                         MessageBox.Show("Data saved successfully to database");
-                        SetUp();
+                        SetUp(true);
                     }
                     catch (System.Data.Entity.Validation.DbEntityValidationException en)
                     {
@@ -1100,7 +1107,6 @@ namespace Cutting
                         MessageBox.Show(ex.Message);
                     }
                 }
-                        
             }
         }
 
@@ -1162,18 +1168,45 @@ namespace Cutting
                 if (selected != null)
                 {
                     dataGridView1.Rows.Clear();
-                    dataGridView2.Rows.Clear();
-
-                    cmboDepartment.SelectedValue = selected.TLCutSH_Department_FK;
-
-                    txtNoBinding.Text = "0";
-                    txtNoGarments.Text = "0";
-                    txtNoTrims.Text = "0";
-
-                    GetDyeBatch(selected.TLCutSH_DyeBatch_FK, true);
-
+                    LowerTable.Rows.Clear();
                     using (var context = new TTI2Entities())
                     {
+                        var AvailSizes = context.TLADM_Sizes.Where(x => (bool)!x.SI_Discontinued).OrderBy(x => x.SI_DisplayOrder).ToList();
+                        foreach (var Size in AvailSizes)
+                        {
+                            DataRow dr = LowerTable.NewRow();
+
+                            dr[0] = Size.SI_id;
+                            dr[1] = Size.SI_Description;
+                            dr[2] = 0.00M;
+                            dr[3] = 0; // row.Value.ToString();
+                            dr[4] = 0.00M; // row.Value.ToString();
+                            dr[5] = 0.00M; // row.Value.ToString();
+                            dr[6] = Size.SI_PowerN; // row.Value.ToString();
+                            dr[7] = 0.00M; // row.Value.ToString();
+                            dr[8] = false;
+                            LowerTable.Rows.Add(dr);
+                        }
+
+                       
+
+                        groupBox5.Visible = false;
+                        chkDownSize.Checked = false;
+
+                        if(UDet._SuperUser || UDet._DownSizeAuthority)
+                        {
+                            chkDownSize.Visible = true;
+                        }
+
+                        cmboDepartment.SelectedValue = selected.TLCutSH_Department_FK;
+
+                        txtNoBinding.Text = "0";
+                        txtNoGarments.Text = "0";
+                        txtNoTrims.Text = "0";
+
+                        GetDyeBatch(selected.TLCutSH_DyeBatch_FK, true);
+
+                    
                         foreach (DataGridViewRow Row in dataGridView1.Rows)
                         {
                             int Pk = (int)Row.Cells[0].Value; 
@@ -1220,6 +1253,112 @@ namespace Cutting
             }
         }
 
-       
-   }
+        private void chkDownSize_CheckedChanged(object sender, EventArgs e)
+        {
+            CheckBox oChk = (CheckBox)sender;
+            if (oChk != null && formloaded)
+            {
+                if (oChk.Checked)
+                {
+                    using (  var context = new TTI2Entities())
+                    {
+                        var CutSh = (TLCUT_CutSheet)cmboCutSheet.SelectedItem;
+                        if(CutSh != null)
+                        {
+                            var EU = context.TLCUT_ExpectedUnits.Where(x => x.TLCUTE_CutSheet_FK == CutSh.TLCutSH_Pk).Count();
+                            if(EU > 1)
+                            {
+                                MessageBox.Show("This CutSheet is a multi marker and therefore this option is not available");
+                                return;
+                            }
+
+                            formloaded = false;
+                            var Sizes = context.TLADM_Sizes.Where(x => !x.SI_Discontinued && x.SI_id != CutSh.TLCutSH_Size_FK).OrderBy(x=>x.SI_DisplayOrder).ToList();
+                            
+                            cmboDownSize.DataSource = Sizes;
+                            cmboDownSize.DisplayMember =  "SI_Description";
+                            cmboDownSize.ValueMember = "SI_Id";
+                            formloaded = true;
+
+                            groupBox5.Visible = true;
+                            label22.Visible = true;
+                            cmboDownSize.Visible = true;
+                            cmboDownSize.Enabled = true;
+                        }
+                    }
+                }
+                else
+                {
+                    label22.Visible = false;
+                    cmboDownSize.Visible = false; 
+                }
+            }
+        }
+
+        private void cmboDownSize_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ComboBox oCmbo = sender as ComboBox;
+            var OriginalSize_Fk = 0;
+
+            TLADM_ProductRating MarkerRating = null;
+
+            if(oCmbo != null && formloaded)
+            {
+                var CSheet = (TLCUT_CutSheet)cmboCutSheet.SelectedItem;
+                var Size = (TLADM_Sizes)oCmbo.SelectedItem;
+
+                using ( var context = new TTI2Entities())
+                {
+                    MarkerRating = context.TLADM_ProductRating.Where(x => x.Pr_Style_FK == CSheet.TLCutSH_Styles_FK && x.Pr_PowerN  == Size.SI_PowerN).FirstOrDefault();
+                    if(MarkerRating == null)
+                    {
+                        MessageBox.Show("There is no valid Product rating for this Style and Size");
+                        return;
+                    }
+
+                    SetUp(false);
+                    var CS = context.TLCUT_CutSheet.Find(CSheet.TLCutSH_Pk);
+                    if(CS != null)
+                    {
+                        OriginalSize_Fk = CSheet.TLCutSH_Size_FK;
+
+                        CSheet.TLCutSH_Size_FK = Size.SI_id;
+                        CSheet.TLCutSH_Size_PN = Size.SI_PowerN;
+
+                        CS.TLCutSH_Size_FK = Size.SI_id;
+                        CS.TLCutSH_Size_PN = Size.SI_PowerN; 
+                    }
+
+                    foreach(DataGridViewRow Row in dataGridView1.Rows)
+                    {
+                        if(!(bool)Row.Cells[2].Value)
+                        {
+                            continue;
+                        }
+
+                        var Pk = (int)Row.Cells[0].Value;
+
+                        var DyeBatchDetail = context.TLDYE_DyeBatchDetails.Find(Pk);
+
+                        if(DyeBatchDetail != null)
+                        {
+                            DyeBatchDetail.DYEBO_ProductRating_FK = MarkerRating.Pr_Id;
+                            context.SaveChanges();
+
+                            DataGridViewCellEventArgs ee = new DataGridViewCellEventArgs(9999, Pk);
+                            dataGridView1_CellContentClick(dataGridView1, ee);
+
+                        }
+                    }
+
+                    context.SaveChanges();
+                }
+            }
+        }
+
+        private void cmboLabels_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+    }
 }

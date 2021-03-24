@@ -27,5 +27,6 @@ namespace Utilities
         public bool Col_Benchmark { get; set; }
         public bool Col_Added_InSession { get; set; }
         public bool Col_Removed_InSession { get; set; }
+        public Nullable<bool> Col_Padding { get; set; }
     }
 }

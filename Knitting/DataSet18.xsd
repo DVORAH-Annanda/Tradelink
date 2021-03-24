@@ -258,6 +258,7 @@ SELECT MD_Pk, MD_MachineCode, MD_Description FROM TLADM_MachineDefinitions WHERE
               <xs:element name="KnitO_Machine_FK" msprop:Generator_ColumnVarNameInTable="columnKnitO_Machine_FK" msprop:Generator_ColumnPropNameInRow="KnitO_Machine_FK" msprop:Generator_ColumnPropNameInTable="KnitO_Machine_FKColumn" msprop:Generator_UserColumnName="KnitO_Machine_FK" type="xs:int" />
               <xs:element name="KnitO_OrderDate" msprop:Generator_ColumnVarNameInTable="columnKnitO_OrderDate" msprop:Generator_ColumnPropNameInRow="KnitO_OrderDate" msprop:Generator_ColumnPropNameInTable="KnitO_OrderDateColumn" msprop:Generator_UserColumnName="KnitO_OrderDate" type="xs:dateTime" />
               <xs:element name="KnitO_OrderNumber" msprop:Generator_ColumnVarNameInTable="columnKnitO_OrderNumber" msprop:Generator_ColumnPropNameInRow="KnitO_OrderNumber" msprop:Generator_ColumnPropNameInTable="KnitO_OrderNumberColumn" msprop:Generator_UserColumnName="KnitO_OrderNumber" type="xs:int" />
+              <xs:element name="KnitO_DskWeight" msprop:Generator_ColumnVarNameInTable="columnKnitO_DskWeight" msprop:Generator_ColumnPropNameInRow="KnitO_DskWeight" msprop:Generator_ColumnPropNameInTable="KnitO_DskWeightColumn" msprop:Generator_UserColumnName="KnitO_DskWeight" type="xs:decimal" minOccurs="0" />
             </xs:sequence>
           </xs:complexType>
         </xs:element>
@@ -272,6 +273,7 @@ SELECT MD_Pk, MD_MachineCode, MD_Description FROM TLADM_MachineDefinitions WHERE
                   </xs:restriction>
                 </xs:simpleType>
               </xs:element>
+              <xs:element name="TLGreige_DskWeight" msprop:Generator_ColumnVarNameInTable="columnTLGreige_DskWeight" msprop:Generator_ColumnPropNameInRow="TLGreige_DskWeight" msprop:Generator_ColumnPropNameInTable="TLGreige_DskWeightColumn" msprop:Generator_UserColumnName="TLGreige_DskWeight" type="xs:decimal" minOccurs="0" />
             </xs:sequence>
           </xs:complexType>
         </xs:element>

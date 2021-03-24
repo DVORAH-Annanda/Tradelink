@@ -172,7 +172,11 @@ namespace Cutting
                                 int w = Screen.PrimaryScreen.WorkingArea.Width;
                                 vRepx.ClientSize = new Size(w, h);
                                 vRepx.ShowDialog();
-                               
+                                if (vRepx != null)
+                                {
+                                    vRepx.Close();
+                                    vRepx.Dispose();
+                                }
 
                             }
                         }

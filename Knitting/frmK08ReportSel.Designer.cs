@@ -51,6 +51,8 @@
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.rbExcludeCommission = new System.Windows.Forms.RadioButton();
             this.chkQASummary = new System.Windows.Forms.CheckBox();
+            this.rbQA7 = new System.Windows.Forms.RadioButton();
+            this.rbQA8 = new System.Windows.Forms.RadioButton();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -169,6 +171,8 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.rbQA8);
+            this.groupBox1.Controls.Add(this.rbQA7);
             this.groupBox1.Controls.Add(this.rbQA6);
             this.groupBox1.Controls.Add(this.rbQA5);
             this.groupBox1.Controls.Add(this.rbQA4);
@@ -177,7 +181,7 @@
             this.groupBox1.Controls.Add(this.rbQA1);
             this.groupBox1.Location = new System.Drawing.Point(74, 344);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(603, 100);
+            this.groupBox1.Size = new System.Drawing.Size(619, 145);
             this.groupBox1.TabIndex = 12;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Report Sort Options";
@@ -186,7 +190,7 @@
             // 
             this.rbQA6.AutoSize = true;
             this.rbQA6.Enabled = false;
-            this.rbQA6.Location = new System.Drawing.Point(286, 66);
+            this.rbQA6.Location = new System.Drawing.Point(301, 66);
             this.rbQA6.Name = "rbQA6";
             this.rbQA6.Size = new System.Drawing.Size(313, 17);
             this.rbQA6.TabIndex = 5;
@@ -198,7 +202,7 @@
             // 
             this.rbQA5.AutoSize = true;
             this.rbQA5.Enabled = false;
-            this.rbQA5.Location = new System.Drawing.Point(286, 43);
+            this.rbQA5.Location = new System.Drawing.Point(301, 43);
             this.rbQA5.Name = "rbQA5";
             this.rbQA5.Size = new System.Drawing.Size(196, 17);
             this.rbQA5.TabIndex = 4;
@@ -209,7 +213,7 @@
             // rbQA4
             // 
             this.rbQA4.AutoSize = true;
-            this.rbQA4.Location = new System.Drawing.Point(286, 19);
+            this.rbQA4.Location = new System.Drawing.Point(301, 19);
             this.rbQA4.Name = "rbQA4";
             this.rbQA4.Size = new System.Drawing.Size(161, 17);
             this.rbQA4.TabIndex = 3;
@@ -252,7 +256,7 @@
             // 
             // btnReport
             // 
-            this.btnReport.Location = new System.Drawing.Point(612, 471);
+            this.btnReport.Location = new System.Drawing.Point(618, 505);
             this.btnReport.Name = "btnReport";
             this.btnReport.Size = new System.Drawing.Size(75, 23);
             this.btnReport.TabIndex = 13;
@@ -291,11 +295,35 @@
             this.chkQASummary.Text = "QA Summary";
             this.chkQASummary.UseVisualStyleBackColor = true;
             // 
+            // rbQA7
+            // 
+            this.rbQA7.AutoSize = true;
+            this.rbQA7.Enabled = false;
+            this.rbQA7.Location = new System.Drawing.Point(301, 89);
+            this.rbQA7.Name = "rbQA7";
+            this.rbQA7.Size = new System.Drawing.Size(203, 17);
+            this.rbQA7.TabIndex = 6;
+            this.rbQA7.TabStop = true;
+            this.rbQA7.Text = "QA Details by Merge Details Summary";
+            this.rbQA7.UseVisualStyleBackColor = true;
+            // 
+            // rbQA8
+            // 
+            this.rbQA8.AutoSize = true;
+            this.rbQA8.Enabled = false;
+            this.rbQA8.Location = new System.Drawing.Point(301, 113);
+            this.rbQA8.Name = "rbQA8";
+            this.rbQA8.Size = new System.Drawing.Size(193, 17);
+            this.rbQA8.TabIndex = 16;
+            this.rbQA8.TabStop = true;
+            this.rbQA8.Text = "QA Details by Merge Details - Detail";
+            this.rbQA8.UseVisualStyleBackColor = true;
+            // 
             // frmK08ReportSel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(726, 506);
+            this.ClientSize = new System.Drawing.Size(726, 549);
             this.Controls.Add(this.chkQASummary);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.btnReport);
@@ -314,6 +342,7 @@
             this.Controls.Add(this.label1);
             this.Name = "frmK08ReportSel";
             this.Text = "QA Reports for Greige";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmK08ReportSel_FormClosing);
             this.LocationChanged += new System.EventHandler(this.FormLoad);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
@@ -353,5 +382,7 @@
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.RadioButton rbExcludeCommission;
         private System.Windows.Forms.CheckBox chkQASummary;
+        private System.Windows.Forms.RadioButton rbQA8;
+        private System.Windows.Forms.RadioButton rbQA7;
     }
 }

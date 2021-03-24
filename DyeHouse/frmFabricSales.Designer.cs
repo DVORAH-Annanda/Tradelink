@@ -37,7 +37,7 @@
             this.label4 = new System.Windows.Forms.Label();
             this.txtOrderNumber = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.cmboGreige = new System.Windows.Forms.ComboBox();
+            this.cmboGreige = new DyeHouse.CheckComboBox();
             this.label5 = new System.Windows.Forms.Label();
             this.rbRejectStore = new System.Windows.Forms.RadioButton();
             this.rbFabricStore = new System.Windows.Forms.RadioButton();
@@ -132,11 +132,14 @@
             // 
             // cmboGreige
             // 
+            this.cmboGreige.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
             this.cmboGreige.FormattingEnabled = true;
             this.cmboGreige.Location = new System.Drawing.Point(164, 37);
             this.cmboGreige.Name = "cmboGreige";
             this.cmboGreige.Size = new System.Drawing.Size(183, 21);
             this.cmboGreige.TabIndex = 3;
+            this.cmboGreige.Text = "Select Options";
+            this.cmboGreige.SelectedIndexChanged += new System.EventHandler(this.cmboGreige_SelectedIndexChanged);
             // 
             // label5
             // 
@@ -231,7 +234,8 @@
         private System.Windows.Forms.RadioButton rbFabricStore;
         private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.DataGridView dataGridView1;
-        private System.Windows.Forms.ComboBox cmboGreige;
+        // private System.Windows.Forms.ComboBox cmboGreige;
+        private DyeHouse.CheckComboBox cmboGreige;
         private System.Windows.Forms.Label label5;
     }
 }

@@ -151,6 +151,7 @@ SELECT WhStore_Id, WhStore_Code, WhStore_Description FROM TLADM_WhseStore WHERE 
               <xs:element name="YarnOrderNo" msprop:Generator_ColumnVarNameInTable="columnYarnOrderNo" msprop:Generator_ColumnPropNameInRow="YarnOrderNo" msprop:Generator_ColumnPropNameInTable="YarnOrderNoColumn" msprop:Generator_UserColumnName="YarnOrderNo" type="xs:string" minOccurs="0" />
               <xs:element name="MergeDetail" msprop:Generator_ColumnVarNameInTable="columnMergeDetail" msprop:Generator_ColumnPropNameInRow="MergeDetail" msprop:Generator_ColumnPropNameInTable="MergeDetailColumn" msprop:Generator_UserColumnName="MergeDetail" type="xs:string" minOccurs="0" />
               <xs:element name="Remarks" msprop:Generator_ColumnVarNameInTable="columnRemarks" msprop:Generator_ColumnPropNameInRow="Remarks" msprop:Generator_ColumnPropNameInTable="RemarksColumn" msprop:Generator_UserColumnName="Remarks" type="xs:string" minOccurs="0" />
+              <xs:element name="DskWeight" msprop:Generator_ColumnVarNameInTable="columnDskWeight" msprop:Generator_ColumnPropNameInRow="DskWeight" msprop:Generator_ColumnPropNameInTable="DskWeightColumn" msprop:Generator_UserColumnName="DskWeight" type="xs:decimal" minOccurs="0" />
             </xs:sequence>
           </xs:complexType>
         </xs:element>

@@ -1,6 +1,8 @@
-﻿namespace Spinning {
-    
-    
-    public partial class DataSet10 {
+﻿namespace Spinning
+{
+
+
+    public partial class DataSet10
+    {
     }
 }

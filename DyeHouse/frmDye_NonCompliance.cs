@@ -16,6 +16,7 @@ namespace DyeHouse
         int _DyeBatch;
         int _Operator;
         int _NCStage;
+        int _PortStatus;
 
         bool formloaded;
 
@@ -25,7 +26,7 @@ namespace DyeHouse
         DataGridViewTextBoxColumn oTxtA2 = new DataGridViewTextBoxColumn();
 
 
-        public frmDye_NonCompliance(int db, int Operator, int NCStage)
+        public frmDye_NonCompliance(int db, int Operator, int NCStage, int PortStatus)
         {
             InitializeComponent();
 
@@ -56,6 +57,7 @@ namespace DyeHouse
             _DyeBatch = db;
             _Operator = Operator;
             _NCStage = NCStage;
+            _PortStatus = PortStatus;
 
 
             SetUp();
@@ -152,7 +154,7 @@ namespace DyeHouse
                             nonC.TLDYE_Department_FK = Dept.Dep_Id;
                             nonC.TLDYE_Operator_FK = _Operator;
                             nonC.TLDYE_NCStage = _NCStage;
-
+                            nonC.TLDYE_PortStatus = _PortStatus;
                             var DBAllocated = context.TLDYE_DyeBatchAllocated.Where(x => x.TLDYEA_DyeBatch_FK == _DyeBatch).FirstOrDefault();
                             if (DBAllocated != null)
                                 nonC.TLDYE_Machine_FK = DBAllocated.TLDYEA_MachCode_FK;

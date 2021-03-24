@@ -521,6 +521,9 @@
     <Compile Include="TLDYE_DyeBatchDetails.cs">
       <DependentUpon>TTI2Entities.tt</DependentUpon>
     </Compile>
+    <Compile Include="TLDYE_DyeingStandards.cs">
+      <DependentUpon>TTI2Entities.tt</DependentUpon>
+    </Compile>
     <Compile Include="TLDYE_DyeOrder.cs">
       <DependentUpon>TTI2Entities.tt</DependentUpon>
     </Compile>

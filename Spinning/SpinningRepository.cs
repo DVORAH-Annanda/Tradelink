@@ -28,6 +28,10 @@ namespace Spinning
             return _context.TLADM_Yarn.FirstOrDefault(s => s.YA_Id == Pk);
         }
 
+        public TLSPN_CottonReceivedBales LoadLotNo(int Pk)
+        {
+            return _context.TLSPN_CottonReceivedBales.FirstOrDefault(s => s.CotBales_LotNo == Pk);
+        }
         public TLSPN_YarnOrder LoadYarnOrders(int Pk)
         {
             return _context.TLSPN_YarnOrder.FirstOrDefault(s => s.YarnO_Pk == Pk);
@@ -41,6 +45,26 @@ namespace Spinning
             }
         }
 
+        public IQueryable<TLSPN_CottonReceivedBales> CottonReceivedLots(SpinningQueryParameters parameters)
+        {
+            var CottonReceived = _context.TLSPN_CottonReceivedBales.Where(x=>x.CotBales_ConfirmedByQA && !x.CoBales_IssuedToProd).AsQueryable();
+
+            if (parameters.CotReceivedBales.Count > 0)
+            {
+                var CottonReceivedPredicate = PredicateBuilder.New<TLSPN_CottonReceivedBales>();
+                foreach (var CottonR in parameters.CotReceivedBales)
+                {
+                    var temp = CottonR;
+                    CottonReceivedPredicate = CottonReceivedPredicate.Or(s => s.CotBales_LotNo == temp.CotBales_LotNo);
+                }
+
+                CottonReceived = CottonReceived.AsExpandable().Where(CottonReceivedPredicate);
+
+            }
+              
+
+            return CottonReceived;
+        }
         public IQueryable<TLSPN_YarnOrder> YarnOrderQuery(SpinningQueryParameters parameters)
         {
             var yarnOrders = _context.TLSPN_YarnOrder.Where(x => !(bool)x.Yarno_Closed && x.YarnO_Date >= parameters.FromDate && x.YarnO_Date <= parameters.ToDate).AsQueryable();
@@ -115,25 +139,28 @@ namespace Spinning
         public List<TLADM_MachineDefinitions> Machines;
         public List<TLADM_Yarn> YarnTypes;
         public List<TLSPN_YarnOrder> YarnOrders;
+        public List<TLSPN_CottonReceivedBales> CotReceivedBales;
         public DateTime FromDate;
         public DateTime ToDate;
         public int MeasurementOpt;
 
-        public bool OutSideTolerance;
         public int UpperTolerance;
-        public int LowerTolerance; 
+        public int LowerTolerance;
 
-
+        public bool CottonRecSummarised;
+        public bool OutSideTolerance;
         public SpinningQueryParameters()
         {
             Machines = new List<TLADM_MachineDefinitions>();
             YarnTypes = new List<TLADM_Yarn>();
             YarnOrders = new List<TLSPN_YarnOrder>();
+            CotReceivedBales = new List<TLSPN_CottonReceivedBales>();
             FromDate = new DateTime();
             ToDate = new DateTime();
             MeasurementOpt = 1;
 
             OutSideTolerance = false;
+            CottonRecSummarised = false;
             UpperTolerance = 0;
             LowerTolerance = 0;
         }

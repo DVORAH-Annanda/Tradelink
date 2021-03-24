@@ -1544,6 +1544,25 @@ namespace DyeHouse
                             vRep.ClientSize = new Size(w, h);
                             vRep.ShowDialog(this);
                         }
+
+                        var DyeBatch = context.TLDYE_DyeBatch.Find(DyeBatchKey);
+                        if(DyeBatch != null)
+                        {
+                            var DyeStandards = context.TLDYE_DyeingStandards.Where(x => x.DyeStan_Quality_FK == DyeBatch.DYEB_Greige_FK).FirstOrDefault();
+                            if(DyeStandards == null)
+                            {
+                                MessageBox.Show("Unable to print Standards control sheet");
+
+                            }
+                            else
+                            {
+                                vRep = new frmDyeViewReport(46, DyeBatchKey);
+                                h = Screen.PrimaryScreen.WorkingArea.Height;
+                                w = Screen.PrimaryScreen.WorkingArea.Width;
+                                vRep.ClientSize = new Size(w, h);
+                                vRep.ShowDialog(this);
+                            }
+                        }
                     }
                     catch (System.Data.Entity.Validation.DbEntityValidationException en)
                     {

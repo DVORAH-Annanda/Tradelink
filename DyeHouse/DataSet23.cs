@@ -1,6 +1,8 @@
-﻿namespace DyeHouse {
-    
-    
-    public partial class DataSet23 {
+﻿namespace DyeHouse
+{
+
+
+    public partial class DataSet23
+    {
     }
 }

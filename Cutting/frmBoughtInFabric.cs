@@ -297,12 +297,22 @@ namespace Cutting
                         int w = Screen.PrimaryScreen.WorkingArea.Width;
                         vRep.ClientSize = new Size(w, h);
                         vRep.ShowDialog(this);
+                        if (vRep != null)
+                        {
+                            vRep.Close();
+                            vRep.Dispose();
+                        }
 
                         vRep = new frmCutViewRep(20, QParms);
                         h = Screen.PrimaryScreen.WorkingArea.Height;
                         w = Screen.PrimaryScreen.WorkingArea.Width;
                         vRep.ClientSize = new Size(w, h);
                         vRep.ShowDialog(this);
+                        if (vRep != null)
+                        {
+                            vRep.Close();
+                            vRep.Dispose();
+                        }
 
                         frmBoughtInFabric_Load(this, null);
 

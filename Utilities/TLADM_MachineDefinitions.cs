@@ -53,6 +53,9 @@ namespace Utilities
         public Nullable<int> MD_GreigeType_FK { get; set; }
         public string MD_AlternateDesc { get; set; }
         public int MD_LastNumberUsed { get; set; }
+        public bool MD_Hydro { get; set; }
+        public bool MD_Drier { get; set; }
+        public bool MD_Compactor { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TLSPN_YarnProductionPerMachine> TLSPN_YarnProductionPerMachine { get; set; }

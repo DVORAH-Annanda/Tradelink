@@ -49,10 +49,15 @@
             this.label9 = new System.Windows.Forms.Label();
             this.cmboOperator = new System.Windows.Forms.ComboBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.rbBtnYes = new System.Windows.Forms.RadioButton();
             this.rbBtnNo = new System.Windows.Forms.RadioButton();
+            this.rbBtnYes = new System.Windows.Forms.RadioButton();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.rbPortA = new System.Windows.Forms.RadioButton();
+            this.rbPortB = new System.Windows.Forms.RadioButton();
+            this.rbBothPorts = new System.Windows.Forms.RadioButton();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            this.groupBox3.SuspendLayout();
             this.SuspendLayout();
             // 
             // dateTimePicker1
@@ -250,17 +255,6 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "NCR Required";
             // 
-            // rbBtnYes
-            // 
-            this.rbBtnYes.AutoSize = true;
-            this.rbBtnYes.Location = new System.Drawing.Point(33, 32);
-            this.rbBtnYes.Name = "rbBtnYes";
-            this.rbBtnYes.Size = new System.Drawing.Size(115, 17);
-            this.rbBtnYes.TabIndex = 0;
-            this.rbBtnYes.Text = "NCR Required Yes";
-            this.rbBtnYes.UseVisualStyleBackColor = true;
-            this.rbBtnYes.CheckedChanged += new System.EventHandler(this.rbBtnYes_CheckedChanged);
-            // 
             // rbBtnNo
             // 
             this.rbBtnNo.AutoSize = true;
@@ -273,11 +267,68 @@
             this.rbBtnNo.Text = "NCR Required No";
             this.rbBtnNo.UseVisualStyleBackColor = true;
             // 
+            // rbBtnYes
+            // 
+            this.rbBtnYes.AutoSize = true;
+            this.rbBtnYes.Location = new System.Drawing.Point(33, 32);
+            this.rbBtnYes.Name = "rbBtnYes";
+            this.rbBtnYes.Size = new System.Drawing.Size(115, 17);
+            this.rbBtnYes.TabIndex = 0;
+            this.rbBtnYes.Text = "NCR Required Yes";
+            this.rbBtnYes.UseVisualStyleBackColor = true;
+            this.rbBtnYes.CheckedChanged += new System.EventHandler(this.rbBtnYes_CheckedChanged);
+            // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.rbBothPorts);
+            this.groupBox3.Controls.Add(this.rbPortB);
+            this.groupBox3.Controls.Add(this.rbPortA);
+            this.groupBox3.Location = new System.Drawing.Point(579, 348);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(200, 129);
+            this.groupBox3.TabIndex = 13;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "DyeMaster Port Status";
+            // 
+            // rbPortA
+            // 
+            this.rbPortA.AutoSize = true;
+            this.rbPortA.Location = new System.Drawing.Point(42, 22);
+            this.rbPortA.Name = "rbPortA";
+            this.rbPortA.Size = new System.Drawing.Size(54, 17);
+            this.rbPortA.TabIndex = 0;
+            this.rbPortA.TabStop = true;
+            this.rbPortA.Text = "Port A";
+            this.rbPortA.UseVisualStyleBackColor = true;
+            // 
+            // rbPortB
+            // 
+            this.rbPortB.AutoSize = true;
+            this.rbPortB.Location = new System.Drawing.Point(42, 63);
+            this.rbPortB.Name = "rbPortB";
+            this.rbPortB.Size = new System.Drawing.Size(54, 17);
+            this.rbPortB.TabIndex = 1;
+            this.rbPortB.TabStop = true;
+            this.rbPortB.Text = "Port B";
+            this.rbPortB.UseVisualStyleBackColor = true;
+            // 
+            // rbBothPorts
+            // 
+            this.rbBothPorts.AutoSize = true;
+            this.rbBothPorts.Location = new System.Drawing.Point(42, 106);
+            this.rbBothPorts.Name = "rbBothPorts";
+            this.rbBothPorts.Size = new System.Drawing.Size(88, 17);
+            this.rbBothPorts.TabIndex = 2;
+            this.rbBothPorts.TabStop = true;
+            this.rbBothPorts.Text = "Both A and B";
+            this.rbBothPorts.UseVisualStyleBackColor = true;
+            // 
             // frmQAColourCheck
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(882, 638);
+            this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.cmboOperator);
             this.Controls.Add(this.label9);
@@ -293,6 +344,8 @@
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
+            this.groupBox3.ResumeLayout(false);
+            this.groupBox3.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -323,5 +376,9 @@
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.RadioButton rbBtnNo;
         private System.Windows.Forms.RadioButton rbBtnYes;
+        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.RadioButton rbBothPorts;
+        private System.Windows.Forms.RadioButton rbPortB;
+        private System.Windows.Forms.RadioButton rbPortA;
     }
 }

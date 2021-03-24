@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -26,6 +26,7 @@
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -124,6 +125,12 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ComDelivery.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ConsumableGRN.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ConsumableGRN.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="CRCurrentReceipes.cs">
@@ -373,6 +380,16 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DataSet5.xsd</DependentUpon>
     </Compile>
+    <Compile Include="DataSet50.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSet50.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="DataSet51.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSet51.xsd</DependentUpon>
+    </Compile>
     <Compile Include="DataSet6.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -579,6 +596,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ConsumablesWithDrawn.rpt</DependentUpon>
       <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="frmConsummablesInspectionResults.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmConsummablesInspectionResults.Designer.cs">
+      <DependentUpon>frmConsummablesInspectionResults.cs</DependentUpon>
     </Compile>
     <Compile Include="frmDBDatesReq.cs">
       <SubType>Form</SubType>
@@ -984,6 +1007,12 @@
       <DependentUpon>QDCRemedyCodes.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="QualityAssuranceCheck.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>QualityAssuranceCheck.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="ReceipeUsage.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -1079,6 +1108,10 @@
     <EmbeddedResource Include="ComDelivery.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>ComDelivery.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ConsumableGRN.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>ConsumableGRN.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="CRCurrentReceipes.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
@@ -1197,6 +1230,9 @@
     <EmbeddedResource Include="ConsumablesWithDrawn.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>ConsumablesWithDrawn.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmConsummablesInspectionResults.resx">
+      <DependentUpon>frmConsummablesInspectionResults.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmDBDatesReq.resx">
       <DependentUpon>frmDBDatesReq.cs</DependentUpon>
@@ -1411,6 +1447,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <EmbeddedResource Include="QDCCodes.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
@@ -1419,6 +1456,10 @@
     <EmbeddedResource Include="QDCRemedyCodes.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>QDCRemedyCodes.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="QualityAssuranceCheck.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>QualityAssuranceCheck.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="ReceipeUsage.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
@@ -1959,6 +2000,28 @@
     </None>
     <None Include="DataSet5.xss">
       <DependentUpon>DataSet5.xsd</DependentUpon>
+    </None>
+    <None Include="DataSet50.xsc">
+      <DependentUpon>DataSet50.xsd</DependentUpon>
+    </None>
+    <None Include="DataSet50.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSet50.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="DataSet50.xss">
+      <DependentUpon>DataSet50.xsd</DependentUpon>
+    </None>
+    <None Include="DataSet51.xsc">
+      <DependentUpon>DataSet51.xsd</DependentUpon>
+    </None>
+    <None Include="DataSet51.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSet51.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="DataSet51.xss">
+      <DependentUpon>DataSet51.xsd</DependentUpon>
     </None>
     <None Include="DataSet6.xsc">
       <DependentUpon>DataSet6.xsd</DependentUpon>

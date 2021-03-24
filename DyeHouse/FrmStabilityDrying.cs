@@ -246,12 +246,12 @@ namespace DyeHouse
 
                     if (_StabAfterDrying)
                     {
-                        frmDye_NonCompliance nonCom = new frmDye_NonCompliance(DB.DYEB_Pk, Selected.MachOp_Pk, 2);
+                        frmDye_NonCompliance nonCom = new frmDye_NonCompliance(DB.DYEB_Pk, Selected.MachOp_Pk, 2, 0);
                         nonCom.ShowDialog(this);
                     }
                     else
                     {
-                        frmDye_NonCompliance nonCom = new frmDye_NonCompliance(DB.DYEB_Pk, Selected.MachOp_Pk, 3);
+                        frmDye_NonCompliance nonCom = new frmDye_NonCompliance(DB.DYEB_Pk, Selected.MachOp_Pk, 3, 0);
                         nonCom.ShowDialog(this);
                     }
                 }
@@ -423,12 +423,12 @@ namespace DyeHouse
 
                     if (_StabAfterDrying)
                     {
-                        frmDye_NonCompliance nonCom = new frmDye_NonCompliance(DB.DYEB_Pk, Selected.MachOp_Pk, 2);
+                        frmDye_NonCompliance nonCom = new frmDye_NonCompliance(DB.DYEB_Pk, Selected.MachOp_Pk, 2, 0);
                         nonCom.ShowDialog(this);
                     }
                     else
                     {
-                        frmDye_NonCompliance nonCom = new frmDye_NonCompliance(DB.DYEB_Pk, Selected.MachOp_Pk, 3);
+                        frmDye_NonCompliance nonCom = new frmDye_NonCompliance(DB.DYEB_Pk, Selected.MachOp_Pk, 3, 0);
                         nonCom.ShowDialog(this);
                     }
                 }

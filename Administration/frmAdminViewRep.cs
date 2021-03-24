@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -659,8 +660,157 @@ namespace Administration
                 crystalReportViewer1.ReportSource = TransTypes;
 
             }
-            crystalReportViewer1.Refresh();
+            else if(_RepNo == 13)
+            {
+                DataSet ds = new DataSet();
+                string[][] ColumnNames = null;
 
+                DataSet13.DataTable1DataTable dataTable1 = new DataSet13.DataTable1DataTable();
+
+                using (var context = new TTI2Entities())
+                {
+                    var Measurements = context.TLADM_QADyeProcessFields.Where(x => x.TLQAPF_Compactor || x.TLQADPF_Drier || x.TLQADPF_Hydro).OrderBy(x=>x.TLQAPF_ColumnNo).ToList();
+                    var QualitiesAvail = context.TLADM_Griege.Where(x => !(bool)x.TLGriege_Discontinued).ToList();
+                    
+                    ColumnNames = new string[][]
+                    {   new string[] {"Text5", String.Empty},
+                        new string[] {"Text6", String.Empty},
+                        new string[] {"Text7", String.Empty},
+                        new string[] {"Text8", String.Empty},
+                        new string[] {"Text9", String.Empty},
+                        new string[] {"Text10", String.Empty},
+                        new string[] {"Text11", String.Empty},
+                        new string[] {"Text12", String.Empty} ,
+                        new string[] {"Text13", String.Empty},
+                        new string[] {"Text14", String.Empty},
+                        new string[] {"Text15", String.Empty},
+                        new string[] {"Text16", String.Empty}
+                        
+                    };
+                    foreach(var M in Measurements)
+                    {
+                        foreach(var Col in ColumnNames)
+                        {
+                            if(String.IsNullOrEmpty(Col[1]))
+                            {
+                                Col[1] = M.TLQADPF_Description;
+                                break;
+                            }
+                        }
+                    }
+                    foreach (var Quality in QualitiesAvail)
+                    {
+                        DataSet13.DataTable1Row nr = dataTable1.NewDataTable1Row();
+                        nr.Quality = Quality.TLGreige_Description;
+
+                        var Standards = context.TLDYE_DyeingStandards.Where(x=>x.DyeStan_Quality_FK == Quality.TLGreige_Id).ToList();
+
+                        if (Standards.Count() == 0)
+                        {
+                            nr.Col1 = 0.00M;
+                            nr.Col2 = 0.00M;
+                            nr.Col3 = 0.00M;
+                            nr.Col4 = 0.00M;
+                            nr.Col5 = 0.00M;
+                            nr.Col6 = 0.00M;
+                            nr.Col7 = 0.00M;
+                            nr.Col8 = 0.00M;
+                            nr.Col9 = 0.00M;
+                            nr.Col10 = 0.00M;
+                            nr.Col11 = 0.00M;
+                            nr.Col12 = 0.00M;
+                        }
+                        else
+                        {
+                            foreach (var item in Standards)
+                            {
+
+                                var itemDetail = (from Meas in Measurements
+                                                  where Meas.TLQADPF_Pk == item.DyeStan_QAProccessField_FK
+                                                  select Meas).FirstOrDefault();
+
+                                if (itemDetail != null)
+                                {
+                                    if (itemDetail.TLQAPF_ColumnNo == 1)
+                                    {
+                                        nr.Col1 = item.DyeStan_Value;
+                                    }
+                                    else if (itemDetail.TLQAPF_ColumnNo == 2)
+                                    {
+                                        nr.Col2 = item.DyeStan_Value;
+                                    }
+                                    else if (itemDetail.TLQAPF_ColumnNo == 3)
+                                    {
+                                        nr.Col3 = item.DyeStan_Value;
+                                    }
+                                    else if (itemDetail.TLQAPF_ColumnNo == 4)
+                                    {
+                                        nr.Col4 = item.DyeStan_Value;
+                                    }
+                                    else if (itemDetail.TLQAPF_ColumnNo == 5)
+                                    {
+                                        nr.Col5 = item.DyeStan_Value;
+                                    }
+                                    else if (itemDetail.TLQAPF_ColumnNo == 6)
+                                    {
+                                        nr.Col6 = item.DyeStan_Value;
+                                    }
+                                    else if (itemDetail.TLQAPF_ColumnNo == 7)
+                                    {
+                                        nr.Col7 = item.DyeStan_Value;
+                                    }
+                                    else if (itemDetail.TLQAPF_ColumnNo == 8)
+                                    {
+                                        nr.Col8 = item.DyeStan_Value;
+                                    }
+                                    else if (itemDetail.TLQAPF_ColumnNo == 9)
+                                    {
+                                        nr.Col9 = item.DyeStan_Value;
+                                    }
+                                    else if (itemDetail.TLQAPF_ColumnNo == 10)
+                                    {
+                                        nr.Col10 = item.DyeStan_Value;
+                                    }
+                                    else if (itemDetail.TLQAPF_ColumnNo == 11)
+                                    {
+                                        nr.Col11 = item.DyeStan_Value;
+                                    }
+                                    else
+                                    {
+                                        nr.Col12 = item.DyeStan_Value;
+                                    }
+
+                                }
+                            }
+                        }
+                        dataTable1.AddDataTable1Row(nr);
+                    }
+
+                    ds.Tables.Add(dataTable1);
+                    DyeStandards DyeStand = new DyeStandards();
+                    DyeStand.SetDataSource(ds);
+                    crystalReportViewer1.ReportSource = DyeStand;
+
+                    IEnumerator ie = DyeStand.Section2.ReportObjects.GetEnumerator();
+                    
+                    while (ie.MoveNext())
+                    {
+                        if (ie.Current != null && ie.Current.GetType().ToString().Equals("CrystalDecisions.CrystalReports.Engine.TextObject"))
+                        {
+                            CrystalDecisions.CrystalReports.Engine.TextObject to = (CrystalDecisions.CrystalReports.Engine.TextObject)ie.Current;
+
+                            var result = (from u in ColumnNames
+                                          where u[0] == to.Name
+                                          select u).FirstOrDefault();
+
+                            if (result != null)
+                                to.Text = result[1];
+
+                        }
+                    }
+                }
+            }
+            crystalReportViewer1.Refresh();
         }
     }
 }

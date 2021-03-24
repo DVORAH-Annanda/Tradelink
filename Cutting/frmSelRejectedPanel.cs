@@ -77,6 +77,11 @@ namespace Cutting
                     int w = Screen.PrimaryScreen.WorkingArea.Width;
                     vRep.ClientSize = new Size(w, h);
                     vRep.ShowDialog();
+                    if (vRep != null)
+                    {
+                        vRep.Close();
+                        vRep.Dispose();
+                    }
                 }
                 else
                 {
@@ -88,6 +93,11 @@ namespace Cutting
                     int w = Screen.PrimaryScreen.WorkingArea.Width;
                     vRep.ClientSize = new Size(w, h);
                     vRep.ShowDialog();
+                    if (vRep != null)
+                    {
+                        vRep.Close();
+                        vRep.Dispose();
+                    }
                 }
                 sortOptions = 1;
             }

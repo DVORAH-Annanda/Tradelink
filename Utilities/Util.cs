@@ -297,7 +297,7 @@ namespace Utilities
         public int _UserPk { get; set; }
         public bool _External { get; set; }
         public bool _QAFunction { get; set; } 
-
+        public bool _DownSizeAuthority { get; set; }
     }
 
 
@@ -766,7 +766,8 @@ namespace Utilities
         public bool K8rbQA4 { get; set; }
         public bool K8rbQA5 { get; set; }
         public bool K8rbQA6 { get; set; }
-
+        public bool K8rbQA7 { get; set; }
+        public bool K8rbQA8 { get; set; }
         //-------------------------------------------------------------------
         // K9 Greige Stock on hand report
         //-------------------------------------------------------------------
@@ -967,6 +968,12 @@ namespace Utilities
                 }
             }
             return ReturnVal;
+        }
+
+        public Decimal CalculateDskVariance(decimal BenchMark, decimal Actual)
+        {
+            var Tmp = -100 + ((Actual / BenchMark) * 100);
+            return Tmp;
         }
 
         public void SendEmailtoContacts(string EMailAddress, DataTable _dt, int MailNo, DateTime Date,  string PO, String TransNo)
@@ -2907,6 +2914,8 @@ namespace Utilities
 
                     oDgv.Rows[index].Cells[9].Value = ExistingRow.Col_StandardTime;
 
+                    oDgv.Rows[index].Cells[10].Value = (bool)ExistingRow.Col_Padding;
+
                 }
             }
             return oDgv;
@@ -3004,7 +3013,15 @@ namespace Utilities
                                 clrs.Col_StandardTime = (decimal)row.Cells[9].Value;
                             else
                                 clrs.Col_StandardTime = 0.00M;
+                        }
 
+                        if((bool)row.Cells[10].Value)
+                        {
+                            clrs.Col_Padding = (bool)row.Cells[10].Value;
+                        }
+                        else
+                        {
+                            clrs.Col_Padding = false;
                         }
 
                         if (lAdd)
@@ -3447,8 +3464,8 @@ namespace Utilities
                     oDgv.Rows[index].Cells[18].Value = ExistingRow.TLGreige_Meters;
                     oDgv.Rows[index].Cells[19].Value = ExistingRow.TLGreige_FaultsAllowed;
                     oDgv.Rows[index].Cells[21].Value = ExistingRow.TLGreige_IsBoughtIn;
-                    
-                   
+                    oDgv.Rows[index].Cells[22].Value = ExistingRow.TLGreige_CubicWeight;
+
                 }
             }
             return oDgv;
@@ -3553,7 +3570,9 @@ namespace Utilities
                             clrs.TLGreige_IsBoughtIn = (bool)row.Cells[21].Value;
                         else
                             clrs.TLGreige_IsBoughtIn = false;
-                        
+
+                        clrs.TLGreige_CubicWeight = Decimal.Parse(row.Cells[22].Value.ToString());
+
                         //------------------------------------------------------------------------------------------------
                         if (lAdd)
                             Context.TLADM_Griege.Add(clrs);
@@ -3818,7 +3837,7 @@ namespace Utilities
                     if (ExistingRow.TR_Greige_FK != null)
                         oDgv.Rows[index].Cells[8].Value = (int)ExistingRow.TR_Greige_FK;
 
-                    oDgv.Rows[index].Cells[9].Value = ExistingRow.TR_IsSizes;
+                    oDgv.Rows[index].Cells[9].Value = (bool)ExistingRow.TR_IsSizes;
 
                     if (ExistingRow.TR_Size_FK != null)
                         oDgv.Rows[index].Cells[10].Value = (int)ExistingRow.TR_Size_FK;
@@ -3897,6 +3916,11 @@ namespace Utilities
                         if (row.Cells[8].Value != null)
                         {
                             clrs.TR_Greige_FK = (int)row.Cells[8].Value;
+                        }
+
+                        if (row.Cells[9].Value == null)
+                        {
+                            row.Cells[9].Value = false;
                         }
 
                         clrs.TR_IsSizes = (bool)row.Cells[9].Value;

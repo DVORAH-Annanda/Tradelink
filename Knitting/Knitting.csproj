@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -11,6 +11,7 @@
     <AssemblyName>Knitting</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -112,6 +113,14 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DataSet34.xsd</DependentUpon>
     </Compile>
+    <Compile Include="DataSet35.cs">
+      <DependentUpon>DataSet35.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="DataSet35.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSet35.xsd</DependentUpon>
+    </Compile>
     <Compile Include="frmCloseYarnPsallet.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -153,6 +162,12 @@
     </Compile>
     <Compile Include="frmLiningTransaction.Designer.cs">
       <DependentUpon>frmLiningTransaction.cs</DependentUpon>
+    </Compile>
+    <Compile Include="KnittingDskVariance.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>KnittingDskVariance.rpt</DependentUpon>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="QualityDescription.cs">
       <AutoGen>True</AutoGen>
@@ -757,6 +772,10 @@
     <EmbeddedResource Include="frmLiningTransaction.resx">
       <DependentUpon>frmLiningTransaction.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="KnittingDskVariance.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>KnittingDskVariance.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="QualityDescription.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>QualityDescription.cs</LastGenOutput>
@@ -958,6 +977,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <EmbeddedResource Include="repTest.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
@@ -1314,6 +1334,17 @@
     </None>
     <None Include="DataSet34.xss">
       <DependentUpon>DataSet34.xsd</DependentUpon>
+    </None>
+    <None Include="DataSet35.xsc">
+      <DependentUpon>DataSet35.xsd</DependentUpon>
+    </None>
+    <None Include="DataSet35.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSet35.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="DataSet35.xss">
+      <DependentUpon>DataSet35.xsd</DependentUpon>
     </None>
     <None Include="DataSet5.xsc">
       <DependentUpon>DataSet5.xsd</DependentUpon>

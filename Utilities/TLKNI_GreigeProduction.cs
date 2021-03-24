@@ -58,5 +58,7 @@ namespace Utilities
         public string GreigeP_MergeDetail { get; set; }
         public Nullable<int> GreigeP_Size_Fk { get; set; }
         public bool GreigeP_WarningMessage { get; set; }
+        public decimal GreigeP_DskWeight { get; set; }
+        public decimal GreigeP_VarianceDiskWeight { get; set; }
     }
 }

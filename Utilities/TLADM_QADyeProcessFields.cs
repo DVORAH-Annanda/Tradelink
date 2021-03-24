@@ -16,7 +16,13 @@ namespace Utilities
     {
         public int TLQADPF_Pk { get; set; }
         public int TLQADPF_Process_FK { get; set; }
-        public string TLQADPF_Description { get; set; }
         public string TLQADPF_ShortCode { get; set; }
+        public string TLQADPF_Description { get; set; }
+        public bool TLQADPF_Hydro { get; set; }
+        public bool TLQADPF_Drier { get; set; }
+        public bool TLQAPF_Compactor { get; set; }
+        public bool TLQAPF_Decimal { get; set; }
+        public int TLQAPF_ColumnNo { get; set; }
+        public bool TLQAPF_Padding { get; set; }
     }
 }

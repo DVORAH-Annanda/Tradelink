@@ -379,6 +379,32 @@ namespace DyeHouse
             return DBDetails;
         }
 
+        public IQueryable<TLDYE_DyeBatchDetails> SelectForFabricSales(DyeQueryParameters parameters)
+        {
+            // var DBDetails = _context.TLDYE_DyeBatchDetails.AsQueryable();
+            var DBDetails = (from GP in _context.TLKNI_GreigeProduction
+                             join DBD in _context.TLDYE_DyeBatchDetails
+                             on GP.GreigeP_Pk equals DBD.DYEBD_GreigeProduction_FK
+                             join ADMGriege in _context.TLADM_Griege
+                             on GP.GreigeP_Greige_Fk equals ADMGriege.TLGreige_Id
+                             where !GP.GreigeP_BoughtIn && DBD.DYEBO_QAApproved
+                             && !DBD.DYEBO_Sold
+                             && !DBD.DYEBO_CutSheet
+                             && !DBD.DYEBO_WriteOff
+                             select DBD).AsQueryable(); 
+
+            if (parameters.Qualities.Count > 0)
+            {
+                var DyeBatchDetPredicate = PredicateBuilder.New<TLDYE_DyeBatchDetails>();
+                foreach (var QualityDetail in parameters.Qualities)
+                {
+                    var Temp = QualityDetail;
+                    DyeBatchDetPredicate = DyeBatchDetPredicate.Or(s => s.DYEBD_QualityKey == Temp.TLGreige_Id);
+                }
+                DBDetails = DBDetails.AsExpandable().Where(DyeBatchDetPredicate);
+            }
+            return DBDetails;
+        }
         public IQueryable<TLADM_Griege> PPSGreige(DyeQueryParameters parameters)
         {
             var SOH = _context.TLADM_Griege.AsQueryable();
@@ -520,6 +546,7 @@ namespace DyeHouse
         public List<TLADM_MachineOperators> Operators;
         public List<TLADM_DyeRemendyCodes> RemedyCodes;
         public List<TLADM_MachineDefinitions> Machines;
+        public List<TLDYE_DyeBatchDetails> SelectForFabricSales;
         public List<TLADM_ConsumablesDC> Consummables;
         public List<TLDYE_DyeTransactions > DyeTransactions; 
 
@@ -539,6 +566,7 @@ namespace DyeHouse
         public bool ProdWIP;
         public bool ProdWIPCompleted;
 
+        public int Consumable_Whse_FK;
         public DyeQueryParameters()
         {
 
@@ -577,6 +605,8 @@ namespace DyeHouse
             CalculateProdResults = false;
             FabricSales = false;
 
+            Consumable_Whse_FK = 0;
+            
             Notes = new StringBuilder();
 
         }

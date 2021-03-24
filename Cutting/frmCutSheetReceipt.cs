@@ -22,6 +22,7 @@ namespace Cutting
         DataGridViewTextBoxColumn oTxtB = new DataGridViewTextBoxColumn();     //  Bundle No                   1 
         DataGridViewComboBoxColumn oCmboA = new DataGridViewComboBoxColumn();  // Sizes                        2 
         DataGridViewTextBoxColumn oTxtC = new DataGridViewTextBoxColumn();     // Qty                          3
+        DataGridViewCheckBoxColumn oChkA = new DataGridViewCheckBoxColumn();
 
         TLCUT_CutSheet cutSheet;
         //------------------------------------------------------------------------------
@@ -34,6 +35,12 @@ namespace Cutting
         DataGridViewTextBoxColumn oTxtZE = new DataGridViewTextBoxColumn();     // Variance          4
         Util core;
 
+        DataTable dataTable; 
+        DataTable dataTable2;
+        DataColumn column;
+        BindingSource BindingSrc;
+        BindingSource BindingSrc2;
+
         public frmCutSheetReceipt()
         {
             InitializeComponent();
@@ -43,6 +50,9 @@ namespace Cutting
         {
             int _Width = 100;
 
+            txtPrevCutSheet.Text = String.Empty;
+            chkSearch.Checked = false;
+
             core = new Util();
 
             txtCurrentTotal.Text = "0";
@@ -50,50 +60,211 @@ namespace Cutting
             chkReset.Checked = false;
 
             formloaded = false;
+            //----------------------------------------------------
+            //0
+            //----------------------------------------------------
+
+            txtPrevCutSheet.Text = string.Empty;
+            chkSearch.Checked = false;
+                    
+
+            //-----------------------------------------------------
+            //
+            //----------------------------------------------------------
+            dataTable = new DataTable();
+            BindingSrc = new BindingSource();
+            dataTable2 = new DataTable();
+            BindingSrc2 = new BindingSource();
+
+            dataGridView1.AutoGenerateColumns = false;
+            // dataGridView2.AutoGenerateColumns = false;
+
+            //==========================================================================================
+            // 1st task is to create the data table dataTable 
+            // Col 0
+            //=====================================================================
+            /*
+            column = new DataColumn();
+            column.DataType = typeof(int);
+            column.ColumnName = "Primary_Pk";
+            column.Caption = "Primary Key";
+            column.DefaultValue = 0;
+            dataTable.Columns.Add(column);
+            
+            column = new DataColumn();
+            column.DataType = typeof(string);
+            column.ColumnName = "Bundle_Description";
+            column.Caption = "Bundle Description";
+            column.DefaultValue = String.Empty;
+            dataTable.Columns.Add(column);
+
+            column = new DataColumn();
+            column.DataType = typeof(int);
+            column.ColumnName = "Bundle_Size";
+            column.Caption = "Bundle Size";
+            column.DefaultValue = 0;
+            dataTable.Columns.Add(column);
+
+            column = new DataColumn();
+            column.DataType = typeof(int);
+            column.ColumnName = "Bundle_Qty";
+            column.Caption = "Bundle Qty";
+            column.DefaultValue = 0;
+            dataTable.Columns.Add(column);
+
+            column = new DataColumn();
+            column.DataType = typeof(bool);
+            column.ColumnName = "Updated";
+            column.Caption = "Updated";
+            column.DefaultValue = false;
+            dataTable.Columns.Add(column); */
 
             oTxtA.Visible = false;
+            oTxtA.Name = "Primary_Key";
             oTxtA.ValueType = typeof(int);
+            oTxtA.HeaderText = "Primary Key";
+            // oTxtA.DataPropertyName = dataTable.Columns[0].ColumnName;
             dataGridView1.Columns.Add(oTxtA);
+            dataGridView1.Columns["Primary_Key"].DisplayIndex = 0;
 
+            //--------------------------------------------------------
+            //1
+            //--------------------------------------------------------------
             oTxtB.HeaderText = "Bundle";
             oTxtB.ValueType = typeof(string);
+            oTxtB.Name = "Bundle";
             oTxtB.Width = _Width;
+            // oTxtB.DataPropertyName = dataTable.Columns[1].ColumnName;
+            oTxtB.HeaderText = "Bundle Description";
             oTxtB.ReadOnly = true;
             dataGridView1.Columns.Add(oTxtB);
-
+            dataGridView1.Columns["Bundle"].DisplayIndex = 1;
+            //-----------------------------------------------------
+            //2
+            //------------------------------------------------------------------
             oCmboA.HeaderText = "Size";
             oCmboA.ValueType = typeof(int);
+            oCmboA.HeaderText = "Size";
+            //oCmboA.DataPropertyName = dataTable.Columns[2].ColumnName;
             oCmboA.Width = _Width;
+            oCmboA.Name = "Size";
             dataGridView1.Columns.Add(oCmboA);
-
+            dataGridView1.Columns["Size"].DisplayIndex = 2;
+            //-----------------------------------------------------------
+            //3
+            //-------------------------------------
             oTxtC.HeaderText = "Qty";
+            oTxtC.Name = "Qty";
             oTxtC.ValueType = typeof(int);
+            // oTxtC.DataPropertyName = dataTable.Columns[3].ColumnName;
             oTxtC.Width = _Width;
             dataGridView1.Columns.Add(oTxtC);
+            dataGridView1.Columns["Qty"].DisplayIndex = 3;
 
+            //-----------------------------------------------------------
+            //4 
+            //----------------------------------------------------------------
+            oChkA.HeaderText = "Updated";
+            oChkA.Name = "UpDated";
+            oChkA.ValueType = typeof(bool);
+           // oChkA.DataPropertyName = dataTable.Columns[4].ColumnName;
+            oChkA.Width = _Width;
+            oChkA.Visible = false;
+            dataGridView1.Columns.Add(oChkA);
+            dataGridView1.Columns["Updated"].DisplayIndex = 4;
+
+
+            // BindingSrc.DataSource = dataTable;
+            // dataGridView1.DataSource = BindingSrc;
+
+
+            //==========================================================================================
+            // 1st task is to create the data table dataTable2 
+            // Col 0
+            //=====================================================================
+            column = new DataColumn();
+            column.DataType = typeof(int);
+            column.ColumnName = "Size_Pk";
+            column.Caption = "Size Primary Key";
+            column.DefaultValue = 0;
+            dataTable2.Columns.Add(column);
+            dataTable2.PrimaryKey = new DataColumn[] { dataTable2.Columns[0] };
+
+            column = new DataColumn();
+            column.DataType = typeof(string);
+            column.ColumnName = "Size_Description";
+            column.Caption = "Size Description";
+            column.DefaultValue = String.Empty;
+            dataTable2.Columns.Add(column);
+
+            column = new DataColumn();
+            column.DataType = typeof(int);
+            column.ColumnName = "Expected_Qty";
+            column.Caption = "Expected Qty";
+            column.DefaultValue = 0;
+            dataTable2.Columns.Add(column);
+
+            column = new DataColumn();
+            column.DataType = typeof(int);
+            column.ColumnName = "Actual_Qty";
+            column.Caption = "Actual Qty";
+            column.DefaultValue = 0;
+            dataTable2.Columns.Add(column);
+
+            column = new DataColumn();
+            column.DataType = typeof(decimal);
+            column.ColumnName = "Variance_Perc";
+            column.Caption = "Variance";
+            column.DefaultValue = 0;
+            dataTable2.Columns.Add(column);
+
+            BindingSrc2.DataSource = dataTable2;
+            dataGridView2.DataSource = BindingSrc2;
+
+            /*
             oTxtZA.Visible = false;
             oTxtZA.ValueType = typeof(int);
+            oTxtZA.DataPropertyName = dataTable2.Columns[0].ColumnName;
             dataGridView2.Columns.Add(oTxtZA);
 
+            oTxtZB.Visible = false;
             oTxtZB.HeaderText = "Size";
             oTxtZB.ValueType = typeof(string);
+            oTxtZB.DataPropertyName = dataTable2.Columns[1].ColumnName;
             oTxtZB.Width = _Width;
             dataGridView2.Columns.Add(oTxtZB);
 
+            oTxtZC.Visible = false;
             oTxtZC.HeaderText = "Expected";
             oTxtZC.ValueType = typeof(int);
+            oTxtZC.DataPropertyName = dataTable2.Columns[2].ColumnName;
             oTxtZC.Width = _Width;
             dataGridView2.Columns.Add(oTxtZC);
 
+            oTxtZD.Visible = false;
             oTxtZD.HeaderText = "Actual";
             oTxtZD.ValueType = typeof(int);
             oTxtZD.Width = _Width;
+            oTxtZD.DataPropertyName = dataTable2.Columns[3].ColumnName;
             dataGridView2.Columns.Add(oTxtZD);
 
             oTxtZE.HeaderText = "Variance";
-            oTxtZE.ValueType = typeof(int);
+            oTxtZE.ValueType = typeof(decimal);
             oTxtZE.Width = _Width;
+            oTxtZE.DataPropertyName = dataTable2.Columns[4].ColumnName;
             dataGridView2.Columns.Add(oTxtZE);
+            */
+
+            int idx = -1;
+
+            foreach (DataColumn col in dataTable2.Columns)
+            {
+                if (++idx == 0 )
+                    dataGridView2.Columns[idx].Visible = false;
+                else
+                    dataGridView2.Columns[idx].HeaderText = col.Caption;
+                
+            }
 
             this.dataGridView1.EditingControlShowing += new DataGridViewEditingControlShowingEventHandler(dataGridView1_EditingControlShowing);
             using (var context = new TTI2Entities())
@@ -138,8 +309,7 @@ namespace Cutting
             this.txtRibbing.KeyPress += core.txtWin_KeyPress;
             this.txtRibbing.KeyDown += core.txtWin_KeyDownOEM;
             this.txtRibbing.Text = "0";
-
-     
+               
             formloaded = true;
         }
 
@@ -150,8 +320,19 @@ namespace Cutting
             this.txtBinding.Text = "0";
             this.txtRibbing.Text = "0";
             this.txtBundles.Text = "0";
+            this.txtCurrentTotal.Text = "0";
 
+            this.formloaded = false;;
+            this.chkSearch.Checked = false;
+            this.txtPrevCutSheet.Text = string.Empty;
+            this.formloaded = true;
+
+            formloaded = false;
+            txtPrevCutSheet.Text = string.Empty;
+            chkSearch.Checked = false;
             cmboCutSheet.SelectedValue = -1;
+            formloaded = true;
+
         }
 
         void dataGridView1_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
@@ -192,7 +373,8 @@ namespace Cutting
                 if (selected != null)
                 {
                     dataGridView1.Rows.Clear();
-                    dataGridView2.Rows.Clear();
+                    dataTable2.Rows.Clear();
+
 
                     cutSheet = selected;
                     txtBundles.Enabled = true;
@@ -256,13 +438,14 @@ namespace Cutting
                                 // var EUnits = context.TLCUT_ExpectedUnits.Where(x => x.TLCUTE_CutSheet_FK == cutSheet.TLCutSH_Pk).ToList();
                                 foreach (var row in EUnits)
                                 {
-                                    var index = dataGridView2.Rows.Add();
-                                    dataGridView2.Rows[index].Cells[0].Value = row.TLCUTE_Size_FK;
-                                    dataGridView2.Rows[index].Cells[1].Value = context.TLADM_Sizes.Find(row.TLCUTE_Size_FK).SI_Description;
-                                    dataGridView2.Rows[index].Cells[2].Value = row.TLCUTE_NoofGarments;
-                                    dataGridView2.Rows[index].Cells[3].Value = 0;
-                                    dataGridView2.Rows[index].Cells[4].Value = 0.00M;
-                                }
+                                    DataRow NewRow = dataTable2.NewRow();
+                                    NewRow[0] = row.TLCUTE_Size_FK;
+                                    NewRow[1] = context.TLADM_Sizes.Find(row.TLCUTE_Size_FK).SI_Description;
+                                    NewRow[2] = row.TLCUTE_NoofGarments;
+                                    NewRow[3] = 0;
+                                    NewRow[4] = 0.00M;
+                                    dataTable2.Rows.Add(NewRow);
+                                 }
                             }
                         }
                         //------------------------------------------------------------
@@ -283,11 +466,22 @@ namespace Cutting
                             {
                                 foreach (var row in CSRD)
                                 {
+                                    /*DataRow NewRow = dataTable.NewRow();
+                                    NewRow[0] = row.TLCUTSHRD_Pk;
+                                    NewRow[1] = row.TLCUTSHRD_Description;
+                                    NewRow[2] = row.TLCUTSHRD_Size_FK;
+                                    NewRow[3] = row.TLCUTSHRD_BundleQty;
+                                    NewRow[4] = false;
+                                    dataTable.Rows.Add(NewRow);*/
+
+                                    
                                     var index = dataGridView1.Rows.Add();
                                     dataGridView1.Rows[index].Cells[0].Value = row.TLCUTSHRD_Pk;
                                     dataGridView1.Rows[index].Cells[1].Value = row.TLCUTSHRD_Description;
                                     dataGridView1.Rows[index].Cells[2].Value = row.TLCUTSHRD_Size_FK;
                                     dataGridView1.Rows[index].Cells[3].Value = row.TLCUTSHRD_BundleQty;
+                                    
+
                                 }
 
                                 DataGridViewCellEventArgs exx = new DataGridViewCellEventArgs(3, 1);
@@ -326,79 +520,62 @@ namespace Cutting
         private void dataGridView1_CellLeave(object sender, DataGridViewCellEventArgs e)
         {
             DataGridView oDgv = sender as DataGridView;
+            var CurrentRow = oDgv.Rows;
+            var Cell = oDgv.CurrentCell;
             int val = 0;
-
-            if (oDgv != null && formloaded)
+            if (e.ColumnIndex == 3)
             {
-                if (e.ColumnIndex == 3)
+                if (String.IsNullOrEmpty(Cell.EditedFormattedValue.ToString()))
                 {
-                    var Cell = oDgv.CurrentCell;
-                    var CurrentRow = oDgv.CurrentRow;
-
-                    if(String.IsNullOrEmpty(Cell.EditedFormattedValue.ToString()))
+                    return;
+                }
+                val = int.Parse(Cell.EditedFormattedValue.ToString());
+                if (val > 0)
+                {
+                    if (oDgv.Rows[e.RowIndex].Cells[2].Value != null)
                     {
-                        return;
-                    }
-
-                    int Total = Convert.ToInt32(Cell.EditedFormattedValue.ToString());
-
-                    //1st thing clear down the  
-                    //-----------------------------------------------------------------
-                    foreach (DataGridViewRow rowx in dataGridView2.Rows)
-                    {
-                        dataGridView2.Rows[rowx.Index].Cells[3].Value = 0;
-                        dataGridView2.Rows[rowx.Index].Cells[4].Value = 0;
-                    }
-
-                    foreach (DataGridViewRow row in dataGridView1.Rows)
-                    {
-                        if (row.Cells[2].Value != null)
+                        var SizePk = (int)oDgv.Rows[e.RowIndex].Cells[2].Value;
+                        if (SizePk != 0)
                         {
-                            int CurrentTotal = 0;
-                            foreach (DataGridViewRow rowx in dataGridView2.Rows)
+                            int total = oDgv.Rows.Cast<DataGridViewRow>()
+                                        .Where(r => Convert.ToInt32(r.Cells[2].Value) == SizePk 
+                                                && r.Cells[0].RowIndex != e.RowIndex)
+                                        .Sum(t => Convert.ToInt32(t.Cells[3].Value));
+
+                            DataRow foundRow = dataTable2.Rows.Find(SizePk);
+                            if (foundRow != null)
                             {
-                                if ((int)row.Cells[2].Value == (int)rowx.Cells[0].Value)
-                                {
-                                    val = (int)dataGridView2.Rows[rowx.Index].Cells[3].Value;
-                                    if ((int)dataGridView1.Rows[row.Index].Cells[3].Value == 0)
-                                    {
-                                        val += Total;
-                                        Total = 0;
-                                    }
-                                    else
-                                    {
-                                        val += (int)dataGridView1.Rows[row.Index].Cells[3].Value;
-                                    }
-
-                                    dataGridView2.Rows[rowx.Index].Cells[3].Value = val;
-                                    int Estimated = (int)dataGridView2.Rows[rowx.Index].Cells[2].Value;
-                                    if (Estimated > 0)
-                                    {
-                                        decimal Variance = -1 * (100 - (decimal)val / (decimal)Estimated * 100);
-                                        dataGridView2.Rows[rowx.Index].Cells[4].Value = Math.Round(Variance, 2);
-                                    }
-                                    else
-                                        dataGridView2.Rows[rowx.Index].Cells[4].Value = 0;
-                                }
-
-                                CurrentTotal += (int)dataGridView2.Rows[rowx.Index].Cells[3].Value;
+                                var Estimated = (int)foundRow[2];
+                                foundRow[3] = total + val;
+                                foundRow[4] = Math.Round(-1 * (100 - (decimal)(total + val) / (decimal)Estimated * 100), 2);
                             }
-                            txtCurrentTotal.Text = CurrentTotal.ToString();
+                            var sum = dataTable2.AsEnumerable().Sum(x => x.Field<int>(3));
+                            txtCurrentTotal.Text = sum.ToString();
                         }
+
                     }
                 }
+                
             }
         }
 
         private void txtBundles_Leave(object sender, EventArgs e)
         {
             TextBox oTxt = sender as TextBox;
+            int Size = 0;
             if (oTxt != null && formloaded)
             {
                 var selected = (TLCUT_CutSheet)cmboCutSheet.SelectedItem;
                 if (selected != null)
                 {
                     string cs = selected.TLCutSH_No.Remove(0, 2);
+
+                    int SizesCnt = dataTable2.Rows.Count;
+
+                    if(SizesCnt == 1)
+                    {
+                        Size = dataTable2.Rows[0].Field<int>(0); 
+                    }
 
                     int BundleNo = Convert.ToInt32(txtBundles.Text);
                     int i = 1;
@@ -407,7 +584,12 @@ namespace Cutting
                         var index = dataGridView1.Rows.Add();
                         dataGridView1.Rows[index].Cells[0].Value = 0;
                         dataGridView1.Rows[index].Cells[1].Value = cs + "-" + (i.ToString().PadLeft(2, '0'));
+                        if(Size != 0)
+                        {
+                            dataGridView1.Rows[index].Cells[2].Value = Size;
+                        }
                         dataGridView1.Rows[index].Cells[3].Value = 0;
+                        dataGridView1.Rows[index].Cells[4].Value = false; 
 
                     } while (++i <= BundleNo);
                 }
@@ -521,7 +703,17 @@ namespace Cutting
                             CSRD.TLCUTSHRD_Description = (String)row.Cells[1].Value;
                             CSRD.TLCUTSHRD_Size_FK     = (int)row.Cells[2].Value;
                             CSRD.TLCUTSHRD_BundleQty   = (int)row.Cells[3].Value;
+                            CSRD.TLCUTSHRD_BoxUnits = (int)row.Cells[3].Value;
                             CSRD.TLCUTSHRD_InBundleStore = true;
+
+                            if (chkSearch.Checked &&
+                                CSRD.TLCUTSHRD_BundleQty != CSRD.TLCUTSHRD_BoxUnits)
+                            {
+                                if (CSRD.TLCUTSHRD_BoxUnits != 0)
+                                {
+                                    CSRD.TLCUTSHRD_BoxUnits = CSRD.TLCUTSHRD_BundleQty;
+                                }
+                            }
 
                             if (Dept != null)
                             {
@@ -578,7 +770,7 @@ namespace Cutting
                             context.SaveChanges();
                             MessageBox.Show("Data saved successfully to database");
                             dataGridView1.Rows.Clear();
-                            dataGridView2.Rows.Clear();
+                            dataTable2.Rows.Clear();
                             SetUp();
 
                         }
@@ -676,7 +868,8 @@ namespace Cutting
                    // cmboMachines.DataSource = null;
                    // cmboMachines.Items.Clear();
                     dataGridView1.Rows.Clear();
-                    dataGridView2.Rows.Clear();
+                    //     dataGridView2.Rows.Clear();
+                    dataTable2.Rows.Clear();
                     
                     using (var context = new TTI2Entities())
                     {
@@ -705,7 +898,8 @@ namespace Cutting
                     // cmboMachines.DataSource = null;
                     // cmboMachines.Items.Clear();
                     dataGridView1.Rows.Clear();
-                    dataGridView2.Rows.Clear();
+                    //  dataGridView2.Rows.Clear();
+                    dataTable2.Rows.Clear(); 
 
                     using (var context = new TTI2Entities())
                     {
@@ -727,5 +921,42 @@ namespace Cutting
             }
         }
 
+        private void chkSearch_CheckedChanged(object sender, EventArgs e)
+        {
+            CheckBox oChk = sender as CheckBox;
+            if(oChk != null && oChk.Checked && formloaded)
+            {
+                using (var context = new TTI2Entities())
+                {
+                    var CS = context.TLCUT_CutSheet.Where(x => x.TLCutSH_No == txtPrevCutSheet.Text).FirstOrDefault();
+                    if(CS == null)
+                    {
+                        MessageBox.Show("No Master Record on file");
+                        return;
+                    }
+
+                    var CSR = context.TLCUT_CutSheetReceipt.Where(x => x.TLCUTSHR_CutSheet_FK == CS.TLCutSH_Pk).FirstOrDefault();
+                    if(CSR == null)
+                    {
+                        MessageBox.Show("It would appear that this CutSheet has not yet been receipted");
+                        return;
+                    }
+                                      
+                    var Details = context.TLCUT_CutSheetReceiptDetail.Where(x => x.TLCUTSHRD_CutSheet_FK == CSR.TLCUTSHR_Pk).ToList();
+                    if(Details.Count != 0)
+                    {
+                        dataGridView1.Rows.Clear();
+                        foreach(var Detail in Details)
+                        {
+                            var index = dataGridView1.Rows.Add();
+                            dataGridView1.Rows[index].Cells[0].Value = Detail.TLCUTSHRD_Pk;
+                            dataGridView1.Rows[index].Cells[1].Value = Detail.TLCUTSHRD_Description;
+                            dataGridView1.Rows[index].Cells[2].Value = Detail.TLCUTSHRD_Size_FK;
+                            dataGridView1.Rows[index].Cells[3].Value = Detail.TLCUTSHRD_BundleQty;
+                        }
+                    }
+                }
+            }
+        }
     }
 }

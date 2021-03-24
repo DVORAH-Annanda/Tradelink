@@ -411,6 +411,7 @@ SELECT GQ_Pk, GQ_Description FROM TLADM_GreigeQuality WHERE (GQ_Pk = @GQ_Pk)</Co
               <xs:element name="TLGreige_ROQ" msprop:Generator_ColumnVarNameInTable="columnTLGreige_ROQ" msprop:Generator_ColumnPropNameInRow="TLGreige_ROQ" msprop:Generator_ColumnPropNameInTable="TLGreige_ROQColumn" msprop:Generator_UserColumnName="TLGreige_ROQ" type="xs:int" />
               <xs:element name="TLGreige_StockTakeFreq_FK" msprop:Generator_ColumnVarNameInTable="columnTLGreige_StockTakeFreq_FK" msprop:Generator_ColumnPropNameInRow="TLGreige_StockTakeFreq_FK" msprop:Generator_ColumnPropNameInTable="TLGreige_StockTakeFreq_FKColumn" msprop:Generator_UserColumnName="TLGreige_StockTakeFreq_FK" type="xs:int" />
               <xs:element name="TLGreige_KgPerPiece" msprop:Generator_ColumnVarNameInTable="columnTLGreige_KgPerPiece" msprop:Generator_ColumnPropNameInRow="TLGreige_KgPerPiece" msprop:Generator_ColumnPropNameInTable="TLGreige_KgPerPieceColumn" msprop:Generator_UserColumnName="TLGreige_KgPerPiece" type="xs:decimal" />
+              <xs:element name="TLGreige_DskWeight" msprop:Generator_ColumnVarNameInTable="columnTLGreige_DskWeight" msprop:Generator_ColumnPropNameInRow="TLGreige_DskWeight" msprop:Generator_ColumnPropNameInTable="TLGreige_DskWeightColumn" msprop:Generator_UserColumnName="TLGreige_DskWeight" type="xs:decimal" minOccurs="0" />
             </xs:sequence>
           </xs:complexType>
         </xs:element>

@@ -75,14 +75,32 @@ namespace Knitting
            }
        }
 
+        public IQueryable<TLKNI_GreigeProduction> GriegeDskVariance(KnitQueryParameters parameters)
+        {
+            IQueryable<TLKNI_GreigeProduction> GriegeProd;
+            GriegeProd = _context.TLKNI_GreigeProduction.Where(x => x.GreigeP_PDate >= parameters.FromDate && x.GreigeP_PDate <= parameters.ToDate && x.GreigeP_Captured && x.GreigeP_DskWeight != 0).AsQueryable();
+            return GriegeProd;
+        }
 
        public IQueryable<TLKNI_GreigeProduction> GreigeProduction(KnitQueryParameters parameters)
        {
            IQueryable<TLKNI_GreigeProduction> GriegeProd;
            var YarnOrders = _context.TLSPN_YarnOrder.AsQueryable();
            var KnitOrders = _context.TLKNI_Order.AsQueryable();
+            if (!parameters.DiskVarianceReport)
+            {
+                GriegeProd = _context.TLKNI_GreigeProduction.Where(x => x.GreigeP_PDate >= parameters.FromDate && x.GreigeP_PDate <= parameters.ToDate && x.GreigeP_Captured).AsQueryable();
+            }
+            else
+            {
+                GriegeProd = _context.TLKNI_GreigeProduction.Where(x => x.GreigeP_PDate >= parameters.FromDate && x.GreigeP_PDate <= parameters.ToDate && x.GreigeP_Captured && x.GreigeP_DskWeight != 0).AsQueryable();
+            }
 
-           GriegeProd = _context.TLKNI_GreigeProduction.Where(x => x.GreigeP_PDate >= parameters.FromDate && x.GreigeP_PDate <= parameters.ToDate && x.GreigeP_Captured).AsQueryable();
+            if(parameters.UpperDskVariance != 0 && parameters.LowerDiskVariance != 0)
+            {
+                //where gp.GreigeP_VarianceDiskWeight < -1.2 or gp.GreigeP_VarianceDiskWeight > 1.2
+                GriegeProd = GriegeProd.Where(x => x.GreigeP_VarianceDiskWeight < parameters.LowerDiskVariance || x.GreigeP_VarianceDiskWeight > parameters.UpperDskVariance  ).AsQueryable();
+            }
 
            if (parameters.YarnTypes.Count != 0)
            {
@@ -128,7 +146,7 @@ namespace Knitting
                GriegeProd = GriegeProd.AsExpandable().Where(CustomerPredicate);
            }
 
-           if (parameters.Grade.Length != 0)
+           if (parameters.Grade.Length != 0 && !parameters.DiskVarianceReport)
            {
                var GradePredicate = PredicateBuilder.New<TLKNI_GreigeProduction>();
                GriegeProd = GriegeProd.AsExpandable().Where(x=>x.GreigeP_Grade == parameters.Grade.ToUpper());
@@ -521,7 +539,10 @@ namespace Knitting
         public bool BoughtInFabric;
         public bool GradeAwithWarnings;
         public int GradeSelectionTotal;
+        public bool DiskVarianceReport;
 
+        public decimal UpperDskVariance;
+        public decimal LowerDiskVariance;
         public KnitQueryParameters()
         {
             YarnTypes = new List<TLADM_Yarn>();
@@ -539,7 +560,13 @@ namespace Knitting
             YarnOrders = new List<TLSPN_YarnOrder>();
             BoughtInFabric = false;
             GradeAwithWarnings = false;
+            DiskVarianceReport = false;
             GradeSelectionTotal = 0;
+
+            UpperDskVariance = 0.00M;
+            LowerDiskVariance = 0.00M;
+
+
         }
 
     }

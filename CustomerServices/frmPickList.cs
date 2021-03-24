@@ -316,7 +316,7 @@ namespace CustomerServices
                                 {
                                     if (Nett <= 0)
                                     {
-                                        MessageBox.Show("Quantity Issued " + AllReadyPicked.ToString() + " exceeds Qty ordered", "Qty originally ordered " + Row.TLCUSTO_Qty.ToString());
+                                       // MessageBox.Show("Quantity Issued " + AllReadyPicked.ToString() + " exceeds Qty ordered", "Qty originally ordered " + Row.TLCUSTO_Qty.ToString());
                                         continue;
                                     }
                                 }
@@ -873,6 +873,11 @@ namespace CustomerServices
                                     int w = Screen.PrimaryScreen.WorkingArea.Width;
                                     vRep.ClientSize = new Size(w, h);
                                     vRep.ShowDialog(this);
+                                    if (vRep != null)
+                                    {
+                                        vRep.Close();
+                                        vRep.Dispose();
+                                    }
                                 }
                                 else
                                 {
@@ -890,6 +895,11 @@ namespace CustomerServices
                                         int w = Screen.PrimaryScreen.WorkingArea.Width;
                                         vRep.ClientSize = new Size(w, h);
                                         vRep.ShowDialog(this);
+                                        if (vRep != null)
+                                        {
+                                            vRep.Close();
+                                            vRep.Dispose();
+                                        }
                                     }
                                 }
                             }

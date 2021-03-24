@@ -73,7 +73,7 @@ namespace CMT
             DataGridView oDgv = sender as DataGridView;
             var Cell = oDgv.CurrentCell;
 
-            if (oDgv.Focused && Cell is DataGridViewTextBoxCell && Cell.ColumnIndex > 1)
+            if (oDgv.Focused && Cell is DataGridViewTextBoxCell && Cell.ColumnIndex > 3)
             {
                 e.Control.KeyDown -= new KeyEventHandler(core.txtWin_KeyDownOEM);
                 e.Control.KeyDown += new KeyEventHandler(core.txtWin_KeyDownOEM);
@@ -202,7 +202,8 @@ namespace CMT
                     column.DataType = typeof(Int32); 
                     column.ColumnName = "CMTBFA_Pk";
                     DataT.Columns.Add(column);
-                   
+
+                    
                     //-----------------------------------------------------------
                     // Create column 2. // This is the Index position of the measurement 
                     //----------------------------------------------
@@ -212,7 +213,7 @@ namespace CMT
                     column.Caption = "Measurement Description";
 
                     DataT.Columns.Add(column);
-
+                    
                     var Measurements = (from AuditM in context.TLCMT_AuditMeasurements
                                join Measure in context.TLADM_CMTMeasurementPoints on AuditM.CMTBFA_MeasureP_FK equals Measure.CMTMP_Pk
                                where AuditM.CMTBFA_Customer_FK == SelectedCustomer.Cust_Pk && AuditM.CMTBFA_Style_FK == SelectedStyle.Sty_Id
@@ -247,14 +248,14 @@ namespace CMT
                             DataT.Columns.Add(column);
                         }
                     }
-
+                    
                     var GroupedM = Measurements.GroupBy(x => x.CMTBFA_MeasureP_FK);
                     foreach (var Group in GroupedM)
                     {
                         bool First = true;
                         // int Index = 0;
                         Row = DataT.NewRow();
-
+                    
                         foreach (var Sze in Group)
                         {
                             
@@ -263,7 +264,7 @@ namespace CMT
                                 First = !First;
                                 Row[0] = Group.FirstOrDefault().CMTBFA_Pk;
                                 Row[1] = Group.FirstOrDefault().CMTBFA_MeasureP_FK;
-                            }
+                           }
 
                             var Ind = DataT.Columns.IndexOf(Sze.CMTBFA_Size_FK.ToString());
                             if (Ind > 0)

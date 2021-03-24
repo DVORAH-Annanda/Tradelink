@@ -287,7 +287,12 @@ namespace CMT
                         int h = Screen.PrimaryScreen.WorkingArea.Height;
                         int w = Screen.PrimaryScreen.WorkingArea.Width;
                         vRep.ClientSize = new Size(w, h);
-                        vRep.ShowDialog(); 
+                        vRep.ShowDialog();
+                        if (vRep != null)
+                        {
+                            vRep.Close();
+                            vRep.Dispose();
+                        }
                     }
 
                     catch (System.Data.Entity.Validation.DbEntityValidationException en)

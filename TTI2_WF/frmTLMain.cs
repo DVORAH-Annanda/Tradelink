@@ -248,6 +248,7 @@ namespace TTI2_WF
             ud._NotAuthorisedMessage = "You are not authorised to use this function";
             ud._External = frmLogin.IsExternal;
             ud._QAFunction = frmLogin.QAFunction;
+            ud._DownSizeAuthority = frmLogin.DownSizeAllowed;
             this.Text += " Welcome - " + ud._UserName;
 
             if (!ud._SuperUser)
@@ -1366,18 +1367,16 @@ namespace TTI2_WF
 
         private void definitionToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("This Facility is No Longer Required");
-            /*
             try
             {
-                frmTLADMGardDef gd = new frmTLADMGardDef(16);
+                frmFabricDyingStandards gd = new frmFabricDyingStandards();
                 gd.ShowDialog();
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
-             */
+             
         }
 
         private void panelsToolStripMenuItem_Click(object sender, EventArgs e)
@@ -2727,7 +2726,7 @@ namespace TTI2_WF
             {
                 try
                 {
-                    frmK07ReportSel greigeP = new frmK07ReportSel();
+                    frmK07ReportSel greigeP = new frmK07ReportSel(true);
                     greigeP.ShowDialog(this);
                 }
                 catch (Exception ex)
@@ -4652,7 +4651,7 @@ namespace TTI2_WF
 
                 try
                 {
-                    frmCutSheet CutSheet = new frmCutSheet();
+                    frmCutSheet CutSheet = new frmCutSheet(ud);
                     CutSheet.ShowDialog(this);
                 }
                 catch (Exception ex)
@@ -5387,7 +5386,7 @@ namespace TTI2_WF
             {
                 try
                 {
-                    frmBFADefinition gd = new frmBFADefinition();
+                    CMT.frmBFADefinition gd = new CMT.frmBFADefinition();
                     gd.ShowDialog();
                 }
                 catch (Exception ex)
@@ -6762,7 +6761,7 @@ namespace TTI2_WF
             {
                 try
                 {
-                    frmCottonBalesInStock balesinstock = new frmCottonBalesInStock();
+                    Spinning.frmCottonBalesInStock balesinstock = new Spinning.frmCottonBalesInStock();
                     balesinstock.ShowDialog(this);
                 }
                 catch (Exception ex)
@@ -9980,6 +9979,164 @@ namespace TTI2_WF
                     MessageBox.Show(ud._NotAuthorisedMessage, ud._UserName);
                 }
 
+            }
+        }
+
+        private void reprintCMTTransferToWarehouseDeliveryNoteToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ToolStripMenuItem oTi = sender as ToolStripMenuItem;
+
+            if (core.GetUserAuthorisation(ud, oTi.Name))
+            {
+                try
+                {
+                    CustomerServices.frmReprintWareHouse CMTTrnsfr = new CustomerServices.frmReprintWareHouse();
+                    CMTTrnsfr.ShowDialog();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+            else
+            {
+                using (DialogCenteringService centeringService = new DialogCenteringService(this)) // center message box
+                {
+                    MessageBox.Show(ud._NotAuthorisedMessage, ud._UserName);
+                }
+
+            }
+        }
+
+        private void dskWeightVarianceReportingToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ToolStripMenuItem oTi = sender as ToolStripMenuItem;
+            if (core.GetUserAuthorisation(ud, oTi.Name))
+            {
+                try
+                {
+                    frmK07ReportSel greigeP = new frmK07ReportSel(false);
+                    greigeP.ShowDialog(this);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+            else
+            {
+                using (DialogCenteringService centeringService = new DialogCenteringService(this)) // center message box
+                {
+                    MessageBox.Show(ud._NotAuthorisedMessage, ud._UserName);
+                }
+            }
+        }
+
+        private void cutSheetReturnsToOriginToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ToolStripMenuItem oTi = sender as ToolStripMenuItem;
+            if (core.GetUserAuthorisation(ud, oTi.Name))
+            {
+                try
+                {
+                     CMT.frmCutSheetReturn greigeP = new CMT.frmCutSheetReturn();
+                     greigeP.ShowDialog(this);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+            else
+            {
+                using (DialogCenteringService centeringService = new DialogCenteringService(this)) // center message box
+                {
+                    MessageBox.Show(ud._NotAuthorisedMessage, ud._UserName);
+                }
+            }
+        }
+
+        private void dyeHouseToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void dyeHouseStandardsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ToolStripMenuItem oTi = sender as ToolStripMenuItem;
+            if (core.GetUserAuthorisation(ud, oTi.Name))
+            {
+                try
+                {
+                    Administration.frmFabricDyingStandards greigeP = new Administration.frmFabricDyingStandards();
+                    greigeP.ShowDialog(this);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+            else
+            {
+                using (DialogCenteringService centeringService = new DialogCenteringService(this)) // center message box
+                {
+                    MessageBox.Show(ud._NotAuthorisedMessage, ud._UserName);
+                }
+            }
+
+        }
+
+        private void currentDyeStandardsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ToolStripMenuItem oTi = sender as ToolStripMenuItem;
+            if (core.GetUserAuthorisation(ud, oTi.Name))
+            {
+                try
+                {
+                    frmAdminViewRep vRep = new frmAdminViewRep(13);
+                    int h = Screen.PrimaryScreen.WorkingArea.Height;
+                    int w = Screen.PrimaryScreen.WorkingArea.Width;
+                    vRep.ClientSize = new Size(w, h);
+                    vRep.ShowDialog(this);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+        }
+
+        private void dyeConsummablesInspectionToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ToolStripMenuItem oTi = sender as ToolStripMenuItem;
+            if (core.GetUserAuthorisation(ud, oTi.Name))
+            {
+                try
+                {
+                    DyeHouse.frmConsummablesInspectionResults InsResults = new DyeHouse.frmConsummablesInspectionResults();
+                    InsResults.ShowDialog(this);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+        }
+
+        private void interDepartmentalDskAnalysisToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ToolStripMenuItem oTi = sender as ToolStripMenuItem;
+            if (core.GetUserAuthorisation(ud, oTi.Name))
+            {
+                try
+                {
+                    ProductionPlanning.frmInterDeptDskAnalysis InsResults = new ProductionPlanning.frmInterDeptDskAnalysis();
+                    InsResults.ShowDialog(this);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
             }
         }
     }

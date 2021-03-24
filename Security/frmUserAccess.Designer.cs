@@ -47,6 +47,7 @@
             this.txtEMail_Address = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.chkExternalUser = new System.Windows.Forms.CheckBox();
+            this.chkDownSizeAuthority = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -88,7 +89,7 @@
             // dataGridView1
             // 
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(77, 266);
+            this.dataGridView1.Location = new System.Drawing.Point(81, 300);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.Size = new System.Drawing.Size(449, 347);
             this.dataGridView1.TabIndex = 6;
@@ -180,6 +181,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.chkDownSizeAuthority);
             this.groupBox1.Controls.Add(this.chkQAFunction);
             this.groupBox1.Controls.Add(this.txtEMail_Address);
             this.groupBox1.Controls.Add(this.label4);
@@ -205,15 +207,15 @@
             // 
             // txtEMail_Address
             // 
-            this.txtEMail_Address.Location = new System.Drawing.Point(134, 56);
+            this.txtEMail_Address.Location = new System.Drawing.Point(119, 74);
             this.txtEMail_Address.Name = "txtEMail_Address";
-            this.txtEMail_Address.Size = new System.Drawing.Size(246, 20);
+            this.txtEMail_Address.Size = new System.Drawing.Size(405, 20);
             this.txtEMail_Address.TabIndex = 13;
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(39, 59);
+            this.label4.Location = new System.Drawing.Point(39, 77);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(74, 13);
             this.label4.TabIndex = 12;
@@ -228,6 +230,16 @@
             this.chkExternalUser.TabIndex = 11;
             this.chkExternalUser.Text = "External User";
             this.chkExternalUser.UseVisualStyleBackColor = true;
+            // 
+            // chkDownSizeAuthority
+            // 
+            this.chkDownSizeAuthority.AutoSize = true;
+            this.chkDownSizeAuthority.Location = new System.Drawing.Point(6, 46);
+            this.chkDownSizeAuthority.Name = "chkDownSizeAuthority";
+            this.chkDownSizeAuthority.Size = new System.Drawing.Size(129, 17);
+            this.chkDownSizeAuthority.TabIndex = 15;
+            this.chkDownSizeAuthority.Text = "Down Sizing Authority";
+            this.chkDownSizeAuthority.UseVisualStyleBackColor = true;
             // 
             // frmUserAccess
             // 
@@ -278,5 +290,6 @@
         private System.Windows.Forms.TextBox txtEMail_Address;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.CheckBox chkQAFunction;
+        private System.Windows.Forms.CheckBox chkDownSizeAuthority;
     }
 }

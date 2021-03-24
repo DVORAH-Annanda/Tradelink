@@ -60,7 +60,7 @@ namespace Security
                 chkSuperUser.Checked = false;
                 chkExternalUser.Checked = false;
                 chkQAFunction.Checked = false;
-
+                chkDownSizeAuthority.Checked = false;
                 txtHostName.Text = string.Empty;
 
                 dt = new DataTable();
@@ -303,6 +303,7 @@ namespace Security
                         user.TLSECUA_External = chkExternalUser.Checked;
                         user.TLSUCUA_EmailAddress = txtEMail_Address.Text;
                         user.TLSECUA_QAFunction = chkQAFunction.Checked;
+                        user.TLSECUA_DownSizeAuthority = chkDownSizeAuthority.Checked;
 
                         context.TLSEC_UserAccess.Add(user);
                         try
@@ -328,6 +329,7 @@ namespace Security
                         user.TLSECUA_External = chkExternalUser.Checked;
                         user.TLSUCUA_EmailAddress = txtEMail_Address.Text;
                         user.TLSECUA_QAFunction = chkQAFunction.Checked;
+                        user.TLSECUA_DownSizeAuthority = chkDownSizeAuthority.Checked;
 
                         if (chkResetPassword.Checked)
                         {

@@ -324,7 +324,11 @@ namespace Cutting
                         int w = Screen.PrimaryScreen.WorkingArea.Width;
                         vRep.ClientSize = new Size(w, h);
                         vRep.ShowDialog();
-                        
+                        if (vRep != null)
+                        {
+                            vRep.Close();
+                            vRep.Dispose();
+                        }
                         //This form is the CMT Issued to line document 
                         //==============================================================
                         vRep = new frmCutViewRep(14, CutSheetSelected);
@@ -332,6 +336,11 @@ namespace Cutting
                         w = Screen.PrimaryScreen.WorkingArea.Width;
                         vRep.ClientSize = new Size(w, h);
                         vRep.ShowDialog();
+                        if (vRep != null)
+                        {
+                            vRep.Close();
+                            vRep.Dispose();
+                        }
                     }
                     catch (System.Data.Entity.Validation.DbEntityValidationException en)
                     {

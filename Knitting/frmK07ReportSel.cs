@@ -17,13 +17,18 @@ namespace Knitting
         bool[] MandFieldsSelected;
         Util core;
         bool formloaded;
-       
+        bool _GreigeProd;
+
         KnitQueryParameters QueryParms;
         KnitRepository repo;
 
-        public frmK07ReportSel()
+        public frmK07ReportSel(bool GreigeProd)
         {
+            // Note for the file if set to true then this performs as per original specifications
+            // otherwise it must do the the dsk weight variance calculations and Reporting 
             InitializeComponent();
+
+            _GreigeProd = GreigeProd;
             
             this.cmbGreigeProduct.CheckStateChanged += new System.EventHandler(this.cmboGreigeProduct_CheckStateChanged);
             this.cmbKnittingCustomer.CheckStateChanged += new EventHandler(this.cmboKnittingCustomer_CheckStateChanged);
@@ -42,6 +47,22 @@ namespace Knitting
 
             chkQASummary.Checked = false;
 
+            if(_GreigeProd)
+            {
+                this.Text = "Greige Production Reporting";
+            }
+            else
+            {
+                this.Text = "Dsk Variance Reporting";
+                groupBox1.Visible = false;
+                chkQASummary.Visible = false;
+                label5.Text = "Variance Band";
+
+                txtGrade.Text = "0.00";
+                txtGrade.KeyDown += core.txtWin_KeyDownOEM;
+                txtGrade.KeyPress += core.txtWin_KeyPress;
+
+            }
 
             MandatoryFields = new string[][]
                 {   new string[] {"cmbKnittingCustomer", "0"},
@@ -218,74 +239,102 @@ namespace Knitting
             if (oBtn != null)
             {
 
-               YarnReportOptions YarnOpts = new YarnReportOptions();
-               if (chkQASummary.Checked)
-                   YarnOpts.QASummary = true;
+                YarnReportOptions YarnOpts = new YarnReportOptions();
+                if (chkQASummary.Checked)
+                    YarnOpts.QASummary = true;
 
-               QueryParms.FromDate = Convert.ToDateTime(dtpFromDate.Value.ToShortDateString());
-               QueryParms.ToDate = Convert.ToDateTime(dtpToDate.Value.ToShortDateString());
-               QueryParms.ToDate = QueryParms.ToDate.AddHours(23.59);
+                QueryParms.FromDate = Convert.ToDateTime(dtpFromDate.Value.ToShortDateString());
+                QueryParms.ToDate = Convert.ToDateTime(dtpToDate.Value.ToShortDateString());
+                QueryParms.ToDate = QueryParms.ToDate.AddHours(23.59);
 
-               QueryParms.Grade = txtGrade.Text;
+                QueryParms.Grade = txtGrade.Text;
+               
+                    int index = -1;
+                    foreach (var element in MandFieldsSelected)
+                    {
+                        ++index;
+                        if (element)
+                        {
+                            if (index == 0)
+                            {
+                                YarnOpts.K7CustSel = true;
+                                //YarnOpts.K7KnittingCustomer_FK = ((TLADM_CustomerFile)cmbKnittingCustomer.SelectedItem).Cust_Pk;
+                            }
+                            else if (index == 1)
+                            {
+                                YarnOpts.K7ProdSel = true;
+                                //YarnOpts.K7GreigeProduct_FK = ((TLADM_Griege)cmbGreigeProduct.SelectedItem).TLGreige_Id;
+                            }
+                            else if (index == 2)
+                            {
+                                YarnOpts.K7MachineSel = true;
+                                //YarnOpts.K7Machine_FK = ((TLADM_MachineDefinitions)cmbMachines.SelectedItem).MD_Pk;
+                            }
+                            else if (index == 3)
+                            {
+                                YarnOpts.K7OperatorSel = true;
+                                //YarnOpts.K7Operator_FK = ((TLADM_MachineOperators)cmbOperator.SelectedItem).MachOp_Pk;
+                            }
+                            else if (index == 4)
+                            {
+                                YarnOpts.K7GradeSel = true;
+                                YarnOpts.K7Grade = txtGrade.Text;
+                            }
+                        }
+                    }
 
-               int index = -1;
-               foreach (var element in MandFieldsSelected)
-               {
-                   ++index;
-                   if (element)
-                   {
-                       if (index == 0)
-                       {
-                           YarnOpts.K7CustSel = true;
-                           //YarnOpts.K7KnittingCustomer_FK = ((TLADM_CustomerFile)cmbKnittingCustomer.SelectedItem).Cust_Pk;
-                       }
-                       else if (index == 1)
-                       {
-                           YarnOpts.K7ProdSel = true;
-                           //YarnOpts.K7GreigeProduct_FK = ((TLADM_Griege)cmbGreigeProduct.SelectedItem).TLGreige_Id;
-                       }
-                       else if (index == 2)
-                       {
-                           YarnOpts.K7MachineSel = true;
-                           //YarnOpts.K7Machine_FK = ((TLADM_MachineDefinitions)cmbMachines.SelectedItem).MD_Pk;
-                       }
-                       else if (index == 3)
-                       {
-                           YarnOpts.K7OperatorSel = true;
-                           //YarnOpts.K7Operator_FK = ((TLADM_MachineOperators)cmbOperator.SelectedItem).MachOp_Pk;
-                       }
-                       else if (index == 4)
-                       {
-                           YarnOpts.K7GradeSel = true;
-                           YarnOpts.K7Grade = txtGrade.Text;
-                       }
-                   }
-               }
+                    if (rbGPByMachine.Checked)
+                    {
+                        YarnOpts.K7rbQA1 = true;
+                    }
+                    else if (rbGPByTotal.Checked)
+                    {
+                        YarnOpts.K7rbQA2 = true;
+                    }
+                    else if (rbGPOperator.Checked)
+                    {
+                        YarnOpts.K7rbQA3 = true;
+                    }
 
-               if (rbGPByMachine.Checked)
-               {
-                   YarnOpts.K7rbQA1 = true;
-               }
-               else if (rbGPByTotal.Checked)
-               {
-                   YarnOpts.K7rbQA2 = true;
-               }
-               else if (rbGPOperator.Checked)
-               {
-                   YarnOpts.K7rbQA3 = true;
-               }
+                if (_GreigeProd)
+                {
+                    QueryParms.DiskVarianceReport = false;
+                    frmKnitViewRep vRep = new frmKnitViewRep(23, QueryParms, YarnOpts);
+                    int h = Screen.PrimaryScreen.WorkingArea.Height;
+                    int w = Screen.PrimaryScreen.WorkingArea.Width;
+                    vRep.ClientSize = new Size(w, h);
+                    vRep.ShowDialog(this);
+                }
+                else
+                {
+                    if(txtGrade.Text.Length != 0 && decimal.Parse(txtGrade.Text) != 0)
+                    {
+                        QueryParms.UpperDskVariance = Decimal.Parse(txtGrade.Text);
+                        QueryParms.LowerDiskVariance = -1 * QueryParms.UpperDskVariance;
 
-               frmKnitViewRep vRep = new frmKnitViewRep(23, QueryParms, YarnOpts);
+                    }
 
-               int h = Screen.PrimaryScreen.WorkingArea.Height;
-               int w = Screen.PrimaryScreen.WorkingArea.Width;
-               vRep.ClientSize = new Size(w, h);
-               vRep.ShowDialog(this);
-             
-                MandFieldsSelected = core.PopulateArray(MandatoryFields.Length, false);
-                Form_Load(this, null);
-                  
+                    QueryParms.DiskVarianceReport = true;
+                    frmKnitViewRep vRep = new frmKnitViewRep(34, QueryParms, YarnOpts);
+                    int h = Screen.PrimaryScreen.WorkingArea.Height;
+                    int w = Screen.PrimaryScreen.WorkingArea.Width;
+                    vRep.ClientSize = new Size(w, h);
+                    vRep.ShowDialog(this);
+                    if (vRep != null)
+                    {
+                        vRep.Close();
+                        vRep.Dispose();
+
+                    }
+                }
+               
+               
             }
+            
+            MandFieldsSelected = core.PopulateArray(MandatoryFields.Length, false);
+            Form_Load(this, null);
+                  
+             
 
         }
 

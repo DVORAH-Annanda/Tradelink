@@ -87,8 +87,8 @@
             this.btnMaintenance = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
-            this.cmbGreigeProductType = new Administration.CheckComboBox();
             this.btnDelete = new System.Windows.Forms.Button();
+            this.cmbGreigeProductType = new Administration.CheckComboBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -133,7 +133,7 @@
             // 
             // btnNew
             // 
-            this.btnNew.Location = new System.Drawing.Point(726, 464);
+            this.btnNew.Location = new System.Drawing.Point(726, 497);
             this.btnNew.Name = "btnNew";
             this.btnNew.Size = new System.Drawing.Size(75, 23);
             this.btnNew.TabIndex = 19;
@@ -143,7 +143,7 @@
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(726, 493);
+            this.btnSave.Location = new System.Drawing.Point(726, 526);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(75, 23);
             this.btnSave.TabIndex = 20;
@@ -175,7 +175,7 @@
             this.groupBox1.Controls.Add(this.label7);
             this.groupBox1.Controls.Add(this.label6);
             this.groupBox1.Controls.Add(this.label3);
-            this.groupBox1.Location = new System.Drawing.Point(35, 253);
+            this.groupBox1.Location = new System.Drawing.Point(37, 297);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(367, 194);
             this.groupBox1.TabIndex = 5;
@@ -306,7 +306,7 @@
             this.groupBox2.Controls.Add(this.label12);
             this.groupBox2.Controls.Add(this.label13);
             this.groupBox2.Controls.Add(this.label16);
-            this.groupBox2.Location = new System.Drawing.Point(434, 253);
+            this.groupBox2.Location = new System.Drawing.Point(434, 297);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(367, 194);
             this.groupBox2.TabIndex = 6;
@@ -484,7 +484,7 @@
             this.groupBox3.Controls.Add(this.label21);
             this.groupBox3.Controls.Add(this.label20);
             this.groupBox3.Controls.Add(this.label19);
-            this.groupBox3.Location = new System.Drawing.Point(35, 116);
+            this.groupBox3.Location = new System.Drawing.Point(37, 160);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(738, 131);
             this.groupBox3.TabIndex = 4;
@@ -642,7 +642,7 @@
             // 
             // btnMaintenance
             // 
-            this.btnMaintenance.Location = new System.Drawing.Point(276, 464);
+            this.btnMaintenance.Location = new System.Drawing.Point(276, 497);
             this.btnMaintenance.Name = "btnMaintenance";
             this.btnMaintenance.Size = new System.Drawing.Size(82, 23);
             this.btnMaintenance.TabIndex = 21;
@@ -653,7 +653,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(53, 469);
+            this.label4.Location = new System.Drawing.Point(53, 502);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(208, 13);
             this.label4.TabIndex = 22;
@@ -668,6 +668,16 @@
             this.label5.TabIndex = 23;
             this.label5.Text = "Please select a greige poduct type";
             // 
+            // btnDelete
+            // 
+            this.btnDelete.Location = new System.Drawing.Point(630, 524);
+            this.btnDelete.Name = "btnDelete";
+            this.btnDelete.Size = new System.Drawing.Size(75, 23);
+            this.btnDelete.TabIndex = 25;
+            this.btnDelete.Text = "Delete";
+            this.btnDelete.UseVisualStyleBackColor = true;
+            this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
+            // 
             // cmbGreigeProductType
             // 
             this.cmbGreigeProductType.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
@@ -678,23 +688,12 @@
             this.cmbGreigeProductType.TabIndex = 24;
             this.cmbGreigeProductType.Text = "Select Options";
             this.cmbGreigeProductType.SelectedIndexChanged += new System.EventHandler(this.cmbGreigeProductType_SelectedIndexChanged);
-           // this.cmbGreigeProductType.MouseUp += new System.Windows.Forms.MouseEventHandler(this.cmbGreigeProductType_MouseUp);
-            // 
-            // btnDelete
-            // 
-            this.btnDelete.Location = new System.Drawing.Point(630, 491);
-            this.btnDelete.Name = "btnDelete";
-            this.btnDelete.Size = new System.Drawing.Size(75, 23);
-            this.btnDelete.TabIndex = 25;
-            this.btnDelete.Text = "Delete";
-            this.btnDelete.UseVisualStyleBackColor = true;
-            this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
             // 
             // frmTLADM_MachineDefinition
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(842, 526);
+            this.ClientSize = new System.Drawing.Size(842, 558);
             this.Controls.Add(this.btnDelete);
             this.Controls.Add(this.cmbGreigeProductType);
             this.Controls.Add(this.label5);

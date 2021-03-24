@@ -221,6 +221,12 @@ namespace Knitting
 
                         frmKnitViewRep vRep = new frmKnitViewRep(31, TransNo);
                         vRep.ShowDialog(this);
+                        if (vRep != null)
+                        {
+                            vRep.Close();
+                            vRep.Dispose();
+
+                        }
                     }
                     catch (Exception ex)
                     {

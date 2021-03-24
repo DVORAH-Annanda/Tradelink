@@ -44,6 +44,10 @@ namespace DyeHouse
             oTxtIndex.ReadOnly = true;
             oTxtIndex.Visible = false;
 
+            DataGridViewCheckBoxColumn oChk = new DataGridViewCheckBoxColumn();
+            oChk.HeaderText = "QA Ok";
+            oChk.ValueType = typeof(bool);
+
             DataGridViewTextBoxColumn oTxtA = new DataGridViewTextBoxColumn();
             oTxtA.HeaderText = "Piece No";
             oTxtA.ReadOnly = true;
@@ -65,17 +69,18 @@ namespace DyeHouse
             oTxtE.HeaderText = "Nett";
             oTxtE.ValueType = typeof(decimal);
 
-            DataGridViewCheckBoxColumn oChk = new DataGridViewCheckBoxColumn();
-            oChk.HeaderText = "QA Ok";
-            oChk.ValueType = typeof(bool);
+            DataGridViewTextBoxColumn oRemarks = new DataGridViewTextBoxColumn();
+            oRemarks.HeaderText = "Remarks";
+            oRemarks.ValueType = typeof(String);
 
-            dataGridView1.Columns.Add(oTxtIndex);  //0
-            dataGridView1.Columns.Add(oTxtA);      //1
-            dataGridView1.Columns.Add(oTxtB);      //2
-            dataGridView1.Columns.Add(oTxtC);      //3
-            dataGridView1.Columns.Add(oTxtD);      //4
-            dataGridView1.Columns.Add(oTxtE);      //5
-            dataGridView1.Columns.Add(oChk);       //6
+            dataGridView1.Columns.Add(oTxtIndex);     //0
+            dataGridView1.Columns.Add(oChk);          //1
+            dataGridView1.Columns.Add(oTxtA);         //2
+            dataGridView1.Columns.Add(oTxtB);         //3
+            dataGridView1.Columns.Add(oTxtC);         //4
+            dataGridView1.Columns.Add(oTxtD);         //5
+            dataGridView1.Columns.Add(oTxtE);          //6
+            dataGridView1.Columns.Add(oRemarks);       //7
         }
 
         void Setup()
@@ -185,16 +190,22 @@ namespace DyeHouse
 
                         int index = (int)row.Cells[0].Value;
 
+                        if (row.Cells[7].Value == null)
+                        {
+                            row.Cells[7].Value = string.Empty;
+                        }
+                        
                         bd = context.TLDYE_DyeBatchDetails.Find(index);
                         if (bd != null)
                         {
-                            if ((bool)row.Cells[6].Value == true)
+                            if ((bool)row.Cells[1].Value == true)
                             {
                                 bd.DYEBO_QAApproved = true;
                                 //use this date tocalculate the days production days
                                 bd.DYEBO_ApprovalDate = dtpTransDate.Value;
                                 bd.DYEBO_CurrentStore_FK = (int)TranType.TrxT_ToWhse_FK;
-                                weight += (decimal)row.Cells[5].Value;
+                                weight += (decimal)row.Cells[6].Value;
+                                bd.DYEBO_Notes = (String)row.Cells[7].Value;
                                 AddRec = true;
                             }
                         }
@@ -295,17 +306,18 @@ namespace DyeHouse
                             if (GP != null)
                             {
                                 dataGridView1.Rows[index].Cells[0].Value = row.DYEBD_Pk;
-                                dataGridView1.Rows[index].Cells[1].Value = GP.GreigeP_PieceNo;
+                                dataGridView1.Rows[index].Cells[1].Value = row.DYEBO_QAApproved;
+                                dataGridView1.Rows[index].Cells[2].Value = GP.GreigeP_PieceNo;
 
                                 var Qual = context.TLADM_Griege.Find(GP.GreigeP_Greige_Fk);
                                 if (Qual != null)
                                 {
-                                    dataGridView1.Rows[index].Cells[2].Value = Qual.TLGreige_Description;
+                                    dataGridView1.Rows[index].Cells[3].Value = Qual.TLGreige_Description;
                                 }
 
-                                dataGridView1.Rows[index].Cells[4].Value = row.DYEBD_GreigeProduction_Weight;
-                                dataGridView1.Rows[index].Cells[5].Value = row.DYEBO_Nett;
-                                dataGridView1.Rows[index].Cells[6].Value = row.DYEBO_QAApproved;
+                                dataGridView1.Rows[index].Cells[5].Value = row.DYEBD_GreigeProduction_Weight;
+                                dataGridView1.Rows[index].Cells[6].Value = row.DYEBO_Nett;
+                                dataGridView1.Rows[index].Cells[7].Value = row.DYEBO_Notes;
                                 
 
                                 if (first)
@@ -315,10 +327,7 @@ namespace DyeHouse
                     }
                   
                 }
-                 
-
-            }
-
+             }
         }
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -331,14 +340,14 @@ namespace DyeHouse
                     decimal nett = 0.0M;
                     decimal weight = 0.0M;
 
-                    if ((decimal)oDgv.Rows[e.RowIndex].Cells[4].Value != 0)
-                    {
-                        weight = (decimal)oDgv.Rows[e.RowIndex].Cells[4].Value;
-                    }
-
                     if ((decimal)oDgv.Rows[e.RowIndex].Cells[5].Value != 0)
                     {
-                        nett = (decimal)oDgv.Rows[e.RowIndex].Cells[5].Value;
+                        weight = (decimal)oDgv.Rows[e.RowIndex].Cells[5].Value;
+                    }
+
+                    if ((decimal)oDgv.Rows[e.RowIndex].Cells[6].Value != 0)
+                    {
+                        nett = (decimal)oDgv.Rows[e.RowIndex].Cells[6].Value;
                     }
 
 

@@ -22,7 +22,7 @@ namespace TTI2_WF
         public bool IsExternal;
         public bool QAFunction;
         public int UserPk;
-
+        public bool DownSizeAllowed;
 
         public frmSecurity()
         {
@@ -91,7 +91,7 @@ namespace TTI2_WF
                                     UserPk = User.TLSECUA_Pk;
                                     IsExternal = User.TLSECUA_External;
                                     QAFunction = User.TLSECUA_QAFunction;
- 
+                                    DownSizeAllowed = User.TLSECUA_DownSizeAuthority;
                                     try
                                     {
                                         context.SaveChanges();
@@ -131,11 +131,11 @@ namespace TTI2_WF
                                  IsAuthorised = String.Equals(Password.Trim(), Confirm.Trim(), StringComparison.CurrentCulture);
                                  if (IsAuthorised)
                                  {
-                                     UserName = User.TLSECUA_UserName;
-                                     IsSuperUser = User.TLSECUA_SuperUser;
-                                     UserPk = User.TLSECUA_Pk;
-                                     IsExternal = User.TLSECUA_External; 
-
+                                    UserName = User.TLSECUA_UserName;
+                                    IsSuperUser = User.TLSECUA_SuperUser;
+                                    UserPk = User.TLSECUA_Pk;
+                                    IsExternal = User.TLSECUA_External;
+                                    DownSizeAllowed = User.TLSECUA_DownSizeAuthority; 
                                      this.Close();
                                  }
                                  else

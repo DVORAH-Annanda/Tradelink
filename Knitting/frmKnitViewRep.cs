@@ -727,13 +727,17 @@ namespace Knitting
                         if (GreigeType != null)
                         {
                             ord.Product = GreigeType.TLGreige_Description;
+                            ord.DskWeight = GreigeType.TLGreige_CubicWeight;
+
                             if (GreigeType.TLGreige_IsBoughtIn && KO.KnitO_Colour_Fk != null && KO.KnitO_Size_Fk != null)
                             {
                                 ord.Colour = context.TLADM_Colours.Find(KO.KnitO_Colour_Fk).Col_Display;
                                 ord.Size = context.TLADM_Sizes.Find(KO.KnitO_Size_Fk).SI_Description;
+                                
                             }
                         }
-                        
+
+                        ord.DskWeight = GreigeType.TLGreige_CubicWeight;
                         ord.DeliveryDate = KO.KnitO_DeliveryDate;
                         ord.OrderDate_ = KO.KnitO_OrderDate;
                         ord.Weight = KO.KnitO_Weight;
@@ -1503,6 +1507,7 @@ namespace Knitting
                         gdr.TLGreige_ROL = row.TLGreige_ROL;
                         gdr.TLGreige_ROQ = row.TLGreige_ROQ;
                         gdr.TLGreige_StockTakeFreq_FK = row.TLGreige_StockTakeFreq_FK;
+                        gdr.TLGreige_DskWeight = row.TLGreige_CubicWeight;
 
                         greigeDataTable.AddTLADM_GriegeRow(gdr);
                     }
@@ -1669,7 +1674,7 @@ namespace Knitting
                         DataSet18.TLADM_GriegeRow grr = greigeTable.NewTLADM_GriegeRow();
                         grr.TLGreige_Description = row.TLGreige_Description;
                         grr.TLGreige_Id = row.TLGreige_Id;
-
+                        grr.TLGreige_DskWeight = row.TLGreige_CubicWeight;
                         greigeTable.AddTLADM_GriegeRow(grr);
                     }
 
@@ -2208,6 +2213,32 @@ namespace Knitting
                         new string[] {"Text16", "Not Inspected"}
                     };
                 }
+                else if (_opts.K8rbQA7)
+                {
+                    ColumnNames = new string[][]
+                   {   new string[] {"Text2", "Merge Detail"},
+                        new string[] {"Text3", "."},
+                        new string[] {"Text4", "Total Pieces Inspected"},
+                        new string[] {"Text5", "A Grade Pieces"},
+                        new string[] {"Text18", "A Pieces With Warning"},
+                        new string[] {"Text6", "B Grade Pieces"},
+                        new string[] {"Text7", "C Grade Pieces"},
+                        new string[] {"Text16", "Not Inspected"}
+                   };
+                }
+                else if(_opts.K8rbQA8)
+                {
+                    ColumnNames = new string[][]
+               {   new string[] {"Text2", "Merge Detail"},
+                        new string[] {"Text3", "."},
+                        new string[] {"Text4", "Total Pieces Inspected"},
+                        new string[] {"Text5", "A Grade Pieces"},
+                        new string[] {"Text18", "A Pieces With Warning"},
+                        new string[] {"Text6", "B Grade Pieces"},
+                        new string[] {"Text7", "C Grade Pieces"},
+                        new string[] {"Text16", "Not Inspected"}
+               };
+                }
                 using (var context = new TTI2Entities())
                 {
                     var Data = _Repo.QAGreigeProduction(_QueryParms);
@@ -2343,6 +2374,84 @@ namespace Knitting
                                  nr.PrimaryKey = 1;
                                  dataTable1.AddDataTable1Row(nr);
                             }
+                      }
+                      else if (_opts.K8rbQA7)
+                      {
+                        var Grps = Data.GroupBy(x => x.GreigeP_MergeDetail).ToList();
+                        foreach (var Grp in Grps)
+                        {
+                            DataSet23.DataTable1Row nr = dataTable1.NewDataTable1Row();
+
+                            nr.DataColumn1 = Grp.FirstOrDefault().GreigeP_MergeDetail;
+
+                            nr.DataColumn3 = Grp.Count();
+                            nr.DataColumn4 = Grp.Where(x => x.GreigeP_Grade == "A" && !x.GreigeP_WarningMessage).Count();
+                            nr.DataColumn17 = Grp.Where(x => x.GreigeP_Grade == "A" && x.GreigeP_WarningMessage).Count();
+                            nr.DataColumn5 = Grp.Where(x => x.GreigeP_Grade == "B").Count();
+                            nr.DataColumn6 = Grp.Where(x => x.GreigeP_Grade == "C").Count();
+                            nr.DataColumn7 = Grp.Sum(x => x.GreigeP_Meas1);
+                            nr.DataColumn8 = Grp.Sum(x => x.GreigeP_Meas2);
+                            nr.DataColumn9 = Grp.Sum(x => x.GreigeP_Meas3);
+                            nr.DataColumn10 = Grp.Sum(x => x.GreigeP_Meas4);
+                            nr.DataColumn11 = Grp.Sum(x => x.GreigeP_Meas5);
+                            nr.DataColumn12 = Grp.Sum(x => x.GreigeP_Meas6);
+                            nr.DataColumn13 = Grp.Sum(x => x.GreigeP_Meas7);
+                            nr.DataColumn14 = Grp.Sum(x => x.GreigeP_Meas8);
+                            nr.DataColumn15 = Grp.Where(x => !x.GreigeP_Inspected).Count();
+                            nr.PrimaryKey = 1;
+                            dataTable1.AddDataTable1Row(nr);
+                        }
+                    }
+                    else if (_opts.K8rbQA8)
+                    {
+                        var Grps = Data.GroupBy(x => x.GreigeP_MergeDetail).ToList();
+                        foreach (var Grp in Grps)
+                        {
+                            foreach (var Item in Grp)
+                            {
+                                DataSet23.DataTable1Row nr = dataTable1.NewDataTable1Row();
+                                
+                                nr.DataColumn1 = Grp.FirstOrDefault().GreigeP_MergeDetail;
+                                nr.DataColumn2 = Item.GreigeP_PieceNo;
+                                if (Item.GreigeP_Inspected)
+                                    nr.DataColumn3 = 1;
+                                else
+                                    nr.DataColumn3 = 0;
+
+                                if (Item.GreigeP_Grade == "A" && !Item.GreigeP_WarningMessage)
+                                    nr.DataColumn4 = 1; // Grp.Where(x => x.GreigeP_Grade == "A" && !x.GreigeP_WarningMessage).Count();
+                                else
+                                    nr.DataColumn4 = 0;
+
+                                if (Item.GreigeP_Grade == "A" && Item.GreigeP_WarningMessage)
+                                    nr.DataColumn17 = 1; 
+                                else
+                                    nr.DataColumn17 =0; 
+                                if (Item.GreigeP_Grade == "B")
+                                    nr.DataColumn5 = 1; 
+                                else
+                                    nr.DataColumn5 = 0;
+                                if (Item.GreigeP_Grade == "C")
+                                    nr.DataColumn6 = 1; 
+                                else 
+                                    nr.DataColumn6 = 0;
+
+                                nr.DataColumn7 = Item.GreigeP_Meas1;
+                                nr.DataColumn8 = Item.GreigeP_Meas2;
+                                nr.DataColumn9 = Item.GreigeP_Meas3;
+                                nr.DataColumn10 = Item.GreigeP_Meas4;
+                                nr.DataColumn11 = Item.GreigeP_Meas5;
+                                nr.DataColumn12 = Item.GreigeP_Meas6;
+                                nr.DataColumn13 = Item.GreigeP_Meas7;
+                                nr.DataColumn14 = Item.GreigeP_Meas8;
+                                if (!Item.GreigeP_Inspected)
+                                    nr.DataColumn15 = 1;
+                                else
+                                    nr.DataColumn15 = 0;
+                                nr.PrimaryKey = 1;
+                                dataTable1.AddDataTable1Row(nr);
+                            }
+                        }
                     }
                 }
 
@@ -2360,6 +2469,10 @@ namespace Knitting
                     hr.Title = "QA details for each knitting machine";
                 else if (_opts.K8rbQA4)
                     hr.Title = "QA details for each operator";
+                else if (_opts.K8rbQA7)
+                    hr.Title = "QA details for each Merge Detail (Summarised)";
+                else if (_opts.K8rbQA8)
+                    hr.Title = "QA details for each Merge Detail (Detail By Piece Number)";
                 dataTable2.AddDataTable2Row(hr);
                 if (dataTable1.Rows.Count == 0)
                 {
@@ -2452,7 +2565,8 @@ namespace Knitting
                         new string[] {"Text7", "A Grade Pieces(kg) Knitted"},
                         new string[] {"Text13", "A Grade Pieces(kg) with Warning"},
                         new string[] {"Text8", "B Grade Pieces(kg) Knitted"},
-                        new string[] {"Text9", "C Grade Pieces(kg) Knitted"}
+                        new string[] {"Text9", "C Grade Pieces(kg) Knitted"},
+                        new string[] {"Text14", "Dsk Variance"}
                     };
                 }
                 else if (_opts.K7rbQA2)
@@ -2465,7 +2579,8 @@ namespace Knitting
                         new string[] {"Text7", "A Grade Pieces(kg) Knitted"},
                         new string[] {"Text13", "A Grade Pieces(kg) with Warning"},
                         new string[] {"Text8", "B Grade Pieces(kg) Knitted"},
-                        new string[] {"Text9", "C Grade Pieces(kg) Knitted"}
+                        new string[] {"Text9", "C Grade Pieces(kg) Knitted"},
+                        new string[] {"Text14", "Dsk Variance"}
                     };
                 }
                 else if (_opts.K7rbQA3)
@@ -2478,7 +2593,8 @@ namespace Knitting
                         new string[] {"Text7", "A Grade Pieces(kg) Knitted"},
                         new string[] {"Text13", "A Grade Pieces(kg) with Warning"},
                         new string[] {"Text8", "B Grade Pieces(kg) Knitted"},
-                        new string[] {"Text9", "C Grade Pieces(kg) Knitted"}
+                        new string[] {"Text9", "C Grade Pieces(kg) Knitted"},
+                        new string[] {"Text14", "Dsk Variance"}
                     };
                 }
 
@@ -2702,6 +2818,7 @@ namespace Knitting
                         nr.DataColumn4 = row.GreigeP_weightAvail;
                         nr.DataColumn5 = (int)row.GreigeP_Store_FK;
                         nr.Remarks = row.GreigeP_Remarks;
+                       // nr.DskWeight = (decimal)row.GreigeP_DskWeight;
 
                         if (row.GreigeP_BoughtIn)
                         {
@@ -3327,6 +3444,54 @@ namespace Knitting
                 QualityDesc.SetDataSource(ds);
                 crystalReportViewer1.ReportSource = QualityDesc;
 
+            }
+            else if(_RepNo == 34)
+            {
+                DataSet ds = new DataSet();
+                DataSet35.DataTable1DataTable dataTable1 = new DataSet35.DataTable1DataTable();
+                Util core = new Util();
+                _Repo = new KnitRepository();
+
+                // var Data = _Repo.GriegeDskVariance(_QueryParms);
+                var Data = _Repo.GreigeProduction(_QueryParms);
+                using (var context = new TTI2Entities())
+                {
+                    foreach (var Record in Data)
+                    {
+                        DataSet35.DataTable1Row NewRow = dataTable1.NewDataTable1Row();
+                        NewRow.KnitOrder = context.TLKNI_Order.Find(Record.GreigeP_KnitO_Fk).KnitO_OrderNumber;
+                        NewRow.PieceNo = Record.GreigeP_PieceNo;
+                        NewRow.Grade = Record.GreigeP_Grade;
+                        NewRow.Date = (DateTime)Record.GreigeP_PDate;
+                        NewRow.ProductionWeight = Record.GreigeP_weight;
+                        var Greige = context.TLADM_Griege.Find(Record.GreigeP_Greige_Fk);
+                        if (Greige != null)
+                        {
+                            NewRow.Quality = Greige.TLGreige_Description;
+                            NewRow.StdDsk = Greige.TLGreige_CubicWeight;
+                            NewRow.KnittedDsk = Record.GreigeP_DskWeight;
+                            NewRow.Variance = Record.GreigeP_VarianceDiskWeight; //  core.CalculateDskVariance(Greige.TLGreige_CubicWeight, Record.GreigeP_DskWeight);
+                        }
+
+                        dataTable1.AddDataTable1Row(NewRow);
+                    }
+                }
+                
+                if(Data.Count() == 0)
+                {
+                    DataSet35.DataTable1Row NewRow = dataTable1.NewDataTable1Row();
+                    NewRow.ErrorLog = "No data found for parameters entered";
+                    dataTable1.AddDataTable1Row(NewRow);
+                }
+                ds.Tables.Add(dataTable1);
+                
+                
+
+                Knitting.KnittingDskVariance KnittingVariance = new Knitting.KnittingDskVariance();
+                KnittingVariance.SetDataSource(ds);
+                crystalReportViewer1.ReportSource = KnittingVariance;
+                
+                
             }
             crystalReportViewer1.Refresh();
 

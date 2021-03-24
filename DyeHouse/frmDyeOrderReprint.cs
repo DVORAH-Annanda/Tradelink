@@ -83,6 +83,26 @@ namespace DyeHouse
                             vRep.ClientSize = new Size(w, h);
                             vRep.ShowDialog(this);
                         }
+
+                        Result = MessageBox.Show("Would you like to print the Quality Assurance Check Sheet", "Information", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                        if (Result == DialogResult.Yes)
+                        {
+                            var Standards = context.TLDYE_DyeingStandards.Find(DyeBatch.DYEB_Greige_FK);
+                            if (Standards != null)
+                            {
+                                vRep = new frmDyeViewReport(46, DyeBatch.DYEB_Pk);
+                                h = Screen.PrimaryScreen.WorkingArea.Height;
+                                w = Screen.PrimaryScreen.WorkingArea.Width;
+                                vRep.ClientSize = new Size(w, h);
+                                vRep.ShowDialog(this);
+                            }
+                            else
+                            {
+                                MessageBox.Show("There are no Dye Standards for this quality");
+
+                            }
+                        }
                     }
                 }
             }
