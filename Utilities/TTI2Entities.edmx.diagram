@@ -38,7 +38,6 @@
         <EntityTypeShape EntityType="TTI2Model.TLADM_AdditionalAddress" Width="1.5" PointX="8" PointY="3.75" />
         <EntityTypeShape EntityType="TTI2Model.TLADM_PanelAttributes" Width="1.5" PointX="21.375" PointY="21.75" />
         <EntityTypeShape EntityType="TTI2Model.TLADM_StylesAdditional" Width="1.5" PointX="0.75" PointY="22.75" />
-        <EntityTypeShape EntityType="TTI2Model.TLADM_MachineMaintenance" Width="1.5" PointX="22.375" PointY="6.75" />
         <EntityTypeShape EntityType="TTI2Model.TLADM_CompanyDetails" Width="1.5" PointX="23.375" PointY="0.75" />
         <EntityTypeShape EntityType="TTI2Model.TLADM_CottonAgent" Width="1.5" PointX="23.375" PointY="10.75" />
         <EntityTypeShape EntityType="TTI2Model.TLADM_CottonHauliers" Width="1.5" PointX="23.375" PointY="19.75" />
@@ -200,6 +199,8 @@
         <EntityTypeShape EntityType="TTI2Model.TLDYE_DyeBatchDetails" Width="1.5" PointX="9.375" PointY="45.75" />
         <EntityTypeShape EntityType="TTI2Model.TLDYE_ConSummableReceived" Width="1.5" PointX="41.375" PointY="35.75" />
         <EntityTypeShape EntityType="TTI2Model.TLADM_WhseStore" Width="1.5" PointX="27.375" PointY="15.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_MachineMaintenanceTasks" Width="1.5" PointX="29.375" PointY="16.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_MachineMaintenance" Width="1.5" PointX="20.375" PointY="6.75" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

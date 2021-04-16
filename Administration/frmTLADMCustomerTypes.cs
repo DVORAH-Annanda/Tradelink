@@ -424,6 +424,7 @@ namespace TTI2_WF
                 }
                 else if (opt == 5)
                 {
+                    /*
                     dataGridView1.Columns.Add(oTxtBoxD);
                     dataGridView1.Columns.Add(oTxtBoxE);
                     dataGridView1.Columns.Add(oTxtBoxF);
@@ -457,7 +458,7 @@ namespace TTI2_WF
                         dataGridView1.Rows[index].Cells[5].Value = rw.Maint_PowerN;
                         dataGridView1.Rows[index].Cells[6].Value = rw.Maint_UOM_FK;
                     }
-
+                    */
                 }
                 else if (opt == 6)
                 {
@@ -1297,6 +1298,7 @@ namespace TTI2_WF
                     {
                         foreach (DataGridViewRow row in dataGridView1.Rows)
                         {
+                            /*
                             if (row.Cells[1].Value == null)
                                 continue;
 
@@ -1344,7 +1346,7 @@ namespace TTI2_WF
                             if (Add)
                                 context.TLADM_MachineMaintenance.Add(ct);
 
-                            
+                            */
                         }
 
                         try

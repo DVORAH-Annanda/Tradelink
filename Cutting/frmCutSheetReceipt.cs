@@ -15,6 +15,7 @@ namespace Cutting
     {
         bool formloaded;
 
+        protected readonly TTI2Entities _context;
         //-----------------------------------------------------------------------------
         // datagridView1 
         //-------------------------------------------------------------------------------------
@@ -44,6 +45,9 @@ namespace Cutting
         public frmCutSheetReceipt()
         {
             InitializeComponent();
+            _context = new TTI2Entities();
+            core = new Util();
+
         }
 
         private void frmCutSheetReceipt_Load(object sender, EventArgs e)
@@ -53,7 +57,7 @@ namespace Cutting
             txtPrevCutSheet.Text = String.Empty;
             chkSearch.Checked = false;
 
-            core = new Util();
+       
 
             txtCurrentTotal.Text = "0";
 
@@ -267,22 +271,22 @@ namespace Cutting
             }
 
             this.dataGridView1.EditingControlShowing += new DataGridViewEditingControlShowingEventHandler(dataGridView1_EditingControlShowing);
-            using (var context = new TTI2Entities())
-            {
-                cmboCutSheet.DataSource = context.TLCUT_CutSheet.Where(x=>x.TLCutSH_Accepted && !x.TLCutSH_WIPComplete && !x.TLCUTSH_OnHold).OrderBy(x=>x.TLCutSH_No).ToList();
+            //using (var context = new TTI2Entities())
+            //{
+                cmboCutSheet.DataSource = _context.TLCUT_CutSheet.Where(x=>x.TLCutSH_Accepted && !x.TLCutSH_WIPComplete && !x.TLCUTSH_OnHold).OrderBy(x=>x.TLCutSH_No).ToList();
                 cmboCutSheet.ValueMember = "TLCutSH_Pk";
                 cmboCutSheet.DisplayMember = "TLCutSH_No";
                 cmboCutSheet.SelectedValue = -1;
 
-                var Dept = context.TLADM_Departments.Where(x => x.Dep_ShortCode.Contains("CUT")).FirstOrDefault();
+                var Dept = _context.TLADM_Departments.Where(x => x.Dep_ShortCode.Contains("CUT")).FirstOrDefault();
                 if (Dept != null)
                 {
-                    cmboMachines.DataSource = context.TLADM_MachineDefinitions.Where(x => x.MD_Department_FK == Dept.Dep_Id).ToList();
+                    cmboMachines.DataSource = _context.TLADM_MachineDefinitions.Where(x => x.MD_Department_FK == Dept.Dep_Id).ToList();
                     cmboMachines.ValueMember = "MD_Pk";
                     cmboMachines.DisplayMember = "MD_Description";
                     cmboMachines.SelectedValue = -1;
                 }
-            }
+           // }
 
             this.dataGridView1.AllowUserToAddRows = false;
             this.dataGridView1.AutoGenerateColumns = false;
@@ -325,9 +329,7 @@ namespace Cutting
             this.formloaded = false;;
             this.chkSearch.Checked = false;
             this.txtPrevCutSheet.Text = string.Empty;
-            this.formloaded = true;
-
-            formloaded = false;
+            
             txtPrevCutSheet.Text = string.Empty;
             chkSearch.Checked = false;
             cmboCutSheet.SelectedValue = -1;
@@ -366,6 +368,7 @@ namespace Cutting
             ComboBox oCmbo = sender as ComboBox;
             IList<TLADM_Sizes> sz = new List<TLADM_Sizes>();
             int NoOfUnits = 0;
+        
 
             if (oCmbo != null && formloaded)
             {
@@ -375,63 +378,86 @@ namespace Cutting
                     dataGridView1.Rows.Clear();
                     dataTable2.Rows.Clear();
 
-
                     cutSheet = selected;
                     txtBundles.Enabled = true;
 
-                    txtBundles.Text = "0";
-
                     rtbNotes.Text = selected.TLCutSH_Notes;
 
-                    using (var context = new TTI2Entities())
-                    {
-                        var Sizes = core.ExtrapNumber(selected.TLCutSH_Size_PN, context.TLADM_Sizes.Count());
-                        Sizes.Sort();
+                    // using (var context = new TTI2Entities())
+                    //{
+                    var PowerN = (from t1 in _context.TLADM_Sizes
+                                  join t2 in _context.TLCUT_ExpectedUnits
+                                  on t1.SI_id equals t2.TLCUTE_Size_FK
+                                  where cutSheet.TLCutSH_Pk == t2.TLCUTE_CutSheet_FK
+                                  select t1).Sum(x => x.SI_PowerN);
 
-                        foreach (var Size in Sizes)
+                    if(PowerN != cutSheet.TLCutSH_Size_PN)
+                    {
+                        cutSheet.TLCutSH_Size_PN = PowerN;
+
+                        var CS = _context.TLCUT_CutSheet.Find(cutSheet.TLCutSH_Pk);
+                        if(CS != null)
                         {
-                            var sze = context.TLADM_Sizes.Where(x => x.SI_PowerN == Size).FirstOrDefault();
-                            if (sze != null)
+                            CS.TLCutSH_Size_PN = PowerN;
+                            try
                             {
-                                sz.Add(sze);
+                                _context.SaveChanges();
+                            }
+                            catch(Exception ex)
+                            {
+                                MessageBox.Show(ex.Message);
                             }
                         }
+                    }
+
+
+                    var Sizes = core.ExtrapNumber(cutSheet.TLCutSH_Size_PN, _context.TLADM_Sizes.Count());
+                    Sizes.Sort();
+
+                    foreach (var Size in Sizes)
+                    {
+                       var sze = _context.TLADM_Sizes.Where(x => x.SI_PowerN == Size).FirstOrDefault();
+                       if (sze != null)
+                       {
+                          sz.Add(sze);
+                       }
+                     }
                     
-                        var DB = context.TLDYE_DyeBatch.Find(selected.TLCutSH_DyeBatch_FK);
-                        if (DB != null)
-                        {
+                     var DB = _context.TLDYE_DyeBatch.Find(cutSheet.TLCutSH_DyeBatch_FK);
+                     if (DB != null)
+                     {
                             txtDyeBatch.Text = DB.DYEB_BatchNo;
 
-                            var DO = context.TLDYE_DyeOrder.Find(DB.DYEB_DyeOrder_FK);
+                            var DO = _context.TLDYE_DyeOrder.Find(DB.DYEB_DyeOrder_FK);
                             if (DO != null)
                             {
-                                NoOfUnits = context.TLDYE_DyeOrderDetails.Where(x => x.TLDYOD_DyeOrder_Fk == DO.TLDYO_Pk && x.TLDYOD_BodyOrTrim).FirstOrDefault().TLDYOD_Units;
-                                txtCustomer.Text = context.TLADM_CustomerFile.Find(DO.TLDYO_Customer_FK).Cust_Description;
-                                txtColour.Text = context.TLADM_Colours.Find(cutSheet.TLCutSH_Colour_FK).Col_Description;
+                                NoOfUnits = _context.TLDYE_DyeOrderDetails.Where(x => x.TLDYOD_DyeOrder_Fk == DO.TLDYO_Pk && x.TLDYOD_BodyOrTrim).FirstOrDefault().TLDYOD_Units;
+                                txtCustomer.Text = _context.TLADM_CustomerFile.Find(DO.TLDYO_Customer_FK).Cust_Description;
+                                txtColour.Text = _context.TLADM_Colours.Find(cutSheet.TLCutSH_Colour_FK).Col_Description;
                                 txtDateOrdered.Text = DO.TLDYO_OrderDate.ToString("dd/MM/yyyy");
 
                                 DateTime dt = core.FirstDateOfWeek(DO.TLDYO_OrderDate.Year, DO.TLDYO_CutReqWeek);
                                 txtDateRequired.Text = dt.AddDays(5).ToString("dd/MM/yyyy");
 
-                                var DBDetails = context.TLDYE_DyeBatchDetails.Where(x => x.DYEBD_DyeBatch_FK == DB.DYEB_Pk).ToList();
+                                var DBDetails = _context.TLDYE_DyeBatchDetails.Where(x => x.DYEBD_DyeBatch_FK == DB.DYEB_Pk).ToList();
                                 foreach (var row in DBDetails)
                                 {
                                     if (row.DYEBD_BodyTrim)
                                     {
-                                        txtBody.Text = context.TLADM_Griege.Find(row.DYEBD_QualityKey).TLGreige_Description;
+                                        txtBody.Text = _context.TLADM_Griege.Find(row.DYEBD_QualityKey).TLGreige_Description;
 
                                     }
                                     else
                                     {
                                         if (String.IsNullOrEmpty(txtTrim1.Text))
-                                            txtTrim1.Text = context.TLADM_Griege.Find(row.DYEBD_QualityKey).TLGreige_Description;
+                                            txtTrim1.Text = _context.TLADM_Griege.Find(row.DYEBD_QualityKey).TLGreige_Description;
                                         else if (String.IsNullOrEmpty(txtTrim2.Text))
-                                            txtTrim2.Text = context.TLADM_Griege.Find(row.DYEBD_QualityKey).TLGreige_Description;
+                                            txtTrim2.Text = _context.TLADM_Griege.Find(row.DYEBD_QualityKey).TLGreige_Description;
                                     }
                                 }
 
-                               var EUnits = (from EUnitsx in context.TLCUT_ExpectedUnits
-                                             join xSizes in context.TLADM_Sizes on EUnitsx.TLCUTE_Size_FK equals xSizes.SI_id
+                               var EUnits = (from EUnitsx in _context.TLCUT_ExpectedUnits
+                                             join xSizes in _context.TLADM_Sizes on EUnitsx.TLCUTE_Size_FK equals xSizes.SI_id
                                              where EUnitsx.TLCUTE_CutSheet_FK == cutSheet.TLCutSH_Pk 
                                              orderby xSizes.SI_DisplayOrder
                                              select EUnitsx).ToList();
@@ -440,7 +466,7 @@ namespace Cutting
                                 {
                                     DataRow NewRow = dataTable2.NewRow();
                                     NewRow[0] = row.TLCUTE_Size_FK;
-                                    NewRow[1] = context.TLADM_Sizes.Find(row.TLCUTE_Size_FK).SI_Description;
+                                    NewRow[1] = _context.TLADM_Sizes.Find(row.TLCUTE_Size_FK).SI_Description;
                                     NewRow[2] = row.TLCUTE_NoofGarments;
                                     NewRow[3] = 0;
                                     NewRow[4] = 0.00M;
@@ -450,7 +476,7 @@ namespace Cutting
                         }
                         //------------------------------------------------------------
                         TLCUT_CutSheetReceipt CSR = new TLCUT_CutSheetReceipt();
-                        CSR = context.TLCUT_CutSheetReceipt.Where(x => x.TLCUTSHR_CutSheet_FK == cutSheet.TLCutSH_Pk).FirstOrDefault();
+                        CSR = _context.TLCUT_CutSheetReceipt.Where(x => x.TLCUTSHR_CutSheet_FK == cutSheet.TLCutSH_Pk).FirstOrDefault();
 
                         if (CSR != null)
                         {
@@ -461,7 +487,7 @@ namespace Cutting
                         
 
                             IList<TLCUT_CutSheetReceiptDetail> CSRD = new List<TLCUT_CutSheetReceiptDetail>();
-                            CSRD = context.TLCUT_CutSheetReceiptDetail.Where(x => x.TLCUTSHRD_CutSheet_FK == CSR.TLCUTSHR_Pk).ToList();
+                            CSRD = _context.TLCUT_CutSheetReceiptDetail.Where(x => x.TLCUTSHRD_CutSheet_FK == CSR.TLCUTSHR_Pk).ToList();
                             if (CSRD != null)
                             {
                                 foreach (var row in CSRD)
@@ -497,7 +523,7 @@ namespace Cutting
                             }
 
                             TLCUT_CutSheetReceiptBoxes CSRB = new TLCUT_CutSheetReceiptBoxes();
-                            CSRB = context.TLCUT_CutSheetReceiptBoxes.Where(x => x.TLCUTSHB_CutSheet_FK == CSR.TLCUTSHR_Pk).FirstOrDefault();
+                            CSRB = _context.TLCUT_CutSheetReceiptBoxes.Where(x => x.TLCUTSHB_CutSheet_FK == CSR.TLCUTSHR_Pk).FirstOrDefault();
                             if (CSRB != null)
                             {
                                 txtAdultBoxes.Text = CSRB.TLCUTSHB_AdultBoxes.ToString();
@@ -506,14 +532,14 @@ namespace Cutting
                                 txtRibbing.Text = CSRB.TLCUTSHB_Ribbing.ToString();
                             }
 
-                        }
-                        
                     }
+                        
+                    // }
 
                     oCmboA.ValueMember = "SI_Id";
                     oCmboA.DisplayMember = "SI_Description";
                     oCmboA.DataSource = sz;
-                 }
+                }
             }
         }
 
@@ -618,17 +644,17 @@ namespace Cutting
                         MessageBox.Show("Please select a machine on which this cutsheet was cut");
                         return;
                     }
-                    using (var context = new TTI2Entities())
-                    {
-                        var Dept = context.TLADM_Departments.Where(x => x.Dep_ShortCode.Contains("CUT")).FirstOrDefault();
+                    //using (var context = new TTI2Entities())
+                    //{
+                        var Dept = _context.TLADM_Departments.Where(x => x.Dep_ShortCode.Contains("CUT")).FirstOrDefault();
 
-                        var CS = context.TLCUT_CutSheet.Find(selected.TLCutSH_Pk);
+                        var CS = _context.TLCUT_CutSheet.Find(selected.TLCutSH_Pk);
                         if (CS != null)
                         {
                             CS.TLCutSH_WIPComplete = true;
                             CS.TLCUTSH_AddNotes = string.Empty;
                         }
-                        CSR = context.TLCUT_CutSheetReceipt.Where(x=>x.TLCUTSHR_CutSheet_FK == selected.TLCutSH_Pk).FirstOrDefault();
+                        CSR = _context.TLCUT_CutSheetReceipt.Where(x=>x.TLCUTSHR_CutSheet_FK == selected.TLCutSH_Pk).FirstOrDefault();
                         if (CSR == null)
                         {
                             Add = true;
@@ -643,7 +669,7 @@ namespace Cutting
                         CSR.TLCUTSHR_InBundleStore = true;
                         if (CSR.TLCUTSHR_InBundleStore)
                         {
-                            var CutStore = context.TLADM_WhseStore.Where(x => x.WhStore_DepartmentFK == CS.TLCutSH_Department_FK && x.WhStore_BundleStore).FirstOrDefault();
+                            var CutStore = _context.TLADM_WhseStore.Where(x => x.WhStore_DepartmentFK == CS.TLCutSH_Department_FK && x.WhStore_BundleStore).FirstOrDefault();
                             if (CutStore != null)
                             {
                                 CSR.TLCUTSHR_WhseBunStore_FK = CutStore.WhStore_Id;
@@ -652,12 +678,12 @@ namespace Cutting
                         }
                         if (Add)
                         {
-                            context.TLCUT_CutSheetReceipt.Add(CSR);
+                            _context.TLCUT_CutSheetReceipt.Add(CSR);
                         }
 
                         try
                         {
-                            context.SaveChanges();
+                            _context.SaveChanges();
                         }
                         catch (System.Data.Entity.Validation.DbEntityValidationException en)
                         {
@@ -687,7 +713,7 @@ namespace Cutting
                             if ((int)row.Cells[0].Value != 0)
                             {
                                 var index = (int)row.Cells[0].Value;
-                                CSRD = context.TLCUT_CutSheetReceiptDetail.Find(index);
+                                CSRD = _context.TLCUT_CutSheetReceiptDetail.Find(index);
 
                                 if (CSRD != null)
                                 {
@@ -717,7 +743,7 @@ namespace Cutting
 
                             if (Dept != null)
                             {
-                                var TranType = context.TLADM_TranactionType.Where(x => x.TrxT_Department_FK == Dept.Dep_Id && x.TrxT_Number == 200).FirstOrDefault();
+                                var TranType = _context.TLADM_TranactionType.Where(x => x.TrxT_Department_FK == Dept.Dep_Id && x.TrxT_Number == 200).FirstOrDefault();
                                 if (TranType != null)
                                 {
                                     CSRD.TLCUTSHRD_TransactionType = TranType.TrxT_Pk;
@@ -726,11 +752,11 @@ namespace Cutting
                             }
 
                             if (Add)
-                                context.TLCUT_CutSheetReceiptDetail.Add(CSRD);
+                                _context.TLCUT_CutSheetReceiptDetail.Add(CSRD);
                         }
 
                         TLCUT_CutSheetReceiptBoxes CSRB = new TLCUT_CutSheetReceiptBoxes();
-                        CSRB = context.TLCUT_CutSheetReceiptBoxes.Where(x => x.TLCUTSHB_CutSheet_FK == CSR.TLCUTSHR_Pk).FirstOrDefault();
+                        CSRB = _context.TLCUT_CutSheetReceiptBoxes.Where(x => x.TLCUTSHB_CutSheet_FK == CSR.TLCUTSHR_Pk).FirstOrDefault();
 
                         Add = false;
                         if (CSRB == null)
@@ -763,14 +789,22 @@ namespace Cutting
 
 
                         if (Add)
-                            context.TLCUT_CutSheetReceiptBoxes.Add(CSRB);
+                            _context.TLCUT_CutSheetReceiptBoxes.Add(CSRB);
 
                         try
                         {
-                            context.SaveChanges();
+                            _context.SaveChanges();
                             MessageBox.Show("Data saved successfully to database");
                             dataGridView1.Rows.Clear();
                             dataTable2.Rows.Clear();
+                            
+                            formloaded = false;
+                            cmboCutSheet.DataSource = _context.TLCUT_CutSheet.Where(x=>x.TLCutSH_Accepted && !x.TLCutSH_WIPComplete && !x.TLCUTSH_OnHold).OrderBy(x=>x.TLCutSH_No).ToList();
+                            cmboCutSheet.ValueMember = "TLCutSH_Pk";
+                            cmboCutSheet.DisplayMember = "TLCutSH_No";
+                            cmboCutSheet.SelectedValue = -1;
+                            formloaded = true;
+                            
                             SetUp();
 
                         }
@@ -789,7 +823,7 @@ namespace Cutting
                         {
                             MessageBox.Show(ex.Message);
                         }
-                    }
+                    //}
                 }
             }
         }
@@ -805,41 +839,41 @@ namespace Cutting
                     DialogResult res = MessageBox.Show("Please confirm this transaction", "Confirmation Required", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                     if (res == DialogResult.Yes)
                     {
-                        using (var context = new TTI2Entities())
-                        {
+                       // using (var context = new TTI2Entities())
+                       //{
                             try
                             {
                                 foreach (DataGridViewRow Row in dataGridView1.Rows)
                                 {
                                     var index = (int)Row.Cells[0].Value;
-                                    var detail = context.TLCUT_CutSheetReceiptDetail.Find(index);
+                                    var detail = _context.TLCUT_CutSheetReceiptDetail.Find(index);
                                     if (detail != null)
                                     {
-                                        context.TLCUT_CutSheetReceiptDetail.Remove(detail);
+                                        _context.TLCUT_CutSheetReceiptDetail.Remove(detail);
                                     }
                                 }
 
                                 foreach (DataGridViewRow Row in dataGridView2.Rows)
                                 {
                                     var index = (int)Row.Cells[0].Value;
-                                    var detail = context.TLCUT_ExpectedUnits.Find(index);
+                                    var detail = _context.TLCUT_ExpectedUnits.Find(index);
                                     if (detail != null)
                                     {
-                                        context.TLCUT_ExpectedUnits.Remove(detail);
+                                        _context.TLCUT_ExpectedUnits.Remove(detail);
                                     }
                                 }
 
-                                var existing = context.TLCUT_CutSheetReceipt.Where(x=>x.TLCUTSHR_CutSheet_FK == selected.TLCutSH_Pk).FirstOrDefault();
+                                var existing = _context.TLCUT_CutSheetReceipt.Where(x=>x.TLCUTSHR_CutSheet_FK == selected.TLCutSH_Pk).FirstOrDefault();
                                 if (existing != null)
                                 {
-                                    context.TLCUT_CutSheetReceipt.Remove(existing);
+                                    _context.TLCUT_CutSheetReceipt.Remove(existing);
                                 }
 
-                                var CutSheet = context.TLCUT_CutSheet.Find(existing.TLCUTSHR_CutSheet_FK);
+                                var CutSheet = _context.TLCUT_CutSheet.Find(existing.TLCUTSHR_CutSheet_FK);
                                 if (CutSheet != null && CutSheet.TLCutSH_WIPComplete)
                                     CutSheet.TLCutSH_WIPComplete = false;
 
-                                context.SaveChanges();
+                                _context.SaveChanges();
                                 MessageBox.Show("Transaction successfully processed");
                                 this.Close();
 
@@ -849,7 +883,7 @@ namespace Cutting
                                 MessageBox.Show(ex.Message);
                             }
 
-                        }
+                        //}
                     }
                 }
             }
@@ -871,16 +905,15 @@ namespace Cutting
                     //     dataGridView2.Rows.Clear();
                     dataTable2.Rows.Clear();
                     
-                    using (var context = new TTI2Entities())
-                    {
-                        cmboCutSheet.DataSource = context.TLCUT_CutSheet.Where(x => x.TLCutSH_Accepted && !x.TLCutSH_WIPComplete).OrderBy(x => x.TLCutSH_No).ToList();
+                    //using (var context = new TTI2Entities())
+                    //{
+                        cmboCutSheet.DataSource = _context.TLCUT_CutSheet.Where(x => x.TLCutSH_Accepted && !x.TLCutSH_WIPComplete).OrderBy(x => x.TLCutSH_No).ToList();
                         cmboCutSheet.ValueMember = "TLCutSH_Pk";
                         cmboCutSheet.DisplayMember = "TLCutSH_No";
                         cmboCutSheet.SelectedValue = -1;
+                    //}
 
-                        formloaded = true;
-
-                    }
+                    formloaded = true;
                 }
             }
         }
@@ -901,10 +934,10 @@ namespace Cutting
                     //  dataGridView2.Rows.Clear();
                     dataTable2.Rows.Clear(); 
 
-                    using (var context = new TTI2Entities())
-                    {
-                        var tst = (from CutSheet in context.TLCUT_CutSheet
-                                   join CutSheetRec in context.TLCUT_CutSheetReceipt on CutSheet.TLCutSH_Pk equals CutSheetRec.TLCUTSHR_CutSheet_FK
+                    //using (var context = new TTI2Entities())
+                    //{
+                        var tst = (from CutSheet in _context.TLCUT_CutSheet
+                                   join CutSheetRec in _context.TLCUT_CutSheetReceipt on CutSheet.TLCutSH_Pk equals CutSheetRec.TLCUTSHR_CutSheet_FK
                                    where CutSheet.TLCutSH_WIPComplete && CutSheet.TLCutSH_Accepted && !CutSheetRec.TLCUTSHR_Issued
                                    orderby CutSheet.TLCutSH_No
                                    select CutSheet).ToList();
@@ -916,7 +949,7 @@ namespace Cutting
 
                         formloaded = true;
 
-                    }
+                    //}
                 }
             }
         }
@@ -926,23 +959,23 @@ namespace Cutting
             CheckBox oChk = sender as CheckBox;
             if(oChk != null && oChk.Checked && formloaded)
             {
-                using (var context = new TTI2Entities())
-                {
-                    var CS = context.TLCUT_CutSheet.Where(x => x.TLCutSH_No == txtPrevCutSheet.Text).FirstOrDefault();
+                //using (var context = new TTI2Entities())
+                //{
+                    var CS = _context.TLCUT_CutSheet.Where(x => x.TLCutSH_No == txtPrevCutSheet.Text).FirstOrDefault();
                     if(CS == null)
                     {
                         MessageBox.Show("No Master Record on file");
                         return;
                     }
 
-                    var CSR = context.TLCUT_CutSheetReceipt.Where(x => x.TLCUTSHR_CutSheet_FK == CS.TLCutSH_Pk).FirstOrDefault();
+                    var CSR = _context.TLCUT_CutSheetReceipt.Where(x => x.TLCUTSHR_CutSheet_FK == CS.TLCutSH_Pk).FirstOrDefault();
                     if(CSR == null)
                     {
                         MessageBox.Show("It would appear that this CutSheet has not yet been receipted");
                         return;
                     }
                                       
-                    var Details = context.TLCUT_CutSheetReceiptDetail.Where(x => x.TLCUTSHRD_CutSheet_FK == CSR.TLCUTSHR_Pk).ToList();
+                    var Details = _context.TLCUT_CutSheetReceiptDetail.Where(x => x.TLCUTSHRD_CutSheet_FK == CSR.TLCUTSHR_Pk).ToList();
                     if(Details.Count != 0)
                     {
                         dataGridView1.Rows.Clear();
@@ -955,6 +988,17 @@ namespace Cutting
                             dataGridView1.Rows[index].Cells[3].Value = Detail.TLCUTSHRD_BundleQty;
                         }
                     }
+                //}
+            }
+        }
+
+        private void frmCutSheetReceipt_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (!e.Cancel)
+            {
+                if (_context != null)
+                {
+                    _context.Dispose();
                 }
             }
         }

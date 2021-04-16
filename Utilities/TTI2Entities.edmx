@@ -625,15 +625,28 @@
         </EntityType>
         <EntityType Name="TLADM_MachineMaintenance">
           <Key>
-            <PropertyRef Name="Maint_Pk" />
+            <PropertyRef Name="mman_Pk" />
           </Key>
-          <Property Name="Maint_Pk" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Maint_ShortCode" Type="varchar" MaxLength="5" Nullable="false" />
-          <Property Name="Maint_Description" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="Maint_UOM_FK" Type="int" Nullable="false" />
-          <Property Name="Maint_PowerN" Type="int" Nullable="false" />
-          <Property Name="Maint_IntervalDownTime" Type="int" Nullable="false" />
-          <Property Name="Maint_DownTimePeriod" Type="int" Nullable="false" />
+          <Property Name="mman_Pk" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="mman_MaintenanceTask_FK" Type="int" Nullable="false" />
+          <Property Name="mman_Machine_Fk" Type="int" Nullable="false" />
+          <Property Name="mman_Interval_Between_Tasks" Type="int" Nullable="false" />
+          <Property Name="mman_Interval_UOM" Type="int" Nullable="false" />
+          <Property Name="mman_Interval_CurrentValue" Type="int" Nullable="false" />
+          <Property Name="mman_Reset" Type="bit" Nullable="false" />
+          <Property Name="mman_Date_Last_Reset" Type="date" />
+          <Property Name="mman_Volume_CurrentValue" Type="int" Nullable="false" />
+          <Property Name="mman_Volume_Between_Tasks" Type="int" Nullable="false" />
+          <Property Name="mman_Volumne_UOM" Type="int" Nullable="false" />
+          <Property Name="mman_Last_Identifier" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="TLADM_MachineMaintenanceTasks">
+          <Key>
+            <PropertyRef Name="TLMtask_Pk" />
+          </Key>
+          <Property Name="TLMtask_Pk" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TLMtask_Dept_FK" Type="int" Nullable="false" />
+          <Property Name="TLMtask_Description" Type="varchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="TLADM_MachineOperators">
           <Key>
@@ -2973,6 +2986,7 @@
           <EntitySet Name="TLADM_LastNumberUsed" EntityType="Self.TLADM_LastNumberUsed" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TLADM_MachineDefinitions" EntityType="Self.TLADM_MachineDefinitions" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TLADM_MachineMaintenance" EntityType="Self.TLADM_MachineMaintenance" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TLADM_MachineMaintenanceTasks" EntityType="Self.TLADM_MachineMaintenanceTasks" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TLADM_MachineOperators" EntityType="Self.TLADM_MachineOperators" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TLADM_NonStockCat" EntityType="Self.TLADM_NonStockCat" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TLADM_NonStockItems" EntityType="Self.TLADM_NonStockItems" Schema="dbo" store:Type="Tables" />
@@ -3565,7 +3579,6 @@
           <EntitySet Name="TLADM_AdditionalAddress" EntityType="TTI2Model.TLADM_AdditionalAddress" />
           <EntitySet Name="TLADM_PanelAttributes" EntityType="TTI2Model.TLADM_PanelAttributes" />
           <EntitySet Name="TLADM_StylesAdditional" EntityType="TTI2Model.TLADM_StylesAdditional" />
-          <EntitySet Name="TLADM_MachineMaintenance" EntityType="TTI2Model.TLADM_MachineMaintenance" />
           <EntitySet Name="TLADM_CompanyDetails" EntityType="TTI2Model.TLADM_CompanyDetails" />
           <EntitySet Name="TLADM_CottonAgent" EntityType="TTI2Model.TLADM_CottonAgent" />
           <EntitySet Name="TLADM_CottonHauliers" EntityType="TTI2Model.TLADM_CottonHauliers" />
@@ -3785,6 +3798,8 @@
           <EntitySet Name="TLDYE_DyeBatchDetails" EntityType="TTI2Model.TLDYE_DyeBatchDetails" />
           <EntitySet Name="TLDYE_ConSummableReceived" EntityType="TTI2Model.TLDYE_ConSummableReceived" />
           <EntitySet Name="TLADM_WhseStore" EntityType="TTI2Model.TLADM_WhseStore" />
+          <EntitySet Name="TLADM_MachineMaintenanceTasks" EntityType="TTI2Model.TLADM_MachineMaintenanceTasks" />
+          <EntitySet Name="TLADM_MachineMaintenance" EntityType="TTI2Model.TLADM_MachineMaintenance" />
           </EntityContainer>
         <EntityType Name="TLADM_FabricProduct">
           <Key>
@@ -3847,18 +3862,6 @@
           <Property Name="AddSty_Colour_FK" Type="Int32" Nullable="false" />
           <Property Name="AddSty_StandardCost" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
           <Property Name="AddSty_RefundCost" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
-        </EntityType>
-        <EntityType Name="TLADM_MachineMaintenance">
-          <Key>
-            <PropertyRef Name="Maint_Pk" />
-          </Key>
-          <Property Name="Maint_Pk" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Maint_ShortCode" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="false" />
-          <Property Name="Maint_Description" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Maint_UOM_FK" Type="Int32" Nullable="false" />
-          <Property Name="Maint_PowerN" Type="Int32" Nullable="false" />
-          <Property Name="Maint_IntervalDownTime" Type="Int32" Nullable="false" />
-          <Property Name="Maint_DownTimePeriod" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="TLADM_CompanyDetails">
           <Key>
@@ -6369,7 +6372,7 @@
           <Property Name="TLGreige_FaultsAllowed" Type="Int32" Nullable="false" />
           <Property Name="TLGreige_IsBoughtIn" Type="Boolean" Nullable="false" />
           <Property Name="TLGreige_IsLining" Type="Boolean" Nullable="false" />
-          <Property Name="TLGreige_CubicWeight" Type="Decimal" Nullable="false" />
+          <Property Name="TLGreige_CubicWeight" Type="Decimal" Nullable="false" Precision="18" Scale="4" />
         </EntityType>
         <EntityType Name="TLADM_MachineDefinitions">
           <Key>
@@ -6598,6 +6601,31 @@
           <Property Name="WhStore_PanelStore" Type="Boolean" Nullable="false" />
           <Property Name="WhStore_RePack" Type="Boolean" Nullable="false" />
           <Property Name="WhStore_Default" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TLADM_MachineMaintenanceTasks">
+          <Key>
+            <PropertyRef Name="TLMtask_Pk" />
+          </Key>
+          <Property Name="TLMtask_Pk" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TLMtask_Dept_FK" Type="Int32" Nullable="false" />
+          <Property Name="TLMtask_Description" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="TLADM_MachineMaintenance">
+          <Key>
+            <PropertyRef Name="mman_Pk" />
+          </Key>
+          <Property Name="mman_Pk" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="mman_MaintenanceTask_FK" Type="Int32" Nullable="false" />
+          <Property Name="mman_Machine_Fk" Type="Int32" Nullable="false" />
+          <Property Name="mman_Interval_Between_Tasks" Type="Int32" Nullable="false" />
+          <Property Name="mman_Interval_UOM" Type="Int32" Nullable="false" />
+          <Property Name="mman_Interval_CurrentValue" Type="Int32" Nullable="false" />
+          <Property Name="mman_Reset" Type="Boolean" Nullable="false" />
+          <Property Name="mman_Date_Last_Reset" Type="DateTime" Precision="0" />
+          <Property Name="mman_Volume_CurrentValue" Type="Int32" Nullable="false" />
+          <Property Name="mman_Volume_Between_Tasks" Type="Int32" Nullable="false" />
+          <Property Name="mman_Volumne_UOM" Type="Int32" Nullable="false" />
+          <Property Name="mman_Last_Identifier" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -6898,19 +6926,6 @@
                 <ScalarProperty Name="AddSty_Size_FK" ColumnName="AddSty_Size_FK" />
                 <ScalarProperty Name="AddSty_Style_FK" ColumnName="AddSty_Style_FK" />
                 <ScalarProperty Name="AddSty_Pk" ColumnName="AddSty_Pk" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="TLADM_MachineMaintenance">
-            <EntityTypeMapping TypeName="TTI2Model.TLADM_MachineMaintenance">
-              <MappingFragment StoreEntitySet="TLADM_MachineMaintenance">
-                <ScalarProperty Name="Maint_DownTimePeriod" ColumnName="Maint_DownTimePeriod" />
-                <ScalarProperty Name="Maint_IntervalDownTime" ColumnName="Maint_IntervalDownTime" />
-                <ScalarProperty Name="Maint_PowerN" ColumnName="Maint_PowerN" />
-                <ScalarProperty Name="Maint_UOM_FK" ColumnName="Maint_UOM_FK" />
-                <ScalarProperty Name="Maint_Description" ColumnName="Maint_Description" />
-                <ScalarProperty Name="Maint_ShortCode" ColumnName="Maint_ShortCode" />
-                <ScalarProperty Name="Maint_Pk" ColumnName="Maint_Pk" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -9666,6 +9681,33 @@
                 <ScalarProperty Name="WhStore_Description" ColumnName="WhStore_Description" />
                 <ScalarProperty Name="WhStore_Code" ColumnName="WhStore_Code" />
                 <ScalarProperty Name="WhStore_Id" ColumnName="WhStore_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TLADM_MachineMaintenanceTasks">
+            <EntityTypeMapping TypeName="TTI2Model.TLADM_MachineMaintenanceTasks">
+              <MappingFragment StoreEntitySet="TLADM_MachineMaintenanceTasks">
+                <ScalarProperty Name="TLMtask_Description" ColumnName="TLMtask_Description" />
+                <ScalarProperty Name="TLMtask_Dept_FK" ColumnName="TLMtask_Dept_FK" />
+                <ScalarProperty Name="TLMtask_Pk" ColumnName="TLMtask_Pk" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TLADM_MachineMaintenance">
+            <EntityTypeMapping TypeName="TTI2Model.TLADM_MachineMaintenance">
+              <MappingFragment StoreEntitySet="TLADM_MachineMaintenance">
+                <ScalarProperty Name="mman_Last_Identifier" ColumnName="mman_Last_Identifier" />
+                <ScalarProperty Name="mman_Volumne_UOM" ColumnName="mman_Volumne_UOM" />
+                <ScalarProperty Name="mman_Volume_Between_Tasks" ColumnName="mman_Volume_Between_Tasks" />
+                <ScalarProperty Name="mman_Volume_CurrentValue" ColumnName="mman_Volume_CurrentValue" />
+                <ScalarProperty Name="mman_Date_Last_Reset" ColumnName="mman_Date_Last_Reset" />
+                <ScalarProperty Name="mman_Reset" ColumnName="mman_Reset" />
+                <ScalarProperty Name="mman_Interval_CurrentValue" ColumnName="mman_Interval_CurrentValue" />
+                <ScalarProperty Name="mman_Interval_UOM" ColumnName="mman_Interval_UOM" />
+                <ScalarProperty Name="mman_Interval_Between_Tasks" ColumnName="mman_Interval_Between_Tasks" />
+                <ScalarProperty Name="mman_Machine_Fk" ColumnName="mman_Machine_Fk" />
+                <ScalarProperty Name="mman_MaintenanceTask_FK" ColumnName="mman_MaintenanceTask_FK" />
+                <ScalarProperty Name="mman_Pk" ColumnName="mman_Pk" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

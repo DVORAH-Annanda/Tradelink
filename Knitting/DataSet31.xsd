@@ -12,7 +12,7 @@
   <xs:element name="DataSet31" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="DataSet31" msprop:Generator_UserDSName="DataSet31">
     <xs:complexType>
       <xs:choice minOccurs="0" maxOccurs="unbounded">
-        <xs:element name="DataTable1" msprop:Generator_TableClassName="DataTable1DataTable" msprop:Generator_TableVarName="tableDataTable1" msprop:Generator_TablePropName="DataTable1" msprop:Generator_RowDeletingName="DataTable1RowDeleting" msprop:Generator_RowChangingName="DataTable1RowChanging" msprop:Generator_RowEvHandlerName="DataTable1RowChangeEventHandler" msprop:Generator_RowDeletedName="DataTable1RowDeleted" msprop:Generator_UserTableName="DataTable1" msprop:Generator_RowChangedName="DataTable1RowChanged" msprop:Generator_RowEvArgName="DataTable1RowChangeEvent" msprop:Generator_RowClassName="DataTable1Row">
+        <xs:element name="DataTable1" msprop:Generator_TableClassName="DataTable1DataTable" msprop:Generator_TableVarName="tableDataTable1" msprop:Generator_RowChangedName="DataTable1RowChanged" msprop:Generator_TablePropName="DataTable1" msprop:Generator_RowDeletingName="DataTable1RowDeleting" msprop:Generator_RowChangingName="DataTable1RowChanging" msprop:Generator_RowEvHandlerName="DataTable1RowChangeEventHandler" msprop:Generator_RowDeletedName="DataTable1RowDeleted" msprop:Generator_RowClassName="DataTable1Row" msprop:Generator_UserTableName="DataTable1" msprop:Generator_RowEvArgName="DataTable1RowChangeEvent">
           <xs:complexType>
             <xs:sequence>
               <xs:element name="Description" msprop:Generator_ColumnVarNameInTable="columnDescription" msprop:Generator_ColumnPropNameInRow="Description" msprop:Generator_ColumnPropNameInTable="DescriptionColumn" msprop:Generator_UserColumnName="Description" type="xs:string" minOccurs="0" />
@@ -25,6 +25,9 @@
               <xs:element name="DO_LT8" msprop:Generator_ColumnVarNameInTable="columnDO_LT8" msprop:Generator_ColumnPropNameInRow="DO_LT8" msprop:Generator_ColumnPropNameInTable="DO_LT8Column" msprop:Generator_UserColumnName="DO_LT8" type="xs:decimal" minOccurs="0" />
               <xs:element name="DO_GT8" msprop:Generator_ColumnVarNameInTable="columnDO_GT8" msprop:Generator_ColumnPropNameInRow="DO_GT8" msprop:Generator_ColumnPropNameInTable="DO_GT8Column" msprop:Generator_UserColumnName="DO_GT8" type="xs:decimal" minOccurs="0" />
               <xs:element name="GroupDescription" msprop:Generator_ColumnVarNameInTable="columnGroupDescription" msprop:Generator_ColumnPropNameInRow="GroupDescription" msprop:Generator_ColumnPropNameInTable="GroupDescriptionColumn" msprop:Generator_UserColumnName="GroupDescription" type="xs:string" minOccurs="0" />
+              <xs:element name="Grade_A" msprop:Generator_ColumnVarNameInTable="columnGrade_A" msprop:Generator_ColumnPropNameInRow="Grade_A" msprop:Generator_ColumnPropNameInTable="Grade_AColumn" msprop:Generator_UserColumnName="Grade_A" type="xs:decimal" minOccurs="0" />
+              <xs:element name="Grade_B" msprop:Generator_ColumnVarNameInTable="columnGrade_B" msprop:Generator_ColumnPropNameInRow="Grade_B" msprop:Generator_ColumnPropNameInTable="Grade_BColumn" msprop:Generator_UserColumnName="Grade_B" type="xs:decimal" minOccurs="0" />
+              <xs:element name="Grade_C" msprop:Generator_ColumnVarNameInTable="columnGrade_C" msprop:Generator_ColumnPropNameInRow="Grade_C" msprop:Generator_ColumnPropNameInTable="Grade_CColumn" msprop:Generator_UserColumnName="Grade_C" type="xs:decimal" minOccurs="0" />
             </xs:sequence>
           </xs:complexType>
         </xs:element>

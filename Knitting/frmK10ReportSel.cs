@@ -136,7 +136,6 @@ namespace Knitting
         //----------------------------------------------------------------------------------------
         private void cmboStore_CheckStateChanged(object sender, EventArgs e)
         {
-
             if (sender is Knitting.CheckComboBoxItem)
             {
                 Knitting.CheckComboBoxItem item = (Knitting.CheckComboBoxItem)sender;
@@ -225,8 +224,7 @@ namespace Knitting
                 YarnOpts.BIFSummarised = rbBIFSummarised.Checked;
 
                 QueryParms.BoughtInFabric = chkBoughtInFabric.Checked;
-                //QueryParms.Grade = txtGrade.Text;
-
+               
                 foreach (var element in MandSelected)
                 {
                     ++index;
@@ -235,47 +233,31 @@ namespace Knitting
                         if (index == 0)
                         {
                             YarnOpts.K10Store = true;
-                            // YarnOpts.K10StoreFK = ((TLADM_WhseStore)cmboStore.SelectedItem).WhStore_Id;
-                           
                         }
                         else if (index == 1)
                         {
-
                             YarnOpts.K10Grade = true;
-                            // YarnOpts.K10GradeFK = txtGrade.Text;
-                            
                         }
                         else if (index == 2)
                         {
                             YarnOpts.GreigeProduct = true;
-                            // YarnOpts.K10GreigeProductFK = ((TLADM_Griege)cmboProduct.SelectedItem).TLGreige_Id;
-                            
                         }
                         else if (index == 3)
                         {
                             YarnOpts.K10ProductQ = true;
-                            // YarnOpts.K10GreigeProductQFK = ((TLADM_GreigeQuality)cmboProductGroup.SelectedItem).GQ_Pk;
-                           
                         }
                         else if (index == 4)
                         {
                             YarnOpts.K10STF = true;
-                            // YarnOpts.K10StockTakeFreqFK = ((TLADM_StockTakeFreq)cmboStockTake.SelectedItem).STF_Pk;
                         }
                     }
                 }
 
-                // QueryParms.GradeAwithWarnings = (bool)cbIncludeWarnings.Checked;
-                
-                bool[] BoxChecked = new bool[3];
-
-                BoxChecked[0] = cbGradeA.Checked;
-                BoxChecked[1] = cbGradeB.Checked;
-                BoxChecked[2] = cbGradeC.Checked;
-
-                QueryParms.GradeSelectionTotal = core.CalculateSelection(BoxChecked);
-
-                QueryParms.GradeAwithWarnings = (bool)cbIncludeGradweAWithWarnings.Checked;
+                QueryParms.BoxChecked[0] = (bool)cbGradeA.Checked;
+                QueryParms.BoxChecked[1] = (bool)cbGradeB.Checked;
+                QueryParms.BoxChecked[2] = (bool)cbGradeC.Checked;
+                QueryParms.BoxChecked[3] = (bool)cbIncludeGradweAWithWarnings.Checked;
+              
                 if (!rbBIFSummarised.Checked)
                 {
                     frmKnitViewRep vRep = new frmKnitViewRep(24, QueryParms, YarnOpts);
@@ -301,51 +283,9 @@ namespace Knitting
                     {
                         vRep.Close();
                         vRep.Dispose();
-
                     }
                 }
 
-                /*
-                if (_Version)
-                {
-                   
-                   
-                }
-                else
-                {
-                    if (YarnOpts.K10STF || chkBoughtInFabric.Checked) // This is for the SOH Report
-                    {
-                        if (!chkBoughtInFabric.Checked || !rbBIFSummarised.Checked)
-                        {
-                            frmKnitViewRep vRep = new frmKnitViewRep(24, QueryParms, YarnOpts);
-                            int h = Screen.PrimaryScreen.WorkingArea.Height;
-                            int w = Screen.PrimaryScreen.WorkingArea.Width;
-                            vRep.ClientSize = new Size(w, h);
-                            vRep.ShowDialog(this);
-                        }
-                        else
-                        {
-                            frmKnitViewRep vRep = new frmKnitViewRep(30, QueryParms, YarnOpts);
-                            int h = Screen.PrimaryScreen.WorkingArea.Height;
-                            int w = Screen.PrimaryScreen.WorkingArea.Width;
-                            vRep.ClientSize = new Size(w, h);
-                            vRep.ShowDialog(this);
-                        }
-
-                    }
-                    else
-                    {
-
-                        frmKnitViewRep vRep = new frmKnitViewRep(30, QueryParms);
-                        int h = Screen.PrimaryScreen.WorkingArea.Height;
-                        int w = Screen.PrimaryScreen.WorkingArea.Width;
-                        vRep.ClientSize = new Size(w, h);
-                        vRep.ShowDialog(this);
-                    }
-                    
-                }
-                */
-              
                 MandSelected = core.PopulateArray(MandatoryFields.Length, false);
                 
                 cmboStockTake.Items.Clear();

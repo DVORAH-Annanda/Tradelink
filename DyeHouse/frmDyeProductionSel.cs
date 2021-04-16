@@ -68,6 +68,12 @@ namespace DyeHouse
                 int w = Screen.PrimaryScreen.WorkingArea.Width;
                 vRep.ClientSize = new Size(w, h);
                 vRep.ShowDialog(this);
+                frmDyeProductionSel_Load(this, null);
+                if(vRep != null)
+                {
+                    vRep.Close();
+                    vRep.Dispose();
+                }
                 repOps = new DyeReportOptions();
 
 

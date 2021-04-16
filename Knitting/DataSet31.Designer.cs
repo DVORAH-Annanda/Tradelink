@@ -299,6 +299,12 @@ namespace Knitting {
             
             private global::System.Data.DataColumn columnGroupDescription;
             
+            private global::System.Data.DataColumn columnGrade_A;
+            
+            private global::System.Data.DataColumn columnGrade_B;
+            
+            private global::System.Data.DataColumn columnGrade_C;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public DataTable1DataTable() {
@@ -414,6 +420,30 @@ namespace Knitting {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn Grade_AColumn {
+                get {
+                    return this.columnGrade_A;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn Grade_BColumn {
+                get {
+                    return this.columnGrade_B;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn Grade_CColumn {
+                get {
+                    return this.columnGrade_C;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -449,7 +479,7 @@ namespace Knitting {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public DataTable1Row AddDataTable1Row(string Description, int ReOrder_Level, int ReOrder_Qty, decimal OutStanding_KO, decimal Pending_Ins, decimal Qualified, decimal Available_ToBatch, decimal DO_LT8, decimal DO_GT8, string GroupDescription) {
+            public DataTable1Row AddDataTable1Row(string Description, int ReOrder_Level, int ReOrder_Qty, decimal OutStanding_KO, decimal Pending_Ins, decimal Qualified, decimal Available_ToBatch, decimal DO_LT8, decimal DO_GT8, string GroupDescription, decimal Grade_A, decimal Grade_B, decimal Grade_C) {
                 DataTable1Row rowDataTable1Row = ((DataTable1Row)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         Description,
@@ -461,7 +491,10 @@ namespace Knitting {
                         Available_ToBatch,
                         DO_LT8,
                         DO_GT8,
-                        GroupDescription};
+                        GroupDescription,
+                        Grade_A,
+                        Grade_B,
+                        Grade_C};
                 rowDataTable1Row.ItemArray = columnValuesArray;
                 this.Rows.Add(rowDataTable1Row);
                 return rowDataTable1Row;
@@ -494,6 +527,9 @@ namespace Knitting {
                 this.columnDO_LT8 = base.Columns["DO_LT8"];
                 this.columnDO_GT8 = base.Columns["DO_GT8"];
                 this.columnGroupDescription = base.Columns["GroupDescription"];
+                this.columnGrade_A = base.Columns["Grade_A"];
+                this.columnGrade_B = base.Columns["Grade_B"];
+                this.columnGrade_C = base.Columns["Grade_C"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -519,6 +555,12 @@ namespace Knitting {
                 base.Columns.Add(this.columnDO_GT8);
                 this.columnGroupDescription = new global::System.Data.DataColumn("GroupDescription", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnGroupDescription);
+                this.columnGrade_A = new global::System.Data.DataColumn("Grade_A", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnGrade_A);
+                this.columnGrade_B = new global::System.Data.DataColumn("Grade_B", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnGrade_B);
+                this.columnGrade_C = new global::System.Data.DataColumn("Grade_C", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnGrade_C);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -821,6 +863,54 @@ namespace Knitting {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public decimal Grade_A {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableDataTable1.Grade_AColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Grade_A\' in table \'DataTable1\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDataTable1.Grade_AColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public decimal Grade_B {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableDataTable1.Grade_BColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Grade_B\' in table \'DataTable1\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDataTable1.Grade_BColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public decimal Grade_C {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableDataTable1.Grade_CColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Grade_C\' in table \'DataTable1\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDataTable1.Grade_CColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public bool IsDescriptionNull() {
                 return this.IsNull(this.tableDataTable1.DescriptionColumn);
             }
@@ -937,6 +1027,42 @@ namespace Knitting {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public void SetGroupDescriptionNull() {
                 this[this.tableDataTable1.GroupDescriptionColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsGrade_ANull() {
+                return this.IsNull(this.tableDataTable1.Grade_AColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetGrade_ANull() {
+                this[this.tableDataTable1.Grade_AColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsGrade_BNull() {
+                return this.IsNull(this.tableDataTable1.Grade_BColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetGrade_BNull() {
+                this[this.tableDataTable1.Grade_BColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsGrade_CNull() {
+                return this.IsNull(this.tableDataTable1.Grade_CColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetGrade_CNull() {
+                this[this.tableDataTable1.Grade_CColumn] = global::System.Convert.DBNull;
             }
         }
         

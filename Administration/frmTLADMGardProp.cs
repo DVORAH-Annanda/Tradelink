@@ -672,6 +672,7 @@ namespace TTI2_WF
 
                     else if (col == 6000)
                     {
+                        /*
                         var existingData = context.TLADM_MachineMaintenance
                                                        .OrderBy(x => x.Maint_ShortCode).ToList();
 
@@ -694,7 +695,7 @@ namespace TTI2_WF
 
                             this.dataGridViewxx.Rows[index].Cells[2].Value = row.Maint_PowerN;
                         }
-
+                        */
                     }
                     else if (col == 7000)
                     {

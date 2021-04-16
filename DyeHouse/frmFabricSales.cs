@@ -276,14 +276,13 @@ namespace DyeHouse
                     txtTransNumber.Text = "FD" + LNU.col10.ToString().PadLeft(6, '0');
                 }
 
-                var GreigeList = context.TLADM_Griege.Where(x => !(bool)x.TLGriege_Discontinued).ToList();
-
+                var GreigeList = context.TLADM_Griege.Where(x=>!x.TLGreige_IsBoughtIn).ToList();
                 foreach(var GreigeItem in GreigeList)
                 {
                     cmboGreige.Items.Add(new DyeHouse.CheckComboBoxItem(GreigeItem.TLGreige_Id, GreigeItem.TLGreige_Description, false));
                 }
-                
-                cmboCustomers.DataSource = context.TLADM_CustomerFile.OrderBy(x => x.Cust_Description).Where(x=>!x.Cust_CommissionCust).OrderBy(x=>x.Cust_Description).ToList();
+
+                cmboCustomers.DataSource = context.TLADM_CustomerFile.OrderBy(x => x.Cust_Description).Where(x => !x.Cust_CommissionCust).OrderBy(x => x.Cust_Description).ToList();
                 cmboCustomers.ValueMember = "Cust_Pk";
                 cmboCustomers.DisplayMember = "Cust_Description";
                 cmboCustomers.SelectedValue = -1;
@@ -499,6 +498,12 @@ namespace DyeHouse
                 if (!string.IsNullOrEmpty(errorM))
                 {
                     MessageBox.Show(errorM);
+                    return;
+                }
+
+                if(dt.Rows.Count == 0)
+                {
+                    MessageBox.Show("There are no records to process");
                     return;
                 }
 

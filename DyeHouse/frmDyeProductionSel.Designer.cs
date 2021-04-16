@@ -56,7 +56,7 @@
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Location = new System.Drawing.Point(178, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(267, 162);
+            this.groupBox1.Size = new System.Drawing.Size(305, 162);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Date Required";
@@ -66,7 +66,7 @@
             this.cmboCustomers.FormattingEnabled = true;
             this.cmboCustomers.Location = new System.Drawing.Point(108, 111);
             this.cmboCustomers.Name = "cmboCustomers";
-            this.cmboCustomers.Size = new System.Drawing.Size(121, 21);
+            this.cmboCustomers.Size = new System.Drawing.Size(169, 21);
             this.cmboCustomers.TabIndex = 5;
             this.cmboCustomers.SelectedIndexChanged += new System.EventHandler(this.cmboCustomers_SelectedIndexChanged);
             // 
@@ -157,16 +157,16 @@
             // cmboReportOptions
             // 
             this.cmboReportOptions.FormattingEnabled = true;
-            this.cmboReportOptions.Location = new System.Drawing.Point(286, 364);
+            this.cmboReportOptions.Location = new System.Drawing.Point(221, 366);
             this.cmboReportOptions.Name = "cmboReportOptions";
-            this.cmboReportOptions.Size = new System.Drawing.Size(121, 21);
+            this.cmboReportOptions.Size = new System.Drawing.Size(197, 21);
             this.cmboReportOptions.TabIndex = 3;
             this.cmboReportOptions.SelectedIndexChanged += new System.EventHandler(this.cmboReportOptions_SelectedIndexChanged);
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(179, 364);
+            this.label4.Location = new System.Drawing.Point(113, 364);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(65, 13);
             this.label4.TabIndex = 4;

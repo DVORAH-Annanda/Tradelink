@@ -639,8 +639,8 @@ namespace Cutting
         }
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-             DataGridView oDgv = sender as DataGridView;
-           
+            DataGridView oDgv = sender as DataGridView;
+            var index = 0;
             if (oDgv.CurrentCell is DataGridViewCheckBoxCell)
              {
                  using (var context = new TTI2Entities())
@@ -649,7 +649,14 @@ namespace Cutting
                      var CurrentCell = oDgv.CurrentCell;
                      if (CurrentRow != null)
                      {
-                         var index = (int)CurrentRow.Cells[0].Value;
+                         if (e.ColumnIndex != 9999)
+                         {
+                            index = (int)CurrentRow.Cells[0].Value;
+                         }
+                         else
+                         {
+                            index = e.RowIndex; 
+                         }
                          TLDYE_DyeBatchDetails dbd = context.TLDYE_DyeBatchDetails.Find(index);
                          if (dbd != null)
                          {
@@ -775,7 +782,7 @@ namespace Cutting
                                  else
                                  {
                                      CurrentRow.Cells[4].ReadOnly = true;
-                                     NoOfGarments += Math.Round(Yield / Rating * NettWeight);
+                                     NoOfGarments +=  Math.Round(Yield / Rating * NettWeight);
                                      txtQtyKg.Text = (Math.Round(TotalQtyKg + NettWeight, 1)).ToString();
                                      txtNoGarments.Text = NoOfGarments.ToString();
                                  }

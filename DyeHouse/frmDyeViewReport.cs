@@ -4047,6 +4047,7 @@ namespace DyeHouse
                 IList<TLADM_MachineOperators> _Operators = null;
                 IList<TLADM_MachineDefinitions> _Machines = null;
                 IList<TLDYE_DyeBatch> DyeBatch = new List<TLDYE_DyeBatch>();
+                string CustomerDet = string.Empty;
 
                 using (var context = new TTI2Entities())
                 {
@@ -4071,7 +4072,10 @@ namespace DyeHouse
                             DyeBatch = DyeBatch.Where(x => x.DYEB_SequenceNo != 0).ToList();
 
                         if (_repOps.DYEPCustNoSelected)
-                            DyeBatch = DyeBatch.Where(x => x.DYEB_Customer_FK == _repOps.CustomerNumberSelected).ToList();
+                        {
+                            DyeBatch = DyeBatch.Where(x => x.DYEB_Customer_FK == _repOps.DYEPCustNo).ToList();
+                            CustomerDet = context.TLADM_CustomerFile.Find(_repOps.DYEPCustNo).Cust_Description;
+                        }
                     }
                     else
                     {
@@ -4085,6 +4089,12 @@ namespace DyeHouse
                                          select t;
 
                             DyeBatch = result.Distinct().ToList();
+
+                            if (_repOps.DYEPCustNoSelected)
+                            {
+                                DyeBatch = DyeBatch.Where(x => x.DYEB_Customer_FK == _repOps.DYEPCustNo).ToList();
+                                CustomerDet = context.TLADM_CustomerFile.Find(_repOps.DYEPCustNo).Cust_Description;
+                            }
                         }
                         else
                         {
@@ -4094,6 +4104,12 @@ namespace DyeHouse
                                           join x in context.TLDYE_DyeTransactions on t.DYEB_Pk equals x.TLDYET_Batch_FK
                                           where x.TLDYET_Date >= _repOps.fromDate && x.TLDYET_Date <= _repOps.toDate && x.TLDYET_Stage == 3
                                           select new { t, x }).ToList();
+
+                            if (_repOps.DYEPCustNoSelected)
+                            {
+                                DyeBatch = DyeBatch.Where(x => x.DYEB_Customer_FK == _repOps.DYEPCustNo).ToList();
+                                CustomerDet = context.TLADM_CustomerFile.Find(_repOps.DYEPCustNo).Cust_Description;
+                            }
 
                             foreach (var row in result)
                             {
@@ -4196,6 +4212,14 @@ namespace DyeHouse
                 tr.Pk = 1;
                 tr.FromDate = _repOps.fromDate;
                 tr.ToDate = _repOps.toDate;
+                if (CustomerDet.Length == 0)
+                {
+                    tr.CustomerDetail = "All";
+                }
+                else
+                {
+                    tr.CustomerDetail = CustomerDet;
+                }
 
                 if (_repOps.FabricToQ)
                 {
@@ -5534,33 +5558,31 @@ namespace DyeHouse
                     }
                     dataTable1.Rows.Add(NewRow);
 
-                    bool First = true;
+                    DataSet50.DataTable2Row NRow = dataTable2.NewDataTable2Row();
+
+                    NRow = dataTable2.NewDataTable2Row();
+                    NRow.Pk = 1;
+                    NRow.Description = "No of Pieces";
+                    NRow.Section = 1;
+                    NRow.SectionDescription = "Hydro";
+                    dataTable2.Rows.Add(NRow);
+
                     var HydroMeasurements = context.TLADM_QADyeProcessFields.Where(x => x.TLQADPF_Hydro && !(bool)x.TLQAPF_Padding).ToList();
                     foreach (var Meas in HydroMeasurements)
                     {
-                        DataSet50.DataTable2Row NRow = dataTable2.NewDataTable2Row();
+                        NRow = dataTable2.NewDataTable2Row();
                         NRow.Pk = 1;
-                        if (First)
-                        {
-                            First = !First;
-                            NRow.Description = "No of Pieces";
-                        }
-                        else
-                        {
-                            NRow.Description = Meas.TLQADPF_Description;
-                            NRow.Standard = context.TLDYE_DyeingStandards.Where(x => x.DyeStan_QAProccessField_FK == Meas.TLQADPF_Pk && x.DyeStan_Quality_FK == DyeBatch.DYEB_Greige_FK).FirstOrDefault().DyeStan_Value.ToString();
-
-                        }
+                        NRow.Description = Meas.TLQADPF_Description;
+                        NRow.Standard = context.TLDYE_DyeingStandards.Where(x => x.DyeStan_QAProccessField_FK == Meas.TLQADPF_Pk && x.DyeStan_Quality_FK == DyeBatch.DYEB_Greige_FK).FirstOrDefault().DyeStan_Value.ToString();
+                        
                         NRow.Section = 1;
                         NRow.SectionDescription = "Hydro";
                         dataTable2.Rows.Add(NRow);
                     }
-
-                    First = true;
                     var DryerMeasurements = context.TLADM_QADyeProcessFields.Where(x => x.TLQADPF_Drier).ToList();
                     foreach (var Meas in DryerMeasurements)
                     {
-                        DataSet50.DataTable2Row NRow = dataTable2.NewDataTable2Row();
+                        NRow = dataTable2.NewDataTable2Row();
                         NRow.Pk = 1;
                         NRow.Description = Meas.TLQADPF_Description;
                         NRow.Standard = context.TLDYE_DyeingStandards.Where(x => x.DyeStan_QAProccessField_FK == Meas.TLQADPF_Pk && x.DyeStan_Quality_FK == DyeBatch.DYEB_Greige_FK).FirstOrDefault().DyeStan_Value.ToString();
@@ -5568,11 +5590,11 @@ namespace DyeHouse
                         NRow.SectionDescription = "Drier";
                         dataTable2.Rows.Add(NRow);
                     }
-                    First = true;
+
                     DryerMeasurements = context.TLADM_QADyeProcessFields.Where(x => x.TLQAPF_Compactor).ToList();
                     foreach (var Meas in DryerMeasurements)
                     {
-                        DataSet50.DataTable2Row NRow = dataTable2.NewDataTable2Row();
+                        NRow = dataTable2.NewDataTable2Row();
                         NRow.Pk = 1;
                         NRow.Description = Meas.TLQADPF_Description;
                         NRow.Standard = context.TLDYE_DyeingStandards.Where(x => x.DyeStan_QAProccessField_FK == Meas.TLQADPF_Pk && x.DyeStan_Quality_FK == DyeBatch.DYEB_Greige_FK).FirstOrDefault().DyeStan_Value.ToString();
@@ -5581,38 +5603,30 @@ namespace DyeHouse
                         dataTable2.Rows.Add(NRow);
                     }
 
-                    /* DataSet50.DataTable2Row NR = dataTable2.NewDataTable2Row();
-                     NR.SectionDescription = "Width Recorded";
-                     NR.Section = 4;
-                     NR.Pk = 1;
-                     dataTable2.Rows.Add(NR); */
-                    First = true;
+                    NRow = dataTable2.NewDataTable2Row();
+                    NRow.Pk = 1;
+                    NRow.Description = "Piece";
+                    NRow.Standard = "Width";
+                    NRow.QCColour = "QC Colour";
+                    NRow.QCWidth = "QC Width";
+                    NRow.Cutting = "Cutting";
+                    NRow.Section = 4;
+                    dataTable2.Rows.Add(NRow);
+
                     var Pieces = context.TLDYE_DyeBatchDetails.Where(x => x.DYEBD_DyeBatch_FK == DyeBatch.DYEB_Pk).ToList();
                     foreach (var Piece in Pieces)
                     {
-                        DataSet50.DataTable2Row NRow = dataTable2.NewDataTable2Row();
+                        NRow = dataTable2.NewDataTable2Row();
                         NRow.Pk = 1;
-                        if (First)
-                        {
-                            NRow.Description = "Piece";
-                            NRow.Standard = "Width";
-                            NRow.QCColour = "QC Colour";
-                            NRow.QCWidth = "QC Width";
-                            NRow.Cutting = "Cutting";
-                            First = !First;
-                        }
-                        else
-                        {
-                            NRow.Description = context.TLKNI_GreigeProduction.Find(Piece.DYEBD_GreigeProduction_FK).GreigeP_PieceNo;
-                        }
+                        NRow.Description = context.TLKNI_GreigeProduction.Find(Piece.DYEBD_GreigeProduction_FK).GreigeP_PieceNo;
                         NRow.Section = 4;
+                        
                         dataTable2.Rows.Add(NRow);
                     }
                 }
 
                 ds.Tables.Add(dataTable1);
                 ds.Tables.Add(dataTable2);
-                //  ds.Tables.Add(dataTable3);
                 QualityAssuranceCheck QualAssurance = new QualityAssuranceCheck();
                 QualAssurance.SetDataSource(ds);
                 crystalReportViewer1.ReportSource = QualAssurance;

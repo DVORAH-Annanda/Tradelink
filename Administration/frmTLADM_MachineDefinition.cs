@@ -983,13 +983,30 @@ namespace TTI2_WF
         private void button1_Click(object sender, EventArgs e)
         {
             Button oBtn = sender as Button;
-            if (oBtn != null)
+            if (oBtn != null && formloaded)
             {
-                
-                frmTLADMGardProp depts = new frmTLADMGardProp(6000, Convert.ToInt32(oBtn.Text));
-                depts.ShowDialog(this);
+                var DeptSelect = (TLADM_Departments)this.cmbDepartmentSelect.SelectedItem;
+                var MachineSelect = (TLADM_MachineDefinitions)this.cmbCodeSelection.SelectedItem;
 
-                oBtn.Text = depts.TotalPN.ToString();
+                if (DeptSelect != null && MachineSelect != null)
+                {
+                    Administration.frmTLADM_MachineMaintenance MachineMain = new Administration.frmTLADM_MachineMaintenance(DeptSelect, MachineSelect);
+                    MachineMain.ShowDialog();
+                }
+                else
+                {
+                    if (DeptSelect == null)
+                    {
+                        MessageBox.Show("Please select a department");
+                        return;
+                    }
+
+                    if (MachineSelect == null)
+                    {
+                        MessageBox.Show("Please select a machine");
+                        return;
+                    }
+                }
             }
         }
 

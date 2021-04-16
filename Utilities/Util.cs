@@ -3052,107 +3052,18 @@ namespace Utilities
             return lTransSuccessful;
         }
 
+        /*
 
         public DataGridView Get_MaintenanceDetail(DataGridView odgv)
         {
-            DataGridView oDgv = odgv;
-           ((DataGridViewTextBoxColumn)oDgv.Columns[3]).MaxInputLength = 5;
-
-            using (var Context = new TTI2Entities())
-            {
-                var ExistingData = Context.TLADM_MachineMaintenance
-                                   .OrderBy(x => x.Maint_ShortCode).ToList();
-
-                foreach (var ExistingRow in ExistingData)
-                {
-                    var index = oDgv.Rows.Add();
-                    oDgv.Rows[index].Cells[0].Value = ExistingRow.Maint_ShortCode;
-                    oDgv.Rows[index].Cells[1].Value = ExistingRow.Maint_Description;
-                    oDgv.Rows[index].Cells[2].Value = ExistingRow.Maint_IntervalDownTime;
-                    oDgv.Rows[index].Cells[3].Value = ExistingRow.Maint_Pk;
-                    oDgv.Rows[index].Cells[4].Value = ExistingRow.Maint_PowerN;
-                    oDgv.Rows[index].Cells[5].Value = ExistingRow.Maint_DownTimePeriod;
-                }
-            }
-            return oDgv;
+           
         }
 
         public bool Save_MaintenanceDetail(DataGridView oDgv)
         {
-            var lAdd = false;
-            var lTransSuccessful = false;
-
-            using (var Context = new TTI2Entities())
-            {
-                foreach (DataGridViewRow row in oDgv.Rows)
-                {
-                    if (row.Cells[0].Value != null && !String.IsNullOrEmpty(row.Cells[0].Value.ToString()))
-                    {
-                        lAdd = false;
-
-                        TLADM_MachineMaintenance clrs = null;
-
-                        if (row.Cells[4].Value != null)
-                        {
-                            int index = Convert.ToInt32(row.Cells[4].Value.ToString());
-                            clrs = Context.TLADM_MachineMaintenance.Find(index);
-
-                        }
-                        else
-                        {
-                            clrs = new TLADM_MachineMaintenance();
-                            lAdd = true;
-                        }
-
-                        clrs.Maint_ShortCode = row.Cells[0].Value.ToString();
-                        clrs.Maint_Description = row.Cells[1].Value.ToString();
-
-                        if (row.Cells[2].Value != null)
-                        {
-                            clrs.Maint_IntervalDownTime = Convert.ToInt32(row.Cells[2].Value.ToString());
-                        }
-                        else
-                            clrs.Maint_IntervalDownTime = 0;
-
-
-                        if (row.Cells[3].Value != null)
-                        {
-                            clrs.Maint_DownTimePeriod = Convert.ToInt32(row.Cells[3].Value.ToString());
-                        }
-                        else
-                            clrs.Maint_DownTimePeriod = 0;
-             
-                        
-                        if (row.Cells[5].Value == null && lAdd)
-                        {
-                            clrs.Maint_PowerN = (int)Math.Pow(2.00D, (double)row.Index);
-                        }
-                        else
-                            clrs.Maint_PowerN = Convert.ToInt32(row.Cells[5].Value.ToString());
-
-
-
-
-
-                        if (lAdd)
-                            Context.TLADM_MachineMaintenance.Add(clrs);
-                            
-                        try
-                        {
-                            Context.SaveChanges();
-                            lTransSuccessful = true;
-                        }
-                        catch (System.Exception ex)
-                        {
-                            MessageBox.Show(ex.Message);
-                            lTransSuccessful = false;
-                        }
-                    }
-                }
-
-            }
-            return lTransSuccessful;
+           
         }
+        */
 
         /*
         public DataGridView Get_AuxColours(DataGridView odgv)

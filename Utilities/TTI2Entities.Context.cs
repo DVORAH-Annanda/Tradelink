@@ -51,7 +51,6 @@ namespace Utilities
         public virtual DbSet<TLADM_AdditionalAddress> TLADM_AdditionalAddress { get; set; }
         public virtual DbSet<TLADM_PanelAttributes> TLADM_PanelAttributes { get; set; }
         public virtual DbSet<TLADM_StylesAdditional> TLADM_StylesAdditional { get; set; }
-        public virtual DbSet<TLADM_MachineMaintenance> TLADM_MachineMaintenance { get; set; }
         public virtual DbSet<TLADM_CompanyDetails> TLADM_CompanyDetails { get; set; }
         public virtual DbSet<TLADM_CottonAgent> TLADM_CottonAgent { get; set; }
         public virtual DbSet<TLADM_CottonHauliers> TLADM_CottonHauliers { get; set; }
@@ -209,6 +208,8 @@ namespace Utilities
         public virtual DbSet<TLDYE_DyeBatchDetails> TLDYE_DyeBatchDetails { get; set; }
         public virtual DbSet<TLDYE_ConSummableReceived> TLDYE_ConSummableReceived { get; set; }
         public virtual DbSet<TLADM_WhseStore> TLADM_WhseStore { get; set; }
+        public virtual DbSet<TLADM_MachineMaintenanceTasks> TLADM_MachineMaintenanceTasks { get; set; }
+        public virtual DbSet<TLADM_MachineMaintenance> TLADM_MachineMaintenance { get; set; }
     
         public virtual int SelectCottonRecords(Nullable<int> contractNo, Nullable<int> supplierNo)
         {

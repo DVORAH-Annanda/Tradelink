@@ -52,62 +52,77 @@ namespace Administration
                 textBox1.Text = "Commencing Customer Services Clear Down";
                 this.Refresh();
 
+                //=====================================
+                //1st Step - are there any old records ie in CSV_StockOnHand
+                //           that have 0 value in the Cut Sheet FK ...
+                //=============================================================
+
+                var Delete = context.TLCSV_StockOnHand.Where(x => x.TLSOH_Sold && x.TLSOH_CutSheet_FK == 0 && x.TLSOH_SoldDate <= DSelected).Delete();
+
+
 
                 //==============================================================================
                 // 1st Step - We have a situation whereby a box has been sold 
                 // We need to ensure that it is removed 
                 //====================================================
-                var BoxSold = (from SOH in context.TLCSV_StockOnHand
-                               where SOH.TLSOH_Sold && SOH.TLSOH_SoldDate <= DSelected
-                               select SOH).GroupBy(x => x.TLSOH_POOrderDetail_FK).ToList();
-
+                var BoxSold = context.TLCSV_StockOnHand.Where(x => x.TLSOH_Sold && x.TLSOH_CutSheet_FK != 0 && x.TLSOH_SoldDate <= DSelected).GroupBy(x => x.TLSOH_CutSheet_FK).ToList();
+                
                 pBar1.Maximum = BoxSold.Count();
                 foreach (var BoxGroup in BoxSold)
                 {
-                    var PODPrimaryKey = BoxGroup.FirstOrDefault().TLSOH_POOrderDetail_FK;
-                    var POPrimaryKey = BoxGroup.FirstOrDefault().TLSOH_POOrder_FK;
+                    var SoldQty = BoxGroup.Count();
+                    var CutSheet_Pk = BoxGroup.FirstOrDefault().TLSOH_CutSheet_FK;
 
-                    var BoxedQty = BoxGroup.Sum(x => (int?)x.TLSOH_BoxedQty) ?? 0;
+                    var CompletedW = context.TLCMT_CompletedWork.Where(x => x.TLCMTWC_CutSheet_FK == CutSheet_Pk).Count();
+                                        
+                    if (SoldQty == CompletedW)
+                    {    // this means that the whole cut 
+                        /*
+                        var PODPrimaryKey = BoxGroup.FirstOrDefault().TLSOH_POOrderDetail_FK;
+                        var POPrimaryKey = BoxGroup.FirstOrDefault().TLSOH_POOrder_FK;
 
-                    var PODetail = context.TLCSV_PuchaseOrderDetail.Find(PODPrimaryKey);
-                    if (PODetail != null && !PODetail.TLCUSTO_Closed)
-                    {
-                        if (BoxedQty < PODetail.TLCUSTO_Qty)
+                        var BoxedQty = BoxGroup.Sum(x => (int?)x.TLSOH_BoxedQty) ?? 0;
+
+                        var PODetail = context.TLCSV_PuchaseOrderDetail.Find(PODPrimaryKey);
+                        if (PODetail != null && !PODetail.TLCUSTO_Closed)
                         {
-                            continue;
+                            if (BoxedQty < PODetail.TLCUSTO_Qty)
+                            {
+                                continue;
+                            }
+
+                            context.TLCSV_PurchaseOrder.Where(x => x.TLCSVPO_Pk == POPrimaryKey).Delete();
+                            context.TLCSV_PuchaseOrderDetail.Where(x => x.TLCUSTO_Pk == PODPrimaryKey).Delete();
+
+                            context.TLCSV_OrderAllocated.Where(x => x.TLORDA_POOrder_FK == POPrimaryKey).Delete();
                         }
 
-                        context.TLCSV_PurchaseOrder.Where(x => x.TLCSVPO_Pk == POPrimaryKey).Delete();
-                        context.TLCSV_PuchaseOrderDetail.Where(x => x.TLCUSTO_Pk == PODPrimaryKey).Delete();
+                        context.TLCSV_StockOnHand.Where(x => x.TLSOH_POOrderDetail_FK == PODPrimaryKey).Delete();
+                        context.TLCSV_RePackTransactions.Where(x => x.REPACT_PurchaseOrderDetail_FK == PODPrimaryKey).Delete();
+                        context.TLCSV_RePackConfig.Where(x => x.PORConfig_PONumber_Fk == PODPrimaryKey).Delete();
+                        context.TLCSV_MergePODetail.Where(x => x.TLMerge_PoDetail_FK == PODPrimaryKey).Delete();
 
                         context.TLCSV_OrderAllocated.Where(x => x.TLORDA_POOrder_FK == POPrimaryKey).Delete();
+
+                        Expression<Func<TLCMT_CompletedWork, bool>> CWPredicate = PredicateBuilder.New<TLCMT_CompletedWork>();
+                        Expression<Func<TLCSV_Movement, bool>> MovePredicate = PredicateBuilder.New<TLCSV_Movement>();
+                        Expression<Func<TLCSV_BoxSplit, bool>> BoxSplitPredicate = PredicateBuilder.New<TLCSV_BoxSplit>();
+                        Expression<Func<TLCSV_WhseTransferDetail, bool>> WhseTransfer = PredicateBuilder.New<TLCSV_WhseTransferDetail>();
+
+                        foreach (var Box in BoxGroup)
+                        {
+                            CWPredicate = CWPredicate.Or(x => x.TLCMTWC_Pk == Box.TLSOH_CMT_FK);
+                            BoxSplitPredicate = BoxSplitPredicate.Or(x => x.TLCMTBS_BoxNo == Box.TLSOH_BoxNumber);
+                            MovePredicate = MovePredicate.Or(s => s.TLMV_BoxNumber == Box.TLSOH_BoxNumber);
+                            WhseTransfer = WhseTransfer.Or(x => x.TLCSVWHTD_TLSOH_Fk == Box.TLSOH_Pk); 
+                        }
+
+                        context.TLCMT_CompletedWork.Where(CWPredicate).Update(x => new TLCMT_CompletedWork() { TLCMTWC_MarkedForDeletion = true });
+                        context.TLCSV_BoxSplit.Where(BoxSplitPredicate).Delete();
+                        context.TLCSV_Movement.Where(MovePredicate).Delete();
+                        context.TLCSV_WhseTransferDetail.Where(WhseTransfer).Delete();
+                        */
                     }
-
-                    context.TLCSV_StockOnHand.Where(x => x.TLSOH_POOrderDetail_FK == PODPrimaryKey).Delete();
-                    context.TLCSV_RePackTransactions.Where(x => x.REPACT_PurchaseOrderDetail_FK == PODPrimaryKey).Delete();
-                    context.TLCSV_RePackConfig.Where(x => x.PORConfig_PONumber_Fk == PODPrimaryKey).Delete();
-                    context.TLCSV_MergePODetail.Where(x => x.TLMerge_PoDetail_FK == PODPrimaryKey).Delete();
-
-                    context.TLCSV_OrderAllocated.Where(x => x.TLORDA_POOrder_FK == POPrimaryKey).Delete();
-                    
-                    Expression<Func<TLCMT_CompletedWork, bool>> CWPredicate = PredicateBuilder.New<TLCMT_CompletedWork>();
-                    Expression<Func<TLCSV_Movement, bool>> MovePredicate = PredicateBuilder.New<TLCSV_Movement>();
-                    Expression<Func<TLCSV_BoxSplit, bool>> BoxSplitPredicate = PredicateBuilder.New<TLCSV_BoxSplit>();
-                    Expression<Func<TLCSV_WhseTransferDetail, bool>> WhseTransfer = PredicateBuilder.New<TLCSV_WhseTransferDetail>();
-                    
-                    foreach (var Box in BoxGroup)
-                    {
-                        CWPredicate = CWPredicate.Or(x => x.TLCMTWC_Pk == Box.TLSOH_CMT_FK);
-                        BoxSplitPredicate = BoxSplitPredicate.Or(x => x.TLCMTBS_BoxNo == Box.TLSOH_BoxNumber);
-                        MovePredicate = MovePredicate.Or(s => s.TLMV_BoxNumber == Box.TLSOH_BoxNumber);
-                        WhseTransfer = WhseTransfer.Or(x => x.TLCSVWHTD_TLSOH_Fk == Box.TLSOH_Pk); 
-                    }
-                                      
-                    context.TLCMT_CompletedWork.Where(CWPredicate).Update(x => new TLCMT_CompletedWork() { TLCMTWC_MarkedForDeletion = true });
-                    context.TLCSV_BoxSplit.Where(BoxSplitPredicate).Delete();
-                    context.TLCSV_Movement.Where(MovePredicate).Delete();
-                    context.TLCSV_WhseTransferDetail.Where(WhseTransfer).Delete();
-
                     pBar1.PerformStep();
 
                  }

@@ -1986,7 +1986,7 @@ namespace ProductionPlanning
                     {
                         DataSet7.DataTable1Row Tab1 = dataTable1.NewDataTable1Row();
                         Tab1.Pk = 1;
-                        Tab1.DyeDsk = Item.DYEBO_DiskWeight;
+                        Tab1.DyeDsk = Item.DYEBO_DiskWeight / 100;
                         Tab1.DyeMeters = Item.DYEBO_Meters;
                         Tab1.KnittingMeters = 0.00M;
                         Tab1.TransDate = (DateTime)Item.DYEBO_TransDate;
@@ -1998,7 +1998,7 @@ namespace ProductionPlanning
                         {
                             Tab1.Quality = Quality.TLGreige_Description;
                             Tab1.StdDsk = Quality.TLGreige_CubicWeight;
-                            Tab1.DevDyeing = core.CalculateDskVariance(Quality.TLGreige_CubicWeight, Item.DYEBO_DiskWeight);
+                            Tab1.DevDyeing = core.CalculateDskVariance(Quality.TLGreige_CubicWeight, Item.DYEBO_DiskWeight/100);
                             
                             var GP = context.TLKNI_GreigeProduction.Find(Item.DYEBD_GreigeProduction_FK);
                             if (GP != null && GP.GreigeP_DskWeight != 0)

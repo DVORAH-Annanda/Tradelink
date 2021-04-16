@@ -501,6 +501,7 @@
             this.Controls.Add(this.label1);
             this.Name = "frmCutSheetReceipt";
             this.Text = "Receipt into bundle store";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmCutSheetReceipt_FormClosing);
             this.Load += new System.EventHandler(this.frmCutSheetReceipt_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.groupBox1.ResumeLayout(false);

@@ -3249,14 +3249,16 @@ namespace Knitting
                         
                         nr.OutStanding_KO = context.TLKNI_Order.Where(x => x.KnitO_Product_FK == Pk && !x.KnitO_Closed).Sum(x => (decimal?)x.KnitO_Weight) ?? 0.00M;
                         nr.Pending_Ins = Group.Where(x => !x.GreigeP_Inspected).Sum(x => (decimal?)x.GreigeP_weight) ?? 0.00M;
-                        nr.Qualified = 0.0M;
 
-                        var Available_To_Batch = Group.Sum(x => (decimal?)x.GreigeP_weightAvail) ?? 0.00M;
-                        if (_QueryParms.GradeAwithWarnings)
-                        {
-                            nr.Qualified = Group.Where(x=>x.GreigeP_WarningMessage).Sum(x=> (decimal ?)x.GreigeP_weightAvail) ?? 0.00M;
-                        }
-                        nr.Available_ToBatch = Available_To_Batch - nr.Qualified;
+                        nr.Available_ToBatch = nr.Grade_A = nr.Grade_B = nr.Grade_C = nr.Qualified = 0.0M;
+                      
+                        nr.Grade_A = Group.Where(x => x.GreigeP_Grade.Trim() == "A" && !x.GreigeP_WarningMessage).Sum(x => x.GreigeP_weightAvail);
+                        nr.Grade_B = Group.Where(x => x.GreigeP_Grade.Trim() == "B").Sum(x => x.GreigeP_weightAvail);
+                        nr.Grade_C = Group.Where(x => x.GreigeP_Grade.Trim() == "C").Sum(x => x.GreigeP_weightAvail);
+                        nr.Qualified = Group.Where(x => x.GreigeP_Grade.Trim() == "A" && x.GreigeP_WarningMessage).Sum(x => x.GreigeP_weightAvail);
+                                               
+                        nr.Available_ToBatch = nr.Grade_A + nr.Grade_B + nr.Grade_C + nr.Qualified;
+                        
                         nr.DO_LT8 = 0.00M;
                         nr.DO_GT8 = 0.00M;
 

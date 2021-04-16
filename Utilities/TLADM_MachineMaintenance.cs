@@ -14,12 +14,17 @@ namespace Utilities
     
     public partial class TLADM_MachineMaintenance
     {
-        public int Maint_Pk { get; set; }
-        public string Maint_ShortCode { get; set; }
-        public string Maint_Description { get; set; }
-        public int Maint_UOM_FK { get; set; }
-        public int Maint_PowerN { get; set; }
-        public int Maint_IntervalDownTime { get; set; }
-        public int Maint_DownTimePeriod { get; set; }
+        public int mman_Pk { get; set; }
+        public int mman_MaintenanceTask_FK { get; set; }
+        public int mman_Machine_Fk { get; set; }
+        public int mman_Interval_Between_Tasks { get; set; }
+        public int mman_Interval_UOM { get; set; }
+        public int mman_Interval_CurrentValue { get; set; }
+        public bool mman_Reset { get; set; }
+        public Nullable<System.DateTime> mman_Date_Last_Reset { get; set; }
+        public int mman_Volume_CurrentValue { get; set; }
+        public int mman_Volume_Between_Tasks { get; set; }
+        public int mman_Volumne_UOM { get; set; }
+        public string mman_Last_Identifier { get; set; }
     }
 }
