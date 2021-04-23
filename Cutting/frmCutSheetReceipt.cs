@@ -54,7 +54,7 @@ namespace Cutting
         {
             int _Width = 100;
 
-            txtPrevCutSheet.Text = String.Empty;
+           
             chkSearch.Checked = false;
 
        
@@ -62,15 +62,15 @@ namespace Cutting
             txtCurrentTotal.Text = "0";
 
             chkReset.Checked = false;
+            chkSearch.Checked = false;
 
             formloaded = false;
             //----------------------------------------------------
             //0
             //----------------------------------------------------
 
-            txtPrevCutSheet.Text = string.Empty;
-            chkSearch.Checked = false;
-                    
+        
+                              
 
             //-----------------------------------------------------
             //
@@ -127,9 +127,9 @@ namespace Cutting
             oTxtA.Name = "Primary_Key";
             oTxtA.ValueType = typeof(int);
             oTxtA.HeaderText = "Primary Key";
-            // oTxtA.DataPropertyName = dataTable.Columns[0].ColumnName;
+            oTxtA.DataPropertyName = dataTable.Columns[0].ColumnName;
             dataGridView1.Columns.Add(oTxtA);
-            dataGridView1.Columns["Primary_Key"].DisplayIndex = 0;
+            dataGridView1.Columns[0].DisplayIndex = 0;
 
             //--------------------------------------------------------
             //1
@@ -225,40 +225,6 @@ namespace Cutting
             BindingSrc2.DataSource = dataTable2;
             dataGridView2.DataSource = BindingSrc2;
 
-            /*
-            oTxtZA.Visible = false;
-            oTxtZA.ValueType = typeof(int);
-            oTxtZA.DataPropertyName = dataTable2.Columns[0].ColumnName;
-            dataGridView2.Columns.Add(oTxtZA);
-
-            oTxtZB.Visible = false;
-            oTxtZB.HeaderText = "Size";
-            oTxtZB.ValueType = typeof(string);
-            oTxtZB.DataPropertyName = dataTable2.Columns[1].ColumnName;
-            oTxtZB.Width = _Width;
-            dataGridView2.Columns.Add(oTxtZB);
-
-            oTxtZC.Visible = false;
-            oTxtZC.HeaderText = "Expected";
-            oTxtZC.ValueType = typeof(int);
-            oTxtZC.DataPropertyName = dataTable2.Columns[2].ColumnName;
-            oTxtZC.Width = _Width;
-            dataGridView2.Columns.Add(oTxtZC);
-
-            oTxtZD.Visible = false;
-            oTxtZD.HeaderText = "Actual";
-            oTxtZD.ValueType = typeof(int);
-            oTxtZD.Width = _Width;
-            oTxtZD.DataPropertyName = dataTable2.Columns[3].ColumnName;
-            dataGridView2.Columns.Add(oTxtZD);
-
-            oTxtZE.HeaderText = "Variance";
-            oTxtZE.ValueType = typeof(decimal);
-            oTxtZE.Width = _Width;
-            oTxtZE.DataPropertyName = dataTable2.Columns[4].ColumnName;
-            dataGridView2.Columns.Add(oTxtZE);
-            */
-
             int idx = -1;
 
             foreach (DataColumn col in dataTable2.Columns)
@@ -328,11 +294,8 @@ namespace Cutting
 
             this.formloaded = false;;
             this.chkSearch.Checked = false;
-            this.txtPrevCutSheet.Text = string.Empty;
             
-            txtPrevCutSheet.Text = string.Empty;
-            chkSearch.Checked = false;
-            cmboCutSheet.SelectedValue = -1;
+             cmboCutSheet.SelectedValue = -1;
             formloaded = true;
 
         }
@@ -803,6 +766,7 @@ namespace Cutting
                             cmboCutSheet.ValueMember = "TLCutSH_Pk";
                             cmboCutSheet.DisplayMember = "TLCutSH_No";
                             cmboCutSheet.SelectedValue = -1;
+                            chkSearch.Checked = false;
                             formloaded = true;
                             
                             SetUp();
@@ -899,97 +863,57 @@ namespace Cutting
                     formloaded = false;
                     cmboCutSheet.DataSource = null;
                     cmboCutSheet.Items.Clear();
-                   // cmboMachines.DataSource = null;
-                   // cmboMachines.Items.Clear();
+                   
                     dataGridView1.Rows.Clear();
-                    //     dataGridView2.Rows.Clear();
                     dataTable2.Rows.Clear();
                     
-                    //using (var context = new TTI2Entities())
-                    //{
-                        cmboCutSheet.DataSource = _context.TLCUT_CutSheet.Where(x => x.TLCutSH_Accepted && !x.TLCutSH_WIPComplete).OrderBy(x => x.TLCutSH_No).ToList();
-                        cmboCutSheet.ValueMember = "TLCutSH_Pk";
-                        cmboCutSheet.DisplayMember = "TLCutSH_No";
-                        cmboCutSheet.SelectedValue = -1;
-                    //}
+                    cmboCutSheet.DataSource = _context.TLCUT_CutSheet.Where(x => x.TLCutSH_Accepted && !x.TLCutSH_WIPComplete).OrderBy(x => x.TLCutSH_No).ToList();
+                    cmboCutSheet.ValueMember = "TLCutSH_Pk";
+                    cmboCutSheet.DisplayMember = "TLCutSH_No";
+                    cmboCutSheet.SelectedValue = -1;
+                   
 
                     formloaded = true;
                 }
             }
         }
-
-        private void rbPreviousCutSheets_CheckedChanged(object sender, EventArgs e)
-        {
-            RadioButton oRad = (RadioButton)sender;
-            if (oRad != null && formloaded)
-            {
-                if (oRad.Checked)
-                {
-                    formloaded = false;
-                    cmboCutSheet.DataSource = null;
-                    cmboCutSheet.Items.Clear();
-                    // cmboMachines.DataSource = null;
-                    // cmboMachines.Items.Clear();
-                    dataGridView1.Rows.Clear();
-                    //  dataGridView2.Rows.Clear();
-                    dataTable2.Rows.Clear(); 
-
-                    //using (var context = new TTI2Entities())
-                    //{
-                        var tst = (from CutSheet in _context.TLCUT_CutSheet
-                                   join CutSheetRec in _context.TLCUT_CutSheetReceipt on CutSheet.TLCutSH_Pk equals CutSheetRec.TLCUTSHR_CutSheet_FK
-                                   where CutSheet.TLCutSH_WIPComplete && CutSheet.TLCutSH_Accepted && !CutSheetRec.TLCUTSHR_Issued
-                                   orderby CutSheet.TLCutSH_No
-                                   select CutSheet).ToList();
-
-                        cmboCutSheet.DataSource = tst;
-                        cmboCutSheet.ValueMember = "TLCutSH_Pk";
-                        cmboCutSheet.DisplayMember = "TLCutSH_No";
-                        cmboCutSheet.SelectedValue = -1;
-
-                        formloaded = true;
-
-                    //}
-                }
-            }
-        }
+              
 
         private void chkSearch_CheckedChanged(object sender, EventArgs e)
         {
             CheckBox oChk = sender as CheckBox;
             if(oChk != null && oChk.Checked && formloaded)
             {
+
                 //using (var context = new TTI2Entities())
                 //{
-                    var CS = _context.TLCUT_CutSheet.Where(x => x.TLCutSH_No == txtPrevCutSheet.Text).FirstOrDefault();
-                    if(CS == null)
-                    {
-                        MessageBox.Show("No Master Record on file");
-                        return;
-                    }
 
-                    var CSR = _context.TLCUT_CutSheetReceipt.Where(x => x.TLCUTSHR_CutSheet_FK == CS.TLCutSH_Pk).FirstOrDefault();
-                    if(CSR == null)
-                    {
-                        MessageBox.Show("It would appear that this CutSheet has not yet been receipted");
-                        return;
-                    }
-                                      
-                    var Details = _context.TLCUT_CutSheetReceiptDetail.Where(x => x.TLCUTSHRD_CutSheet_FK == CSR.TLCUTSHR_Pk).ToList();
-                    if(Details.Count != 0)
-                    {
-                        dataGridView1.Rows.Clear();
-                        foreach(var Detail in Details)
-                        {
-                            var index = dataGridView1.Rows.Add();
-                            dataGridView1.Rows[index].Cells[0].Value = Detail.TLCUTSHRD_Pk;
-                            dataGridView1.Rows[index].Cells[1].Value = Detail.TLCUTSHRD_Description;
-                            dataGridView1.Rows[index].Cells[2].Value = Detail.TLCUTSHRD_Size_FK;
-                            dataGridView1.Rows[index].Cells[3].Value = Detail.TLCUTSHRD_BundleQty;
-                        }
-                    }
+                var tst = (from CutSheet in _context.TLCUT_CutSheet
+                           join CutSheetRec in _context.TLCUT_CutSheetReceipt on CutSheet.TLCutSH_Pk equals CutSheetRec.TLCUTSHR_CutSheet_FK
+                           where CutSheet.TLCutSH_WIPComplete && CutSheet.TLCutSH_Accepted && !CutSheetRec.TLCUTSHR_Issued
+                           orderby CutSheet.TLCutSH_No
+                           select CutSheet).ToList();
+                
+                formloaded = false;
+                cmboCutSheet.DataSource = tst;
+                cmboCutSheet.ValueMember = "TLCutSH_Pk";
+                cmboCutSheet.DisplayMember = "TLCutSH_No";
+                cmboCutSheet.SelectedValue = -1;
+                formloaded = true;
                 //}
             }
+            else
+            {
+                formloaded = false;
+                cmboCutSheet.DataSource = _context.TLCUT_CutSheet.Where(x => x.TLCutSH_Accepted && !x.TLCutSH_WIPComplete).OrderBy(x => x.TLCutSH_No).ToList();
+                cmboCutSheet.ValueMember = "TLCutSH_Pk";
+                cmboCutSheet.DisplayMember = "TLCutSH_No";
+                cmboCutSheet.SelectedValue = -1;
+                formloaded = true;
+                SetUp();
+
+            }
+            
         }
 
         private void frmCutSheetReceipt_FormClosing(object sender, FormClosingEventArgs e)

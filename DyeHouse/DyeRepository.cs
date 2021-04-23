@@ -387,11 +387,41 @@ namespace DyeHouse
                              on GP.GreigeP_Pk equals DBD.DYEBD_GreigeProduction_FK
                              join ADMGriege in _context.TLADM_Griege
                              on GP.GreigeP_Greige_Fk equals ADMGriege.TLGreige_Id
-                             where !GP.GreigeP_BoughtIn && DBD.DYEBO_QAApproved
+                             where !GP.GreigeP_BoughtIn 
+                             && DBD.DYEBO_QAApproved
+                             && !DBD.DYEBO_Rejected
                              && !DBD.DYEBO_Sold
                              && !DBD.DYEBO_CutSheet
                              && !DBD.DYEBO_WriteOff
                              select DBD).AsQueryable(); 
+
+            if (parameters.Qualities.Count > 0)
+            {
+                var DyeBatchDetPredicate = PredicateBuilder.New<TLDYE_DyeBatchDetails>();
+                foreach (var QualityDetail in parameters.Qualities)
+                {
+                    var Temp = QualityDetail;
+                    DyeBatchDetPredicate = DyeBatchDetPredicate.Or(s => s.DYEBD_QualityKey == Temp.TLGreige_Id);
+                }
+                DBDetails = DBDetails.AsExpandable().Where(DyeBatchDetPredicate);
+            }
+            return DBDetails;
+        }
+
+        public IQueryable<TLDYE_DyeBatchDetails> SelectForRejectFabricSales(DyeQueryParameters parameters)
+        {
+            // var DBDetails = _context.TLDYE_DyeBatchDetails.AsQueryable();
+            var DBDetails = (from GP in _context.TLKNI_GreigeProduction
+                             join DBD in _context.TLDYE_DyeBatchDetails
+                             on GP.GreigeP_Pk equals DBD.DYEBD_GreigeProduction_FK
+                             join ADMGriege in _context.TLADM_Griege
+                             on GP.GreigeP_Greige_Fk equals ADMGriege.TLGreige_Id
+                             where !GP.GreigeP_BoughtIn
+                             && DBD.DYEBO_Rejected
+                             && !DBD.DYEBO_Sold
+                             && !DBD.DYEBO_CutSheet
+                             && !DBD.DYEBO_WriteOff
+                             select DBD).AsQueryable();
 
             if (parameters.Qualities.Count > 0)
             {

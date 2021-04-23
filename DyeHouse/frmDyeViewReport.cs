@@ -5574,7 +5574,10 @@ namespace DyeHouse
                         NRow.Pk = 1;
                         NRow.Description = Meas.TLQADPF_Description;
                         NRow.Standard = context.TLDYE_DyeingStandards.Where(x => x.DyeStan_QAProccessField_FK == Meas.TLQADPF_Pk && x.DyeStan_Quality_FK == DyeBatch.DYEB_Greige_FK).FirstOrDefault().DyeStan_Value.ToString();
-                        
+                        if (Meas.TLQAPF_Operator_Ins)
+                        {
+                            NRow.Description += " ****";
+                        }
                         NRow.Section = 1;
                         NRow.SectionDescription = "Hydro";
                         dataTable2.Rows.Add(NRow);
@@ -5585,6 +5588,10 @@ namespace DyeHouse
                         NRow = dataTable2.NewDataTable2Row();
                         NRow.Pk = 1;
                         NRow.Description = Meas.TLQADPF_Description;
+                        if(Meas.TLQAPF_Operator_Ins)
+                        {
+                            NRow.Description += " ****";
+                        }
                         NRow.Standard = context.TLDYE_DyeingStandards.Where(x => x.DyeStan_QAProccessField_FK == Meas.TLQADPF_Pk && x.DyeStan_Quality_FK == DyeBatch.DYEB_Greige_FK).FirstOrDefault().DyeStan_Value.ToString();
                         NRow.Section = 2;
                         NRow.SectionDescription = "Drier";
@@ -5597,6 +5604,10 @@ namespace DyeHouse
                         NRow = dataTable2.NewDataTable2Row();
                         NRow.Pk = 1;
                         NRow.Description = Meas.TLQADPF_Description;
+                        if (Meas.TLQAPF_Operator_Ins)
+                        {
+                            NRow.Description += " ****";
+                        }
                         NRow.Standard = context.TLDYE_DyeingStandards.Where(x => x.DyeStan_QAProccessField_FK == Meas.TLQADPF_Pk && x.DyeStan_Quality_FK == DyeBatch.DYEB_Greige_FK).FirstOrDefault().DyeStan_Value.ToString();
                         NRow.Section = 3;
                         NRow.SectionDescription = "Compacter";

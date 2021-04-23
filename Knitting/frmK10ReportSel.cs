@@ -35,8 +35,6 @@ namespace Knitting
             repo = new KnitRepository();
 
             this.cmboProduct.CheckStateChanged      += new System.EventHandler(this.cmboGreigeProduct_CheckStateChanged);
-            this.cmboProductGroup.CheckStateChanged += new System.EventHandler(this.cmboProductGroup_CheckStateChanged);
-            this.cmboStockTake.CheckStateChanged    += new EventHandler(this.cmboStockTake_CheckStateChanged);
             this.cmboStore.CheckStateChanged        += new EventHandler(this.cmboStore_CheckStateChanged);
                   
       
@@ -79,54 +77,6 @@ namespace Knitting
                     var value = QueryParms.Greiges.Find(it => it.TLGreige_Id == item._Pk);
                     if (value != null)
                         QueryParms.Greiges.Remove(value);
-                }
-            }
-        }
-
-
-        //-------------------------------------------------------------------------------------
-        // this message handler gets called when the user checks/unchecks an item the combo box
-        //----------------------------------------------------------------------------------------
-        private void cmboProductGroup_CheckStateChanged(object sender, EventArgs e)
-        {
-
-            if (sender is Knitting.CheckComboBoxItem)
-            {
-                Knitting.CheckComboBoxItem item = (Knitting.CheckComboBoxItem)sender;
-                if (item.CheckState)
-                {
-                    QueryParms.ProductQualities.Add(repo.LoadGreigeQuality(item._Pk));
-                }
-                else
-                {
-                    var value = QueryParms.ProductQualities.Find(it => it.GQ_Pk == item._Pk);
-                    if (value != null)
-                        QueryParms.ProductQualities.Remove(value);
-
-                }
-            }
-        }
-
-        //-------------------------------------------------------------------------------------
-        // this message handler gets called when the user checks/unchecks an item the combo box
-        //----------------------------------------------------------------------------------------
-        private void cmboStockTake_CheckStateChanged(object sender, EventArgs e)
-        {
-
-            if (sender is Knitting.CheckComboBoxItem)
-            {
-                Knitting.CheckComboBoxItem item = (Knitting.CheckComboBoxItem)sender;
-                if (item.CheckState)
-                {
-                    QueryParms.StockTakeFreq.Add(repo.LoadStockTake(item._Pk));
-
-                }
-                else
-                {
-                    var value = QueryParms.StockTakeFreq.Find(it => it.STF_Pk == item._Pk);
-                    if (value != null)
-                        QueryParms.StockTakeFreq.Remove(value);
-
                 }
             }
         }
@@ -178,18 +128,14 @@ namespace Knitting
                     }
                 }
 
-                var StockTakeItems = context.TLADM_StockTakeFreq.OrderBy(x => x.STF_Description).ToList();
-                foreach (var Item in StockTakeItems)
-                {
-                    cmboStockTake.Items.Add(new Knitting.CheckComboBoxItem(Item.STF_Pk, Item.STF_Description, false));
-                }
-
-                var QualityGroups = context.TLADM_GreigeQuality.OrderBy(x => x.GQ_Description).ToList();
-                foreach (var Quality in QualityGroups)
-                {
-                    cmboProductGroup.Items.Add(new Knitting.CheckComboBoxItem(Quality.GQ_Pk, Quality.GQ_Description, false));
-                }
+                
             }
+
+            cbGradeA.Checked = true;
+            cbGradeB.Checked = false;
+            cbGradeC.Checked = false;
+            cbIncludeGradweAWithWarnings.Checked = false;
+            chkNonStandardGrades.Checked = false;
 
             MandSelected = core.PopulateArray(MandatoryFields.Length, false);
             formloaded = true;
@@ -257,7 +203,9 @@ namespace Knitting
                 QueryParms.BoxChecked[1] = (bool)cbGradeB.Checked;
                 QueryParms.BoxChecked[2] = (bool)cbGradeC.Checked;
                 QueryParms.BoxChecked[3] = (bool)cbIncludeGradweAWithWarnings.Checked;
-              
+
+                QueryParms.NonStandardGrades = (bool)chkNonStandardGrades.Checked;
+                
                 if (!rbBIFSummarised.Checked)
                 {
                     frmKnitViewRep vRep = new frmKnitViewRep(24, QueryParms, YarnOpts);
@@ -288,15 +236,11 @@ namespace Knitting
 
                 MandSelected = core.PopulateArray(MandatoryFields.Length, false);
                 
-                cmboStockTake.Items.Clear();
-                cmboProductGroup.Items.Clear();
                 cmboProduct.Items.Clear();
                 cmboStore.Items.Clear();
                 chkBoughtInFabric.Checked = false;
                 rbBIFSummarised.Checked = true;
-
-            
-
+                
                 Form_Load(this, null);
                 
             }

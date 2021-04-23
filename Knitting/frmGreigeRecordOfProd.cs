@@ -27,7 +27,7 @@ namespace Knitting
         decimal BalanceOutstanding;
         decimal BatchBalanceCaptured;
         bool formloaded;
-
+        bool MaintenanceTasks; 
         Util core;
 
         public frmGreigeRecordOfProd()
@@ -91,6 +91,7 @@ namespace Knitting
             txtNoOfPieces.Text = "0";
             txtDskWeight.Text = "0.0";
 
+            MaintenanceTasks = false;
 
             _LastNumber = 0;
 
@@ -176,6 +177,8 @@ namespace Knitting
             TLADM_Yarn YarnType = null;
             string MergeDetails = string.Empty;
             Decimal DskWght = 0.0M;
+            Decimal MaintenanceValue = 0.00M;
+
             IList<TLKNI_YarnAllocTransctions> PalletTrans = null; 
 
             if (oBtn != null && formloaded)
@@ -281,6 +284,7 @@ namespace Knitting
 
                                 griegP.GreigeP_weight = (decimal)row.Cells[3].Value;
                                 griegP.GreigeP_weightAvail = (decimal)row.Cells[3].Value;
+                               
                                 if (row.Cells[4].Value != null)
                                     griegP.GreigeP_Shift_FK = (int)row.Cells[4].Value;
                                 if (row.Cells[5].Value != null)
@@ -362,6 +366,50 @@ namespace Knitting
                                 MC.TLMDD_LastNumber = _LastNumber;
                                 txtPieceNo.Text = _LastNumber.ToString(); 
                             }
+
+                            if (MaintenanceTasks)
+                            {
+                                var MainTasks = context.TLADM_MachineMaintenance.Where(x => x.mman_Machine_Fk == MachDet.MD_Pk && !x.mman_Reset).ToList();
+                                foreach (var MainTask in MainTasks)
+                                {
+                                    if (MainTask.mman_Interval_Between_Tasks != 0)
+                                    {
+                                        MainTask.mman_Interval_CurrentValue += (int)BatchBalanceCaptured;
+                                        if(MainTask.mman_Interval_CurrentValue > MainTask.mman_Interval_Between_Tasks)
+                                        {
+                                            var Msg = "Mainteance needs to be performed on " + MachDet.MD_Description + Environment.NewLine;
+
+                                            var MainDet = (from T1 in context.TLADM_MachineMaintenance
+                                                           join T2 in context.TLADM_MachineMaintenanceTasks
+                                                           on T1.mman_MaintenanceTask_FK equals T2.TLMtask_Pk
+                                                           where T2.TLMtask_Pk == MainTask.mman_MaintenanceTask_FK
+                                                           select T2).FirstOrDefault().TLMtask_Description;
+
+                                            Msg += "Maintenance Detail : " + MainDet;
+                                            MessageBox.Show(Msg);
+                                        }
+                                    }
+
+                                    if (MainTask.mman_Volume_Between_Tasks != 0)
+                                    {
+                                        MainTask.mman_Volume_CurrentValue += (int)BatchBalanceCaptured;
+                                        if (MainTask.mman_Volume_CurrentValue > MainTask.mman_Volume_Between_Tasks)
+                                        {
+                                            var Msg = "Mainteance needs to be performed on " + MachDet.MD_Description + Environment.NewLine;
+
+                                            var MainDet = (from T1 in context.TLADM_MachineMaintenance
+                                                           join T2 in context.TLADM_MachineMaintenanceTasks
+                                                           on T1.mman_MaintenanceTask_FK equals T2.TLMtask_Pk
+                                                           where T2.TLMtask_Pk == MainTask.mman_MaintenanceTask_FK
+                                                           select T2).FirstOrDefault().TLMtask_Description;
+
+                                            Msg += "Maintenance Detail " + MainDet;
+                                            MessageBox.Show(Msg);
+                                        }
+                                    }
+                                }
+                               
+                            }
                         }
 
                         try
@@ -398,6 +446,15 @@ namespace Knitting
                         var KMachine = context.TLADM_MachineDefinitions.Find(KO.KnitO_Machine_FK);
                         if (KMachine != null)
                         {
+                            if(context.TLADM_MachineMaintenance.Where(x=>x.mman_Machine_Fk== KMachine.MD_Pk).Count() == 0 )
+                            {
+                                MessageBox.Show("There are no maintenace tasks set for this Machine", KMachine.MD_Description, MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                            }
+                            else
+                            {
+                                MaintenanceTasks = true;
+                            }
                             var LstN = context.TLKNI_MachineLastNumber.Where(x => x.TLMDD_MachineCode == KMachine.MD_MachineCode).FirstOrDefault();
                             if (LstN != null)
                                 txtPieceNo.Text = LstN.TLMDD_LastNumber.ToString();

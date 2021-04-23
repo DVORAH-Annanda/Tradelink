@@ -46,5 +46,6 @@ namespace Utilities
         public Nullable<System.DateTime> DYEB_OnHold_Date { get; set; }
         public string DYEB_OnHold_Reason { get; set; }
         public bool DYEB_QAInspected { get; set; }
+        public bool DYEB_Stage4 { get; set; }
     }
 }

@@ -773,6 +773,7 @@
           <Property Name="TLQAPF_Decimal" Type="bit" Nullable="false" />
           <Property Name="TLQAPF_ColumnNo" Type="int" Nullable="false" />
           <Property Name="TLQAPF_Padding" Type="bit" Nullable="false" />
+          <Property Name="TLQAPF_Operator_Ins" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="TLADM_QualityDefinition">
           <Key>
@@ -1914,6 +1915,7 @@
           <Property Name="DYEB_Stage1" Type="bit" Nullable="false" />
           <Property Name="DYEB_Stage2" Type="bit" Nullable="false" />
           <Property Name="DYEB_Stage3" Type="bit" Nullable="false" />
+          <Property Name="DYEB_Stage4" Type="bit" Nullable="false" />
           <Property Name="DYEB_TransactionType_FK" Type="int" Nullable="false" />
           <Property Name="DYEB_Reprocess" Type="bit" Nullable="false" />
           <Property Name="DYEB_OutProcess" Type="bit" Nullable="false" />
@@ -6125,6 +6127,7 @@
           <Property Name="DYEB_OnHold_Date" Type="DateTime" Precision="0" />
           <Property Name="DYEB_OnHold_Reason" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="DYEB_QAInspected" Type="Boolean" Nullable="false" />
+          <Property Name="DYEB_Stage4" Type="Boolean" Nullable="false" />
         </EntityType>
         <ComplexType Name="CottonAdjustments_Result">
           <Property Type="Int32" Name="cotrx_Return_No" Nullable="false" />
@@ -6519,6 +6522,7 @@
           <Property Name="TLQAPF_Decimal" Type="Boolean" Nullable="false" />
           <Property Name="TLQAPF_ColumnNo" Type="Int32" Nullable="false" />
           <Property Name="TLQAPF_Padding" Type="Boolean" Nullable="false" />
+          <Property Name="TLQAPF_Operator_Ins" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="TLDYE_DyeBatchDetails">
           <Key>
@@ -9159,6 +9163,7 @@
           <EntitySetMapping Name="TLDYE_DyeBatch">
             <EntityTypeMapping TypeName="TTI2Model.TLDYE_DyeBatch">
               <MappingFragment StoreEntitySet="TLDYE_DyeBatch">
+                <ScalarProperty Name="DYEB_Stage4" ColumnName="DYEB_Stage4" />
                 <ScalarProperty Name="DYEB_QAInspected" ColumnName="DYEB_QAInspected" />
                 <ScalarProperty Name="DYEB_OnHold_Reason" ColumnName="DYEB_OnHold_Reason" />
                 <ScalarProperty Name="DYEB_OnHold_Date" ColumnName="DYEB_OnHold_Date" />
@@ -9586,6 +9591,7 @@
           <EntitySetMapping Name="TLADM_QADyeProcessFields">
             <EntityTypeMapping TypeName="TTI2Model.TLADM_QADyeProcessFields">
               <MappingFragment StoreEntitySet="TLADM_QADyeProcessFields">
+                <ScalarProperty Name="TLQAPF_Operator_Ins" ColumnName="TLQAPF_Operator_Ins" />
                 <ScalarProperty Name="TLQAPF_Padding" ColumnName="TLQAPF_Padding" />
                 <ScalarProperty Name="TLQAPF_ColumnNo" ColumnName="TLQAPF_ColumnNo" />
                 <ScalarProperty Name="TLQAPF_Decimal" ColumnName="TLQAPF_Decimal" />

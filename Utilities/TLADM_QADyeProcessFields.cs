@@ -24,5 +24,6 @@ namespace Utilities
         public bool TLQAPF_Decimal { get; set; }
         public int TLQAPF_ColumnNo { get; set; }
         public bool TLQAPF_Padding { get; set; }
+        public bool TLQAPF_Operator_Ins { get; set; }
     }
 }

@@ -2772,39 +2772,11 @@ namespace Knitting
 
                 using (var context = new TTI2Entities())
                 {
-                    
                     var GProduction = _Repo.SOHGreigeProduction(_QueryParms);
                     foreach (var row in GProduction)
                     {   //-----------------------------------------------------------------
                         //
                         //--------------------------------------------------------------
-                        if (_QueryParms.StockTakeFreq.Count > 0)
-                        {
-                            var Greige = context.TLADM_Griege.Find(row.GreigeP_Greige_Fk);
-                            if (Greige != null)
-                            {
-                                var value = _QueryParms.StockTakeFreq.Find(x=>x.STF_Pk == Greige.TLGreige_StockTakeFreq_FK);
-                                if (value == null)
-                                    continue;
-                            }
-                        }
-                        //-------------------------------------------------------------------------
-                        if (_QueryParms.ProductQualities.Count > 0)
-                        {
-                            var Greige = context.TLADM_Griege.Find(row.GreigeP_Greige_Fk);
-                            if (Greige != null)
-                            {
-                                var GreigeQual = context.TLADM_GreigeQuality.Find(Greige.TLGreige_Quality_FK);
-                                if (GreigeQual != null)
-                                {
-
-                                    var value = _QueryParms.ProductQualities.Find(s => s.GQ_Pk == GreigeQual.GQ_Pk);
-                                    if (value == null)
-                                        continue;
-                                }
-                            }
-                        }
-                        //-------------------------------------------------------------
                         DataSet25.DataTable1Row nr = datatable1.NewDataTable1Row();
                         var xGreige = context.TLADM_Griege.Find(row.GreigeP_Greige_Fk);
                         if (xGreige != null)
@@ -3224,6 +3196,24 @@ namespace Knitting
                 _Repo = new KnitRepository();
                 Util core = new Util();
 
+                string[][] ColumnNames = null;
+
+                if (!_QueryParms.NonStandardGrades)
+                {
+                    ColumnNames = new string[][]
+                    {   
+                      new string[] {"Text12", "Qualified"}
+                        
+                    };
+                }
+                else
+                {
+                    ColumnNames = new string[][]
+                   {
+                      new string[] {"Text12", "Non Standard"}
+
+                   };
+                }
                 var GreigeSOHGroup = _Repo.SOHGreigeProduction(_QueryParms).GroupBy(x => x.GreigeP_Greige_Fk).ToList();
 
                 using (var context = new TTI2Entities())
@@ -3251,12 +3241,19 @@ namespace Knitting
                         nr.Pending_Ins = Group.Where(x => !x.GreigeP_Inspected).Sum(x => (decimal?)x.GreigeP_weight) ?? 0.00M;
 
                         nr.Available_ToBatch = nr.Grade_A = nr.Grade_B = nr.Grade_C = nr.Qualified = 0.0M;
-                      
-                        nr.Grade_A = Group.Where(x => x.GreigeP_Grade.Trim() == "A" && !x.GreigeP_WarningMessage).Sum(x => x.GreigeP_weightAvail);
-                        nr.Grade_B = Group.Where(x => x.GreigeP_Grade.Trim() == "B").Sum(x => x.GreigeP_weightAvail);
-                        nr.Grade_C = Group.Where(x => x.GreigeP_Grade.Trim() == "C").Sum(x => x.GreigeP_weightAvail);
-                        nr.Qualified = Group.Where(x => x.GreigeP_Grade.Trim() == "A" && x.GreigeP_WarningMessage).Sum(x => x.GreigeP_weightAvail);
-                                               
+
+                        if (!_QueryParms.NonStandardGrades)
+                        {
+                            nr.Grade_A = Group.Where(x => x.GreigeP_Grade.Trim() == "A" && !x.GreigeP_WarningMessage).Sum(x => x.GreigeP_weightAvail);
+                            nr.Grade_B = Group.Where(x => x.GreigeP_Grade.Trim() == "B").Sum(x => x.GreigeP_weightAvail);
+                            nr.Grade_C = Group.Where(x => x.GreigeP_Grade.Trim() == "C").Sum(x => x.GreigeP_weightAvail);
+                            nr.Qualified = Group.Where(x => x.GreigeP_Grade.Trim() == "A" && x.GreigeP_WarningMessage).Sum(x => x.GreigeP_weightAvail);
+                        }
+                        else
+                        {
+                            nr.Qualified = Group.Sum(x => x.GreigeP_weightAvail);
+                        }
+
                         nr.Available_ToBatch = nr.Grade_A + nr.Grade_B + nr.Grade_C + nr.Qualified;
                         
                         nr.DO_LT8 = 0.00M;
@@ -3314,6 +3311,22 @@ namespace Knitting
 
                 GreigeSOHSummary SOHSummary = new GreigeSOHSummary();
                 SOHSummary.SetDataSource(ds);
+                IEnumerator ie = SOHSummary.Section2.ReportObjects.GetEnumerator();
+                while (ie.MoveNext())
+                {
+                    if (ie.Current != null && ie.Current.GetType().ToString().Equals("CrystalDecisions.CrystalReports.Engine.TextObject"))
+                    {
+                        CrystalDecisions.CrystalReports.Engine.TextObject to = (CrystalDecisions.CrystalReports.Engine.TextObject)ie.Current;
+
+                        var result = (from u in ColumnNames
+                                      where u[0] == to.Name
+                                      select u).FirstOrDefault();
+
+                        if (result != null)
+                            to.Text = result[1];
+
+                    }
+                }
                 crystalReportViewer1.ReportSource = SOHSummary;
             }
             else if(_RepNo == 31)

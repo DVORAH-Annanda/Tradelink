@@ -324,38 +324,26 @@ namespace DyeHouse
             // IList<TLDYE_DyeBatchDetails> dbDetails = null;
             if (oRad != null && formloaded && oRad.Checked)
             {
-                
-                 using (var context = new TTI2Entities())
-                 {
+                if (QueryParms.Qualities.Count != 0)
+                {
+                    using (var context = new TTI2Entities())
+                    {
                         dt.Rows.Clear();
 
-                        /*var dbDetails = (from GP in context.TLKNI_GreigeProduction
-                                         join DBD in context.TLDYE_DyeBatchDetails
-                                         on GP.GreigeP_Pk equals DBD.DYEBD_GreigeProduction_FK
-                                         join ADMGriege in context.TLADM_Griege
-                                         on GP.GreigeP_Greige_Fk equals ADMGriege.TLGreige_Id
-                                         where !GP.GreigeP_BoughtIn && DBD.DYEBO_QAApproved
-                                         && !DBD.DYEBO_Sold
-                                         && !DBD.DYEBO_CutSheet
-                                         && !DBD.DYEBO_WriteOff
-                                         && DBD.DYEBD_QualityKey == GreigeSelected.TLGreige_Id
-                                         orderby GP.GreigeP_PieceNo
-                                         select new { DBD, GP, ADMGriege }).ToList(); */
-
-                        var dbDetails = repo.SelectForFabricSales(QueryParms); 
+                        var dbDetails = repo.SelectForFabricSales(QueryParms);
 
                         if (dbDetails.Count() == 0)
                         {
                             using (DialogCenteringService centeringService = new DialogCenteringService(this)) // center message box
                             {
                                 MessageBox.Show("There are no records found pertaining to selection made", "No Records Found", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                                if(rbFabricStore.Checked)
+                                if (rbFabricStore.Checked)
                                 {
                                     formloaded = false;
                                     rbFabricStore.Checked = false;
                                     formloaded = true;
                                 }
-                                else if(rbRejectStore.Checked)
+                                else if (rbRejectStore.Checked)
                                 {
                                     formloaded = false;
                                     rbRejectStore.Checked = false;
@@ -365,7 +353,7 @@ namespace DyeHouse
                             }
                         }
 
-                        
+
                         foreach (var row in dbDetails)
                         {
                             DataRow NewRow = dt.NewRow();
@@ -381,33 +369,27 @@ namespace DyeHouse
                             NewRow[6] = row.DYEBO_Nett;
                             NewRow[7] = row.DYEBO_DiskWeight;
                             NewRow[8] = 0;
-                            NewRow[9] = 0; 
+                            NewRow[9] = 0;
                             NewRow[10] = 0;
                             dt.Rows.Add(NewRow);
-                         
-                            /*
-                            var index = dataGridView1.Rows.Add();
-                            dataGridView1.Rows[index].Cells[0].Value = row.DBD.DYEBD_Pk;
-                            dataGridView1.Rows[index].Cells[1].Value = row.GP.GreigeP_PieceNo;
-                            dataGridView1.Rows[index].Cells[2].Value = row.ADMGriege.TLGreige_Description;
-                            var BD = context.TLDYE_DyeBatch.Find(row.DBD.DYEBD_DyeBatch_FK);
-                            if (BD != null)
-                                dataGridView1.Rows[index].Cells[3].Value = context.TLADM_Colours.Find(BD.DYEB_Colour_FK).Col_Display;
-                            dataGridView1.Rows[index].Cells[4].Value = row.DBD.DYEBD_GreigeProduction_Weight;
-                            dataGridView1.Rows[index].Cells[5].Value = row.DBD.DYEBO_Nett;
-                            dataGridView1.Rows[index].Cells[6].Value = row.DBD.DYEBO_DiskWeight;
-
-                            dataGridView1.Rows[index].Cells[7].Value = 0;
-                            dataGridView1.Rows[index].Cells[8].Value = 0;
-                            dataGridView1.Rows[index].Cells[9].Value = 0;
-
-                            dataGridView1.Rows[index].Cells[10].Value = false;
-                            dataGridView1.Rows[index].Cells[11].Value = row.DBD.DYEBD_DyeBatch_FK;
-                            */
 
                         }
-                        
-                 }
+
+                    }
+                }
+                else
+                {
+                    using (DialogCenteringService centeringService = new DialogCenteringService(this)) // center message box
+                    {
+                        MessageBox.Show("Please select a Quality to process", "Multiple Selections permitted");
+                    }
+                }
+            }
+            else
+            {
+                formloaded = false;
+                rbFabricStore.Checked = false;
+                formloaded = true;
             }
         }
 
@@ -416,59 +398,39 @@ namespace DyeHouse
             RadioButton oRad = sender as RadioButton;
             if (oRad != null && formloaded && oRad.Checked)
             {
-                /*
-                var GreigeSelected = (TLADM_Griege)cmboGreige.SelectedItem;
-                if (GreigeSelected != null)
+                if (QueryParms.Qualities.Count != 0)
                 {
-
+                    var dbDetails = repo.SelectForRejectFabricSales(QueryParms);
+                    if (dbDetails.Count() == 0)
+                    {
+                        using (DialogCenteringService centeringService = new DialogCenteringService(this)) // center message box
+                        {
+                            MessageBox.Show("There are no records found pertaining to selection made", "No Records Found", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            return;
+                        }
+                    }
                     using (var context = new TTI2Entities())
                     {
                         dt.Rows.Clear();
 
-                        var dbDetails = (from GP in context.TLKNI_GreigeProduction
-                                         join DBD in context.TLDYE_DyeBatchDetails
-                                         on GP.GreigeP_Pk equals DBD.DYEBD_GreigeProduction_FK
-                                         join ADMGriege in context.TLADM_Griege
-                                         on GP.GreigeP_Greige_Fk equals ADMGriege.TLGreige_Id
-                                         where !GP.GreigeP_BoughtIn &&
-                                               !DBD.DYEBO_QAApproved &&
-                                               DBD.DYEBO_Rejected &&
-                                               !DBD.DYEBO_WriteOff &&
-                                               !DBD.DYEBO_Sold &&
-                                               !DBD.DYEBO_CutSheet &&
-                                               DBD.DYEBD_QualityKey == GreigeSelected.TLGreige_Id
-                                         orderby GP.GreigeP_PieceNo
-                                         select new { DBD, GP, ADMGriege }).ToList();
-
-
-                        if (dbDetails.Count == 0)
-                        {
-                            using (DialogCenteringService centeringService = new DialogCenteringService(this)) // center message box
-                            {
-                                MessageBox.Show("There are no records found pertaining to selection made", "No Records Found", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                                return;
-                            }
-                        }
-
                         foreach (var row in dbDetails)
                         {
-                            var index = dataGridView1.Rows.Add();
-                            dataGridView1.Rows[index].Cells[0].Value = row.DBD.DYEBD_Pk;
-                            dataGridView1.Rows[index].Cells[1].Value = row.GP.GreigeP_PieceNo;
-                            dataGridView1.Rows[index].Cells[2].Value = row.ADMGriege.TLGreige_Description;
-                            var BD = context.TLDYE_DyeBatch.Find(row.DBD.DYEBD_DyeBatch_FK);
+                            DataRow NewRow = dt.NewRow();
+                            NewRow[0] = row.DYEBD_Pk;
+                            NewRow[1] = false;
+                            NewRow[2] = context.TLKNI_GreigeProduction.Find(row.DYEBD_GreigeProduction_FK).GreigeP_PieceNo;
+                            NewRow[3] = context.TLADM_Griege.Find(row.DYEBD_QualityKey).TLGreige_Description;
+                            var BD = context.TLDYE_DyeBatch.Find(row.DYEBD_DyeBatch_FK);
                             if (BD != null)
-                                dataGridView1.Rows[index].Cells[3].Value = context.TLADM_Colours.Find(BD.DYEB_Colour_FK).Col_Display;
-                            dataGridView1.Rows[index].Cells[4].Value = row.DBD.DYEBD_GreigeProduction_Weight;
-                            dataGridView1.Rows[index].Cells[5].Value = row.DBD.DYEBO_Nett;
-                            dataGridView1.Rows[index].Cells[6].Value = row.DBD.DYEBO_DiskWeight;
+                                NewRow[4] = context.TLADM_Colours.Find(BD.DYEB_Colour_FK).Col_Display;
 
-                            dataGridView1.Rows[index].Cells[7].Value = 0;
-                            dataGridView1.Rows[index].Cells[8].Value = 0;
-                            dataGridView1.Rows[index].Cells[9].Value = 0;
-
-                            dataGridView1.Rows[index].Cells[10].Value = false;
-                            dataGridView1.Rows[index].Cells[11].Value = row.DBD.DYEBD_DyeBatch_FK;
+                            NewRow[5] = context.TLKNI_GreigeProduction.Find(row.DYEBD_GreigeProduction_FK).GreigeP_weight;
+                            NewRow[6] = row.DYEBO_Nett;
+                            NewRow[7] = row.DYEBO_DiskWeight;
+                            NewRow[8] = 0;
+                            NewRow[9] = 0;
+                            NewRow[10] = 0;
+                            dt.Rows.Add(NewRow);
                         }
                     }
                 }
@@ -476,11 +438,15 @@ namespace DyeHouse
                 {
                     using (DialogCenteringService centeringService = new DialogCenteringService(this)) // center message box
                     {
-                        MessageBox.Show("Please select a quality from the drop down box");
+                        MessageBox.Show("Please select a Quality to process", "Multiple Selections permitted");
                     }
                 }
-                */
-
+            }
+            else
+            {
+                formloaded = false;
+                rbRejectStore.Checked = false;
+                formloaded = true;
             }
         }
         private void btnSave_Click(object sender, EventArgs e)
@@ -491,7 +457,6 @@ namespace DyeHouse
             TLADM_TranactionType TranType = null;
             Decimal BatchWeight = 0.00M;
            
-
             if (oBtn != null && formloaded)
             {
                 var errorM = core.returnMessage(MandSelected, true, MandatoryFields);

@@ -300,11 +300,33 @@ namespace Knitting
 
         public IQueryable<TLKNI_GreigeProduction> SOHGreigeProduction(KnitQueryParameters parameters)
         {
-            IQueryable<TLKNI_GreigeProduction> GreigeProduction;
-            
+            IQueryable<TLKNI_GreigeProduction> GreigeProduction = null;
+
             if (!parameters.BoughtInFabric)
             {
-                GreigeProduction = _context.TLKNI_GreigeProduction.Where(x => x.GreigeP_Captured && !x.GreigeP_Dye && x.GreigeP_weightAvail > 0 && !x.GreigeP_BoughtIn && x.GreigeP_Grade != null).AsQueryable();
+                if (!parameters.NonStandardGrades)
+                {
+                    GreigeProduction = _context.TLKNI_GreigeProduction
+                                        .Where(x => x.GreigeP_Captured &&
+                                                !x.GreigeP_Dye &&
+                                                x.GreigeP_weightAvail > 0 &&
+                                                !x.GreigeP_BoughtIn &&
+                                                (x.GreigeP_Grade.Trim() == "A" ||
+                                                x.GreigeP_Grade.Trim() == "B" ||
+                                                x.GreigeP_Grade.Trim() == "C")).AsQueryable();
+
+                }
+                else
+                {
+                    GreigeProduction = _context.TLKNI_GreigeProduction
+                                       .Where(x => x.GreigeP_Captured &&
+                                               !x.GreigeP_Dye &&
+                                               x.GreigeP_weightAvail > 0 &&
+                                               !x.GreigeP_BoughtIn &&
+                                               (x.GreigeP_Grade.Trim() != "A" &&
+                                               x.GreigeP_Grade.Trim() != "B" &&
+                                               x.GreigeP_Grade.Trim() != "C")).AsQueryable();
+                }
                 if (!parameters.BoxChecked[0])
                 {
                     var Items = GreigeProduction.Where(x => x.GreigeP_Grade == "A" && !x.GreigeP_WarningMessage).AsQueryable();
@@ -332,7 +354,7 @@ namespace Knitting
             }
             
             if (parameters.Greiges.Count > 0)
-           {
+            {
                var GreigePredicate = PredicateBuilder.New<TLKNI_GreigeProduction>();
                foreach (var Greige in parameters.Greiges)
                {
@@ -341,10 +363,10 @@ namespace Knitting
                }
 
                GreigeProduction = GreigeProduction.AsExpandable().Where(GreigePredicate);
-           }
+            }
 
-           if (parameters.WhseStores.Count > 0)
-           {
+            if (parameters.WhseStores.Count > 0)
+            {
                var WhsePredicate = PredicateBuilder.New<TLKNI_GreigeProduction>();
                foreach (var whse in parameters.WhseStores)
                {
@@ -353,10 +375,9 @@ namespace Knitting
                }
 
                GreigeProduction = GreigeProduction.AsExpandable().Where(WhsePredicate);
-           }
-
-       
-           return GreigeProduction;
+            }
+            
+            return GreigeProduction;
        }
 
        public IQueryable<TLKNI_GreigeProduction> QAGreigeProduction(KnitQueryParameters parameters)
@@ -516,7 +537,7 @@ namespace Knitting
         public bool GradeAwithWarnings;
         public int GradeSelectionTotal;
         public bool DiskVarianceReport;
-
+        public bool NonStandardGrades;
         public decimal UpperDskVariance;
         public decimal LowerDiskVariance;
         public KnitQueryParameters()
@@ -540,6 +561,8 @@ namespace Knitting
             GradeSelectionTotal = 0;
 
             BoxChecked = new bool[4];
+
+            NonStandardGrades = false;
 
             UpperDskVariance = 0.00M;
             LowerDiskVariance = 0.00M;

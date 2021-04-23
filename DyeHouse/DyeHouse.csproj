@@ -747,6 +747,12 @@
     <Compile Include="frmFinalApproval.Designer.cs">
       <DependentUpon>frmFinalApproval.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmHydroResults.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmHydroResults.Designer.cs">
+      <DependentUpon>frmHydroResults.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmInsAfterDrying.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -1306,6 +1312,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmFinalApproval.resx">
       <DependentUpon>frmFinalApproval.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmHydroResults.resx">
+      <DependentUpon>frmHydroResults.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmInsAfterDrying.resx">
       <DependentUpon>frmInsAfterDrying.cs</DependentUpon>
