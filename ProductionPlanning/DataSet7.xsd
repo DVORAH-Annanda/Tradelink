@@ -26,6 +26,9 @@
               <xs:element name="DevDyeing" msprop:Generator_ColumnVarNameInTable="columnDevDyeing" msprop:Generator_ColumnPropNameInRow="DevDyeing" msprop:Generator_ColumnPropNameInTable="DevDyeingColumn" msprop:Generator_UserColumnName="DevDyeing" type="xs:decimal" minOccurs="0" />
               <xs:element name="TransDate" msprop:Generator_ColumnVarNameInTable="columnTransDate" msprop:Generator_ColumnPropNameInRow="TransDate" msprop:Generator_ColumnPropNameInTable="TransDateColumn" msprop:Generator_UserColumnName="TransDate" type="xs:dateTime" minOccurs="0" />
               <xs:element name="Pk" msprop:Generator_ColumnVarNameInTable="columnPk" msprop:Generator_ColumnPropNameInRow="Pk" msprop:Generator_ColumnPropNameInTable="PkColumn" msprop:Generator_UserColumnName="Pk" type="xs:int" minOccurs="0" />
+              <xs:element name="StdFinDsk" msprop:Generator_ColumnVarNameInTable="columnStdFinDsk" msprop:Generator_ColumnPropNameInRow="StdFinDsk" msprop:Generator_ColumnPropNameInTable="StdFinDskColumn" msprop:Generator_UserColumnName="StdFinDsk" type="xs:decimal" minOccurs="0" />
+              <xs:element name="Colour" msprop:Generator_ColumnVarNameInTable="columnColour" msprop:Generator_ColumnPropNameInRow="Colour" msprop:Generator_ColumnPropNameInTable="ColourColumn" msprop:Generator_UserColumnName="Colour" type="xs:string" minOccurs="0" />
+              <xs:element name="ErrorMessage" msprop:Generator_ColumnVarNameInTable="columnErrorMessage" msprop:Generator_ColumnPropNameInRow="ErrorMessage" msprop:Generator_ColumnPropNameInTable="ErrorMessageColumn" msprop:Generator_UserColumnName="ErrorMessage" type="xs:string" minOccurs="0" />
             </xs:sequence>
           </xs:complexType>
         </xs:element>

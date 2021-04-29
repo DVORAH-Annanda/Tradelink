@@ -52,13 +52,14 @@ namespace DyeHouse
             this.cmboDyeBatches.Name = "cmboDyeBatches";
             this.cmboDyeBatches.Size = new System.Drawing.Size(172, 21);
             this.cmboDyeBatches.TabIndex = 1;
+            this.cmboDyeBatches.SelectedIndexChanged += new System.EventHandler(this.cmboDyeBatches_SelectedIndexChanged);
             // 
             // dataGridView1
             // 
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(215, 184);
+            this.dataGridView1.Location = new System.Drawing.Point(139, 170);
             this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(240, 177);
+            this.dataGridView1.Size = new System.Drawing.Size(371, 177);
             this.dataGridView1.TabIndex = 2;
             // 
             // btnSave
@@ -69,6 +70,7 @@ namespace DyeHouse
             this.btnSave.TabIndex = 3;
             this.btnSave.Text = "Save";
             this.btnSave.UseVisualStyleBackColor = true;
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
             // frmHydroResults
             // 
@@ -81,6 +83,7 @@ namespace DyeHouse
             this.Controls.Add(this.label1);
             this.Name = "frmHydroResults";
             this.Text = "Hydro Results";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmHydroResults_FormClosing);
             this.Load += new System.EventHandler(this.frmHydroResults_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);

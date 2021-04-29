@@ -343,6 +343,12 @@ namespace ProductionPlanning {
             
             private global::System.Data.DataColumn columnPk;
             
+            private global::System.Data.DataColumn columnStdFinDsk;
+            
+            private global::System.Data.DataColumn columnColour;
+            
+            private global::System.Data.DataColumn columnErrorMessage;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public DataTable1DataTable() {
@@ -466,6 +472,30 @@ namespace ProductionPlanning {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn StdFinDskColumn {
+                get {
+                    return this.columnStdFinDsk;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn ColourColumn {
+                get {
+                    return this.columnColour;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn ErrorMessageColumn {
+                get {
+                    return this.columnErrorMessage;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -501,7 +531,7 @@ namespace ProductionPlanning {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public DataTable1Row AddDataTable1Row(string PieceNo, string Quality, decimal StdDsk, decimal KnittingDsk, decimal KnittingMeters, decimal DyeDsk, decimal DyeMeters, decimal DevKnitting, decimal DevDyeing, System.DateTime TransDate, DataTable2Row parentDataTable2RowByDataTable1_DataTable2) {
+            public DataTable1Row AddDataTable1Row(string PieceNo, string Quality, decimal StdDsk, decimal KnittingDsk, decimal KnittingMeters, decimal DyeDsk, decimal DyeMeters, decimal DevKnitting, decimal DevDyeing, System.DateTime TransDate, DataTable2Row parentDataTable2RowByDataTable1_DataTable2, decimal StdFinDsk, string Colour, string ErrorMessage) {
                 DataTable1Row rowDataTable1Row = ((DataTable1Row)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         PieceNo,
@@ -514,7 +544,10 @@ namespace ProductionPlanning {
                         DevKnitting,
                         DevDyeing,
                         TransDate,
-                        null};
+                        null,
+                        StdFinDsk,
+                        Colour,
+                        ErrorMessage};
                 if ((parentDataTable2RowByDataTable1_DataTable2 != null)) {
                     columnValuesArray[10] = parentDataTable2RowByDataTable1_DataTable2[0];
                 }
@@ -551,6 +584,9 @@ namespace ProductionPlanning {
                 this.columnDevDyeing = base.Columns["DevDyeing"];
                 this.columnTransDate = base.Columns["TransDate"];
                 this.columnPk = base.Columns["Pk"];
+                this.columnStdFinDsk = base.Columns["StdFinDsk"];
+                this.columnColour = base.Columns["Colour"];
+                this.columnErrorMessage = base.Columns["ErrorMessage"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -578,6 +614,12 @@ namespace ProductionPlanning {
                 base.Columns.Add(this.columnTransDate);
                 this.columnPk = new global::System.Data.DataColumn("Pk", typeof(int), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnPk);
+                this.columnStdFinDsk = new global::System.Data.DataColumn("StdFinDsk", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnStdFinDsk);
+                this.columnColour = new global::System.Data.DataColumn("Colour", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnColour);
+                this.columnErrorMessage = new global::System.Data.DataColumn("ErrorMessage", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnErrorMessage);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1171,6 +1213,54 @@ namespace ProductionPlanning {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public decimal StdFinDsk {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableDataTable1.StdFinDskColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'StdFinDsk\' in table \'DataTable1\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDataTable1.StdFinDskColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public string Colour {
+                get {
+                    try {
+                        return ((string)(this[this.tableDataTable1.ColourColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Colour\' in table \'DataTable1\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDataTable1.ColourColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public string ErrorMessage {
+                get {
+                    try {
+                        return ((string)(this[this.tableDataTable1.ErrorMessageColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'ErrorMessage\' in table \'DataTable1\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDataTable1.ErrorMessageColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public DataTable2Row DataTable2Row {
                 get {
                     return ((DataTable2Row)(this.GetParentRow(this.Table.ParentRelations["DataTable1_DataTable2"])));
@@ -1310,6 +1400,42 @@ namespace ProductionPlanning {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public void SetPkNull() {
                 this[this.tableDataTable1.PkColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsStdFinDskNull() {
+                return this.IsNull(this.tableDataTable1.StdFinDskColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetStdFinDskNull() {
+                this[this.tableDataTable1.StdFinDskColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsColourNull() {
+                return this.IsNull(this.tableDataTable1.ColourColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetColourNull() {
+                this[this.tableDataTable1.ColourColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsErrorMessageNull() {
+                return this.IsNull(this.tableDataTable1.ErrorMessageColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetErrorMessageNull() {
+                this[this.tableDataTable1.ErrorMessageColumn] = global::System.Convert.DBNull;
             }
         }
         

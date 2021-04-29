@@ -2265,7 +2265,7 @@ namespace DyeHouse
                                         tr.CustomerName = Customer.Cust_Description;
                                         tr.CustomerPhone = Customer.Cust_Telephone;
                                         tr.DeliveryNote = DyeTran.TLDYET_TransactionNumber;
-                                        tr.Notes = ""; //  _parms.Notes.ToString();
+                                        tr.Notes = _parms.Notes.ToString();
                                         tr.TransDate = DateTime.Now;
 
                                         datatable1.AddDataTable1Row(tr);
@@ -2488,7 +2488,7 @@ namespace DyeHouse
                                     tr.CustomerPhone = Customer.Cust_Telephone;
 
                                     tr.DeliveryNote = DyeTran.TLDYET_TransactionNumber;
-                                    tr.Notes = Customer.Cust_ContactPerson;
+                                    tr.Notes = Customer.Cust_ContactPerson.ToString();
                                     datatable1.AddDataTable1Row(tr);
 
                                     var DBDetails = context.TLDYE_DyeBatchDetails.Where(x => x.DYEBO_TransactionNo == DyeTran.TLDYET_TransactionNumber).ToList();
@@ -4318,7 +4318,7 @@ namespace DyeHouse
 
                 using (var context = new TTI2Entities())
                 {
-                    var QAProcessItems = context.TLADM_QADyeProcessFields.Where(x => x.TLQADPF_Process_FK == 4).ToList();
+                    var QAProcessItems = context.TLADM_QADyeProcessFields.Where(x => x.TLQADPF_Process_FK == 3).ToList();
                     foreach (var QAProcessItem in QAProcessItems)
                     {
                         foreach (var Column in ColumnNames)
@@ -4335,7 +4335,7 @@ namespace DyeHouse
                     nr.NCRPk = 1;
                     nr.NCRFromDate = _parms.FromDate;
                     nr.NCRToDate = _parms.ToDate;
-                    nr.NCReportTitle = "Report on results measurement after compacting from ";
+                    nr.NCReportTitle = "Fabric Stability after compacting from ";
                     nr.NCRSelection = string.Empty;
                     nr.NCRSorted = string.Empty;
                     dataTable1.AddDataTable1Row(nr);
@@ -5428,8 +5428,8 @@ namespace DyeHouse
                         xr.Pk = 1;
                         xr.Transaction_Date = Entry.TLDyeIns_TransactionDate;
 
-                        if (Dye_Pk != Entry.TLDyeIns_DyeBatch_Fk)
-                        {
+                       // /*if (Dye_Pk != Entry.TLDyeIns_DyeBatch_Fk)
+                       // {
                             DyeBatch = context.TLDYE_DyeBatch.Find(Entry.TLDyeIns_DyeBatch_Fk);
                             if (DyeBatch != null)
                             {
@@ -5458,9 +5458,10 @@ namespace DyeHouse
                                         KnittingMachine = string.Empty;
                                 }
                             }
-                        }
+                       // }
+                        
 
-                        xr.DyeBatch = DyeBatch.DYEB_BatchNo;
+                        xr.DyeBatch = DyeBatch.DYEB_BatchNo;//
                         xr.Quality = Quality;
                         xr.Colour = Colour;
                         xr.DyeMachine = DyeMachine;

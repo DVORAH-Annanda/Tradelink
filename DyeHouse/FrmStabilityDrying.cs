@@ -53,7 +53,7 @@ namespace DyeHouse
             if (StabAfterDrying)
                 this.Text = "Stability Check After Drying";
             else
-                this.Text = "Colour and stability check after compacting";
+                this.Text = "Fabric Stability check after compacting";
 
            _StabAfterDrying = StabAfterDrying;
             SetUp(true);
@@ -284,7 +284,7 @@ namespace DyeHouse
                 var GP = (TLKNI_GreigeProduction)oCmboPieceNumber.SelectedItem;
                 if (GP == null)
                 {
-                    MessageBox.Show("Please cselect a piece number from the drop down box");
+                    MessageBox.Show("Please select a piece number from the drop down box");
                     return;
                 }
 
@@ -292,11 +292,11 @@ namespace DyeHouse
                 {
                     if (_StabAfterDrying)
                     {
-                        trns = context.TLDYE_DyeTransactions.Where(x => x.TLDYET_Batch_FK == DB.DYEB_Pk && x.TLDYET_Stage == 4).FirstOrDefault(); 
+                        trns = context.TLDYE_DyeTransactions.Where(x => x.TLDYET_Batch_FK == DB.DYEB_Pk && x.TLDYET_Stage == 2).FirstOrDefault(); 
                     }
                     else
                     {
-                        trns = context.TLDYE_DyeTransactions.Where(x => x.TLDYET_Batch_FK == DB.DYEB_Pk && x.TLDYET_Stage == 5).FirstOrDefault(); 
+                        trns = context.TLDYE_DyeTransactions.Where(x => x.TLDYET_Batch_FK == DB.DYEB_Pk && x.TLDYET_Stage == 3).FirstOrDefault(); 
                     }
 
                     if (trns == null)
@@ -308,9 +308,9 @@ namespace DyeHouse
                         trns.TLDYET_SequenceNo = DB.DYEB_SequenceNo;
                         trns.TLDYET_Batch_FK = DB.DYEB_Pk;
                         if (_StabAfterDrying)
-                               trns.TLDYET_Stage = 4;
+                               trns.TLDYET_Stage = 2;
                         else
-                               trns.TLDYET_Stage = 5; 
+                               trns.TLDYET_Stage = 3; 
                     
                          if (rbPassYes.Checked)
                          { 

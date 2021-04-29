@@ -2072,6 +2072,7 @@
           <Property Name="TLDYET_WriteOff" Type="bit" />
           <Property Name="TLDYET_FabricSales" Type="bit" Nullable="false" />
           <Property Name="TLDYET_CustomerOrderNo" Type="varchar" MaxLength="50" />
+          <Property Name="TLDYET_MeasurementField_FK" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="TLDYE_NonCompliance">
           <Key>
@@ -5569,6 +5570,7 @@
           <Property Name="TLDYET_WriteOff" Type="Boolean" />
           <Property Name="TLDYET_FabricSales" Type="Boolean" Nullable="false" />
           <Property Name="TLDYET_CustomerOrderNo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="TLDYET_MeasurementField_FK" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="TLCMT_UnitProductionTargets">
           <Key>
@@ -8690,6 +8692,7 @@
           <EntitySetMapping Name="TLDYE_DyeTransactions">
             <EntityTypeMapping TypeName="TTI2Model.TLDYE_DyeTransactions">
               <MappingFragment StoreEntitySet="TLDYE_DyeTransactions">
+                <ScalarProperty Name="TLDYET_MeasurementField_FK" ColumnName="TLDYET_MeasurementField_FK" />
                 <ScalarProperty Name="TLDYET_CustomerOrderNo" ColumnName="TLDYET_CustomerOrderNo" />
                 <ScalarProperty Name="TLDYET_FabricSales" ColumnName="TLDYET_FabricSales" />
                 <ScalarProperty Name="TLDYET_WriteOff" ColumnName="TLDYET_WriteOff" />

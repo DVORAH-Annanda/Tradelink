@@ -108,7 +108,26 @@ namespace ProductionPlanning
              return GreigeItems;
          }
 
-         public IQueryable<TLADM_CustomerFile> PPSCustomerOrders()
+        // var DyeBatchDetail = context.TLDYE_DyeBatchDetails.Where(x => x.DYEBO_QAApproved && x.DYEBO_TransDate >= _ProdQParms.FromDate && x.DYEBO_TransDate <= _ProdQParms.ToDate && x.DYEBO_DiskWeight != 0).ToList();
+        public IQueryable<TLDYE_DyeBatchDetails> SelectDskInfo(ProdQueryParameters QueryParms)
+        {
+            var DyeBatchDet = _context.TLDYE_DyeBatchDetails.Where(x => x.DYEBO_QAApproved && x.DYEBO_TransDate >= QueryParms.FromDate && x.DYEBO_TransDate <= QueryParms.ToDate && x.DYEBO_DiskWeight != 0).AsQueryable();
+
+            if(QueryParms.Greiges.Count != 0)
+            {
+                var DyeBatchPredicate = PredicateBuilder.New<TLDYE_DyeBatchDetails>();
+                foreach (var Qual in QueryParms.Greiges)
+                {
+                    var temp = Qual;
+                    DyeBatchPredicate = DyeBatchPredicate.Or(s => s.DYEBD_QualityKey == temp.TLGreige_Id);
+                }
+
+                DyeBatchDet = DyeBatchDet.AsExpandable().Where(DyeBatchPredicate);
+            }
+
+            return DyeBatchDet;
+        }
+        public IQueryable<TLADM_CustomerFile> PPSCustomerOrders()
          {
              var Customers = (from CTS in _context.TLADM_CustomerFile
                              join PO in _context.TLCSV_PurchaseOrder on CTS.Cust_Pk equals PO.TLCSVPO_Customer_FK

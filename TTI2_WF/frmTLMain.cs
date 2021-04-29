@@ -10139,6 +10139,23 @@ namespace TTI2_WF
                 }
             }
         }
+
+        private void HydroMeasuresWidth_Click(object sender, EventArgs e)
+        {
+            ToolStripMenuItem oTi = sender as ToolStripMenuItem;
+            if (core.GetUserAuthorisation(ud, oTi.Name))
+            {
+                try
+                {
+                    DyeHouse.frmHydroResults HydroResults = new DyeHouse.frmHydroResults();
+                    HydroResults.ShowDialog(this);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+        }
     }
        
 }

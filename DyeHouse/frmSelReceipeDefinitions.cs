@@ -22,6 +22,13 @@ namespace DyeHouse
          
             repo = new DyeRepository();
 
+            //--------------------------------------------------------
+            // wire up the check state changed event
+            //--------------------------------------------------------------------------------------------------------
+            this.cmboColours.CheckStateChanged += new System.EventHandler(this.cmboColours_CheckStateChanged);
+            this.cmboQualities.CheckStateChanged += new System.EventHandler(this.cmboQualities_CheckStateChanged);
+            this.cmboReceipeDefintions.CheckStateChanged += new System.EventHandler(this.cmboReceipeDefintions_CheckStateChanged);
+
         }
 
         private void frmSelReceipeDefinitions_Load(object sender, EventArgs e)
@@ -49,12 +56,7 @@ namespace DyeHouse
                     cmboColours.Items.Add(new DyeHouse.CheckComboBoxItem(Record.Col_Id, Record.Col_Display, false));
                 }
 
-                //--------------------------------------------------------
-                // wire up the check state changed event
-                //--------------------------------------------------------------------------------------------------------
-                this.cmboColours.CheckStateChanged += new System.EventHandler(this.cmboColours_CheckStateChanged);
-                this.cmboQualities.CheckStateChanged += new System.EventHandler(this.cmboQualities_CheckStateChanged);
-                this.cmboReceipeDefintions.CheckStateChanged += new System.EventHandler(this.cmboReceipeDefintions_CheckStateChanged);
+               
                  
             }
             formloaded = true;

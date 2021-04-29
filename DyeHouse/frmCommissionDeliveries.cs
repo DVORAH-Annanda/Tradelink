@@ -303,6 +303,10 @@ namespace DyeHouse
                                 int w = Screen.PrimaryScreen.WorkingArea.Width;
                                 vRep.ClientSize = new Size(w, h);
                                 vRep.ShowDialog(this);
+                                if(vRep != null)
+                                {
+                                    vRep.Dispose();
+                                }
 
 
                                 vRep = new frmDyeViewReport(16, QueryParms, TransNumber);
@@ -310,7 +314,10 @@ namespace DyeHouse
                                 w = Screen.PrimaryScreen.WorkingArea.Width;
                                 vRep.ClientSize = new Size(w, h);
                                 vRep.ShowDialog(this);
-
+                                if(vRep != null)
+                                {
+                                    vRep.Dispose();
+                                }
                                 frmCommissionDeliveries_Load(this, null);
                             }
                             catch (Exception ex)
@@ -361,19 +368,30 @@ namespace DyeHouse
                         //============================================================
                       
                         QueryParms.FabricSales = true;
+                        StringBuilder sb = new StringBuilder();
+                        sb.Append(richTextBox1.Text);
+                        QueryParms.Notes = sb;
 
                         frmDyeViewReport vRep = new frmDyeViewReport(17, QueryParms);
                         int h = Screen.PrimaryScreen.WorkingArea.Height;
                         int w = Screen.PrimaryScreen.WorkingArea.Width;
                         vRep.ClientSize = new Size(w, h);
                         vRep.ShowDialog(this);
-
+                        if(vRep != null)
+                        {
+                            vRep.Dispose();
+                        }
+                        
                         vRep = new frmDyeViewReport(16, QueryParms);
                         h = Screen.PrimaryScreen.WorkingArea.Height;
                         w = Screen.PrimaryScreen.WorkingArea.Width;
                         vRep.ClientSize = new Size(w, h);
                         vRep.ShowDialog(this);
-
+                        if(vRep != null)
+                        {
+                            vRep.Dispose();
+                        }
+                        
                         frmCommissionDeliveries_Load(this, null);
                     }
                 }

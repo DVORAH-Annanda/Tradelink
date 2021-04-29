@@ -165,16 +165,28 @@ namespace DyeHouse
                 {
                     frmDyeViewReport vRep = new frmDyeViewReport(28, QueryParms);
                     vRep.ShowDialog(this);
+                    if(vRep != null)
+                    {
+                        vRep.Dispose();
+                    }
                 }
                 else if (_Stage == 4)       //Stage 4 Stability Check after Drying;
                 {
                     frmDyeViewReport vRep = new frmDyeViewReport(32, QueryParms);
                     vRep.ShowDialog(this);
+                    if (vRep != null)
+                    {
+                        vRep.Dispose();
+                    }
                 }
                 else                        //Stage 5 Results Check after Compacting;
                 {
                     frmDyeViewReport vRep = new frmDyeViewReport(33, QueryParms);
                     vRep.ShowDialog(this);
+                    if (vRep != null)
+                    {
+                        vRep.Dispose();
+                    }
 
                 }
 

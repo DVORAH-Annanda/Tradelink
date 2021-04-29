@@ -34,12 +34,14 @@ namespace ProductionPlanning
             this.dtpFromDate = new System.Windows.Forms.DateTimePicker();
             this.dtpToDate = new System.Windows.Forms.DateTimePicker();
             this.btnProcess = new System.Windows.Forms.Button();
+            this.cmboQuality = new ProductionPlanning.CheckComboBox();
+            this.label3 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(275, 98);
+            this.label1.Location = new System.Drawing.Point(261, 98);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(56, 13);
             this.label1.TabIndex = 0;
@@ -48,7 +50,7 @@ namespace ProductionPlanning
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(275, 162);
+            this.label2.Location = new System.Drawing.Point(261, 162);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(46, 13);
             this.label2.TabIndex = 1;
@@ -78,11 +80,33 @@ namespace ProductionPlanning
             this.btnProcess.UseVisualStyleBackColor = true;
             this.btnProcess.Click += new System.EventHandler(this.btnProcess_Click);
             // 
+            // cmboQuality
+            // 
+            this.cmboQuality.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cmboQuality.FormattingEnabled = true;
+            this.cmboQuality.Location = new System.Drawing.Point(359, 233);
+            this.cmboQuality.Name = "cmboQuality";
+            this.cmboQuality.Size = new System.Drawing.Size(205, 21);
+            this.cmboQuality.TabIndex = 5;
+            this.cmboQuality.Text = "Select Options";
+            this.cmboQuality.SelectedIndexChanged += new System.EventHandler(this.cmboQuality_SelectedIndexChanged);
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(261, 241);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(80, 13);
+            this.label3.TabIndex = 6;
+            this.label3.Text = "Select Qualities";
+            // 
             // frmInterDeptDskAnalysis
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.cmboQuality);
             this.Controls.Add(this.btnProcess);
             this.Controls.Add(this.dtpToDate);
             this.Controls.Add(this.dtpFromDate);
@@ -103,5 +127,7 @@ namespace ProductionPlanning
         private System.Windows.Forms.DateTimePicker dtpFromDate;
         private System.Windows.Forms.DateTimePicker dtpToDate;
         private System.Windows.Forms.Button btnProcess;
+        private ProductionPlanning.CheckComboBox cmboQuality;
+        private System.Windows.Forms.Label label3;
     }
 }

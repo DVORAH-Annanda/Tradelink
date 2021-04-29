@@ -1971,6 +1971,7 @@ namespace ProductionPlanning
                 DataSet7.DataTable1DataTable dataTable1 = new DataSet7.DataTable1DataTable();
                 DataSet7.DataTable2DataTable dataTable2 = new DataSet7.DataTable2DataTable();
                 core = new Util();
+                var repo = new PPSRepository();
 
                 DataSet7.DataTable2Row Tab2 = dataTable2.NewDataTable2Row();
                 Tab2.FromDate = _ProdQParms.FromDate;
@@ -1981,7 +1982,7 @@ namespace ProductionPlanning
 
                 using ( var context = new TTI2Entities())
                 {
-                    var DyeBatchDetail = context.TLDYE_DyeBatchDetails.Where(x => x.DYEBO_QAApproved && x.DYEBO_TransDate >= _ProdQParms.FromDate && x.DYEBO_TransDate <= _ProdQParms.ToDate && x.DYEBO_DiskWeight != 0).ToList(); 
+                    var DyeBatchDetail = repo.SelectDskInfo(_ProdQParms);
                     foreach(var Item in DyeBatchDetail)
                     {
                         DataSet7.DataTable1Row Tab1 = dataTable1.NewDataTable1Row();
@@ -1996,9 +1997,20 @@ namespace ProductionPlanning
                         var Quality = context.TLADM_Griege.Find(Item.DYEBD_QualityKey);
                         if (Quality != null && Quality.TLGreige_CubicWeight != 0 && Item.DYEBO_DiskWeight!= 0)
                         {
+                            var FabWeight = context.TLADM_FabricWeight.Find(Quality.TLGreige_FabricWeight_FK);
+                            if(FabWeight != null)
+                            {
+                                Tab1.StdFinDsk = (Decimal)FabWeight.FWW_Calculation_Value / 100;
+                                Tab1.DevDyeing = core.CalculateDskVariance(Tab1.StdFinDsk, Item.DYEBO_DiskWeight / 100);
+                            }
+                           
                             Tab1.Quality = Quality.TLGreige_Description;
                             Tab1.StdDsk = Quality.TLGreige_CubicWeight;
-                            Tab1.DevDyeing = core.CalculateDskVariance(Quality.TLGreige_CubicWeight, Item.DYEBO_DiskWeight/100);
+                            var DyeBat = context.TLDYE_DyeBatch.Find(Item.DYEBD_DyeBatch_FK);
+                            if(DyeBat != null)
+                            {
+                                Tab1.Colour = context.TLADM_Colours.Find(DyeBat.DYEB_Colour_FK).Col_Display; 
+                            }
                             
                             var GP = context.TLKNI_GreigeProduction.Find(Item.DYEBD_GreigeProduction_FK);
                             if (GP != null && GP.GreigeP_DskWeight != 0)
@@ -2014,6 +2026,13 @@ namespace ProductionPlanning
                     }
                 }
 
+                if(dataTable1.Rows.Count == 0)
+                {
+                    DataSet7.DataTable1Row Tab1 = dataTable1.NewDataTable1Row();
+                    Tab1.Pk = 1;
+                    Tab1.ErrorMessage = "No Data Found for Selection Period";
+                    dataTable1.Rows.Add(Tab1);
+                }
                 ds.Tables.Add(dataTable1);
                 ds.Tables.Add(dataTable2);
                 DskDeviation SItem = new DskDeviation();

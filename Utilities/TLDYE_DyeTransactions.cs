@@ -33,5 +33,6 @@ namespace Utilities
         public Nullable<bool> TLDYET_WriteOff { get; set; }
         public bool TLDYET_FabricSales { get; set; }
         public string TLDYET_CustomerOrderNo { get; set; }
+        public int TLDYET_MeasurementField_FK { get; set; }
     }
 }

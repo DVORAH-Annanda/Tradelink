@@ -458,6 +458,7 @@
             this.dataClearDownToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.inUseResetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
+            this.shadeResultsAfterHydroToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             this.SuspendLayout();
@@ -1388,6 +1389,7 @@
             this.HydroMeasuresWidth.Name = "HydroMeasuresWidth";
             this.HydroMeasuresWidth.Size = new System.Drawing.Size(285, 22);
             this.HydroMeasuresWidth.Text = "Hydro Measures Width";
+            this.HydroMeasuresWidth.Click += new System.EventHandler(this.HydroMeasuresWidth_Click);
             // 
             // stabilityCheckAfterDryingToolStripMenuItem1
             // 
@@ -1784,6 +1786,7 @@
             this.allShadedCodesToolStripMenuItem,
             this.allRemedyCodesToolStripMenuItem,
             this.shadeResultsAfterDyeingToolStripMenuItem,
+            this.shadeResultsAfterHydroToolStripMenuItem,
             this.shadeResultsAfterDryingToolStripMenuItem,
             this.shadeResultsAfterCompactingToolStripMenuItem,
             this.nCRResultsToolStripMenuItem,
@@ -1795,51 +1798,50 @@
             // allShadedCodesToolStripMenuItem
             // 
             this.allShadedCodesToolStripMenuItem.Name = "allShadedCodesToolStripMenuItem";
-            this.allShadedCodesToolStripMenuItem.Size = new System.Drawing.Size(378, 22);
+            this.allShadedCodesToolStripMenuItem.Size = new System.Drawing.Size(375, 22);
             this.allShadedCodesToolStripMenuItem.Text = "All Shaded Codes";
             this.allShadedCodesToolStripMenuItem.Click += new System.EventHandler(this.allShadedCodesToolStripMenuItem_Click);
             // 
             // allRemedyCodesToolStripMenuItem
             // 
             this.allRemedyCodesToolStripMenuItem.Name = "allRemedyCodesToolStripMenuItem";
-            this.allRemedyCodesToolStripMenuItem.Size = new System.Drawing.Size(378, 22);
+            this.allRemedyCodesToolStripMenuItem.Size = new System.Drawing.Size(375, 22);
             this.allRemedyCodesToolStripMenuItem.Text = "All Remedy Codes";
             this.allRemedyCodesToolStripMenuItem.Click += new System.EventHandler(this.allRemedyCodesToolStripMenuItem_Click);
             // 
             // shadeResultsAfterDyeingToolStripMenuItem
             // 
             this.shadeResultsAfterDyeingToolStripMenuItem.Name = "shadeResultsAfterDyeingToolStripMenuItem";
-            this.shadeResultsAfterDyeingToolStripMenuItem.Size = new System.Drawing.Size(378, 22);
+            this.shadeResultsAfterDyeingToolStripMenuItem.Size = new System.Drawing.Size(375, 22);
             this.shadeResultsAfterDyeingToolStripMenuItem.Text = "Shade Results After Dyeing";
             this.shadeResultsAfterDyeingToolStripMenuItem.Click += new System.EventHandler(this.shadeResultsAfterDyeingToolStripMenuItem_Click);
             // 
             // shadeResultsAfterDryingToolStripMenuItem
             // 
             this.shadeResultsAfterDryingToolStripMenuItem.Name = "shadeResultsAfterDryingToolStripMenuItem";
-            this.shadeResultsAfterDryingToolStripMenuItem.Size = new System.Drawing.Size(378, 22);
+            this.shadeResultsAfterDryingToolStripMenuItem.Size = new System.Drawing.Size(375, 22);
             this.shadeResultsAfterDryingToolStripMenuItem.Text = "Shade Results After Drying";
             this.shadeResultsAfterDryingToolStripMenuItem.Click += new System.EventHandler(this.shadeResultsAfterDryingToolStripMenuItem_Click);
             // 
             // shadeResultsAfterCompactingToolStripMenuItem
             // 
             this.shadeResultsAfterCompactingToolStripMenuItem.Name = "shadeResultsAfterCompactingToolStripMenuItem";
-            this.shadeResultsAfterCompactingToolStripMenuItem.Size = new System.Drawing.Size(378, 22);
+            this.shadeResultsAfterCompactingToolStripMenuItem.Size = new System.Drawing.Size(375, 22);
             this.shadeResultsAfterCompactingToolStripMenuItem.Text = "Shade Results After Compacting";
             this.shadeResultsAfterCompactingToolStripMenuItem.Click += new System.EventHandler(this.shadeResultsAfterCompactingToolStripMenuItem_Click);
             // 
             // nCRResultsToolStripMenuItem
             // 
             this.nCRResultsToolStripMenuItem.Name = "nCRResultsToolStripMenuItem";
-            this.nCRResultsToolStripMenuItem.Size = new System.Drawing.Size(378, 22);
+            this.nCRResultsToolStripMenuItem.Size = new System.Drawing.Size(375, 22);
             this.nCRResultsToolStripMenuItem.Text = "NCR Results";
             this.nCRResultsToolStripMenuItem.Click += new System.EventHandler(this.nCRResultsToolStripMenuItem_Click);
             // 
             // toolStripMenuItem2
             // 
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(378, 22);
-            this.toolStripMenuItem2.Text = "Quality Exception Report                                                         " +
-    " ";
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(375, 22);
+            this.toolStripMenuItem2.Text = "Fabric Quality Summary                                                          ";
             this.toolStripMenuItem2.Click += new System.EventHandler(this.toolStripMenuItem2_Click);
             // 
             // viewsToolStripMenuItem
@@ -3033,7 +3035,7 @@
             this.replenishmentMachineCapacityToolStripMenuItem,
             this.interDepartmentalAnalysisDefinitionToolStripMenuItem});
             this.replenishmentDefinitionToolStripMenuItem.Name = "replenishmentDefinitionToolStripMenuItem";
-            this.replenishmentDefinitionToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.replenishmentDefinitionToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
             this.replenishmentDefinitionToolStripMenuItem.Text = "PPS Replenishment";
             // 
             // replenishmentDefinitionToolStripMenuItem1
@@ -3080,7 +3082,7 @@
             this.interDepartmentalFaultsComparisonToolStripMenuItem,
             this.interDepartmentalDskAnalysisToolStripMenuItem});
             this.reportingToolStripMenuItem4.Name = "reportingToolStripMenuItem4";
-            this.reportingToolStripMenuItem4.Size = new System.Drawing.Size(180, 22);
+            this.reportingToolStripMenuItem4.Size = new System.Drawing.Size(176, 22);
             this.reportingToolStripMenuItem4.Text = "PPS Reporting";
             // 
             // replenishmentDetailsToolStripMenuItem
@@ -3899,6 +3901,12 @@
             // 
             this.errorProvider1.ContainerControl = this;
             // 
+            // shadeResultsAfterHydroToolStripMenuItem
+            // 
+            this.shadeResultsAfterHydroToolStripMenuItem.Name = "shadeResultsAfterHydroToolStripMenuItem";
+            this.shadeResultsAfterHydroToolStripMenuItem.Size = new System.Drawing.Size(375, 22);
+            this.shadeResultsAfterHydroToolStripMenuItem.Text = "Shade Results After Hydro";
+            // 
             // frmTLMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -4349,5 +4357,6 @@
         private System.Windows.Forms.ToolStripMenuItem cottonDespatchedForInspectionToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem dyeConsummablesInspectionToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem interDepartmentalDskAnalysisToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem shadeResultsAfterHydroToolStripMenuItem;
     }
 }
