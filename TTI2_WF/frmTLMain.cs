@@ -73,6 +73,7 @@ namespace TTI2_WF
             //========================================================================
             // This only needs to updated when either a new Department ie "CMT" or "Cutting" is added
             // or a new sub menu is added to either "CMT" or "Cutting" as an example
+            // remember to point the connection string to the "Live" database in the App.config file  
             // UpdateSecurity(); // See below
             //=======================================================
         }

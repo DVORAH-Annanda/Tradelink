@@ -226,6 +226,7 @@ namespace Cutting
             txtQtyKg.Text = "0.00";
             txtTrimKg.Text = "0.00";
             txtDyeBatchNumber.Text = string.Empty;
+            txtStyle.Text = string.Empty;
 
             txtBodyRating.KeyPress += core.txtWin_KeyPress;
             txtBodyRating.KeyDown += core.txtWin_KeyDownOEM;
@@ -396,6 +397,7 @@ namespace Cutting
             txtNoTrims.Text = "0.00";
             txtQtyKg.Text = "0.00";
             txtTrimKg.Text = "0.00";
+            txtStyle.Text = string.Empty;
 
             if (Onload)
             {
@@ -698,6 +700,8 @@ namespace Cutting
                                      return;
                                  }
 
+                                 txtStyle.Text = context.TLADM_Styles.Find(StyleFK).Sty_Description;
+                                
                                  var ISBinding = (from stytrim in context.TLADM_StyleTrim
                                                   join trim in context.TLADM_Trims on stytrim.StyTrim_Trim_Fk equals trim.TR_Id
                                                   join prodrating in context.TLADM_ProductRating on stytrim.StyTrim_ProdRating_FK equals prodrating.Pr_Id

@@ -85,6 +85,8 @@
             this.cmboDownSize = new System.Windows.Forms.ComboBox();
             this.label22 = new System.Windows.Forms.Label();
             this.chkDownSize = new System.Windows.Forms.CheckBox();
+            this.label20 = new System.Windows.Forms.Label();
+            this.txtStyle = new System.Windows.Forms.TextBox();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.groupBox2.SuspendLayout();
@@ -96,10 +98,10 @@
             // 
             // txtLastNumber
             // 
-            this.txtLastNumber.Location = new System.Drawing.Point(962, 7);
+            this.txtLastNumber.Location = new System.Drawing.Point(1031, 5);
             this.txtLastNumber.Name = "txtLastNumber";
             this.txtLastNumber.ReadOnly = true;
-            this.txtLastNumber.Size = new System.Drawing.Size(151, 20);
+            this.txtLastNumber.Size = new System.Drawing.Size(132, 20);
             this.txtLastNumber.TabIndex = 0;
             // 
             // label1
@@ -556,7 +558,7 @@
             // label18
             // 
             this.label18.AutoSize = true;
-            this.label18.Location = new System.Drawing.Point(545, 17);
+            this.label18.Location = new System.Drawing.Point(508, 14);
             this.label18.Name = "label18";
             this.label18.Size = new System.Drawing.Size(97, 13);
             this.label18.TabIndex = 24;
@@ -564,7 +566,7 @@
             // 
             // txtDyeBatchNumber
             // 
-            this.txtDyeBatchNumber.Location = new System.Drawing.Point(667, 10);
+            this.txtDyeBatchNumber.Location = new System.Drawing.Point(630, 7);
             this.txtDyeBatchNumber.Name = "txtDyeBatchNumber";
             this.txtDyeBatchNumber.ReadOnly = true;
             this.txtDyeBatchNumber.Size = new System.Drawing.Size(128, 20);
@@ -573,7 +575,7 @@
             // cmboDepartment
             // 
             this.cmboDepartment.FormattingEnabled = true;
-            this.cmboDepartment.Location = new System.Drawing.Point(992, 44);
+            this.cmboDepartment.Location = new System.Drawing.Point(1037, 44);
             this.cmboDepartment.Name = "cmboDepartment";
             this.cmboDepartment.Size = new System.Drawing.Size(121, 21);
             this.cmboDepartment.TabIndex = 26;
@@ -581,7 +583,7 @@
             // label19
             // 
             this.label19.AutoSize = true;
-            this.label19.Location = new System.Drawing.Point(917, 47);
+            this.label19.Location = new System.Drawing.Point(952, 47);
             this.label19.Name = "label19";
             this.label19.Size = new System.Drawing.Size(62, 13);
             this.label19.TabIndex = 27;
@@ -638,11 +640,30 @@
             this.chkDownSize.UseVisualStyleBackColor = true;
             this.chkDownSize.CheckedChanged += new System.EventHandler(this.chkDownSize_CheckedChanged);
             // 
+            // label20
+            // 
+            this.label20.AutoSize = true;
+            this.label20.Location = new System.Drawing.Point(771, 12);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(30, 13);
+            this.label20.TabIndex = 31;
+            this.label20.Text = "Style";
+            // 
+            // txtStyle
+            // 
+            this.txtStyle.Location = new System.Drawing.Point(808, 5);
+            this.txtStyle.Name = "txtStyle";
+            this.txtStyle.ReadOnly = true;
+            this.txtStyle.Size = new System.Drawing.Size(212, 20);
+            this.txtStyle.TabIndex = 32;
+            // 
             // frmCutSheet
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1137, 638);
+            this.ClientSize = new System.Drawing.Size(1180, 638);
+            this.Controls.Add(this.txtStyle);
+            this.Controls.Add(this.label20);
             this.Controls.Add(this.chkDownSize);
             this.Controls.Add(this.groupBox5);
             this.Controls.Add(this.chkSample);
@@ -749,6 +770,8 @@
         private System.Windows.Forms.ComboBox cmboDownSize;
         private System.Windows.Forms.Label label22;
         private System.Windows.Forms.CheckBox chkDownSize;
+        private System.Windows.Forms.Label label20;
+        private System.Windows.Forms.TextBox txtStyle;
     }
 }
 

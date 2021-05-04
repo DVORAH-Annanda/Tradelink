@@ -127,7 +127,7 @@ namespace Cutting
             oTxtA.Name = "Primary_Key";
             oTxtA.ValueType = typeof(int);
             oTxtA.HeaderText = "Primary Key";
-            oTxtA.DataPropertyName = dataTable.Columns[0].ColumnName;
+            // oTxtA.DataPropertyName = dataTable.Columns[0].ColumnName;
             dataGridView1.Columns.Add(oTxtA);
             dataGridView1.Columns[0].DisplayIndex = 0;
 
@@ -348,27 +348,30 @@ namespace Cutting
 
                     // using (var context = new TTI2Entities())
                     //{
-                    var PowerN = (from t1 in _context.TLADM_Sizes
-                                  join t2 in _context.TLCUT_ExpectedUnits
-                                  on t1.SI_id equals t2.TLCUTE_Size_FK
-                                  where cutSheet.TLCutSH_Pk == t2.TLCUTE_CutSheet_FK
-                                  select t1).Sum(x => x.SI_PowerN);
-
-                    if(PowerN != cutSheet.TLCutSH_Size_PN)
+                    if (_context.TLCUT_ExpectedUnits.Where(x => x.TLCUTE_CutSheet_FK == cutSheet.TLCutSH_Pk).Count() != 0)
                     {
-                        cutSheet.TLCutSH_Size_PN = PowerN;
+                        var PowerN = (from t1 in _context.TLADM_Sizes
+                                      join t2 in _context.TLCUT_ExpectedUnits
+                                      on t1.SI_id equals t2.TLCUTE_Size_FK
+                                      where cutSheet.TLCutSH_Pk == t2.TLCUTE_CutSheet_FK
+                                      select t1).Sum(x => x.SI_PowerN);
 
-                        var CS = _context.TLCUT_CutSheet.Find(cutSheet.TLCutSH_Pk);
-                        if(CS != null)
+                        if (PowerN != cutSheet.TLCutSH_Size_PN)
                         {
-                            CS.TLCutSH_Size_PN = PowerN;
-                            try
+                            cutSheet.TLCutSH_Size_PN = PowerN;
+
+                            var CS = _context.TLCUT_CutSheet.Find(cutSheet.TLCutSH_Pk);
+                            if (CS != null)
                             {
-                                _context.SaveChanges();
-                            }
-                            catch(Exception ex)
-                            {
-                                MessageBox.Show(ex.Message);
+                                CS.TLCutSH_Size_PN = PowerN;
+                                try
+                                {
+                                    _context.SaveChanges();
+                                }
+                                catch (Exception ex)
+                                {
+                                    MessageBox.Show(ex.Message);
+                                }
                             }
                         }
                     }

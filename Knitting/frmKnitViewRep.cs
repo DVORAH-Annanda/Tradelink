@@ -2790,6 +2790,8 @@ namespace Knitting
                         nr.DataColumn4 = row.GreigeP_weightAvail;
                         nr.DataColumn5 = (int)row.GreigeP_Store_FK;
                         nr.Remarks = row.GreigeP_Remarks;
+                        nr.MergeDetail = row.GreigeP_MergeDetail;
+
                        // nr.DskWeight = (decimal)row.GreigeP_DskWeight;
 
                         if (row.GreigeP_BoughtIn)

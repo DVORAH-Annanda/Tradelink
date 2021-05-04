@@ -632,6 +632,8 @@ namespace DyeHouse {
             
             private global::System.Data.DataColumn columnLoss;
             
+            private global::System.Data.DataColumn columnMergeDetail;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public DataTable2DataTable() {
@@ -755,6 +757,14 @@ namespace DyeHouse {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn MergeDetailColumn {
+                get {
+                    return this.columnMergeDetail;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -790,7 +800,7 @@ namespace DyeHouse {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public DataTable2Row AddDataTable2Row(DataTable1Row parentDataTable1RowByDataTable1_DataTable2, string BatchNumber, System.DateTime Date, string Quality, string ColourCode, string Shade, string Machine, decimal GrossKg, decimal NettKg, decimal ProcessLoss, decimal Loss) {
+            public DataTable2Row AddDataTable2Row(DataTable1Row parentDataTable1RowByDataTable1_DataTable2, string BatchNumber, System.DateTime Date, string Quality, string ColourCode, string Shade, string Machine, decimal GrossKg, decimal NettKg, decimal ProcessLoss, decimal Loss, string MergeDetail) {
                 DataTable2Row rowDataTable2Row = ((DataTable2Row)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         null,
@@ -803,7 +813,8 @@ namespace DyeHouse {
                         GrossKg,
                         NettKg,
                         ProcessLoss,
-                        Loss};
+                        Loss,
+                        MergeDetail};
                 if ((parentDataTable1RowByDataTable1_DataTable2 != null)) {
                     columnValuesArray[0] = parentDataTable1RowByDataTable1_DataTable2[0];
                 }
@@ -840,6 +851,7 @@ namespace DyeHouse {
                 this.columnNettKg = base.Columns["NettKg"];
                 this.columnProcessLoss = base.Columns["ProcessLoss"];
                 this.columnLoss = base.Columns["Loss"];
+                this.columnMergeDetail = base.Columns["MergeDetail"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -867,6 +879,8 @@ namespace DyeHouse {
                 base.Columns.Add(this.columnProcessLoss);
                 this.columnLoss = new global::System.Data.DataColumn("Loss", typeof(decimal), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnLoss);
+                this.columnMergeDetail = new global::System.Data.DataColumn("MergeDetail", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnMergeDetail);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1323,6 +1337,22 @@ namespace DyeHouse {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public string MergeDetail {
+                get {
+                    try {
+                        return ((string)(this[this.tableDataTable2.MergeDetailColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'MergeDetail\' in table \'DataTable2\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDataTable2.MergeDetailColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public DataTable1Row DataTable1Row {
                 get {
                     return ((DataTable1Row)(this.GetParentRow(this.Table.ParentRelations["DataTable1_DataTable2"])));
@@ -1462,6 +1492,18 @@ namespace DyeHouse {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public void SetLossNull() {
                 this[this.tableDataTable2.LossColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsMergeDetailNull() {
+                return this.IsNull(this.tableDataTable2.MergeDetailColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetMergeDetailNull() {
+                this[this.tableDataTable2.MergeDetailColumn] = global::System.Convert.DBNull;
             }
         }
         

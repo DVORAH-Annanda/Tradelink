@@ -196,6 +196,7 @@
             this.allShadedCodesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.allRemedyCodesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.shadeResultsAfterDyeingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.shadeResultsAfterHydroToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.shadeResultsAfterDryingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.shadeResultsAfterCompactingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.nCRResultsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -458,7 +459,7 @@
             this.dataClearDownToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.inUseResetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
-            this.shadeResultsAfterHydroToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.fabricQualityToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             this.SuspendLayout();
@@ -1733,7 +1734,8 @@
             this.fabricStockOnHandToolStripMenuItem,
             this.fabricProductionInQuaratineStoreToolStripMenuItem,
             this.fabricProductionToFabricStoreToolStripMenuItem,
-            this.fabricProductionNotFinishedToolStripMenuItem});
+            this.fabricProductionNotFinishedToolStripMenuItem,
+            this.fabricQualityToolStripMenuItem});
             this.fabricQualityTypesToolStripMenuItem.Name = "fabricQualityTypesToolStripMenuItem";
             this.fabricQualityTypesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.fabricQualityTypesToolStripMenuItem.Text = "Fabric Reports";
@@ -1815,6 +1817,12 @@
             this.shadeResultsAfterDyeingToolStripMenuItem.Size = new System.Drawing.Size(375, 22);
             this.shadeResultsAfterDyeingToolStripMenuItem.Text = "Shade Results After Dyeing";
             this.shadeResultsAfterDyeingToolStripMenuItem.Click += new System.EventHandler(this.shadeResultsAfterDyeingToolStripMenuItem_Click);
+            // 
+            // shadeResultsAfterHydroToolStripMenuItem
+            // 
+            this.shadeResultsAfterHydroToolStripMenuItem.Name = "shadeResultsAfterHydroToolStripMenuItem";
+            this.shadeResultsAfterHydroToolStripMenuItem.Size = new System.Drawing.Size(375, 22);
+            this.shadeResultsAfterHydroToolStripMenuItem.Text = "Shade Results After Hydro";
             // 
             // shadeResultsAfterDryingToolStripMenuItem
             // 
@@ -3901,11 +3909,11 @@
             // 
             this.errorProvider1.ContainerControl = this;
             // 
-            // shadeResultsAfterHydroToolStripMenuItem
+            // fabricQualityToolStripMenuItem
             // 
-            this.shadeResultsAfterHydroToolStripMenuItem.Name = "shadeResultsAfterHydroToolStripMenuItem";
-            this.shadeResultsAfterHydroToolStripMenuItem.Size = new System.Drawing.Size(375, 22);
-            this.shadeResultsAfterHydroToolStripMenuItem.Text = "Shade Results After Hydro";
+            this.fabricQualityToolStripMenuItem.Name = "fabricQualityToolStripMenuItem";
+            this.fabricQualityToolStripMenuItem.Size = new System.Drawing.Size(266, 22);
+            this.fabricQualityToolStripMenuItem.Text = "Fabric Quality";
             // 
             // frmTLMain
             // 
@@ -4358,5 +4366,6 @@
         private System.Windows.Forms.ToolStripMenuItem dyeConsummablesInspectionToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem interDepartmentalDskAnalysisToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem shadeResultsAfterHydroToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem fabricQualityToolStripMenuItem;
     }
 }

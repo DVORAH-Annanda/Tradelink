@@ -25,14 +25,17 @@ namespace Cutting
         DataGridViewTextBoxColumn oTxtD = new DataGridViewTextBoxColumn();     // 3 Box Number                   3
         DataGridViewTextBoxColumn oTxtE = new DataGridViewTextBoxColumn();     // 4 Boxed  Qty                   4
         DataGridViewComboBoxColumn oCmboA = new DataGridViewComboBoxColumn();  // 5 Box Types                    5
-        
+
+        protected readonly TTI2Entities _context;
         Util core;
 
         
         public frmCutBoxes()
         {
             InitializeComponent();
-            
+
+            _context = new TTI2Entities();
+
             dataGridView1.AllowUserToAddRows = false;
             dataGridView1.AutoGenerateColumns = false;
           
@@ -467,6 +470,17 @@ namespace Cutting
                     }
 
                     formloaded = true;
+                }
+            }
+        }
+
+        private void frmCutBoxes_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if(!e.Cancel)
+            {
+                if(_context != null)
+                {
+                    _context.Dispose();
                 }
             }
         }

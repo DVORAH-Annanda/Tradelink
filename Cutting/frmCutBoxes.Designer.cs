@@ -220,6 +220,7 @@
             this.Controls.Add(this.dataGridView1);
             this.Name = "frmCutBoxes";
             this.Text = "Boxes Update";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmCutBoxes_FormClosing);
             this.Load += new System.EventHandler(this.frmCutBoxes_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.groupBox1.ResumeLayout(false);
