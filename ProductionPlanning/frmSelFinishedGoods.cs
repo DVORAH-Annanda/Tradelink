@@ -448,7 +448,11 @@ namespace ProductionPlanning
                     //---------------------------------------------------------------
                     // This variable is used in the 2nd Task 
                     //--------------------------------------------------------------
-                    var SOH = context.TLCSV_StockOnHand.Where(x => !x.TLSOH_Picked && x.TLSOH_Grade.Contains("A") && !x.TLSOH_Write_Off && !x.TLSOH_Returned && !x.TLSOH_Split).ToList();
+                    var SOH = context.TLCSV_StockOnHand.Where(x => !x.TLSOH_Picked 
+                                                                    && x.TLSOH_Is_A 
+                                                                    && !x.TLSOH_Write_Off 
+                                                                    && !x.TLSOH_Returned 
+                                                                    && !x.TLSOH_Split).ToList();
                    
                     //---------------------------------------------------------------
                     // This variable is used in the 9th (a) and 9(b)  tasks-- CMT 

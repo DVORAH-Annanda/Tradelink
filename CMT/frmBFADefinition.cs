@@ -52,7 +52,7 @@ namespace CMT
 
                 oCmboA = new DataGridViewComboBoxColumn();
                 oCmboA.HeaderText = "Measurement Description";
-                oCmboA.DataSource = context.TLADM_CMTMeasurementPoints.OrderBy(x => x.CMTMP_DisplayOrder).ToList();
+                oCmboA.DataSource = context.TLADM_CMTMeasurementPoints.OrderBy(x => x.CMTMP_Description).ToList();
                 oCmboA.ValueMember = "CMTMP_Pk";
                 oCmboA.DisplayMember = "CMTMP_Description";
                 oCmboA.DataPropertyName = "CMTMP_Pk";

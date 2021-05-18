@@ -269,10 +269,10 @@ namespace Cutting
                         gp.GreigeP_Meas6 = 0;
                         gp.GreigeP_Meas7 = 0;
                         gp.GreigeP_Meas8 = 0;
-                        gp.GreigeP_PDate              = DateTime.Now;
-                        gp.GreigeP_PieceNo            = (string)Row.Cells[0].Value;
+                        gp.GreigeP_PDate = DateTime.Now;
+                        gp.GreigeP_PieceNo = (string)Row.Cells[0].Value;
                         gp.GreigeP_BoughtIn_FabWeight = (decimal)Row.Cells[2].Value;
-                        gp.GreigeP_BoughtIn_FabWidth  = (decimal)Row.Cells[3].Value;
+                        gp.GreigeP_BoughtIn_FabWidth = (decimal)Row.Cells[3].Value;
                         gp.GreigeP_weight = (decimal)Row.Cells[4].Value;
                         gp.GreigeP_weightAvail = (decimal)Row.Cells[5].Value;
                         gp.GreigeP_Store_FK = CurrentStore.WhStore_Id;
@@ -281,7 +281,15 @@ namespace Cutting
                         gp.GreigeP_BoughtIn_Fk = BoughtIn.TLBIN_Pk;
                         gp.GreigeP_Meters = BoughtIn.TLBIN_Meters_Roll;
 
-                        context.TLKNI_GreigeProduction.Add(gp);
+                        try
+                        {
+                            context.TLKNI_GreigeProduction.Add(gp);
+                        }
+                        catch(Exception ex)
+                        {
+                            MessageBox.Show(ex.InnerException.Message);
+                            return;
+                        }
                     }
 
                     try

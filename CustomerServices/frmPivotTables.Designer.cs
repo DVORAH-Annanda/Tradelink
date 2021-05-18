@@ -29,21 +29,21 @@
         private void InitializeComponent()
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.cmboSizes = new CustomerServices.CheckComboBox();
             this.label5 = new System.Windows.Forms.Label();
-            this.cmboColours = new CustomerServices.CheckComboBox();
             this.label4 = new System.Windows.Forms.Label();
-            this.cmboStyles = new CustomerServices.CheckComboBox();
             this.DGVOutput = new System.Windows.Forms.DataGridView();
-            this.cmboWareHouses = new CustomerServices.CheckComboBox();
             this.rbOutStanding = new System.Windows.Forms.RadioButton();
             this.rbAvailable = new System.Windows.Forms.RadioButton();
             this.rbGrossStock = new System.Windows.Forms.RadioButton();
             this.label3 = new System.Windows.Forms.Label();
-            this.cmboCustomers = new CustomerServices.CheckComboBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.btnSubmit = new System.Windows.Forms.Button();
+            this.cmboSizes = new CustomerServices.CheckComboBox();
+            this.cmboColours = new CustomerServices.CheckComboBox();
+            this.cmboStyles = new CustomerServices.CheckComboBox();
+            this.cmboWareHouses = new CustomerServices.CheckComboBox();
+            this.cmboCustomers = new CustomerServices.CheckComboBox();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DGVOutput)).BeginInit();
             this.SuspendLayout();
@@ -70,17 +70,6 @@
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             // 
-            // cmboSizes
-            // 
-            this.cmboSizes.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.cmboSizes.FormattingEnabled = true;
-            this.cmboSizes.Location = new System.Drawing.Point(203, 294);
-            this.cmboSizes.Name = "cmboSizes";
-            this.cmboSizes.Size = new System.Drawing.Size(271, 21);
-            this.cmboSizes.TabIndex = 15;
-            this.cmboSizes.Text = "Select Options";
-            this.cmboSizes.SelectedIndexChanged += new System.EventHandler(this.cmboSizes_SelectedIndexChanged);
-            // 
             // label5
             // 
             this.label5.AutoSize = true;
@@ -89,17 +78,6 @@
             this.label5.Size = new System.Drawing.Size(32, 13);
             this.label5.TabIndex = 14;
             this.label5.Text = "Sizes";
-            // 
-            // cmboColours
-            // 
-            this.cmboColours.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.cmboColours.FormattingEnabled = true;
-            this.cmboColours.Location = new System.Drawing.Point(202, 235);
-            this.cmboColours.Name = "cmboColours";
-            this.cmboColours.Size = new System.Drawing.Size(272, 21);
-            this.cmboColours.TabIndex = 13;
-            this.cmboColours.Text = "Select Options";
-            this.cmboColours.SelectedIndexChanged += new System.EventHandler(this.cmboColours_SelectedIndexChanged);
             // 
             // label4
             // 
@@ -110,17 +88,6 @@
             this.label4.TabIndex = 12;
             this.label4.Text = "Colours";
             // 
-            // cmboStyles
-            // 
-            this.cmboStyles.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.cmboStyles.FormattingEnabled = true;
-            this.cmboStyles.Location = new System.Drawing.Point(203, 176);
-            this.cmboStyles.Name = "cmboStyles";
-            this.cmboStyles.Size = new System.Drawing.Size(271, 21);
-            this.cmboStyles.TabIndex = 11;
-            this.cmboStyles.Text = "Select Options";
-            this.cmboStyles.SelectedIndexChanged += new System.EventHandler(this.cmboStyles_SelectedIndexChanged);
-            // 
             // DGVOutput
             // 
             this.DGVOutput.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
@@ -129,17 +96,6 @@
             this.DGVOutput.Size = new System.Drawing.Size(536, 282);
             this.DGVOutput.TabIndex = 8;
             this.DGVOutput.CellMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.DGVOutput_CellMouseClick);
-            // 
-            // cmboWareHouses
-            // 
-            this.cmboWareHouses.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.cmboWareHouses.FormattingEnabled = true;
-            this.cmboWareHouses.Location = new System.Drawing.Point(203, 58);
-            this.cmboWareHouses.Name = "cmboWareHouses";
-            this.cmboWareHouses.Size = new System.Drawing.Size(271, 21);
-            this.cmboWareHouses.TabIndex = 10;
-            this.cmboWareHouses.Text = "Select Options";
-            this.cmboWareHouses.SelectedIndexChanged += new System.EventHandler(this.cmboWareHouses_SelectedIndexChanged);
             // 
             // rbOutStanding
             // 
@@ -151,6 +107,7 @@
             this.rbOutStanding.TabStop = true;
             this.rbOutStanding.Text = "Outstanding Orders";
             this.rbOutStanding.UseVisualStyleBackColor = true;
+            this.rbOutStanding.CheckedChanged += new System.EventHandler(this.rbOutStanding_CheckedChanged);
             // 
             // rbAvailable
             // 
@@ -161,6 +118,7 @@
             this.rbAvailable.TabIndex = 7;
             this.rbAvailable.Text = "Available Stock";
             this.rbAvailable.UseVisualStyleBackColor = true;
+            this.rbAvailable.CheckedChanged += new System.EventHandler(this.rbAvailable_CheckedChanged);
             // 
             // rbGrossStock
             // 
@@ -168,11 +126,12 @@
             this.rbGrossStock.Checked = true;
             this.rbGrossStock.Location = new System.Drawing.Point(66, 19);
             this.rbGrossStock.Name = "rbGrossStock";
-            this.rbGrossStock.Size = new System.Drawing.Size(83, 17);
+            this.rbGrossStock.Size = new System.Drawing.Size(99, 17);
             this.rbGrossStock.TabIndex = 6;
             this.rbGrossStock.TabStop = true;
-            this.rbGrossStock.Text = "Gross Stock";
+            this.rbGrossStock.Text = "Stock On Hand";
             this.rbGrossStock.UseVisualStyleBackColor = true;
+            this.rbGrossStock.CheckedChanged += new System.EventHandler(this.rbGrossStock_CheckedChanged);
             // 
             // label3
             // 
@@ -182,17 +141,6 @@
             this.label3.Size = new System.Drawing.Size(35, 13);
             this.label3.TabIndex = 5;
             this.label3.Text = "Styles";
-            // 
-            // cmboCustomers
-            // 
-            this.cmboCustomers.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.cmboCustomers.FormattingEnabled = true;
-            this.cmboCustomers.Location = new System.Drawing.Point(203, 117);
-            this.cmboCustomers.Name = "cmboCustomers";
-            this.cmboCustomers.Size = new System.Drawing.Size(271, 21);
-            this.cmboCustomers.TabIndex = 3;
-            this.cmboCustomers.Text = "Select Options";
-            this.cmboCustomers.SelectedIndexChanged += new System.EventHandler(this.cmboCustomers_SelectedIndexChanged);
             // 
             // label2
             // 
@@ -221,6 +169,61 @@
             this.btnSubmit.Text = "Submit";
             this.btnSubmit.UseVisualStyleBackColor = true;
             this.btnSubmit.Click += new System.EventHandler(this.btnSubmit_Click);
+            // 
+            // cmboSizes
+            // 
+            this.cmboSizes.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cmboSizes.FormattingEnabled = true;
+            this.cmboSizes.Location = new System.Drawing.Point(203, 294);
+            this.cmboSizes.Name = "cmboSizes";
+            this.cmboSizes.Size = new System.Drawing.Size(271, 21);
+            this.cmboSizes.TabIndex = 15;
+            this.cmboSizes.Text = "Select Options";
+            this.cmboSizes.SelectedIndexChanged += new System.EventHandler(this.cmboSizes_SelectedIndexChanged);
+            // 
+            // cmboColours
+            // 
+            this.cmboColours.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cmboColours.FormattingEnabled = true;
+            this.cmboColours.Location = new System.Drawing.Point(202, 235);
+            this.cmboColours.Name = "cmboColours";
+            this.cmboColours.Size = new System.Drawing.Size(272, 21);
+            this.cmboColours.TabIndex = 13;
+            this.cmboColours.Text = "Select Options";
+            this.cmboColours.SelectedIndexChanged += new System.EventHandler(this.cmboColours_SelectedIndexChanged);
+            // 
+            // cmboStyles
+            // 
+            this.cmboStyles.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cmboStyles.FormattingEnabled = true;
+            this.cmboStyles.Location = new System.Drawing.Point(203, 176);
+            this.cmboStyles.Name = "cmboStyles";
+            this.cmboStyles.Size = new System.Drawing.Size(271, 21);
+            this.cmboStyles.TabIndex = 11;
+            this.cmboStyles.Text = "Select Options";
+            this.cmboStyles.SelectedIndexChanged += new System.EventHandler(this.cmboStyles_SelectedIndexChanged);
+            // 
+            // cmboWareHouses
+            // 
+            this.cmboWareHouses.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cmboWareHouses.FormattingEnabled = true;
+            this.cmboWareHouses.Location = new System.Drawing.Point(203, 58);
+            this.cmboWareHouses.Name = "cmboWareHouses";
+            this.cmboWareHouses.Size = new System.Drawing.Size(271, 21);
+            this.cmboWareHouses.TabIndex = 10;
+            this.cmboWareHouses.Text = "Select Options";
+            this.cmboWareHouses.SelectedIndexChanged += new System.EventHandler(this.cmboWareHouses_SelectedIndexChanged);
+            // 
+            // cmboCustomers
+            // 
+            this.cmboCustomers.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cmboCustomers.FormattingEnabled = true;
+            this.cmboCustomers.Location = new System.Drawing.Point(203, 117);
+            this.cmboCustomers.Name = "cmboCustomers";
+            this.cmboCustomers.Size = new System.Drawing.Size(271, 21);
+            this.cmboCustomers.TabIndex = 3;
+            this.cmboCustomers.Text = "Select Options";
+            this.cmboCustomers.SelectedIndexChanged += new System.EventHandler(this.cmboCustomers_SelectedIndexChanged);
             // 
             // frmPivotTables
             // 

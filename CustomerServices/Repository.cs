@@ -693,7 +693,11 @@ namespace CustomerServices
 
         public IQueryable<TLCSV_StockOnHand> SOHOnHand(CustomerServicesParameters parameters)
         {
-            var SOH = _context.TLCSV_StockOnHand.Where(x => !x.TLSOH_Sold && !x.TLSOH_Split && !x.TLSOH_InTransit && !x.TLSOH_Write_Off).AsQueryable();
+            var SOH = _context.TLCSV_StockOnHand.Where(x => !x.TLSOH_Sold 
+                                                            && !x.TLSOH_Split
+                                                            && !x.TLSOH_InTransit 
+                                                            && !x.TLSOH_Write_Off 
+                                                            && !x.TLSOH_Returned).AsQueryable();
            
             if (parameters.Whses.Count() > 0)
             {
@@ -736,9 +740,9 @@ namespace CustomerServices
             if (parameters.Colours.Count() > 0)
             {
                 var colourPredicate = PredicateBuilder.New<TLCSV_StockOnHand>();
-                foreach (var style in parameters.Colours)
+                foreach (var Colour in parameters.Colours)
                 {
-                    var temp = style;
+                    var temp = Colour;
                     colourPredicate = colourPredicate.Or(s => s.TLSOH_Colour_FK == temp.Col_Id);
                 }
 
@@ -748,9 +752,9 @@ namespace CustomerServices
             if (parameters.Sizes.Count() > 0)
             {
                 var sizePredicate = PredicateBuilder.New<TLCSV_StockOnHand>();
-                foreach (var style in parameters.Sizes)
+                foreach (var Size in parameters.Sizes)
                 {
-                    var temp = style;
+                    var temp = Size;
                     sizePredicate = sizePredicate.Or(s => s.TLSOH_Size_FK == temp.SI_id);
                 }
 
@@ -984,7 +988,7 @@ namespace CustomerServices
 
         public IQueryable<TLCSV_StockOnHand> GrossSOHQuery(CustomerServicesParameters parameters)
         {
-            var SOH = _context.TLCSV_StockOnHand.Where(x => !x.TLSOH_Sold && !x.TLSOH_Split).AsQueryable();
+            var SOH = _context.TLCSV_StockOnHand.Where(x => !x.TLSOH_Sold && !x.TLSOH_Split && !x.TLSOH_Write_Off && !x.TLSOH_Returned && !x.TLSOH_InTransit).AsQueryable();
             SOH = (from i in SOH
                             join o in _context.TLADM_Sizes
                             on i.TLSOH_Size_FK equals o.SI_id

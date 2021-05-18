@@ -361,6 +361,8 @@ namespace Cutting {
             
             private global::System.Data.DataColumn columnCol11;
             
+            private global::System.Data.DataColumn columnDyeBatch;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public DataTable1DataTable() {
@@ -556,6 +558,14 @@ namespace Cutting {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn DyeBatchColumn {
+                get {
+                    return this.columnDyeBatch;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -611,7 +621,8 @@ namespace Cutting {
                         int Col8, 
                         int Col9, 
                         int Col10, 
-                        int Col11) {
+                        int Col11, 
+                        string DyeBatch) {
                 DataTable1Row rowDataTable1Row = ((DataTable1Row)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         null,
@@ -633,7 +644,8 @@ namespace Cutting {
                         Col8,
                         Col9,
                         Col10,
-                        Col11};
+                        Col11,
+                        DyeBatch};
                 if ((parentDataTable2RowByDataTable2_DataTable1 != null)) {
                     columnValuesArray[0] = parentDataTable2RowByDataTable2_DataTable1[0];
                 }
@@ -679,6 +691,7 @@ namespace Cutting {
                 this.columnCol9 = base.Columns["Col9"];
                 this.columnCol10 = base.Columns["Col10"];
                 this.columnCol11 = base.Columns["Col11"];
+                this.columnDyeBatch = base.Columns["DyeBatch"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -724,6 +737,8 @@ namespace Cutting {
                 base.Columns.Add(this.columnCol10);
                 this.columnCol11 = new global::System.Data.DataColumn("Col11", typeof(int), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnCol11);
+                this.columnDyeBatch = new global::System.Data.DataColumn("DyeBatch", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnDyeBatch);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1475,6 +1490,22 @@ namespace Cutting {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public string DyeBatch {
+                get {
+                    try {
+                        return ((string)(this[this.tableDataTable1.DyeBatchColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'DyeBatch\' in table \'DataTable1\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDataTable1.DyeBatchColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public DataTable2Row DataTable2Row {
                 get {
                     return ((DataTable2Row)(this.GetParentRow(this.Table.ParentRelations["DataTable2_DataTable1"])));
@@ -1722,6 +1753,18 @@ namespace Cutting {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public void SetCol11Null() {
                 this[this.tableDataTable1.Col11Column] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsDyeBatchNull() {
+                return this.IsNull(this.tableDataTable1.DyeBatchColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetDyeBatchNull() {
+                this[this.tableDataTable1.DyeBatchColumn] = global::System.Convert.DBNull;
             }
         }
         

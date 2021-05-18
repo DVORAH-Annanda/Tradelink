@@ -43,19 +43,20 @@ namespace CustomerServices
             IList<TLADM_WhseStore> WareHouses = null;
             IList<TLADM_CustomerFile> Customers = null;
 
-
              DGVOutput.Visible = false; 
              using (var context = new TTI2Entities())
              {
                  if (!UserD._External)
                  {
+                     cmboWareHouses.Items.Clear();
                      WareHouses = context.TLADM_WhseStore.Where(x => x.WhStore_WhseOrStore).OrderBy(x => x.WhStore_Description).ToList();
                      foreach (var WareHouse in WareHouses)
                      {
                          cmboWareHouses.Items.Add(new CustomerServices.CheckComboBoxItem(WareHouse.WhStore_Id, WareHouse.WhStore_Description, false));
                      }
 
-                     Customers = context.TLADM_CustomerFile.OrderBy(x => x.Cust_Description).ToList();
+                    cmboCustomers.Items.Clear();
+                    Customers = context.TLADM_CustomerFile.OrderBy(x => x.Cust_Description).ToList();
                      foreach (var Customer in Customers)
                      {
                          cmboCustomers.Items.Add(new CustomerServices.CheckComboBoxItem(Customer.Cust_Pk, Customer.Cust_Description, false));
@@ -63,12 +64,14 @@ namespace CustomerServices
                  }
                  else
                  {
+                     cmboWareHouses.Items.Clear();
                      WareHouses = context.TLADM_WhseStore.Where(x => x.WhStore_WhseOrStore && !x.WhStore_RePack && x.WhStore_GradeA).OrderBy(x => x.WhStore_Description).ToList();
                      foreach (var WareHouse in WareHouses)
                      {
                          cmboWareHouses.Items.Add(new CustomerServices.CheckComboBoxItem(WareHouse.WhStore_Id, WareHouse.WhStore_Description, false));
                      }
 
+                     cmboCustomers.Items.Clear();
                      var AccessPermitted = context.TLADM_CustomerAccess.Where(x => x.CustAcc_User_Fk == UserD._UserPk).ToList();
                      foreach (var Access in AccessPermitted)
                      {
@@ -78,19 +81,22 @@ namespace CustomerServices
                      }
               
                  }
-                    
+                
+                 cmboStyles.Items.Clear();   
                  var Styles = context.TLADM_Styles.OrderBy(x=>x.Sty_Description).ToList();
                  foreach (var Style in Styles)
                  {
                         cmboStyles.Items.Add(new CustomerServices.CheckComboBoxItem(Style.Sty_Id, Style.Sty_Description, false));
                  }
 
+                 cmboSizes.Items.Clear();
                  var Sizes = context.TLADM_Sizes.Where(x=>(bool)!x.SI_Discontinued).OrderBy(x => x.SI_DisplayOrder).ToList();
                  foreach (var Size in Sizes)
                  {
                      cmboSizes.Items.Add(new CustomerServices.CheckComboBoxItem(Size.SI_id, Size.SI_Description, false));
                  }
 
+                 cmboColours.Items.Clear();
                  var Colours = context.TLADM_Colours.OrderBy(x => x.Col_Display).ToList();
                  foreach (var Colour in Colours)
                  {
@@ -292,12 +298,15 @@ namespace CustomerServices
                                 dd._ColourFK = Clr;
                                 dd._SizeFK = xSize;
                                 dd._StyleFK = Sty;
+                                dd._Total = BoxQty;
 
                                 SOHGrouped.Add(dd);
                             }
                             else
                             {
                                 Record._BoxedQty += BoxQty;
+                                Record._Total += BoxQty;
+
                             }
                         }
 
@@ -332,6 +341,9 @@ namespace CustomerServices
                                 continue;
                         }
 
+                        dt.Columns.Add("Total", typeof(Int32));
+                        dt.Columns[dt.Columns.IndexOf("Total")].DefaultValue = 0;
+
                         foreach (var soh in SOHGrouped)
                         {
                             var xStyle = context.TLADM_Styles.Find(soh._StyleFK).Sty_Description;
@@ -346,14 +358,18 @@ namespace CustomerServices
                             if (SingleRow != null)
                             {
                                 SingleRow[index] = soh._BoxedQty;
+                                var CurrentTotal = Convert.ToInt32(SingleRow[dt.Columns.IndexOf("Total")]);
+                                var ColIndex = dt.Columns.IndexOf("Total");
+                                SingleRow[ColIndex] = CurrentTotal + soh._BoxedQty;
                             }
                             else
                             {
-                                var TheNewRow = dt.NewRow();
+                                DataRow TheNewRow = dt.NewRow();
                                 TheNewRow[0] = xStyle;
                                 TheNewRow[1] = xColour;
                                 TheNewRow[index] = soh._BoxedQty;
-
+                                var ColIndex = dt.Columns.IndexOf("Total");
+                                TheNewRow[ColIndex] = soh._BoxedQty;
                                 dt.Rows.Add(TheNewRow);
                             }
                         }
@@ -394,12 +410,14 @@ namespace CustomerServices
                                 dd._ColourFK = Clr;
                                 dd._SizeFK = xSize;
                                 dd._StyleFK = Sty;
+                                dd._Total = BoxQty;
 
                                 SOHGrouped.Add(dd);
                             }
                             else
                             {
                                 Record._BoxedQty += BoxQty;
+                                Record._Total += BoxQty;
                             }
                         }
                         //now ready to display 
@@ -433,6 +451,9 @@ namespace CustomerServices
                                 continue;
                         }
 
+                        dt.Columns.Add("Total", typeof(Int32));
+                        dt.Columns[dt.Columns.IndexOf("Total")].DefaultValue = 0;
+
                         foreach (var soh in SOHGrouped)
                         {
                             var xStyle = context.TLADM_Styles.Find(soh._StyleFK).Sty_Description;
@@ -447,6 +468,10 @@ namespace CustomerServices
                             if (SingleRow != null)
                             {
                                 SingleRow[index] = soh._BoxedQty;
+                                var CurrentTotal = Convert.ToInt32(SingleRow[dt.Columns.IndexOf("Total")]);
+                                var ColIndex = dt.Columns.IndexOf("Total");
+                                SingleRow[ColIndex] = CurrentTotal + soh._BoxedQty;
+                                
                             }
                             else
                             {
@@ -454,7 +479,8 @@ namespace CustomerServices
                                 TheNewRow[0] = xStyle;
                                 TheNewRow[1] = xColour;
                                 TheNewRow[index] = soh._BoxedQty;
-
+                                var ColIndex = dt.Columns.IndexOf("Total");
+                                TheNewRow[ColIndex] = soh._BoxedQty;
                                 dt.Rows.Add(TheNewRow);
                             }
                             
@@ -585,7 +611,20 @@ namespace CustomerServices
                 oCmbo.DroppedDown = true;
         }
 
-    
+        private void rbGrossStock_CheckedChanged(object sender, EventArgs e)
+        {
+            frmPivotTables_Load(this, null);
+        }
+
+        private void rbAvailable_CheckedChanged(object sender, EventArgs e)
+        {
+            frmPivotTables_Load(this, null);
+        }
+
+        private void rbOutStanding_CheckedChanged(object sender, EventArgs e)
+        {
+            frmPivotTables_Load(this, null);
+        }
     }
 
     public struct DATA
@@ -594,13 +633,14 @@ namespace CustomerServices
         public int _ColourFK;           // Colour FK
         public int _SizeFK;             // Size FK     
         public int _BoxedQty;           // dataGridView Trim Record Key
-     
-        public DATA(int StyleKey, int ColourKey, int SizeKey, int BoxedQty)
+        public int _Total;
+        public DATA(int StyleKey, int ColourKey, int SizeKey, int BoxedQty, int Total)
         {
             this._StyleFK = StyleKey;
             this._ColourFK = ColourKey;
             this._SizeFK = SizeKey;
             this._BoxedQty = BoxedQty;
+            this._Total = Total;
         }
     }
 }

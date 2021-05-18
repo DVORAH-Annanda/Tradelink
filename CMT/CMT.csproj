@@ -119,6 +119,12 @@
       <DependentUpon>CMTFinishedWAnalysis.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="CMTFinishedWorkBySize.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CMTFinishedWorkBySize.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="CMTFinWAnalBy.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -840,6 +846,10 @@
     <EmbeddedResource Include="CMTFinishedWAnalysis.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>CMTFinishedWAnalysis.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CMTFinishedWorkBySize.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>CMTFinishedWorkBySize.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="CMTFinWAnalBy.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>

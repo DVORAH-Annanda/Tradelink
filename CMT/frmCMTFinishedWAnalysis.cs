@@ -54,8 +54,9 @@ namespace CMT
             cmboReportOptions.ValueMember =  "Key";
             cmboReportOptions.DisplayMember = "Value";
             cmboReportOptions.SelectedIndex = -1;
-            
 
+            chkValueBySize.Checked = false;
+            
             using (var context = new TTI2Entities())
             {
                 var Factories = context.TLADM_Departments.Where(x => x.Dep_IsCMT).OrderBy(x=>x.Dep_Description).ToList();
@@ -218,9 +219,15 @@ namespace CMT
                     CMTRepOpts.fromDate = Convert.ToDateTime(dtpFromDate.Value.ToShortDateString());
                     CMTRepOpts.toDate = Convert.ToDateTime(dtpToDate.Value.ToShortDateString());
                     CMTRepOpts.toDate = CMTRepOpts.toDate.AddHours(23);
-
-                    frmCMTViewRep vRep = new frmCMTViewRep(20, QueryParms, CMTRepOpts);
-
+                    frmCMTViewRep vRep = null;
+                    if (!chkValueBySize.Checked)
+                    {
+                        vRep = new frmCMTViewRep(20, QueryParms, CMTRepOpts);
+                    }
+                    else
+                    {
+                        vRep = new frmCMTViewRep(36, QueryParms, CMTRepOpts);
+                    }
                     int h = Screen.PrimaryScreen.WorkingArea.Height;
                     int w = Screen.PrimaryScreen.WorkingArea.Width;
                     vRep.ClientSize = new Size(w, h);

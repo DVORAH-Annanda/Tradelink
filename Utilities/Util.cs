@@ -1462,8 +1462,15 @@ namespace Utilities
             {
                 StockOnHand = (from soh in context.TLCSV_StockOnHand 
                                join whse in context.TLADM_WhseStore on soh.TLSOH_WareHouse_FK equals whse.WhStore_Id
-                               where soh.TLSOH_Style_FK == Style && soh.TLSOH_Colour_FK == Colour && soh.TLSOH_Size_FK == Size
-                               && soh.TLSOH_Grade.Contains("A") && !soh.TLSOH_Picked && !soh.TLSOH_Sold && !soh.TLSOH_Write_Off && !soh.TLSOH_Split && !soh.TLSOH_Returned
+                               where soh.TLSOH_Style_FK == Style 
+                               && soh.TLSOH_Colour_FK == Colour 
+                               && soh.TLSOH_Size_FK == Size
+                               && soh.TLSOH_Is_A  
+                               && !soh.TLSOH_Picked 
+                               && !soh.TLSOH_Sold 
+                               && !soh.TLSOH_Write_Off 
+                               && !soh.TLSOH_Split 
+                               && !soh.TLSOH_Returned
                                && whse.WhStore_GradeA
                                select soh).ToList();
  
@@ -1472,6 +1479,7 @@ namespace Utilities
                     ExpectedUnits = StockOnHand.Sum(x => (int?)x.TLSOH_BoxedQty) ?? 0;
                }
             }
+            
             return ExpectedUnits;
         }
 

@@ -194,7 +194,7 @@ namespace CMT
                         if (idx < 5)
                         {
                             dataGridView1.Columns[idx].HeaderText = col.Caption;
-
+                            dataGridView1.Columns[idx].Visible = true;
                         }
                         else
                         {
@@ -220,6 +220,11 @@ namespace CMT
 
                     var LineIssues = context.TLCMT_LineIssue.Where(x => !x.TLCMTLI_WorkCompleted).ToList();
 
+                    if(LineIssues.Count == 0)
+                    {
+                        MessageBox.Show("No records found for selection made");
+                        return;
+                    }
                     foreach (var LineIssue in LineIssues)
                     {
                         DataRow NewRow = dt.NewRow();
@@ -241,6 +246,8 @@ namespace CMT
 
 
                     }
+                    if (!dataGridView1.Visible)
+                        dataGridView1.Visible = true;
                 }
             }
         }

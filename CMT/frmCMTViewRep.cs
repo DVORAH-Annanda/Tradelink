@@ -1926,7 +1926,7 @@ namespace CMT
                 core = new Util();
                 _repos = new CMTRepository();
 
-
+                // DJL
                 using (var context = new TTI2Entities())
                 {
                     Reasons = context.TLCMT_DeflectFlaw.ToList();
@@ -3753,7 +3753,100 @@ namespace CMT
                 crystalReportViewer1.ReportSource = BoxH;
 
             }
+            else if (_RepNo == 36)  // CMT Completed Work Analysis showing values by Sizes 
+            {
+                DataSet ds = new DataSet();
+                DataSet21.DataTable1DataTable dataTable1 = new DataSet21.DataTable1DataTable();
+                DataSet21.DataTable2DataTable dataTable2 = new DataSet21.DataTable2DataTable();
+
+                core = new Util();
+                _repos = new CMTRepository();
+                using (var context = new TTI2Entities())
+                {
+                    DataSet21.DataTable2Row t2 = dataTable2.NewDataTable2Row();
+                    t2.Title = "CMT Completed Work Analysis - Values By Size";
+                    t2.FromDate = _repOpts.fromDate;
+                    t2.ToDate = _repOpts.toDate;
+                    t2.Pk = 1;
+                    dataTable2.AddDataTable2Row(t2);
+
+                    var CompletedWork = _repos.CMTCompletedWork(_QueryParms).ToList();
+                    var ExistingGroups = CompletedWork.Where(x => x.TLCMTWC_TransactionDate >= _repOpts.fromDate && x.TLCMTWC_TransactionDate <= _repOpts.toDate).GroupBy(x => x.TLCMTWC_CutSheet_FK).ToList();
+
+
+                    foreach (var Group in ExistingGroups)
+                    {
+                        StringBuilder SizeConcat = new StringBuilder();
+
+                        var xSize = Group.GroupBy(x => x.TLCMTWC_Size_FK);
+                        if (xSize.Count() == 1)
+                            continue;
+
+                        foreach (var Record in xSize)
+                        {
+                            var Pk = Record.FirstOrDefault().TLCMTWC_Size_FK;
+                            var SizeDesc = _Sizes.FirstOrDefault(s => s.SI_id == Pk).SI_Description;
+                          
+                            DataSet21.DataTable1Row nr = dataTable1.NewDataTable1Row();
+                            nr.TotalCS = 0;
+                            nr.Pk = 1;
+                            nr.Size = SizeDesc;
+                            nr.AGrade = Group.Where(x => x.TLCMTWC_Grade.Contains("A") && x.TLCMTWC_Size_FK == Pk).Sum(x => x.TLCMTWC_Qty);
+                            nr.BGrade = Group.Where(x => !x.TLCMTWC_Grade.Contains("A") && x.TLCMTWC_Size_FK == Pk).Sum(x => x.TLCMTWC_Qty);
+                                                       
+                           /* nr.Panels = Stats.CMTS_Panels;
+                            nr.TotalIssued = Stats.CMTS_Total_A_Grades + Stats.CMTS_Total_B_Grades;
+                            nr.Short = (Stats.CMTS_Total_A_Grades + Stats.CMTS_Total_B_Grades + Stats.CMTS_Panels) - nr.TotalCS;
+                            nr.AGrade = Stats.CMTS_Total_A_Grades;
+                            nr.BGrade = Stats.CMTS_Total_B_Grades;*/
+
+                            var StylePk = Group.FirstOrDefault().TLCMTWC_Style_FK;
+                            var ColorPk = Group.FirstOrDefault().TLCMTWC_Colour_FK;
+                            var FacilityPk = Group.FirstOrDefault().TLCMTWC_CMTFacility_FK;
+
+                            nr.CMT = context.TLADM_Departments.Find(FacilityPk).Dep_Description;
+                            nr.Style = _Styles.FirstOrDefault(s => s.Sty_Id == StylePk).Sty_Description;
+                            nr.Colour = _Colours.FirstOrDefault(s => s.Col_Id == ColorPk).Col_Display;
+                            var CS = context.TLCUT_CutSheet.Find(Group.FirstOrDefault().TLCMTWC_CutSheet_FK);
+                            if (CS != null)
+                            {
+                                nr.CSNO = CS.TLCutSH_No.Remove(0, 2);
+
+                                var DB = context.TLDYE_DyeBatch.Find(CS.TLCutSH_DyeBatch_FK);
+                                if (DB != null)
+                                {
+                                    nr.BATCHNO = DB.DYEB_BatchNo.Remove(0, 2);
+
+                                }
+
+                                var CutSheetReceipt = context.TLCUT_CutSheetReceipt.Where(x => x.TLCUTSHR_CutSheet_FK == CS.TLCutSH_Pk).FirstOrDefault();
+                                if (CutSheetReceipt != null)
+                                {
+                                    nr.TotalCS = context.TLCUT_CutSheetReceiptDetail.Where(x => x.TLCUTSHRD_CutSheet_FK == CutSheetReceipt.TLCUTSHR_Pk && x.TLCUTSHRD_Size_FK == Pk).Sum(x => (int?)x.TLCUTSHRD_BoxUnits) ?? 0;
+                                }
+
+                                var LinePk = Group.FirstOrDefault().TLCMTWC_LineIssue_FK;
+
+                                var Existing = context.TLCMT_LineIssue.Where(x => x.TLCMTLI_Pk == LinePk).FirstOrDefault();
+                                if (Existing != null)
+                                {
+                                   nr.LineNumber = context.TLCMT_FactConfig.Find(Existing.TLCMTLI_LineNo_FK).TLCMTCFG_LineNo.ToString();
+                                }
+                            }
+                            dataTable1.AddDataTable1Row(nr);
+                        }
+                    }
+                   
+                    ds.Tables.Add(dataTable1);
+                    ds.Tables.Add(dataTable2);
+                    CMTFinishedWorkBySize BoxH = new CMTFinishedWorkBySize();
+                    BoxH.SetDataSource(ds);
+                    crystalReportViewer1.ReportSource = BoxH;
+                }
+            }
+
             crystalReportViewer1.Refresh();
+            
         }
 
         private void releaseObject(object obj)

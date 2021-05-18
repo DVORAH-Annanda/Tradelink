@@ -716,7 +716,8 @@ namespace Cutting
                         nr.Colour = _Colours.FirstOrDefault(s => s.Col_Id == row.TLCutSH_Colour_FK).Col_Display;
                         nr.Priority = row.TLCUTSH_Priority;
                         nr.OnHold = row.TLCUTSH_OnHold;
-
+                        nr.DyeBatch = context.TLDYE_DyeBatch.Find(row.TLCutSH_DyeBatch_FK).DYEB_BatchNo;
+                        
                         var xSizes = context.TLCUT_ExpectedUnits.Where(x => x.TLCUTE_CutSheet_FK == row.TLCutSH_Pk).ToList();
                         foreach (var xSize in xSizes)
                         {
@@ -793,6 +794,7 @@ namespace Cutting
                                 nr.Col9 = dr.Field<int>(17);
                                 nr.Col10 = dr.Field<int>(18);
                                 nr.Col11 = dr.Field<int>(19);
+                                nr.DyeBatch = dr.Field<String>(20);
 
                                 dataTable1.AddDataTable1Row(nr);
                             }

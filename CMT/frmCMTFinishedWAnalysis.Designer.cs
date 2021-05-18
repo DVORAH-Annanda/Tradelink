@@ -37,10 +37,6 @@
             this.label7 = new System.Windows.Forms.Label();
             this.dtpFromDate = new System.Windows.Forms.DateTimePicker();
             this.dtpToDate = new System.Windows.Forms.DateTimePicker();
-            this.cmboFactory = new CMT.CheckComboBox();
-            this.cmboStyle = new CMT.CheckComboBox();
-            this.cmboColour = new CMT.CheckComboBox();
-            this.cmboSize = new CMT.CheckComboBox();
             this.cmboReportOptions = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.chkQaSummary = new System.Windows.Forms.CheckBox();
@@ -49,6 +45,11 @@
             this.txtPercentage = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
             this.chkException = new System.Windows.Forms.CheckBox();
+            this.cmboSize = new CMT.CheckComboBox();
+            this.cmboColour = new CMT.CheckComboBox();
+            this.cmboStyle = new CMT.CheckComboBox();
+            this.cmboFactory = new CMT.CheckComboBox();
+            this.chkValueBySize = new System.Windows.Forms.CheckBox();
             this.groupBox4.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -130,50 +131,6 @@
             this.dtpToDate.Size = new System.Drawing.Size(141, 20);
             this.dtpToDate.TabIndex = 9;
             // 
-            // cmboFactory
-            // 
-            this.cmboFactory.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.cmboFactory.FormattingEnabled = true;
-            this.cmboFactory.Location = new System.Drawing.Point(248, 250);
-            this.cmboFactory.Name = "cmboFactory";
-            this.cmboFactory.Size = new System.Drawing.Size(278, 21);
-            this.cmboFactory.TabIndex = 10;
-            this.cmboFactory.Text = "Select Options";
-            this.cmboFactory.SelectedIndexChanged += new System.EventHandler(this.cmboFactory_SelectedIndexChanged);
-            // 
-            // cmboStyle
-            // 
-            this.cmboStyle.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.cmboStyle.FormattingEnabled = true;
-            this.cmboStyle.Location = new System.Drawing.Point(248, 299);
-            this.cmboStyle.Name = "cmboStyle";
-            this.cmboStyle.Size = new System.Drawing.Size(278, 21);
-            this.cmboStyle.TabIndex = 12;
-            this.cmboStyle.Text = "Select Options";
-            this.cmboStyle.SelectedIndexChanged += new System.EventHandler(this.cmboStyle_SelectedIndexChanged);
-            // 
-            // cmboColour
-            // 
-            this.cmboColour.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.cmboColour.FormattingEnabled = true;
-            this.cmboColour.Location = new System.Drawing.Point(248, 348);
-            this.cmboColour.Name = "cmboColour";
-            this.cmboColour.Size = new System.Drawing.Size(278, 21);
-            this.cmboColour.TabIndex = 13;
-            this.cmboColour.Text = "Select Options";
-            this.cmboColour.SelectedIndexChanged += new System.EventHandler(this.cmboColour_SelectedIndexChanged);
-            // 
-            // cmboSize
-            // 
-            this.cmboSize.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.cmboSize.FormattingEnabled = true;
-            this.cmboSize.Location = new System.Drawing.Point(248, 397);
-            this.cmboSize.Name = "cmboSize";
-            this.cmboSize.Size = new System.Drawing.Size(278, 21);
-            this.cmboSize.TabIndex = 14;
-            this.cmboSize.Text = "Select Options";
-            this.cmboSize.SelectedIndexChanged += new System.EventHandler(this.cmboSize_SelectedIndexChanged);
-            // 
             // cmboReportOptions
             // 
             this.cmboReportOptions.FormattingEnabled = true;
@@ -194,7 +151,7 @@
             // chkQaSummary
             // 
             this.chkQaSummary.AutoSize = true;
-            this.chkQaSummary.Location = new System.Drawing.Point(248, 129);
+            this.chkQaSummary.Location = new System.Drawing.Point(223, 129);
             this.chkQaSummary.Name = "chkQaSummary";
             this.chkQaSummary.Size = new System.Drawing.Size(87, 17);
             this.chkQaSummary.TabIndex = 17;
@@ -249,11 +206,66 @@
             this.chkException.UseVisualStyleBackColor = true;
             this.chkException.CheckedChanged += new System.EventHandler(this.chkException_CheckedChanged);
             // 
+            // cmboSize
+            // 
+            this.cmboSize.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cmboSize.FormattingEnabled = true;
+            this.cmboSize.Location = new System.Drawing.Point(248, 397);
+            this.cmboSize.Name = "cmboSize";
+            this.cmboSize.Size = new System.Drawing.Size(278, 21);
+            this.cmboSize.TabIndex = 14;
+            this.cmboSize.Text = "Select Options";
+            this.cmboSize.SelectedIndexChanged += new System.EventHandler(this.cmboSize_SelectedIndexChanged);
+            // 
+            // cmboColour
+            // 
+            this.cmboColour.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cmboColour.FormattingEnabled = true;
+            this.cmboColour.Location = new System.Drawing.Point(248, 348);
+            this.cmboColour.Name = "cmboColour";
+            this.cmboColour.Size = new System.Drawing.Size(278, 21);
+            this.cmboColour.TabIndex = 13;
+            this.cmboColour.Text = "Select Options";
+            this.cmboColour.SelectedIndexChanged += new System.EventHandler(this.cmboColour_SelectedIndexChanged);
+            // 
+            // cmboStyle
+            // 
+            this.cmboStyle.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cmboStyle.FormattingEnabled = true;
+            this.cmboStyle.Location = new System.Drawing.Point(248, 299);
+            this.cmboStyle.Name = "cmboStyle";
+            this.cmboStyle.Size = new System.Drawing.Size(278, 21);
+            this.cmboStyle.TabIndex = 12;
+            this.cmboStyle.Text = "Select Options";
+            this.cmboStyle.SelectedIndexChanged += new System.EventHandler(this.cmboStyle_SelectedIndexChanged);
+            // 
+            // cmboFactory
+            // 
+            this.cmboFactory.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cmboFactory.FormattingEnabled = true;
+            this.cmboFactory.Location = new System.Drawing.Point(248, 250);
+            this.cmboFactory.Name = "cmboFactory";
+            this.cmboFactory.Size = new System.Drawing.Size(278, 21);
+            this.cmboFactory.TabIndex = 10;
+            this.cmboFactory.Text = "Select Options";
+            this.cmboFactory.SelectedIndexChanged += new System.EventHandler(this.cmboFactory_SelectedIndexChanged);
+            // 
+            // chkValueBySize
+            // 
+            this.chkValueBySize.AutoSize = true;
+            this.chkValueBySize.Location = new System.Drawing.Point(352, 129);
+            this.chkValueBySize.Name = "chkValueBySize";
+            this.chkValueBySize.Size = new System.Drawing.Size(128, 17);
+            this.chkValueBySize.TabIndex = 19;
+            this.chkValueBySize.Text = "Display Value By Size";
+            this.chkValueBySize.UseVisualStyleBackColor = true;
+            // 
             // frmCMTFinishedWAnalysis
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(627, 583);
+            this.Controls.Add(this.chkValueBySize);
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.chkQaSummary);
             this.Controls.Add(this.label1);
@@ -310,5 +322,6 @@
         private System.Windows.Forms.TextBox txtPercentage;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.CheckBox chkException;
+        private System.Windows.Forms.CheckBox chkValueBySize;
     }
 }

@@ -725,8 +725,8 @@ namespace CMT
                     MessageBox.Show("Please select a box type from the facilities");
                     return;
                 }
-                var PanelIssue = (int)cmboCMTIssue.SelectedValue;
-                if (PanelIssue == 0)
+                var PanelIssue_FK = (int)cmboCMTIssue.SelectedValue;
+                if (PanelIssue_FK == 0)
                 {
                     MessageBox.Show("Please select a panel issue document");
                     return;
@@ -769,7 +769,7 @@ namespace CMT
                             LI.TLCMTLI_WorkCompleted = true;
                         }
                         
-                        comWork.TLCMTWC_PanelIssue_FK = PanelIssue;
+                        comWork.TLCMTWC_PanelIssue_FK = PanelIssue_FK;
                         comWork.TLCMTWC_TransactionDate = dtpTransDate.Value;
                         comWork.TLCMTWC_BoxNumber = row.Cells[0].Value.ToString();
                         comWork.TLCMTWC_PastelNumber = row.Cells[3].Value.ToString();
@@ -835,7 +835,7 @@ namespace CMT
                         TLCMT_ProductionFaults pf = new TLCMT_ProductionFaults();
 
                         pf.TLCMTPF_Fault_FK = (int)rw.Cells[0].Value;
-                        pf.TLCMTPF_PanelIssue_FK = PanelIssue;
+                        pf.TLCMTPF_PanelIssue_FK = PanelIssue_FK;
                         if(LI != null)
                             pf.TLCMTPF_LineIssue_FK = LI.TLCMTLI_LineNo_FK;
                         pf.TLCMTPF_Qty = (int)rw.Cells[2].Value;
@@ -849,7 +849,7 @@ namespace CMT
                     TLCMT_Statistics stats = new TLCMT_Statistics();
                     bool Add = true;
 
-                    stats = context.TLCMT_Statistics.Where(x => x.CMTS_PanelIssue_FK == PanelIssue).FirstOrDefault();
+                    stats = context.TLCMT_Statistics.Where(x => x.CMTS_PanelIssue_FK == PanelIssue_FK).FirstOrDefault();
                     if (stats == null)
                     {
                         stats = new TLCMT_Statistics();
@@ -857,7 +857,7 @@ namespace CMT
                     else
                         Add = !Add;
 
-                    stats.CMTS_PanelIssue_FK = PanelIssue;
+                    stats.CMTS_PanelIssue_FK = PanelIssue_FK;
                     stats.CMTS_Total_A_Grades = Convert.ToInt32(txtTotAGrade.Text);
                     stats.CMTS_Total_B_Grades = Convert.ToInt32(txtTotBGrade.Text);
                     stats.CMTS_TotalPanelIssued = Convert.ToInt32(txtTPIssued.Text);

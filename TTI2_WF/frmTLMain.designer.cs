@@ -192,6 +192,7 @@
             this.fabricProductionInQuaratineStoreToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fabricProductionToFabricStoreToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fabricProductionNotFinishedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.fabricQualityToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aQReportsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.allShadedCodesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.allRemedyCodesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -459,7 +460,6 @@
             this.dataClearDownToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.inUseResetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
-            this.fabricQualityToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             this.SuspendLayout();
@@ -1782,6 +1782,12 @@
             this.fabricProductionNotFinishedToolStripMenuItem.Text = "Fabric Production Not Finished";
             this.fabricProductionNotFinishedToolStripMenuItem.Click += new System.EventHandler(this.fabricProductionNotFinishedToolStripMenuItem_Click);
             // 
+            // fabricQualityToolStripMenuItem
+            // 
+            this.fabricQualityToolStripMenuItem.Name = "fabricQualityToolStripMenuItem";
+            this.fabricQualityToolStripMenuItem.Size = new System.Drawing.Size(266, 22);
+            this.fabricQualityToolStripMenuItem.Text = "Fabric Quality";
+            // 
             // aQReportsToolStripMenuItem
             // 
             this.aQReportsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -2658,7 +2664,7 @@
             this.transferExCMTToolStripMenuItem,
             this.directTransferToCustomerToolStripMenuItem});
             this.transactionsToolStripMenuItem.Name = "transactionsToolStripMenuItem";
-            this.transactionsToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
+            this.transactionsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.transactionsToolStripMenuItem.Text = "CSV Transactions";
             // 
             // transferExCMTToolStripMenuItem
@@ -2843,7 +2849,7 @@
             this.negativeStockByCustomerToolStripMenuItem,
             this.pastelReconciliationReportToolStripMenuItem});
             this.reportingToolStripMenuItem3.Name = "reportingToolStripMenuItem3";
-            this.reportingToolStripMenuItem3.Size = new System.Drawing.Size(165, 22);
+            this.reportingToolStripMenuItem3.Size = new System.Drawing.Size(180, 22);
             this.reportingToolStripMenuItem3.Text = "CSV Reporting";
             // 
             // stockQuantitiesOnHandToolStripMenuItem
@@ -2994,7 +3000,7 @@
             this.deliveryNoteInquiryToolStripMenuItem,
             this.purchaseOrderNumberToolStripMenuItem});
             this.viewsToolStripMenuItem3.Name = "viewsToolStripMenuItem3";
-            this.viewsToolStripMenuItem3.Size = new System.Drawing.Size(165, 22);
+            this.viewsToolStripMenuItem3.Size = new System.Drawing.Size(180, 22);
             this.viewsToolStripMenuItem3.Text = "CSV Views";
             // 
             // boxEnquiryToolStripMenuItem
@@ -3043,7 +3049,7 @@
             this.replenishmentMachineCapacityToolStripMenuItem,
             this.interDepartmentalAnalysisDefinitionToolStripMenuItem});
             this.replenishmentDefinitionToolStripMenuItem.Name = "replenishmentDefinitionToolStripMenuItem";
-            this.replenishmentDefinitionToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
+            this.replenishmentDefinitionToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.replenishmentDefinitionToolStripMenuItem.Text = "PPS Replenishment";
             // 
             // replenishmentDefinitionToolStripMenuItem1
@@ -3090,7 +3096,7 @@
             this.interDepartmentalFaultsComparisonToolStripMenuItem,
             this.interDepartmentalDskAnalysisToolStripMenuItem});
             this.reportingToolStripMenuItem4.Name = "reportingToolStripMenuItem4";
-            this.reportingToolStripMenuItem4.Size = new System.Drawing.Size(176, 22);
+            this.reportingToolStripMenuItem4.Size = new System.Drawing.Size(180, 22);
             this.reportingToolStripMenuItem4.Text = "PPS Reporting";
             // 
             // replenishmentDetailsToolStripMenuItem
@@ -3908,12 +3914,6 @@
             // errorProvider1
             // 
             this.errorProvider1.ContainerControl = this;
-            // 
-            // fabricQualityToolStripMenuItem
-            // 
-            this.fabricQualityToolStripMenuItem.Name = "fabricQualityToolStripMenuItem";
-            this.fabricQualityToolStripMenuItem.Size = new System.Drawing.Size(266, 22);
-            this.fabricQualityToolStripMenuItem.Text = "Fabric Quality";
             // 
             // frmTLMain
             // 

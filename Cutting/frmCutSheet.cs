@@ -976,7 +976,7 @@ namespace Cutting
                         var LNU = context.TLADM_LastNumberUsed.Find(4);
                         if (LNU != null)
                         {
-                            cutSheet.TLCutSH_No = "CS" + LNU.col1.ToString().PadLeft(5, '0');
+                            cutSheet.TLCutSH_No = "CS" + LNU.col1.ToString().PadLeft(6, '0');
                             LNU.col1 += 1;
                         }
                         context.TLCUT_CutSheet.Add(cutSheet);

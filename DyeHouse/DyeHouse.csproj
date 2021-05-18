@@ -711,6 +711,12 @@
     <Compile Include="frmFabricOnOffHold.Designer.cs">
       <DependentUpon>frmFabricOnOffHold.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmFabricQualSummary.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmFabricQualSummary.Designer.cs">
+      <DependentUpon>frmFabricQualSummary.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmFabricReversal.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -1293,6 +1299,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmFabricOnOffHold.resx">
       <DependentUpon>frmFabricOnOffHold.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmFabricQualSummary.resx">
+      <DependentUpon>frmFabricQualSummary.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmFabricReversal.resx">
       <DependentUpon>frmFabricReversal.cs</DependentUpon>
