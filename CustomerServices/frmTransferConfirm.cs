@@ -373,7 +373,7 @@ namespace CustomerServices
                                 {
                                     var index = dataGridView1.Rows.Add();
                                     dataGridView1.Rows[index].Cells[0].Value = Box.TLCSV_Pk;
-                                    dataGridView1.Rows[index].Cells[1].Value = false;
+                                    dataGridView1.Rows[index].Cells[1].Value = true;
                                     dataGridView1.Rows[index].Cells[2].Value = Box.TLCSV_PLDetails;
                                     dataGridView1.Rows[index].Cells[3].Value = context.TLADM_Departments.Find(Box.TLCSV_From_FK).Dep_Description;
                                     dataGridView1.Rows[index].Cells[4].Value = context.TLADM_WhseStore.Find(Box.TLCSV_To_FK).WhStore_Description;

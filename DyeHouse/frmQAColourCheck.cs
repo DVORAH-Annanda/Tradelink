@@ -38,6 +38,7 @@ namespace DyeHouse
                 var Existing = from T1 in context.TLDYE_DyeBatchAllocated
                                join T2 in context.TLDYE_DyeBatch on T1.TLDYEA_DyeBatch_FK equals T2.DYEB_Pk 
                                where T2.DYEB_Allocated && !T2.DYEB_OutProcess && !T2.DYEB_Stage1  
+                               orderby T2.DYEB_BatchNo 
                                select T2;
 
                 cmboBatchNo.DataSource = Existing.ToList();

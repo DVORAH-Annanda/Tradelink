@@ -294,6 +294,18 @@ namespace Cutting
                 CS = CS.AsExpandable().Where(CSPredicate);
             }
 
+            if (parameters.Styles.Count != 0)
+            {
+                var CSPredicate = PredicateBuilder.New<TLCUT_CutSheet>();
+                foreach (var CSR in parameters.Styles)
+                {
+                    var temp = CSR;
+                    CSPredicate = CSPredicate.Or(s => s.TLCutSH_Styles_FK == temp.Sty_Id);
+                }
+
+                CS = CS.AsExpandable().Where(CSPredicate);
+            }
+
             if (parameters.Colours.Count != 0)
             {
                 var CSColourPredicate = PredicateBuilder.New<TLCUT_CutSheet>();

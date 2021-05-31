@@ -2425,78 +2425,91 @@ namespace CustomerServices
                 DataSet ds = new DataSet();
                 DataSet23.DataTable1DataTable dataTable1 = new DataSet23.DataTable1DataTable();
                 DataSet23.DataTable2DataTable dataTable2 = new DataSet23.DataTable2DataTable();
+                var repo = new Repository();
+                IList<TLCSV_PuchaseOrderDetail> Dets = null;
 
                 using (var context = new TTI2Entities())
                 {
-                    foreach (var PurchaseOrder in _QueryParms.PurchaseOrders)
+                    if (_QueryParms.TransactHistory)
                     {
-                        var PODetails = (from PODetail in context.TLCSV_PuchaseOrderDetail
-                                         join xSizes in context.TLADM_Sizes on PODetail.TLCUSTO_Size_FK equals xSizes.SI_id
-                                         where PODetail.TLCUSTO_PurchaseOrder_FK == PurchaseOrder.TLCSVPO_Pk
-                                         orderby PODetail.TLCUSTO_Style_FK, PODetail.TLCUSTO_Colour_FK, xSizes.SI_DisplayOrder
-                                         select PODetail).ToList();
+                        var Boxes = repo.CustomerAudit(_QueryParms, _QueryParms.Customers.FirstOrDefault().Cust_Pk).ToList();
 
-
-                        // var PODetails = context.TLCSV_PuchaseOrderDetail.Where(x => x.TLCUSTO_PurchaseOrder_FK == PurchaseOrder.TLCSVPO_Pk).ToList();
-                        foreach (var PODetail in PODetails)
+                        foreach (var Box in Boxes)
                         {
-                            if (_QueryParms.TransactHistory)
+                            DataSet23.DataTable1Row nr = dataTable1.NewDataTable1Row();
+                            nr.Pk = 1;
+                            var POOrder = context.TLCSV_PurchaseOrder.Find(Box.TLSOH_POOrder_FK);
+                            if (POOrder != null)
                             {
-                                var Boxes = context.TLCSV_StockOnHand.Where(x => x.TLSOH_POOrderDetail_FK == PODetail.TLCUSTO_Pk).ToList();
+                                nr.TPurchaseNo = POOrder.TLCSVPO_PurchaseOrder;
+                                nr.TCustName = _Customers.FirstOrDefault(s => s.Cust_Pk == POOrder.TLCSVPO_Customer_FK).Cust_Description;
+                                nr.TRequiredDate = POOrder.TLCSVPO_RequiredDate;
+                                nr.TOrderDate = POOrder.TLCSVPO_TransDate;
+                                nr.TStatus = POOrder.TLCSVPO_Closeed;
+                                nr.TOrderQty = 0;
+                                /*nr.TOrderQty = (from T1 in context.TLCSV_PurchaseOrder
+                                                  join T2 in context.TLCSV_PuchaseOrderDetail
+                                                  on T1.TLCSVPO_Pk equals T2.TLCUSTO_PurchaseOrder_FK
+                                                  where T2.TLCUSTO_Style_FK == Box.TLSOH_Style_FK &&
+                                                        T2.TLCUSTO_Colour_FK == Box.TLSOH_Colour_FK &&
+                                                        T2.TLCUSTO_Size_FK == Box.TLSOH_Size_FK
+                                                  select T2).Sum(x => x.TLCUSTO_Qty);*/
 
-                                if (Boxes.Count == 0)
-                                {
-                                    continue;
-                                }
-
-                                foreach (var Box in Boxes)
-                                {
-                                    DataSet23.DataTable1Row nr = dataTable1.NewDataTable1Row();
-                                    nr.Pk = 1;
-                                    nr.TPurchaseNo = PurchaseOrder.TLCSVPO_PurchaseOrder;
-                                    nr.TCustName = _Customers.FirstOrDefault(s => s.Cust_Pk == PurchaseOrder.TLCSVPO_Customer_FK).Cust_Description;
-                                    nr.TRequiredDate = PurchaseOrder.TLCSVPO_RequiredDate;
-                                    nr.TOrderDate = PurchaseOrder.TLCSVPO_TransDate;
-                                    nr.TStatus = PurchaseOrder.TLCSVPO_Closeed;
-                                    nr.TStyle = _Styles.FirstOrDefault(s => s.Sty_Id == PODetail.TLCUSTO_Style_FK).Sty_Description;
-                                    nr.TColour = _Colours.FirstOrDefault(s => s.Col_Id == PODetail.TLCUSTO_Colour_FK).Col_Display;
-                                    var xSize = _Sizes.FirstOrDefault(s => s.SI_id == PODetail.TLCUSTO_Size_FK);
-                                    if (xSize != null)
-                                    {
-                                        nr.TSize = xSize.SI_Description;
-                                        nr.TDisplayOrder = xSize.SI_DisplayOrder;
-                                    }
-                                    nr.TOrderQty = PODetail.TLCUSTO_Qty;
-                                    nr.TBoxQty = Box.TLSOH_BoxedQty;
-                                    nr.TBoxNumber = Box.TLSOH_BoxNumber;
-
-                                    if (Box.TLSOH_Picked)
-                                    {
-                                        if (Box.TLSOH_PickListDate != null)
-                                            nr.TPLDate = (DateTime)Box.TLSOH_PickListDate;
-
-                                        nr.TPLNumber = "PL" + Box.TLSOH_PickListNo.ToString().PadLeft(5, '0');
-                                    }
-
-                                    if (Box.TLSOH_Sold)
-                                    {
-                                        if (Box.TLSOH_DNListDate != null)
-                                            nr.TDLDate = (DateTime)Box.TLSOH_DNListDate;
-
-                                        nr.TDLNumber = "DN" + Box.TLSOH_DNListNo.ToString().PadLeft(5, '0');
-                                    }
-                                    dataTable1.AddDataTable1Row(nr);
-                                }
                             }
-                            else
+                            nr.TStyle = _Styles.FirstOrDefault(s => s.Sty_Id == Box.TLSOH_Style_FK).Sty_Description;
+                            nr.TColour = _Colours.FirstOrDefault(s => s.Col_Id == Box.TLSOH_Colour_FK).Col_Display;
+                            var xSize = _Sizes.FirstOrDefault(s => s.SI_id == Box.TLSOH_Size_FK);
+                            if (xSize != null)
                             {
+                                nr.TSize = xSize.SI_Description;
+                                nr.TDisplayOrder = xSize.SI_DisplayOrder;
+                            }
+
+                            nr.TBoxQty = Box.TLSOH_BoxedQty;
+                            nr.TBoxNumber = Box.TLSOH_BoxNumber;
+
+                            if (Box.TLSOH_Picked)
+                            {
+                                if (Box.TLSOH_PickListDate != null)
+                                    nr.TPLDate = (DateTime)Box.TLSOH_PickListDate;
+
+                                nr.TPLNumber = "PL" + Box.TLSOH_PickListNo.ToString().PadLeft(5, '0');
+                            }
+
+                            if (Box.TLSOH_Sold)
+                            {
+                                if (Box.TLSOH_DNListDate != null)
+                                    nr.TDLDate = (DateTime)Box.TLSOH_DNListDate;
+
+                                nr.TDLNumber = "DN" + Box.TLSOH_DNListNo.ToString().PadLeft(5, '0');
+                            }
+                            dataTable1.AddDataTable1Row(nr);
+                        }
+                    }
+                    else
+                    {
+                        foreach (var PurchaseOrder in _QueryParms.PurchaseOrders)
+                        {
+                            Dets = (from PODetail in context.TLCSV_PuchaseOrderDetail
+                                    join xSizes in context.TLADM_Sizes on PODetail.TLCUSTO_Size_FK equals xSizes.SI_id
+                                    where PODetail.TLCUSTO_PurchaseOrder_FK == PurchaseOrder.TLCSVPO_Pk
+                                    orderby PODetail.TLCUSTO_Style_FK, PODetail.TLCUSTO_Colour_FK, xSizes.SI_DisplayOrder
+                                    select PODetail).ToList();
+
+                            foreach (var PODetail in Dets)
+                            {
+
                                 DataSet23.DataTable1Row nr = dataTable1.NewDataTable1Row();
                                 nr.Pk = 1;
-                                nr.TPurchaseNo = PurchaseOrder.TLCSVPO_PurchaseOrder;
-                                nr.TCustName = _Customers.FirstOrDefault(s => s.Cust_Pk == PurchaseOrder.TLCSVPO_Customer_FK).Cust_Description;
-                                nr.TRequiredDate = PurchaseOrder.TLCSVPO_RequiredDate;
-                                nr.TOrderDate = PurchaseOrder.TLCSVPO_TransDate;
-                                nr.TStatus = PurchaseOrder.TLCSVPO_Closeed;
+                                var POOrder = context.TLCSV_PurchaseOrder.Find(PODetail.TLCUSTO_PurchaseOrder_FK);
+                                if (POOrder != null)
+                                {
+                                    nr.TPurchaseNo = POOrder.TLCSVPO_PurchaseOrder;
+                                    nr.TCustName = _Customers.FirstOrDefault(s => s.Cust_Pk == PurchaseOrder.TLCSVPO_Customer_FK).Cust_Description;
+                                    nr.TRequiredDate = POOrder.TLCSVPO_RequiredDate;
+                                    nr.TOrderDate = POOrder.TLCSVPO_TransDate;
+                                    nr.TStatus = POOrder.TLCSVPO_Closeed;
+                                }
                                 nr.TStyle = _Styles.FirstOrDefault(s => s.Sty_Id == PODetail.TLCUSTO_Style_FK).Sty_Description;
                                 nr.TColour = _Colours.FirstOrDefault(s => s.Col_Id == PODetail.TLCUSTO_Colour_FK).Col_Display;
                                 var xSize = _Sizes.FirstOrDefault(s => s.SI_id == PODetail.TLCUSTO_Size_FK);
@@ -2508,7 +2521,6 @@ namespace CustomerServices
                                 nr.TOrderQty = PODetail.TLCUSTO_Qty;
                                 dataTable1.AddDataTable1Row(nr);
                             }
-
                         }
                     }
                 }
@@ -2518,7 +2530,10 @@ namespace CustomerServices
 
                 if (_QueryParms.TransactHistory)
                 {
-                    hnr.Title = "Customer Transactional History";
+                    hnr.FromDate = _QueryParms.FromDate;
+                    hnr.ToDate = _QueryParms.ToDate;
+
+                    hnr.Title = "Customer Transactional History From" ;
                 }
                 else
                 {

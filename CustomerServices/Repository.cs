@@ -890,6 +890,55 @@ namespace CustomerServices
 
             return SOH;
         }
+
+        public IQueryable<TLCSV_StockOnHand> CustomerAudit(CustomerServicesParameters parameters, int Customer_Pk)
+        {
+            var SOH = _context.TLCSV_StockOnHand.Where(x => x.TLSOH_Customer_Fk == Customer_Pk && x.TLSOH_SoldDate >= parameters.FromDate && x.TLSOH_SoldDate <= parameters.ToDate).AsQueryable();
+           if(parameters.PurchaseOrders.Count() > 0 )
+            {
+                var POPredicate = PredicateBuilder.New<TLCSV_StockOnHand>();
+                foreach (var POOrder in parameters.PurchaseOrders)
+                {
+                    var temp = POOrder;
+                    POPredicate = POPredicate.Or(s => s.TLSOH_POOrder_FK == temp.TLCSVPO_Pk);
+                }
+                SOH = SOH.AsExpandable().Where(POPredicate);
+            }
+            if (parameters.Styles.Count() > 0)
+            {
+                var stylePredicate = PredicateBuilder.New<TLCSV_StockOnHand>();
+                foreach (var style in parameters.Styles)
+                {
+                    var temp = style;
+                    stylePredicate = stylePredicate.Or(s => s.TLSOH_Style_FK == temp.Sty_Id);
+                }
+                SOH = SOH.AsExpandable().Where(stylePredicate);
+            }
+
+            if (parameters.Colours.Count() > 0)
+            {
+                var colourPredicate = PredicateBuilder.New<TLCSV_StockOnHand>();
+                foreach (var style in parameters.Colours)
+                {
+                    var temp = style;
+                    colourPredicate = colourPredicate.Or(s => s.TLSOH_Colour_FK == temp.Col_Id);
+                }
+                SOH = SOH.AsExpandable().Where(colourPredicate);
+            }
+
+            if (parameters.Sizes.Count() > 0)
+            {
+                var sizePredicate = PredicateBuilder.New<TLCSV_StockOnHand>();
+                foreach (var style in parameters.Sizes)
+                {
+                    var temp = style;
+                    sizePredicate = sizePredicate.Or(s => s.TLSOH_Size_FK == temp.SI_id);
+                }
+                SOH = SOH.AsExpandable().Where(sizePredicate);
+            }
+
+            return SOH;
+        }
         public IQueryable<TLCSV_StockOnHand> SOHQuery(CustomerServicesParameters parameters)
         {
             var SOH = _context.TLCSV_StockOnHand.Where(x => !x.TLSOH_Picked && !x.TLSOH_Split).AsQueryable();

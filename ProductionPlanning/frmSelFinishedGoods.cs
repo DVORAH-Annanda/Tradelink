@@ -737,7 +737,7 @@ namespace ProductionPlanning
                                        join T2 in context.TLDYE_DyeBatch on T1.TLDYO_Pk equals T2.DYEB_DyeOrder_FK
                                        join T3 in context.TLDYE_DyeBatchDetails on T2.DYEB_Pk equals T3.DYEBD_DyeBatch_FK  
                                        where !T2.DYEB_CommissinCust && T2.DYEB_OutProcess && !T3.DYEBO_Sold &&
-                                       T3.DYEBD_BodyTrim && !T3.DYEBO_Rejected && !T3.DYEBO_WriteOff 
+                                       T3.DYEBD_BodyTrim && T3.DYEBO_QAApproved  && !T3.DYEBO_Rejected && !T3.DYEBO_WriteOff 
                                        && !T3.DYEBO_CutSheet && T1.TLDYO_Style_FK == Item.TLREP_Style_FK && T1.TLDYO_Colour_FK == Item.TLREP_Colour_FK
                                        select new { T1.TLDYO_Pk , T2.DYEB_Pk, T3.DYEBO_Nett };
                               

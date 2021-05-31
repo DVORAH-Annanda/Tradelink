@@ -29,8 +29,10 @@ namespace CustomerServices
                 this.Text = "Tranactional Customer History";
             else
                 this.Text = "Customer Audit History";
- 
 
+            this.cmboStyles.CheckStateChanged += new System.EventHandler(this.cmboStyles_CheckStateChanged);
+            this.cmboColours.CheckStateChanged += new System.EventHandler(this.cmboColours_CheckStateChanged);
+            this.cmboSizes.CheckStateChanged += new System.EventHandler(this.cmboSizes_CheckStateChanged);
             this.cmboPurchaseOrders.CheckStateChanged += new System.EventHandler(this.cmboPurchaseOrders_CheckStateChanged);
         }
 
@@ -39,15 +41,47 @@ namespace CustomerServices
             FormLoaded = false;
             using (var context = new TTI2Entities())
             {
-                cmboCustomers.DataSource = context.TLADM_CustomerFile.Where(x=>!x.Cust_Blocked).OrderBy(x=>x.Cust_Description).ToList();
+                cmboCustomers.DataSource = context.TLADM_CustomerFile.Where(x => !x.Cust_Blocked).OrderBy(x => x.Cust_Description).ToList();
                 cmboCustomers.ValueMember = "Cust_Pk";
                 cmboCustomers.DisplayMember = "Cust_Description";
                 cmboCustomers.SelectedValue = -1;
+
+                this.cmboPurchaseOrders.Items.Clear();
+
+                var Styles = context.TLADM_Styles.OrderBy(x => x.Sty_Description).ToList();
+                foreach (var Style in Styles)
+                {
+                    cmboStyles.Items.Add(new CustomerServices.CheckComboBoxItem(Style.Sty_Id, Style.Sty_Description, false));
+                }
+
+                var Colours = context.TLADM_Colours.Where(x => !(bool)x.Col_Discontinued).OrderBy(x => x.Col_Display).ToList();
+                foreach (var Colour in Colours)
+                {
+                    cmboColours.Items.Add(new CustomerServices.CheckComboBoxItem(Colour.Col_Id, Colour.Col_Display, false));
+                }
+
+                var Sizes = context.TLADM_Sizes.Where(x => !(bool)x.SI_Discontinued).OrderBy(x => x.SI_DisplayOrder).ToList();
+                foreach (var Size in Sizes)
+                {
+                    cmboSizes.Items.Add(new CustomerServices.CheckComboBoxItem(Size.SI_id, Size.SI_Description, false));
+                }
             }
-
-            this.cmboPurchaseOrders.Items.Clear();
-
+            
             QueryParms = new CustomerServicesParameters();
+
+            if(!Transactional)
+            {
+                dtpFromDate.Visible = false;
+                label6.Visible = false;
+                dtpToDate.Visible = false;
+                label7.Visible = false;
+                cmboColours.Visible = false;
+                label3.Visible = false;
+                cmboSizes.Visible = false;
+                label4.Visible = false;
+                cmboStyles.Visible = false;
+                label5.Visible = false;
+            }
 
             FormLoaded = true;
         }
@@ -98,6 +132,75 @@ namespace CustomerServices
             }
         }
 
+        //-------------------------------------------------------------------------------------
+        // this message handler gets called when the user checks/unchecks an item the combo box
+        //----------------------------------------------------------------------------------------
+        private void cmboStyles_CheckStateChanged(object sender, EventArgs e)
+        {
+
+            if (sender is CustomerServices.CheckComboBoxItem && FormLoaded)
+            {
+                CustomerServices.CheckComboBoxItem item = (CustomerServices.CheckComboBoxItem)sender;
+                if (item.CheckState)
+                {
+                    QueryParms.Styles.Add(repo.LoadStyle(item._Pk));
+
+                }
+                else
+                {
+                    var value = QueryParms.Styles.Find(it => it.Sty_Id == item._Pk);
+                    if (value != null)
+                        QueryParms.Styles.Remove(value);
+
+                }
+            }
+        }
+        //-------------------------------------------------------------------------------------
+        // this message handler gets called when the user checks/unchecks an item the combo box
+        //----------------------------------------------------------------------------------------
+        private void cmboColours_CheckStateChanged(object sender, EventArgs e)
+        {
+
+            if (sender is CustomerServices.CheckComboBoxItem && FormLoaded)
+            {
+                CustomerServices.CheckComboBoxItem item = (CustomerServices.CheckComboBoxItem)sender;
+                if (item.CheckState)
+                {
+                    QueryParms.Colours.Add(repo.LoadColour(item._Pk));
+
+                }
+                else
+                {
+                    var value = QueryParms.Colours.Find(it => it.Col_Id == item._Pk);
+                    if (value != null)
+                        QueryParms.Colours.Remove(value);
+
+                }
+            }
+        }
+        //-------------------------------------------------------------------------------------
+        // this message handler gets called when the user checks/unchecks an item the combo box
+        //----------------------------------------------------------------------------------------
+        private void cmboSizes_CheckStateChanged(object sender, EventArgs e)
+        {
+
+            if (sender is CustomerServices.CheckComboBoxItem && FormLoaded)
+            {
+                CustomerServices.CheckComboBoxItem item = (CustomerServices.CheckComboBoxItem)sender;
+                if (item.CheckState)
+                {
+                    QueryParms.Sizes.Add(repo.LoadSize(item._Pk));
+
+                }
+                else
+                {
+                    var value = QueryParms.Sizes.Find(it => it.SI_id == item._Pk);
+                    if (value != null)
+                        QueryParms.Sizes.Remove(value);
+
+                }
+            }
+        }
         private void btnSubmit_Click(object sender, EventArgs e)
         {
             Button oBtn = (Button)sender;
@@ -105,34 +208,28 @@ namespace CustomerServices
 
             if (oBtn != null && FormLoaded)
             {
-                if (txtPurchaseOrder.Text.Length > 0)
+                var SelectedCustomer = (TLADM_CustomerFile)cmboCustomers.SelectedItem;
+                if (SelectedCustomer == null)
                 {
-                    using (var context = new TTI2Entities())
-                    {
-                        var PurchaseOrder = context.TLCSV_PurchaseOrder.Where(x => x.TLCSVPO_PurchaseOrder == txtPurchaseOrder.Text).FirstOrDefault();
-                        if (PurchaseOrder == null)
-                        {
-                            MessageBox.Show("Purchase Order Number not found");
-                            return;
-                        }
-
-                        QueryParms.PurchaseOrders.Add(repo.LoadPurchaseOrder(PurchaseOrder.TLCSVPO_Pk));
-                    }
-                }
-                else
-                {
-                    var SelectedCustomer = (TLADM_CustomerFile)cmboCustomers.SelectedItem;
-                    if (SelectedCustomer == null)
-                    {
                         MessageBox.Show("Please select a customer from the drop down box");
                         return;
-                    }
-
-                    QueryParms.Customers.Add(repo.LoadCustomers(SelectedCustomer.Cust_Pk));
                 }
 
+                if(!Transactional)
+                {
+                    if(QueryParms.PurchaseOrders.Count() == 0)
+                    {
+                        MessageBox.Show("Please select a customer purchase order from the drop down box");
+                        return;
+                    }
+                }
+                
+                QueryParms.Customers.Add(repo.LoadCustomers(SelectedCustomer.Cust_Pk));
                 QueryParms.TransactHistory = Transactional;
- 
+
+                QueryParms.FromDate = dtpFromDate.Value;
+                QueryParms.ToDate = dtpToDate.Value;
+
                 frmCSViewRep vRep = new frmCSViewRep(25, QueryParms, services);
                 int h = Screen.PrimaryScreen.WorkingArea.Height;
                 int w = Screen.PrimaryScreen.WorkingArea.Width;
@@ -141,7 +238,7 @@ namespace CustomerServices
 
             
                 this.frmCustomerTransHistory_Load(this, null);
-                this.txtPurchaseOrder.Text = string.Empty;
+                
                         
             }
         }

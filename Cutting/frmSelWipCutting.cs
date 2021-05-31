@@ -26,6 +26,8 @@ namespace Cutting
             this.cmboColour.CheckStateChanged  += new System.EventHandler(this.cmboColour_CheckStateChanged);
             this.cmboQuality.CheckStateChanged += new System.EventHandler(this.cmboQuality_CheckStateChanged);
             this.cmboDepartments.CheckStateChanged += new System.EventHandler(this.cmboDepartments_CheckStateChanged);
+            this.cmboStyles.CheckStateChanged += new System.EventHandler(this.cmboStyles_CheckedChange);
+
         }
 
         private void frmSelWipCutting_Load(object sender, EventArgs e)
@@ -35,18 +37,19 @@ namespace Cutting
             parms = new CuttingQueryParameters();
             
             _RepSortOption = 1;
-
-            chkAllWIP.Checked = true;
-
-            dtpFromDate.Value = DateTime.Now;
-            dtpToDate.Value = DateTime.Now;
-
+                    
             using (var context = new TTI2Entities())
             {
                 var Existing = context.TLADM_Griege.OrderBy(x => x.TLGreige_Description).ToList();
                 foreach (var Row in Existing)
                 {
                     cmboQuality.Items.Add(new Cutting.CheckComboBoxItem(Row.TLGreige_Id, Row.TLGreige_Description, false));
+                }
+
+                var Styles = context.TLADM_Styles.OrderBy(x => x.Sty_Description).ToList();
+                foreach(var Style in Styles)
+                {
+                    cmboStyles.Items.Add(new Cutting.CheckComboBoxItem(Style.Sty_Id, Style.Sty_Description, false));
                 }
 
                 var Colours = context.TLADM_Colours.ToList();
@@ -97,6 +100,23 @@ namespace Cutting
             }
         }
 
+        private void cmboStyles_CheckedChange(object sender, EventArgs e)
+        {
+            if (sender is Cutting.CheckComboBoxItem && formloaded)
+            {
+                Cutting.CheckComboBoxItem item = (Cutting.CheckComboBoxItem)sender;
+                if (item.CheckState)
+                {
+                    parms.Styles.Add(repo.LoadStyle(item._Pk));
+                }
+                else
+                {
+                    var value = parms.Styles.Find(it => it.Sty_Id == item._Pk);
+                    if (value != null)
+                        parms.Styles.Remove(value);
+                }
+            }
+        }
         //-------------------------------------------------------------------------------------
         // this message handler gets called when the user checks/unchecks an item the combo box
         //----------------------------------------------------------------------------------------
@@ -145,19 +165,32 @@ namespace Cutting
             if (oBtn != null)
             {
                
-                if (chkAllWIP.Checked)
-                    parms.AllWIP = true;
+                parms.AllWIP = true;
 
-                parms.FromDate = Convert.ToDateTime(dtpFromDate.Value.ToShortDateString());
-                parms.ToDate  = Convert.ToDateTime(dtpToDate.Value.ToShortDateString());
-                parms.ToDate = parms.ToDate.AddHours(23);
                 parms.RepSortOption = _RepSortOption;
-                              
+                parms.FromDate = DateTime.Now;
+                parms.ToDate = DateTime.Now;
+
                 frmCutViewRep vRep = new frmCutViewRep(4, parms);
                 int h = Screen.PrimaryScreen.WorkingArea.Height;
                 int w = Screen.PrimaryScreen.WorkingArea.Width;
                 vRep.ClientSize = new Size(w, h);
                 vRep.ShowDialog(this);
+                
+                if (parms.Styles.Count != 0)
+                {
+                    cmboStyles.Items.Clear();
+                }
+                if (parms.Qualities.Count != 0)
+                {
+                    cmboQuality.Items.Clear();
+                }
+                if (parms.Colours.Count != 0)
+                {
+                    cmboColour.Items.Clear();
+                }
+
+                frmSelWipCutting_Load(this, null);
             }
         }
 
@@ -178,6 +211,13 @@ namespace Cutting
         }
 
         private void cmboColour_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ComboBox oCmbo = (ComboBox)sender;
+            if (oCmbo != null && !oCmbo.DroppedDown)
+                oCmbo.DroppedDown = true;
+        }
+
+        private void cmboStyles_SelectedIndexChanged(object sender, EventArgs e)
         {
             ComboBox oCmbo = (ComboBox)sender;
             if (oCmbo != null && !oCmbo.DroppedDown)
