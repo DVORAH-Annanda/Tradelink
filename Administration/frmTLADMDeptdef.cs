@@ -21,6 +21,7 @@ namespace TTI2_WF
         DataGridViewTextBoxColumn selectf;    // Department power no
         DataGridViewCheckBoxColumn oChkA;     // Is Cmt Yes or No;
         DataGridViewCheckBoxColumn oChkB;     // Is Cutting Department Yes or No;
+        DataGridViewCheckBoxColumn oChkC;     // Is Department a quarantine store Yes or No;
         public frmTLADMDeptdef()
         {
            InitializeComponent();
@@ -56,6 +57,7 @@ namespace TTI2_WF
             oChkB = new DataGridViewCheckBoxColumn();
             oChkB.ValueType = typeof(bool);
             oChkB.HeaderText = "Cut";
+                        
 
             dataGridView1.Columns.Add(selecta);
             dataGridView1.Columns.Add(selectb);
@@ -81,6 +83,7 @@ namespace TTI2_WF
                 dataGridView1.Columns.Add(selectf);
                 dataGridView1.Columns.Add(oChkA);
                 dataGridView1.Columns.Add(oChkB);
+           
                 var ExistingData = context.TLADM_Departments.OrderBy(x => x.Dep_Description).ToList();
 
                 foreach (var row in ExistingData)
@@ -101,6 +104,8 @@ namespace TTI2_WF
                         dataGridView1.Rows[index].Cells[7].Value = true;
                     else
                         dataGridView1.Rows[index].Cells[7].Value = false;
+
+                    
                 }
             }
         }
@@ -110,6 +115,7 @@ namespace TTI2_WF
             Button oBtn = sender as Button;
             bool lAdd = false;
             bool lCMT = false;
+            bool lQuarantine = false;
             bool lSuccess = true;
           
             if (oBtn != null)
@@ -161,6 +167,7 @@ namespace TTI2_WF
                         else
                             dpt.Dep_IsCut = false;
 
+                        
                         if (lAdd)
                             context.TLADM_Departments.Add(dpt);
 

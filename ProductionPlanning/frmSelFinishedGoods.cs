@@ -347,6 +347,8 @@ namespace ProductionPlanning
                 dt.Columns.Add("Expected Units - WIP Dyeing", typeof(int));
                 dt.Columns["Expected Units - WIP Dyeing"].DefaultValue = 0;
                 //-------------------------------------------------------------------------------------------------------------
+                dt.Columns.Add("Expected Units - Fabric Quarantine Store", typeof(int));
+                dt.Columns["Expected Units - Fabric Quarantine Store"].DefaultValue = 0;
                 dt.Columns.Add("Expected Units - Fabric Store", typeof(int));
                 dt.Columns["Expected Units - Fabric Store"].DefaultValue = 0;
                 //-------------------------------------------------------------------------------------------------------------
@@ -725,15 +727,72 @@ namespace ProductionPlanning
                         // Bring the WIP Total Up to date
                         //-------------------------------------------------------
                         Row[WIPIndex] = Row.Field<int>(WIPIndex) + Row.Field<int>(ColIndex);
+
+                        //******************************************************
+                        // 6th Task  -- DyeBatching (Quarantine) 
+                        //******************************************************
+                        
+                        ColIndex = dt.Columns.IndexOf("Expected Units - Fabric Quarantine Store");
+                        var DBOrders = from T1 in context.TLDYE_DyeOrder
+                                       join T2 in context.TLDYE_DyeBatch on T1.TLDYO_Pk equals T2.DYEB_DyeOrder_FK
+                                       join T3 in context.TLDYE_DyeBatchDetails on T2.DYEB_Pk equals T3.DYEBD_DyeBatch_FK
+                                       join T4 in context.TLADM_WhseStore on T3.DYEBO_CurrentStore_FK equals T4.WhStore_Id 
+                                       where !T2.DYEB_CommissinCust && T2.DYEB_OutProcess &&  T3.DYEBD_BodyTrim && T4.WhStore_Quarantine && !T3.DYEBO_CutSheet
+                                       && T1.TLDYO_Style_FK == Item.TLREP_Style_FK && T1.TLDYO_Colour_FK == Item.TLREP_Colour_FK
+                                       select new { T1.TLDYO_Pk, T2.DYEB_Pk, T3.DYEBO_Nett };
+
+                        var DBOrdersx = DBOrders.GroupBy(x => x.TLDYO_Pk);
+                        foreach (var Order in DBOrdersx)
+                        {
+                            BindingList<KeyValuePair<int, decimal>> Ratios = null;
+                            var FirstOrder = Order.FirstOrDefault();
+
+                            var DyeOrderDetail = context.TLDYE_DyeOrderDetails.Where(x => x.TLDYOD_DyeOrder_Fk == FirstOrder.TLDYO_Pk && x.TLDYOD_BodyOrTrim).FirstOrDefault();
+                            if (DyeOrderDetail != null)
+                            {
+                                Ratios = core.ReturnRatios(DyeOrderDetail.TLDYOD_MarkerRating_FK);
+                                var Entry = Ratios.FirstOrDefault(x => x.Key == Item.TLREP_Size_FK);
+                                if (Entry.Key != 0)
+                                {
+                                    var ExpectedUnits = 0;
+                                    var FabricYield = DyeOrderDetail.TLDYOD_Yield;
+                                    var FabricRating = DyeOrderDetail.TLDYOD_Rating;
+                                    var TotalWeight = 0.00M;
+
+                                    try
+                                    {
+                                        TotalWeight = Order.Sum(x => (decimal?)x.DYEBO_Nett) ?? 0.00M;
+                                        ExpectedUnits = Convert.ToInt32(FabricYield / FabricRating * TotalWeight);
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        ExpectedUnits = 0;
+                                    }
+
+                                    int CurrentValue = 0;
+
+                                    if (!string.IsNullOrEmpty(Row[ColIndex].ToString()))
+                                        CurrentValue = Convert.ToInt32(Row[ColIndex].ToString());
+
+                                    var Total = Ratios.Sum(x => x.Value);
+                                    var Answer = Convert.ToInt32((Entry.Value / Total) * ExpectedUnits);
+                                    Answer = Convert.ToInt32(Answer * 0.95);
+                                    Row[ColIndex] = CurrentValue + Answer;
+                                }
+                            }
+                        }
+                        //---------------------------------
+                        // Bring the WIP Total Up to date
+                        //-------------------------------------------------------
+                        Row[WIPIndex] = Row.Field<int>(WIPIndex) + Row.Field<int>(ColIndex);
                         //-----------------------------------------------------------------
-                        // 6th Task  -- DyeBatching (FABRIC Store) 
-                        // Notes :- Request from Heath Wolmaraans to include The Quarantine store in the run 15/12/2017 
+                        // 7th Task  -- DyeBatching (FABRIC Store) 
                         //--------------------------------------------------------------
                         // Because Dye Batches have no specified Style, Colour and size Key 
                         // We have to get it from the respective Dye Orders 
                         //---------------------------------------------------------------
                         ColIndex = dt.Columns.IndexOf("Expected Units - Fabric Store");
-                        var DBOrders = from T1 in context.TLDYE_DyeOrder
+                        DBOrders = from T1 in context.TLDYE_DyeOrder
                                        join T2 in context.TLDYE_DyeBatch on T1.TLDYO_Pk equals T2.DYEB_DyeOrder_FK
                                        join T3 in context.TLDYE_DyeBatchDetails on T2.DYEB_Pk equals T3.DYEBD_DyeBatch_FK  
                                        where !T2.DYEB_CommissinCust && T2.DYEB_OutProcess && !T3.DYEBO_Sold &&
@@ -741,7 +800,7 @@ namespace ProductionPlanning
                                        && !T3.DYEBO_CutSheet && T1.TLDYO_Style_FK == Item.TLREP_Style_FK && T1.TLDYO_Colour_FK == Item.TLREP_Colour_FK
                                        select new { T1.TLDYO_Pk , T2.DYEB_Pk, T3.DYEBO_Nett };
                               
-                        var DBOrdersx = DBOrders.GroupBy(x => x.TLDYO_Pk);
+                        DBOrdersx = DBOrders.GroupBy(x => x.TLDYO_Pk);
                         foreach (var Order in DBOrdersx)
                         {
                             BindingList<KeyValuePair<int, decimal>> Ratios = null;
@@ -786,7 +845,7 @@ namespace ProductionPlanning
                         //-------------------------------------------------------
                         Row[WIPIndex] = Row.Field<int>(WIPIndex) + Row.Field<int>(ColIndex);
                         //-------------------------------------------------------------------------------------------------------------
-                        // 7th Task Expected Units in Cutting WIP 
+                        // 8th Task Expected Units in Cutting WIP 
                         //----------------------------------------------------------------------------------------------------
                         ColIndex = dt.Columns.IndexOf("Expected Units - WIP Cutting");
                         var CutSheets = context.TLCUT_CutSheet.Where(x => !x.TLCutSH_WIPComplete && x.TLCutSH_Accepted && x.TLCutSH_Styles_FK == Item.TLREP_Style_FK && x.TLCutSH_Colour_FK == Item.TLREP_Colour_FK && !x.TLCutSH_Closed).ToList();
@@ -810,7 +869,7 @@ namespace ProductionPlanning
                         Row[WIPIndex] = Row.Field<int>(WIPIndex) + Row.Field<int>(ColIndex);
                         
                         //-------------------------------------------------------------------------------------------------------------
-                        // 8th Task Expected Units in Panel 
+                        // 9th Task Expected Units in Panel 
                         //----------------------------------------------------------------------------------------------------
                         ColIndex = dt.Columns.IndexOf("Expected Units - CUT Panel Store");
                         var CutSheetR = from T1 in context.TLCUT_CutSheetReceipt
@@ -845,7 +904,7 @@ namespace ProductionPlanning
                         Row[WIPIndex] = Row.Field<int>(WIPIndex) + Row.Field<int>(ColIndex);
 
                         //-------------------------------------------------------------------------------------------------------------
-                        // 9th Task (b) Expected Units at CMT Store (WIP)
+                        // 10th Task (b) Expected Units at CMT Store (WIP)
                         //----------------------------------------------------------------------------------------------------
                         ColIndex = dt.Columns.IndexOf("Expected Units - CMT WIP");
                         var WIP = CMTWIP.Where(x => x.TLCUTSHR_Style_FK == Item.TLREP_Style_FK && x.TLCUTSHR_Colour_FK == Item.TLREP_Colour_FK && x.TLCUTSHRD_Size_FK == Item.TLREP_Size_FK).ToList();
@@ -860,7 +919,7 @@ namespace ProductionPlanning
                         Row[WIPIndex] = Row.Field<int>(WIPIndex) + Row.Field<int>(ColIndex);
 
                         //-------------------------------------------------------------------------------------------------------------
-                        // 9th Task (c) Expected Units at CMT Store in Finished Goods Despatch Cage
+                        // 11th Task (c) Expected Units at CMT Store in Finished Goods Despatch Cage
                         //----------------------------------------------------------------------------------------------------
                         ColIndex = dt.Columns.IndexOf("Expected Units - CMT Store (Despatch Cage)");
                         var QueryC = from T1 in context.TLCMT_CompletedWork
@@ -876,7 +935,7 @@ namespace ProductionPlanning
                         //-------------------------------------------------------
                         Row[WIPIndex] = Row.Field<int>(WIPIndex) + Row.Field<int>(ColIndex);
 
-                        // 10th and Final Task is to update Avg Week Sales, ReOrder Levels, Reorder Qty Sales
+                        // 12th and Final Task is to update Avg Week Sales, ReOrder Levels, Reorder Qty Sales
                         //===================================================================================
                         var colIndex = dt.Columns.IndexOf("Avg Week Sales");
                         Row[colIndex] = Row.Field<int>(colIndex) + Item.TLREP_ExpectedSales;

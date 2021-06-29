@@ -71,10 +71,6 @@ namespace CustomerServices
 
             if(!Transactional)
             {
-                dtpFromDate.Visible = false;
-                label6.Visible = false;
-                dtpToDate.Visible = false;
-                label7.Visible = false;
                 cmboColours.Visible = false;
                 label3.Visible = false;
                 cmboSizes.Visible = false;
@@ -226,9 +222,6 @@ namespace CustomerServices
                 
                 QueryParms.Customers.Add(repo.LoadCustomers(SelectedCustomer.Cust_Pk));
                 QueryParms.TransactHistory = Transactional;
-
-                QueryParms.FromDate = dtpFromDate.Value;
-                QueryParms.ToDate = dtpToDate.Value;
 
                 frmCSViewRep vRep = new frmCSViewRep(25, QueryParms, services);
                 int h = Screen.PrimaryScreen.WorkingArea.Height;

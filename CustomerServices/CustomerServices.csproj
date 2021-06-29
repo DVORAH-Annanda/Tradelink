@@ -291,6 +291,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DataSet26.xsd</DependentUpon>
     </Compile>
+    <Compile Include="DataSet27.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSet27.xsd</DependentUpon>
+    </Compile>
     <Compile Include="DataSet3.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -379,6 +384,12 @@
     </Compile>
     <Compile Include="frmBoxView.Designer.cs">
       <DependentUpon>frmBoxView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmContiWorkWearReceipts.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmContiWorkWearReceipts.Designer.cs">
+      <DependentUpon>frmContiWorkWearReceipts.cs</DependentUpon>
     </Compile>
     <Compile Include="frmCrossBorderDoc.cs">
       <SubType>Form</SubType>
@@ -681,6 +692,12 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReceivedBoughtInGoods.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ReceivedBoughtInGoods.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="RePackDeliveryNote.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -817,6 +834,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmBoxView.resx">
       <DependentUpon>frmBoxView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmContiWorkWearReceipts.resx">
+      <DependentUpon>frmContiWorkWearReceipts.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmCrossBorderDoc.resx">
       <DependentUpon>frmCrossBorderDoc.cs</DependentUpon>
@@ -988,6 +1008,10 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="ReceivedBoughtInGoods.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>ReceivedBoughtInGoods.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="RePackDeliveryNote.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>RePackDeliveryNote.cs</LastGenOutput>
@@ -1241,6 +1265,17 @@
     </None>
     <None Include="DataSet26.xss">
       <DependentUpon>DataSet26.xsd</DependentUpon>
+    </None>
+    <None Include="DataSet27.xsc">
+      <DependentUpon>DataSet27.xsd</DependentUpon>
+    </None>
+    <None Include="DataSet27.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSet27.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="DataSet27.xss">
+      <DependentUpon>DataSet27.xsd</DependentUpon>
     </None>
     <None Include="DataSet3.xsc">
       <DependentUpon>DataSet3.xsd</DependentUpon>

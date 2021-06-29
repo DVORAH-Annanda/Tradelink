@@ -10,6 +10,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Utilities;
 using EntityFramework.Extensions;
+using System.Threading;
+
 
 using LinqKit;
 
@@ -19,123 +21,41 @@ namespace Administration
     public partial class frmDataClearDown : Form
     {
         protected readonly TTI2Entities _context;
-        private System.ComponentModel.BackgroundWorker backGroundWorker1;
         DateTime DSelected;
-        ProgressBar pBar = new ProgressBar();
+
+        private BackgroundWorker backgroundWorker1;
         int ProgressState = 0;
 
+        int PendingCuts = 0;
+        bool lStage1 = false;
+        bool lStage2 = false;
         public frmDataClearDown()
         {
             InitializeComponent();
             this._context = new TTI2Entities();
-            this.backGroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            backgroundWorker1 = new BackgroundWorker();
+
+            this.backgroundWorker1.DoWork += new DoWorkEventHandler(this.BackGroundWork1_DoWork);
+            this.backgroundWorker1.WorkerReportsProgress = true;
+            this.backgroundWorker1.WorkerSupportsCancellation = true;
             
-            this.backGroundWorker1.DoWork += new DoWorkEventHandler(this.BackGroundWork1_DoWork);
-            this.backGroundWorker1.WorkerReportsProgress = true;
-            this.backGroundWorker1.WorkerSupportsCancellation = true;
-           
-            this.backGroundWorker1.ProgressChanged += new ProgressChangedEventHandler(Worker_ProgressChanged);
-            this.backGroundWorker1.RunWorkerCompleted += new RunWorkerCompletedEventHandler(Worker_RunWorkerCompleted);
-          
-            
+            this.backgroundWorker1.ProgressChanged += new ProgressChangedEventHandler(Worker_ProgressChanged);
+            this.backgroundWorker1.RunWorkerCompleted += new RunWorkerCompletedEventHandler(Worker_RunWorkerCompleted);
         }
 
         private void frmDataClearDown_Load(object sender, EventArgs e)
         {
             dtpPriorDate.Value = DateTime.Now.AddDays(-1 * DateTime.Now.DayOfYear);
+            this.toolStripStatusLabel1.Text = string.Empty; 
             
         }
-
-        private void BackGroundWork1_DoWork(object sender, DoWorkEventArgs e)
-        {
-            BackgroundWorker helperBW = sender as BackgroundWorker;
-            int arg = (int)e.Argument;
-            e.Result = BackgroundProcessLogicMethod(helperBW, arg);
-
-            if (helperBW.CancellationPending)
-            {
-                e.Cancel = true;
-            }
-
-        }
-        private void Worker_ProgressChanged(object sender,
-                                     ProgressChangedEventArgs e)
-        {
-            // This is where you would have the UI related changes. 
-            //In your case updating the progressbar. 
-            // While the files are being copied this would update the UI.
-            if(e.ProgressPercentage <= 100)
-               pBar1.Value = e.ProgressPercentage;
-           
-        }
-
-        private void Worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
-        {
-            this.backGroundWorker1.CancelAsync();
-        }
-        
-       
-        int BackgroundProcessLogicMethod(BackgroundWorker bw, int a)
-        {
-            int result = 0;
-            var BoxSold = _context.TLCSV_StockOnHand.Where(x => x.TLSOH_Sold && (DateTime)x.TLSOH_SoldDate <= DSelected).GroupBy(x => x.TLSOH_CutSheet_FK).ToList();
-            int Cnt = 0;
-            int Before = 0;
-
-            foreach (var BoxGroup in BoxSold)
-            {
-                var CutSheet_Pk = BoxGroup.FirstOrDefault().TLSOH_CutSheet_FK;
-                var WcCount = _context.TLCMT_CompletedWork.Where(x => x.TLCMTWC_CutSheet_FK == CutSheet_Pk).Count();
-                var QtySold = _context.TLCSV_StockOnHand.Where(x => x.TLSOH_CutSheet_FK == CutSheet_Pk).Count();
-
-                if ((QtySold >= WcCount) || (WcCount - QtySold < 2))
-                {
-                    var CutSheet = _context.TLCUT_CutSheet.Find(CutSheet_Pk);
-                    if (CutSheet != null)
-                    {
-                        CutSheet.TLCUTSH_MarkedForDeletion = true;
-                    }
-                }
-
-                if (++Cnt > 500)
-                {
-                    ProgressState = Before + Cnt;
-                    bw.ReportProgress(ProgressState);
-                    Before += Cnt;
-                    Cnt = 0; 
-                }
-               
-            }
-            try
-            {
-                _context.SaveChanges();
-
-                DialogResult res = MessageBox.Show("Customer clear down successfully completed", "", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
-
-                if (res == DialogResult.No)
-                {
-                    this.Close();
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Message " + ex.InnerException);
-             
-            }
-
-           return result;
-        }
+      
         private void btnCommence_Click(object sender, EventArgs e)
         {
             DSelected = Convert.ToDateTime(dtpPriorDate.Value.ToShortDateString());
 
-           //===========================================================================
-           
-            textBox1.Text = "Commencing Customer Services Clear Down";
-            this.Refresh();
-            pBar1.Maximum = _context.TLCSV_StockOnHand.Where(x => x.TLSOH_Sold && (DateTime)x.TLSOH_SoldDate <= DSelected).GroupBy(x => x.TLSOH_CutSheet_FK).Count();
-            pBar.Step = 1;
-
+            //===========================================================================
+                     
             _context.TLCSV_StockOnHand.Where(x => x.TLSOH_Sold && x.TLSOH_CutSheet_FK == 0 && x.TLSOH_SoldDate <= DSelected).Delete();
 
             try
@@ -148,46 +68,128 @@ namespace Administration
             {
                 _context.Configuration.AutoDetectChangesEnabled = true;
             }
+            
+            this.toolStripStatusLabel1.Text = "Commencing Customer Clear Down";
+            backgroundWorker1.RunWorkerAsync(2000);
+            
+        }
 
-            if (!backGroundWorker1.IsBusy)
+        private void BackGroundWork1_DoWork(object sender, DoWorkEventArgs e)
+        {
+            BackgroundWorker helperBW = sender as BackgroundWorker;
+            int arg = (int)e.Argument;
+                
+            e.Result = ProcessLogicMethod(helperBW, arg);
+
+            if (helperBW.CancellationPending)
             {
-                backGroundWorker1.RunWorkerAsync(2000);
-
-                pBar1.Visible = true;
-
-                textBox1.Text = "Commencing Customer Services Delete";
-                this.Refresh();
-               
+                    e.Cancel = true;
             }
+        }
 
-            /*try
+        private void Worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            this.backgroundWorker1.CancelAsync();
+            if (e.Cancelled)
             {
-                _context.SaveChanges();
+                this.toolStripStatusLabel1.Text = "Run cancelled";
+            }
+            else
+            {
+                this.toolStripStatusLabel1.Text = "Run completed";
+            }
+        }
+        private void Worker_ProgressChanged(object sender,
+                                     ProgressChangedEventArgs e)
+        {
+            if(lStage1)
+            {
+                lStage1 = !lStage1;
+                this.toolStripStatusLabel1.Text = "Begining Stage 1";
+            }
+            else if(lStage2)
+            {
+                lStage2 = !lStage2;
+                this.toolStripStatusLabel1.Text = "Beginning Stage 2";
+            }
+            
+           // this.toolStripProgressBar1.Value = e.ProgressPercentage;
+            
+        }
 
-                DialogResult res = MessageBox.Show("Customer clear down successfully completed", "", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
+      
+        private int ProcessLogicMethod(BackgroundWorker bw, int a)
+        {
+            int result = 0;
+            var BoxSold = _context.TLCSV_StockOnHand.Where(x => x.TLSOH_Sold && (DateTime)x.TLSOH_SoldDate <= DSelected).GroupBy(x => x.TLSOH_CutSheet_FK).ToList();
+            PendingCuts = BoxSold.Count();
+            lStage1 = true;
+                      
+            foreach (var BoxGroup in BoxSold)
+            {
+                var CutSheet_Pk = BoxGroup.FirstOrDefault().TLSOH_CutSheet_FK;
+                var WcCount = _context.TLCMT_CompletedWork.Where(x => x.TLCMTWC_CutSheet_FK == CutSheet_Pk).Count();
+                var QtySold = _context.TLCSV_StockOnHand.Where(x => x.TLSOH_CutSheet_FK == CutSheet_Pk).Count();
 
-                if (res == DialogResult.No)
+                _context.TLCUT_CutSheet.Where(c => c.TLCutSH_Pk == CutSheet_Pk && ((QtySold >= WcCount) || (WcCount - QtySold < 2))).Update(x=> new TLCUT_CutSheet { TLCUTSH_MarkedForDeletion = true });
+
+                ProgressState += 1;
+                bw.ReportProgress((ProgressState * 100) / (PendingCuts - 1));
+
+            }
+            
+
+            try
+            {
+                lStage1 = false;
+                lStage2 = true;
+             
+                
+                //Commencing Stage 2
+                //==============================================
+                var PendingCutSheets = _context.TLCUT_CutSheet.Where(x => x.TLCUTSH_MarkedForDeletion).Select(x=>x.TLCutSH_Pk).ToList();
+                PendingCuts = PendingCutSheets.Count();
+                ProgressState = 0;
+                
+                foreach(var PCutSh in PendingCutSheets)
                 {
-                    Close();
-                    return;
+                    //*************************************************
+                    // This is Customer Services
+                    //**************************************************
+                    _context.TLCSV_StockOnHand.Where(x => x.TLSOH_CutSheet_FK == PCutSh).Delete();
+
+                    //*************************************************
+                    // This is CMT 
+                    //**************************************************
+                    var LineIssue = _context.TLCMT_LineIssue.Where(x => x.TLCMTLI_CutSheet_FK == PCutSh).FirstOrDefault();
+                    if(LineIssue != null)
+                    {
+                        _context.TLCMT_Statistics.Where(x => x.CMTS_PanelIssue_FK == LineIssue.TLCMTLI_Pk).Delete();
+                        _context.TLCMT_ProductionFaults.Where(x => x.TLCMTPF_LineIssue_FK == LineIssue.TLCMTLI_Pk).Delete();
+                    }
+                    
+                    _context.TLCMT_LineIssue.Where(x => x.TLCMTLI_CutSheet_FK == PCutSh).Delete();
+                    _context.TLCMT_AuditMeasureRecorded.Where(x => x.TLBFAR_CutSheet_FK == PCutSh).Delete();
+                    _context.TLCMT_CompletedWork.Where(x => x.TLCMTWC_CutSheet_FK == PCutSh).Delete();
+                    _context.TLCMT_LineFeederBundleCheck.Where(x => x.TLCMTLF_CutSheet_FK == PCutSh).Delete();
+                    _context.TLCMT_NonCompliance.Where(x => x.CMTNCD_CutSheet_Fk == PCutSh).Delete();
+
+                    ProgressState += 1;
+                    bw.ReportProgress((ProgressState * 100) / (PendingCuts - 1));
                 }
+               
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Message " + ex.InnerException);
-                return;
-            }*/
 
-        
+            }
 
+            return result;
         }
-
         private void btnCancel_Click(object sender, EventArgs e)
         {
-            if(backGroundWorker1.IsBusy)
-            {
-                backGroundWorker1.CancelAsync();
-            }
+          this.backgroundWorker1.CancelAsync();
         }
 
         private void BackGroundProcessLogicMethod(object sender, RunWorkerCompletedEventArgs e)
@@ -202,12 +204,18 @@ namespace Administration
         {
             if (!e.Cancel)
             {
-                if (backGroundWorker1.IsBusy)
+                if(_context != null)
                 {
-                    backGroundWorker1.CancelAsync();
+                    _context.Dispose();
+                }
+                
+                if(backgroundWorker1.IsBusy)
+                {
+                    this.backgroundWorker1.CancelAsync();
                 }
             }
         }
+        
     }
     
 }

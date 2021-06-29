@@ -116,8 +116,6 @@
         <EntityTypeShape EntityType="TTI2Model.TLADM_CutAreaLocations" Width="1.5" PointX="10.375" PointY="16.75" />
         <EntityTypeShape EntityType="TTI2Model.TLADM_CutMeasureStandards" Width="1.5" PointX="9.375" PointY="19.75" />
         <EntityTypeShape EntityType="TTI2Model.TLCUT_QAResults" Width="1.5" PointX="41.375" PointY="27.75" />
-        <EntityTypeShape EntityType="TTI2Model.TLADM_Sizes" Width="1.5" PointX="5.375" PointY="39" />
-        <AssociationConnector Association="TTI2Model.FK_TLADM_ConsumablesOther_TLADM_Sizes" />
         <EntityTypeShape EntityType="TTI2Model.TLCSV_MergePODetail" Width="1.5" PointX="30.375" PointY="35.75" />
         <EntityTypeShape EntityType="TTI2Model.TLADM_WareHouseAssociation" Width="1.5" PointX="36.375" PointY="10.75" />
         <EntityTypeShape EntityType="TTI2Model.TLDYE_ReceipeGreigeQual" Width="1.5" PointX="39.375" PointY="31.75" />
@@ -153,8 +151,6 @@
         <EntityTypeShape EntityType="TTI2Model.TLPPS_ProductionLeadTime" Width="1.5" PointX="17.375" PointY="37.75" />
         <EntityTypeShape EntityType="TTI2Model.TLDYE_DyeTransactions" Width="1.5" PointX="45.375" PointY="0.75" />
         <EntityTypeShape EntityType="TTI2Model.TLCMT_UnitProductionTargets" Width="1.5" PointX="45.375" PointY="6.75" />
-        <EntityTypeShape EntityType="TTI2Model.TLADM_Departments" Width="1.5" PointX="17.75" PointY="22.75" />
-        <EntityTypeShape EntityType="TTI2Model.TLADM_Styles" Width="1.5" PointX="0.75" PointY="44.75" />
         <EntityTypeShape EntityType="TTI2Model.TLSEC_Sections" Width="1.5" PointX="34.375" PointY="0.75" />
         <EntityTypeShape EntityType="TTI2Model.TLKNI_YarnOrderPallets" Width="1.5" PointX="21.375" PointY="43.75" />
         <EntityTypeShape EntityType="TTI2Model.TLCMT_FactConfig" Width="1.5" PointX="35.375" PointY="13.75" />
@@ -169,9 +165,7 @@
         <EntityTypeShape EntityType="TTI2Model.TLADM_Transporters" Width="1.5" PointX="37.375" PointY="34.75" />
         <EntityTypeShape EntityType="TTI2Model.TLCMT_ProductionCosts" Width="1.5" PointX="37.375" PointY="37.75" />
         <EntityTypeShape EntityType="TTI2Model.TLADM_CMTMeasurementPoints" Width="1.5" PointX="32.375" PointY="10.75" />
-        <EntityTypeShape EntityType="TTI2Model.TLADM_Colours" Width="1.5" PointX="28.375" PointY="25.75" />
         <EntityTypeShape EntityType="TTI2Model.TLCSV_PurchaseOrder" Width="1.5" PointX="30.375" PointY="38.75" />
-        <EntityTypeShape EntityType="TTI2Model.TLCSV_StockOnHand" Width="1.5" PointX="36.375" PointY="41.75" />
         <EntityTypeShape EntityType="TTI2Model.TLADM_FabWidth" Width="1.5" PointX="12.375" PointY="16.75" />
         <EntityTypeShape EntityType="TTI2Model.TLADM_QualityDefinition" Width="1.5" PointX="18" PointY="7.75" />
         <AssociationConnector Association="TTI2Model.FK_TLADM_QualityDefinition_TLADM_RejectReasons1" />
@@ -198,9 +192,16 @@
         <EntityTypeShape EntityType="TTI2Model.TLADM_QADyeProcessFields" Width="1.5" PointX="11.375" PointY="41.75" />
         <EntityTypeShape EntityType="TTI2Model.TLDYE_DyeBatchDetails" Width="1.5" PointX="9.375" PointY="45.75" />
         <EntityTypeShape EntityType="TTI2Model.TLDYE_ConSummableReceived" Width="1.5" PointX="41.375" PointY="35.75" />
-        <EntityTypeShape EntityType="TTI2Model.TLADM_WhseStore" Width="1.5" PointX="27.375" PointY="15.75" />
         <EntityTypeShape EntityType="TTI2Model.TLADM_MachineMaintenanceTasks" Width="1.5" PointX="29.375" PointY="16.75" />
         <EntityTypeShape EntityType="TTI2Model.TLADM_MachineMaintenance" Width="1.5" PointX="20.375" PointY="6.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_Departments" Width="1.5" PointX="17.375" PointY="22.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_WhseStore" Width="1.5" PointX="46.375" PointY="42.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_Styles" Width="1.5" PointX="47.75" PointY="0.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLCSV_BoughtInGoods" Width="1.5" PointX="3.375" PointY="39.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_Colours" Width="1.5" PointX="28.375" PointY="25.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLCSV_StockOnHand" Width="1.5" PointX="36.375" PointY="41.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_Sizes" Width="1.5" PointX="0.75" PointY="45" />
+        <AssociationConnector Association="TTI2Model.FK_TLADM_ConsumablesOther_TLADM_Sizes" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

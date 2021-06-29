@@ -102,7 +102,7 @@ namespace CMT
                 column = new DataColumn();
                 column.DataType = typeof(Int32);
                 column.ColumnName = "NoOfBoxes";
-                column.Caption = "No Of Boxes";
+                column.Caption = "No Of Pieces";
                 column.DefaultValue = 0;
                 dt.Columns.Add(column);
 
@@ -230,16 +230,14 @@ namespace CMT
                         DataRow NewRow = dt.NewRow();
                         NewRow[0] = LineIssue.TLCMTLI_Pk;
                         NewRow[1] = false;
-                        NewRow[2] = context.TLCUT_CutSheet.Find(LineIssue.TLCMTLI_CutSheet_FK).TLCutSH_No;
-                        NewRow[3] = (from CS in context.TLCUT_CutSheet
-                                     join Style in context.TLADM_Styles
-                                     on CS.TLCutSH_Styles_FK equals Style.Sty_Id
-                                     select Style).FirstOrDefault().Sty_Description; // context.TLADM_Styles.Find(LineIssueut.TLCutSH_Styles_FK).Sty_Description;
-                        NewRow[4] = (from CDetails in context.TLCUT_CutSheetReceiptDetail
-                                     join CReceipt in context.TLCUT_CutSheetReceipt
-                                     on CDetails.TLCUTSHRD_CutSheet_FK equals CReceipt.TLCUTSHR_Pk
-                                     where CReceipt.TLCUTSHR_CutSheet_FK == LineIssue.TLCMTLI_CutSheet_FK
-                                     select CDetails).Count();
+                        var CS = context.TLCUT_CutSheet.Find(LineIssue.TLCMTLI_CutSheet_FK);
+                        if (CS != null)
+                        {
+                            NewRow[2] = CS.TLCutSH_No;
+                            NewRow[3] = context.TLADM_Styles.Find(CS.TLCutSH_Styles_FK).Sty_Description;
+                            NewRow[4] = context.TLCUT_CutSheetDetail.Where(x => x.TLCutSHD_CutSheet_FK == CS.TLCutSH_Pk).Count();
+                        }
+                       
                         NewRow[5] = LineIssue.TLCMTLI_CutSheet_FK; 
 
                         dt.Rows.Add(NewRow);

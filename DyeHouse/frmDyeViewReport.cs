@@ -5428,38 +5428,38 @@ namespace DyeHouse
                         xr.Pk = 1;
                         xr.Transaction_Date = Entry.TLDyeIns_TransactionDate;
 
-                       // /*if (Dye_Pk != Entry.TLDyeIns_DyeBatch_Fk)
-                       // {
-                            DyeBatch = context.TLDYE_DyeBatch.Find(Entry.TLDyeIns_DyeBatch_Fk);
-                            if (DyeBatch != null)
-                            {
-                                Dye_Pk = Entry.TLDyeIns_DyeBatch_Fk;
-                                Cause = DyeBatch.DYEB_QExceptionCause;
+                        // /*if (Dye_Pk != Entry.TLDyeIns_DyeBatch_Fk)
+                        // {
+                        DyeBatch = context.TLDYE_DyeBatch.Find(Entry.TLDyeIns_DyeBatch_Fk);
+                        if (DyeBatch != null)
+                        {
+                            Dye_Pk = Entry.TLDyeIns_DyeBatch_Fk;
+                            Cause = DyeBatch.DYEB_QExceptionCause;
 
-                                Quality = _Quality.FirstOrDefault(s => s.TLGreige_Id == DyeBatch.DYEB_Greige_FK).TLGreige_Description;
-                                Colour = _Colours.FirstOrDefault(s => s.Col_Id == DyeBatch.DYEB_Colour_FK).Col_Display;
-                                var Allocated = context.TLDYE_DyeBatchAllocated.Where(x => x.TLDYEA_DyeBatch_FK == DyeBatch.DYEB_Pk).FirstOrDefault();
-                                if (Allocated != null)
+                            Quality = _Quality.FirstOrDefault(s => s.TLGreige_Id == DyeBatch.DYEB_Greige_FK).TLGreige_Description;
+                            Colour = _Colours.FirstOrDefault(s => s.Col_Id == DyeBatch.DYEB_Colour_FK).Col_Display;
+                            var Allocated = context.TLDYE_DyeBatchAllocated.Where(x => x.TLDYEA_DyeBatch_FK == DyeBatch.DYEB_Pk).FirstOrDefault();
+                            if (Allocated != null)
+                            {
+                                DyeMachine = _Machines.FirstOrDefault(s => s.MD_Pk == Allocated.TLDYEA_MachCode_FK).MD_Description;
+                            }
+                            else
+                                DyeMachine = string.Empty;
+
+                            var DyeBatchDetail = context.TLDYE_DyeBatchDetails.Where(x => x.DYEBD_DyeBatch_FK == DyeBatch.DYEB_Pk).FirstOrDefault();
+                            if (DyeBatchDetail != null)
+                            {
+                                var GriegeProd = context.TLKNI_GreigeProduction.Find(DyeBatchDetail.DYEBD_GreigeProduction_FK);
+                                if (GriegeProd != null && GriegeProd.GreigeP_Machine_FK != null)
                                 {
-                                    DyeMachine = _Machines.FirstOrDefault(s => s.MD_Pk == Allocated.TLDYEA_MachCode_FK).MD_Description;
+                                    KnittingMachine = context.TLADM_MachineDefinitions.Find(GriegeProd.GreigeP_Machine_FK).MD_Description;
                                 }
                                 else
-                                    DyeMachine = string.Empty;
-
-                                var DyeBatchDetail = context.TLDYE_DyeBatchDetails.Where(x => x.DYEBD_DyeBatch_FK == DyeBatch.DYEB_Pk).FirstOrDefault();
-                                if (DyeBatchDetail != null)
-                                {
-                                    var GriegeProd = context.TLKNI_GreigeProduction.Find(DyeBatchDetail.DYEBD_GreigeProduction_FK);
-                                    if (GriegeProd != null && GriegeProd.GreigeP_Machine_FK != null)
-                                    {
-                                        KnittingMachine = context.TLADM_MachineDefinitions.Find(GriegeProd.GreigeP_Machine_FK).MD_Description;
-                                    }
-                                    else
-                                        KnittingMachine = string.Empty;
-                                }
+                                    KnittingMachine = string.Empty;
                             }
-                       // }
-                        
+                        }
+                        // }
+
 
                         xr.DyeBatch = DyeBatch.DYEB_BatchNo;//
                         xr.Quality = Quality;
@@ -5589,7 +5589,7 @@ namespace DyeHouse
                         NRow = dataTable2.NewDataTable2Row();
                         NRow.Pk = 1;
                         NRow.Description = Meas.TLQADPF_Description;
-                        if(Meas.TLQAPF_Operator_Ins)
+                        if (Meas.TLQAPF_Operator_Ins)
                         {
                             NRow.Description += " ****";
                         }
@@ -5632,7 +5632,7 @@ namespace DyeHouse
                         NRow.Pk = 1;
                         NRow.Description = context.TLKNI_GreigeProduction.Find(Piece.DYEBD_GreigeProduction_FK).GreigeP_PieceNo;
                         NRow.Section = 4;
-                        
+
                         dataTable2.Rows.Add(NRow);
                     }
                 }
@@ -5651,7 +5651,7 @@ namespace DyeHouse
                 core = new Util();
                 var TransNumber = int.Parse(_TransNumber);
 
-                using( var context = new TTI2Entities())
+                using (var context = new TTI2Entities())
                 {
                     DataSet51.DataTable1Row NewRow = dataTable1.NewDataTable1Row();
                     NewRow.Pk = 1;
@@ -5662,7 +5662,7 @@ namespace DyeHouse
 
                     var Consumables = context.TLDYE_ConSummableReceived.Where(x => x.DYECON_TransNumber == TransNumber).ToList();
 
-                    foreach(var Consumable in Consumables)
+                    foreach (var Consumable in Consumables)
                     {
                         DataSet51.DataTable2Row NRow = dataTable2.NewDataTable2Row();
                         NRow.Pk = 1;
@@ -5674,13 +5674,185 @@ namespace DyeHouse
                         dataTable2.Rows.Add(NRow);
                     }
                 }
-                
+
                 ds.Tables.Add(dataTable1);
                 ds.Tables.Add(dataTable2);
                 DyeHouse.ConsumableGRN QualAssurance = new DyeHouse.ConsumableGRN();
                 QualAssurance.SetDataSource(ds);
                 crystalReportViewer1.ReportSource = QualAssurance;
 
+            }
+            else if (_RepNo == 48)
+            {
+                DataSet ds = new DataSet();
+                DataSet52.DataTable1DataTable dataTable1 = new DataSet52.DataTable1DataTable();
+                DataSet52.DataTable2DataTable dataTable2 = new DataSet52.DataTable2DataTable();
+                core = new Util();
+                _repo = new DyeHouse.DyeRepository();
+
+                DataSet52.DataTable2Row NewRow = dataTable2.NewDataTable2Row();
+                NewRow.Pk = 1;
+                NewRow.FromDate = _parms.FromDate;
+                NewRow.ToDate = _parms.ToDate;
+                NewRow.Title = "Fabric width movement through finishing processes";
+                dataTable2.Rows.Add(NewRow);
+
+                using (var context = new TTI2Entities())
+                {
+                    var DyeBatches = _repo.SelectDyedBasicQuality(_parms);
+
+                    foreach (var DBatch in DyeBatches)
+                    {
+                        var DyeBatchDetails = context.TLDYE_DyeBatchDetails.Where(x => x.DYEBD_DyeBatch_FK == DBatch.DYEB_Pk && x.DYEBD_BodyTrim).ToList();
+
+                        var AfterHydro = context.TLDYE_NonComplianceAnalysis.Where(x => x.TLDYEDC_BatchNo == DBatch.DYEB_Pk && x.TLDYEDC_NCStage == 6 ).FirstOrDefault();
+                        var AfterDrying = context.TLDYE_NonComplianceAnalysis.Where(x => x.TLDYEDC_BatchNo == DBatch.DYEB_Pk && x.TLDYEDC_NCStage == 4 && x.TLDYEDC_Code_FK == 1).FirstOrDefault();
+                        var AfterCompacting = context.TLDYE_NonComplianceAnalysis.Where(x => x.TLDYEDC_BatchNo == DBatch.DYEB_Pk && x.TLDYEDC_NCStage == 5 && x.TLDYEDC_Code_FK == 1).FirstOrDefault();
+                        
+                        foreach (var Detail in DyeBatchDetails)
+                        {
+                            DataSet52.DataTable1Row NRow = dataTable1.NewDataTable1Row();
+                            NRow.Pk = 1;
+                            var GreigeProd = context.TLKNI_GreigeProduction.Find(Detail.DYEBD_GreigeProduction_FK);
+                            if(GreigeProd == null)
+                            {
+                                continue;
+                            }
+
+                            NRow.DyeBatch = DBatch.DYEB_BatchNo;
+                            NRow.PieceNo = GreigeProd.GreigeP_PieceNo;
+                            var Quality = context.TLADM_Griege.Find(DBatch.DYEB_Greige_FK);
+                            if (Quality != null)
+                            {
+                                NRow.Quality = Quality.TLGreige_Description;
+                                var FabWidth = context.TLADM_FabWidth.Find(Quality.TLGreige_FabricWidth_FK);
+                                if (FabWidth != null)
+                                {
+                                    NRow.GreigeWidth = FabWidth.FW_Calculation_Value;
+                                }
+                            }
+                            
+                            NRow.Quality = context.TLADM_Griege.Find(DBatch.DYEB_Greige_FK).TLGreige_Description;
+                            NRow.Colour = context.TLADM_Colours.Find(DBatch.DYEB_Colour_FK).Col_Display;
+                            NRow.GrossKg = Detail.DYEBD_GreigeProduction_Weight;
+                            NRow.NetKg = Detail.DYEBO_Nett;
+                           
+                            if(NRow.GrossKg != 0 & NRow.NetKg != 0 )
+                            {
+                                NRow.ProccesLoss = core.CalculateVariance(NRow.GrossKg, NRow.NetKg);
+                            }
+                            else
+                            {
+                                NRow.ProccesLoss = 0;
+                            }
+
+                            if(_parms.ProcessLoss != 0)
+                            {
+                                if(NRow.ProccesLoss > (_parms.ProcessLoss * -1) && NRow.ProccesLoss < _parms.ProcessLoss)
+                                {
+                                    continue;
+                                }
+                            }
+
+                            if(AfterHydro != null && AfterHydro.TLDYEDC_Value != 0)
+                            {
+                                NRow.GreigeWidth_AfterHydro = AfterHydro.TLDYEDC_Value;
+                                NRow.WidthMove_AfterHydro = core.CalculateVariance(NRow.GreigeWidth, AfterHydro.TLDYEDC_Value);
+                            }
+                            else
+                            {
+                                NRow.GreigeWidth_AfterHydro = 0;
+                                NRow.WidthMove_AfterHydro = 0;
+                            }
+                            
+                            if(AfterDrying != null && AfterDrying.TLDYEDC_Value != 0 && NRow.GreigeWidth_AfterHydro != 0)
+                            {
+                                NRow.GreigeWidth_AfterDrying = AfterDrying.TLDYEDC_Value;
+                                NRow.WidthMove_AfterDrying = core.CalculateVariance(NRow.GreigeWidth_AfterHydro, AfterHydro.TLDYEDC_Value);
+                            }
+                            else
+                            {
+                                NRow.GreigeWidth_AfterDrying = 0;
+                                NRow.WidthMove_AfterDrying = 0;
+                            }
+                            
+                            if(AfterCompacting!= null && NRow.GreigeWidth_AfterDrying != 0 && AfterCompacting.TLDYEDC_Value != 0)
+                            {
+                                NRow.GreigeWidth_AfterCompact = AfterCompacting.TLDYEDC_Value;
+                                NRow.WidthMove_AfterCompact = core.CalculateVariance(NRow.GreigeWidth_AfterHydro, AfterCompacting.TLDYEDC_Value);
+                                NRow.WidthMove_AfterGreige = core.CalculateVariance(NRow.GrossKg, AfterCompacting.TLDYEDC_Value);
+                            }
+                            else
+                            {
+                                NRow.GreigeWidth_AfterCompact = Detail.DYEBO_Width;
+                                NRow.WidthMove_AfterCompact = 0;
+                                NRow.WidthMove_AfterGreige = core.CalculateVariance(NRow.GreigeWidth, Detail.DYEBO_Width); ;
+                            }
+                            if (_parms.WidthMagnitude != 0)
+                            {
+                                if (NRow.WidthMove_AfterGreige > (_parms.WidthMagnitude * -1) && NRow.WidthMove_AfterGreige < _parms.WidthMagnitude)
+                                {
+                                    continue;
+                                }
+                            }
+                            var AllocatedOp = context.TLDYE_AllocatedOperator.Where(x => x.DYEOP_BatchNo_FK == DBatch.DYEB_Pk).FirstOrDefault();
+                            if (AllocatedOp != null)
+                            {
+                                NRow.DyeOperator = context.TLADM_MachineOperators.Find(AllocatedOp.DYEOP_Operator_FK).MachOp_Description ;
+                            }
+
+                            var AllocatedMachine = context.TLDYE_DyeBatchAllocated.Where(x => x.TLDYEA_DyeBatch_FK == DBatch.DYEB_Pk).FirstOrDefault();
+                            if(AllocatedMachine != null)
+                            {
+                                NRow.DyeMachine = context.TLADM_MachineDefinitions.Find(AllocatedMachine.TLDYEA_MachCode_FK).MD_Description; 
+                            }
+                            
+                                
+                            dataTable1.Rows.Add(NRow);
+                        }
+                    }
+                }
+
+                ds.Tables.Add(dataTable1);
+                ds.Tables.Add(dataTable2);
+                DyeHouse.FabricWidthThroughProcess ThroughProcess =  new DyeHouse.FabricWidthThroughProcess();
+                ThroughProcess.SetDataSource(ds);
+
+                /*reportOptions = new BindingList<KeyValuePair<int, string>>();
+                reportOptions.Add(new KeyValuePair<int, string>(0, "Batch Number "));
+                reportOptions.Add(new KeyValuePair<int, string>(1, "Dye Machines"));
+                reportOptions.Add(new KeyValuePair<int, string>(2, "Dye Operator"));
+                reportOptions.Add(new KeyValuePair<int, string>(3, "Process loss magnitude"));
+                reportOptions.Add(new KeyValuePair<int, string>(4, "Width difference to fabric final")); */
+
+                if ( _parms.DO_OptionSelected == 0)
+                {
+                    //Dye Batch Number
+                    ThroughProcess.DataDefinition.Groups[0].ConditionField = ThroughProcess.Database.Tables[0].Fields[1];
+                }
+                else if (_parms.DO_OptionSelected == 1)
+                {
+                    // Dye Machine
+                    ThroughProcess.DataDefinition.Groups[0].ConditionField = ThroughProcess.Database.Tables[0].Fields[17];
+                }
+                else if (_parms.DO_OptionSelected == 2)
+                {
+                    //Operator
+                    ThroughProcess.DataDefinition.Groups[0].ConditionField = ThroughProcess.Database.Tables[0].Fields[16];
+                }
+                else if (_parms.DO_OptionSelected == 3)
+                {
+                    // Process Loss Magnitude
+                    ThroughProcess.DataDefinition.Groups[0].ConditionField = ThroughProcess.Database.Tables[0].Fields[7];
+                }
+                else 
+                {
+                    // Process Width Loss Magnitude
+                    ThroughProcess.DataDefinition.Groups[0].ConditionField = ThroughProcess.Database.Tables[0].Fields[8];
+                }
+
+
+                crystalReportViewer1.ReportSource = ThroughProcess;
             }
             crystalReportViewer1.Refresh();
 

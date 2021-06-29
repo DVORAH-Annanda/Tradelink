@@ -893,7 +893,7 @@ namespace CustomerServices
 
         public IQueryable<TLCSV_StockOnHand> CustomerAudit(CustomerServicesParameters parameters, int Customer_Pk)
         {
-            var SOH = _context.TLCSV_StockOnHand.Where(x => x.TLSOH_Customer_Fk == Customer_Pk && x.TLSOH_SoldDate >= parameters.FromDate && x.TLSOH_SoldDate <= parameters.ToDate).AsQueryable();
+            var SOH = _context.TLCSV_StockOnHand.Where(x => x.TLSOH_Customer_Fk == Customer_Pk && x.TLSOH_Sold).AsQueryable();
            if(parameters.PurchaseOrders.Count() > 0 )
             {
                 var POPredicate = PredicateBuilder.New<TLCSV_StockOnHand>();

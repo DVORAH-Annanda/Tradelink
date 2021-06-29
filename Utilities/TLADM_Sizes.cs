@@ -30,6 +30,8 @@ namespace Utilities
         public int SI_PastelNo { get; set; }
         public int SI_DisplayOrder { get; set; }
         public bool SI_Adult { get; set; }
+        public int SI_ContiSize { get; set; }
+        public string SI_Display { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TLADM_ConsumablesOther> TLADM_ConsumablesOther { get; set; }

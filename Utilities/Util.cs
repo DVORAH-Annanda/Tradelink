@@ -976,6 +976,11 @@ namespace Utilities
             return Tmp;
         }
 
+        public Decimal CalculateVariance(decimal BenchMark, decimal Actual)
+        {
+            return (Actual / BenchMark) * 100 - 100;
+            
+        }
         public void SendEmailtoContacts(string EMailAddress, DataTable _dt, int MailNo, DateTime Date,  string PO, String TransNo)
         {
             StringBuilder html = new StringBuilder();
@@ -2720,8 +2725,8 @@ namespace Utilities
                     oDgv.Rows[index].Cells[14].Value = ExistingRow.Sty_Buttons;
                     oDgv.Rows[index].Cells[15].Value = ExistingRow.Sty_BoughtIn;
                     oDgv.Rows[index].Cells[16].Value = ExistingRow.Sty_DisplayOrder;
-               }
-              
+                    oDgv.Rows[index].Cells[17].Value = ExistingRow.Sty_WorkWear;
+                }
             }
             return oDgv;
         }
@@ -2837,7 +2842,14 @@ namespace Utilities
 
                         try
                         {
-                            clrs.Sty_Buttons = Convert.ToBoolean(row.Cells[14].Value.ToString());
+                            if (row.Cells[14].Value != null)
+                            {
+                                clrs.Sty_Buttons = Convert.ToBoolean(row.Cells[14].Value.ToString());
+                            }
+                            else
+                            {
+                                clrs.Sty_Buttons = false;
+                            }
                         }
                         catch (System.Exception ex)
                         {
@@ -2855,11 +2867,34 @@ namespace Utilities
 
                         try
                         {
-                            clrs.Sty_DisplayOrder = Convert.ToInt32(row.Cells[16].Value.ToString());
+                            if (row.Cells[16].Value != null)
+                            {
+                                clrs.Sty_DisplayOrder = Convert.ToInt32(row.Cells[16].Value.ToString());
+                            }
+                            else
+                            {
+                                clrs.Sty_DisplayOrder = 0;
+                            }
                         }
                         catch (System.Exception ex)
                         {
                             clrs.Sty_DisplayOrder = 0;
+                        }
+
+                        try
+                        {
+                            if (row.Cells[17].Value != null)
+                            {
+                                clrs.Sty_WorkWear = Convert.ToBoolean(row.Cells[17].Value.ToString());
+                            }
+                            else
+                            {
+                                clrs.Sty_WorkWear = false;
+                            }
+                        }
+                        catch (System.Exception ex)
+                        {
+                            clrs.Sty_WorkWear = false;
                         }
 
                         clrs.Sty_Label_FK = SelectedLabel;
@@ -3894,7 +3929,8 @@ namespace Utilities
                     oDgv.Rows[index].Cells[5].Value = ExistingRow.SI_PastelNo;
                     oDgv.Rows[index].Cells[6].Value = ExistingRow.SI_DisplayOrder;
                     oDgv.Rows[index].Cells[7].Value = ExistingRow.SI_ColNumber;
-
+                    oDgv.Rows[index].Cells[8].Value = ExistingRow.SI_Display;
+                    oDgv.Rows[index].Cells[9].Value = ExistingRow.SI_ContiSize;
                 }
             }
             return oDgv;
@@ -3966,6 +4002,13 @@ namespace Utilities
                             clrs.SI_ColNumber = (int)row.Cells[7].Value;
                         else
                             clrs.SI_ColNumber = 1;
+
+                        clrs.SI_Display  = (String)row.Cells[8].Value;
+
+                        if (row.Cells[9].Value == null)
+                            row.Cells[9].Value = 0;
+
+                        clrs.SI_ContiSize = (int)row.Cells[9].Value;
 
                         if (lAdd)
                             Context.TLADM_Sizes.Add(clrs);

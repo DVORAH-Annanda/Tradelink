@@ -82,6 +82,7 @@ namespace TTI2_WF
             rbStore.Checked = true;
             rbGradeA.Checked = true;
             rbRepackNo.Checked = true;
+            rbQuarantineNo.Checked = true;
 
             rctNotes.Text = string.Empty;
 
@@ -237,7 +238,12 @@ namespace TTI2_WF
                    else
                        whse.WhStore_RePack = false;
 
-                   if(chkDefault.Checked)
+                    if (rbIsQuarantineYes.Checked)
+                        whse.WhStore_Quarantine = true;
+                    else
+                        whse.WhStore_Quarantine = false;
+
+                    if (chkDefault.Checked)
                     {
                         whse.WhStore_Default = true;
                     }
@@ -348,12 +354,13 @@ namespace TTI2_WF
 
                         if (whse.WhStore_ChemicalStore)
                             rbChemicalStoreYes.Checked = true;
+
+                        if (whse.WhStore_Quarantine)
+                            rbIsQuarantineYes.Checked = true;
                         
                         if (whse.WhStore_RePack)
                              rbRepacYes.Checked = true;
-                        else
-                            rbRepackNo.Checked = false;
- 
+                         
                         if(whse.WhStore_Default)
                         {
                             chkDefault.Checked = true;

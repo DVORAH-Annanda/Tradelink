@@ -93,7 +93,7 @@ namespace CustomerServices
                  var Sizes = context.TLADM_Sizes.Where(x=>(bool)!x.SI_Discontinued).OrderBy(x => x.SI_DisplayOrder).ToList();
                  foreach (var Size in Sizes)
                  {
-                     cmboSizes.Items.Add(new CustomerServices.CheckComboBoxItem(Size.SI_id, Size.SI_Description, false));
+                     cmboSizes.Items.Add(new CustomerServices.CheckComboBoxItem(Size.SI_id, Size.SI_Display, false));
                  }
 
                  cmboColours.Items.Clear();
@@ -348,7 +348,17 @@ namespace CustomerServices
                         {
                             var xStyle = context.TLADM_Styles.Find(soh._StyleFK).Sty_Description;
                             var xColour = context.TLADM_Colours.Find(soh._ColourFK).Col_Display;
-                            var xSize = context.TLADM_Sizes.Find(soh._SizeFK).SI_Description;
+                            var Sty = context.TLADM_Styles.Find(soh._StyleFK);
+                            var xSize = string.Empty;
+
+                            if (Sty != null && !Sty.Sty_WorkWear)
+                            {
+                                xSize = context.TLADM_Sizes.Find(soh._SizeFK).SI_Description;
+                            }
+                            else
+                            {
+                                xSize = context.TLADM_Sizes.Find(soh._SizeFK).SI_ContiSize.ToString();
+                            }
                             var index = dt.Columns.IndexOf(xSize);
 
                             var SingleRow = (from Rows in dt.Rows.Cast<DataRow>()

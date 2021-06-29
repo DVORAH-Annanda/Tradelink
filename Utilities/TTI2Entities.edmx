@@ -82,6 +82,7 @@
           <Property Name="Col_Removed_InSession" Type="bit" Nullable="false" />
           <Property Name="Col_Added_InSession" Type="bit" Nullable="false" />
           <Property Name="Col_Padding" Type="bit" />
+          <Property Name="Col_Pastel" Type="varchar" MaxLength="10" />
         </EntityType>
         <EntityType Name="TLADM_CompanyDetails">
           <Key>
@@ -831,6 +832,8 @@
           <Property Name="SI_PastelNo" Type="int" Nullable="false" />
           <Property Name="SI_DisplayOrder" Type="int" Nullable="false" />
           <Property Name="SI_Adult" Type="bit" Nullable="false" />
+          <Property Name="SI_ContiSize" Type="int" Nullable="false" />
+          <Property Name="SI_Display" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="TLADM_StandardProduct">
           <Key>
@@ -911,6 +914,7 @@
           <Property Name="Sty_Equiv" Type="bit" Nullable="false" />
           <Property Name="Sty_DisplayOrder" Type="int" Nullable="false" />
           <Property Name="Sty_Units_Per_Hour" Type="int" Nullable="false" />
+          <Property Name="Sty_WorkWear" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="TLADM_StylesAdditional">
           <Key>
@@ -1051,6 +1055,7 @@
           <Property Name="WhStore_PanelStore" Type="bit" Nullable="false" />
           <Property Name="WhStore_RePack" Type="bit" Nullable="false" />
           <Property Name="WhStore_Default" Type="bit" Nullable="false" />
+          <Property Name="WhStore_Quarantine" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="TLADM_Yarn">
           <Key>
@@ -1336,6 +1341,18 @@
           <Property Name="TLUPT_Style_Fk" Type="int" Nullable="false" />
           <Property Name="TLUPT_Unit_Target" Type="int" Nullable="false" />
         </EntityType>
+        <EntityType Name="TLCSV_BoughtInGoods">
+          <Key>
+            <PropertyRef Name="TLBIG_Pk" />
+          </Key>
+          <Property Name="TLBIG_Pk" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TLBIG_TransDate" Type="date" Nullable="false" />
+          <Property Name="TLBIG_TransNumber" Type="int" Nullable="false" />
+          <Property Name="TLBIG_TTIOrderNo" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="TLBIG_Supplier_FK" Type="int" Nullable="false" />
+          <Property Name="TLBIG_SupplierDelNo" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="TLBIG_WareHouse_FK" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="TLCSV_BoxConfiguration">
           <Key>
             <PropertyRef Name="BxCon_Pk" />
@@ -1569,6 +1586,10 @@
           <Property Name="TLSOH_CutSheet_FK" Type="int" Nullable="false" />
           <Property Name="TLSOH_Invoiced" Type="bit" Nullable="false" />
           <Property Name="TLSOH_InvDate" Type="datetime" />
+          <Property Name="TLSOH_Supplier_Fk" Type="int" />
+          <Property Name="TLSOH_SupplierTransNumber" Type="int" Nullable="false" />
+          <Property Name="TLSOH_BoughtInGoods" Type="bit" Nullable="false" />
+          <Property Name="TLSOH_BoughtInGoods_Fk" Type="int" />
         </EntityType>
         <EntityType Name="TLCSV_WhseTransfer">
           <Key>
@@ -3040,6 +3061,7 @@
           <EntitySet Name="TLCMT_ProductionFaults" EntityType="Self.TLCMT_ProductionFaults" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TLCMT_Statistics" EntityType="Self.TLCMT_Statistics" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TLCMT_UnitProductionTargets" EntityType="Self.TLCMT_UnitProductionTargets" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TLCSV_BoughtInGoods" EntityType="Self.TLCSV_BoughtInGoods" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TLCSV_BoxConfiguration" EntityType="Self.TLCSV_BoxConfiguration" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TLCSV_BoxSelected" EntityType="Self.TLCSV_BoxSelected" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TLCSV_BoxSplit" EntityType="Self.TLCSV_BoxSplit" Schema="dbo" store:Type="Tables" />
@@ -3677,11 +3699,6 @@
           <EntitySet Name="TLADM_CutAreaLocations" EntityType="TTI2Model.TLADM_CutAreaLocations" />
           <EntitySet Name="TLADM_CutMeasureStandards" EntityType="TTI2Model.TLADM_CutMeasureStandards" />
           <EntitySet Name="TLCUT_QAResults" EntityType="TTI2Model.TLCUT_QAResults" />
-          <EntitySet Name="TLADM_Sizes" EntityType="TTI2Model.TLADM_Sizes" />
-          <AssociationSet Name="FK_TLADM_ConsumablesOther_TLADM_Sizes" Association="TTI2Model.FK_TLADM_ConsumablesOther_TLADM_Sizes">
-            <End Role="TLADM_Sizes" EntitySet="TLADM_Sizes" />
-            <End Role="TLADM_ConsumablesOther" EntitySet="TLADM_ConsumablesOther" />
-          </AssociationSet>
           <EntitySet Name="TLCSV_MergePODetail" EntityType="TTI2Model.TLCSV_MergePODetail" />
           <EntitySet Name="TLADM_WareHouseAssociation" EntityType="TTI2Model.TLADM_WareHouseAssociation" />
           <EntitySet Name="TLDYE_ReceipeGreigeQual" EntityType="TTI2Model.TLDYE_ReceipeGreigeQual" />
@@ -3722,8 +3739,6 @@
           <EntitySet Name="TLPPS_ProductionLeadTime" EntityType="TTI2Model.TLPPS_ProductionLeadTime" />
           <EntitySet Name="TLDYE_DyeTransactions" EntityType="TTI2Model.TLDYE_DyeTransactions" />
           <EntitySet Name="TLCMT_UnitProductionTargets" EntityType="TTI2Model.TLCMT_UnitProductionTargets" />
-          <EntitySet Name="TLADM_Departments" EntityType="TTI2Model.TLADM_Departments" />
-          <EntitySet Name="TLADM_Styles" EntityType="TTI2Model.TLADM_Styles" />
           <EntitySet Name="TLSEC_Sections" EntityType="TTI2Model.TLSEC_Sections" />
           <EntitySet Name="TLKNI_YarnOrderPallets" EntityType="TTI2Model.TLKNI_YarnOrderPallets" />
           <EntitySet Name="TLCMT_FactConfig" EntityType="TTI2Model.TLCMT_FactConfig" />
@@ -3741,9 +3756,7 @@
           <EntitySet Name="TLADM_Transporters" EntityType="TTI2Model.TLADM_Transporters" />
           <EntitySet Name="TLCMT_ProductionCosts" EntityType="TTI2Model.TLCMT_ProductionCosts" />
           <EntitySet Name="TLADM_CMTMeasurementPoints" EntityType="TTI2Model.TLADM_CMTMeasurementPoints" />
-          <EntitySet Name="TLADM_Colours" EntityType="TTI2Model.TLADM_Colours" />
           <EntitySet Name="TLCSV_PurchaseOrder" EntityType="TTI2Model.TLCSV_PurchaseOrder" />
-          <EntitySet Name="TLCSV_StockOnHand" EntityType="TTI2Model.TLCSV_StockOnHand" />
           <EntitySet Name="TLADM_FabWidth" EntityType="TTI2Model.TLADM_FabWidth" />
           <EntitySet Name="TLADM_QualityDefinition" EntityType="TTI2Model.TLADM_QualityDefinition" />
           <AssociationSet Name="FK_TLADM_QualityDefinition_TLADM_RejectReasons1" Association="TTI2Model.FK_TLADM_QualityDefinition_TLADM_RejectReasons1">
@@ -3800,9 +3813,19 @@
           <EntitySet Name="TLADM_QADyeProcessFields" EntityType="TTI2Model.TLADM_QADyeProcessFields" />
           <EntitySet Name="TLDYE_DyeBatchDetails" EntityType="TTI2Model.TLDYE_DyeBatchDetails" />
           <EntitySet Name="TLDYE_ConSummableReceived" EntityType="TTI2Model.TLDYE_ConSummableReceived" />
-          <EntitySet Name="TLADM_WhseStore" EntityType="TTI2Model.TLADM_WhseStore" />
           <EntitySet Name="TLADM_MachineMaintenanceTasks" EntityType="TTI2Model.TLADM_MachineMaintenanceTasks" />
           <EntitySet Name="TLADM_MachineMaintenance" EntityType="TTI2Model.TLADM_MachineMaintenance" />
+          <EntitySet Name="TLADM_Departments" EntityType="TTI2Model.TLADM_Departments" />
+          <EntitySet Name="TLADM_WhseStore" EntityType="TTI2Model.TLADM_WhseStore" />
+          <EntitySet Name="TLADM_Styles" EntityType="TTI2Model.TLADM_Styles" />
+          <EntitySet Name="TLCSV_BoughtInGoods" EntityType="TTI2Model.TLCSV_BoughtInGoods" />
+          <EntitySet Name="TLADM_Colours" EntityType="TTI2Model.TLADM_Colours" />
+          <EntitySet Name="TLCSV_StockOnHand" EntityType="TTI2Model.TLCSV_StockOnHand" />
+          <EntitySet Name="TLADM_Sizes" EntityType="TTI2Model.TLADM_Sizes" />
+          <AssociationSet Name="FK_TLADM_ConsumablesOther_TLADM_Sizes" Association="TTI2Model.FK_TLADM_ConsumablesOther_TLADM_Sizes">
+            <End Role="TLADM_Sizes" EntitySet="TLADM_Sizes" />
+            <End Role="TLADM_ConsumablesOther" EntitySet="TLADM_ConsumablesOther" />
+          </AssociationSet>
           </EntityContainer>
         <EntityType Name="TLADM_FabricProduct">
           <Key>
@@ -5080,34 +5103,6 @@
           <Property Name="TLCUTQA_Col3" Type="Decimal" Nullable="false" Precision="18" Scale="4" />
           <Property Name="TLCUTQA_Col4" Type="Decimal" Nullable="false" Precision="18" Scale="4" />
         </EntityType>
-        <EntityType Name="TLADM_Sizes">
-          <Key>
-            <PropertyRef Name="SI_id" />
-          </Key>
-          <Property Name="SI_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="SI_Description" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="SI_PowerN" Type="Int32" Nullable="false" />
-          <Property Name="SI_Discontinued" Type="Boolean" Nullable="false" />
-          <Property Name="SI_Discontinued_Date" Type="DateTime" Precision="0" />
-          <Property Name="SI_FinishedCode" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Name="SI_ColNumber" Type="Int32" Nullable="false" />
-          <Property Name="SI_PastelNo" Type="Int32" Nullable="false" />
-          <Property Name="SI_DisplayOrder" Type="Int32" Nullable="false" />
-          <Property Name="SI_Adult" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="TLADM_ConsumablesOther" Relationship="TTI2Model.FK_TLADM_ConsumablesOther_TLADM_Sizes" FromRole="TLADM_Sizes" ToRole="TLADM_ConsumablesOther" />
-        </EntityType>
-        <Association Name="FK_TLADM_ConsumablesOther_TLADM_Sizes">
-          <End Type="TTI2Model.TLADM_Sizes" Role="TLADM_Sizes" Multiplicity="1" />
-          <End Type="TTI2Model.TLADM_ConsumablesOther" Role="TLADM_ConsumablesOther" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="TLADM_Sizes">
-              <PropertyRef Name="SI_id" />
-            </Principal>
-            <Dependent Role="TLADM_ConsumablesOther">
-              <PropertyRef Name="ConsOther_SizeCode_FK" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="TLCSV_MergePODetail">
           <Key>
             <PropertyRef Name="TLMerge_PK" />
@@ -5583,45 +5578,6 @@
           <Property Name="TLUPT_Style_Fk" Type="Int32" Nullable="false" />
           <Property Name="TLUPT_Unit_Target" Type="Int32" Nullable="false" />
         </EntityType>
-        <EntityType Name="TLADM_Departments">
-          <Key>
-            <PropertyRef Name="Dep_Id" />
-          </Key>
-          <Property Name="Dep_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Dep_ShortCode" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="false" />
-          <Property Name="Dep_Description" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Dep_PowerN" Type="Int32" Nullable="false" />
-          <Property Name="Dep_UOM" Type="Int32" Nullable="false" />
-          <Property Name="Dep_ProductType_FK" Type="Int32" />
-          <Property Name="Dep_Location" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Dep_IsCMT" Type="Boolean" Nullable="false" />
-          <Property Name="Dep_IsCut" Type="Boolean" Nullable="false" />
-          <Property Name="Dep_Hours_Per_Day" Type="Decimal" Nullable="false" Precision="18" Scale="4" />
-        </EntityType>
-        <EntityType Name="TLADM_Styles">
-          <Key>
-            <PropertyRef Name="Sty_Id" />
-          </Key>
-          <Property Name="Sty_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Sty_Label_FK" Type="Int32" Nullable="false" />
-          <Property Name="Sty_Description" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Sty_Discontinued" Type="Boolean" />
-          <Property Name="Sty_Discontinued_Date" Type="DateTime" Precision="0" />
-          <Property Name="Sty_Sizes_PN" Type="Int32" Nullable="false" />
-          <Property Name="Sty_Trims_PN" Type="Int32" Nullable="false" />
-          <Property Name="Sty_Labels_FK" Type="Int32" Nullable="false" />
-          <Property Name="Sty_ChkMandatory" Type="Boolean" Nullable="false" />
-          <Property Name="Sty_PastelNo" Type="Int32" Nullable="false" />
-          <Property Name="Sty_PastelCode" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Name="Sty_CottonFactor" Type="Int32" Nullable="false" />
-          <Property Name="Sty_Bags" Type="Int32" Nullable="false" />
-          <Property Name="Sty_Buttons" Type="Boolean" Nullable="false" />
-          <Property Name="Sty_BoughtIn" Type="Boolean" Nullable="false" />
-          <Property Name="Sty_GreigeQual_PN" Type="Int32" Nullable="false" />
-          <Property Name="Sty_Equiv" Type="Boolean" Nullable="false" />
-          <Property Name="Sty_DisplayOrder" Type="Int32" Nullable="false" />
-          <Property Name="Sty_Units_Per_Hour" Type="Int32" Nullable="false" />
-        </EntityType>
         <EntityType Name="TLSEC_Sections">
           <Key>
             <PropertyRef Name="TLSECSect_Pk" />
@@ -5861,25 +5817,6 @@
           <Property Name="CMTMP_DisplayOrder" Type="Int32" Nullable="false" />
           <Property Name="CMTMP_Active" Type="Boolean" Nullable="false" />
         </EntityType>
-        <EntityType Name="TLADM_Colours">
-          <Key>
-            <PropertyRef Name="Col_Id" />
-          </Key>
-          <Property Name="Col_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Col_Description" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Col_PowerN" Type="Int32" Nullable="false" />
-          <Property Name="Col_Discontinued" Type="Boolean" />
-          <Property Name="Col_Discontinued_Date" Type="DateTime" Precision="0" />
-          <Property Name="Col_FinishedCode" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
-          <Property Name="Col_HasAuxColors" Type="Boolean" Nullable="false" />
-          <Property Name="Col_AuxPowerN" Type="Int32" Nullable="false" />
-          <Property Name="Col_Display" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Col_StandardTime" Type="Decimal" Nullable="false" Precision="18" Scale="4" />
-          <Property Name="Col_Benchmark" Type="Boolean" Nullable="false" />
-          <Property Name="Col_Added_InSession" Type="Boolean" Nullable="false" />
-          <Property Name="Col_Removed_InSession" Type="Boolean" Nullable="false" />
-          <Property Name="Col_Padding" Type="Boolean" />
-        </EntityType>
         <EntityType Name="TLCSV_PurchaseOrder">
           <Key>
             <PropertyRef Name="TLCSVPO_Pk" />
@@ -5895,57 +5832,6 @@
           <Property Name="TLCSVPO_SpecialOrder" Type="Boolean" Nullable="false" />
           <Property Name="TLCSVPO_RepackTransaction" Type="Boolean" Nullable="false" />
           <Property Name="TLCSVPO_Provisional" Type="Boolean" Nullable="false" />
-        </EntityType>
-        <EntityType Name="TLCSV_StockOnHand">
-          <Key>
-            <PropertyRef Name="TLSOH_Pk" />
-          </Key>
-          <Property Name="TLSOH_Pk" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="TLSOH_WareHouse_FK" Type="Int32" Nullable="false" />
-          <Property Name="TLSOH_CMT_FK" Type="Int32" />
-          <Property Name="TLSOH_DateIntoStock" Type="DateTime" Precision="3" />
-          <Property Name="TLSOH_BoxSelected_FK" Type="Int32" Nullable="false" />
-          <Property Name="TLSOH_Sold" Type="Boolean" Nullable="false" />
-          <Property Name="TLSOH_SoldDate" Type="DateTime" Precision="0" />
-          <Property Name="TLSOH_Notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="TLSOH_Transfered" Type="Boolean" Nullable="false" />
-          <Property Name="TLSOH_TransferNotes" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="TLSOH_Split" Type="Boolean" Nullable="false" />
-          <Property Name="TLSOH_BoxedQty" Type="Int32" Nullable="false" />
-          <Property Name="TLSOH_Picked" Type="Boolean" Nullable="false" />
-          <Property Name="TLSOH_PickListNo" Type="Int32" />
-          <Property Name="TLSOH_PickListDate" Type="DateTime" Precision="3" />
-          <Property Name="TLSOH_DNListNo" Type="Int32" Nullable="false" />
-          <Property Name="TLSOH_DNListDate" Type="DateTime" Precision="0" />
-          <Property Name="TLSOH_Movement_FK" Type="Int32" />
-          <Property Name="TLSOH_Style_FK" Type="Int32" Nullable="false" />
-          <Property Name="TLSOH_Colour_FK" Type="Int32" Nullable="false" />
-          <Property Name="TLSOH_Size_FK" Type="Int32" Nullable="false" />
-          <Property Name="TLSOH_BoxNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="TLSOH_Weight" Type="Decimal" Nullable="false" Precision="18" Scale="4" />
-          <Property Name="TLSOH_PastelNumber" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="TLSOH_BoxType" Type="Int32" Nullable="false" />
-          <Property Name="TLSOH_POOrder_FK" Type="Int32" />
-          <Property Name="TLSOH_POOrderDetail_FK" Type="Int32" />
-          <Property Name="TLSOH_Returned" Type="Boolean" Nullable="false" />
-          <Property Name="TLSOH_ReturnedDate" Type="DateTime" Precision="0" />
-          <Property Name="TLSOH_ReturnNumber" Type="Int32" Nullable="false" />
-          <Property Name="TLSOH_ReturnedBoxQty" Type="Int32" Nullable="false" />
-          <Property Name="TLSOH_ReturnedWeight" Type="Decimal" Nullable="false" Precision="18" Scale="4" />
-          <Property Name="TLSOH_QtyAdjusted" Type="Int32" Nullable="false" />
-          <Property Name="TLSOH_MoveAdjust_FK" Type="Int32" />
-          <Property Name="TLSOH_Customer_Fk" Type="Int32" />
-          <Property Name="TLSOH_WareHousePickList" Type="Int32" Nullable="false" />
-          <Property Name="TLSOH_WareHouseDeliveryNo" Type="Int32" Nullable="false" />
-          <Property Name="TLSOH_Grade" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
-          <Property Name="TLSOH_InTransit" Type="Boolean" Nullable="false" />
-          <Property Name="TLSOH_Session_Key" Type="Int32" Nullable="false" />
-          <Property Name="TLSOH_Write_Off" Type="Boolean" Nullable="false" />
-          <Property Name="TLSOH_Is_A" Type="Boolean" Nullable="false" />
-          <Property Name="TLSOH_RePackConfig_Fk" Type="Int32" />
-          <Property Name="TLSOH_CutSheet_FK" Type="Int32" Nullable="false" />
-          <Property Name="TLSOH_Invoiced" Type="Boolean" Nullable="false" />
-          <Property Name="TLSOH_InvDate" Type="DateTime" Precision="3" />
         </EntityType>
         <EntityType Name="TLADM_FabWidth">
           <Key>
@@ -6578,6 +6464,46 @@
           <Property Name="DYECON_Pass" Type="Boolean" Nullable="false" />
           <Property Name="DYECON_TransNumber" Type="Int32" Nullable="false" />
         </EntityType>
+        <EntityType Name="TLADM_MachineMaintenanceTasks">
+          <Key>
+            <PropertyRef Name="TLMtask_Pk" />
+          </Key>
+          <Property Name="TLMtask_Pk" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TLMtask_Dept_FK" Type="Int32" Nullable="false" />
+          <Property Name="TLMtask_Description" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="TLADM_MachineMaintenance">
+          <Key>
+            <PropertyRef Name="mman_Pk" />
+          </Key>
+          <Property Name="mman_Pk" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="mman_MaintenanceTask_FK" Type="Int32" Nullable="false" />
+          <Property Name="mman_Machine_Fk" Type="Int32" Nullable="false" />
+          <Property Name="mman_Interval_Between_Tasks" Type="Int32" Nullable="false" />
+          <Property Name="mman_Interval_UOM" Type="Int32" Nullable="false" />
+          <Property Name="mman_Interval_CurrentValue" Type="Int32" Nullable="false" />
+          <Property Name="mman_Reset" Type="Boolean" Nullable="false" />
+          <Property Name="mman_Date_Last_Reset" Type="DateTime" Precision="0" />
+          <Property Name="mman_Volume_CurrentValue" Type="Int32" Nullable="false" />
+          <Property Name="mman_Volume_Between_Tasks" Type="Int32" Nullable="false" />
+          <Property Name="mman_Volumne_UOM" Type="Int32" Nullable="false" />
+          <Property Name="mman_Last_Identifier" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="TLADM_Departments">
+          <Key>
+            <PropertyRef Name="Dep_Id" />
+          </Key>
+          <Property Name="Dep_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Dep_ShortCode" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="Dep_Description" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Dep_PowerN" Type="Int32" Nullable="false" />
+          <Property Name="Dep_UOM" Type="Int32" Nullable="false" />
+          <Property Name="Dep_ProductType_FK" Type="Int32" />
+          <Property Name="Dep_Location" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Dep_IsCMT" Type="Boolean" Nullable="false" />
+          <Property Name="Dep_IsCut" Type="Boolean" Nullable="false" />
+          <Property Name="Dep_Hours_Per_Day" Type="Decimal" Nullable="false" Precision="18" Scale="4" />
+        </EntityType>
         <EntityType Name="TLADM_WhseStore">
           <Key>
             <PropertyRef Name="WhStore_Id" />
@@ -6607,32 +6533,150 @@
           <Property Name="WhStore_PanelStore" Type="Boolean" Nullable="false" />
           <Property Name="WhStore_RePack" Type="Boolean" Nullable="false" />
           <Property Name="WhStore_Default" Type="Boolean" Nullable="false" />
+          <Property Name="WhStore_Quarantine" Type="Boolean" Nullable="false" />
         </EntityType>
-        <EntityType Name="TLADM_MachineMaintenanceTasks">
+        <EntityType Name="TLADM_Styles">
           <Key>
-            <PropertyRef Name="TLMtask_Pk" />
+            <PropertyRef Name="Sty_Id" />
           </Key>
-          <Property Name="TLMtask_Pk" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="TLMtask_Dept_FK" Type="Int32" Nullable="false" />
-          <Property Name="TLMtask_Description" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Sty_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Sty_Label_FK" Type="Int32" Nullable="false" />
+          <Property Name="Sty_Description" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Sty_Discontinued" Type="Boolean" />
+          <Property Name="Sty_Discontinued_Date" Type="DateTime" Precision="0" />
+          <Property Name="Sty_Sizes_PN" Type="Int32" Nullable="false" />
+          <Property Name="Sty_Trims_PN" Type="Int32" Nullable="false" />
+          <Property Name="Sty_Labels_FK" Type="Int32" Nullable="false" />
+          <Property Name="Sty_ChkMandatory" Type="Boolean" Nullable="false" />
+          <Property Name="Sty_PastelNo" Type="Int32" Nullable="false" />
+          <Property Name="Sty_PastelCode" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="Sty_CottonFactor" Type="Int32" Nullable="false" />
+          <Property Name="Sty_Bags" Type="Int32" Nullable="false" />
+          <Property Name="Sty_Buttons" Type="Boolean" Nullable="false" />
+          <Property Name="Sty_BoughtIn" Type="Boolean" Nullable="false" />
+          <Property Name="Sty_GreigeQual_PN" Type="Int32" Nullable="false" />
+          <Property Name="Sty_Equiv" Type="Boolean" Nullable="false" />
+          <Property Name="Sty_DisplayOrder" Type="Int32" Nullable="false" />
+          <Property Name="Sty_Units_Per_Hour" Type="Int32" Nullable="false" />
+          <Property Name="Sty_WorkWear" Type="Boolean" Nullable="false" />
         </EntityType>
-        <EntityType Name="TLADM_MachineMaintenance">
+        <EntityType Name="TLCSV_BoughtInGoods">
           <Key>
-            <PropertyRef Name="mman_Pk" />
+            <PropertyRef Name="TLBIG_Pk" />
           </Key>
-          <Property Name="mman_Pk" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="mman_MaintenanceTask_FK" Type="Int32" Nullable="false" />
-          <Property Name="mman_Machine_Fk" Type="Int32" Nullable="false" />
-          <Property Name="mman_Interval_Between_Tasks" Type="Int32" Nullable="false" />
-          <Property Name="mman_Interval_UOM" Type="Int32" Nullable="false" />
-          <Property Name="mman_Interval_CurrentValue" Type="Int32" Nullable="false" />
-          <Property Name="mman_Reset" Type="Boolean" Nullable="false" />
-          <Property Name="mman_Date_Last_Reset" Type="DateTime" Precision="0" />
-          <Property Name="mman_Volume_CurrentValue" Type="Int32" Nullable="false" />
-          <Property Name="mman_Volume_Between_Tasks" Type="Int32" Nullable="false" />
-          <Property Name="mman_Volumne_UOM" Type="Int32" Nullable="false" />
-          <Property Name="mman_Last_Identifier" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="TLBIG_Pk" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TLBIG_TransDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="TLBIG_TransNumber" Type="Int32" Nullable="false" />
+          <Property Name="TLBIG_TTIOrderNo" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="TLBIG_Supplier_FK" Type="Int32" Nullable="false" />
+          <Property Name="TLBIG_SupplierDelNo" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="TLBIG_WareHouse_FK" Type="Int32" Nullable="false" />
         </EntityType>
+        <EntityType Name="TLADM_Colours">
+          <Key>
+            <PropertyRef Name="Col_Id" />
+          </Key>
+          <Property Name="Col_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Col_Description" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Col_PowerN" Type="Int32" Nullable="false" />
+          <Property Name="Col_Discontinued" Type="Boolean" />
+          <Property Name="Col_Discontinued_Date" Type="DateTime" Precision="0" />
+          <Property Name="Col_FinishedCode" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="Col_HasAuxColors" Type="Boolean" Nullable="false" />
+          <Property Name="Col_AuxPowerN" Type="Int32" Nullable="false" />
+          <Property Name="Col_Display" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Col_StandardTime" Type="Decimal" Nullable="false" Precision="18" Scale="4" />
+          <Property Name="Col_Benchmark" Type="Boolean" Nullable="false" />
+          <Property Name="Col_Removed_InSession" Type="Boolean" Nullable="false" />
+          <Property Name="Col_Added_InSession" Type="Boolean" Nullable="false" />
+          <Property Name="Col_Padding" Type="Boolean" />
+          <Property Name="Col_Pastel" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="TLCSV_StockOnHand">
+          <Key>
+            <PropertyRef Name="TLSOH_Pk" />
+          </Key>
+          <Property Name="TLSOH_Pk" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TLSOH_WareHouse_FK" Type="Int32" Nullable="false" />
+          <Property Name="TLSOH_CMT_FK" Type="Int32" />
+          <Property Name="TLSOH_DateIntoStock" Type="DateTime" Precision="3" />
+          <Property Name="TLSOH_BoxSelected_FK" Type="Int32" Nullable="false" />
+          <Property Name="TLSOH_Sold" Type="Boolean" Nullable="false" />
+          <Property Name="TLSOH_SoldDate" Type="DateTime" Precision="0" />
+          <Property Name="TLSOH_Notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="TLSOH_Transfered" Type="Boolean" Nullable="false" />
+          <Property Name="TLSOH_TransferNotes" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="TLSOH_Split" Type="Boolean" Nullable="false" />
+          <Property Name="TLSOH_BoxedQty" Type="Int32" Nullable="false" />
+          <Property Name="TLSOH_Picked" Type="Boolean" Nullable="false" />
+          <Property Name="TLSOH_PickListNo" Type="Int32" />
+          <Property Name="TLSOH_PickListDate" Type="DateTime" Precision="3" />
+          <Property Name="TLSOH_DNListNo" Type="Int32" Nullable="false" />
+          <Property Name="TLSOH_DNListDate" Type="DateTime" Precision="0" />
+          <Property Name="TLSOH_Movement_FK" Type="Int32" />
+          <Property Name="TLSOH_Style_FK" Type="Int32" Nullable="false" />
+          <Property Name="TLSOH_Colour_FK" Type="Int32" Nullable="false" />
+          <Property Name="TLSOH_Size_FK" Type="Int32" Nullable="false" />
+          <Property Name="TLSOH_BoxNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="TLSOH_Weight" Type="Decimal" Nullable="false" Precision="18" Scale="4" />
+          <Property Name="TLSOH_PastelNumber" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="TLSOH_BoxType" Type="Int32" Nullable="false" />
+          <Property Name="TLSOH_POOrder_FK" Type="Int32" />
+          <Property Name="TLSOH_POOrderDetail_FK" Type="Int32" />
+          <Property Name="TLSOH_Returned" Type="Boolean" Nullable="false" />
+          <Property Name="TLSOH_ReturnedDate" Type="DateTime" Precision="0" />
+          <Property Name="TLSOH_ReturnNumber" Type="Int32" Nullable="false" />
+          <Property Name="TLSOH_ReturnedBoxQty" Type="Int32" Nullable="false" />
+          <Property Name="TLSOH_ReturnedWeight" Type="Decimal" Nullable="false" Precision="18" Scale="4" />
+          <Property Name="TLSOH_QtyAdjusted" Type="Int32" Nullable="false" />
+          <Property Name="TLSOH_MoveAdjust_FK" Type="Int32" />
+          <Property Name="TLSOH_Customer_Fk" Type="Int32" />
+          <Property Name="TLSOH_WareHousePickList" Type="Int32" Nullable="false" />
+          <Property Name="TLSOH_WareHouseDeliveryNo" Type="Int32" Nullable="false" />
+          <Property Name="TLSOH_Grade" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="TLSOH_InTransit" Type="Boolean" Nullable="false" />
+          <Property Name="TLSOH_Session_Key" Type="Int32" Nullable="false" />
+          <Property Name="TLSOH_Write_Off" Type="Boolean" Nullable="false" />
+          <Property Name="TLSOH_Is_A" Type="Boolean" Nullable="false" />
+          <Property Name="TLSOH_RePackConfig_Fk" Type="Int32" />
+          <Property Name="TLSOH_CutSheet_FK" Type="Int32" Nullable="false" />
+          <Property Name="TLSOH_Invoiced" Type="Boolean" Nullable="false" />
+          <Property Name="TLSOH_InvDate" Type="DateTime" Precision="3" />
+          <Property Name="TLSOH_Supplier_Fk" Type="Int32" />
+          <Property Name="TLSOH_SupplierTransNumber" Type="Int32" Nullable="false" />
+          <Property Name="TLSOH_BoughtInGoods" Type="Boolean" Nullable="false" />
+          <Property Name="TLSOH_BoughtInGoods_Fk" Type="Int32" />
+        </EntityType>
+        <EntityType Name="TLADM_Sizes">
+          <Key>
+            <PropertyRef Name="SI_id" />
+          </Key>
+          <Property Name="SI_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SI_Description" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="SI_PowerN" Type="Int32" Nullable="false" />
+          <Property Name="SI_Discontinued" Type="Boolean" Nullable="false" />
+          <Property Name="SI_Discontinued_Date" Type="DateTime" Precision="0" />
+          <Property Name="SI_FinishedCode" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="SI_ColNumber" Type="Int32" Nullable="false" />
+          <Property Name="SI_PastelNo" Type="Int32" Nullable="false" />
+          <Property Name="SI_DisplayOrder" Type="Int32" Nullable="false" />
+          <Property Name="SI_Adult" Type="Boolean" Nullable="false" />
+          <Property Name="SI_ContiSize" Type="Int32" Nullable="false" />
+          <Property Name="SI_Display" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="TLADM_ConsumablesOther" Relationship="TTI2Model.FK_TLADM_ConsumablesOther_TLADM_Sizes" FromRole="TLADM_Sizes" ToRole="TLADM_ConsumablesOther" />
+        </EntityType>
+        <Association Name="FK_TLADM_ConsumablesOther_TLADM_Sizes">
+          <End Type="TTI2Model.TLADM_Sizes" Role="TLADM_Sizes" Multiplicity="1" />
+          <End Type="TTI2Model.TLADM_ConsumablesOther" Role="TLADM_ConsumablesOther" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TLADM_Sizes">
+              <PropertyRef Name="SI_id" />
+            </Principal>
+            <Dependent Role="TLADM_ConsumablesOther">
+              <PropertyRef Name="ConsOther_SizeCode_FK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -8200,22 +8244,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="TLADM_Sizes">
-            <EntityTypeMapping TypeName="TTI2Model.TLADM_Sizes">
-              <MappingFragment StoreEntitySet="TLADM_Sizes">
-                <ScalarProperty Name="SI_Adult" ColumnName="SI_Adult" />
-                <ScalarProperty Name="SI_DisplayOrder" ColumnName="SI_DisplayOrder" />
-                <ScalarProperty Name="SI_PastelNo" ColumnName="SI_PastelNo" />
-                <ScalarProperty Name="SI_ColNumber" ColumnName="SI_ColNumber" />
-                <ScalarProperty Name="SI_FinishedCode" ColumnName="SI_FinishedCode" />
-                <ScalarProperty Name="SI_Discontinued_Date" ColumnName="SI_Discontinued_Date" />
-                <ScalarProperty Name="SI_Discontinued" ColumnName="SI_Discontinued" />
-                <ScalarProperty Name="SI_PowerN" ColumnName="SI_PowerN" />
-                <ScalarProperty Name="SI_Description" ColumnName="SI_Description" />
-                <ScalarProperty Name="SI_id" ColumnName="SI_id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="TLCSV_MergePODetail">
             <EntityTypeMapping TypeName="TTI2Model.TLCSV_MergePODetail">
               <MappingFragment StoreEntitySet="TLCSV_MergePODetail">
@@ -8727,47 +8755,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="TLADM_Departments">
-            <EntityTypeMapping TypeName="TTI2Model.TLADM_Departments">
-              <MappingFragment StoreEntitySet="TLADM_Departments">
-                <ScalarProperty Name="Dep_Hours_Per_Day" ColumnName="Dep_Hours_Per_Day" />
-                <ScalarProperty Name="Dep_IsCut" ColumnName="Dep_IsCut" />
-                <ScalarProperty Name="Dep_IsCMT" ColumnName="Dep_IsCMT" />
-                <ScalarProperty Name="Dep_Location" ColumnName="Dep_Location" />
-                <ScalarProperty Name="Dep_ProductType_FK" ColumnName="Dep_ProductType_FK" />
-                <ScalarProperty Name="Dep_UOM" ColumnName="Dep_UOM" />
-                <ScalarProperty Name="Dep_PowerN" ColumnName="Dep_PowerN" />
-                <ScalarProperty Name="Dep_Description" ColumnName="Dep_Description" />
-                <ScalarProperty Name="Dep_ShortCode" ColumnName="Dep_ShortCode" />
-                <ScalarProperty Name="Dep_Id" ColumnName="Dep_Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="TLADM_Styles">
-            <EntityTypeMapping TypeName="TTI2Model.TLADM_Styles">
-              <MappingFragment StoreEntitySet="TLADM_Styles">
-                <ScalarProperty Name="Sty_Units_Per_Hour" ColumnName="Sty_Units_Per_Hour" />
-                <ScalarProperty Name="Sty_DisplayOrder" ColumnName="Sty_DisplayOrder" />
-                <ScalarProperty Name="Sty_Equiv" ColumnName="Sty_Equiv" />
-                <ScalarProperty Name="Sty_GreigeQual_PN" ColumnName="Sty_GreigeQual_PN" />
-                <ScalarProperty Name="Sty_BoughtIn" ColumnName="Sty_BoughtIn" />
-                <ScalarProperty Name="Sty_Buttons" ColumnName="Sty_Buttons" />
-                <ScalarProperty Name="Sty_Bags" ColumnName="Sty_Bags" />
-                <ScalarProperty Name="Sty_CottonFactor" ColumnName="Sty_CottonFactor" />
-                <ScalarProperty Name="Sty_PastelCode" ColumnName="Sty_PastelCode" />
-                <ScalarProperty Name="Sty_PastelNo" ColumnName="Sty_PastelNo" />
-                <ScalarProperty Name="Sty_ChkMandatory" ColumnName="Sty_ChkMandatory" />
-                <ScalarProperty Name="Sty_Labels_FK" ColumnName="Sty_Labels_FK" />
-                <ScalarProperty Name="Sty_Trims_PN" ColumnName="Sty_Trims_PN" />
-                <ScalarProperty Name="Sty_Sizes_PN" ColumnName="Sty_Sizes_PN" />
-                <ScalarProperty Name="Sty_Discontinued_Date" ColumnName="Sty_Discontinued_Date" />
-                <ScalarProperty Name="Sty_Discontinued" ColumnName="Sty_Discontinued" />
-                <ScalarProperty Name="Sty_Description" ColumnName="Sty_Description" />
-                <ScalarProperty Name="Sty_Label_FK" ColumnName="Sty_Label_FK" />
-                <ScalarProperty Name="Sty_Id" ColumnName="Sty_Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="TLSEC_Sections">
             <EntityTypeMapping TypeName="TTI2Model.TLSEC_Sections">
               <MappingFragment StoreEntitySet="TLSEC_Sections">
@@ -9007,26 +8994,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="TLADM_Colours">
-            <EntityTypeMapping TypeName="TTI2Model.TLADM_Colours">
-              <MappingFragment StoreEntitySet="TLADM_Colours">
-                <ScalarProperty Name="Col_Padding" ColumnName="Col_Padding" />
-                <ScalarProperty Name="Col_Removed_InSession" ColumnName="Col_Removed_InSession" />
-                <ScalarProperty Name="Col_Added_InSession" ColumnName="Col_Added_InSession" />
-                <ScalarProperty Name="Col_Benchmark" ColumnName="Col_Benchmark" />
-                <ScalarProperty Name="Col_StandardTime" ColumnName="Col_StandardTime" />
-                <ScalarProperty Name="Col_Display" ColumnName="Col_Display" />
-                <ScalarProperty Name="Col_AuxPowerN" ColumnName="Col_AuxPowerN" />
-                <ScalarProperty Name="Col_HasAuxColors" ColumnName="Col_HasAuxColors" />
-                <ScalarProperty Name="Col_FinishedCode" ColumnName="Col_FinishedCode" />
-                <ScalarProperty Name="Col_Discontinued_Date" ColumnName="Col_Discontinued_Date" />
-                <ScalarProperty Name="Col_Discontinued" ColumnName="Col_Discontinued" />
-                <ScalarProperty Name="Col_PowerN" ColumnName="Col_PowerN" />
-                <ScalarProperty Name="Col_Description" ColumnName="Col_Description" />
-                <ScalarProperty Name="Col_Id" ColumnName="Col_Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="TLCSV_PurchaseOrder">
             <EntityTypeMapping TypeName="TTI2Model.TLCSV_PurchaseOrder">
               <MappingFragment StoreEntitySet="TLCSV_PurchaseOrder">
@@ -9041,58 +9008,6 @@
                 <ScalarProperty Name="TLCSVPO_TransDate" ColumnName="TLCSVPO_TransDate" />
                 <ScalarProperty Name="TLCSVPO_Customer_FK" ColumnName="TLCSVPO_Customer_FK" />
                 <ScalarProperty Name="TLCSVPO_Pk" ColumnName="TLCSVPO_Pk" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="TLCSV_StockOnHand">
-            <EntityTypeMapping TypeName="TTI2Model.TLCSV_StockOnHand">
-              <MappingFragment StoreEntitySet="TLCSV_StockOnHand">
-                <ScalarProperty Name="TLSOH_InvDate" ColumnName="TLSOH_InvDate" />
-                <ScalarProperty Name="TLSOH_Invoiced" ColumnName="TLSOH_Invoiced" />
-                <ScalarProperty Name="TLSOH_CutSheet_FK" ColumnName="TLSOH_CutSheet_FK" />
-                <ScalarProperty Name="TLSOH_RePackConfig_Fk" ColumnName="TLSOH_RePackConfig_Fk" />
-                <ScalarProperty Name="TLSOH_Is_A" ColumnName="TLSOH_Is_A" />
-                <ScalarProperty Name="TLSOH_Write_Off" ColumnName="TLSOH_Write_Off" />
-                <ScalarProperty Name="TLSOH_Session_Key" ColumnName="TLSOH_Session_Key" />
-                <ScalarProperty Name="TLSOH_InTransit" ColumnName="TLSOH_InTransit" />
-                <ScalarProperty Name="TLSOH_Grade" ColumnName="TLSOH_Grade" />
-                <ScalarProperty Name="TLSOH_WareHouseDeliveryNo" ColumnName="TLSOH_WareHouseDeliveryNo" />
-                <ScalarProperty Name="TLSOH_WareHousePickList" ColumnName="TLSOH_WareHousePickList" />
-                <ScalarProperty Name="TLSOH_Customer_Fk" ColumnName="TLSOH_Customer_Fk" />
-                <ScalarProperty Name="TLSOH_MoveAdjust_FK" ColumnName="TLSOH_MoveAdjust_FK" />
-                <ScalarProperty Name="TLSOH_QtyAdjusted" ColumnName="TLSOH_QtyAdjusted" />
-                <ScalarProperty Name="TLSOH_ReturnedWeight" ColumnName="TLSOH_ReturnedWeight" />
-                <ScalarProperty Name="TLSOH_ReturnedBoxQty" ColumnName="TLSOH_ReturnedBoxQty" />
-                <ScalarProperty Name="TLSOH_ReturnNumber" ColumnName="TLSOH_ReturnNumber" />
-                <ScalarProperty Name="TLSOH_ReturnedDate" ColumnName="TLSOH_ReturnedDate" />
-                <ScalarProperty Name="TLSOH_Returned" ColumnName="TLSOH_Returned" />
-                <ScalarProperty Name="TLSOH_POOrderDetail_FK" ColumnName="TLSOH_POOrderDetail_FK" />
-                <ScalarProperty Name="TLSOH_POOrder_FK" ColumnName="TLSOH_POOrder_FK" />
-                <ScalarProperty Name="TLSOH_BoxType" ColumnName="TLSOH_BoxType" />
-                <ScalarProperty Name="TLSOH_PastelNumber" ColumnName="TLSOH_PastelNumber" />
-                <ScalarProperty Name="TLSOH_Weight" ColumnName="TLSOH_Weight" />
-                <ScalarProperty Name="TLSOH_BoxNumber" ColumnName="TLSOH_BoxNumber" />
-                <ScalarProperty Name="TLSOH_Size_FK" ColumnName="TLSOH_Size_FK" />
-                <ScalarProperty Name="TLSOH_Colour_FK" ColumnName="TLSOH_Colour_FK" />
-                <ScalarProperty Name="TLSOH_Style_FK" ColumnName="TLSOH_Style_FK" />
-                <ScalarProperty Name="TLSOH_Movement_FK" ColumnName="TLSOH_Movement_FK" />
-                <ScalarProperty Name="TLSOH_DNListDate" ColumnName="TLSOH_DNListDate" />
-                <ScalarProperty Name="TLSOH_DNListNo" ColumnName="TLSOH_DNListNo" />
-                <ScalarProperty Name="TLSOH_PickListDate" ColumnName="TLSOH_PickListDate" />
-                <ScalarProperty Name="TLSOH_PickListNo" ColumnName="TLSOH_PickListNo" />
-                <ScalarProperty Name="TLSOH_Picked" ColumnName="TLSOH_Picked" />
-                <ScalarProperty Name="TLSOH_BoxedQty" ColumnName="TLSOH_BoxedQty" />
-                <ScalarProperty Name="TLSOH_Split" ColumnName="TLSOH_Split" />
-                <ScalarProperty Name="TLSOH_TransferNotes" ColumnName="TLSOH_TransferNotes" />
-                <ScalarProperty Name="TLSOH_Transfered" ColumnName="TLSOH_Transfered" />
-                <ScalarProperty Name="TLSOH_Notes" ColumnName="TLSOH_Notes" />
-                <ScalarProperty Name="TLSOH_SoldDate" ColumnName="TLSOH_SoldDate" />
-                <ScalarProperty Name="TLSOH_Sold" ColumnName="TLSOH_Sold" />
-                <ScalarProperty Name="TLSOH_BoxSelected_FK" ColumnName="TLSOH_BoxSelected_FK" />
-                <ScalarProperty Name="TLSOH_DateIntoStock" ColumnName="TLSOH_DateIntoStock" />
-                <ScalarProperty Name="TLSOH_CMT_FK" ColumnName="TLSOH_CMT_FK" />
-                <ScalarProperty Name="TLSOH_WareHouse_FK" ColumnName="TLSOH_WareHouse_FK" />
-                <ScalarProperty Name="TLSOH_Pk" ColumnName="TLSOH_Pk" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -9662,9 +9577,53 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="TLADM_MachineMaintenanceTasks">
+            <EntityTypeMapping TypeName="TTI2Model.TLADM_MachineMaintenanceTasks">
+              <MappingFragment StoreEntitySet="TLADM_MachineMaintenanceTasks">
+                <ScalarProperty Name="TLMtask_Description" ColumnName="TLMtask_Description" />
+                <ScalarProperty Name="TLMtask_Dept_FK" ColumnName="TLMtask_Dept_FK" />
+                <ScalarProperty Name="TLMtask_Pk" ColumnName="TLMtask_Pk" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TLADM_MachineMaintenance">
+            <EntityTypeMapping TypeName="TTI2Model.TLADM_MachineMaintenance">
+              <MappingFragment StoreEntitySet="TLADM_MachineMaintenance">
+                <ScalarProperty Name="mman_Last_Identifier" ColumnName="mman_Last_Identifier" />
+                <ScalarProperty Name="mman_Volumne_UOM" ColumnName="mman_Volumne_UOM" />
+                <ScalarProperty Name="mman_Volume_Between_Tasks" ColumnName="mman_Volume_Between_Tasks" />
+                <ScalarProperty Name="mman_Volume_CurrentValue" ColumnName="mman_Volume_CurrentValue" />
+                <ScalarProperty Name="mman_Date_Last_Reset" ColumnName="mman_Date_Last_Reset" />
+                <ScalarProperty Name="mman_Reset" ColumnName="mman_Reset" />
+                <ScalarProperty Name="mman_Interval_CurrentValue" ColumnName="mman_Interval_CurrentValue" />
+                <ScalarProperty Name="mman_Interval_UOM" ColumnName="mman_Interval_UOM" />
+                <ScalarProperty Name="mman_Interval_Between_Tasks" ColumnName="mman_Interval_Between_Tasks" />
+                <ScalarProperty Name="mman_Machine_Fk" ColumnName="mman_Machine_Fk" />
+                <ScalarProperty Name="mman_MaintenanceTask_FK" ColumnName="mman_MaintenanceTask_FK" />
+                <ScalarProperty Name="mman_Pk" ColumnName="mman_Pk" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TLADM_Departments">
+            <EntityTypeMapping TypeName="TTI2Model.TLADM_Departments">
+              <MappingFragment StoreEntitySet="TLADM_Departments">
+                <ScalarProperty Name="Dep_Hours_Per_Day" ColumnName="Dep_Hours_Per_Day" />
+                <ScalarProperty Name="Dep_IsCut" ColumnName="Dep_IsCut" />
+                <ScalarProperty Name="Dep_IsCMT" ColumnName="Dep_IsCMT" />
+                <ScalarProperty Name="Dep_Location" ColumnName="Dep_Location" />
+                <ScalarProperty Name="Dep_ProductType_FK" ColumnName="Dep_ProductType_FK" />
+                <ScalarProperty Name="Dep_UOM" ColumnName="Dep_UOM" />
+                <ScalarProperty Name="Dep_PowerN" ColumnName="Dep_PowerN" />
+                <ScalarProperty Name="Dep_Description" ColumnName="Dep_Description" />
+                <ScalarProperty Name="Dep_ShortCode" ColumnName="Dep_ShortCode" />
+                <ScalarProperty Name="Dep_Id" ColumnName="Dep_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="TLADM_WhseStore">
             <EntityTypeMapping TypeName="TTI2Model.TLADM_WhseStore">
               <MappingFragment StoreEntitySet="TLADM_WhseStore">
+                <ScalarProperty Name="WhStore_Quarantine" ColumnName="WhStore_Quarantine" />
                 <ScalarProperty Name="WhStore_Default" ColumnName="WhStore_Default" />
                 <ScalarProperty Name="WhStore_RePack" ColumnName="WhStore_RePack" />
                 <ScalarProperty Name="WhStore_PanelStore" ColumnName="WhStore_PanelStore" />
@@ -9693,30 +9652,137 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="TLADM_MachineMaintenanceTasks">
-            <EntityTypeMapping TypeName="TTI2Model.TLADM_MachineMaintenanceTasks">
-              <MappingFragment StoreEntitySet="TLADM_MachineMaintenanceTasks">
-                <ScalarProperty Name="TLMtask_Description" ColumnName="TLMtask_Description" />
-                <ScalarProperty Name="TLMtask_Dept_FK" ColumnName="TLMtask_Dept_FK" />
-                <ScalarProperty Name="TLMtask_Pk" ColumnName="TLMtask_Pk" />
+          <EntitySetMapping Name="TLADM_Styles">
+            <EntityTypeMapping TypeName="TTI2Model.TLADM_Styles">
+              <MappingFragment StoreEntitySet="TLADM_Styles">
+                <ScalarProperty Name="Sty_WorkWear" ColumnName="Sty_WorkWear" />
+                <ScalarProperty Name="Sty_Units_Per_Hour" ColumnName="Sty_Units_Per_Hour" />
+                <ScalarProperty Name="Sty_DisplayOrder" ColumnName="Sty_DisplayOrder" />
+                <ScalarProperty Name="Sty_Equiv" ColumnName="Sty_Equiv" />
+                <ScalarProperty Name="Sty_GreigeQual_PN" ColumnName="Sty_GreigeQual_PN" />
+                <ScalarProperty Name="Sty_BoughtIn" ColumnName="Sty_BoughtIn" />
+                <ScalarProperty Name="Sty_Buttons" ColumnName="Sty_Buttons" />
+                <ScalarProperty Name="Sty_Bags" ColumnName="Sty_Bags" />
+                <ScalarProperty Name="Sty_CottonFactor" ColumnName="Sty_CottonFactor" />
+                <ScalarProperty Name="Sty_PastelCode" ColumnName="Sty_PastelCode" />
+                <ScalarProperty Name="Sty_PastelNo" ColumnName="Sty_PastelNo" />
+                <ScalarProperty Name="Sty_ChkMandatory" ColumnName="Sty_ChkMandatory" />
+                <ScalarProperty Name="Sty_Labels_FK" ColumnName="Sty_Labels_FK" />
+                <ScalarProperty Name="Sty_Trims_PN" ColumnName="Sty_Trims_PN" />
+                <ScalarProperty Name="Sty_Sizes_PN" ColumnName="Sty_Sizes_PN" />
+                <ScalarProperty Name="Sty_Discontinued_Date" ColumnName="Sty_Discontinued_Date" />
+                <ScalarProperty Name="Sty_Discontinued" ColumnName="Sty_Discontinued" />
+                <ScalarProperty Name="Sty_Description" ColumnName="Sty_Description" />
+                <ScalarProperty Name="Sty_Label_FK" ColumnName="Sty_Label_FK" />
+                <ScalarProperty Name="Sty_Id" ColumnName="Sty_Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="TLADM_MachineMaintenance">
-            <EntityTypeMapping TypeName="TTI2Model.TLADM_MachineMaintenance">
-              <MappingFragment StoreEntitySet="TLADM_MachineMaintenance">
-                <ScalarProperty Name="mman_Last_Identifier" ColumnName="mman_Last_Identifier" />
-                <ScalarProperty Name="mman_Volumne_UOM" ColumnName="mman_Volumne_UOM" />
-                <ScalarProperty Name="mman_Volume_Between_Tasks" ColumnName="mman_Volume_Between_Tasks" />
-                <ScalarProperty Name="mman_Volume_CurrentValue" ColumnName="mman_Volume_CurrentValue" />
-                <ScalarProperty Name="mman_Date_Last_Reset" ColumnName="mman_Date_Last_Reset" />
-                <ScalarProperty Name="mman_Reset" ColumnName="mman_Reset" />
-                <ScalarProperty Name="mman_Interval_CurrentValue" ColumnName="mman_Interval_CurrentValue" />
-                <ScalarProperty Name="mman_Interval_UOM" ColumnName="mman_Interval_UOM" />
-                <ScalarProperty Name="mman_Interval_Between_Tasks" ColumnName="mman_Interval_Between_Tasks" />
-                <ScalarProperty Name="mman_Machine_Fk" ColumnName="mman_Machine_Fk" />
-                <ScalarProperty Name="mman_MaintenanceTask_FK" ColumnName="mman_MaintenanceTask_FK" />
-                <ScalarProperty Name="mman_Pk" ColumnName="mman_Pk" />
+          <EntitySetMapping Name="TLCSV_BoughtInGoods">
+            <EntityTypeMapping TypeName="TTI2Model.TLCSV_BoughtInGoods">
+              <MappingFragment StoreEntitySet="TLCSV_BoughtInGoods">
+                <ScalarProperty Name="TLBIG_WareHouse_FK" ColumnName="TLBIG_WareHouse_FK" />
+                <ScalarProperty Name="TLBIG_SupplierDelNo" ColumnName="TLBIG_SupplierDelNo" />
+                <ScalarProperty Name="TLBIG_Supplier_FK" ColumnName="TLBIG_Supplier_FK" />
+                <ScalarProperty Name="TLBIG_TTIOrderNo" ColumnName="TLBIG_TTIOrderNo" />
+                <ScalarProperty Name="TLBIG_TransNumber" ColumnName="TLBIG_TransNumber" />
+                <ScalarProperty Name="TLBIG_TransDate" ColumnName="TLBIG_TransDate" />
+                <ScalarProperty Name="TLBIG_Pk" ColumnName="TLBIG_Pk" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TLADM_Colours">
+            <EntityTypeMapping TypeName="TTI2Model.TLADM_Colours">
+              <MappingFragment StoreEntitySet="TLADM_Colours">
+                <ScalarProperty Name="Col_Pastel" ColumnName="Col_Pastel" />
+                <ScalarProperty Name="Col_Padding" ColumnName="Col_Padding" />
+                <ScalarProperty Name="Col_Added_InSession" ColumnName="Col_Added_InSession" />
+                <ScalarProperty Name="Col_Removed_InSession" ColumnName="Col_Removed_InSession" />
+                <ScalarProperty Name="Col_Benchmark" ColumnName="Col_Benchmark" />
+                <ScalarProperty Name="Col_StandardTime" ColumnName="Col_StandardTime" />
+                <ScalarProperty Name="Col_Display" ColumnName="Col_Display" />
+                <ScalarProperty Name="Col_AuxPowerN" ColumnName="Col_AuxPowerN" />
+                <ScalarProperty Name="Col_HasAuxColors" ColumnName="Col_HasAuxColors" />
+                <ScalarProperty Name="Col_FinishedCode" ColumnName="Col_FinishedCode" />
+                <ScalarProperty Name="Col_Discontinued_Date" ColumnName="Col_Discontinued_Date" />
+                <ScalarProperty Name="Col_Discontinued" ColumnName="Col_Discontinued" />
+                <ScalarProperty Name="Col_PowerN" ColumnName="Col_PowerN" />
+                <ScalarProperty Name="Col_Description" ColumnName="Col_Description" />
+                <ScalarProperty Name="Col_Id" ColumnName="Col_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TLCSV_StockOnHand">
+            <EntityTypeMapping TypeName="TTI2Model.TLCSV_StockOnHand">
+              <MappingFragment StoreEntitySet="TLCSV_StockOnHand">
+                <ScalarProperty Name="TLSOH_BoughtInGoods_Fk" ColumnName="TLSOH_BoughtInGoods_Fk" />
+                <ScalarProperty Name="TLSOH_BoughtInGoods" ColumnName="TLSOH_BoughtInGoods" />
+                <ScalarProperty Name="TLSOH_SupplierTransNumber" ColumnName="TLSOH_SupplierTransNumber" />
+                <ScalarProperty Name="TLSOH_Supplier_Fk" ColumnName="TLSOH_Supplier_Fk" />
+                <ScalarProperty Name="TLSOH_InvDate" ColumnName="TLSOH_InvDate" />
+                <ScalarProperty Name="TLSOH_Invoiced" ColumnName="TLSOH_Invoiced" />
+                <ScalarProperty Name="TLSOH_CutSheet_FK" ColumnName="TLSOH_CutSheet_FK" />
+                <ScalarProperty Name="TLSOH_RePackConfig_Fk" ColumnName="TLSOH_RePackConfig_Fk" />
+                <ScalarProperty Name="TLSOH_Is_A" ColumnName="TLSOH_Is_A" />
+                <ScalarProperty Name="TLSOH_Write_Off" ColumnName="TLSOH_Write_Off" />
+                <ScalarProperty Name="TLSOH_Session_Key" ColumnName="TLSOH_Session_Key" />
+                <ScalarProperty Name="TLSOH_InTransit" ColumnName="TLSOH_InTransit" />
+                <ScalarProperty Name="TLSOH_Grade" ColumnName="TLSOH_Grade" />
+                <ScalarProperty Name="TLSOH_WareHouseDeliveryNo" ColumnName="TLSOH_WareHouseDeliveryNo" />
+                <ScalarProperty Name="TLSOH_WareHousePickList" ColumnName="TLSOH_WareHousePickList" />
+                <ScalarProperty Name="TLSOH_Customer_Fk" ColumnName="TLSOH_Customer_Fk" />
+                <ScalarProperty Name="TLSOH_MoveAdjust_FK" ColumnName="TLSOH_MoveAdjust_FK" />
+                <ScalarProperty Name="TLSOH_QtyAdjusted" ColumnName="TLSOH_QtyAdjusted" />
+                <ScalarProperty Name="TLSOH_ReturnedWeight" ColumnName="TLSOH_ReturnedWeight" />
+                <ScalarProperty Name="TLSOH_ReturnedBoxQty" ColumnName="TLSOH_ReturnedBoxQty" />
+                <ScalarProperty Name="TLSOH_ReturnNumber" ColumnName="TLSOH_ReturnNumber" />
+                <ScalarProperty Name="TLSOH_ReturnedDate" ColumnName="TLSOH_ReturnedDate" />
+                <ScalarProperty Name="TLSOH_Returned" ColumnName="TLSOH_Returned" />
+                <ScalarProperty Name="TLSOH_POOrderDetail_FK" ColumnName="TLSOH_POOrderDetail_FK" />
+                <ScalarProperty Name="TLSOH_POOrder_FK" ColumnName="TLSOH_POOrder_FK" />
+                <ScalarProperty Name="TLSOH_BoxType" ColumnName="TLSOH_BoxType" />
+                <ScalarProperty Name="TLSOH_PastelNumber" ColumnName="TLSOH_PastelNumber" />
+                <ScalarProperty Name="TLSOH_Weight" ColumnName="TLSOH_Weight" />
+                <ScalarProperty Name="TLSOH_BoxNumber" ColumnName="TLSOH_BoxNumber" />
+                <ScalarProperty Name="TLSOH_Size_FK" ColumnName="TLSOH_Size_FK" />
+                <ScalarProperty Name="TLSOH_Colour_FK" ColumnName="TLSOH_Colour_FK" />
+                <ScalarProperty Name="TLSOH_Style_FK" ColumnName="TLSOH_Style_FK" />
+                <ScalarProperty Name="TLSOH_Movement_FK" ColumnName="TLSOH_Movement_FK" />
+                <ScalarProperty Name="TLSOH_DNListDate" ColumnName="TLSOH_DNListDate" />
+                <ScalarProperty Name="TLSOH_DNListNo" ColumnName="TLSOH_DNListNo" />
+                <ScalarProperty Name="TLSOH_PickListDate" ColumnName="TLSOH_PickListDate" />
+                <ScalarProperty Name="TLSOH_PickListNo" ColumnName="TLSOH_PickListNo" />
+                <ScalarProperty Name="TLSOH_Picked" ColumnName="TLSOH_Picked" />
+                <ScalarProperty Name="TLSOH_BoxedQty" ColumnName="TLSOH_BoxedQty" />
+                <ScalarProperty Name="TLSOH_Split" ColumnName="TLSOH_Split" />
+                <ScalarProperty Name="TLSOH_TransferNotes" ColumnName="TLSOH_TransferNotes" />
+                <ScalarProperty Name="TLSOH_Transfered" ColumnName="TLSOH_Transfered" />
+                <ScalarProperty Name="TLSOH_Notes" ColumnName="TLSOH_Notes" />
+                <ScalarProperty Name="TLSOH_SoldDate" ColumnName="TLSOH_SoldDate" />
+                <ScalarProperty Name="TLSOH_Sold" ColumnName="TLSOH_Sold" />
+                <ScalarProperty Name="TLSOH_BoxSelected_FK" ColumnName="TLSOH_BoxSelected_FK" />
+                <ScalarProperty Name="TLSOH_DateIntoStock" ColumnName="TLSOH_DateIntoStock" />
+                <ScalarProperty Name="TLSOH_CMT_FK" ColumnName="TLSOH_CMT_FK" />
+                <ScalarProperty Name="TLSOH_WareHouse_FK" ColumnName="TLSOH_WareHouse_FK" />
+                <ScalarProperty Name="TLSOH_Pk" ColumnName="TLSOH_Pk" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TLADM_Sizes">
+            <EntityTypeMapping TypeName="TTI2Model.TLADM_Sizes">
+              <MappingFragment StoreEntitySet="TLADM_Sizes">
+                <ScalarProperty Name="SI_Display" ColumnName="SI_Display" />
+                <ScalarProperty Name="SI_ContiSize" ColumnName="SI_ContiSize" />
+                <ScalarProperty Name="SI_Adult" ColumnName="SI_Adult" />
+                <ScalarProperty Name="SI_DisplayOrder" ColumnName="SI_DisplayOrder" />
+                <ScalarProperty Name="SI_PastelNo" ColumnName="SI_PastelNo" />
+                <ScalarProperty Name="SI_ColNumber" ColumnName="SI_ColNumber" />
+                <ScalarProperty Name="SI_FinishedCode" ColumnName="SI_FinishedCode" />
+                <ScalarProperty Name="SI_Discontinued_Date" ColumnName="SI_Discontinued_Date" />
+                <ScalarProperty Name="SI_Discontinued" ColumnName="SI_Discontinued" />
+                <ScalarProperty Name="SI_PowerN" ColumnName="SI_PowerN" />
+                <ScalarProperty Name="SI_Description" ColumnName="SI_Description" />
+                <ScalarProperty Name="SI_id" ColumnName="SI_id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

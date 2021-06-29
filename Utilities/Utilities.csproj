@@ -410,6 +410,9 @@
     <Compile Include="TLCMT_UnitProductionTargets.cs">
       <DependentUpon>TTI2Entities.tt</DependentUpon>
     </Compile>
+    <Compile Include="TLCSV_BoughtInGoods.cs">
+      <DependentUpon>TTI2Entities.tt</DependentUpon>
+    </Compile>
     <Compile Include="TLCSV_BoxConfiguration.cs">
       <DependentUpon>TTI2Entities.tt</DependentUpon>
     </Compile>

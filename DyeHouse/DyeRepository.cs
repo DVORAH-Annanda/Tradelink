@@ -176,6 +176,38 @@ namespace DyeHouse
             return DO;
         }
 
+        public IQueryable<TLDYE_DyeBatch> SelectDyedBasicQuality(DyeQueryParameters parameters)
+        {
+            var DyeBatch = _context.TLDYE_DyeBatch.Where(x => x.DYEB_OutProcess && x.DYEB_OutProcessDate >= parameters.FromDate && x.DYEB_OutProcessDate <= parameters.ToDate).AsQueryable();
+                        
+            if(parameters.Qualities.Count != 0)
+            {
+                var QualityPredicate = PredicateBuilder.New<TLDYE_DyeBatch>();
+
+                foreach (var colour in parameters.Qualities)
+                {
+                    var temp = colour;
+                    QualityPredicate = QualityPredicate.Or(s => s.DYEB_Greige_FK == temp.TLGreige_Id);
+                }
+
+                DyeBatch = DyeBatch.AsExpandable().Where(QualityPredicate);
+
+            }
+
+            if (parameters.Colours.Count > 0)
+            {
+                var ColourPredicate = PredicateBuilder.New<TLDYE_DyeBatch>();
+
+                foreach (var colour in parameters.Colours)
+                {
+                    var temp = colour;
+                    ColourPredicate = ColourPredicate.Or(s => s.DYEB_Colour_FK  == temp.Col_Id);
+                }
+
+                DyeBatch = DyeBatch.AsExpandable().Where(ColourPredicate);
+            }
+            return DyeBatch;
+        }
         public IQueryable<TLDYE_DyeOrder> SelectActiveDyeOrders(DyeQueryParameters parameters)
         {
             var DO = _context.TLDYE_DyeOrder.Where(x => !x.TLDYO_Closed).AsQueryable();
@@ -578,8 +610,10 @@ namespace DyeHouse
         public List<TLADM_MachineDefinitions> Machines;
         public List<TLDYE_DyeBatchDetails> SelectForFabricSales;
         public List<TLADM_ConsumablesDC> Consummables;
-        public List<TLDYE_DyeTransactions > DyeTransactions; 
+        public List<TLDYE_DyeTransactions > DyeTransactions;
 
+        public Decimal ProcessLoss;
+        public Decimal WidthMagnitude;
         public int DO_OptionSelected; 
         public DateTime FromDate;
         public DateTime ToDate;
@@ -599,7 +633,6 @@ namespace DyeHouse
         public int Consumable_Whse_FK;
         public DyeQueryParameters()
         {
-
             Sizes = new List<TLADM_Sizes>();
             Colours = new List<TLADM_Colours>();
             Styles = new List<TLADM_Styles>();
@@ -634,6 +667,9 @@ namespace DyeHouse
 
             CalculateProdResults = false;
             FabricSales = false;
+
+            ProcessLoss = 0.0M;
+            WidthMagnitude = 0.0M; 
 
             Consumable_Whse_FK = 0;
             

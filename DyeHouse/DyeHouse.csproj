@@ -390,6 +390,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DataSet51.xsd</DependentUpon>
     </Compile>
+    <Compile Include="DataSet52.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSet52.xsd</DependentUpon>
+    </Compile>
     <Compile Include="DataSet6.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -543,6 +548,12 @@
       <DependentUpon>FabricStockAdjustment.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="FabricWidthThroughProcess.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>FabricWidthThroughProcess.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -638,6 +649,12 @@
     </Compile>
     <Compile Include="frmDyeConsReceived.Designer.cs">
       <DependentUpon>frmDyeConsReceived.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmDyedBasicQual.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmDyedBasicQual.Designer.cs">
+      <DependentUpon>frmDyedBasicQual.cs</DependentUpon>
     </Compile>
     <Compile Include="frmDyeingProcessLoss.cs">
       <SubType>Form</SubType>
@@ -1218,6 +1235,10 @@
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>FabricStockAdjustment.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="FabricWidthThroughProcess.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>FabricWidthThroughProcess.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="frmAllocatedOperator.resx">
       <DependentUpon>frmAllocatedOperator.cs</DependentUpon>
     </EmbeddedResource>
@@ -1263,6 +1284,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmDyeConsReceived.resx">
       <DependentUpon>frmDyeConsReceived.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmDyedBasicQual.resx">
+      <DependentUpon>frmDyedBasicQual.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmDyeingProcessLoss.resx">
       <DependentUpon>frmDyeingProcessLoss.cs</DependentUpon>
@@ -2040,6 +2064,17 @@
     </None>
     <None Include="DataSet51.xss">
       <DependentUpon>DataSet51.xsd</DependentUpon>
+    </None>
+    <None Include="DataSet52.xsc">
+      <DependentUpon>DataSet52.xsd</DependentUpon>
+    </None>
+    <None Include="DataSet52.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSet52.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="DataSet52.xss">
+      <DependentUpon>DataSet52.xsd</DependentUpon>
     </None>
     <None Include="DataSet6.xsc">
       <DependentUpon>DataSet6.xsd</DependentUpon>

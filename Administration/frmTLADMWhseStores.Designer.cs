@@ -66,6 +66,7 @@
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.rbDyeKitchenNo = new System.Windows.Forms.RadioButton();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.chkDefault = new System.Windows.Forms.CheckBox();
             this.rbChemicalStoreNo = new System.Windows.Forms.RadioButton();
             this.rbChemicalStoreYes = new System.Windows.Forms.RadioButton();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
@@ -77,7 +78,9 @@
             this.groupBox9 = new System.Windows.Forms.GroupBox();
             this.rbRepackNo = new System.Windows.Forms.RadioButton();
             this.rbRepacYes = new System.Windows.Forms.RadioButton();
-            this.chkDefault = new System.Windows.Forms.CheckBox();
+            this.groupBox10 = new System.Windows.Forms.GroupBox();
+            this.rbQuarantineNo = new System.Windows.Forms.RadioButton();
+            this.rbIsQuarantineYes = new System.Windows.Forms.RadioButton();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -87,6 +90,7 @@
             this.groupBox7.SuspendLayout();
             this.groupBox8.SuspendLayout();
             this.groupBox9.SuspendLayout();
+            this.groupBox10.SuspendLayout();
             this.SuspendLayout();
             // 
             // cmbWhse
@@ -374,7 +378,7 @@
             // 
             this.groupBox4.Controls.Add(this.rbGradeOther);
             this.groupBox4.Controls.Add(this.rbGradeA);
-            this.groupBox4.Location = new System.Drawing.Point(131, 164);
+            this.groupBox4.Location = new System.Drawing.Point(48, 164);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Size = new System.Drawing.Size(200, 46);
             this.groupBox4.TabIndex = 16;
@@ -418,9 +422,9 @@
             // 
             this.groupBox5.Controls.Add(this.rbDyeKitchenNo);
             this.groupBox5.Controls.Add(this.rbDyeKitchYes);
-            this.groupBox5.Location = new System.Drawing.Point(355, 272);
+            this.groupBox5.Location = new System.Drawing.Point(291, 272);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(200, 46);
+            this.groupBox5.Size = new System.Drawing.Size(186, 46);
             this.groupBox5.TabIndex = 18;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Dye Kitchen";
@@ -441,12 +445,22 @@
             this.groupBox6.Controls.Add(this.chkDefault);
             this.groupBox6.Controls.Add(this.rbChemicalStoreNo);
             this.groupBox6.Controls.Add(this.rbChemicalStoreYes);
-            this.groupBox6.Location = new System.Drawing.Point(101, 272);
+            this.groupBox6.Location = new System.Drawing.Point(52, 272);
             this.groupBox6.Name = "groupBox6";
             this.groupBox6.Size = new System.Drawing.Size(230, 46);
             this.groupBox6.TabIndex = 19;
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "Chemical Store";
+            // 
+            // chkDefault
+            // 
+            this.chkDefault.AutoSize = true;
+            this.chkDefault.Location = new System.Drawing.Point(165, 19);
+            this.chkDefault.Name = "chkDefault";
+            this.chkDefault.Size = new System.Drawing.Size(60, 17);
+            this.chkDefault.TabIndex = 19;
+            this.chkDefault.Text = "Default";
+            this.chkDefault.UseVisualStyleBackColor = true;
             // 
             // rbChemicalStoreNo
             // 
@@ -474,7 +488,7 @@
             // 
             this.groupBox7.Controls.Add(this.rbBundleStoreNo);
             this.groupBox7.Controls.Add(this.rbBundleStoreYes);
-            this.groupBox7.Location = new System.Drawing.Point(131, 220);
+            this.groupBox7.Location = new System.Drawing.Point(48, 220);
             this.groupBox7.Name = "groupBox7";
             this.groupBox7.Size = new System.Drawing.Size(200, 46);
             this.groupBox7.TabIndex = 20;
@@ -507,9 +521,9 @@
             // 
             this.groupBox8.Controls.Add(this.rbPanelStoreNo);
             this.groupBox8.Controls.Add(this.rbPanelStoreYes);
-            this.groupBox8.Location = new System.Drawing.Point(355, 220);
+            this.groupBox8.Location = new System.Drawing.Point(297, 220);
             this.groupBox8.Name = "groupBox8";
-            this.groupBox8.Size = new System.Drawing.Size(200, 46);
+            this.groupBox8.Size = new System.Drawing.Size(180, 46);
             this.groupBox8.TabIndex = 21;
             this.groupBox8.TabStop = false;
             this.groupBox8.Text = "Panel Store";
@@ -540,9 +554,9 @@
             // 
             this.groupBox9.Controls.Add(this.rbRepackNo);
             this.groupBox9.Controls.Add(this.rbRepacYes);
-            this.groupBox9.Location = new System.Drawing.Point(355, 164);
+            this.groupBox9.Location = new System.Drawing.Point(300, 164);
             this.groupBox9.Name = "groupBox9";
-            this.groupBox9.Size = new System.Drawing.Size(200, 46);
+            this.groupBox9.Size = new System.Drawing.Size(177, 46);
             this.groupBox9.TabIndex = 22;
             this.groupBox9.TabStop = false;
             this.groupBox9.Text = "Re Pack Center";
@@ -569,21 +583,45 @@
             this.rbRepacYes.Text = "Yes";
             this.rbRepacYes.UseVisualStyleBackColor = true;
             // 
-            // chkDefault
+            // groupBox10
             // 
-            this.chkDefault.AutoSize = true;
-            this.chkDefault.Location = new System.Drawing.Point(165, 19);
-            this.chkDefault.Name = "chkDefault";
-            this.chkDefault.Size = new System.Drawing.Size(60, 17);
-            this.chkDefault.TabIndex = 19;
-            this.chkDefault.Text = "Default";
-            this.chkDefault.UseVisualStyleBackColor = true;
+            this.groupBox10.Controls.Add(this.rbQuarantineNo);
+            this.groupBox10.Controls.Add(this.rbIsQuarantineYes);
+            this.groupBox10.Location = new System.Drawing.Point(494, 165);
+            this.groupBox10.Name = "groupBox10";
+            this.groupBox10.Size = new System.Drawing.Size(180, 46);
+            this.groupBox10.TabIndex = 23;
+            this.groupBox10.TabStop = false;
+            this.groupBox10.Text = "Is Quarantine Store";
+            // 
+            // rbQuarantineNo
+            // 
+            this.rbQuarantineNo.AutoSize = true;
+            this.rbQuarantineNo.Location = new System.Drawing.Point(35, 19);
+            this.rbQuarantineNo.Name = "rbQuarantineNo";
+            this.rbQuarantineNo.Size = new System.Drawing.Size(39, 17);
+            this.rbQuarantineNo.TabIndex = 1;
+            this.rbQuarantineNo.TabStop = true;
+            this.rbQuarantineNo.Text = "No";
+            this.rbQuarantineNo.UseVisualStyleBackColor = true;
+            // 
+            // rbIsQuarantineYes
+            // 
+            this.rbIsQuarantineYes.AutoSize = true;
+            this.rbIsQuarantineYes.Location = new System.Drawing.Point(127, 19);
+            this.rbIsQuarantineYes.Name = "rbIsQuarantineYes";
+            this.rbIsQuarantineYes.Size = new System.Drawing.Size(43, 17);
+            this.rbIsQuarantineYes.TabIndex = 0;
+            this.rbIsQuarantineYes.TabStop = true;
+            this.rbIsQuarantineYes.Text = "Yes";
+            this.rbIsQuarantineYes.UseVisualStyleBackColor = true;
             // 
             // frmTLADMWhseStores
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(687, 748);
+            this.ClientSize = new System.Drawing.Size(699, 748);
+            this.Controls.Add(this.groupBox10);
             this.Controls.Add(this.groupBox9);
             this.Controls.Add(this.groupBox8);
             this.Controls.Add(this.groupBox7);
@@ -628,6 +666,8 @@
             this.groupBox8.PerformLayout();
             this.groupBox9.ResumeLayout(false);
             this.groupBox9.PerformLayout();
+            this.groupBox10.ResumeLayout(false);
+            this.groupBox10.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -685,5 +725,8 @@
         private System.Windows.Forms.RadioButton rbRepackNo;
         private System.Windows.Forms.RadioButton rbRepacYes;
         private System.Windows.Forms.CheckBox chkDefault;
+        private System.Windows.Forms.GroupBox groupBox10;
+        private System.Windows.Forms.RadioButton rbQuarantineNo;
+        private System.Windows.Forms.RadioButton rbIsQuarantineYes;
     }
 }

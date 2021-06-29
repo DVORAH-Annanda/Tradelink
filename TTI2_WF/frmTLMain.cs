@@ -10157,6 +10157,57 @@ namespace TTI2_WF
                 }
             }
         }
+
+        private void fabricBasicQualityInformationToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ToolStripMenuItem oTi = sender as ToolStripMenuItem;
+            if (core.GetUserAuthorisation(ud, oTi.Name))
+            {
+                try
+                {
+                    DyeHouse.frmDyedBasicQual BasicQual = new DyeHouse.frmDyedBasicQual(true);
+                    BasicQual.ShowDialog(this);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+        }
+
+        private void fabricBaqsicQualityInformationWeightToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ToolStripMenuItem oTi = sender as ToolStripMenuItem;
+            if (core.GetUserAuthorisation(ud, oTi.Name))
+            {
+                try
+                {
+                    DyeHouse.frmDyedBasicQual BasicQual = new DyeHouse.frmDyedBasicQual(false);
+                    BasicQual.ShowDialog(this);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+        }
+
+        private void contiWorkWearReceiptsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ToolStripMenuItem oTi = sender as ToolStripMenuItem;
+            if (core.GetUserAuthorisation(ud, oTi.Name))
+            {
+                try
+                {
+                    CustomerServices.frmContiWorkWearReceipts ContiWear = new CustomerServices.frmContiWorkWearReceipts();
+                    ContiWear.ShowDialog(this);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+        }
     }
        
 }

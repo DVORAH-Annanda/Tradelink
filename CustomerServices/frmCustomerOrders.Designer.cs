@@ -172,7 +172,7 @@
             this.groupBox2.Controls.Add(this.rbOrderActive);
             this.groupBox2.Location = new System.Drawing.Point(88, 213);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(235, 48);
+            this.groupBox2.Size = new System.Drawing.Size(235, 93);
             this.groupBox2.TabIndex = 7;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Order Status";
@@ -311,6 +311,7 @@
             this.dataGridView2.Name = "dataGridView2";
             this.dataGridView2.Size = new System.Drawing.Size(579, 224);
             this.dataGridView2.TabIndex = 5;
+            this.dataGridView2.RowsAdded += new System.Windows.Forms.DataGridViewRowsAddedEventHandler(this.dataGridView2_RowsAdded);
             // 
             // btnAdd
             // 

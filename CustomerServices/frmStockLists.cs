@@ -57,7 +57,7 @@ namespace CustomerServices
                 var Sizes = context.TLADM_Sizes.Where(x => !(bool)x.SI_Discontinued).OrderBy(x => x.SI_DisplayOrder).ToList();
                 foreach (var Size in Sizes)
                 {
-                    this.comboSizes.Items.Add(new CheckComboBoxItem(Size.SI_id, Size.SI_Description, false));
+                    this.comboSizes.Items.Add(new CheckComboBoxItem(Size.SI_id, Size.SI_Display, false));
                 }
             }
 

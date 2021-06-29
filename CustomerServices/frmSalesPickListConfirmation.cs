@@ -113,7 +113,7 @@ namespace CustomerServices
                     {
                         if ((bool)Row.Cells[1].Value == true)
                             continue;
-
+                        //========================================
                         // Item Not confirmed so therefore have to reset all the variables
                         //======================================================================
                         int Pk = (int)Row.Cells[0].Value;
@@ -140,8 +140,7 @@ namespace CustomerServices
                             SOH.TLSOH_POOrderDetail_FK = null;
                             SOH.TLSOH_WareHousePickList = 0;
                             SOH.TLSOH_Customer_Fk = null;
-
-                           
+                                                   
                         }
                     }
 

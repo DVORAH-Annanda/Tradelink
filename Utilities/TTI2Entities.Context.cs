@@ -129,7 +129,6 @@ namespace Utilities
         public virtual DbSet<TLADM_CutAreaLocations> TLADM_CutAreaLocations { get; set; }
         public virtual DbSet<TLADM_CutMeasureStandards> TLADM_CutMeasureStandards { get; set; }
         public virtual DbSet<TLCUT_QAResults> TLCUT_QAResults { get; set; }
-        public virtual DbSet<TLADM_Sizes> TLADM_Sizes { get; set; }
         public virtual DbSet<TLCSV_MergePODetail> TLCSV_MergePODetail { get; set; }
         public virtual DbSet<TLADM_WareHouseAssociation> TLADM_WareHouseAssociation { get; set; }
         public virtual DbSet<TLDYE_ReceipeGreigeQual> TLDYE_ReceipeGreigeQual { get; set; }
@@ -165,8 +164,6 @@ namespace Utilities
         public virtual DbSet<TLPPS_ProductionLeadTime> TLPPS_ProductionLeadTime { get; set; }
         public virtual DbSet<TLDYE_DyeTransactions> TLDYE_DyeTransactions { get; set; }
         public virtual DbSet<TLCMT_UnitProductionTargets> TLCMT_UnitProductionTargets { get; set; }
-        public virtual DbSet<TLADM_Departments> TLADM_Departments { get; set; }
-        public virtual DbSet<TLADM_Styles> TLADM_Styles { get; set; }
         public virtual DbSet<TLSEC_Sections> TLSEC_Sections { get; set; }
         public virtual DbSet<TLKNI_YarnOrderPallets> TLKNI_YarnOrderPallets { get; set; }
         public virtual DbSet<TLCMT_FactConfig> TLCMT_FactConfig { get; set; }
@@ -180,9 +177,7 @@ namespace Utilities
         public virtual DbSet<TLADM_Transporters> TLADM_Transporters { get; set; }
         public virtual DbSet<TLCMT_ProductionCosts> TLCMT_ProductionCosts { get; set; }
         public virtual DbSet<TLADM_CMTMeasurementPoints> TLADM_CMTMeasurementPoints { get; set; }
-        public virtual DbSet<TLADM_Colours> TLADM_Colours { get; set; }
         public virtual DbSet<TLCSV_PurchaseOrder> TLCSV_PurchaseOrder { get; set; }
-        public virtual DbSet<TLCSV_StockOnHand> TLCSV_StockOnHand { get; set; }
         public virtual DbSet<TLADM_FabWidth> TLADM_FabWidth { get; set; }
         public virtual DbSet<TLADM_QualityDefinition> TLADM_QualityDefinition { get; set; }
         public virtual DbSet<TLCMT_LineIssue> TLCMT_LineIssue { get; set; }
@@ -207,9 +202,15 @@ namespace Utilities
         public virtual DbSet<TLADM_QADyeProcessFields> TLADM_QADyeProcessFields { get; set; }
         public virtual DbSet<TLDYE_DyeBatchDetails> TLDYE_DyeBatchDetails { get; set; }
         public virtual DbSet<TLDYE_ConSummableReceived> TLDYE_ConSummableReceived { get; set; }
-        public virtual DbSet<TLADM_WhseStore> TLADM_WhseStore { get; set; }
         public virtual DbSet<TLADM_MachineMaintenanceTasks> TLADM_MachineMaintenanceTasks { get; set; }
         public virtual DbSet<TLADM_MachineMaintenance> TLADM_MachineMaintenance { get; set; }
+        public virtual DbSet<TLADM_Departments> TLADM_Departments { get; set; }
+        public virtual DbSet<TLADM_WhseStore> TLADM_WhseStore { get; set; }
+        public virtual DbSet<TLADM_Styles> TLADM_Styles { get; set; }
+        public virtual DbSet<TLCSV_BoughtInGoods> TLCSV_BoughtInGoods { get; set; }
+        public virtual DbSet<TLADM_Colours> TLADM_Colours { get; set; }
+        public virtual DbSet<TLCSV_StockOnHand> TLCSV_StockOnHand { get; set; }
+        public virtual DbSet<TLADM_Sizes> TLADM_Sizes { get; set; }
     
         public virtual int SelectCottonRecords(Nullable<int> contractNo, Nullable<int> supplierNo)
         {

@@ -417,8 +417,9 @@ namespace TTI2_WF
                 oTxtBoxL = new DataGridViewTextBoxColumn();
                 oTxtBoxL.HeaderText = "Display Position";
                 oTxtBoxL.ValueType = typeof(int);
-                              
-                                
+                oChkBoxD = new DataGridViewCheckBoxColumn();
+                oChkBoxD.HeaderText = "Conti Wear";
+                oChkBoxD.ValueType = typeof(bool);
                 dataGridView1.Columns.Add(oBtnA);       //   5 Sizes 
                 dataGridView1.Columns.Add(oBtnB);       //   6 Trims 
                 dataGridView1.Columns.Add(oBtnC);       //   7 Style Colour  
@@ -431,6 +432,7 @@ namespace TTI2_WF
                 dataGridView1.Columns.Add(oChkBoxA);    //   14 Buttons
                 dataGridView1.Columns.Add(oChkBoxC);    //   15 Buttons
                 dataGridView1.Columns.Add(oTxtBoxL);    //   16 Display Position
+                dataGridView1.Columns.Add(oChkBoxD);    //   17 WorkWear
                 //-------------------------------------------------------------------------------------------------
                 // This is the row leave event that only needs to be fired for a select group of modules
                 //------------------------------------------------------------------------------------------------------
@@ -723,8 +725,18 @@ namespace TTI2_WF
               oTxtBoxE.HeaderText = "Column Code";
               oTxtBoxE.ValueType = typeof(int);
               dataGridView1.Columns.Add(oTxtBoxE);
-              
-          }
+
+              oTxtBoxG = new DataGridViewTextBoxColumn();
+              oTxtBoxG.HeaderText = "UI Display";
+              oTxtBoxG.ValueType = typeof(String);
+              dataGridView1.Columns.Add(oTxtBoxG);
+
+              oTxtBoxH = new DataGridViewTextBoxColumn();
+              oTxtBoxH.HeaderText = "Conti Size";
+              oTxtBoxH.ValueType = typeof(int);
+              dataGridView1.Columns.Add(oTxtBoxH);
+
+            }
           else if (frmNumber == 9)
           {
               oCmbBoxA = new DataGridViewComboBoxColumn();   // Customer Details    

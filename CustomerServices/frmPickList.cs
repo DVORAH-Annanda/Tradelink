@@ -332,6 +332,12 @@ namespace CustomerServices
                           dataGridView2.Rows[indexx].Cells[2].Value = context.TLADM_Styles.Find(Row.TLCUSTO_Style_FK).Sty_Description;
                           dataGridView2.Rows[indexx].Cells[3].Value = context.TLADM_Colours.Find(Row.TLCUSTO_Colour_FK).Col_Display;
                           dataGridView2.Rows[indexx].Cells[4].Value = context.TLADM_Sizes.Find(Row.TLCUSTO_Size_FK).SI_Description;
+                          var Styles = context.TLADM_Styles.Find(Row.TLCUSTO_Style_FK);
+                          if(Styles != null && Styles.Sty_WorkWear)
+                          {
+                              dataGridView2.Rows[indexx].Cells[4].Value = context.TLADM_Sizes.Find(Row.TLCUSTO_Size_FK).SI_ContiSize;
+                          }
+                         
                           dataGridView2.Rows[indexx].Cells[5].Value = Nett;
                           dataGridView2.Rows[indexx].Cells[6].Value = 0;
                           dataGridView2.Rows[indexx].Cells[7].Value = Row.TLCUSTO_Style_FK;
@@ -832,12 +838,12 @@ namespace CustomerServices
                                         PODetail.TLCUSTO_PickedNumber = TransNumber;
                                         PODetail.TLCUSTO_PickedDate = DateTime.Now;
                                         PODetail.TLCUSTO_QtyPicked_ToDate += BoxSelected.TLSOH_BoxedQty;
+                                        BoxSelected.TLSOH_POOrder_FK = PODetail.TLCUSTO_PurchaseOrder_FK;
                                     }
 
                                     BoxSelected.TLSOH_Picked = true;
                                     BoxSelected.TLSOH_PickListDate = DateTime.Now;
                                     BoxSelected.TLSOH_PickListNo = TransNumber;
-                                    BoxSelected.TLSOH_POOrder_FK = PO.TLCSVPO_Pk;
                                     BoxSelected.TLSOH_POOrderDetail_FK = MasterRecord.TLPL_PODetail_FK;
                                     BoxSelected.TLSOH_Customer_Fk = PO.TLCSVPO_Customer_FK;
                                     BoxSelected.TLSOH_RePackConfig_Fk = MasterRecord.TLPL_BoxRePack_FK;

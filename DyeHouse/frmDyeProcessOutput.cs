@@ -213,13 +213,16 @@ namespace DyeHouse
           
             if (oDgv != null && formloaded)
             {
-                if (e.ColumnIndex == 5 || e.ColumnIndex == 6 || e.ColumnIndex == 7)
+                if (e.ColumnIndex == 5 || 
+                    e.ColumnIndex == 6 || 
+                    e.ColumnIndex == 7)
                 {
                     String CellValue = oDgv.CurrentRow.Cells[e.ColumnIndex].EditedFormattedValue.ToString();
                     if (String.IsNullOrEmpty(CellValue) || Convert.ToDecimal(CellValue) == 0.00M)
                     {
-                        MessageBox.Show("No value entered");
+                        MessageBox.Show("No value entered","Error");
                         e.Cancel = true;
+                        return;
                     }
                 }
 
@@ -228,11 +231,14 @@ namespace DyeHouse
                     Decimal NettValue = Convert.ToDecimal(oDgv.CurrentRow.Cells[e.ColumnIndex].EditedFormattedValue.ToString());
                     Decimal GrossValue = Convert.ToDecimal(oDgv.CurrentRow.Cells[-1 + e.ColumnIndex].Value.ToString());
 
-                    decimal ans = (NettValue / GrossValue) * 100;
-                    if( ans > 100 )
+                    decimal ans = core.CalculateVariance(GrossValue, NettValue);
+                    if( ans > 5.00M || ans < -5.00M )
                     {
-                        MessageBox.Show("Incorrect amount entered", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        e.Cancel = true;
+                        DialogResult res = MessageBox.Show("Possible incorrect amount entered -- Continue?", "Possible error variance " + Math.Round(ans,1) + " % ",  MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                        if (res == DialogResult.No)
+                        {
+                            e.Cancel = true;
+                        }
                     }
                 }
             }

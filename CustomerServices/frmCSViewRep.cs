@@ -122,6 +122,7 @@ namespace CustomerServices
                             row.Colour = _Colours.FirstOrDefault(s => s.Col_Id == Record.TLCMTWC_Colour_FK).Col_Display;
                             row.Size = _Sizes.FirstOrDefault(s => s.SI_id == Record.TLCMTWC_Size_FK).SI_Description;
                             row.BoxQty = Record.TLCMTWC_Qty;
+                            
 
                             dataTable2.AddDataTable2Row(row);
 
@@ -336,7 +337,14 @@ namespace CustomerServices
 
                                 nr.Style = _Styles.FirstOrDefault(s => s.Sty_Id == Item.TLSOH_Style_FK).Sty_Description;
                                 nr.Colour = _Colours.FirstOrDefault(s => s.Col_Id == Item.TLSOH_Colour_FK).Col_Description;
-                                nr.Size = _Sizes.FirstOrDefault(s => s.SI_id == Item.TLSOH_Size_FK).SI_Description;
+                                if (!_Styles.FirstOrDefault(s => s.Sty_Id == Item.TLSOH_Style_FK).Sty_WorkWear)
+                                {
+                                    nr.Size = _Sizes.FirstOrDefault(s => s.SI_id == Item.TLSOH_Size_FK).SI_Description;
+                                }
+                                else
+                                {
+                                    nr.Size = _Sizes.FirstOrDefault(s => s.SI_id == Item.TLSOH_Size_FK).SI_ContiSize.ToString();
+                                }
                                 nr.BoxNumber = Item.TLSOH_BoxNumber;
                                 nr.BoxQty = Item.TLSOH_BoxedQty;
                                 nr.Weight = Item.TLSOH_Weight;
@@ -594,8 +602,19 @@ namespace CustomerServices
                     {
                         DataSet5.DataTable1Row nr = datatable1.NewDataTable1Row();
                         nr.Style = _Styles.FirstOrDefault(s => s.Sty_Id == (int)row[0]).Sty_Description;
+                        
+                        var Sty =  _Styles.FirstOrDefault(s => s.Sty_Id == (int)row[0]);
+                        if (Sty != null && !Sty.Sty_WorkWear)
+                        {
+                            nr.Size = _Sizes.FirstOrDefault(s => s.SI_id == (int)row[2]).SI_Description;
+                        }
+                        else
+                        {
+                            nr.Size = _Sizes.FirstOrDefault(s => s.SI_id == (int)row[2]).SI_ContiSize.ToString();
+                        }
+
                         nr.Colour = _Colours.FirstOrDefault(s => s.Col_Id == (int)row[1]).Col_Display;
-                        nr.Size = _Sizes.FirstOrDefault(s => s.SI_id == (int)row[2]).SI_Description;
+                        // nr.Size = _Sizes.FirstOrDefault(s => s.SI_id == (int)row[2]).SI_Description;
                         nr.Col1 = (int)row[3];
                         nr.Col2 = (int)row[4];
                         nr.Col3 = (int)row[5];
@@ -724,7 +743,17 @@ namespace CustomerServices
                         n2r.WareHouse = context.TLADM_WhseStore.Find(SItem.TLSOH_WareHouse_FK).WhStore_Description;
                         n2r.Product = _Styles.FirstOrDefault(s => s.Sty_Id == SItem.TLSOH_Style_FK).Sty_Description;
                         n2r.Colour = _Colours.FirstOrDefault(s => s.Col_Id == SItem.TLSOH_Colour_FK).Col_Display;
-                        n2r.Size = _Sizes.FirstOrDefault(s => s.SI_id == SItem.TLSOH_Size_FK).SI_Description;
+
+                        var Prd = _Styles.FirstOrDefault(s => s.Sty_Id == SItem.TLSOH_Style_FK);
+                        if (Prd != null && !Prd.Sty_WorkWear)
+                        {
+                            n2r.Size = _Sizes.FirstOrDefault(s => s.SI_id == SItem.TLSOH_Size_FK).SI_Description;
+                        }
+                        else
+                        {
+                            n2r.Size = _Sizes.FirstOrDefault(s => s.SI_id == SItem.TLSOH_Size_FK).SI_ContiSize.ToString();
+                        }
+                      
                         n2r.BoxNumber = SItem.TLSOH_BoxNumber;
                         n2r.SizeDisplayOrder = _Sizes.FirstOrDefault(s => s.SI_id == SItem.TLSOH_Size_FK).SI_DisplayOrder;
                         n2r.Status = string.Empty;
@@ -840,10 +869,18 @@ namespace CustomerServices
                             StringBuilder sb = new StringBuilder();
                             sb.Append(_Styles.FirstOrDefault(s => s.Sty_Id == PODetail.TLCUSTO_Style_FK).Sty_Description + ' ');
                             sb.Append(_Colours.FirstOrDefault(s => s.Col_Id == PODetail.TLCUSTO_Colour_FK).Col_Display + ' ');
-                            sb.Append(_Sizes.FirstOrDefault(s => s.SI_id == PODetail.TLCUSTO_Size_FK).SI_Description);
 
+                            var Sty = _Styles.FirstOrDefault(s => s.Sty_Id == PODetail.TLCUSTO_Style_FK);
+                            if (Sty != null && !Sty.Sty_WorkWear)
+                            {
+                                sb.Append(_Sizes.FirstOrDefault(s => s.SI_id == PODetail.TLCUSTO_Size_FK).SI_Description);
+                            }
+                            else
+                            {
+                                sb.Append(_Sizes.FirstOrDefault(s => s.SI_id == PODetail.TLCUSTO_Size_FK).SI_ContiSize.ToString());
+                            }
+                            
                             nr.DisplayOrder = _Sizes.FirstOrDefault(s => s.SI_id == PODetail.TLCUSTO_Size_FK).SI_DisplayOrder;
-
                             nr.StyleDescription = sb.ToString();
                             nr.OrderQty = PODetail.TLCUSTO_Qty;
 
@@ -1023,7 +1060,7 @@ namespace CustomerServices
                             if (OrderAlloc != null)
                             {
                                 var POrder = context.TLCSV_PurchaseOrder.Find(OrderAlloc.TLORDA_POOrder_FK);
-                                var Existing = context.TLCSV_StockOnHand.Where(x => x.TLSOH_PickListNo == OrderAlloc.TLORDA_TransNumber && x.TLSOH_POOrder_FK == OrderAlloc.TLORDA_POOrder_FK).ToList();
+                                var Existing = context.TLCSV_StockOnHand.Where(x => x.TLSOH_PickListNo == OrderAlloc.TLORDA_TransNumber).ToList();
 
                                 Existing = (from Exist in Existing
                                             join Style in context.TLADM_Styles on Exist.TLSOH_Style_FK equals Style.Sty_Id
@@ -1047,7 +1084,14 @@ namespace CustomerServices
                                         //-------------------------------------------------------------
                                         nr.Style = _Styles.FirstOrDefault(s => s.Sty_Id == Row.TLSOH_Style_FK).Sty_Description;
                                         nr.Colour = _Colours.FirstOrDefault(s => s.Col_Id == Row.TLSOH_Colour_FK).Col_Display;
-                                        nr.Size = _Sizes.FirstOrDefault(s => s.SI_id == Row.TLSOH_Size_FK).SI_Description;
+                                        if (!_Styles.FirstOrDefault(s => s.Sty_Id == Row.TLSOH_Style_FK).Sty_WorkWear)
+                                        {
+                                            nr.Size = _Sizes.FirstOrDefault(s => s.SI_id == Row.TLSOH_Size_FK).SI_Description;
+                                        }
+                                        else
+                                        {
+                                            nr.Size = _Sizes.FirstOrDefault(s => s.SI_id == Row.TLSOH_Size_FK).SI_ContiSize.ToString();
+                                        }
                                         nr.BoxedQty = Row.TLSOH_BoxedQty;
                                         nr.Weight = Row.TLSOH_Weight;
 
@@ -1152,7 +1196,16 @@ namespace CustomerServices
                                         nr.BoxNumber = Row.TLSOH_BoxNumber;
                                         nr.Style = _Styles.FirstOrDefault(s => s.Sty_Id == Row.TLSOH_Style_FK).Sty_Description;
                                         nr.Colour = _Colours.FirstOrDefault(s => s.Col_Id == Row.TLSOH_Colour_FK).Col_Display;
-                                        nr.Size = _Sizes.FirstOrDefault(s => s.SI_id == Row.TLSOH_Size_FK).SI_Description;
+
+                                        var Sty = _Styles.FirstOrDefault(s => s.Sty_Id == Row.TLSOH_Style_FK);
+                                        if (Sty != null && !Sty.Sty_WorkWear)
+                                        {
+                                            nr.Size = _Sizes.FirstOrDefault(s => s.SI_id == Row.TLSOH_Size_FK).SI_Description;
+                                        }
+                                        else
+                                        {
+                                            nr.Size = _Sizes.FirstOrDefault(s => s.SI_id == Row.TLSOH_Size_FK).SI_ContiSize.ToString();
+                                        }
                                         nr.BoxedQty = Row.TLSOH_BoxedQty;
                                         nr.Weight = Row.TLSOH_Weight;
                                         nr.WareHouseDeliveryNo = Row.TLSOH_WareHouseDeliveryNo;
@@ -1459,9 +1512,15 @@ namespace CustomerServices
 
                                     t3r.Style = context.TLADM_Styles.Find(StylePk).Sty_Description;
                                     t3r.Colour = _Colours.FirstOrDefault(s => s.Col_Id == ColourPk).Col_Display;
-
-                                    t3r.Size = _Sizes.FirstOrDefault(s => s.SI_id == SizePk).SI_Description;
-                                    t3r.DisplayOrder = _Sizes.FirstOrDefault(s => s.SI_id == SizePk).SI_DisplayOrder;
+                                    var Sty = context.TLADM_Styles.Find(StylePk);
+                                    if (Sty != null && !Sty.Sty_WorkWear)
+                                    {
+                                        t3r.Size = _Sizes.FirstOrDefault(s => s.SI_id == SizePk).SI_Description;
+                                    }
+                                    else
+                                    {
+                                        t3r.Size = _Sizes.FirstOrDefault(s => s.SI_id == SizePk).SI_ContiSize.ToString();
+                                    }
                                     t3r.BoxedQty = Size.Sum(x => x.TLSOH_BoxedQty);
                                     t3r.Total_BoxedQty = Item.Sum(x => x.TLSOH_BoxedQty);
 
@@ -1486,7 +1545,16 @@ namespace CustomerServices
                                 t3r.Style = context.TLADM_Styles.Find(StylePk).Sty_Description;
                                 t3r.Colour = _Colours.FirstOrDefault(s => s.Col_Id == ColourPk).Col_Display;
 
-                                t3r.Size = _Sizes.FirstOrDefault(s => s.SI_id == SizePk).SI_Description;
+                                var Sty = context.TLADM_Styles.Find(StylePk);
+                                if (Sty != null && !Sty.Sty_WorkWear)
+                                {
+                                    t3r.Size = _Sizes.FirstOrDefault(s => s.SI_id == SizePk).SI_Description;
+                                }
+                                else
+                                {
+
+                                    t3r.Size = _Sizes.FirstOrDefault(s => s.SI_id == SizePk).SI_ContiSize.ToString();
+                                }
                                 t3r.DisplayOrder = _Sizes.FirstOrDefault(s => s.SI_id == SizePk).SI_DisplayOrder;
                                 t3r.BoxedQty = Item.Sum(x => x.TLSOH_BoxedQty);
                                 t3r.Total_BoxedQty = Item.Sum(x => x.TLSOH_BoxedQty);
@@ -1582,7 +1650,15 @@ namespace CustomerServices
                         t2r.STList_BoxedQty = Record.TLSOH_BoxedQty;
                         t2r.StList_Style = _Styles.FirstOrDefault(s => s.Sty_Id == Record.TLSOH_Style_FK).Sty_Description;
                         t2r.STList_Colour = _Colours.FirstOrDefault(s => s.Col_Id == Record.TLSOH_Colour_FK).Col_Display;
-                        t2r.STList_Size = _Sizes.FirstOrDefault(s => s.SI_id == Record.TLSOH_Size_FK).SI_Description;
+                        var Sty = _Styles.FirstOrDefault(s => s.Sty_Id == Record.TLSOH_Style_FK);
+                        if (Sty != null && !Sty.Sty_WorkWear)
+                        {
+                            t2r.STList_Size = _Sizes.FirstOrDefault(s => s.SI_id == Record.TLSOH_Size_FK).SI_Description;
+                        }
+                        else
+                        {
+                            t2r.STList_Size = _Sizes.FirstOrDefault(s => s.SI_id == Record.TLSOH_Size_FK).SI_ContiSize.ToString();
+                        }
                         t2r.STList_BoxNumber = Record.TLSOH_BoxNumber;
                         t2r.STList_BoxedQty = Record.TLSOH_BoxedQty;
                         t2r.STList_WareHouse = context.TLADM_WhseStore.Find(Record.TLSOH_WareHouse_FK).WhStore_Description;
@@ -1702,7 +1778,16 @@ namespace CustomerServices
                         nr.BoxWeight = Record.TLCMTWC_Weight;
                         nr.Colour = _Colours.FirstOrDefault(s => s.Col_Id == Record.TLCMTWC_Colour_FK).Col_Display;
                         nr.Style = _Styles.FirstOrDefault(s => s.Sty_Id == Record.TLCMTWC_Style_FK).Sty_Description;
-                        nr.Size = _Sizes.FirstOrDefault(s => s.SI_id == Record.TLCMTWC_Size_FK).SI_Description;
+                        var Sty = _Styles.FirstOrDefault(s => s.Sty_Id == Record.TLCMTWC_Style_FK);
+                        if(Sty != null && !Sty.Sty_WorkWear)
+                        {
+                            nr.Size = _Sizes.FirstOrDefault(s => s.SI_id == Record.TLCMTWC_Size_FK).SI_Description;
+                        }
+                        else
+                        {
+                            nr.Size = _Sizes.FirstOrDefault(s => s.SI_id == Record.TLCMTWC_Size_FK).SI_ContiSize.ToString();
+                        }
+                        
                         nr.ToWhse = context.TLADM_WhseStore.Find(Record.TLCMTWC_ToWhse_FK).WhStore_Description;
                         if (Record.TLCMTWC_PickList_FK != null)
                         {
@@ -1815,7 +1900,15 @@ namespace CustomerServices
                         DataSet17.DataTable1Row nr = dataTable1.NewDataTable1Row();
                         nr.Style = _Styles.FirstOrDefault(s => s.Sty_Id == Row.Field<int>(0)).Sty_Description;
                         nr.Colour = _Colours.FirstOrDefault(s => s.Col_Id == Row.Field<int>(1)).Col_Display;
-                        nr.Size = _Sizes.FirstOrDefault(s => s.SI_id == Row.Field<int>(2)).SI_Description;
+                        var Sty = _Styles.FirstOrDefault(s => s.Sty_Id == Row.Field<int>(0));
+                        if (Sty != null && !Sty.Sty_WorkWear)
+                        {
+                            nr.Size = _Sizes.FirstOrDefault(s => s.SI_id == Row.Field<int>(2)).SI_Description;
+                        }
+                        else
+                        {
+                            nr.Size = _Sizes.FirstOrDefault(s => s.SI_id == Row.Field<int>(2)).SI_ContiSize.ToString();
+                        }
                         nr.Jan = Row.Field<int>(3);
                         nr.Feb = Row.Field<int>(4);
                         nr.Mar = Row.Field<int>(5);
@@ -1883,7 +1976,16 @@ namespace CustomerServices
                                 nrd.BoxNumber = SOH.TLSOH_BoxNumber;
                                 nrd.Style = _Styles.FirstOrDefault(s => s.Sty_Id == SOH.TLSOH_Style_FK).Sty_Description;
                                 nrd.Colour = _Colours.FirstOrDefault(s => s.Col_Id == SOH.TLSOH_Colour_FK).Col_Display;
-                                nrd.Size = _Sizes.FirstOrDefault(s => s.SI_id == SOH.TLSOH_Size_FK).SI_Description;
+
+                                var Sty = _Styles.FirstOrDefault(s => s.Sty_Id == SOH.TLSOH_Style_FK);
+                                if (Sty != null && !Sty.Sty_WorkWear)
+                                {
+                                    nrd.Size = _Sizes.FirstOrDefault(s => s.SI_id == SOH.TLSOH_Size_FK).SI_Description;
+                                }
+                                else
+                                {
+                                    nrd.Size = _Sizes.FirstOrDefault(s => s.SI_id == SOH.TLSOH_Size_FK).SI_ContiSize.ToString();
+                                }
                                 nrd.Boxed_Qty = SOH.TLSOH_BoxedQty;
                                 nrd.Weight = SOH.TLSOH_Weight;
 
@@ -2447,43 +2549,53 @@ namespace CustomerServices
                                 nr.TOrderDate = POOrder.TLCSVPO_TransDate;
                                 nr.TStatus = POOrder.TLCSVPO_Closeed;
                                 nr.TOrderQty = 0;
+
                                 /*nr.TOrderQty = (from T1 in context.TLCSV_PurchaseOrder
                                                   join T2 in context.TLCSV_PuchaseOrderDetail
                                                   on T1.TLCSVPO_Pk equals T2.TLCUSTO_PurchaseOrder_FK
                                                   where T2.TLCUSTO_Style_FK == Box.TLSOH_Style_FK &&
                                                         T2.TLCUSTO_Colour_FK == Box.TLSOH_Colour_FK &&
                                                         T2.TLCUSTO_Size_FK == Box.TLSOH_Size_FK
-                                                  select T2).Sum(x => x.TLCUSTO_Qty);*/
+                                                        select T2).Sum(x => x.TLCUSTO_Qty);*/
 
+
+                                nr.TStyle = _Styles.FirstOrDefault(s => s.Sty_Id == Box.TLSOH_Style_FK).Sty_Description;
+                                nr.TColour = _Colours.FirstOrDefault(s => s.Col_Id == Box.TLSOH_Colour_FK).Col_Display;
+                                var xSize = _Sizes.FirstOrDefault(s => s.SI_id == Box.TLSOH_Size_FK);
+                                if (xSize != null)
+                                {
+                                   var Sty = _Styles.FirstOrDefault(s => s.Sty_Id == Box.TLSOH_Style_FK);
+                                    if (Sty != null && !Sty.Sty_WorkWear)
+                                    {
+                                        nr.TSize = xSize.SI_Description;
+                                    }
+                                    else
+                                    {
+                                        nr.TSize = xSize.SI_ContiSize.ToString();
+                                    }
+                                    nr.TDisplayOrder = xSize.SI_DisplayOrder;
+                                }
+
+                                nr.TBoxQty = Box.TLSOH_BoxedQty;
+                                nr.TBoxNumber = Box.TLSOH_BoxNumber;
+
+                                if (Box.TLSOH_Picked)
+                                {
+                                    if (Box.TLSOH_PickListDate != null)
+                                        nr.TPLDate = (DateTime)Box.TLSOH_PickListDate;
+
+                                    nr.TPLNumber = "PL" + Box.TLSOH_PickListNo.ToString().PadLeft(5, '0');
+                                }
+
+                                if (Box.TLSOH_Sold)
+                                {
+                                    if (Box.TLSOH_DNListDate != null)
+                                        nr.TDLDate = (DateTime)Box.TLSOH_DNListDate;
+
+                                    nr.TDLNumber = "DN" + Box.TLSOH_DNListNo.ToString().PadLeft(5, '0');
+                                }
+                                dataTable1.AddDataTable1Row(nr);
                             }
-                            nr.TStyle = _Styles.FirstOrDefault(s => s.Sty_Id == Box.TLSOH_Style_FK).Sty_Description;
-                            nr.TColour = _Colours.FirstOrDefault(s => s.Col_Id == Box.TLSOH_Colour_FK).Col_Display;
-                            var xSize = _Sizes.FirstOrDefault(s => s.SI_id == Box.TLSOH_Size_FK);
-                            if (xSize != null)
-                            {
-                                nr.TSize = xSize.SI_Description;
-                                nr.TDisplayOrder = xSize.SI_DisplayOrder;
-                            }
-
-                            nr.TBoxQty = Box.TLSOH_BoxedQty;
-                            nr.TBoxNumber = Box.TLSOH_BoxNumber;
-
-                            if (Box.TLSOH_Picked)
-                            {
-                                if (Box.TLSOH_PickListDate != null)
-                                    nr.TPLDate = (DateTime)Box.TLSOH_PickListDate;
-
-                                nr.TPLNumber = "PL" + Box.TLSOH_PickListNo.ToString().PadLeft(5, '0');
-                            }
-
-                            if (Box.TLSOH_Sold)
-                            {
-                                if (Box.TLSOH_DNListDate != null)
-                                    nr.TDLDate = (DateTime)Box.TLSOH_DNListDate;
-
-                                nr.TDLNumber = "DN" + Box.TLSOH_DNListNo.ToString().PadLeft(5, '0');
-                            }
-                            dataTable1.AddDataTable1Row(nr);
                         }
                     }
                     else
@@ -2515,7 +2627,15 @@ namespace CustomerServices
                                 var xSize = _Sizes.FirstOrDefault(s => s.SI_id == PODetail.TLCUSTO_Size_FK);
                                 if (xSize != null)
                                 {
-                                    nr.TSize = xSize.SI_Description;
+                                    var Sty = _Styles.FirstOrDefault(s => s.Sty_Id == PODetail.TLCUSTO_Style_FK);
+                                    if (Sty != null && !Sty.Sty_WorkWear)
+                                    {
+                                        nr.TSize = xSize.SI_Description;
+                                    }
+                                    else
+                                    {
+                                        nr.TSize = xSize.SI_ContiSize.ToString();
+                                    }
                                     nr.TDisplayOrder = xSize.SI_DisplayOrder;
                                 }
                                 nr.TOrderQty = PODetail.TLCUSTO_Qty;
@@ -2533,7 +2653,7 @@ namespace CustomerServices
                     hnr.FromDate = _QueryParms.FromDate;
                     hnr.ToDate = _QueryParms.ToDate;
 
-                    hnr.Title = "Customer Transactional History From" ;
+                    hnr.Title = "Customer Transactional History From";
                 }
                 else
                 {
@@ -2887,6 +3007,59 @@ namespace CustomerServices
                 crystalReportViewer1.ReportSource = PRecon;
 
             }
+            else if (_RepNo == 29)      // Bought in Goods Receipt Report 
+            {
+                DataSet ds = new DataSet();
+                DataSet27.DataTable1DataTable dataTable1 = new DataSet27.DataTable1DataTable();
+                DataSet27.DataTable2DataTable dataTable2 = new DataSet27.DataTable2DataTable();
+                Util core = new Util();
+                Repository repo = new Repository();
+                using (var context = new TTI2Entities())
+                {
+                    DataSet27.DataTable1Row hnr = dataTable1.NewDataTable1Row();
+                    hnr.Pk = 1;
+
+                    var BoughtInGoods = context.TLCSV_BoughtInGoods.Find(_Pk);
+                    if (BoughtInGoods != null)
+                    {
+                        hnr.TransDate = BoughtInGoods.TLBIG_TransDate;
+                        hnr.ReceivingWareHouse = context.TLADM_WhseStore.Find(BoughtInGoods.TLBIG_WareHouse_FK).WhStore_Description;
+                        hnr.Supplier = context.TLADM_Suppliers.Find(BoughtInGoods.TLBIG_Supplier_FK).Sup_Description;
+                        hnr.TransNumber = BoughtInGoods.TLBIG_TransNumber;
+                        hnr.TTIOrderNumber = BoughtInGoods.TLBIG_TTIOrderNo;
+                        hnr.SupplierDelNumber = BoughtInGoods.TLBIG_SupplierDelNo;
+                        
+                        dataTable1.AddDataTable1Row(hnr);
+
+                        var BoughtInDetails = context.TLCSV_StockOnHand.Where(x => x.TLSOH_BoughtInGoods_Fk == _Pk).GroupBy(x => new { x.TLSOH_Style_FK, x.TLSOH_Colour_FK, x.TLSOH_Size_FK });
+                        foreach (var Sty in BoughtInDetails)
+                        {
+                            DataSet27.DataTable2Row nr = dataTable2.NewDataTable2Row();
+                            nr.Pk = 1;
+                            var FirstSty = Sty.FirstOrDefault().TLSOH_Style_FK;
+                            nr.Style = context.TLADM_Styles.Find(FirstSty).Sty_Description;
+                            var FirstClr = Sty.FirstOrDefault().TLSOH_Colour_FK;
+                            nr.Colour = context.TLADM_Colours.Find(FirstClr).Col_Display;
+                            var FirstSiz = Sty.FirstOrDefault().TLSOH_Size_FK;
+                            nr.Size = context.TLADM_Sizes.Find(FirstSiz).SI_ContiSize.ToString();
+                            nr.ReceivedQty = Sty.Count();
+
+                            dataTable2.AddDataTable2Row(nr);
+                        }
+                    }
+
+
+                    ds.Tables.Add(dataTable1);
+                    ds.Tables.Add(dataTable2);
+
+                    CustomerServices.ReceivedBoughtInGoods PRecon = new CustomerServices.ReceivedBoughtInGoods();
+                    PRecon.SetDataSource(ds);
+
+                    crystalReportViewer1.ReportSource = PRecon;
+                }
+               
+            }
+            
             crystalReportViewer1.Refresh();
         }
 

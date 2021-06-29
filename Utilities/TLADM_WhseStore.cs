@@ -39,5 +39,6 @@ namespace Utilities
         public bool WhStore_PanelStore { get; set; }
         public bool WhStore_RePack { get; set; }
         public bool WhStore_Default { get; set; }
+        public bool WhStore_Quarantine { get; set; }
     }
 }

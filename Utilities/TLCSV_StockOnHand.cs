@@ -60,5 +60,9 @@ namespace Utilities
         public int TLSOH_CutSheet_FK { get; set; }
         public bool TLSOH_Invoiced { get; set; }
         public Nullable<System.DateTime> TLSOH_InvDate { get; set; }
+        public Nullable<int> TLSOH_Supplier_Fk { get; set; }
+        public int TLSOH_SupplierTransNumber { get; set; }
+        public bool TLSOH_BoughtInGoods { get; set; }
+        public Nullable<int> TLSOH_BoughtInGoods_Fk { get; set; }
     }
 }

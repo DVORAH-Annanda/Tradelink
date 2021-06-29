@@ -28,7 +28,6 @@ namespace DyeHouse
         {
             formloaded = false;
             dataGridView1.Rows.Clear();
-
             dataGridView1.AllowUserToAddRows = false;
             dataGridView1.AutoGenerateColumns = false;
             using (var context = new TTI2Entities())
@@ -39,10 +38,13 @@ namespace DyeHouse
                     txtGrnNumber.Text =  "RF"+LNU.col7.ToString().PadLeft(6,'0');
                 }
 
+                cmboBatchNumber.Text = string.Empty;
+                cmboBatchNumber.DataSource = null;
+                cmboBatchNumber.Items.Clear();
+
                 var Query  = (from T1 in context.TLDYE_DyeBatch
                              join T2 in context.TLDYE_DyeBatchDetails on T1.DYEB_Pk equals T2.DYEBD_DyeBatch_FK
-                             join T3 in context.TLKNI_GreigeProduction on T2.DYEBD_GreigeProduction_FK equals T3.GreigeP_Pk 
-                             where !T2.DYEBO_Sold && !T2.DYEBO_Rejected && !T2.DYEBO_CutSheet && !T2.DYEBO_QAApproved && T1.DYEB_OutProcess && T1.DYEB_Allocated && !T1.DYEB_CommissinCust && T3.GreigeP_Dye
+                             where !T2.DYEBO_Sold && !T2.DYEBO_Rejected && !T2.DYEBO_CutSheet && !T2.DYEBO_QAApproved && T1.DYEB_OutProcess && T1.DYEB_Allocated && !T1.DYEB_CommissinCust
                              select T1).OrderBy(x=>x.DYEB_BatchNo).GroupBy(x=>x.DYEB_BatchNo);
 
                 foreach(var BatchGroup in Query)
@@ -150,11 +152,11 @@ namespace DyeHouse
                                 continue;
 
                             var index = dataGridView1.Rows.Add();
+                            dataGridView1.Rows[index].Cells[0].Value = row.DYEBD_Pk;
 
                             var GP = context.TLKNI_GreigeProduction.Find(row.DYEBD_GreigeProduction_FK);
                             if (GP != null)
                             {
-                                dataGridView1.Rows[index].Cells[0].Value = row.DYEBD_Pk;
                                 dataGridView1.Rows[index].Cells[1].Value = GP.GreigeP_PieceNo;
 
                                 var Qual = context.TLADM_Griege.Find(GP.GreigeP_Greige_Fk);
@@ -183,17 +185,29 @@ namespace DyeHouse
                 {
                     decimal nett = 0.0M;
                     decimal weight = 0.0M;
-
-                    if ((decimal)oDgv.Rows[e.RowIndex].Cells[4].Value != 0)
+                    if (oDgv.Rows[e.RowIndex].Cells[4].Value != null)
                     {
-                        weight = (decimal)oDgv.Rows[e.RowIndex].Cells[4].Value;
+                        if ((decimal)oDgv.Rows[e.RowIndex].Cells[4].Value != 0)
+                        {
+                            weight = (decimal)oDgv.Rows[e.RowIndex].Cells[4].Value;
+                        }
+                    }
+                    else
+                    {
+                        weight = 0;
                     }
 
-                    if ((decimal)oDgv.Rows[e.RowIndex].Cells[5].Value != 0)
+                    if (oDgv.Rows[e.RowIndex].Cells[5].Value != null)
                     {
-                        nett = (decimal)oDgv.Rows[e.RowIndex].Cells[5].Value;
+                        if ((decimal)oDgv.Rows[e.RowIndex].Cells[5].Value != 0)
+                        {
+                            nett = (decimal)oDgv.Rows[e.RowIndex].Cells[5].Value;
+                        }
                     }
-
+                    else
+                    {
+                        nett = 0;
+                    }
 
                     decimal GrossWeight = Convert.ToDecimal(txtBatchGreigeKg.Text);
                     GrossWeight += weight;
@@ -288,7 +302,10 @@ namespace DyeHouse
                                 bd.DYEBO_Rejected = true;
                                 bd.DYEBO_RejectedDate = dtpTransDate.Value;
                                 bd.DYEBO_WasRejected = true;
-                                weight += (decimal)row.Cells[5].Value;
+                                if (row.Cells[5].Value != null)
+                                {
+                                    weight += (decimal)row.Cells[5].Value;
+                                }
                                 bd.DYEBO_CurrentStore_FK = (int)TranType.TrxT_ToWhse_FK;
                                 AddRec = true;
                             }

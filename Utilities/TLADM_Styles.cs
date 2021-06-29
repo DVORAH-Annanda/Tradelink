@@ -33,5 +33,6 @@ namespace Utilities
         public bool Sty_Equiv { get; set; }
         public int Sty_DisplayOrder { get; set; }
         public int Sty_Units_Per_Hour { get; set; }
+        public bool Sty_WorkWear { get; set; }
     }
 }

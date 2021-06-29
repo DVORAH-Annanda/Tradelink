@@ -49,6 +49,7 @@ namespace CustomerServices
         StringBuilder sb = null;
         DataTable dt;
 
+        protected readonly TTI2Entities _context;
         //==========================================
         // Note for the file 
         //============================================================
@@ -64,6 +65,7 @@ namespace CustomerServices
         public frmCustomerOrders()
         {
             InitializeComponent();
+            _context = new TTI2Entities();
 
         }
 
@@ -804,6 +806,9 @@ namespace CustomerServices
                             cmboCurrentOrders.ValueMember = "TLCSVPO_Pk";
                             cmboCurrentOrders.DisplayMember = "TLCSVPO_PurchaseOrder";
                             cmboCurrentOrders.SelectedValue = -1;
+
+                           
+                            
                             rbSpecialNo.Checked = true;
                             if (!cmboCurrentOrders.Enabled)
                                 cmboCurrentOrders.Enabled = true;
@@ -859,7 +864,7 @@ namespace CustomerServices
         private void dataGridView1_RowEnter(object sender, DataGridViewCellEventArgs e)
         {
             DataGridView oDgv = sender as DataGridView;
-
+                            
             if (!EditMode && !AddnAdd)
             {
                 oDgv.Rows[oDgv.NewRowIndex].Cells[1].Value = "L" + (oDgv.NewRowIndex + 1).ToString().PadLeft(5, '0');
@@ -899,7 +904,19 @@ namespace CustomerServices
                         e.Control.KeyPress -= new KeyPressEventHandler(core.txtWin_KeyPress);
                     }
                 }
+                else
+                {
+                    if (oDgv.CurrentCell is DataGridViewComboBoxCell)
+                    {
+                        oCombo.SelectedIndexChanged += new EventHandler (ComboBox_SelectedIndexChanged);
+                    }
+                }
             }
+        }
+
+        private void OCombo_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
         }
 
         private void ComboBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -910,7 +927,27 @@ namespace CustomerServices
             {
                 if (Cell.ColumnIndex == 2)
                 {
-                   
+                    var Style = _context.TLADM_Styles.Where(x => x.Sty_Description == Cell.EditedFormattedValue.ToString()).FirstOrDefault();
+                    if (Style != null && Style.Sty_WorkWear)
+                    {
+                        oCmbB.DataSource = null;
+                        oCmbB.Items.Clear();
+                        var tst = (from T1 in _context.TLADM_StyleColour
+                                   join T2 in _context.TLADM_Colours
+                                   on T1.STYCOL_Colour_FK  equals T2.Col_Id
+                                   where T1.STYCOL_Style_FK == Style.Sty_Id
+                                   select T2).ToList();
+
+                        oCmbB.DataSource = tst;
+                        oCmbB.ValueMember = "Col_Id";
+                        oCmbB.DisplayMember = "Col_Display";
+                        
+                        oCmbC.DataSource = null;
+                        oCmbC.Items.Clear();
+                        oCmbC.DataSource = _context.TLADM_Sizes.Where(x =>x.SI_ContiSize != 0).OrderBy(x => x.SI_DisplayOrder).ToList();
+                        oCmbC.ValueMember = "SI_id";
+                        oCmbC.DisplayMember = "SI_ContiSize";
+                    }
                 }
             }
         }
@@ -1228,28 +1265,35 @@ namespace CustomerServices
         private void frmCustomerOrders_FormClosing(object sender, FormClosingEventArgs e)
         {
             Form oFrm = (Form)sender;
-
-            var Customer = (TLADM_CustomerFile)this.cmboCustomers.SelectedItem;
-            if(Customer != null)
-             {
-                if (Customer.Cust_RePack)
+            if (!e.Cancel)
+            {
+                if(_context != null)
                 {
-                    //------------------------------------------------------------------------------------
-                    // If a repack customer, the user may have created a packing config and then 
-                    // at the last moment decided not to save the results 
-                    // This creates an imbalance and 'loose' data with no reference point
-                    // This is to do the neccessary house keeping....
-                    //---------------------------------------------------------------------------
-                    using (var context = new TTI2Entities())
+                    _context.Dispose();
+                }
+
+                var Customer = (TLADM_CustomerFile)this.cmboCustomers.SelectedItem;
+                if (Customer != null)
+                {
+                    if (Customer.Cust_RePack)
                     {
-                        context.TLCSV_RePackConfig.RemoveRange(context.TLCSV_RePackConfig.Where(x => x.PORConfig_PONumber_Fk == 0));
-                        try
+                        //------------------------------------------------------------------------------------
+                        // If a repack customer, the user may have created a packing config and then 
+                        // at the last moment decided not to save the results 
+                        // This creates an imbalance and 'loose' data with no reference point
+                        // This is to do the neccessary house keeping....
+                        //---------------------------------------------------------------------------
+                        using (var context = new TTI2Entities())
                         {
-                            context.SaveChanges();
-                        }
-                        catch (System.Exception ex)
-                        {
-                            MessageBox.Show(ex.Message);
+                            context.TLCSV_RePackConfig.RemoveRange(context.TLCSV_RePackConfig.Where(x => x.PORConfig_PONumber_Fk == 0));
+                            try
+                            {
+                                context.SaveChanges();
+                            }
+                            catch (System.Exception ex)
+                            {
+                                MessageBox.Show(ex.Message);
+                            }
                         }
                     }
                 }
@@ -1294,6 +1338,13 @@ namespace CustomerServices
              }
         }
 
-        
+        private void dataGridView2_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
+        {
+            DataGridView oDgv = sender as DataGridView;
+            if(oDgv != null && formloaded)
+            {
+               
+            }
+        }
     }
 }
