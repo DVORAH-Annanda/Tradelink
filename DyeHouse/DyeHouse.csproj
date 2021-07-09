@@ -395,6 +395,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DataSet52.xsd</DependentUpon>
     </Compile>
+    <Compile Include="DataSet53.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSet53.xsd</DependentUpon>
+    </Compile>
     <Compile Include="DataSet6.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -546,6 +551,12 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>FabricStockAdjustment.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="FabricWeightThroughProcess.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>FabricWeightThroughProcess.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="FabricWidthThroughProcess.cs">
@@ -1234,6 +1245,10 @@
     <EmbeddedResource Include="FabricStockAdjustment.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>FabricStockAdjustment.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FabricWeightThroughProcess.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>FabricWeightThroughProcess.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="FabricWidthThroughProcess.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
@@ -2075,6 +2090,17 @@
     </None>
     <None Include="DataSet52.xss">
       <DependentUpon>DataSet52.xsd</DependentUpon>
+    </None>
+    <None Include="DataSet53.xsc">
+      <DependentUpon>DataSet53.xsd</DependentUpon>
+    </None>
+    <None Include="DataSet53.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSet53.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="DataSet53.xss">
+      <DependentUpon>DataSet53.xsd</DependentUpon>
     </None>
     <None Include="DataSet6.xsc">
       <DependentUpon>DataSet6.xsd</DependentUpon>

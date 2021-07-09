@@ -117,9 +117,9 @@ namespace DyeHouse
 
         private void frmHydroResults_Load(object sender, EventArgs e)
         {
+            var FromDate = DateTime.Now.AddMonths(-3);
             FormLoaded = false;
-            cmboDyeBatches.DataSource = _context.TLDYE_DyeBatch.Where(x=>x.DYEB_Stage1 && !x.DYEB_Stage2 && !x.DYEB_Stage3 &&
-                                        !x.DYEB_Stage4 && !x.DYEB_Closed && !x.DYEB_OutProcess).ToList();
+            cmboDyeBatches.DataSource = _context.TLDYE_DyeBatch.Where(x=>x.DYEB_BatchDate >= FromDate && !x.DYEB_Stage4 ).ToList();
             cmboDyeBatches.ValueMember = "DYEB_Pk";
             cmboDyeBatches.DisplayMember = "DYEB_BatchNo";
             cmboDyeBatches.SelectedValue = -1;

@@ -456,7 +456,8 @@ namespace DyeHouse
             Decimal Nett = 0.00M;
             TLADM_TranactionType TranType = null;
             Decimal BatchWeight = 0.00M;
-           
+            TLCSV_PurchaseOrder SelectedContract = null;
+
             if (oBtn != null && formloaded)
             {
                 var errorM = core.returnMessage(MandSelected, true, MandatoryFields);
@@ -472,6 +473,16 @@ namespace DyeHouse
                     return;
                 }
 
+                var SelectedCustomer = (TLADM_CustomerFile)cmboCustomers.SelectedItem;
+                if(SelectedCustomer.Cust_FabricCustomer)
+                {
+                    SelectedContract = (TLCSV_PurchaseOrder)cmboContracts.SelectedItem;
+                    if(SelectedContract == null)
+                    {
+                        MessageBox.Show("Please select a valid contract for his customer");
+                        return;
+                    }
+                }
                 using (var context = new TTI2Entities())
                 {
                     var Dept = context.TLADM_Departments.Where(x => x.Dep_ShortCode == "DYE").FirstOrDefault();
@@ -512,6 +523,22 @@ namespace DyeHouse
 
                             BatchWeight += DBD.DYEBD_GreigeProduction_Weight;
                             Nett += DBD.DYEBO_Nett;
+
+                            if(SelectedCustomer.Cust_FabricCustomer)
+                            {
+                                var PurOrderDetail = context.TLCSV_PuchaseOrderDetail.Where(x => x.TLCUSTO_PurchaseOrder_FK == SelectedContract.TLCSVPO_Pk && x.TLCUSTO_Quality_FK == DBD.DYEBD_QualityKey).FirstOrDefault();
+                                if(PurOrderDetail != null)
+                                {
+                                    PurOrderDetail.TLCUSTO_QtyMeters_Delivered += DBD.DYEBO_Nett;
+                                    if(PurOrderDetail.TLCUSTO_QtyMeters_Delivered >= PurOrderDetail.TLCUSTO_QtyMeters)
+                                    {
+                                        if (!PurOrderDetail.TLCUSTO_Closed)
+                                        {
+                                            PurOrderDetail.TLCUSTO_Closed = true;
+                                        }
+                                    }
+                                }
+                            }
                         }
                
                     }
@@ -585,44 +612,48 @@ namespace DyeHouse
                     MandSelected[nbr] = true;
                 }
 
-                /*
+
+
                 using (var context = new TTI2Entities())
                 {
-                    if (rbFabricStore.Checked)
-                        dbDetails = context.TLDYE_DyeBatchDetails.Where(x => x.DYEBO_QAApproved && !x.DYEBO_Sold && !x.DYEBO_CutSheet).ToList();
-                    else
-                        dbDetails = context.TLDYE_DyeBatchDetails.Where(x => x.DYEBO_Rejected && !x.DYEBO_Sold && !x.DYEBO_CutSheet).ToList();
-
-                    foreach (var row in dbDetails)
+                    var SelCust = (TLADM_CustomerFile)oCmbo.SelectedItem;
+                    if (SelCust != null && SelCust.Cust_FabricCustomer)
                     {
-                        var index = dataGridView1.Rows.Add();
-                        dataGridView1.Rows[index].Cells[0].Value = row.DYEBD_Pk;
-                        var GreigeProd = context.TLKNI_GreigeProduction.Find(row.DYEBD_GreigeProduction_FK);
-                        if (GreigeProd == null)
+                        cmboGreige.Items.Clear();
+                        cmboGreige.DataSource = null;
+
+                        var Qualities = (from T1 in context.TLADM_Griege
+                                                 join T2 in context.TLCSV_PuchaseOrderDetail
+                                                 on T1.TLGreige_Id equals T2.TLCUSTO_Quality_FK
+                                                 where T2.TLCUSTO_Customer_FK == SelCust.Cust_Pk && !T2.TLCUSTO_Closed
+                                                 select T1).ToList();
+                        foreach(var Quality in Qualities)
                         {
-                            dataGridView1.Rows[index].Cells[1].Value = "Unknown";
+                            cmboGreige.Items.Add(new DyeHouse.CheckComboBoxItem(Quality.TLGreige_Id, Quality.TLGreige_Description, false));
                         }
-                        else
-                            dataGridView1.Rows[index].Cells[1].Value = GreigeProd.GreigeP_PieceNo;
-                        dataGridView1.Rows[index].Cells[2].Value = context.TLADM_Griege.Find(row.DYEBD_QualityKey).TLGreige_Description;
-                        var BD = context.TLDYE_DyeBatch.Find(row.DYEBD_DyeBatch_FK);
-                        if (BD != null)
-                            dataGridView1.Rows[index].Cells[3].Value = context.TLADM_Colours.Find(BD.DYEB_Colour_FK).Col_Display;
-                        dataGridView1.Rows[index].Cells[4].Value = row.DYEBD_GreigeProduction_Weight;
-                        dataGridView1.Rows[index].Cells[5].Value = row.DYEBO_Nett;
-                        dataGridView1.Rows[index].Cells[6].Value = row.DYEBO_DiskWeight;
-                        
-                        dataGridView1.Rows[index].Cells[7].Value = 0;
-                        dataGridView1.Rows[index].Cells[8].Value = 0;
-                        dataGridView1.Rows[index].Cells[9].Value = 0;
-
-                        dataGridView1.Rows[index].Cells[10].Value = false;
-                        dataGridView1.Rows[index].Cells[11].Value = row.DYEBD_DyeBatch_FK;
-
+                                                
+                        cmboGreige.SelectedValue = -1;
+                        var PODetails = context.TLCSV_PuchaseOrderDetail.Where(x => x.TLCUSTO_Customer_FK == SelCust.Cust_Pk).GroupBy(x => x.TLCUSTO_PurchaseOrder_FK);
+                        IList<TLCSV_PurchaseOrder> POrder = new List<TLCSV_PurchaseOrder>();
+                        if (PODetails.Count() != 0)
+                        {
+                            foreach (var Grp in PODetails)
+                            {
+                                var FK = Grp.FirstOrDefault().TLCUSTO_PurchaseOrder_FK;
+                                var PO = context.TLCSV_PurchaseOrder.Where(x => x.TLCSVPO_Pk == FK).FirstOrDefault();
+                                if (PO != null)
+                                {
+                                    POrder.Add(PO);
+                                }
+                            }
+                        }
+                        cmboContracts.DataSource = POrder;
+                        cmboContracts.ValueMember = "TLCSVPO_Pk";
+                        cmboContracts.DisplayMember = "TLCSVPO_PurchaseOrder";
+                        cmboContracts.SelectedValue = -1;
+                      
                     }
-                    
-                }
-                 */ 
+                }       
             }
         }
 

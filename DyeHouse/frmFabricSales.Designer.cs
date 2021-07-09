@@ -37,12 +37,14 @@
             this.label4 = new System.Windows.Forms.Label();
             this.txtOrderNumber = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.cmboGreige = new DyeHouse.CheckComboBox();
             this.label5 = new System.Windows.Forms.Label();
             this.rbRejectStore = new System.Windows.Forms.RadioButton();
             this.rbFabricStore = new System.Windows.Forms.RadioButton();
             this.btnSave = new System.Windows.Forms.Button();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.label6 = new System.Windows.Forms.Label();
+            this.cmboContracts = new System.Windows.Forms.ComboBox();
+            this.cmboGreige = new DyeHouse.CheckComboBox();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
@@ -119,32 +121,23 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.cmboContracts);
+            this.groupBox1.Controls.Add(this.label6);
             this.groupBox1.Controls.Add(this.cmboGreige);
             this.groupBox1.Controls.Add(this.label5);
             this.groupBox1.Controls.Add(this.rbRejectStore);
             this.groupBox1.Controls.Add(this.rbFabricStore);
             this.groupBox1.Location = new System.Drawing.Point(114, 183);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(377, 137);
+            this.groupBox1.Size = new System.Drawing.Size(477, 183);
             this.groupBox1.TabIndex = 8;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Fabric Location";
             // 
-            // cmboGreige
-            // 
-            this.cmboGreige.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.cmboGreige.FormattingEnabled = true;
-            this.cmboGreige.Location = new System.Drawing.Point(164, 37);
-            this.cmboGreige.Name = "cmboGreige";
-            this.cmboGreige.Size = new System.Drawing.Size(183, 21);
-            this.cmboGreige.TabIndex = 3;
-            this.cmboGreige.Text = "Select Options";
-            this.cmboGreige.SelectedIndexChanged += new System.EventHandler(this.cmboGreige_SelectedIndexChanged);
-            // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(59, 40);
+            this.label5.Location = new System.Drawing.Point(65, 40);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(63, 13);
             this.label5.TabIndex = 2;
@@ -153,7 +146,7 @@
             // rbRejectStore
             // 
             this.rbRejectStore.AutoSize = true;
-            this.rbRejectStore.Location = new System.Drawing.Point(231, 92);
+            this.rbRejectStore.Location = new System.Drawing.Point(231, 139);
             this.rbRejectStore.Name = "rbRejectStore";
             this.rbRejectStore.Size = new System.Drawing.Size(116, 17);
             this.rbRejectStore.TabIndex = 1;
@@ -165,7 +158,7 @@
             // rbFabricStore
             // 
             this.rbFabricStore.AutoSize = true;
-            this.rbFabricStore.Location = new System.Drawing.Point(59, 92);
+            this.rbFabricStore.Location = new System.Drawing.Point(59, 139);
             this.rbFabricStore.Name = "rbFabricStore";
             this.rbFabricStore.Size = new System.Drawing.Size(82, 17);
             this.rbFabricStore.TabIndex = 0;
@@ -176,7 +169,7 @@
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(590, 555);
+            this.btnSave.Location = new System.Drawing.Point(590, 592);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(75, 23);
             this.btnSave.TabIndex = 9;
@@ -187,16 +180,44 @@
             // dataGridView1
             // 
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(69, 350);
+            this.dataGridView1.Location = new System.Drawing.Point(71, 401);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.Size = new System.Drawing.Size(557, 174);
             this.dataGridView1.TabIndex = 10;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(65, 86);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(96, 13);
+            this.label6.TabIndex = 4;
+            this.label6.Text = "Fabric Contract No";
+            // 
+            // cmboContracts
+            // 
+            this.cmboContracts.FormattingEnabled = true;
+            this.cmboContracts.Location = new System.Drawing.Point(173, 83);
+            this.cmboContracts.Name = "cmboContracts";
+            this.cmboContracts.Size = new System.Drawing.Size(183, 21);
+            this.cmboContracts.TabIndex = 5;
+            // 
+            // cmboGreige
+            // 
+            this.cmboGreige.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cmboGreige.FormattingEnabled = true;
+            this.cmboGreige.Location = new System.Drawing.Point(173, 37);
+            this.cmboGreige.Name = "cmboGreige";
+            this.cmboGreige.Size = new System.Drawing.Size(282, 21);
+            this.cmboGreige.TabIndex = 3;
+            this.cmboGreige.Text = "Select Options";
+            this.cmboGreige.SelectedIndexChanged += new System.EventHandler(this.cmboGreige_SelectedIndexChanged);
             // 
             // frmFabricSales
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(677, 602);
+            this.ClientSize = new System.Drawing.Size(677, 627);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.btnSave);
             this.Controls.Add(this.groupBox1);
@@ -237,5 +258,7 @@
         // private System.Windows.Forms.ComboBox cmboGreige;
         private DyeHouse.CheckComboBox cmboGreige;
         private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.ComboBox cmboContracts;
+        private System.Windows.Forms.Label label6;
     }
 }

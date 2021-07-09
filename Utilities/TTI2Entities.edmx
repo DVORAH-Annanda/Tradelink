@@ -287,6 +287,8 @@
           <Property Name="Cust_OwnStock" Type="bit" Nullable="false" />
           <Property Name="Cust_RePack" Type="bit" Nullable="false" />
           <Property Name="Cust_WareHouse_FK" Type="int" />
+          <Property Name="Cust_FabricCustomer" Type="bit" Nullable="false" />
+          <Property Name="Cust_PostalCode" Type="varchar" MaxLength="10" />
         </EntityType>
         <EntityType Name="TLADM_CustomerTypes">
           <Key>
@@ -1469,8 +1471,8 @@
           </Key>
           <Property Name="TLCUSTO_Pk" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="TLCUSTO_PurchaseOrder_FK" Type="int" Nullable="false" />
-          <Property Name="TLCUSTO_Style_FK" Type="int" Nullable="false" />
-          <Property Name="TLCUSTO_Size_FK" Type="int" Nullable="false" />
+          <Property Name="TLCUSTO_Style_FK" Type="int" />
+          <Property Name="TLCUSTO_Size_FK" Type="int" />
           <Property Name="TLCUSTO_Colour_FK" Type="int" Nullable="false" />
           <Property Name="TLCUSTO_Qty" Type="int" Nullable="false" />
           <Property Name="TLCUSTO_Picked" Type="bit" Nullable="false" />
@@ -1490,6 +1492,9 @@
           <Property Name="TLCUSTO_QtyDelivered_ToDate" Type="int" Nullable="false" />
           <Property Name="TLCUSTO_QtyPicked_ToDate" Type="int" Nullable="false" />
           <Property Name="TLCUSTO_DateRequired" Type="date" />
+          <Property Name="TLCUSTO_Quality_FK" Type="int" />
+          <Property Name="TLCUSTO_QtyMeters" Type="decimal" Precision="18" Scale="4" Nullable="false" />
+          <Property Name="TLCUSTO_QtyMeters_Delivered" Type="decimal" Precision="18" Scale="4" Nullable="false" />
         </EntityType>
         <EntityType Name="TLCSV_PurchaseOrder">
           <Key>
@@ -1506,6 +1511,7 @@
           <Property Name="TLCSVPO_SpecialOrder" Type="bit" Nullable="false" />
           <Property Name="TLCSVPO_RepackTransaction" Type="bit" Nullable="false" />
           <Property Name="TLCSVPO_Provisional" Type="bit" Nullable="false" />
+          <Property Name="TLCSV_FabricCustomer" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="TLCSV_RePackConfig">
           <Key>
@@ -3742,7 +3748,6 @@
           <EntitySet Name="TLSEC_Sections" EntityType="TTI2Model.TLSEC_Sections" />
           <EntitySet Name="TLKNI_YarnOrderPallets" EntityType="TTI2Model.TLKNI_YarnOrderPallets" />
           <EntitySet Name="TLCMT_FactConfig" EntityType="TTI2Model.TLCMT_FactConfig" />
-          <EntitySet Name="TLCSV_PuchaseOrderDetail" EntityType="TTI2Model.TLCSV_PuchaseOrderDetail" />
           <EntitySet Name="TLPPS_Replenishment" EntityType="TTI2Model.TLPPS_Replenishment" />
           <EntitySet Name="TLCSV_PickingListMaster" EntityType="TTI2Model.TLCSV_PickingListMaster" />
           <EntitySet Name="TLADM_CustomerFile" EntityType="TTI2Model.TLADM_CustomerFile" />
@@ -3826,6 +3831,7 @@
             <End Role="TLADM_Sizes" EntitySet="TLADM_Sizes" />
             <End Role="TLADM_ConsumablesOther" EntitySet="TLADM_ConsumablesOther" />
           </AssociationSet>
+          <EntitySet Name="TLCSV_PuchaseOrderDetail" EntityType="TTI2Model.TLCSV_PuchaseOrderDetail" />
           </EntityContainer>
         <EntityType Name="TLADM_FabricProduct">
           <Key>
@@ -5636,34 +5642,6 @@
           <Property Name="TLCMTCFG_DisplayOrder" Type="Int32" Nullable="false" />
           <Property Name="TLCMTCFG_CurrentlyOperational" Type="Boolean" Nullable="false" />
         </EntityType>
-        <EntityType Name="TLCSV_PuchaseOrderDetail">
-          <Key>
-            <PropertyRef Name="TLCUSTO_Pk" />
-          </Key>
-          <Property Name="TLCUSTO_Pk" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="TLCUSTO_PurchaseOrder_FK" Type="Int32" Nullable="false" />
-          <Property Name="TLCUSTO_Style_FK" Type="Int32" Nullable="false" />
-          <Property Name="TLCUSTO_Size_FK" Type="Int32" Nullable="false" />
-          <Property Name="TLCUSTO_Colour_FK" Type="Int32" Nullable="false" />
-          <Property Name="TLCUSTO_Qty" Type="Int32" Nullable="false" />
-          <Property Name="TLCUSTO_Picked" Type="Boolean" Nullable="false" />
-          <Property Name="TLCUSTO_PickedDate" Type="DateTime" Precision="3" />
-          <Property Name="TLCUSTO_PickedNumber" Type="Int32" Nullable="false" />
-          <Property Name="TLCUSTO_Invoiced" Type="Boolean" Nullable="false" />
-          <Property Name="TLCUSTO_InvoicedDate" Type="DateTime" Precision="3" />
-          <Property Name="TLCUSTO_Delivered" Type="Boolean" Nullable="false" />
-          <Property Name="TLCUSTO_DeliveredDate" Type="DateTime" Precision="3" />
-          <Property Name="TLCUSTO_DeliveryNumber" Type="Int32" Nullable="false" />
-          <Property Name="TLCUSTO_LineNumber" Type="Int32" Nullable="false" />
-          <Property Name="TLCUSTO_Closed" Type="Boolean" Nullable="false" />
-          <Property Name="TLCUSTO_Grade" Type="String" Nullable="false" MaxLength="2" FixedLength="false" Unicode="false" />
-          <Property Name="TLCUSTO_Transporter" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="TLCUSTO_StockOnHand_FK" Type="Int32" />
-          <Property Name="TLCUSTO_Customer_FK" Type="Int32" Nullable="false" />
-          <Property Name="TLCUSTO_QtyDelivered_ToDate" Type="Int32" Nullable="false" />
-          <Property Name="TLCUSTO_QtyPicked_ToDate" Type="Int32" Nullable="false" />
-          <Property Name="TLCUSTO_DateRequired" Type="DateTime" Precision="0" />
-        </EntityType>
         <EntityType Name="TLPPS_Replenishment">
           <Key>
             <PropertyRef Name="TLREP_Pk" />
@@ -5716,6 +5694,8 @@
           <Property Name="Cust_RePack" Type="Boolean" Nullable="false" />
           <Property Name="Cust_WareHouse_FK" Type="Int32" />
           <NavigationProperty Name="TLADM_CustomerTypes" Relationship="TTI2Model.FK_TLADM_CustomerFile_TLADM_CustomerTypes" FromRole="TLADM_CustomerFile" ToRole="TLADM_CustomerTypes" />
+          <Property Name="Cust_FabricCustomer" Type="Boolean" Nullable="false" />
+          <Property Name="Cust_PostalCode" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
         </EntityType>
         <Association Name="FK_TLADM_CustomerFile_TLADM_CustomerTypes">
           <End Type="TTI2Model.TLADM_CustomerTypes" Role="TLADM_CustomerTypes" Multiplicity="1" />
@@ -5832,6 +5812,7 @@
           <Property Name="TLCSVPO_SpecialOrder" Type="Boolean" Nullable="false" />
           <Property Name="TLCSVPO_RepackTransaction" Type="Boolean" Nullable="false" />
           <Property Name="TLCSVPO_Provisional" Type="Boolean" Nullable="false" />
+          <Property Name="TLCSV_FabricCustomer" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="TLADM_FabWidth">
           <Key>
@@ -6677,6 +6658,37 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="TLCSV_PuchaseOrderDetail">
+          <Key>
+            <PropertyRef Name="TLCUSTO_Pk" />
+          </Key>
+          <Property Name="TLCUSTO_Pk" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TLCUSTO_PurchaseOrder_FK" Type="Int32" Nullable="false" />
+          <Property Name="TLCUSTO_Style_FK" Type="Int32" />
+          <Property Name="TLCUSTO_Size_FK" Type="Int32" />
+          <Property Name="TLCUSTO_Colour_FK" Type="Int32" Nullable="false" />
+          <Property Name="TLCUSTO_Qty" Type="Int32" Nullable="false" />
+          <Property Name="TLCUSTO_Picked" Type="Boolean" Nullable="false" />
+          <Property Name="TLCUSTO_PickedDate" Type="DateTime" Precision="3" />
+          <Property Name="TLCUSTO_PickedNumber" Type="Int32" Nullable="false" />
+          <Property Name="TLCUSTO_Invoiced" Type="Boolean" Nullable="false" />
+          <Property Name="TLCUSTO_InvoicedDate" Type="DateTime" Precision="3" />
+          <Property Name="TLCUSTO_Delivered" Type="Boolean" Nullable="false" />
+          <Property Name="TLCUSTO_DeliveredDate" Type="DateTime" Precision="3" />
+          <Property Name="TLCUSTO_DeliveryNumber" Type="Int32" Nullable="false" />
+          <Property Name="TLCUSTO_LineNumber" Type="Int32" Nullable="false" />
+          <Property Name="TLCUSTO_Closed" Type="Boolean" Nullable="false" />
+          <Property Name="TLCUSTO_Grade" Type="String" Nullable="false" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="TLCUSTO_Transporter" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="TLCUSTO_StockOnHand_FK" Type="Int32" />
+          <Property Name="TLCUSTO_Customer_FK" Type="Int32" Nullable="false" />
+          <Property Name="TLCUSTO_QtyDelivered_ToDate" Type="Int32" Nullable="false" />
+          <Property Name="TLCUSTO_QtyPicked_ToDate" Type="Int32" Nullable="false" />
+          <Property Name="TLCUSTO_DateRequired" Type="DateTime" Precision="0" />
+          <Property Name="TLCUSTO_Quality_FK" Type="Int32" />
+          <Property Name="TLCUSTO_QtyMeters" Type="Decimal" Nullable="false" Precision="18" Scale="4" />
+          <Property Name="TLCUSTO_QtyMeters_Delivered" Type="Decimal" Nullable="false" Precision="18" Scale="4" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -8816,35 +8828,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="TLCSV_PuchaseOrderDetail">
-            <EntityTypeMapping TypeName="TTI2Model.TLCSV_PuchaseOrderDetail">
-              <MappingFragment StoreEntitySet="TLCSV_PuchaseOrderDetail">
-                <ScalarProperty Name="TLCUSTO_DateRequired" ColumnName="TLCUSTO_DateRequired" />
-                <ScalarProperty Name="TLCUSTO_QtyPicked_ToDate" ColumnName="TLCUSTO_QtyPicked_ToDate" />
-                <ScalarProperty Name="TLCUSTO_QtyDelivered_ToDate" ColumnName="TLCUSTO_QtyDelivered_ToDate" />
-                <ScalarProperty Name="TLCUSTO_Customer_FK" ColumnName="TLCUSTO_Customer_FK" />
-                <ScalarProperty Name="TLCUSTO_StockOnHand_FK" ColumnName="TLCUSTO_StockOnHand_FK" />
-                <ScalarProperty Name="TLCUSTO_Transporter" ColumnName="TLCUSTO_Transporter" />
-                <ScalarProperty Name="TLCUSTO_Grade" ColumnName="TLCUSTO_Grade" />
-                <ScalarProperty Name="TLCUSTO_Closed" ColumnName="TLCUSTO_Closed" />
-                <ScalarProperty Name="TLCUSTO_LineNumber" ColumnName="TLCUSTO_LineNumber" />
-                <ScalarProperty Name="TLCUSTO_DeliveryNumber" ColumnName="TLCUSTO_DeliveryNumber" />
-                <ScalarProperty Name="TLCUSTO_DeliveredDate" ColumnName="TLCUSTO_DeliveredDate" />
-                <ScalarProperty Name="TLCUSTO_Delivered" ColumnName="TLCUSTO_Delivered" />
-                <ScalarProperty Name="TLCUSTO_InvoicedDate" ColumnName="TLCUSTO_InvoicedDate" />
-                <ScalarProperty Name="TLCUSTO_Invoiced" ColumnName="TLCUSTO_Invoiced" />
-                <ScalarProperty Name="TLCUSTO_PickedNumber" ColumnName="TLCUSTO_PickedNumber" />
-                <ScalarProperty Name="TLCUSTO_PickedDate" ColumnName="TLCUSTO_PickedDate" />
-                <ScalarProperty Name="TLCUSTO_Picked" ColumnName="TLCUSTO_Picked" />
-                <ScalarProperty Name="TLCUSTO_Qty" ColumnName="TLCUSTO_Qty" />
-                <ScalarProperty Name="TLCUSTO_Colour_FK" ColumnName="TLCUSTO_Colour_FK" />
-                <ScalarProperty Name="TLCUSTO_Size_FK" ColumnName="TLCUSTO_Size_FK" />
-                <ScalarProperty Name="TLCUSTO_Style_FK" ColumnName="TLCUSTO_Style_FK" />
-                <ScalarProperty Name="TLCUSTO_PurchaseOrder_FK" ColumnName="TLCUSTO_PurchaseOrder_FK" />
-                <ScalarProperty Name="TLCUSTO_Pk" ColumnName="TLCUSTO_Pk" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="TLPPS_Replenishment">
             <EntityTypeMapping TypeName="TTI2Model.TLPPS_Replenishment">
               <MappingFragment StoreEntitySet="TLPPS_Replenishment">
@@ -8876,6 +8859,8 @@
           <EntitySetMapping Name="TLADM_CustomerFile">
             <EntityTypeMapping TypeName="TTI2Model.TLADM_CustomerFile">
               <MappingFragment StoreEntitySet="TLADM_CustomerFile">
+                <ScalarProperty Name="Cust_PostalCode" ColumnName="Cust_PostalCode" />
+                <ScalarProperty Name="Cust_FabricCustomer" ColumnName="Cust_FabricCustomer" />
                 <ScalarProperty Name="Cust_WareHouse_FK" ColumnName="Cust_WareHouse_FK" />
                 <ScalarProperty Name="Cust_RePack" ColumnName="Cust_RePack" />
                 <ScalarProperty Name="Cust_OwnStock" ColumnName="Cust_OwnStock" />
@@ -8997,6 +8982,7 @@
           <EntitySetMapping Name="TLCSV_PurchaseOrder">
             <EntityTypeMapping TypeName="TTI2Model.TLCSV_PurchaseOrder">
               <MappingFragment StoreEntitySet="TLCSV_PurchaseOrder">
+                <ScalarProperty Name="TLCSV_FabricCustomer" ColumnName="TLCSV_FabricCustomer" />
                 <ScalarProperty Name="TLCSVPO_Provisional" ColumnName="TLCSVPO_Provisional" />
                 <ScalarProperty Name="TLCSVPO_RepackTransaction" ColumnName="TLCSVPO_RepackTransaction" />
                 <ScalarProperty Name="TLCSVPO_SpecialOrder" ColumnName="TLCSVPO_SpecialOrder" />
@@ -9783,6 +9769,38 @@
                 <ScalarProperty Name="SI_PowerN" ColumnName="SI_PowerN" />
                 <ScalarProperty Name="SI_Description" ColumnName="SI_Description" />
                 <ScalarProperty Name="SI_id" ColumnName="SI_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TLCSV_PuchaseOrderDetail">
+            <EntityTypeMapping TypeName="TTI2Model.TLCSV_PuchaseOrderDetail">
+              <MappingFragment StoreEntitySet="TLCSV_PuchaseOrderDetail">
+                <ScalarProperty Name="TLCUSTO_QtyMeters_Delivered" ColumnName="TLCUSTO_QtyMeters_Delivered" />
+                <ScalarProperty Name="TLCUSTO_QtyMeters" ColumnName="TLCUSTO_QtyMeters" />
+                <ScalarProperty Name="TLCUSTO_Quality_FK" ColumnName="TLCUSTO_Quality_FK" />
+                <ScalarProperty Name="TLCUSTO_DateRequired" ColumnName="TLCUSTO_DateRequired" />
+                <ScalarProperty Name="TLCUSTO_QtyPicked_ToDate" ColumnName="TLCUSTO_QtyPicked_ToDate" />
+                <ScalarProperty Name="TLCUSTO_QtyDelivered_ToDate" ColumnName="TLCUSTO_QtyDelivered_ToDate" />
+                <ScalarProperty Name="TLCUSTO_Customer_FK" ColumnName="TLCUSTO_Customer_FK" />
+                <ScalarProperty Name="TLCUSTO_StockOnHand_FK" ColumnName="TLCUSTO_StockOnHand_FK" />
+                <ScalarProperty Name="TLCUSTO_Transporter" ColumnName="TLCUSTO_Transporter" />
+                <ScalarProperty Name="TLCUSTO_Grade" ColumnName="TLCUSTO_Grade" />
+                <ScalarProperty Name="TLCUSTO_Closed" ColumnName="TLCUSTO_Closed" />
+                <ScalarProperty Name="TLCUSTO_LineNumber" ColumnName="TLCUSTO_LineNumber" />
+                <ScalarProperty Name="TLCUSTO_DeliveryNumber" ColumnName="TLCUSTO_DeliveryNumber" />
+                <ScalarProperty Name="TLCUSTO_DeliveredDate" ColumnName="TLCUSTO_DeliveredDate" />
+                <ScalarProperty Name="TLCUSTO_Delivered" ColumnName="TLCUSTO_Delivered" />
+                <ScalarProperty Name="TLCUSTO_InvoicedDate" ColumnName="TLCUSTO_InvoicedDate" />
+                <ScalarProperty Name="TLCUSTO_Invoiced" ColumnName="TLCUSTO_Invoiced" />
+                <ScalarProperty Name="TLCUSTO_PickedNumber" ColumnName="TLCUSTO_PickedNumber" />
+                <ScalarProperty Name="TLCUSTO_PickedDate" ColumnName="TLCUSTO_PickedDate" />
+                <ScalarProperty Name="TLCUSTO_Picked" ColumnName="TLCUSTO_Picked" />
+                <ScalarProperty Name="TLCUSTO_Qty" ColumnName="TLCUSTO_Qty" />
+                <ScalarProperty Name="TLCUSTO_Colour_FK" ColumnName="TLCUSTO_Colour_FK" />
+                <ScalarProperty Name="TLCUSTO_Size_FK" ColumnName="TLCUSTO_Size_FK" />
+                <ScalarProperty Name="TLCUSTO_Style_FK" ColumnName="TLCUSTO_Style_FK" />
+                <ScalarProperty Name="TLCUSTO_PurchaseOrder_FK" ColumnName="TLCUSTO_PurchaseOrder_FK" />
+                <ScalarProperty Name="TLCUSTO_Pk" ColumnName="TLCUSTO_Pk" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

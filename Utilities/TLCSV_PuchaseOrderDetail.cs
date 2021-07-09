@@ -16,8 +16,8 @@ namespace Utilities
     {
         public int TLCUSTO_Pk { get; set; }
         public int TLCUSTO_PurchaseOrder_FK { get; set; }
-        public int TLCUSTO_Style_FK { get; set; }
-        public int TLCUSTO_Size_FK { get; set; }
+        public Nullable<int> TLCUSTO_Style_FK { get; set; }
+        public Nullable<int> TLCUSTO_Size_FK { get; set; }
         public int TLCUSTO_Colour_FK { get; set; }
         public int TLCUSTO_Qty { get; set; }
         public bool TLCUSTO_Picked { get; set; }
@@ -37,5 +37,8 @@ namespace Utilities
         public int TLCUSTO_QtyDelivered_ToDate { get; set; }
         public int TLCUSTO_QtyPicked_ToDate { get; set; }
         public Nullable<System.DateTime> TLCUSTO_DateRequired { get; set; }
+        public Nullable<int> TLCUSTO_Quality_FK { get; set; }
+        public decimal TLCUSTO_QtyMeters { get; set; }
+        public decimal TLCUSTO_QtyMeters_Delivered { get; set; }
     }
 }

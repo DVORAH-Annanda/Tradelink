@@ -23,6 +23,7 @@ namespace CustomerServices
         IList<TLADM_Colours> _Colours;
         IList<TLADM_Sizes> _Sizes;
         IList<TLADM_CustomerFile> _Customers;
+        IList<TLADM_Griege> _Qualities; 
 
         public frmCSViewRep()
         {
@@ -80,6 +81,8 @@ namespace CustomerServices
                 _Colours = context.TLADM_Colours.ToList();
                 _Sizes = context.TLADM_Sizes.ToList();
                 _Customers = context.TLADM_CustomerFile.ToList();
+                _Qualities = context.TLADM_Griege.ToList();
+
             }
 
             if (_RepNo == 1)
@@ -811,7 +814,7 @@ namespace CustomerServices
                     _Styles = context.TLADM_Styles.OrderBy(x => x.Sty_Description).ToList();
                     _Colours = context.TLADM_Colours.OrderBy(x => x.Col_Display).ToList();
                     _Sizes = context.TLADM_Sizes.OrderBy(x => x.SI_DisplayOrder).ToList();
-
+                    _Qualities = context.TLADM_Griege.OrderBy(x => x.TLGreige_Description).ToList();
                     foreach (var POrder in POOrders)
                     {
                         PODetails = context.TLCSV_PuchaseOrderDetail.Where(x => x.TLCUSTO_PurchaseOrder_FK == POrder.TLCSVPO_Pk && !x.TLCUSTO_Closed).ToList();
@@ -845,10 +848,11 @@ namespace CustomerServices
                                 if (Find == null)
                                     continue;
                             }
-
+                            var Cust = _Customers.FirstOrDefault(s => s.Cust_Pk == POrder.TLCSVPO_Customer_FK);
+                             
                             DataSet8.DataTable1Row nr = datatable1.NewDataTable1Row();
                             nr.OrderNo = POrder.TLCSVPO_PurchaseOrder;
-                            nr.Customer = _Customers.FirstOrDefault(s => s.Cust_Pk == POrder.TLCSVPO_Customer_FK).Cust_Description;
+                            nr.Customer = Cust.Cust_Description;
                             nr.OrderDate = (DateTime)POrder.TLCSVPO_TransDate;
 
                             if (PODetail.TLCUSTO_DateRequired != null)
@@ -867,44 +871,72 @@ namespace CustomerServices
                             }
 
                             StringBuilder sb = new StringBuilder();
-                            sb.Append(_Styles.FirstOrDefault(s => s.Sty_Id == PODetail.TLCUSTO_Style_FK).Sty_Description + ' ');
-                            sb.Append(_Colours.FirstOrDefault(s => s.Col_Id == PODetail.TLCUSTO_Colour_FK).Col_Display + ' ');
-
-                            var Sty = _Styles.FirstOrDefault(s => s.Sty_Id == PODetail.TLCUSTO_Style_FK);
-                            if (Sty != null && !Sty.Sty_WorkWear)
+                            if (!Cust.Cust_FabricCustomer)
                             {
-                                sb.Append(_Sizes.FirstOrDefault(s => s.SI_id == PODetail.TLCUSTO_Size_FK).SI_Description);
+                                sb.Append(_Styles.FirstOrDefault(s => s.Sty_Id == PODetail.TLCUSTO_Style_FK).Sty_Description + ' ');
+                                sb.Append(_Colours.FirstOrDefault(s => s.Col_Id == PODetail.TLCUSTO_Colour_FK).Col_Display + ' ');
+
+                                var Sty = _Styles.FirstOrDefault(s => s.Sty_Id == PODetail.TLCUSTO_Style_FK);
+                                if (Sty != null && !Sty.Sty_WorkWear)
+                                {
+                                    sb.Append(_Sizes.FirstOrDefault(s => s.SI_id == PODetail.TLCUSTO_Size_FK).SI_Description);
+                                }
+                                else
+                                {
+                                    sb.Append(_Sizes.FirstOrDefault(s => s.SI_id == PODetail.TLCUSTO_Size_FK).SI_ContiSize.ToString());
+                                }
+
+                                nr.DisplayOrder = _Sizes.FirstOrDefault(s => s.SI_id == PODetail.TLCUSTO_Size_FK).SI_DisplayOrder;
+                                nr.StyleDescription = sb.ToString();
+                                nr.OrderQty = PODetail.TLCUSTO_Qty;
+
+                                //--------------------------------------------
+                                // Delivered to date 
+                                //--------------------------------
+                                nr.LineNo = PODetail.TLCUSTO_LineNumber;
+                                nr.DeliveredToDate = context.TLCSV_StockOnHand.Where(x => x.TLSOH_POOrderDetail_FK == PODetail.TLCUSTO_Pk && x.TLSOH_Sold).Sum(x => (int?)x.TLSOH_BoxedQty) ?? 0;
+                                nr.PickingLists = context.TLCSV_StockOnHand.Where(x => x.TLSOH_POOrderDetail_FK == PODetail.TLCUSTO_Pk && x.TLSOH_Picked && !x.TLSOH_Sold).Sum(x => (int?)x.TLSOH_BoxedQty) ?? 0;
+                                nr.Nett = nr.OrderQty - (nr.PickingLists + nr.DeliveredToDate);
+
+                                if (_QueryParms.SummarisedPurchaseOrders)
+                                {
+                                    if (nr.Nett < 0)
+                                        continue;
+                                }
+
+                                if (POrder.TLCSVPO_Closeed)
+                                    nr.Status = "Closed";
+                                else
+                                    nr.Status = "Active";
                             }
                             else
                             {
-                                sb.Append(_Sizes.FirstOrDefault(s => s.SI_id == PODetail.TLCUSTO_Size_FK).SI_ContiSize.ToString());
+                                sb.Append(_Qualities.FirstOrDefault(s => s.TLGreige_Id == PODetail.TLCUSTO_Quality_FK).TLGreige_Description + ' ');
+                                sb.Append(_Colours.FirstOrDefault(s => s.Col_Id == PODetail.TLCUSTO_Colour_FK).Col_Display + ' ');
+                                                                
+                                nr.StyleDescription = sb.ToString();
+                                nr.OrderQty = (int)PODetail.TLCUSTO_QtyMeters;
+
+                                //--------------------------------------------
+                                // Delivered to date 
+                                //--------------------------------
+                                nr.LineNo = PODetail.TLCUSTO_LineNumber;
+                                nr.DeliveredToDate = (int)PODetail.TLCUSTO_QtyMeters_Delivered;
+                                nr.PickingLists = 0;
+                                nr.Nett = nr.OrderQty - (nr.PickingLists + nr.DeliveredToDate);
+
+                                if (_QueryParms.SummarisedPurchaseOrders)
+                                {
+                                    if (nr.Nett < 0)
+                                        continue;
+                                }
+
+                                if (POrder.TLCSVPO_Closeed)
+                                    nr.Status = "Closed";
+                                else
+                                    nr.Status = "Active";
+
                             }
-                            
-                            nr.DisplayOrder = _Sizes.FirstOrDefault(s => s.SI_id == PODetail.TLCUSTO_Size_FK).SI_DisplayOrder;
-                            nr.StyleDescription = sb.ToString();
-                            nr.OrderQty = PODetail.TLCUSTO_Qty;
-
-                            //--------------------------------------------
-                            // Delivered to date 
-                            //--------------------------------
-                            nr.LineNo = PODetail.TLCUSTO_LineNumber;
-                            nr.DeliveredToDate = context.TLCSV_StockOnHand.Where(x => x.TLSOH_POOrderDetail_FK == PODetail.TLCUSTO_Pk && x.TLSOH_Sold).Sum(x => (int?)x.TLSOH_BoxedQty) ?? 0;
-                            nr.PickingLists = context.TLCSV_StockOnHand.Where(x => x.TLSOH_POOrderDetail_FK == PODetail.TLCUSTO_Pk && x.TLSOH_Picked && !x.TLSOH_Sold).Sum(x => (int?)x.TLSOH_BoxedQty) ?? 0;
-                            nr.Nett = nr.OrderQty - (nr.PickingLists + nr.DeliveredToDate);
-
-                            if (_QueryParms.SummarisedPurchaseOrders)
-                            {
-                                if (nr.Nett < 0)
-                                    continue;
-                            }
-
-
-
-                            if (POrder.TLCSVPO_Closeed)
-                                nr.Status = "Closed";
-                            else
-                                nr.Status = "Active";
-
                             datatable1.AddDataTable1Row(nr);
                         }
                     }
@@ -2164,7 +2196,7 @@ namespace CustomerServices
                 //-------------------------------------------------------------
                 using (var context = new TTI2Entities())
                 {
-                    var Customers = core.CurrentCustomers().ToList();
+                    var Customers = core.CurrentCustomers(true).ToList();
                     foreach (var Customer in Customers)
                     {
                         if (!columns.Contains(Customer.Value))

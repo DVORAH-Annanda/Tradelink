@@ -35,6 +35,8 @@ namespace Utilities
         public bool Cust_OwnStock { get; set; }
         public bool Cust_RePack { get; set; }
         public Nullable<int> Cust_WareHouse_FK { get; set; }
+        public bool Cust_FabricCustomer { get; set; }
+        public string Cust_PostalCode { get; set; }
     
         public virtual TLADM_CustomerTypes TLADM_CustomerTypes { get; set; }
     }

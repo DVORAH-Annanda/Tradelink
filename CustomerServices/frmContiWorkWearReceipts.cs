@@ -14,14 +14,21 @@ namespace CustomerServices
     public partial class frmContiWorkWearReceipts : Form
     {
         bool FormLoaded;
-        bool UpdateTable;
-
+        
         Util core;
 
         protected readonly TTI2Entities _context;
 
         DataTable dt;
         DataColumn column;
+        BindingSource BindingSrc;
+
+        DataGridViewComboBoxColumn oCmboA = new DataGridViewComboBoxColumn();  // Styles
+        DataGridViewComboBoxColumn oCmboB = new DataGridViewComboBoxColumn();  // Colours
+        DataGridViewComboBoxColumn oCmboC = new DataGridViewComboBoxColumn();  // Sizes
+
+        DataGridViewTextBoxColumn oTxtA;   // No of
+
         public frmContiWorkWearReceipts()
         {
             InitializeComponent();
@@ -30,6 +37,7 @@ namespace CustomerServices
             _context = new TTI2Entities();
 
             dt = new DataTable();
+            BindingSrc = new BindingSource();
 
             //------------------------------------------------------
             // Create column 0. // This is the style index 
@@ -37,7 +45,6 @@ namespace CustomerServices
             column = new DataColumn();
             column.DataType = System.Type.GetType("System.Int32");
             column.ColumnName = "Col0";
-            column.DefaultValue = 0;
             dt.Columns.Add(column);
 
             //------------------------------------------------------
@@ -46,7 +53,6 @@ namespace CustomerServices
             column = new DataColumn();
             column.DataType = System.Type.GetType("System.Int32");
             column.ColumnName = "Col1";
-            column.DefaultValue = 0;
             dt.Columns.Add(column);
 
             //------------------------------------------------------
@@ -55,7 +61,6 @@ namespace CustomerServices
             column = new DataColumn();
             column.DataType = System.Type.GetType("System.Int32");
             column.ColumnName = "Col2";
-            column.DefaultValue = 0;
             dt.Columns.Add(column);
 
 
@@ -69,28 +74,63 @@ namespace CustomerServices
             dt.Columns.Add(column);
 
 
-            //------------------------------------------------------
-            // Create column 3. // This is the Quantity of 
-            //----------------------------------------------
-            column = new DataColumn();
-            column.DataType = System.Type.GetType("System.String");
-            column.ColumnName = "Col4";
-            column.DefaultValue = String.Empty;
-            dt.Columns.Add(column);
+            oCmboA = new DataGridViewComboBoxColumn();
+            oCmboA.HeaderText = "Styles Description";
+            oCmboA.DataSource = _context.TLADM_Styles.Where(x =>x.Sty_WorkWear).ToList();
+            oCmboA.ValueMember = "Sty_Id";
+            oCmboA.DisplayMember = "Sty_Description";
+            oCmboA.DataPropertyName = dt.Columns[0].ColumnName;
+            oCmboA.Width = 150;
+            dataGridView1.Columns.Add(oCmboA);
+            dataGridView1.Columns[0].DisplayIndex = 0;
 
+            var Sty = _context.TLADM_Styles.FirstOrDefault(x => x.Sty_WorkWear);
+            var tst = (from T1 in _context.TLADM_Colours
+                       join T2 in _context.TLADM_StyleColour
+                       on T1.Col_Id equals T2.STYCOL_Colour_FK
+                       where T2.STYCOL_Style_FK == Sty.Sty_Id
+                       select T1).ToList();
 
-            txtQtyOf.KeyDown += core.txtWin_KeyDownJI;
-            txtQtyOf.KeyPress += core.txtWin_KeyPress;
+            oCmboB = new DataGridViewComboBoxColumn();
+            oCmboB.HeaderText = "Colours Description";
+            oCmboB.DataSource = tst;
+            oCmboB.ValueMember = "Col_Id";
+            oCmboB.DisplayMember = "Col_Display";
+            oCmboB.DataPropertyName = dt.Columns[1].ColumnName;
+            oCmboB.Width = 150;
+            dataGridView1.Columns.Add(oCmboB);
+            dataGridView1.Columns[1].DisplayIndex = 1;
 
-           
+            oCmboC = new DataGridViewComboBoxColumn();
+            oCmboC.HeaderText = "Sizes Description";
+            oCmboC.DataSource = _context.TLADM_Sizes.Where(x => x.SI_ContiSize != 0).ToList();
+            oCmboC.ValueMember = "SI_Id";
+            oCmboC.DisplayMember = "SI_ContiSize";
+            oCmboC.DataPropertyName = dt.Columns[2].ColumnName;
+            oCmboC.Width = 150;
+            dataGridView1.Columns.Add(oCmboC);
+            dataGridView1.Columns[2].DisplayIndex = 2;
 
+            oTxtA = new DataGridViewTextBoxColumn();   // 4 Number of items 
+            oTxtA.HeaderText = "Number Of";
+            oTxtA.ValueType = typeof(int);
+            oTxtA.DataPropertyName = dt.Columns[3].ColumnName;
+            oTxtA.Visible = true;
+            oTxtA.Width = 100;
+            dataGridView1.Columns.Add(oTxtA);
+            dataGridView1.Columns[3].DisplayIndex = 3;
+            
+            dataGridView1.AllowUserToOrderColumns = false;
+            dataGridView1.AllowUserToAddRows = true;
+
+            BindingSrc.DataSource = dt;
+            dataGridView1.DataSource = BindingSrc;
 
         }
 
         private void frmContiWorkWearReceipts_Load(object sender, EventArgs e)
         {
             FormLoaded = false;
-            txtQtyOf.Text = "0";
             txtTransNumber.Text = "0";
             txtDelNo.Text = string.Empty;
             txtTTIOrderNo.Text = string.Empty;
@@ -99,29 +139,7 @@ namespace CustomerServices
             cmboWarehouses.ValueMember = "WHStore_Id";
             cmboWarehouses.DisplayMember = "WHStore_Description";
             cmboWarehouses.SelectedValue = -1;
-
-            cmboStyles.DataSource = _context.TLADM_Styles.Where(x => x.Sty_WorkWear).ToList();
-            cmboStyles.ValueMember = "Sty_Id";
-            cmboStyles.DisplayMember = "Sty_Description";
-            cmboStyles.SelectedValue = -1;
-
-            var Sty = _context.TLADM_Styles.FirstOrDefault(x => x.Sty_WorkWear);
-            var tst = (from T1 in _context.TLADM_Colours
-                      join T2 in _context.TLADM_StyleColour 
-                      on T1.Col_Id equals T2.STYCOL_Colour_FK
-                      where T2.STYCOL_Style_FK == Sty.Sty_Id 
-                      select T1).ToList();
-
-            cmboColours.DataSource = tst;
-            cmboColours.ValueMember = "Col_Id";
-            cmboColours.DisplayMember = "Col_Display";
-            cmboColours.SelectedValue = -1;
-
-            cmboSizes.DataSource = _context.TLADM_Sizes.Where(x=>x.SI_ContiSize != 0).OrderBy(x=>x.SI_DisplayOrder).ToList();
-            cmboSizes.ValueMember = "SI_Id";
-            cmboSizes.DisplayMember = "SI_ContiSize";
-            cmboSizes.SelectedValue = -1;
-
+                        
             cmboSuppliers.DataSource = _context.TLADM_Suppliers.Where(x => !(bool)x.Sup_Blocked).OrderBy(x => x.Sup_Description).ToList();
             cmboSuppliers.ValueMember = "SUP_Pk";
             cmboSuppliers.DisplayMember = "SUP_Description";
@@ -135,6 +153,7 @@ namespace CustomerServices
         private void btnSave_Click(object sender, EventArgs e)
         {
             Button oBtn = (Button)sender;
+            int QuantityOrdered = 0;
             if(oBtn != null && FormLoaded)
             {
                 var SupplierSelected = (TLADM_Suppliers)cmboSuppliers.SelectedItem;
@@ -162,35 +181,6 @@ namespace CustomerServices
                     return;
                 }
 
-                var StyleSel = (TLADM_Styles)cmboStyles.SelectedItem;
-                if(StyleSel == null)
-                {
-                    MessageBox.Show("Please select a style");
-                    return;
-                }
-
-                var ColourSel = (TLADM_Colours)cmboColours.SelectedItem;
-                if (ColourSel == null)
-                {
-                    MessageBox.Show("Please select a colour");
-                    return;
-                }
-
-                var SizeSel = (TLADM_Sizes)cmboSizes.SelectedItem;
-                if (SizeSel == null)
-                {
-                    MessageBox.Show("Please select a size");
-                    return;
-                }
-
-                var QuantyOrder = Convert.ToInt32(txtQtyOf.Text);
-
-                if(QuantyOrder == 0)
-                {
-                    MessageBox.Show("Please enter a quantity ");
-                    return;
-                }
-
                 var TrnsNumber = Convert.ToInt32(txtTransNumber.Text);
 
                 var BoughtInGds = new TLCSV_BoughtInGoods();
@@ -214,18 +204,15 @@ namespace CustomerServices
                 }
 
                 var Ind = 0;
-                if(UpdateTable)
-                {
-                    if (!AddToDataTable())
-                    {
-                        return; 
-                    }
-                }
                 foreach (DataRow Dr in dt.Rows)
                 {
-                    QuantyOrder = Dr.Field<int>(3);
+                    QuantityOrdered = Dr.Field<int>(3);
 
-                    Ind = 0;    
+                    Ind = 0;
+                    var _Style = _context.TLADM_Styles.Find(Dr.Field<int>(0));
+                    var _Colours = _context.TLADM_Colours.Find(Dr.Field<int>(1));
+                    var _Sizes = _context.TLADM_Sizes.Find(Dr.Field<int>(2));
+
                     do
                     {
                         TLCSV_StockOnHand soh = new TLCSV_StockOnHand();
@@ -236,7 +223,12 @@ namespace CustomerServices
                         soh.TLSOH_Size_FK = Dr.Field<int>(2);
                         soh.TLSOH_Is_A = true;
                         soh.TLSOH_Grade = "A";
-                        soh.TLSOH_PastelNumber = Dr.Field<String>(4);
+                        if(_Style != null)
+                            soh.TLSOH_PastelNumber = _Style.Sty_PastelNo + _Style.Sty_PastelCode;
+                        if (_Colours != null)
+                            soh.TLSOH_PastelNumber += _Colours.Col_Pastel;
+                        if (_Sizes != null)
+                            soh.TLSOH_PastelNumber += _Sizes.SI_PastelNo;
                         soh.TLSOH_SupplierTransNumber = TrnsNumber;
                         soh.TLSOH_Supplier_Fk = SupplierSelected.Sup_Pk;
                         soh.TLSOH_BoughtInGoods = true;
@@ -246,7 +238,7 @@ namespace CustomerServices
 
                         _context.TLCSV_StockOnHand.Add(soh);
                     }
-                    while (++Ind < QuantyOrder);
+                    while (++Ind < QuantityOrdered);
                 }
                 try
                 {
@@ -284,72 +276,17 @@ namespace CustomerServices
             }
         }
 
-        private bool AddToDataTable()
+        private void dataGridView1_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
         {
-            bool res = false;
+            DataGridView oDgv = sender as DataGridView;
+            var Cell = oDgv.CurrentCell;
 
-            DataRow Dr = dt.NewRow();
-
-            var Styles = (TLADM_Styles)cmboStyles.SelectedItem;
-            if (Styles == null)
+            if (oDgv.Focused && Cell is DataGridViewTextBoxCell && Cell.ColumnIndex ==3)
             {
-                MessageBox.Show("Please select a style");
-                return false;
-            }
-            var Colours = (TLADM_Colours)cmboColours.SelectedItem;
-            if (Colours == null)
-            {
-                MessageBox.Show("Please select a colour");
-                return false ;
-            }
-            var Sizes = (TLADM_Sizes)cmboSizes.SelectedItem;
-            if (Sizes == null)
-            {
-                MessageBox.Show("Please select a size");
-                return false;
-            }
-            Dr[0] = Styles.Sty_Id;
-            Dr[1] = Colours.Col_Id;
-            Dr[2] = Sizes.SI_id;
-            Dr[3] = Convert.ToInt32(txtQtyOf.Text);
-            Dr[4] = Styles.Sty_PastelNo + Styles.Sty_PastelCode + Colours.Col_Pastel + Sizes.SI_PastelNo;
-
-            try
-            {
-                dt.Rows.Add(Dr);
-                UpdateTable = false;
-                res = true;
-            }
-            catch (Exception ex)
-            {
-                res = false;
-            }
-            return res; 
-        }
-        private void btnNext_Click(object sender, EventArgs e)
-        {
-            Button oBtn = (Button)sender;
-            if(oBtn != null && FormLoaded)
-            {
-
-                if (AddToDataTable())
-                {
-                    cmboColours.SelectedValue = -1;
-                    cmboStyles.SelectedValue = -1;
-                    cmboSizes.SelectedValue = -1;
-
-                    UpdateTable = false;
-
-                    txtQtyOf.Text = "0";
-                }
-            }
-        }
-
-        private void cmboStyles_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if(FormLoaded)
-            {
-                UpdateTable = true;
+                e.Control.KeyDown -= new KeyEventHandler(core.txtWin_KeyDownJI);
+                e.Control.KeyDown += new KeyEventHandler(core.txtWin_KeyDownJI);
+                e.Control.KeyPress -= new KeyPressEventHandler(core.txtWin_KeyPress);
+                e.Control.KeyPress += new KeyPressEventHandler(core.txtWin_KeyPress);
             }
         }
     }

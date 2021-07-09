@@ -77,6 +77,8 @@ namespace TTI2_WF
             rtbPostalAddress.Text = string.Empty;
             rtbAddress1.Text = string.Empty;
 
+            rbFabricCustomer.Checked = false;
+
             txtContactPerson.Text = string.Empty;
             txtCustomerCode.Text = string.Empty;
             txtCustomerDescription.Text = string.Empty;
@@ -165,6 +167,12 @@ namespace TTI2_WF
                     else
                         customers.Cust_CommissionCust = false;
 
+                    customers.Cust_FabricCustomer = false;
+
+                    if(rbFabricCustomer.Checked)
+                    {
+                        customers.Cust_FabricCustomer = true;
+                    }
                     if (rbRepackYes.Checked)
                     {
                         var Whse = (TLADM_WhseStore)cmbWareHouse.SelectedItem;
@@ -302,6 +310,8 @@ namespace TTI2_WF
                         txtGreigePrefix.Text = customers.Cust_GreigePrefix;
                         txtLastNumberUsed.Text = customers.Cust_LastNumberUsed.ToString();
                     }
+
+                    rbFabricCustomer.Checked = customers.Cust_FabricCustomer;
 
                     if (customers.Cust_Blocked)
                         rbAccountBlockedYes.Checked = true;

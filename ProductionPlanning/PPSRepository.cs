@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Utilities;
 using LinqKit;
+using System.Data;
+using Utilities;
 
 namespace ProductionPlanning
 {
@@ -242,6 +244,7 @@ namespace ProductionPlanning
              return IS;
          }
 
+       
          public IQueryable<TLPPS_Replenishment> PPSQuery(ProdQueryParameters parameters)
          {
              var PPSSortOrder = from T1 in _context.TLPPS_Replenishment

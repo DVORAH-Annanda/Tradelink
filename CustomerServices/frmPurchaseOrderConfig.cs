@@ -62,7 +62,7 @@ namespace CustomerServices
 
                      if (PODetails != null)
                      {
-                            StylePk = PODetails.FirstOrDefault().TLCUSTO_Style_FK;
+                            StylePk = (int)PODetails.FirstOrDefault().TLCUSTO_Style_FK;
                             ColourPk = PODetails.FirstOrDefault().TLCUSTO_Colour_FK;
 
                             txtStyle.Text = context.TLADM_Styles.Find(StylePk).Sty_Description;

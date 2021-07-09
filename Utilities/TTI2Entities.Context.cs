@@ -167,7 +167,6 @@ namespace Utilities
         public virtual DbSet<TLSEC_Sections> TLSEC_Sections { get; set; }
         public virtual DbSet<TLKNI_YarnOrderPallets> TLKNI_YarnOrderPallets { get; set; }
         public virtual DbSet<TLCMT_FactConfig> TLCMT_FactConfig { get; set; }
-        public virtual DbSet<TLCSV_PuchaseOrderDetail> TLCSV_PuchaseOrderDetail { get; set; }
         public virtual DbSet<TLPPS_Replenishment> TLPPS_Replenishment { get; set; }
         public virtual DbSet<TLCSV_PickingListMaster> TLCSV_PickingListMaster { get; set; }
         public virtual DbSet<TLADM_CustomerFile> TLADM_CustomerFile { get; set; }
@@ -211,6 +210,7 @@ namespace Utilities
         public virtual DbSet<TLADM_Colours> TLADM_Colours { get; set; }
         public virtual DbSet<TLCSV_StockOnHand> TLCSV_StockOnHand { get; set; }
         public virtual DbSet<TLADM_Sizes> TLADM_Sizes { get; set; }
+        public virtual DbSet<TLCSV_PuchaseOrderDetail> TLCSV_PuchaseOrderDetail { get; set; }
     
         public virtual int SelectCottonRecords(Nullable<int> contractNo, Nullable<int> supplierNo)
         {

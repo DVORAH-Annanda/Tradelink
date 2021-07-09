@@ -179,7 +179,20 @@ namespace DyeHouse
         public IQueryable<TLDYE_DyeBatch> SelectDyedBasicQuality(DyeQueryParameters parameters)
         {
             var DyeBatch = _context.TLDYE_DyeBatch.Where(x => x.DYEB_OutProcess && x.DYEB_OutProcessDate >= parameters.FromDate && x.DYEB_OutProcessDate <= parameters.ToDate).AsQueryable();
-                        
+            
+            if(parameters.Customers.Count != 0)
+            {
+                var CustomerPredicate = PredicateBuilder.New<TLDYE_DyeBatch>();
+
+                foreach(var Customer in parameters.Customers)
+                {
+                    var temp = Customer;
+                    CustomerPredicate = CustomerPredicate.Or(s => s.DYEB_Customer_FK == temp.Cust_Pk);
+                }
+
+                DyeBatch = DyeBatch.AsExpandable().Where(CustomerPredicate);
+            }
+            
             if(parameters.Qualities.Count != 0)
             {
                 var QualityPredicate = PredicateBuilder.New<TLDYE_DyeBatch>();

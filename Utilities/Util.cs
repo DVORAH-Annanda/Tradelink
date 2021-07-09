@@ -976,7 +976,7 @@ namespace Utilities
             return Tmp;
         }
 
-        public Decimal CalculateVariance(decimal BenchMark, decimal Actual)
+        public decimal CalculateVariance(decimal BenchMark, decimal Actual)
         {
             return (Actual / BenchMark) * 100 - 100;
             
@@ -2169,17 +2169,31 @@ namespace Utilities
             return sb.ToString();
         }
 
-        public BindingList<KeyValuePair<int, String>> CurrentCustomers()
+        public BindingList<KeyValuePair<int, String>> CurrentCustomers(bool FinshedGood)
         {
             var CC = new BindingList<KeyValuePair<int, string>>(); 
             using (var context = new TTI2Entities())
             {
                 foreach (var Customer in context.TLADM_CustomerFile)
                 {
-                    var Orders = context.TLCSV_PurchaseOrder.Where(x => x.TLCSVPO_Customer_FK == Customer.Cust_Pk && !x.TLCSVPO_Closeed).FirstOrDefault();
-                    if (Orders != null)
+                    if (FinshedGood && !Customer.Cust_FabricCustomer)
                     {
-                        CC.Add(new KeyValuePair<int, string>(Customer.Cust_Pk, Customer.Cust_Code));
+                        var Orders = context.TLCSV_PurchaseOrder.Where(x => x.TLCSVPO_Customer_FK == Customer.Cust_Pk && !x.TLCSVPO_Closeed).FirstOrDefault();
+                        if (Orders != null)
+                        {
+                            CC.Add(new KeyValuePair<int, string>(Customer.Cust_Pk, Customer.Cust_Code));
+                        }
+                    }
+                    else
+                    {
+                        if (Customer.Cust_FabricCustomer)
+                        {
+                            var Orders = context.TLCSV_PurchaseOrder.Where(x => x.TLCSVPO_Customer_FK == Customer.Cust_Pk && !x.TLCSVPO_Closeed).FirstOrDefault();
+                            if (Orders != null)
+                            {
+                                CC.Add(new KeyValuePair<int, string>(Customer.Cust_Pk, Customer.Cust_Code));
+                            }
+                        }
                     }
                 }
             }

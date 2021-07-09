@@ -74,10 +74,14 @@
             this.rbRepackNo = new System.Windows.Forms.RadioButton();
             this.rbRepackYes = new System.Windows.Forms.RadioButton();
             this.btnUsers = new System.Windows.Forms.Button();
+            this.rbFabricCustomer = new System.Windows.Forms.RadioButton();
+            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
+            this.splitContainer1.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnNew
@@ -403,7 +407,7 @@
             this.groupBox3.Controls.Add(this.rbCCYes);
             this.groupBox3.Location = new System.Drawing.Point(354, 404);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(152, 146);
+            this.groupBox3.Size = new System.Drawing.Size(168, 146);
             this.groupBox3.TabIndex = 30;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Commission Customer";
@@ -517,11 +521,31 @@
             this.btnUsers.UseVisualStyleBackColor = true;
             this.btnUsers.Click += new System.EventHandler(this.btnUsers_Click);
             // 
+            // rbFabricCustomer
+            // 
+            this.rbFabricCustomer.AutoSize = true;
+            this.rbFabricCustomer.Location = new System.Drawing.Point(19, 292);
+            this.rbFabricCustomer.Name = "rbFabricCustomer";
+            this.rbFabricCustomer.Size = new System.Drawing.Size(101, 17);
+            this.rbFabricCustomer.TabIndex = 33;
+            this.rbFabricCustomer.TabStop = true;
+            this.rbFabricCustomer.Text = "Fabric Customer";
+            this.rbFabricCustomer.UseVisualStyleBackColor = true;
+            // 
+            // splitContainer1
+            // 
+            this.splitContainer1.Location = new System.Drawing.Point(454, 575);
+            this.splitContainer1.Name = "splitContainer1";
+            this.splitContainer1.Size = new System.Drawing.Size(150, 100);
+            this.splitContainer1.TabIndex = 34;
+            // 
             // frmTLADM_Customers
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(709, 619);
+            this.ClientSize = new System.Drawing.Size(709, 637);
+            this.Controls.Add(this.splitContainer1);
+            this.Controls.Add(this.rbFabricCustomer);
             this.Controls.Add(this.btnUsers);
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.groupBox3);
@@ -564,6 +588,8 @@
             this.groupBox3.PerformLayout();
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
+            this.splitContainer1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -617,5 +643,7 @@
         private System.Windows.Forms.RadioButton rbRepackYes;
         private System.Windows.Forms.Button btnUsers;
         private System.Windows.Forms.ComboBox cmbWareHouse;
+        private System.Windows.Forms.RadioButton rbFabricCustomer;
+        private System.Windows.Forms.SplitContainer splitContainer1;
     }
 }

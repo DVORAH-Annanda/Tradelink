@@ -55,12 +55,12 @@ namespace DyeHouse
             {
                 reportOptions.Add(new KeyValuePair<int, string>(0, "Batch Number "));
                 reportOptions.Add(new KeyValuePair<int, string>(1, "Quality"));
-                reportOptions.Add(new KeyValuePair<int, string>(2, "Customer"));
-                reportOptions.Add(new KeyValuePair<int, string>(3, "Dye Machine"));
-                reportOptions.Add(new KeyValuePair<int, string>(4, "Operator"));
-                reportOptions.Add(new KeyValuePair<int, string>(5, "Process loss magnitude"));
-                reportOptions.Add(new KeyValuePair<int, string>(6, "Width difference to fabric final"));
-                reportOptions.Add(new KeyValuePair<int, string>(7, "Weight difference Magnitude"));
+                reportOptions.Add(new KeyValuePair<int, string>(2, "Dye Machine"));
+                reportOptions.Add(new KeyValuePair<int, string>(3, "Operator"));
+                reportOptions.Add(new KeyValuePair<int, string>(4, "Process loss magnitude"));
+                reportOptions.Add(new KeyValuePair<int, string>(5, "Width difference to fabric final"));
+                reportOptions.Add(new KeyValuePair<int, string>(6, "Weight difference Magnitude"));
+                reportOptions.Add(new KeyValuePair<int, string>(7, "Customer"));
             }
 
             cmboReportOptions.DataSource = reportOptions;
@@ -82,6 +82,8 @@ namespace DyeHouse
             txtWidthDiff.KeyDown += core.txtWin_KeyDownOEM;
             txtWidthDiff.KeyPress += core.txtWin_KeyPress;
 
+            this.cmboCustomers.CheckStateChanged += new System.EventHandler(this.cmboCustomers_CheckStateChanged);
+
             this.cmboGreige.CheckStateChanged += new System.EventHandler(this.cmboGreige_CheckStateChanged);
             this.cmboColours.CheckStateChanged += new System.EventHandler(this.cmboColours_CheckStateChanged);
         }
@@ -92,7 +94,10 @@ namespace DyeHouse
 
             txtWidthDiff.Text = "0.0";
             txtProcessLoss.Text = "0.0";
-            
+
+            dtpFromDate.Value = DateTime.Now;
+            dtpToDate.Value = DateTime.Now;
+
             QueryParms = new DyeQueryParameters();
             
             var Qualities = _context.TLADM_Griege.OrderBy(x => x.TLGreige_Description).ToList();
@@ -155,6 +160,26 @@ namespace DyeHouse
             }
         }
 
+        private void cmboCustomers_CheckStateChanged(object sender, EventArgs e)
+        {
+
+            if (sender is DyeHouse.CheckComboBoxItem && FormLoaded)
+            {
+                DyeHouse.CheckComboBoxItem item = (DyeHouse.CheckComboBoxItem)sender;
+                if (item.CheckState)
+                {
+                    QueryParms.Customers.Add(repo.LoadCustomer(item._Pk));
+
+                }
+                else
+                {
+                    var value = QueryParms.Customers.Find(it => it.Cust_Pk  == item._Pk);
+                    if (value != null)
+                        QueryParms.Customers.Remove(value);
+
+                }
+            }
+        }
         private void cmboMachine_CheckStateChanged(object sender, EventArgs e)
         {
 
@@ -220,6 +245,8 @@ namespace DyeHouse
         private void btnSubmit_Click(object sender, EventArgs e)
         {
             Button oBtn = sender as Button;
+            frmDyeViewReport vRep = null;
+
             if(oBtn != null && FormLoaded)
             {
                 var FDate = Convert.ToDateTime(dtpFromDate.Value.ToShortDateString());
@@ -242,16 +269,32 @@ namespace DyeHouse
                     QueryParms.DO_OptionSelected = 0;
                 }
 
-                frmDyeViewReport vRep = new frmDyeViewReport(48, QueryParms);
+                if (_Mode)
+                {
+                    vRep = new frmDyeViewReport(48, QueryParms);
+                }
+                else
+                {
+                    vRep = new frmDyeViewReport(49, QueryParms);
+                }
+                
                 int h = Screen.PrimaryScreen.WorkingArea.Height;
                 int w = Screen.PrimaryScreen.WorkingArea.Width;
                 vRep.ClientSize = new Size(w, h);
                 vRep.ShowDialog(this);
                 if (vRep != null)
                 {
-                    vRep.Dispose();
+                        vRep.Dispose();
                 }
 
+
+                cmboColours.Items.Clear();
+                cmboCustomers.Items.Clear();
+                cmboDyeMachine.Items.Clear();
+                cmboDyeOperator.Items.Clear();
+                cmboGreige.Items.Clear();
+                cmboReportOptions.SelectedValue = -1;
+                
                 frmDyedBasicQual_Load(this, null);
             }
         }

@@ -418,8 +418,8 @@ namespace CustomerServices
                                 DATA dd = new DATA();
                                 dd._BoxedQty = BoxQty;
                                 dd._ColourFK = Clr;
-                                dd._SizeFK = xSize;
-                                dd._StyleFK = Sty;
+                                dd._SizeFK = (int)xSize;
+                                dd._StyleFK = (int)Sty;
                                 dd._Total = BoxQty;
 
                                 SOHGrouped.Add(dd);

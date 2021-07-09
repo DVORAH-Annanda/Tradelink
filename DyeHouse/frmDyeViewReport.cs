@@ -2165,6 +2165,8 @@ namespace DyeHouse
                                     tr.DeliveryNote = _TransNumber;
                                     tr.Notes = _parms.Notes.ToString();
                                     tr.TransDate = DateTime.Now;
+                                    tr.PostalCode = string.Empty;
+
                                     datatable1.AddDataTable1Row(tr);
                                 }
 
@@ -2267,7 +2269,7 @@ namespace DyeHouse
                                         tr.DeliveryNote = DyeTran.TLDYET_TransactionNumber;
                                         tr.Notes = _parms.Notes.ToString();
                                         tr.TransDate = DateTime.Now;
-
+                                        tr.PostalCode = Customer.Cust_Code;
                                         datatable1.AddDataTable1Row(tr);
 
                                         var ExistingGrps = context.TLDYE_DyeBatchDetails.Where(x => x.DYEBO_TransactionNo == DyeTran.TLDYET_TransactionNumber).GroupBy(x => x.DYEBD_DyeBatch_FK);
@@ -5853,6 +5855,219 @@ namespace DyeHouse
 
 
                 crystalReportViewer1.ReportSource = ThroughProcess;
+            }
+            else if(_RepNo == 49)
+            {
+                DataSet ds = new DataSet();
+                DataSet53.DataTable1DataTable dataTable1 = new DataSet53.DataTable1DataTable();
+                DataSet53.DataTable2DataTable dataTable2 = new DataSet53.DataTable2DataTable();
+                core = new Util();
+                _repo = new DyeHouse.DyeRepository();
+
+                DataSet53.DataTable2Row NewRow = dataTable2.NewDataTable2Row();
+                NewRow.Pk = 1;
+                NewRow.FromDate = _parms.FromDate;
+                NewRow.ToDate = _parms.ToDate;
+                NewRow.Title = "Fabric Weight movement through finishing processes";
+                dataTable2.Rows.Add(NewRow);
+
+                using (var context = new TTI2Entities())
+                {
+                    var DyeBatches = _repo.SelectDyedBasicQuality(_parms);
+
+                    foreach (var DBatch in DyeBatches)
+                    {
+                        var DyeBatchDetails = context.TLDYE_DyeBatchDetails.Where(x => x.DYEBD_DyeBatch_FK == DBatch.DYEB_Pk && x.DYEBD_BodyTrim).ToList();
+                                               
+                        foreach (var Detail in DyeBatchDetails)
+                        {
+                            DataSet53.DataTable1Row NRow = dataTable1.NewDataTable1Row();
+                            NRow.Pk = 1;
+
+                            if (!Detail.DYEBD_BodyTrim)
+                                continue;
+
+                            var GreigeProd = context.TLKNI_GreigeProduction.Find(Detail.DYEBD_GreigeProduction_FK);
+                            if (GreigeProd == null)
+                            {
+                                continue;
+                            }
+
+                            NRow.DyeBatch = DBatch.DYEB_BatchNo;
+                            NRow.PieceNo = GreigeProd.GreigeP_PieceNo;
+                            var Quality = context.TLADM_Griege.Find(DBatch.DYEB_Greige_FK);
+                            NRow.StandardDskWeight = 0.0M;
+
+                            if (Quality != null)
+                            {
+                                NRow.Quality = Quality.TLGreige_Description;
+                                //==============================================================
+                                //Dsk Weight
+                                //========================================
+                                var FWeight = context.TLADM_FabricWeight.Find(Quality.TLGreige_FabricWeight_FK);
+                                if (FWeight != null)
+                                {
+                                    NRow.StandardDskWeight = FWeight.FWW_Calculation_Value;
+                                }
+                                var FWidth = context.TLADM_FabWidth.Find(Quality.TLGreige_FabricWidth_FK);
+                                if(FWidth != null)
+                                {
+                                    NRow.StandardWidth = FWidth.FW_Calculation_Value; 
+                                }
+                            }
+
+                            NRow.Colour = context.TLADM_Colours.Find(DBatch.DYEB_Colour_FK).Col_Display;
+                            NRow.GrossKg = Detail.DYEBD_GreigeProduction_Weight;
+                            NRow.NetKg = Detail.DYEBO_Nett;
+
+                            if (NRow.GrossKg != 0 & NRow.NetKg != 0)
+                            {
+                                NRow.ProccesLoss = Math.Round(core.CalculateVariance(NRow.GrossKg, NRow.NetKg),4);
+                            }
+                            else
+                            {
+                                NRow.ProccesLoss = 0;
+                            }
+
+                            if (_parms.ProcessLoss != 0)
+                            {
+                                if (NRow.ProccesLoss > (_parms.ProcessLoss * -1) && NRow.ProccesLoss < _parms.ProcessLoss)
+                                {
+                                    continue;
+                                }
+                            }
+                            //********************************************
+                            // Weight Variance
+                            //*************************************************
+                            NRow.DiskWeight = Detail.DYEBO_DiskWeight;
+                            if (NRow.StandardDskWeight != 0 && NRow.DiskWeight != 0)
+                            {
+                                NRow.WeightVariance = core.CalculateVariance(NRow.StandardDskWeight, NRow.DiskWeight);
+                            }
+                            else
+                            {
+                                NRow.WeightVariance = 0;
+                            }
+
+                            NRow.AfterProcess = Math.Round(Detail.DYEBO_Width,1);
+                            //********************************************
+                            // Width Variance
+                            //*************************************************
+                            if (NRow.StandardWidth != 0 && Detail.DYEBO_Width != 0)
+                            {
+                                NRow.WidthVariance = core.CalculateVariance(NRow.StandardWidth, Detail.DYEBO_Width);
+                            }
+                            else
+                            {
+                                NRow.WidthVariance = 0; 
+                            }
+
+                            if (_parms.WidthMagnitude != 0)
+                            {
+                                if (NRow.WidthVariance > (_parms.WidthMagnitude * -1) && NRow.WidthVariance < _parms.WidthMagnitude)
+                                {
+                                    continue;
+                                }
+                            }
+                            var Rating = context.TLADM_ProductRating.Find(Detail.DYEBO_ProductRating_FK).Pr_numeric_Rating;
+
+                            if(Rating != 0 && Detail.DYEBO_Nett != 0)
+                            {
+                                if (NRow.StandardDskWeight != 0 && NRow.StandardWidth != 0)
+                                {
+                                    var Yield = core.FabricYield(NRow.StandardDskWeight, NRow.StandardWidth);
+                                    NRow.StdExpectQty = Convert.ToInt32((Yield / Rating) * GreigeProd.GreigeP_weightAvail);
+
+                                    Yield = core.FabricYield(Detail.DYEBO_DiskWeight, Detail.DYEBO_Width);
+                                    NRow.Actual = Convert.ToInt32((Yield / Rating) * Detail.DYEBO_Nett);
+
+                                    NRow.Difference = NRow.Actual - NRow.StdExpectQty;
+                                    NRow.VariancePercent = core.CalculateVariance(NRow.StdExpectQty, NRow.Actual);
+                                }
+                                else
+                                {
+                                    NRow.StdExpectQty = 0;
+                                    NRow.Actual = 0;
+                                    NRow.Difference = 0;
+                                    NRow.VariancePercent = 0;
+                                }
+                            }
+                            else
+                            {   
+                                NRow.StdExpectQty = 0;
+                                NRow.Actual = 0;
+                                NRow.Difference = 0;
+                                NRow.VariancePercent = 0;
+                            }
+
+                            var AllocatedOp = context.TLDYE_AllocatedOperator.Where(x => x.DYEOP_BatchNo_FK == DBatch.DYEB_Pk).FirstOrDefault();
+                            if (AllocatedOp != null)
+                            {
+                                NRow.DyeOperator = context.TLADM_MachineOperators.Find(AllocatedOp.DYEOP_Operator_FK).MachOp_Description;
+                            }
+
+                            var AllocatedMachine = context.TLDYE_DyeBatchAllocated.Where(x => x.TLDYEA_DyeBatch_FK == DBatch.DYEB_Pk).FirstOrDefault();
+                            if (AllocatedMachine != null)
+                            {
+                                NRow.DyeMachine = context.TLADM_MachineDefinitions.Find(AllocatedMachine.TLDYEA_MachCode_FK).MD_Description;
+                            }
+
+                            var Customer = context.TLADM_CustomerFile.Find(DBatch.DYEB_Customer_FK);
+                            if(Customer != null)
+                            {
+                                NRow.Customer = Customer.Cust_Description;
+                            }
+
+                            dataTable1.Rows.Add(NRow);
+                        }
+                    }
+                }
+
+                ds.Tables.Add(dataTable1);
+                ds.Tables.Add(dataTable2);
+                DyeHouse.FabricWeightThroughProcess TProcess = new DyeHouse.FabricWeightThroughProcess();
+                TProcess.SetDataSource(ds);
+
+                if (_parms.DO_OptionSelected == 0)
+                {
+                    //Dye Batch Number
+                    TProcess.DataDefinition.Groups[0].ConditionField = TProcess.Database.Tables[0].Fields[1];
+                }
+                else if (_parms.DO_OptionSelected == 1)
+                {
+                    // Quality
+                    TProcess.DataDefinition.Groups[0].ConditionField = TProcess.Database.Tables[0].Fields[3];
+                }
+                else if (_parms.DO_OptionSelected == 2)
+                {
+                    //ODye Machine
+                    TProcess.DataDefinition.Groups[0].ConditionField = TProcess.Database.Tables[0].Fields[18];
+                }
+                else if (_parms.DO_OptionSelected == 3)
+                {
+                    // Operator
+                    TProcess.DataDefinition.Groups[0].ConditionField = TProcess.Database.Tables[0].Fields[19];
+                }
+                else if(_parms.DO_OptionSelected == 4)
+                {
+                    // Process Loss Magnitude
+                    TProcess.DataDefinition.Groups[0].ConditionField = TProcess.Database.Tables[0].Fields[7];
+                }
+                else if (_parms.DO_OptionSelected == 5)
+                {
+                    // Width Difference
+                    TProcess.DataDefinition.Groups[0].ConditionField = TProcess.Database.Tables[0].Fields[10];
+                }
+                else if (_parms.DO_OptionSelected == 6)
+                {
+                    // Weight Difference
+                    TProcess.DataDefinition.Groups[0].ConditionField = TProcess.Database.Tables[0].Fields[16];
+                }
+                else
+                {
+                    TProcess.DataDefinition.Groups[0].ConditionField = TProcess.Database.Tables[0].Fields[20];
+                }
+                    crystalReportViewer1.ReportSource = TProcess;
             }
             crystalReportViewer1.Refresh();
 
