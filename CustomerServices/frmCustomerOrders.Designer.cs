@@ -62,7 +62,7 @@
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(721, 677);
+            this.btnSave.Location = new System.Drawing.Point(903, 677);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(75, 23);
             this.btnSave.TabIndex = 0;
@@ -293,7 +293,7 @@
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Location = new System.Drawing.Point(98, 379);
             this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(745, 263);
+            this.dataGridView1.Size = new System.Drawing.Size(825, 263);
             this.dataGridView1.TabIndex = 0;
             this.dataGridView1.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellClick);
             this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
@@ -309,13 +309,13 @@
             this.dataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView2.Location = new System.Drawing.Point(173, 399);
             this.dataGridView2.Name = "dataGridView2";
-            this.dataGridView2.Size = new System.Drawing.Size(579, 224);
+            this.dataGridView2.Size = new System.Drawing.Size(700, 224);
             this.dataGridView2.TabIndex = 5;
             this.dataGridView2.RowsAdded += new System.Windows.Forms.DataGridViewRowsAddedEventHandler(this.dataGridView2_RowsAdded);
             // 
             // btnAdd
             // 
-            this.btnAdd.Location = new System.Drawing.Point(721, 648);
+            this.btnAdd.Location = new System.Drawing.Point(903, 648);
             this.btnAdd.Name = "btnAdd";
             this.btnAdd.Size = new System.Drawing.Size(75, 23);
             this.btnAdd.TabIndex = 6;
@@ -327,7 +327,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(855, 711);
+            this.ClientSize = new System.Drawing.Size(990, 711);
             this.Controls.Add(this.btnAdd);
             this.Controls.Add(this.txtTransNumber);
             this.Controls.Add(this.dataGridView2);

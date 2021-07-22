@@ -65,9 +65,13 @@ namespace DyeHouse
             formloaded = false;
             dataGridView1.Enabled = false;
             dataGridView1.Rows.Clear();
-
+            List<TLADM_QADyeProcessFields> QAProcessItems = null;
             Add = true;
 
+            label5.Visible = false;
+            cmboOperator.Visible = false;
+
+            var TwelveMonths = DateTime.Now.AddMonths(-12);
 
             rbPassYes.Checked = true;
 
@@ -77,27 +81,37 @@ namespace DyeHouse
                 {
                     if (_StabAfterDrying)
                     {
-                        cmboBatchNumber.DataSource = context.TLDYE_DyeBatch.Where(x => x.DYEB_Transfered && x.DYEB_Allocated && x.DYEB_Stage1 && !x.DYEB_Stage2 && !x.DYEB_Stage3).OrderBy(x => x.DYEB_BatchNo).ToList();
-                        cmboBatchNumber.ValueMember = "DYEB_Pk";
-                        cmboBatchNumber.DisplayMember = "DYEB_BatchNo";
-                        cmboBatchNumber.SelectedValue = 0;
+                        cmboBatchNumber.DataSource = context.TLDYE_DyeBatch.Where(x => x.DYEB_BatchDate >= TwelveMonths).OrderBy(x => x.DYEB_BatchNo).ToList();
+                        //cmboBatchNumber.DataSource = context.TLDYE_DyeBatch.Where(x => x.DYEB_Transfered && x.DYEB_Allocated && x.DYEB_Stage1 && !x.DYEB_Stage2 && !x.DYEB_Stage3).OrderBy(x => x.DYEB_BatchNo).ToList();
                     }
                     else
                     {
-                        cmboBatchNumber.DataSource = context.TLDYE_DyeBatch.Where(x => x.DYEB_Transfered && x.DYEB_Allocated && x.DYEB_Stage1 && x.DYEB_Stage2 && !x.DYEB_Stage3).OrderBy(x => x.DYEB_BatchNo).ToList();
-                        cmboBatchNumber.ValueMember = "DYEB_Pk";
-                        cmboBatchNumber.DisplayMember = "DYEB_BatchNo";
-                        cmboBatchNumber.SelectedValue = 0;
+                        cmboBatchNumber.DataSource = context.TLDYE_DyeBatch.Where(x => x.DYEB_BatchDate >= TwelveMonths).OrderBy(x => x.DYEB_BatchNo).ToList();
+                        // cmboBatchNumber.DataSource = context.TLDYE_DyeBatch.Where(x => x.DYEB_Transfered && x.DYEB_Allocated && x.DYEB_Stage1 && x.DYEB_Stage2 && !x.DYEB_Stage3).OrderBy(x => x.DYEB_BatchNo).ToList();
                     }
-
-                    cmboOperator.DataSource = context.TLADM_MachineOperators.Where(x => !x.MachOp_Inspector && !x.MachOp_Discontinued).OrderBy(x => x.MachOp_Description).ToList();
+                    
+                    cmboBatchNumber.ValueMember = "DYEB_Pk";
+                    cmboBatchNumber.DisplayMember = "DYEB_BatchNo";
+                    cmboBatchNumber.SelectedValue = 0;
+                    
+                   /* cmboOperator.DataSource = context.TLADM_MachineOperators.Where(x => !x.MachOp_Inspector && !x.MachOp_Discontinued).OrderBy(x => x.MachOp_Description).ToList();
                     cmboOperator.DisplayMember = "MachOp_Description";
                     cmboOperator.ValueMember = "MachOp_Pk";
                     cmboOperator.SelectedValue = 0;
-                    oCmboPieceNumber.DataSource = null;
+                    oCmboPieceNumber.DataSource = null;*/
+
                 }
 
-                var QAProcessItems = context.TLADM_QADyeProcessFields.Where(x => x.TLQADPF_Process_FK == 2).ToList();
+                //var QAProcessItems = context.TLADM_QADyeProcessFields.Where(x => x.TLQADPF_Process_FK == 2).ToList();
+                if (_StabAfterDrying)
+                {
+                    QAProcessItems = context.TLADM_QADyeProcessFields.Where(x => x.TLQADPF_Drier).ToList();
+                }
+                else
+                {
+                    QAProcessItems = context.TLADM_QADyeProcessFields.Where(x => x.TLQAPF_Compactor).ToList();
+                }
+
                 foreach (var Record in QAProcessItems)
                 {
                     var index = dataGridView1.Rows.Add();
@@ -184,7 +198,8 @@ namespace DyeHouse
                         
 
                         dataGridView1.Rows.Clear();
-                        var QAProcessItems = context.TLADM_QADyeProcessFields.Where(x => x.TLQADPF_Process_FK == 2).ToList();
+                        // var QAProcessItems = context.TLADM_QADyeProcessFields.Where(x => x.TLQADPF_Process_FK == 2).ToList();
+                        var QAProcessItems = context.TLADM_QADyeProcessFields.Where(x => x.TLQADPF_Drier).ToList();
                         if (QAProcessItems.Count == 0)
                         {
                             MessageBox.Show("No set up has been applied to QA Dye Process Fields table");
@@ -273,12 +288,14 @@ namespace DyeHouse
                     return;
                 }
 
+                /*
                 var OP = (TLADM_MachineOperators)cmboOperator.SelectedItem;
                 if (OP == null)
                 {
                     MessageBox.Show("Please select an operator from the drop down list");
                     return;
                 }
+                */
 
 
                 var GP = (TLKNI_GreigeProduction)oCmboPieceNumber.SelectedItem;
@@ -334,37 +351,47 @@ namespace DyeHouse
                          }
 
                         context.TLDYE_DyeTransactions.Add(trns);
-                         
                     }
 
                     
                     foreach (DataGridViewRow row in dataGridView1.Rows)
                     {
-                         TLDYE_NonComplianceAnalysis nca = new TLDYE_NonComplianceAnalysis();
+                       TLDYE_NonComplianceAnalysis nca = new TLDYE_NonComplianceAnalysis();
 
-                          Add = true;
+                       Add = true;
                            
-                          nca.TLDYEDC_Code_FK = (int)row.Cells[0].Value;
-                          nca.TLDYEDC_BatchNo = DB.DYEB_Pk;
-                          nca.TLDYEDC_Operator_FK = (int)cmboOperator.SelectedValue;
-                          nca.TLDYEDC_PieceNo_FK = GP.GreigeP_Pk;
+                       nca.TLDYEDC_Code_FK = (int)row.Cells[0].Value;
+                       nca.TLDYEDC_BatchNo = DB.DYEB_Pk;
+                       nca.TLDYEDC_Operator_FK = 0; // (int)cmboOperator.SelectedValue;
+                       nca.TLDYEDC_PieceNo_FK = GP.GreigeP_Pk;
 
-                          if (rbPassYes.Checked)
-                               nca.TLDYEDC_Pass = true;
-                          else
-                                nca.TLDYEDC_Pass = false;
+                        if (rbPassYes.Checked)
+                        {
+                            nca.TLDYEDC_Pass = true;
+                        }
+                        else
+                        {
+                            nca.TLDYEDC_Pass = false;
+                        }
 
-                          nca.TLDYEDC_Date = DateTime.Now;
+                       nca.TLDYEDC_Date = DateTime.Now;
 
-                          if (_StabAfterDrying)
-                                nca.TLDYEDC_NCStage = 4;
-                          else
-                                nca.TLDYEDC_NCStage = 5;
+                        if (_StabAfterDrying)
+                        {
+                            nca.TLDYEDC_NCStage = 4;
+                        }
+                        else
+                        {
+                            nca.TLDYEDC_NCStage = 5;
+                        }
+                            
 
-                          nca.TLDYEDC_Value = (decimal)row.Cells[2].Value;
+                       nca.TLDYEDC_Value = (decimal)row.Cells[2].Value;
 
-                          if (Add)
-                                context.TLDYE_NonComplianceAnalysis.Add(nca);
+                        if (Add)
+                        {
+                            context.TLDYE_NonComplianceAnalysis.Add(nca);
+                        }
                     }
 
 
@@ -374,22 +401,26 @@ namespace DyeHouse
                         if (DBatch != null)
                         {
                             if (_StabAfterDrying)
+                            {
                                 DBatch.DYEB_Stage2 = true;
+                            }
                             else
+                            {
                                 DBatch.DYEB_Stage3 = true;
+                            }
                         }
-                    }
 
-                    try
-                    {
-                        context.SaveChanges();
-                        MessageBox.Show("Data saved to database successfully");
-                        SetUp(false);
+                        try
+                        {
+                            context.SaveChanges();
+                            MessageBox.Show("Data saved to database successfully");
+                            SetUp(false);
 
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.Message);
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show(ex.Message);
+                        }
                     }
                 }
             }
@@ -414,21 +445,23 @@ namespace DyeHouse
                         return;
                     }
 
+                    /*
                     var Selected = (TLADM_MachineOperators)cmboOperator.SelectedItem;
                     if (Selected == null)
                     {
                         MessageBox.Show("Please select an operator from the drop down box");
                         return;
-                    }
+                    }*/
+
 
                     if (_StabAfterDrying)
                     {
-                        frmDye_NonCompliance nonCom = new frmDye_NonCompliance(DB.DYEB_Pk, Selected.MachOp_Pk, 2, 0);
+                        frmDye_NonCompliance nonCom = new frmDye_NonCompliance(DB.DYEB_Pk, 0, 2, 0);
                         nonCom.ShowDialog(this);
                     }
                     else
                     {
-                        frmDye_NonCompliance nonCom = new frmDye_NonCompliance(DB.DYEB_Pk, Selected.MachOp_Pk, 3, 0);
+                        frmDye_NonCompliance nonCom = new frmDye_NonCompliance(DB.DYEB_Pk, 0, 3, 0);
                         nonCom.ShowDialog(this);
                     }
                 }

@@ -77,7 +77,7 @@ namespace TTI2_WF
             rtbPostalAddress.Text = string.Empty;
             rtbAddress1.Text = string.Empty;
 
-            rbFabricCustomer.Checked = false;
+           // rbFabricCustomer.Checked = false;
 
             txtContactPerson.Text = string.Empty;
             txtCustomerCode.Text = string.Empty;
@@ -94,6 +94,8 @@ namespace TTI2_WF
             rbRepackNo.Checked = true;
  
             rtbNotes.Text = string.Empty;
+
+            rbFabricNo.Checked = true;
 
             rbCCNo.Checked = true;
             formloaded = true;
@@ -169,10 +171,15 @@ namespace TTI2_WF
 
                     customers.Cust_FabricCustomer = false;
 
-                    if(rbFabricCustomer.Checked)
+                    if(rbFabricNo.Checked)
+                    {
+                        customers.Cust_FabricCustomer = false;
+                    }
+                    else
                     {
                         customers.Cust_FabricCustomer = true;
                     }
+
                     if (rbRepackYes.Checked)
                     {
                         var Whse = (TLADM_WhseStore)cmbWareHouse.SelectedItem;
@@ -311,7 +318,7 @@ namespace TTI2_WF
                         txtLastNumberUsed.Text = customers.Cust_LastNumberUsed.ToString();
                     }
 
-                    rbFabricCustomer.Checked = customers.Cust_FabricCustomer;
+                   // rbFabricCustomer.Checked = customers.Cust_FabricCustomer;
 
                     if (customers.Cust_Blocked)
                         rbAccountBlockedYes.Checked = true;
@@ -343,7 +350,14 @@ namespace TTI2_WF
                     }
                     cmbSelectCustomerCategory.SelectedValue = customers.Cust_CustomerCat_FK;
                     rtbNotes.Text = customers.Cust_Notes;
-
+                    if(customers.Cust_FabricCustomer)
+                    {
+                        rbFabricYes.Checked = true;
+                    }
+                    else
+                    {
+                        rbFabricNo.Checked = true;
+                    }
                     FldEntered = core.PopulateArray(FldNames.Length, true);
                 }
             }

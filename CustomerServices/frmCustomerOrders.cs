@@ -16,17 +16,18 @@ namespace CustomerServices
     public partial class frmCustomerOrders : Form
     {
         bool formloaded;
-        DataGridViewTextBoxColumn oTxtA;   //  0 datagridView1 Current Pk
-        DataGridViewTextBoxColumn oTxtB;   //  1 Line Numbers
-        DataGridViewComboBoxColumn oCmbA;  //  2 datagridView1 Styles
-        DataGridViewComboBoxColumn oCmbB;  //  3 datagridView1 Colours
-        DataGridViewComboBoxColumn oCmbC;  //  4 datagridView1 Sizes
-        DataGridViewTextBoxColumn oTxtC;   //  5 datagridView1 Order Qty
-        DataGridViewTextBoxColumn oTxtD;   //  6 Grade
-        DataGridViewCheckBoxColumn oChkA;  //  7 datagridView1 Check Qty on Hand at Whses / CMT 
-        DataGridViewCheckBoxColumn oChkB;  //  8 datagridView1 Check status of previous orders
-        DataGridViewTextBoxColumn oTxtE;   //  9 The Key Pertaining to the repack center 
-        DataGridViewTextBoxColumn oTxtF;   //  10 The Date Required for a particlar line 
+        DataGridViewTextBoxColumn  oTxtA;   //  0 datagridView1 Current Pk
+        DataGridViewTextBoxColumn  oTxtB;   //  1 Line Numbers
+        DataGridViewComboBoxColumn oCmbA;  //   2 datagridView1 Styles
+        DataGridViewComboBoxColumn oCmbD;  //   3 datagridView1 Styles
+        DataGridViewComboBoxColumn oCmbB;  //   4 datagridView1 Colours
+        DataGridViewComboBoxColumn oCmbC;  //   5 datagridView1 Sizes
+        DataGridViewTextBoxColumn  oTxtC;   //  6 datagridView1 Order Qty
+        DataGridViewTextBoxColumn  oTxtD;   //  7 Grade
+        DataGridViewCheckBoxColumn oChkA;  //   8 datagridView1 Check Qty on Hand at Whses / CMT 
+        DataGridViewCheckBoxColumn oChkB;  //   9 datagridView1 Check status of previous orders
+        DataGridViewTextBoxColumn  oTxtE;   //  10 The Key Pertaining to the repack center 
+        DataGridViewTextBoxColumn  oTxtF;   //  11 The Date Required for a particlar line 
 
         DataGridViewTextBoxColumn oTxtAA;   // 0 datagridview2 warehouse description 
         DataGridViewTextBoxColumn oTxtAB;   // 1 datagridview2 Total SOH for selection 
@@ -108,21 +109,32 @@ namespace CustomerServices
                 dataGridView1.Columns.Add(oTxtB);
 
                 oCmbA = new DataGridViewComboBoxColumn();
+                oCmbA.DataSource = context.TLADM_Styles.Where(x => (bool)!x.Sty_Discontinued).OrderBy(x=>x.Sty_Description).ToList();
                 oCmbA.HeaderText = "Styles";
                 oCmbA.ValueMember = "Sty_Id";
                 oCmbA.DisplayMember = "Sty_Description";
                 dataGridView1.Columns.Add(oCmbA);
 
+                oCmbD = new DataGridViewComboBoxColumn();
+                oCmbD.DataSource = context.TLADM_Griege.Where(x => (bool)!x.TLGriege_Discontinued).OrderBy (x=>x.TLGreige_Description) .ToList();
+                oCmbD.HeaderText = "Qualities";
+                oCmbD.ValueMember = "TLGreige_Id";
+                oCmbD.DisplayMember = "TlGreige_Description";
+                oCmbD.Visible = false;
+                dataGridView1.Columns.Add(oCmbD);
+
                 oCmbB = new DataGridViewComboBoxColumn();
+                oCmbB.DataSource = context.TLADM_Colours.OrderBy(x => x.Col_Display).ToList();
                 oCmbB.HeaderText = "Colours";
                 oCmbB.ValueMember = "Col_Id";
                 oCmbB.DisplayMember = "Col_Display";
                 dataGridView1.Columns.Add(oCmbB);
 
                 oCmbC = new DataGridViewComboBoxColumn();
+                oCmbC.DataSource = context.TLADM_Sizes.Where(x => (bool)!x.SI_Discontinued).OrderBy(x=>x.SI_DisplayOrder).ToList(); 
                 oCmbC.HeaderText = "Sizes";
                 oCmbC.ValueMember = "SI_id";
-                oCmbC.DisplayMember = "SI_Description";
+                oCmbC.DisplayMember = "SI_Display";
                 dataGridView1.Columns.Add(oCmbC);
 
                 oTxtC = new DataGridViewTextBoxColumn();
@@ -197,9 +209,9 @@ namespace CustomerServices
                 core = new Util();
                 MandatoryFields = new string[][]
                 {   new string[] {"2", "Please select a style", "0"},
-                    new string[] {"3", "Please select a Colour", "1"},
-                    new string[] {"4", "Please select a Size", "2"}, 
-                    new string[] {"5", "Please enter the required qty", "3"} 
+                    new string[] {"4", "Please select a Colour", "1"},
+                    new string[] {"5", "Please select a Size", "2"}, 
+                    new string[] {"6", "Please enter the required qty", "3"} 
                     
                 };
 
@@ -232,7 +244,8 @@ namespace CustomerServices
         private void cmboCustomers_SelectedIndexChanged(object sender, EventArgs e)
         {
             ComboBox oCmbo = sender as ComboBox;
-                   
+            IList<TLCSV_PurchaseOrder> PurOrder = new List<TLCSV_PurchaseOrder>(); ;
+            
             if (oCmbo != null && formloaded)
             {
                 dataGridView1.Rows.Clear();
@@ -250,41 +263,58 @@ namespace CustomerServices
                 {
                     if (!selected.Cust_FabricCustomer)
                     {
-                        oCmbA.DataSource = null;
-                        oCmbA.DataSource = _context.TLADM_Styles.OrderBy(x => x.Sty_Description).ToList();
-                        oCmbA.HeaderText = "Styles";
-                        oCmbA.ValueMember = "Sty_Id";
-                        oCmbA.DisplayMember = "Sty_Description";
-
-                      
-                        oCmbB.DataSource = null;
-                        oCmbB.DataSource = _context.TLADM_Colours.Where(x => (bool)!x.Col_Discontinued).OrderBy(x => x.Col_Display).ToList();
-                       
-                        DataGridViewColumn col = dataGridView1.Columns[4];
+                       // Style
+                        DataGridViewColumn col = dataGridView1.Columns[2];
                         col.Visible = true;
 
+                        //Quality 
+                        col = dataGridView1.Columns[3];
+                        col.Visible = false;
+
+                        //Colour
+                        col = dataGridView1.Columns[4];
+                        col.Visible = true;
+
+                        //Size
+                        col = dataGridView1.Columns[5];
+                        col.Visible = true;
+
+                        FabricMode = false;
                         oTxtC.HeaderText = "Qty";
                     }
                     else
                     {
-                        oCmbA.DataSource = null;
-                        oCmbA.DataSource = _context.TLADM_Griege.Where(x => (bool)!x.TLGriege_Discontinued).OrderBy(x => x.TLGreige_Description).ToList();
-                        oCmbA.HeaderText = "Qualities";
-                        oCmbA.ValueMember = "TLGreige_Id";
-                        oCmbA.DisplayMember = "TLGreige_Description";
-                      
-                        oCmbB.DataSource = null;
-                        oCmbB.DataSource = _context.TLADM_Colours.Where(x => (bool)!x.Col_Discontinued).OrderBy(x => x.Col_Display).ToList();
+                        DataGridViewColumn col = dataGridView1.Columns[2];
+                        col.Visible = false;
+
+                        col = dataGridView1.Columns[3];
+                        col.Visible = true;
+
+                        col = dataGridView1.Columns[4];
+                        col.Visible = true;
+
+                        col = dataGridView1.Columns[5];
+                        col.Visible = false;
+                        
                         FabricMode = true;
 
-                        DataGridViewColumn col = dataGridView1.Columns[4];
-                        col.Visible = false;
                         oTxtC.HeaderText = "Meters";
                         
                     }
                     formloaded = false;
-                          
-                    cmboCurrentOrders.DataSource = _context.TLCSV_PurchaseOrder.Where(x => x.TLCSVPO_Customer_FK == selected.Cust_Pk && !x.TLCSVPO_Closeed).OrderBy(x => x.TLCSVPO_PurchaseOrder).ToList();
+
+                    var ttb = (from T1 in _context.TLCSV_PurchaseOrder
+                               join T2 in _context.TLCSV_PuchaseOrderDetail
+                               on T1.TLCSVPO_Pk equals T2.TLCUSTO_PurchaseOrder_FK
+                               where !T2.TLCUSTO_Closed && T1.TLCSVPO_Customer_FK == selected.Cust_Pk
+                               select T1).GroupBy(x => x.TLCSVPO_PurchaseOrder).ToList();
+                    foreach(var Item in ttb)
+                    {
+                        var Record = Item.FirstOrDefault();
+                        PurOrder.Add(Record);
+
+                    }
+                    cmboCurrentOrders.DataSource = PurOrder.ToList(); ;
                     cmboCurrentOrders.ValueMember = "TLCSVPO_Pk";
                     cmboCurrentOrders.DisplayMember = "TLCSVPO_PurchaseOrder";
                     cmboCurrentOrders.SelectedValue = -1;
@@ -466,10 +496,12 @@ namespace CustomerServices
         private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             DataGridView oDgv = (DataGridView)sender;
-            if (oDgv.Focused && e.ColumnIndex == 7)
+            if (oDgv.Focused && e.ColumnIndex == 8)
             {
                  oDgv.Columns[e.ColumnIndex].DefaultCellStyle.Format = "dd/MM/yyyy";
                  dtp = new DateTimePicker();
+                 dtp.Value = dtpRequiredDate.Value;
+                 
                  dataGridView1.Controls.Add(dtp);
                  dtp.Format = DateTimePickerFormat.Short;
                  Rectangle Rectangle = dataGridView1.GetCellDisplayRectangle(e.ColumnIndex, e.RowIndex, true);
@@ -478,7 +510,7 @@ namespace CustomerServices
 
                  dtp.CloseUp += new EventHandler(dtp_CloseUp);
                  dtp.TextChanged += new EventHandler(dtp_OnTextChange);
-                    
+                 
                  dtp.Visible = true;
              }
         }
@@ -486,7 +518,7 @@ namespace CustomerServices
         private void dtp_OnTextChange(object sender, EventArgs e)
         {
             var CurrentRow = dataGridView1.CurrentRow;
-            CurrentRow.Cells[7].Value = dtp.Value;
+            CurrentRow.Cells[8].Value = dtp.Value;
         } 
 
         void dtp_CloseUp(object sender, EventArgs e)
@@ -757,44 +789,44 @@ namespace CustomerServices
                                 }
                                 else
                                 {
-                                    PODet.TLCUSTO_Quality_FK = Convert.ToInt32(row.Cells[2].Value.ToString());
+                                    PODet.TLCUSTO_Quality_FK = Convert.ToInt32(row.Cells[3].Value.ToString());
                                 }
 
-                                PODet.TLCUSTO_Colour_FK = (int)row.Cells[3].Value;
+                                PODet.TLCUSTO_Colour_FK = (int)row.Cells[4].Value;
 
                                 if (!FabricMode)
                                 {
-                                    PODet.TLCUSTO_Size_FK = (int)row.Cells[4].Value;
+                                    PODet.TLCUSTO_Size_FK = (int)row.Cells[5].Value;
                                 }
 
                                 PODet.TLCUSTO_Customer_FK = CustSelected.Cust_Pk;
                                 if (!FabricMode)
                                 {
-                                    if (row.Cells[4].Value != null)
-                                        PODet.TLCUSTO_Qty = (int)row.Cells[5].Value;
+                                    if (row.Cells[6].Value != null)
+                                        PODet.TLCUSTO_Qty = (int)row.Cells[6].Value;
                                     else
-                                        PODet.TLCUSTO_Qty = (int)row.Cells[5].EditedFormattedValue;
+                                        PODet.TLCUSTO_Qty = (int)row.Cells[6].EditedFormattedValue;
                                 }
                                 else
                                 {
-                                    if (row.Cells[4].Value != null)
-                                        PODet.TLCUSTO_QtyMeters  = Convert.ToInt32(row.Cells[5].Value.ToString());
+                                    if (row.Cells[6].Value != null)
+                                        PODet.TLCUSTO_QtyMeters  = Convert.ToDecimal(row.Cells[6].Value.ToString());
                                     else
-                                        PODet.TLCUSTO_QtyMeters = Convert.ToInt32(row.Cells[5].EditedFormattedValue.ToString());
+                                        PODet.TLCUSTO_QtyMeters = Convert.ToDecimal(row.Cells[6].EditedFormattedValue.ToString());
                                 }
 
                                 if (!FabricMode)
                                 {
-                                    PODet.TLCUSTO_Grade = row.Cells[6].Value.ToString();
+                                    PODet.TLCUSTO_Grade = row.Cells[7].Value.ToString();
                                 }
                                 else
                                 {
                                     PODet.TLCUSTO_Grade = "A";
                                 }
                                 
-                                if (row.Cells[7].Value != null)
+                                if (row.Cells[8].Value != null)
                                 {
-                                    PODet.TLCUSTO_DateRequired = Convert.ToDateTime(row.Cells[7].Value);
+                                    PODet.TLCUSTO_DateRequired = Convert.ToDateTime(row.Cells[8].Value);
                                 }
                                 else
                                 {
@@ -812,18 +844,18 @@ namespace CustomerServices
                                     DataRow dr = dt.NewRow();
                                     string temp = context.TLADM_Styles.Find((int)row.Cells[2].Value).Sty_Description.Trim();
                                     dr[0] = temp;
-                                    temp = context.TLADM_Colours.Find(row.Cells[3].Value).Col_Description;
+                                    temp = context.TLADM_Colours.Find(row.Cells[4].Value).Col_Description;
                                     dr[1] = temp;
-                                    temp = context.TLADM_Sizes.Find(row.Cells[4].Value).SI_Description;
+                                    temp = context.TLADM_Sizes.Find(row.Cells[5].Value).SI_Description;
                                     dr[2] = temp;
                                     int temp1 = 0;
-                                    if (row.Cells[5].Value != null)
+                                    if (row.Cells[6].Value != null)
                                     {
-                                        temp1 = (int)row.Cells[5].Value;
+                                        temp1 = (int)row.Cells[6].Value;
                                     }
                                     else
                                     {
-                                        temp1 = (int)row.Cells[5].EditedFormattedValue;
+                                        temp1 = (int)row.Cells[6].EditedFormattedValue;
                                     }
                                     dr[3] = temp1;
 
@@ -937,14 +969,14 @@ namespace CustomerServices
             if (!EditMode && !AddnAdd)
             {
                 oDgv.Rows[oDgv.NewRowIndex].Cells[1].Value = "L" + (oDgv.NewRowIndex + 1).ToString().PadLeft(5, '0');
-                oDgv.Rows[oDgv.NewRowIndex].Cells[6].Value = "A";
+                oDgv.Rows[oDgv.NewRowIndex].Cells[7].Value = "A";
             }
             else
             {
                 if (AddnAdd)
                 {
                     oDgv.Rows[oDgv.NewRowIndex].Cells[1].Value = "L" + (oDgv.NewRowIndex + 1).ToString().PadLeft(5, '0');
-                    oDgv.Rows[oDgv.NewRowIndex].Cells[6].Value = "A";
+                    oDgv.Rows[oDgv.NewRowIndex].Cells[7].Value = "A";
                 }
             }
         }
@@ -977,7 +1009,7 @@ namespace CustomerServices
                 {
                     if (oDgv.CurrentCell is DataGridViewComboBoxCell)
                     {
-                        oCombo.SelectedIndexChanged += new EventHandler (ComboBox_SelectedIndexChanged);
+                      oCombo.SelectedIndexChanged += new EventHandler (ComboBox_SelectedIndexChanged);
                     }
                 }
             }
@@ -996,26 +1028,47 @@ namespace CustomerServices
             {
                 if (Cell.ColumnIndex == 2)
                 {
-                    var Style = _context.TLADM_Styles.Where(x => x.Sty_Description == Cell.EditedFormattedValue.ToString()).FirstOrDefault();
-                    if (Style != null && Style.Sty_WorkWear)
-                    {
-                        oCmbB.DataSource = null;
-                        oCmbB.Items.Clear();
-                        var tst = (from T1 in _context.TLADM_StyleColour
-                                   join T2 in _context.TLADM_Colours
-                                   on T1.STYCOL_Colour_FK  equals T2.Col_Id
-                                   where T1.STYCOL_Style_FK == Style.Sty_Id
-                                   select T2).ToList();
+                    var SelItem = (TLADM_Styles)cb.SelectedItem;
 
-                        oCmbB.DataSource = tst;
-                        oCmbB.ValueMember = "Col_Id";
-                        oCmbB.DisplayMember = "Col_Display";
-                        
-                        oCmbC.DataSource = null;
-                        oCmbC.Items.Clear();
-                        oCmbC.DataSource = _context.TLADM_Sizes.Where(x =>x.SI_ContiSize != 0).OrderBy(x => x.SI_DisplayOrder).ToList();
-                        oCmbC.ValueMember = "SI_id";
-                        oCmbC.DisplayMember = "SI_ContiSize";
+                    if (SelItem != null && SelItem.Sty_WorkWear && !FabricMode)
+                    {
+                        var Style = _context.TLADM_Styles.Where(x => x.Sty_Description == Cell.EditedFormattedValue.ToString()).FirstOrDefault();
+                        if (Style != null && Style.Sty_WorkWear)
+                        {
+                            //oCmbB.DataSource = null;
+                            //oCmbB.Items.Clear();
+                            var tst = (from T1 in _context.TLADM_StyleColour
+                                       join T2 in _context.TLADM_Colours
+                                       on T1.STYCOL_Colour_FK equals T2.Col_Id
+                                       where T1.STYCOL_Style_FK == Style.Sty_Id
+                                       select T2).ToList();
+
+                            oCmbB.DataSource = tst;
+                            oCmbB.ValueMember = "Col_Id";
+                            oCmbB.DisplayMember = "Col_Display";
+
+                            //oCmbC.DataSource = null;
+                            //oCmbC.Items.Clear();
+                            oCmbC.DataSource = _context.TLADM_Sizes.Where(x => x.SI_ContiSize != 0).OrderBy(x => x.SI_DisplayOrder).ToList();
+                            oCmbC.ValueMember = "SI_id";
+                            oCmbC.DisplayMember = "SI_Display";
+                        }
+                    }
+                    else
+                    {
+                        if (oCmbB.Items.Count < _context.TLADM_Colours.Where(x=>!(bool)x.Col_Discontinued).Count())
+                        {
+                            oCmbB.DataSource = _context.TLADM_Colours.Where(x => !(bool)x.Col_Discontinued).OrderBy(x => x.Col_Display).ToList();
+                            oCmbB.ValueMember = "Col_Id";
+                            oCmbB.DisplayMember = "Col_Display";
+                        }
+
+                        if (oCmbC.Items.Count < _context.TLADM_Sizes.Where(x=>!(bool)x.SI_Discontinued).Count())
+                        {
+                            oCmbC.DataSource = _context.TLADM_Sizes.Where(x => !(bool)x.SI_Discontinued).OrderBy(x => x.SI_DisplayOrder).ToList();
+                            oCmbC.ValueMember = "SI_id";
+                            oCmbC.DisplayMember = "SI_Display";
+                        }
                     }
                 }
             }
@@ -1162,45 +1215,45 @@ namespace CustomerServices
                             }
                             
 
-                            formloaded = false;
+                           formloaded = false;
                            
                            foreach (var row in Existing)
                            {
                                var index = dataGridView1.Rows.Add();
-                                if (FabricMode)
+                                if (!FabricMode)
                                 {
                                     dataGridView1.Rows[index].Cells[0].Value = row.TLCUSTO_Pk;
                                     dataGridView1.Rows[index].Cells[1].Value = "L" + row.TLCUSTO_LineNumber.ToString().PadLeft(5, '0');
                                     dataGridView1.Rows[index].Cells[2].Value = row.TLCUSTO_Style_FK;
-                                    dataGridView1.Rows[index].Cells[3].Value = row.TLCUSTO_Colour_FK;
-                                    dataGridView1.Rows[index].Cells[4].Value = row.TLCUSTO_Size_FK;
-                                    dataGridView1.Rows[index].Cells[5].Value = row.TLCUSTO_Qty;
-                                    dataGridView1.Rows[index].Cells[6].Value = row.TLCUSTO_Grade;
+                                    dataGridView1.Rows[index].Cells[4].Value = row.TLCUSTO_Colour_FK;
+                                    dataGridView1.Rows[index].Cells[5].Value = row.TLCUSTO_Size_FK;
+                                    dataGridView1.Rows[index].Cells[6].Value = row.TLCUSTO_Qty;
+                                    dataGridView1.Rows[index].Cells[7].Value = row.TLCUSTO_Grade;
                                     if (row.TLCUSTO_DateRequired != null)
-                                        dataGridView1.Rows[index].Cells[7].Value = row.TLCUSTO_DateRequired;
+                                        dataGridView1.Rows[index].Cells[8].Value = row.TLCUSTO_DateRequired;
                                     else
-                                        dataGridView1.Rows[index].Cells[7].Value = SelectedOrder.TLCSVPO_RequiredDate;
-                                    dataGridView1.Rows[index].Cells[8].Value = false;
+                                        dataGridView1.Rows[index].Cells[8].Value = SelectedOrder.TLCSVPO_RequiredDate;
                                     dataGridView1.Rows[index].Cells[9].Value = false;
-                                    dataGridView1.Rows[index].Cells[10].Value = null;
+                                    dataGridView1.Rows[index].Cells[10].Value = false;
+                                    dataGridView1.Rows[index].Cells[11].Value = null;
                                 }
                                 else
                                 {
                                     dataGridView1.Rows[index].Cells[0].Value = row.TLCUSTO_Pk;
                                     dataGridView1.Rows[index].Cells[1].Value = "L" + row.TLCUSTO_LineNumber.ToString().PadLeft(5, '0');
-                                    dataGridView1.Rows[index].Cells[2].Value = row.TLCUSTO_Quality_FK;
-                                    dataGridView1.Rows[index].Cells[3].Value = row.TLCUSTO_Colour_FK;
-                                    dataGridView1.Rows[index].Cells[4].Value = null;
-                                    dataGridView1.Rows[index].Cells[5].Value = row.TLCUSTO_QtyMeters;
-                                    dataGridView1.Rows[index].Cells[6].Value = row.TLCUSTO_Grade;
+                                    dataGridView1.Rows[index].Cells[3].Value = row.TLCUSTO_Quality_FK;
+                                    dataGridView1.Rows[index].Cells[4].Value = row.TLCUSTO_Colour_FK;
+                                    dataGridView1.Rows[index].Cells[5].Value = null;
+                                    dataGridView1.Rows[index].Cells[6].Value = row.TLCUSTO_QtyMeters;
+                                    dataGridView1.Rows[index].Cells[7].Value = row.TLCUSTO_Grade;
                                     if (row.TLCUSTO_DateRequired != null)
-                                        dataGridView1.Rows[index].Cells[7].Value = row.TLCUSTO_DateRequired;
+                                        dataGridView1.Rows[index].Cells[8].Value = row.TLCUSTO_DateRequired;
                                     else
-                                        dataGridView1.Rows[index].Cells[7].Value = SelectedOrder.TLCSVPO_RequiredDate;
-                                    dataGridView1.Rows[index].Cells[8].Value = false;
+                                        dataGridView1.Rows[index].Cells[8].Value = SelectedOrder.TLCSVPO_RequiredDate;
                                     dataGridView1.Rows[index].Cells[9].Value = false;
-                                    dataGridView1.Rows[index].Cells[10].Value = null;
-                                }
+                                    dataGridView1.Rows[index].Cells[10].Value = false;
+                                    dataGridView1.Rows[index].Cells[11].Value = null;
+                                }   
 
                            }
                            
@@ -1231,7 +1284,7 @@ namespace CustomerServices
                     AddnAdd = true;
                     EditMode = false;
                     dataGridView1.Rows[dataGridView1.NewRowIndex].Cells[1].Value = "L" + (dataGridView1.NewRowIndex + 1).ToString().PadLeft(5, '0');
-                    dataGridView1.Rows[dataGridView1.NewRowIndex].Cells[6].Value = "A";
+                    dataGridView1.Rows[dataGridView1.NewRowIndex].Cells[7].Value = "A";
                 }
                     
             }
@@ -1327,16 +1380,16 @@ namespace CustomerServices
             DataGridView oDgv = (DataGridView)sender;
             if (formloaded)
             {
-                if (e.ColumnIndex == 4)
+                if (e.ColumnIndex == 5 && !FabricMode)
                 {
                     int Style = (int)oDgv.CurrentRow.Cells[2].Value;
-                    int Colour = (int)oDgv.CurrentRow.Cells[3].Value;
-                    int Size = (int)oDgv.CurrentRow.Cells[4].Value;
+                    int Colour = (int)oDgv.CurrentRow.Cells[4].Value;
+                    int Size = (int)oDgv.CurrentRow.Cells[5].Value;
 
                     DataGridViewRow SingleRow = (from Rows in dataGridView1.Rows.Cast<DataGridViewRow>()
                                                  where (int)Rows.Cells[2].Value == Style
-                                                 && (int)Rows.Cells[3].Value == Colour
-                                                 && (int)Rows.Cells[4].Value == Size
+                                                 && (int)Rows.Cells[4].Value == Colour
+                                                 && (int)Rows.Cells[5].Value == Size
                                                  select Rows).FirstOrDefault();
 
                     if (SingleRow != null && SingleRow.Index != e.RowIndex)
