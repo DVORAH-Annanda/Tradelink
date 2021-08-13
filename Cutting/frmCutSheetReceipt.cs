@@ -23,6 +23,7 @@ namespace Cutting
         DataGridViewTextBoxColumn oTxtB = new DataGridViewTextBoxColumn();     //  Bundle No                   1 
         DataGridViewComboBoxColumn oCmboA = new DataGridViewComboBoxColumn();  // Sizes                        2 
         DataGridViewTextBoxColumn oTxtC = new DataGridViewTextBoxColumn();     // Qty                          3
+        DataGridViewTextBoxColumn oTxtD = new DataGridViewTextBoxColumn();     // Waste Qty                 3
         DataGridViewCheckBoxColumn oChkA = new DataGridViewCheckBoxColumn();
 
         TLCUT_CutSheet cutSheet;
@@ -48,13 +49,14 @@ namespace Cutting
             _context = new TTI2Entities();
             core = new Util();
 
+     
+
         }
 
         private void frmCutSheetReceipt_Load(object sender, EventArgs e)
         {
             int _Width = 100;
-
-           
+                       
             chkSearch.Checked = false;
 
        
@@ -161,7 +163,7 @@ namespace Cutting
             oTxtC.Name = "Qty";
             oTxtC.ValueType = typeof(int);
             // oTxtC.DataPropertyName = dataTable.Columns[3].ColumnName;
-            oTxtC.Width = _Width;
+            oTxtC.Width = 100;
             dataGridView1.Columns.Add(oTxtC);
             dataGridView1.Columns["Qty"].DisplayIndex = 3;
 
@@ -280,6 +282,14 @@ namespace Cutting
             this.txtRibbing.KeyDown += core.txtWin_KeyDownOEM;
             this.txtRibbing.Text = "0";
                
+            this.txtWasteCutSheet.KeyPress += core.txtWin_KeyPress;
+            this.txtWasteCutSheet.KeyDown += core.txtWin_KeyDownOEM;
+            this.txtWasteCutSheet.Text = "0.00";
+
+            this.txtWastePanels.KeyPress += core.txtWin_KeyPress;
+            this.txtWastePanels.KeyDown += core.txtWin_KeyDownOEM;
+            this.txtWastePanels.Text = "0.00";
+
             formloaded = true;
         }
 
@@ -311,6 +321,13 @@ namespace Cutting
                 if (oDgv.Focused && oDgv.CurrentCell is DataGridViewTextBoxCell)
                 {
                     if (Cell.ColumnIndex == 3)
+                    {
+                        e.Control.KeyDown -= new KeyEventHandler(core.txtWin_KeyDownJI);
+                        e.Control.KeyDown += new KeyEventHandler(core.txtWin_KeyDownJI);
+                        e.Control.KeyPress -= new KeyPressEventHandler(core.txtWin_KeyPress);
+                        e.Control.KeyPress += new KeyPressEventHandler(core.txtWin_KeyPress);
+                    }
+                    else if (Cell.ColumnIndex == 4)
                     {
                         e.Control.KeyDown -= new KeyEventHandler(core.txtWin_KeyDownOEM);
                         e.Control.KeyDown += new KeyEventHandler(core.txtWin_KeyDownOEM);
@@ -435,7 +452,6 @@ namespace Cutting
                                     NewRow[1] = _context.TLADM_Sizes.Find(row.TLCUTE_Size_FK).SI_Description;
                                     NewRow[2] = row.TLCUTE_NoofGarments;
                                     NewRow[3] = 0;
-                                    NewRow[4] = 0.00M;
                                     dataTable2.Rows.Add(NewRow);
                                  }
                             }
@@ -447,7 +463,10 @@ namespace Cutting
                         if (CSR != null)
                         {
                             cmboMachines.SelectedValue = CSR.TLCUTSHR_Machine_FK;
-
+                        
+                            txtWastePanels.Text = CSR.TLCUTSHR_WastePanels.ToString();
+                            txtWasteCutSheet.Text = CSR.TLCUTSHR_WasteCutSheet.ToString();
+                        
                             dtpTransDate.Value = CSR.TLCUTSHR_Date;
                             txtBundles.Text = CSR.TLCUTSHR_NoOfBundles.ToString();
                         
@@ -472,9 +491,9 @@ namespace Cutting
                                     dataGridView1.Rows[index].Cells[1].Value = row.TLCUTSHRD_Description;
                                     dataGridView1.Rows[index].Cells[2].Value = row.TLCUTSHRD_Size_FK;
                                     dataGridView1.Rows[index].Cells[3].Value = row.TLCUTSHRD_BundleQty;
-                                    
+                                    dataGridView1.Rows[index].Cells[4].Value = row.TLCUTSHRD_WasteMeasurement;
 
-                                }
+                            }
 
                                 DataGridViewCellEventArgs exx = new DataGridViewCellEventArgs(3, 1);
                                 try
@@ -581,7 +600,7 @@ namespace Cutting
                             dataGridView1.Rows[index].Cells[2].Value = Size;
                         }
                         dataGridView1.Rows[index].Cells[3].Value = 0;
-                        dataGridView1.Rows[index].Cells[4].Value = false; 
+                        dataGridView1.Rows[index].Cells[4].Value = false;
 
                     } while (++i <= BundleNo);
                 }
@@ -633,6 +652,14 @@ namespace Cutting
                         CSR.TLCUTSHR_NoOfBundles = Convert.ToInt32(txtBundles.Text);
                         CSR.TLCUTSHR_Machine_FK = Machine.MD_Pk;
                         CSR.TLCUTSHR_InBundleStore = true;
+                        if(txtWasteCutSheet.Text.Length != 0)
+                        {
+                            CSR.TLCUTSHR_WasteCutSheet = Convert.ToDecimal(txtWasteCutSheet.Text.ToString());
+                        }
+                        if(txtWastePanels.Text.Length != 0)
+                        {
+                            CSR.TLCUTSHR_WastePanels = Convert.ToDecimal(txtWastePanels.Text.ToString());
+                        }
                         if (CSR.TLCUTSHR_InBundleStore)
                         {
                             var CutStore = _context.TLADM_WhseStore.Where(x => x.WhStore_DepartmentFK == CS.TLCutSH_Department_FK && x.WhStore_BundleStore).FirstOrDefault();

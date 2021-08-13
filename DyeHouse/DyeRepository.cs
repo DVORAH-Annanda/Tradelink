@@ -98,6 +98,11 @@ namespace DyeHouse
             return _context.TLDYE_RecipeDefinition.FirstOrDefault(s => s.TLDYE_DefinePk == Pk);
         }
 
+        public TLADM_WhseStore LoadWareHouse(int Pk)
+        {
+            return _context.TLADM_WhseStore.FirstOrDefault(s => s.WhStore_Id == Pk);
+        }
+
         public TLADM_ConsumablesDC LoadConsummable(int Pk)
         {
             return _context.TLADM_ConsumablesDC.FirstOrDefault(s => s.ConsDC_Pk == Pk);
@@ -122,6 +127,23 @@ namespace DyeHouse
             return Consumables;
         }
 
+        public IQueryable<TLDYE_DyeTransactions> SelectFabricSales(DyeQueryParameters parameters)
+        {
+            var FabricTrans = _context.TLDYE_DyeTransactions.Where(x => x.TLDYET_FabricSales && x.TLDYET_Date >= parameters.FromDate && x.TLDYET_Date <= parameters.ToDate).AsQueryable();
+            if (parameters.Customers.Count > 0)
+            {
+                var CustomerPredicate = PredicateBuilder.New<TLDYE_DyeTransactions>();
+                foreach (var Customer in parameters.Customers)
+                {
+                    var temp = Customer;
+                    CustomerPredicate = CustomerPredicate.Or(s => s.TLDYET_Customer_FK == temp.Cust_Pk);
+                }
+
+                FabricTrans = FabricTrans.AsExpandable().Where(CustomerPredicate);
+            }
+
+            return FabricTrans;
+        }
         public IQueryable<TLDYE_DyeOrder> SelectDyeOrders(DyeQueryParameters parameters)
         {
             var DO = _context.TLDYE_DyeOrder.Where(x => x.TLDYO_OrderDate >= parameters.FromDate && x.TLDYO_OrderDate <= parameters.ToDate & !x.TLDYO_Closed).AsQueryable();
@@ -624,6 +646,7 @@ namespace DyeHouse
         public List<TLDYE_DyeBatchDetails> SelectForFabricSales;
         public List<TLADM_ConsumablesDC> Consummables;
         public List<TLDYE_DyeTransactions > DyeTransactions;
+        public List<TLADM_WhseStore> WhseStores;
 
         public Decimal ProcessLoss;
         public Decimal WidthMagnitude;
@@ -642,7 +665,7 @@ namespace DyeHouse
         public bool FabricSales;
         public bool ProdWIP;
         public bool ProdWIPCompleted;
-
+        public bool DConsumablesFullDetail;
         public int Consumable_Whse_FK;
         public DyeQueryParameters()
         {
@@ -664,7 +687,8 @@ namespace DyeHouse
             Machines = new List<TLADM_MachineDefinitions>();
             Consummables = new List<TLADM_ConsumablesDC>();
             DyeTransactions = new List<TLDYE_DyeTransactions>();
- 
+            WhseStores = new List<TLADM_WhseStore>();
+
             FromDate = new DateTime();
             ToDate = new DateTime();
             CommissionCustomers = false;
@@ -677,7 +701,7 @@ namespace DyeHouse
 
             ProdWIP = false;
             ProdWIPCompleted = false;
-
+            DConsumablesFullDetail = false;
             CalculateProdResults = false;
             FabricSales = false;
 

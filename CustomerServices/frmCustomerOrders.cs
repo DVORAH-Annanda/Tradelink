@@ -93,6 +93,8 @@ namespace CustomerServices
 
                 }
 
+                //0
+                //***************************
                 oTxtA = new DataGridViewTextBoxColumn();
                 oTxtA.ReadOnly = true;
                 oTxtA.ValueType = typeof(int);
@@ -100,6 +102,8 @@ namespace CustomerServices
                 oTxtA.HeaderText = "Pk";
                 dataGridView1.Columns.Add(oTxtA);
 
+                //1
+                //*************************
                 oTxtB = new DataGridViewTextBoxColumn();
                 oTxtB.Visible = true;
                 oTxtB.ReadOnly = true;
@@ -108,6 +112,8 @@ namespace CustomerServices
                 oTxtB.ValueType = typeof(string);
                 dataGridView1.Columns.Add(oTxtB);
 
+                //2
+                //***************************************
                 oCmbA = new DataGridViewComboBoxColumn();
                 oCmbA.DataSource = context.TLADM_Styles.Where(x => (bool)!x.Sty_Discontinued).OrderBy(x=>x.Sty_Description).ToList();
                 oCmbA.HeaderText = "Styles";
@@ -115,6 +121,8 @@ namespace CustomerServices
                 oCmbA.DisplayMember = "Sty_Description";
                 dataGridView1.Columns.Add(oCmbA);
 
+                //3
+                //*************************
                 oCmbD = new DataGridViewComboBoxColumn();
                 oCmbD.DataSource = context.TLADM_Griege.Where(x => (bool)!x.TLGriege_Discontinued).OrderBy (x=>x.TLGreige_Description) .ToList();
                 oCmbD.HeaderText = "Qualities";
@@ -123,6 +131,8 @@ namespace CustomerServices
                 oCmbD.Visible = false;
                 dataGridView1.Columns.Add(oCmbD);
 
+                //4
+                //***************************
                 oCmbB = new DataGridViewComboBoxColumn();
                 oCmbB.DataSource = context.TLADM_Colours.OrderBy(x => x.Col_Display).ToList();
                 oCmbB.HeaderText = "Colours";
@@ -130,6 +140,8 @@ namespace CustomerServices
                 oCmbB.DisplayMember = "Col_Display";
                 dataGridView1.Columns.Add(oCmbB);
 
+                //5
+                //****************************
                 oCmbC = new DataGridViewComboBoxColumn();
                 oCmbC.DataSource = context.TLADM_Sizes.Where(x => (bool)!x.SI_Discontinued).OrderBy(x=>x.SI_DisplayOrder).ToList(); 
                 oCmbC.HeaderText = "Sizes";
@@ -137,6 +149,8 @@ namespace CustomerServices
                 oCmbC.DisplayMember = "SI_Display";
                 dataGridView1.Columns.Add(oCmbC);
 
+                //6
+                //**************************************
                 oTxtC = new DataGridViewTextBoxColumn();
                 oTxtC.Visible = true;
                 oTxtC.HeaderText = "Qty";
@@ -144,6 +158,8 @@ namespace CustomerServices
                 oTxtC.ValueType = typeof(int);
                 dataGridView1.Columns.Add(oTxtC);
 
+                //7
+                //************************************************
                 oTxtD = new DataGridViewTextBoxColumn();
                 oTxtD.Visible = true;
                 oTxtD.HeaderText = "Grade";
@@ -151,6 +167,8 @@ namespace CustomerServices
                 oTxtD.ValueType = typeof(string);
                 dataGridView1.Columns.Add(oTxtD);
 
+                //8
+                //***********************************************
                 oTxtF = new DataGridViewTextBoxColumn();
                 oTxtF.Visible = true;
                 oTxtF.HeaderText = "Date Required";
@@ -158,17 +176,23 @@ namespace CustomerServices
                 oTxtF.ValueType = typeof(DateTime);
                 oTxtF.DefaultCellStyle.Format = "dd/MM/yyyy";
                 dataGridView1.Columns.Add(oTxtF);
-                                
+                
+                //9
+                //****************************************
                 oChkA = new DataGridViewCheckBoxColumn();
                 oChkA.ValueType = typeof(bool);
                 oChkA.HeaderText = "Stock Available";
                 dataGridView1.Columns.Add(oChkA);
 
+                //10
+                //*************************************
                 oChkB = new DataGridViewCheckBoxColumn();
                 oChkB.ValueType = typeof(bool);
                 oChkB.HeaderText = "Order Status";
                 dataGridView1.Columns.Add(oChkB);
-
+                
+                //11
+                //**********************************
                 oTxtE = new DataGridViewTextBoxColumn();
                 oTxtE.Visible = false;
                 oTxtE.HeaderText = "RePack Center Key";
@@ -341,8 +365,10 @@ namespace CustomerServices
                 var parms = new CustomerServicesParameters();
                 dataGridView2.Rows.Clear();
 
-                if (CurrentCell.ColumnIndex == 8)
+                if (CurrentCell.ColumnIndex == 9 && !FabricMode)
                 {
+                    dataGridView1.Rows[dataGridView1.CurrentRow.Index].Cells[CurrentCell.ColumnIndex].Value = false;
+                    
                     if ((bool)oDgv.CurrentCell.EditedFormattedValue)
                     {
                         if (CurrentRow.Cells[2].Value != null)
@@ -352,37 +378,36 @@ namespace CustomerServices
                         else
                         {
                             MessageBox.Show("Please select a style");
-                            dataGridView1.Rows[dataGridView1.CurrentRow.Index].Cells[8].Value = false;
-                            return;
-                        }
-
-                        if (CurrentRow.Cells[3].Value != null)
-                        {
-                            parms.Colours.Add(repo.LoadColour((int)CurrentRow.Cells[3].Value));
-                        }
-                        else
-                        {
-                            MessageBox.Show("Please select a colour");
-                            dataGridView1.Rows[dataGridView1.CurrentRow.Index].Cells[8].Value = false;
                             return;
                         }
 
                         if (CurrentRow.Cells[4].Value != null)
                         {
-                            parms.Sizes.Add(repo.LoadSize((int)CurrentRow.Cells[4].Value));
+                            parms.Colours.Add(repo.LoadColour((int)CurrentRow.Cells[4].Value));
+                        }
+                        else
+                        {
+                            MessageBox.Show("Please select a colour");
+                            return;
+                        }
+
+                        if (CurrentRow.Cells[5].Value != null)
+                        {
+                            parms.Sizes.Add(repo.LoadSize((int)CurrentRow.Cells[5].Value));
                         }
                         else
                         {
                             MessageBox.Show("Please select a size");
-                            dataGridView1.Rows[dataGridView1.CurrentRow.Index].Cells[8].Value = false;
                             return;
                         }
 
-                        var soh = repo.SOHQuery(parms);
-                        if (soh.Count() == 0)
+                        var whsesoh = repo.SOHQuery(parms);
+                        int RecCnt = whsesoh.Count();
+                        
+                        if (RecCnt == 0)
                         {
                             MessageBox.Show("There are no records pertaining to selection made");
-                            dataGridView1.Rows[dataGridView1.CurrentRow.Index].Cells[8].Value = false;
+                            dataGridView1.Rows[dataGridView1.CurrentRow.Index].Cells[9].Value = false;
                             return;
                         }
 
@@ -400,8 +425,8 @@ namespace CustomerServices
                             {
                                 var index = dataGridView2.Rows.Add();
                                 dataGridView2.Rows[index].Cells[0].Value = Whse.WhStore_Description;
-                                int TotalSOH = soh.Where(x => x.TLSOH_WareHouse_FK == Whse.WhStore_Id).Sum(x => (int?)x.TLSOH_BoxedQty) ?? 0;
-                                int TotalPicked = soh.Where(x => x.TLSOH_WareHouse_FK == Whse.WhStore_Id && x.TLSOH_Picked).Sum(x => (int?)x.TLSOH_BoxedQty) ?? 0;
+                                int TotalSOH = whsesoh.Where(x => x.TLSOH_WareHouse_FK == Whse.WhStore_Id).Sum(x => (int?)x.TLSOH_BoxedQty) ?? 0;
+                                int TotalPicked = whsesoh.Where(x => x.TLSOH_WareHouse_FK == Whse.WhStore_Id && x.TLSOH_Picked).Sum(x => (int?)x.TLSOH_BoxedQty) ?? 0;
                                 dataGridView2.Rows[index].Cells[1].Value = TotalSOH;
                                 dataGridView2.Rows[index].Cells[2].Value = TotalPicked;
                                 dataGridView2.Rows[index].Cells[3].Value = TotalSOH - TotalPicked;
@@ -409,15 +434,16 @@ namespace CustomerServices
                         }
                     }
                 }
-                else if (CurrentCell.ColumnIndex == 9)
+                else if (CurrentCell.ColumnIndex == 10)
                 {
                     if ((bool)oDgv.CurrentCell.EditedFormattedValue)
                     {
+                        dataGridView1.Rows[dataGridView1.CurrentRow.Index].Cells[CurrentCell.ColumnIndex].Value = false;
+
                         var CustSelected = (TLADM_CustomerFile)cmboCustomers.SelectedItem;
                         if (CustSelected == null)
                         {
                             MessageBox.Show("Please select a customer");
-                            dataGridView1.Rows[dataGridView1.CurrentRow.Index].Cells[8].Value = false;
                             return;
                         }
 
@@ -428,29 +454,26 @@ namespace CustomerServices
                         else
                         {
                             MessageBox.Show("Please select a style");
-                            dataGridView1.Rows[dataGridView1.CurrentRow.Index].Cells[2].Value = false;
-                            return;
-                        }
-
-                        if (CurrentRow.Cells[3].Value != null)
-                        {
-                            parms.Colours.Add(repo.LoadColour((int)CurrentRow.Cells[3].Value));
-                        }
-                        else
-                        {
-                            MessageBox.Show("Please select a colour");
-                            dataGridView1.Rows[dataGridView1.CurrentRow.Index].Cells[8].Value = false;
                             return;
                         }
 
                         if (CurrentRow.Cells[4].Value != null)
                         {
-                            parms.Sizes.Add(repo.LoadSize((int)CurrentRow.Cells[4].Value));
+                            parms.Colours.Add(repo.LoadColour((int)CurrentRow.Cells[4].Value));
+                        }
+                        else
+                        {
+                            MessageBox.Show("Please select a colour");
+                            return;
+                        }
+
+                        if (CurrentRow.Cells[5].Value != null)
+                        {
+                            parms.Sizes.Add(repo.LoadSize((int)CurrentRow.Cells[5].Value));
                         }
                         else
                         {
                             MessageBox.Show("Please select a size");
-                            dataGridView1.Rows[dataGridView1.CurrentRow.Index].Cells[8].Value = false;
                             return;
                         }
 
@@ -458,9 +481,11 @@ namespace CustomerServices
                         if (pod.Count() == 0)
                         {
                             MessageBox.Show("There are no records pertaining to selection made");
-                            dataGridView1.Rows[dataGridView1.CurrentRow.Index].Cells[8].Value = false;
+                            dataGridView1.Rows[dataGridView1.CurrentRow.Index].Cells[10].Value = false;
                             return;
                         }
+
+                        dataGridView1.Rows[dataGridView1.CurrentRow.Index].Cells[10].Value = false;
 
                         oTxtAA.HeaderText = "PONumber";
                         oTxtAB.HeaderText = "Qty On Order";
@@ -543,8 +568,8 @@ namespace CustomerServices
                     cmboCustomers.Enabled = true;
                     Mode = !Mode;
                     RowLeave = true;
-                    dataGridView1.Rows[dataGridView1.CurrentRow.Index].Cells[8].Value = false;
                     dataGridView1.Rows[dataGridView1.CurrentRow.Index].Cells[9].Value = false;
+                    dataGridView1.Rows[dataGridView1.CurrentRow.Index].Cells[10].Value = false;
                     oTxtAA.HeaderText = "Warehouse Description";
                     oTxtAB.HeaderText = "Current SOH";
                     oTxtAC.HeaderText = "Current Picked";
@@ -798,21 +823,34 @@ namespace CustomerServices
                                 {
                                     PODet.TLCUSTO_Size_FK = (int)row.Cells[5].Value;
                                 }
+                                else
+                                {
+                                    PODet.TLCUSTO_Size_FK = _context.TLADM_Sizes.Where(x => x.SI_Description == "ALL").FirstOrDefault().SI_id;
+                                }
 
                                 PODet.TLCUSTO_Customer_FK = CustSelected.Cust_Pk;
+                                
                                 if (!FabricMode)
                                 {
                                     if (row.Cells[6].Value != null)
+                                    {
                                         PODet.TLCUSTO_Qty = (int)row.Cells[6].Value;
+                                    }
                                     else
+                                    {
                                         PODet.TLCUSTO_Qty = (int)row.Cells[6].EditedFormattedValue;
+                                    }
                                 }
                                 else
                                 {
                                     if (row.Cells[6].Value != null)
-                                        PODet.TLCUSTO_QtyMeters  = Convert.ToDecimal(row.Cells[6].Value.ToString());
+                                    {
+                                        PODet.TLCUSTO_QtyMeters = Convert.ToDecimal(row.Cells[6].Value.ToString());
+                                    }
                                     else
+                                    {
                                         PODet.TLCUSTO_QtyMeters = Convert.ToDecimal(row.Cells[6].EditedFormattedValue.ToString());
+                                    }
                                 }
 
                                 if (!FabricMode)
@@ -867,7 +905,6 @@ namespace CustomerServices
                         try
                         {
                             context.SaveChanges();
-                            
                             MessageBox.Show("Data successfully saved to database");
                             
                             EditMode = false;
@@ -907,8 +944,7 @@ namespace CustomerServices
                             cmboCurrentOrders.ValueMember = "TLCSVPO_Pk";
                             cmboCurrentOrders.DisplayMember = "TLCSVPO_PurchaseOrder";
                             cmboCurrentOrders.SelectedValue = -1;
-
-                           
+                                        
                             
                             rbSpecialNo.Checked = true;
                             if (!cmboCurrentOrders.Enabled)
@@ -984,7 +1020,9 @@ namespace CustomerServices
         private void dataGridView1_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
         {
             DataGridView oDgv = sender as DataGridView;
-            ComboBox oCombo = e.Control as ComboBox;       
+            ComboBox oCombo = e.Control as ComboBox;
+           
+
             if (formloaded)
             {
                 RowLeave = true;
@@ -992,10 +1030,10 @@ namespace CustomerServices
                 {
                     var Cell = oDgv.CurrentCell;
 
-                    if (Cell.ColumnIndex == 4)
+                    if(Cell.ColumnIndex == 6)
                     {
-                        e.Control.KeyDown -= new KeyEventHandler(core.txtWin_KeyDown);
-                        e.Control.KeyDown += new KeyEventHandler(core.txtWin_KeyDown);
+                        e.Control.KeyDown -= new KeyEventHandler(core.txtWin_KeyDownJI);
+                        e.Control.KeyDown += new KeyEventHandler(core.txtWin_KeyDownJI);
                         e.Control.KeyPress -= new KeyPressEventHandler(core.txtWin_KeyPress);
                         e.Control.KeyPress += new KeyPressEventHandler(core.txtWin_KeyPress);
                     }
@@ -1024,6 +1062,7 @@ namespace CustomerServices
         {
             ComboBox cb = (ComboBox)sender;
             var Cell = dataGridView1.CurrentCell;
+            var CurrentRow = dataGridView1.CurrentRow;
             if (cb != null)
             {
                 if (Cell.ColumnIndex == 2)
@@ -1032,24 +1071,21 @@ namespace CustomerServices
 
                     if (SelItem != null && SelItem.Sty_WorkWear && !FabricMode)
                     {
-                        var Style = _context.TLADM_Styles.Where(x => x.Sty_Description == Cell.EditedFormattedValue.ToString()).FirstOrDefault();
-                        if (Style != null && Style.Sty_WorkWear)
+                        if (SelItem.Sty_WorkWear)
                         {
-                            //oCmbB.DataSource = null;
-                            //oCmbB.Items.Clear();
                             var tst = (from T1 in _context.TLADM_StyleColour
                                        join T2 in _context.TLADM_Colours
                                        on T1.STYCOL_Colour_FK equals T2.Col_Id
-                                       where T1.STYCOL_Style_FK == Style.Sty_Id
+                                       where T1.STYCOL_Style_FK == SelItem.Sty_Id
                                        select T2).ToList();
 
                             oCmbB.DataSource = tst;
+                            oCmbB.HeaderText = "Colours";
                             oCmbB.ValueMember = "Col_Id";
                             oCmbB.DisplayMember = "Col_Display";
-
-                            //oCmbC.DataSource = null;
-                            //oCmbC.Items.Clear();
-                            oCmbC.DataSource = _context.TLADM_Sizes.Where(x => x.SI_ContiSize != 0).OrderBy(x => x.SI_DisplayOrder).ToList();
+                            
+                            var SizeSrc = _context.TLADM_Sizes.Where(x => x.SI_ContiSize != 0).OrderBy(x => x.SI_DisplayOrder).ToList();
+                            oCmbC.DataSource = SizeSrc;
                             oCmbC.ValueMember = "SI_id";
                             oCmbC.DisplayMember = "SI_Display";
                         }
@@ -1254,7 +1290,6 @@ namespace CustomerServices
                                     dataGridView1.Rows[index].Cells[10].Value = false;
                                     dataGridView1.Rows[index].Cells[11].Value = null;
                                 }   
-
                            }
                            
                             formloaded = true;
@@ -1382,19 +1417,24 @@ namespace CustomerServices
             {
                 if (e.ColumnIndex == 5 && !FabricMode)
                 {
-                    int Style = (int)oDgv.CurrentRow.Cells[2].Value;
-                    int Colour = (int)oDgv.CurrentRow.Cells[4].Value;
-                    int Size = (int)oDgv.CurrentRow.Cells[5].Value;
-
-                    DataGridViewRow SingleRow = (from Rows in dataGridView1.Rows.Cast<DataGridViewRow>()
-                                                 where (int)Rows.Cells[2].Value == Style
-                                                 && (int)Rows.Cells[4].Value == Colour
-                                                 && (int)Rows.Cells[5].Value == Size
-                                                 select Rows).FirstOrDefault();
-
-                    if (SingleRow != null && SingleRow.Index != e.RowIndex)
+                    if (oDgv.CurrentRow.Cells[2].Value != null &&
+                       oDgv.CurrentRow.Cells[4].Value != null &&
+                       oDgv.CurrentRow.Cells[5].Value != null)
                     {
-                        MessageBox.Show("This Style, Colour and Size combination already exists on this order");
+                        int Style = (int)oDgv.CurrentRow.Cells[2].Value;
+                        int Colour = (int)oDgv.CurrentRow.Cells[4].Value;
+                        int Size = (int)oDgv.CurrentRow.Cells[5].Value;
+
+                        DataGridViewRow SingleRow = (from Rows in dataGridView1.Rows.Cast<DataGridViewRow>()
+                                                     where (int)Rows.Cells[2].Value == Style
+                                                     && (int)Rows.Cells[4].Value == Colour
+                                                     && (int)Rows.Cells[5].Value == Size
+                                                     select Rows).FirstOrDefault();
+
+                        if (SingleRow != null && SingleRow.Index != e.RowIndex)
+                        {
+                            MessageBox.Show("This Style, Colour and Size combination already exists on this order");
+                        }
                     }
                 }
             }

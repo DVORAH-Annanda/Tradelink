@@ -923,7 +923,7 @@ namespace CustomerServices
                                 nr.LineNo = PODetail.TLCUSTO_LineNumber;
                                 nr.DeliveredToDate = (int)PODetail.TLCUSTO_QtyMeters_Delivered;
                                 nr.PickingLists = 0;
-                                nr.Nett = nr.OrderQty - (nr.PickingLists + nr.DeliveredToDate);
+                                nr.Nett = nr.OrderQty - nr.DeliveredToDate;
 
                                 if (_QueryParms.SummarisedPurchaseOrders)
                                 {
@@ -2654,23 +2654,35 @@ namespace CustomerServices
                                     nr.TOrderDate = POOrder.TLCSVPO_TransDate;
                                     nr.TStatus = POOrder.TLCSVPO_Closeed;
                                 }
-                                nr.TStyle = _Styles.FirstOrDefault(s => s.Sty_Id == PODetail.TLCUSTO_Style_FK).Sty_Description;
-                                nr.TColour = _Colours.FirstOrDefault(s => s.Col_Id == PODetail.TLCUSTO_Colour_FK).Col_Display;
-                                var xSize = _Sizes.FirstOrDefault(s => s.SI_id == PODetail.TLCUSTO_Size_FK);
-                                if (xSize != null)
+
+                                if (!_Customers.FirstOrDefault(s => s.Cust_Pk == PurchaseOrder.TLCSVPO_Customer_FK).Cust_FabricCustomer) 
                                 {
-                                    var Sty = _Styles.FirstOrDefault(s => s.Sty_Id == PODetail.TLCUSTO_Style_FK);
-                                    if (Sty != null && !Sty.Sty_WorkWear)
+                                    nr.TStyle = _Styles.FirstOrDefault(s => s.Sty_Id == PODetail.TLCUSTO_Style_FK).Sty_Description;
+                                    nr.TColour = _Colours.FirstOrDefault(s => s.Col_Id == PODetail.TLCUSTO_Colour_FK).Col_Display;
+                                    var xSize = _Sizes.FirstOrDefault(s => s.SI_id == PODetail.TLCUSTO_Size_FK);
+                                    if (xSize != null)
                                     {
-                                        nr.TSize = xSize.SI_Description;
+                                        var Sty = _Styles.FirstOrDefault(s => s.Sty_Id == PODetail.TLCUSTO_Style_FK);
+                                        if (Sty != null && !Sty.Sty_WorkWear)
+                                        {
+                                            nr.TSize = xSize.SI_Description;
+                                        }
+                                        else
+                                        {
+                                            nr.TSize = xSize.SI_ContiSize.ToString();
+                                        }
+                                        nr.TDisplayOrder = xSize.SI_DisplayOrder;
                                     }
-                                    else
-                                    {
-                                        nr.TSize = xSize.SI_ContiSize.ToString();
-                                    }
-                                    nr.TDisplayOrder = xSize.SI_DisplayOrder;
+                                    nr.TOrderQty = PODetail.TLCUSTO_Qty;
                                 }
-                                nr.TOrderQty = PODetail.TLCUSTO_Qty;
+                                else
+                                {
+                                    nr.TStyle = _Qualities.FirstOrDefault(s => s.TLGreige_Id == PODetail.TLCUSTO_Quality_FK).TLGreige_Description;
+                                    nr.TColour = _Colours.FirstOrDefault(s => s.Col_Id == PODetail.TLCUSTO_Colour_FK).Col_Display;
+                                    nr.TSize = string.Empty;
+                                    nr.TOrderQty = (int)PODetail.TLCUSTO_QtyMeters;
+                                }
+                            
                                 dataTable1.AddDataTable1Row(nr);
                             }
                         }

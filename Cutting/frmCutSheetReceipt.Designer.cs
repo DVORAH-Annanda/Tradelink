@@ -70,6 +70,10 @@
             this.cmboMachines = new System.Windows.Forms.ComboBox();
             this.label4 = new System.Windows.Forms.Label();
             this.chkSearch = new System.Windows.Forms.CheckBox();
+            this.WPanels = new System.Windows.Forms.Label();
+            this.txtWastePanels = new System.Windows.Forms.TextBox();
+            this.label18 = new System.Windows.Forms.Label();
+            this.txtWasteCutSheet = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -132,7 +136,7 @@
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Location = new System.Drawing.Point(20, 75);
             this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(313, 293);
+            this.dataGridView1.Size = new System.Drawing.Size(330, 293);
             this.dataGridView1.TabIndex = 6;
             this.dataGridView1.CellLeave += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellLeave);
             // 
@@ -146,7 +150,7 @@
             this.groupBox1.Controls.Add(this.label6);
             this.groupBox1.Controls.Add(this.txtAdultBoxes);
             this.groupBox1.Controls.Add(this.label5);
-            this.groupBox1.Location = new System.Drawing.Point(254, 502);
+            this.groupBox1.Location = new System.Drawing.Point(294, 538);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(397, 102);
             this.groupBox1.TabIndex = 8;
@@ -223,7 +227,7 @@
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(789, 581);
+            this.btnSave.Location = new System.Drawing.Point(789, 617);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(75, 23);
             this.btnSave.TabIndex = 9;
@@ -249,7 +253,7 @@
             this.groupBox2.Controls.Add(this.label11);
             this.groupBox2.Controls.Add(this.label10);
             this.groupBox2.Controls.Add(this.label9);
-            this.groupBox2.Location = new System.Drawing.Point(361, 358);
+            this.groupBox2.Location = new System.Drawing.Point(361, 384);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(503, 138);
             this.groupBox2.TabIndex = 10;
@@ -394,7 +398,7 @@
             // dataGridView2
             // 
             this.dataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView2.Location = new System.Drawing.Point(394, 75);
+            this.dataGridView2.Location = new System.Drawing.Point(394, 102);
             this.dataGridView2.Name = "dataGridView2";
             this.dataGridView2.Size = new System.Drawing.Size(467, 179);
             this.dataGridView2.TabIndex = 16;
@@ -420,7 +424,7 @@
             // chkReset
             // 
             this.chkReset.AutoSize = true;
-            this.chkReset.Location = new System.Drawing.Point(706, 503);
+            this.chkReset.Location = new System.Drawing.Point(751, 583);
             this.chkReset.Name = "chkReset";
             this.chkReset.Size = new System.Drawing.Size(113, 17);
             this.chkReset.TabIndex = 19;
@@ -456,11 +460,47 @@
             this.chkSearch.UseVisualStyleBackColor = true;
             this.chkSearch.CheckedChanged += new System.EventHandler(this.chkSearch_CheckedChanged);
             // 
+            // WPanels
+            // 
+            this.WPanels.AutoSize = true;
+            this.WPanels.Location = new System.Drawing.Point(394, 52);
+            this.WPanels.Name = "WPanels";
+            this.WPanels.Size = new System.Drawing.Size(73, 13);
+            this.WPanels.TabIndex = 23;
+            this.WPanels.Text = "Waste Panels";
+            // 
+            // txtWastePanels
+            // 
+            this.txtWastePanels.Location = new System.Drawing.Point(485, 49);
+            this.txtWastePanels.Name = "txtWastePanels";
+            this.txtWastePanels.Size = new System.Drawing.Size(86, 20);
+            this.txtWastePanels.TabIndex = 24;
+            // 
+            // label18
+            // 
+            this.label18.AutoSize = true;
+            this.label18.Location = new System.Drawing.Point(638, 53);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(85, 13);
+            this.label18.TabIndex = 25;
+            this.label18.Text = "Waste CutSheet";
+            // 
+            // txtWasteCutSheet
+            // 
+            this.txtWasteCutSheet.Location = new System.Drawing.Point(761, 49);
+            this.txtWasteCutSheet.Name = "txtWasteCutSheet";
+            this.txtWasteCutSheet.Size = new System.Drawing.Size(86, 20);
+            this.txtWasteCutSheet.TabIndex = 26;
+            // 
             // frmCutSheetReceipt
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(901, 631);
+            this.ClientSize = new System.Drawing.Size(901, 652);
+            this.Controls.Add(this.txtWasteCutSheet);
+            this.Controls.Add(this.label18);
+            this.Controls.Add(this.txtWastePanels);
+            this.Controls.Add(this.WPanels);
             this.Controls.Add(this.chkSearch);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.cmboMachines);
@@ -538,5 +578,9 @@
         private System.Windows.Forms.ComboBox cmboMachines;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.CheckBox chkSearch;
+        private System.Windows.Forms.Label WPanels;
+        private System.Windows.Forms.TextBox txtWastePanels;
+        private System.Windows.Forms.Label label18;
+        private System.Windows.Forms.TextBox txtWasteCutSheet;
     }
 }

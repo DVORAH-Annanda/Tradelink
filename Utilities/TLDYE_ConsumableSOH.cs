@@ -16,9 +16,15 @@ namespace Utilities
     {
         public int DYCSH_Pk { get; set; }
         public int DYCSH_Consumable_FK { get; set; }
-        public int DYCSH_WhseStore_FK { get; set; }
+        public Nullable<int> DYCSH_WhseStore_FK { get; set; }
         public decimal DYCSH_StockOnHand { get; set; }
         public int DYCSH_TransNumber { get; set; }
         public bool DYCSH_DyeKitchen { get; set; }
+        public bool DYCSH_Quarantine { get; set; }
+        public bool DYCSH_Pass { get; set; }
+        public int DYCSH_QuarantineStore_FK { get; set; }
+        public Nullable<int> DYCSH_DyeKitchen_FK { get; set; }
+        public decimal DYCSH_SOHQuar { get; set; }
+        public decimal DYCSH_SOHKitchen { get; set; }
     }
 }

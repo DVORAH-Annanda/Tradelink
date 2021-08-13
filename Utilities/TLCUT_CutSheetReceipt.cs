@@ -29,5 +29,7 @@ namespace Utilities
         public bool TLCUTSHR_InReceiptCage { get; set; }
         public int TLCUTSHR_WhsePanStore_FK { get; set; }
         public int TLCUTSHR_WhseBunStore_FK { get; set; }
+        public decimal TLCUTSHR_WastePanels { get; set; }
+        public decimal TLCUTSHR_WasteCutSheet { get; set; }
     }
 }

@@ -3977,11 +3977,23 @@ namespace TTI2_WF
             {
                 try
                 {
+                    try
+                    {
+                        DyeHouse.frmDyeConsumablesSOH CONSOH = new DyeHouse.frmDyeConsumablesSOH();
+                        CONSOH.ShowDialog(this);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                    }
+
+                    /*
                     frmDyeViewReport vRep = new frmDyeViewReport(13);
                     int h = Screen.PrimaryScreen.WorkingArea.Height;
                     int w = Screen.PrimaryScreen.WorkingArea.Width;
                     vRep.ClientSize = new Size(w, h);
                     vRep.ShowDialog(this);
+                    */
                 }
                 catch (Exception ex)
                 {
@@ -9025,7 +9037,7 @@ namespace TTI2_WF
             {
                 try
                 {
-                    frmInsAfterDrying QInsAfterDrying = new frmInsAfterDrying(ud);
+                    frmInsAfterDrying QInsAfterDrying = new frmInsAfterDrying(ud, true);
                     QInsAfterDrying.ShowDialog(this);
                 }
                 catch (Exception ex)
@@ -10206,6 +10218,56 @@ namespace TTI2_WF
                 {
                     MessageBox.Show(ex.Message);
                 }
+            }
+        }
+
+        private void fabricWidthBeforeCuttingToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ToolStripMenuItem oTi = sender as ToolStripMenuItem;
+            if (core.GetUserAuthorisation(ud, oTi.Name))
+            {
+                try
+                {
+                    frmInsAfterDrying QInsAfterDrying = new frmInsAfterDrying(ud, false);
+                    QInsAfterDrying.ShowDialog(this);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+            else
+            {
+                using (DialogCenteringService centeringService = new DialogCenteringService(this)) // center message box
+                {
+                    MessageBox.Show(ud._NotAuthorisedMessage, ud._UserName);
+                }
+
+            }
+        }
+
+        private void cuttingWasteToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ToolStripMenuItem oTi = sender as ToolStripMenuItem;
+            if (core.GetUserAuthorisation(ud, oTi.Name))
+            {
+                try
+                {
+                    frmCuttingWasteSelection WasteSelection = new frmCuttingWasteSelection();
+                    WasteSelection.ShowDialog(this);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+            else
+            {
+                using (DialogCenteringService centeringService = new DialogCenteringService(this)) // center message box
+                {
+                    MessageBox.Show(ud._NotAuthorisedMessage, ud._UserName);
+                }
+
             }
         }
     }

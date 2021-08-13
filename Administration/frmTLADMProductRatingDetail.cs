@@ -111,10 +111,13 @@ namespace TTI2_WF
                        
             if(oDgv.Focused && oDgv.CurrentCell is DataGridViewComboBoxCell && oCmb != null)
             {
-                e.Control.KeyDown -= new KeyEventHandler(core.txtWin_KeyDown);
-                e.Control.KeyDown += new KeyEventHandler(core.txtWin_KeyDown);
-                e.Control.KeyPress -= new KeyPressEventHandler(core.txtWin_KeyPress);
-                e.Control.KeyPress += new KeyPressEventHandler(core.txtWin_KeyPress);
+                if (oDgv.CurrentCell.ColumnIndex == 4)
+                {
+                    e.Control.KeyDown -= new KeyEventHandler(core.txtWin_KeyDownOEM);
+                    e.Control.KeyDown += new KeyEventHandler(core.txtWin_KeyDownOEM);
+                    e.Control.KeyPress -= new KeyPressEventHandler(core.txtWin_KeyPress);
+                    e.Control.KeyPress += new KeyPressEventHandler(core.txtWin_KeyPress);
+                }
             }
         }
        
@@ -173,6 +176,16 @@ namespace TTI2_WF
             }
         }
 
-        
+        private void dataGridView1_EditingControlShowing_1(object sender, DataGridViewEditingControlShowingEventArgs e)
+        {
+            DataGridView oDgv = sender as DataGridView;
+            if (oDgv.Focused && oDgv.CurrentCell is DataGridViewTextBoxCell)
+            {
+               e.Control.KeyDown -= new KeyEventHandler(core.txtWin_KeyDownOEM);
+               e.Control.KeyDown += new KeyEventHandler(core.txtWin_KeyDownOEM);
+               e.Control.KeyPress -= new KeyPressEventHandler(core.txtWin_KeyPress);
+               e.Control.KeyPress += new KeyPressEventHandler(core.txtWin_KeyPress);
+            }
+        }
     }
 }

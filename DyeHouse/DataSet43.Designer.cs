@@ -283,7 +283,7 @@ namespace DyeHouse {
             
             private global::System.Data.DataColumn columnDescription;
             
-            private global::System.Data.DataColumn columnStockOnHand;
+            private global::System.Data.DataColumn columnSOHStore;
             
             private global::System.Data.DataColumn columnReOrderLevel;
             
@@ -296,6 +296,10 @@ namespace DyeHouse {
             private global::System.Data.DataColumn columnPreferredSupplier;
             
             private global::System.Data.DataColumn columnLocation;
+            
+            private global::System.Data.DataColumn columnSOHQuarantine;
+            
+            private global::System.Data.DataColumn columnSOHDyeKitchen;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
@@ -348,9 +352,9 @@ namespace DyeHouse {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public global::System.Data.DataColumn StockOnHandColumn {
+            public global::System.Data.DataColumn SOHStoreColumn {
                 get {
-                    return this.columnStockOnHand;
+                    return this.columnSOHStore;
                 }
             }
             
@@ -404,6 +408,22 @@ namespace DyeHouse {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn SOHQuarantineColumn {
+                get {
+                    return this.columnSOHQuarantine;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn SOHDyeKitchenColumn {
+                get {
+                    return this.columnSOHDyeKitchen;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -439,18 +459,20 @@ namespace DyeHouse {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public DataTable1Row AddDataTable1Row(string Code, string Description, decimal StockOnHand, int ReOrderLevel, int MinReOrder, decimal StdCost, string StockTakeFreq, string PreferredSupplier, string Location) {
+            public DataTable1Row AddDataTable1Row(string Code, string Description, decimal SOHStore, int ReOrderLevel, int MinReOrder, decimal StdCost, string StockTakeFreq, string PreferredSupplier, string Location, decimal SOHQuarantine, decimal SOHDyeKitchen) {
                 DataTable1Row rowDataTable1Row = ((DataTable1Row)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         Code,
                         Description,
-                        StockOnHand,
+                        SOHStore,
                         ReOrderLevel,
                         MinReOrder,
                         StdCost,
                         StockTakeFreq,
                         PreferredSupplier,
-                        Location};
+                        Location,
+                        SOHQuarantine,
+                        SOHDyeKitchen};
                 rowDataTable1Row.ItemArray = columnValuesArray;
                 this.Rows.Add(rowDataTable1Row);
                 return rowDataTable1Row;
@@ -475,13 +497,15 @@ namespace DyeHouse {
             internal void InitVars() {
                 this.columnCode = base.Columns["Code"];
                 this.columnDescription = base.Columns["Description"];
-                this.columnStockOnHand = base.Columns["StockOnHand"];
+                this.columnSOHStore = base.Columns["SOHStore"];
                 this.columnReOrderLevel = base.Columns["ReOrderLevel"];
                 this.columnMinReOrder = base.Columns["MinReOrder"];
                 this.columnStdCost = base.Columns["StdCost"];
                 this.columnStockTakeFreq = base.Columns["StockTakeFreq"];
                 this.columnPreferredSupplier = base.Columns["PreferredSupplier"];
                 this.columnLocation = base.Columns["Location"];
+                this.columnSOHQuarantine = base.Columns["SOHQuarantine"];
+                this.columnSOHDyeKitchen = base.Columns["SOHDyeKitchen"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -491,8 +515,8 @@ namespace DyeHouse {
                 base.Columns.Add(this.columnCode);
                 this.columnDescription = new global::System.Data.DataColumn("Description", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnDescription);
-                this.columnStockOnHand = new global::System.Data.DataColumn("StockOnHand", typeof(decimal), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnStockOnHand);
+                this.columnSOHStore = new global::System.Data.DataColumn("SOHStore", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnSOHStore);
                 this.columnReOrderLevel = new global::System.Data.DataColumn("ReOrderLevel", typeof(int), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnReOrderLevel);
                 this.columnMinReOrder = new global::System.Data.DataColumn("MinReOrder", typeof(int), null, global::System.Data.MappingType.Element);
@@ -505,6 +529,10 @@ namespace DyeHouse {
                 base.Columns.Add(this.columnPreferredSupplier);
                 this.columnLocation = new global::System.Data.DataColumn("Location", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnLocation);
+                this.columnSOHQuarantine = new global::System.Data.DataColumn("SOHQuarantine", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnSOHQuarantine);
+                this.columnSOHDyeKitchen = new global::System.Data.DataColumn("SOHDyeKitchen", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnSOHDyeKitchen);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -679,17 +707,17 @@ namespace DyeHouse {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public decimal StockOnHand {
+            public decimal SOHStore {
                 get {
                     try {
-                        return ((decimal)(this[this.tableDataTable1.StockOnHandColumn]));
+                        return ((decimal)(this[this.tableDataTable1.SOHStoreColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'StockOnHand\' in table \'DataTable1\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'SOHStore\' in table \'DataTable1\' is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableDataTable1.StockOnHandColumn] = value;
+                    this[this.tableDataTable1.SOHStoreColumn] = value;
                 }
             }
             
@@ -791,6 +819,38 @@ namespace DyeHouse {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public decimal SOHQuarantine {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableDataTable1.SOHQuarantineColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'SOHQuarantine\' in table \'DataTable1\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDataTable1.SOHQuarantineColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public decimal SOHDyeKitchen {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableDataTable1.SOHDyeKitchenColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'SOHDyeKitchen\' in table \'DataTable1\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDataTable1.SOHDyeKitchenColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public bool IsCodeNull() {
                 return this.IsNull(this.tableDataTable1.CodeColumn);
             }
@@ -815,14 +875,14 @@ namespace DyeHouse {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public bool IsStockOnHandNull() {
-                return this.IsNull(this.tableDataTable1.StockOnHandColumn);
+            public bool IsSOHStoreNull() {
+                return this.IsNull(this.tableDataTable1.SOHStoreColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public void SetStockOnHandNull() {
-                this[this.tableDataTable1.StockOnHandColumn] = global::System.Convert.DBNull;
+            public void SetSOHStoreNull() {
+                this[this.tableDataTable1.SOHStoreColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -895,6 +955,30 @@ namespace DyeHouse {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public void SetLocationNull() {
                 this[this.tableDataTable1.LocationColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsSOHQuarantineNull() {
+                return this.IsNull(this.tableDataTable1.SOHQuarantineColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetSOHQuarantineNull() {
+                this[this.tableDataTable1.SOHQuarantineColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsSOHDyeKitchenNull() {
+                return this.IsNull(this.tableDataTable1.SOHDyeKitchenColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetSOHDyeKitchenNull() {
+                this[this.tableDataTable1.SOHDyeKitchenColumn] = global::System.Convert.DBNull;
             }
         }
         

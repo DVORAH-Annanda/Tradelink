@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace DyeHouse {
+namespace Cutting {
     using System;
     using System.ComponentModel;
     using CrystalDecisions.Shared;
@@ -16,14 +16,14 @@ namespace DyeHouse {
     using CrystalDecisions.CrystalReports.Engine;
     
     
-    public class DCSOH : ReportClass {
+    public class CuttingWasteMangement : ReportClass {
         
-        public DCSOH() {
+        public CuttingWasteMangement() {
         }
         
         public override string ResourceName {
             get {
-                return "DCSOH.rpt";
+                return "CuttingWasteMangement.rpt";
             }
             set {
                 // Do nothing
@@ -41,7 +41,7 @@ namespace DyeHouse {
         
         public override string FullResourceName {
             get {
-                return "DyeHouse.DCSOH.rpt";
+                return "Cutting.CuttingWasteMangement.rpt";
             }
             set {
                 // Do nothing
@@ -90,9 +90,9 @@ namespace DyeHouse {
     }
     
     [System.Drawing.ToolboxBitmapAttribute(typeof(CrystalDecisions.Shared.ExportOptions), "report.bmp")]
-    public class CachedDCSOH : Component, ICachedReport {
+    public class CachedCuttingWasteMangement : Component, ICachedReport {
         
-        public CachedDCSOH() {
+        public CachedCuttingWasteMangement() {
         }
         
         [Browsable(false)]
@@ -129,7 +129,7 @@ namespace DyeHouse {
         }
         
         public virtual CrystalDecisions.CrystalReports.Engine.ReportDocument CreateReport() {
-            DCSOH rpt = new DCSOH();
+            CuttingWasteMangement rpt = new CuttingWasteMangement();
             rpt.Site = this.Site;
             return rpt;
         }

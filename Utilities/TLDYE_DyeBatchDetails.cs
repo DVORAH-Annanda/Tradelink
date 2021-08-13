@@ -45,5 +45,6 @@ namespace Utilities
         public bool DYEBO_BIFInTransit { get; set; }
         public bool DYEBO_WasRejected { get; set; }
         public string DYEBO_Notes { get; set; }
+        public decimal DYEBO_FWAtCutting { get; set; }
     }
 }

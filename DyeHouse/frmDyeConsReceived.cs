@@ -194,28 +194,17 @@ namespace DyeHouse
                         consReceived.DYECON_WhseStore_FK = StoreSelected.WhStore_Id;
                         consReceived.DYECON_TransactionDate = dtpDateReceived.Value;
                         consReceived.DYECON_TransNumber = TransNumber;
-                        
                         context.TLDYE_ConSummableReceived.Add(consReceived);
-
-                        /*
-                        var StockOH = context.TLDYE_ConsumableSOH.Where(x => x.DYCSH_Consumable_FK == consReceived.DYECON_Consumable_FK &&  !x.DYCSH_DyeKitchen).FirstOrDefault();
-                        if (StockOH == null)
-                        {
-                            TLDYE_ConsumableSOH soh = new TLDYE_ConsumableSOH();
-                            soh.DYCSH_Consumable_FK = consReceived.DYECON_Consumable_FK;
-                            soh.DYCSH_StockOnHand += consReceived.DYECON_Amount;
-                            soh.DYCSH_WhseStore_FK = (int)consReceived.DYECON_WhseStore_FK;
-                            soh.DYCSH_DyeKitchen = StoreSelected.WhStore_DyeKitchen;
-
-                            context.TLDYE_ConsumableSOH.Add(soh);
-                        }
-                       
-                        else
-                        {
-                            StockOH.DYCSH_StockOnHand += consReceived.DYECON_Amount;
-                        }
-                        */
-
+                      
+                        TLDYE_ConsumableSOH soh = new TLDYE_ConsumableSOH();
+                        soh.DYCSH_Consumable_FK = consReceived.DYECON_Consumable_FK;
+                        soh.DYCSH_SOHQuar = consReceived.DYECON_Amount;
+                        soh.DYCSH_QuarantineStore_FK = (int)consReceived.DYECON_WhseStore_FK;
+                        soh.DYCSH_DyeKitchen = false;
+                        soh.DYCSH_Pass = false;
+                        soh.DYCSH_Quarantine = true;
+                        soh.DYCSH_TransNumber = TransNumber;
+                        context.TLDYE_ConsumableSOH.Add(soh);
                     }
 
                     try
@@ -229,6 +218,7 @@ namespace DyeHouse
                         int w = Screen.PrimaryScreen.WorkingArea.Width;
                         vRep.ClientSize = new Size(w, h);
                         vRep.ShowDialog(this);
+                        
                         SetUp();
 
 

@@ -144,8 +144,9 @@
             this.colourCheckAfterDyeingToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.HydroMeasuresWidth = new System.Windows.Forms.ToolStripMenuItem();
             this.stabilityCheckAfterDryingToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.inspectionAfterDryingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.colourStabilityCheckAfterCompactingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.inspectionAfterDryingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.fabricWidthBeforeCuttingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.qAInputToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.remedialActionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fabricOutputToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -463,6 +464,7 @@
             this.dataClearDownToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.inUseResetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
+            this.cuttingWasteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             this.SuspendLayout();
@@ -1375,8 +1377,9 @@
             this.colourCheckAfterDyeingToolStripMenuItem1,
             this.HydroMeasuresWidth,
             this.stabilityCheckAfterDryingToolStripMenuItem1,
+            this.colourStabilityCheckAfterCompactingToolStripMenuItem,
             this.inspectionAfterDryingToolStripMenuItem,
-            this.colourStabilityCheckAfterCompactingToolStripMenuItem});
+            this.fabricWidthBeforeCuttingToolStripMenuItem});
             this.dataCaptureToolStripMenuItem.Name = "dataCaptureToolStripMenuItem";
             this.dataCaptureToolStripMenuItem.Size = new System.Drawing.Size(274, 22);
             this.dataCaptureToolStripMenuItem.Text = "Dye QA results data capture";
@@ -1402,6 +1405,13 @@
             this.stabilityCheckAfterDryingToolStripMenuItem1.Text = "Stability Check after Drying";
             this.stabilityCheckAfterDryingToolStripMenuItem1.Click += new System.EventHandler(this.stabilityCheckAfterDryingToolStripMenuItem1_Click);
             // 
+            // colourStabilityCheckAfterCompactingToolStripMenuItem
+            // 
+            this.colourStabilityCheckAfterCompactingToolStripMenuItem.Name = "colourStabilityCheckAfterCompactingToolStripMenuItem";
+            this.colourStabilityCheckAfterCompactingToolStripMenuItem.Size = new System.Drawing.Size(285, 22);
+            this.colourStabilityCheckAfterCompactingToolStripMenuItem.Text = "Colour Stability Check after compacting";
+            this.colourStabilityCheckAfterCompactingToolStripMenuItem.Click += new System.EventHandler(this.colourStabilityCheckAfterCompactingToolStripMenuItem_Click);
+            // 
             // inspectionAfterDryingToolStripMenuItem
             // 
             this.inspectionAfterDryingToolStripMenuItem.Name = "inspectionAfterDryingToolStripMenuItem";
@@ -1409,12 +1419,12 @@
             this.inspectionAfterDryingToolStripMenuItem.Text = "Inspection After Drying";
             this.inspectionAfterDryingToolStripMenuItem.Click += new System.EventHandler(this.inspectionAfterDryingToolStripMenuItem_Click);
             // 
-            // colourStabilityCheckAfterCompactingToolStripMenuItem
+            // fabricWidthBeforeCuttingToolStripMenuItem
             // 
-            this.colourStabilityCheckAfterCompactingToolStripMenuItem.Name = "colourStabilityCheckAfterCompactingToolStripMenuItem";
-            this.colourStabilityCheckAfterCompactingToolStripMenuItem.Size = new System.Drawing.Size(285, 22);
-            this.colourStabilityCheckAfterCompactingToolStripMenuItem.Text = "Colour Stability Check after compacting";
-            this.colourStabilityCheckAfterCompactingToolStripMenuItem.Click += new System.EventHandler(this.colourStabilityCheckAfterCompactingToolStripMenuItem_Click);
+            this.fabricWidthBeforeCuttingToolStripMenuItem.Name = "fabricWidthBeforeCuttingToolStripMenuItem";
+            this.fabricWidthBeforeCuttingToolStripMenuItem.Size = new System.Drawing.Size(285, 22);
+            this.fabricWidthBeforeCuttingToolStripMenuItem.Text = "Fabric Width before Cutting";
+            this.fabricWidthBeforeCuttingToolStripMenuItem.Click += new System.EventHandler(this.fabricWidthBeforeCuttingToolStripMenuItem_Click);
             // 
             // qAInputToolStripMenuItem
             // 
@@ -2132,7 +2142,8 @@
             this.cMTPanelIssueReprintToolStripMenuItem,
             this.cutSheetNumberRegisterToolStripMenuItem,
             this.cutSheetProductionPlanningResultsToolStripMenuItem,
-            this.cutSheetOnHoldReportToolStripMenuItem});
+            this.cutSheetOnHoldReportToolStripMenuItem,
+            this.cuttingWasteToolStripMenuItem});
             this.reportingToolStripMenuItem1.Name = "reportingToolStripMenuItem1";
             this.reportingToolStripMenuItem1.Size = new System.Drawing.Size(206, 22);
             this.reportingToolStripMenuItem1.Text = "Cutting Reporting";
@@ -2683,7 +2694,7 @@
             this.transferExCMTToolStripMenuItem,
             this.directTransferToCustomerToolStripMenuItem});
             this.transactionsToolStripMenuItem.Name = "transactionsToolStripMenuItem";
-            this.transactionsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.transactionsToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
             this.transactionsToolStripMenuItem.Text = "CSV Transactions";
             // 
             // transferExCMTToolStripMenuItem
@@ -2876,7 +2887,7 @@
             this.negativeStockByCustomerToolStripMenuItem,
             this.pastelReconciliationReportToolStripMenuItem});
             this.reportingToolStripMenuItem3.Name = "reportingToolStripMenuItem3";
-            this.reportingToolStripMenuItem3.Size = new System.Drawing.Size(180, 22);
+            this.reportingToolStripMenuItem3.Size = new System.Drawing.Size(165, 22);
             this.reportingToolStripMenuItem3.Text = "CSV Reporting";
             // 
             // stockQuantitiesOnHandToolStripMenuItem
@@ -3027,7 +3038,7 @@
             this.deliveryNoteInquiryToolStripMenuItem,
             this.purchaseOrderNumberToolStripMenuItem});
             this.viewsToolStripMenuItem3.Name = "viewsToolStripMenuItem3";
-            this.viewsToolStripMenuItem3.Size = new System.Drawing.Size(180, 22);
+            this.viewsToolStripMenuItem3.Size = new System.Drawing.Size(165, 22);
             this.viewsToolStripMenuItem3.Text = "CSV Views";
             // 
             // boxEnquiryToolStripMenuItem
@@ -3942,6 +3953,13 @@
             // 
             this.errorProvider1.ContainerControl = this;
             // 
+            // cuttingWasteToolStripMenuItem
+            // 
+            this.cuttingWasteToolStripMenuItem.Name = "cuttingWasteToolStripMenuItem";
+            this.cuttingWasteToolStripMenuItem.Size = new System.Drawing.Size(277, 22);
+            this.cuttingWasteToolStripMenuItem.Text = "Cutting Waste";
+            this.cuttingWasteToolStripMenuItem.Click += new System.EventHandler(this.cuttingWasteToolStripMenuItem_Click);
+            // 
             // frmTLMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -4397,5 +4415,7 @@
         private System.Windows.Forms.ToolStripMenuItem fabricBasicQualityInformationToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem fabricBaqsicQualityInformationWeightToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem contiWorkWearReceiptsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem fabricWidthBeforeCuttingToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem cuttingWasteToolStripMenuItem;
     }
 }

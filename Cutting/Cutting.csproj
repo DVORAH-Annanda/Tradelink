@@ -169,6 +169,12 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="CuttingRepository.cs" />
+    <Compile Include="CuttingWasteMangement.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CuttingWasteMangement.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="DataSet1.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -236,6 +242,14 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>DataSet21.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="DataSet22.cs">
+      <DependentUpon>DataSet22.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="DataSet22.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSet22.xsd</DependentUpon>
     </Compile>
     <Compile Include="DataSet3.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -367,6 +381,12 @@
     </Compile>
     <Compile Include="frmCutSheetReceipt.Designer.cs">
       <DependentUpon>frmCutSheetReceipt.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmCuttingWasteSelection.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmCuttingWasteSelection.Designer.cs">
+      <DependentUpon>frmCuttingWasteSelection.cs</DependentUpon>
     </Compile>
     <Compile Include="frmCutView.cs">
       <SubType>Form</SubType>
@@ -616,6 +636,10 @@
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>CutSheetTickets.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="CuttingWasteMangement.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>CuttingWasteMangement.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="fmtCuttingBoxesAdjustment.resx">
       <DependentUpon>fmtCuttingBoxesAdjustment.cs</DependentUpon>
     </EmbeddedResource>
@@ -660,6 +684,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmCutSheetReceipt.resx">
       <DependentUpon>frmCutSheetReceipt.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmCuttingWasteSelection.resx">
+      <DependentUpon>frmCuttingWasteSelection.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmCutView.resx">
       <DependentUpon>frmCutView.cs</DependentUpon>
@@ -923,6 +950,17 @@
     </None>
     <None Include="DataSet21.xss">
       <DependentUpon>DataSet21.xsd</DependentUpon>
+    </None>
+    <None Include="DataSet22.xsc">
+      <DependentUpon>DataSet22.xsd</DependentUpon>
+    </None>
+    <None Include="DataSet22.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSet22.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="DataSet22.xss">
+      <DependentUpon>DataSet22.xsd</DependentUpon>
     </None>
     <None Include="DataSet3.xsc">
       <DependentUpon>DataSet3.xsd</DependentUpon>

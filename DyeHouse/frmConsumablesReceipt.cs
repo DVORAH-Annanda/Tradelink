@@ -81,7 +81,7 @@ namespace DyeHouse
             formloaded = false;
             using (var context = new TTI2Entities())
             {
-                cmboIssueDepartment.DataSource = context.TLADM_WhseStore.Where(x => x.WhStore_ChemicalStore).ToList();
+                cmboIssueDepartment.DataSource = context.TLADM_WhseStore.Where(x => x.WhStore_ChemicalStore && !x.WhStore_Quarantine).ToList();
                 cmboIssueDepartment.ValueMember = "WhStore_Id";
                 cmboIssueDepartment.DisplayMember = "WhStore_Description";
                 cmboIssueDepartment.SelectedValue = -1;
@@ -160,29 +160,16 @@ namespace DyeHouse
                         //-------------------------------------------------------
                         TLDYE_ConsumableSOH newSOH = new TLDYE_ConsumableSOH();
                     
-                        newSOH = context.TLDYE_ConsumableSOH.Where(x=>x.DYCSH_WhseStore_FK == WhseReceiving.WhStore_Id && x.DYCSH_Consumable_FK == index).FirstOrDefault();
-                        if (newSOH == null)
+                        newSOH = context.TLDYE_ConsumableSOH.Find(index);
+                        if (newSOH != null)
                         {
-                            newSOH = new TLDYE_ConsumableSOH();
-                            newSOH.DYCSH_StockOnHand   = (decimal)row.Cells[4].Value;
+                            newSOH.DYCSH_StockOnHand   -= (decimal)row.Cells[4].Value;
+                            newSOH.DYCSH_SOHKitchen +=  (decimal)row.Cells[4].Value;
                             newSOH.DYCSH_TransNumber   = -1 + LNU.col12;
                             newSOH.DYCSH_Consumable_FK = (int)row.Cells[5].Value;
                             newSOH.DYCSH_WhseStore_FK  = WhseReceiving.WhStore_Id;
                             newSOH.DYCSH_DyeKitchen    = WhseReceiving.WhStore_DyeKitchen;
-
-                            context.TLDYE_ConsumableSOH.Add(newSOH);
                         }
-                        else
-                        {
-                            newSOH.DYCSH_StockOnHand += (decimal)row.Cells[4].Value;
-                        }
-
-                        TLDYE_ConsumableSOH oldSOH = new TLDYE_ConsumableSOH();
-                        oldSOH = context.TLDYE_ConsumableSOH.Find(index);
-                        if (oldSOH != null)
-                            oldSOH.DYCSH_StockOnHand -= (Decimal)row.Cells[4].Value;
- 
-
                     }
                     try
                     {
@@ -222,7 +209,7 @@ namespace DyeHouse
                 {
                     var Selected = (TLADM_WhseStore)oCmbo.SelectedItem;
 
-                    var SOH = context.TLDYE_ConsumableSOH.Where(x => x.DYCSH_WhseStore_FK == Selected.WhStore_Id).ToList();
+                    var SOH = context.TLDYE_ConsumableSOH.Where(x => x.DYCSH_StockOnHand > 0 ).ToList();
                     foreach (var row in SOH)
                     {
                         var index = dataGridView1.Rows.Add();

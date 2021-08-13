@@ -661,6 +661,12 @@
     <Compile Include="frmDyeConsReceived.Designer.cs">
       <DependentUpon>frmDyeConsReceived.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmDyeConsumablesSOH.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmDyeConsumablesSOH.Designer.cs">
+      <DependentUpon>frmDyeConsumablesSOH.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmDyedBasicQual.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -1299,6 +1305,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmDyeConsReceived.resx">
       <DependentUpon>frmDyeConsReceived.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmDyeConsumablesSOH.resx">
+      <DependentUpon>frmDyeConsumablesSOH.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmDyedBasicQual.resx">
       <DependentUpon>frmDyedBasicQual.cs</DependentUpon>

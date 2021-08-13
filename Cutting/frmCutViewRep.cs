@@ -717,7 +717,7 @@ namespace Cutting
                         nr.Priority = row.TLCUTSH_Priority;
                         nr.OnHold = row.TLCUTSH_OnHold;
                         nr.DyeBatch = context.TLDYE_DyeBatch.Find(row.TLCutSH_DyeBatch_FK).DYEB_BatchNo;
-                        
+
                         var xSizes = context.TLCUT_ExpectedUnits.Where(x => x.TLCUTE_CutSheet_FK == row.TLCutSH_Pk).ToList();
                         foreach (var xSize in xSizes)
                         {
@@ -3041,9 +3041,87 @@ namespace Cutting
                 crystalReportViewer1.ReportSource = OnHold;
 
             }
+            else if (_RepNo == 22)      // Cutting On Hold Report  
+            {
+                DataSet ds = new DataSet();
+                DataSet22.DataTable1DataTable dataTable = new DataSet22.DataTable1DataTable();
+                DataSet22.DataTable2DataTable dataTable2 = new DataSet22.DataTable2DataTable();
+                Util core = new Util();
 
+                DataSet22.DataTable1Row nr = dataTable.NewDataTable1Row();
+                nr.Pk = 1;
+                nr.FromDate = _parms.FromDate;
+                nr.ToDate = _parms.ToDate;
+                nr.Title = "Cutting Waste Anaysis";
+                dataTable.AddDataTable1Row(nr);
+
+                using (var context = new TTI2Entities())
+                {
+                    var CutSheets = context.TLCUT_CutSheet.Where(x => x.TLCutSH_Date >= _parms.FromDate && x.TLCutSH_Date <= _parms.ToDate).ToList();
+                    foreach(var CutSheet in CutSheets)
+                    {
+                        DataSet22.DataTable2Row xnr = dataTable2.NewDataTable2Row();
+                        xnr.Pk = 1;
+                        xnr.CutSheetNo = CutSheet.TLCutSH_No;
+                        var DB = context.TLDYE_DyeBatch.Find(CutSheet.TLCutSH_DyeBatch_FK);
+                        if (DB != null)
+                        {
+                            xnr.DyeBatchNo = DB.DYEB_BatchNo;
+                            xnr.FabNetWeight = (from T1 in context.TLDYE_DyeBatch
+                                       join T2 in context.TLDYE_DyeBatchDetails
+                                       on T1.DYEB_Pk equals T2.DYEBD_DyeBatch_FK
+                                       where T1.DYEB_Pk == CutSheet.TLCutSH_DyeBatch_FK && T2.DYEBD_BodyTrim
+                                       select T2).Sum(x =>(decimal?)x.DYEBO_Nett) ?? 0.00M;
+                        }
+                        var CutReceipt = context.TLCUT_CutSheetReceipt.Where(x => x.TLCUTSHR_CutSheet_FK == CutSheet.TLCutSH_Pk).FirstOrDefault();
+                        if (CutReceipt != null)
+                        {
+                            xnr.Machine = context.TLADM_MachineDefinitions.Find(CutReceipt.TLCUTSHR_Machine_FK).MD_Description;
+                            xnr.GoodPanels = (from T1 in context.TLCUT_CutSheetReceipt
+                                                join T2 in context.TLCUT_CutSheetReceiptDetail
+                                                on T1.TLCUTSHR_Pk equals T2.TLCUTSHRD_CutSheet_FK
+                                                where T1.TLCUTSHR_Pk == CutReceipt.TLCUTSHR_CutSheet_FK
+                                                select T2).Sum(x => (int ?)x.TLCUTSHRD_BundleQty ) ?? 0;
+
+                            xnr.RecordedCuttingWeight = CutReceipt.TLCUTSHR_WasteCutSheet;
+                            xnr.RecordedPanelWaste = CutReceipt.TLCUTSHR_WastePanels;
+
+                            if (xnr.RecordedCuttingWeight != 0 && xnr.FabNetWeight != 0)
+                            {
+                                xnr.CuttingWastePerc = Math.Round(xnr.RecordedCuttingWeight / xnr.FabNetWeight * 100, 1);
+                            }
+
+                            if (xnr.RecordedPanelWaste != 0 && xnr.FabNetWeight != 0)
+                            {
+                                xnr.PanelWastePerc = Math.Round(xnr.RecordedPanelWaste / xnr.FabNetWeight * 100, 1);
+                            }
+
+                            xnr.TotalWaste = xnr.RecordedCuttingWeight + xnr.RecordedPanelWaste;
+
+                            if(xnr.TotalWaste != 0 && xnr.FabNetWeight != 0)
+                            {
+                                xnr.TotalWastePerc = Math.Round(xnr.TotalWaste / xnr.FabNetWeight * 100, 1);
+                            }
+
+                        }
+                        
+                        xnr.Quality = context.TLADM_Griege.Find(CutSheet.TLCutSH_Quality_FK).TLGreige_Description;
+                        xnr.Size = context.TLADM_Sizes.Find(CutSheet.TLCutSH_Size_FK).SI_Description;
+                        xnr.Colour = context.TLADM_Colours.Find(CutSheet.TLCutSH_Colour_FK).Col_Display;
+
+
+
+                        dataTable2.AddDataTable2Row(xnr);
+                    }
+
+                }
+                ds.Tables.Add(dataTable);
+                ds.Tables.Add(dataTable2);
+                // CuttingWasteMangement OnHold = new CuttingWasteManagement();
+                // OnHold.SetDataSource(ds);
+                // crystalReportViewer1.ReportSource = OnHold;
+            }
             crystalReportViewer1.Refresh();
-
         }
 
         private struct DATA

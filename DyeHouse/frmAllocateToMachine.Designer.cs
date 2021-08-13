@@ -210,6 +210,7 @@
             this.Cursor = System.Windows.Forms.Cursors.Arrow;
             this.Name = "frmAllocateToMachine";
             this.Text = "Allocate batch to dye machine";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmAllocateToMachine_FormClosing);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.ResumeLayout(false);

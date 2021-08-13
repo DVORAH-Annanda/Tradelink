@@ -105,11 +105,11 @@ namespace DyeHouse
                 //var QAProcessItems = context.TLADM_QADyeProcessFields.Where(x => x.TLQADPF_Process_FK == 2).ToList();
                 if (_StabAfterDrying)
                 {
-                    QAProcessItems = context.TLADM_QADyeProcessFields.Where(x => x.TLQADPF_Drier).ToList();
+                    QAProcessItems = context.TLADM_QADyeProcessFields.Where(x=>x.TLQADPF_Drier).ToList();
                 }
                 else
                 {
-                    QAProcessItems = context.TLADM_QADyeProcessFields.Where(x => x.TLQAPF_Compactor).ToList();
+                    QAProcessItems = context.TLADM_QADyeProcessFields.Where(x=>x.TLQAPF_Compactor || x.TLQADPF_Process_FK == 3).ToList();
                 }
 
                 foreach (var Record in QAProcessItems)
@@ -151,12 +151,16 @@ namespace DyeHouse
             ComboBox oCmbo = sender as ComboBox;
             TLDYE_NonComplianceAnalysis Existing;
             bool first = true;
-
+            IList<TLADM_QADyeProcessFields> QAProcessItems = null;  // context.TLADM_QADyeProcessFields.Where(x => x.TLQADPF_Process_FK == 2).ToList();
             if (oCmbo != null && formloaded)
             {
                 var selected = (TLDYE_DyeBatch)cmboBatchNumber.SelectedItem;
                 if (selected != null)
                 {
+                    oCmboPieceNumber.DataSource = null;
+                    oCmboPieceNumber.Items.Clear();
+                    dataGridView1.Rows.Clear();
+                    
                     using (var context = new TTI2Entities())
                     {
                         if (!selected.DYEB_CommissinCust)
@@ -198,8 +202,15 @@ namespace DyeHouse
                         
 
                         dataGridView1.Rows.Clear();
-                        // var QAProcessItems = context.TLADM_QADyeProcessFields.Where(x => x.TLQADPF_Process_FK == 2).ToList();
-                        var QAProcessItems = context.TLADM_QADyeProcessFields.Where(x => x.TLQADPF_Drier).ToList();
+                        // var QAProcessItems = context.TLADM_QADyeProcessFields.Where(x => x.TLQADPF_Process_FK == 2 || x.TL.ToList();
+                        if (_StabAfterDrying)
+                        {
+                            QAProcessItems = context.TLADM_QADyeProcessFields.Where(x => x.TLQADPF_Drier).ToList();
+                        }
+                        else
+                        {
+                            QAProcessItems = context.TLADM_QADyeProcessFields.Where(x => x.TLQAPF_Compactor || x.TLQADPF_Process_FK == 3).ToList();
+                        }
                         if (QAProcessItems.Count == 0)
                         {
                             MessageBox.Show("No set up has been applied to QA Dye Process Fields table");

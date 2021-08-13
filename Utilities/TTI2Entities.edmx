@@ -1707,6 +1707,8 @@
           <Property Name="TLCUTSHR_InReceiptCage" Type="bit" Nullable="false" />
           <Property Name="TLCUTSHR_WhsePanStore_FK" Type="int" Nullable="false" />
           <Property Name="TLCUTSHR_WhseBunStore_FK" Type="int" Nullable="false" />
+          <Property Name="TLCUTSHR_WastePanels" Type="decimal" Precision="18" Scale="4" Nullable="false" />
+          <Property Name="TLCUTSHR_WasteCutSheet" Type="decimal" Precision="18" Scale="4" Nullable="false" />
         </EntityType>
         <EntityType Name="TLCUT_CutSheetReceiptBoxes">
           <Key>
@@ -1743,6 +1745,7 @@
           <Property Name="TLCUTSHRD_ToCMTDate" Type="datetime" />
           <Property Name="TLCUTSHRD_OnHold" Type="bit" Nullable="false" />
           <Property Name="TLCUTSHRD_OnHold_FK" Type="int" Nullable="false" />
+          <Property Name="TLCUTSHRD_WasteMeasurement" Type="decimal" Precision="18" Scale="4" Nullable="false" />
         </EntityType>
         <EntityType Name="TLCUT_ExpectedUnits">
           <Key>
@@ -1888,10 +1891,16 @@
           </Key>
           <Property Name="DYCSH_Pk" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="DYCSH_Consumable_FK" Type="int" Nullable="false" />
-          <Property Name="DYCSH_WhseStore_FK" Type="int" Nullable="false" />
+          <Property Name="DYCSH_WhseStore_FK" Type="int" />
           <Property Name="DYCSH_StockOnHand" Type="decimal" Precision="18" Scale="4" Nullable="false" />
           <Property Name="DYCSH_TransNumber" Type="int" Nullable="false" />
           <Property Name="DYCSH_DyeKitchen" Type="bit" Nullable="false" />
+          <Property Name="DYCSH_Quarantine" Type="bit" Nullable="false" />
+          <Property Name="DYCSH_Pass" Type="bit" Nullable="false" />
+          <Property Name="DYCSH_QuarantineStore_FK" Type="int" Nullable="false" />
+          <Property Name="DYCSH_DyeKitchen_FK" Type="int" />
+          <Property Name="DYCSH_SOHQuar" Type="decimal" Precision="18" Scale="4" Nullable="false" />
+          <Property Name="DYCSH_SOHKitchen" Type="decimal" Precision="18" Scale="4" Nullable="false" />
         </EntityType>
         <EntityType Name="TLDYE_ConSummableReceived">
           <Key>
@@ -2003,6 +2012,7 @@
           <Property Name="DYEBO_BIFInTransit" Type="bit" Nullable="false" />
           <Property Name="DYEBO_WasRejected" Type="bit" Nullable="false" />
           <Property Name="DYEBO_Notes" Type="varchar" MaxLength="50" />
+          <Property Name="DYEBO_FWAtCutting" Type="decimal" Precision="18" Scale="4" Nullable="false" />
         </EntityType>
         <EntityType Name="TLDYE_DyeingStandards">
           <Key>
@@ -5182,6 +5192,7 @@
           <Property Name="TLCUTSHRD_ToCMTDate" Type="DateTime" Precision="3" />
           <Property Name="TLCUTSHRD_OnHold" Type="Boolean" Nullable="false" />
           <Property Name="TLCUTSHRD_OnHold_FK" Type="Int32" Nullable="false" />
+          <Property Name="TLCUTSHRD_WasteMeasurement" Type="Decimal" Nullable="false" Precision="18" Scale="4" />
         </EntityType>
         <EntityType Name="TLADM_StyleTrim">
           <Key>
@@ -5199,10 +5210,16 @@
           </Key>
           <Property Name="DYCSH_Pk" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="DYCSH_Consumable_FK" Type="Int32" Nullable="false" />
-          <Property Name="DYCSH_WhseStore_FK" Type="Int32" Nullable="false" />
+          <Property Name="DYCSH_WhseStore_FK" Type="Int32" />
           <Property Name="DYCSH_StockOnHand" Type="Decimal" Nullable="false" Precision="18" Scale="4" />
           <Property Name="DYCSH_TransNumber" Type="Int32" Nullable="false" />
           <Property Name="DYCSH_DyeKitchen" Type="Boolean" Nullable="false" />
+          <Property Name="DYCSH_Quarantine" Type="Boolean" Nullable="false" />
+          <Property Name="DYCSH_Pass" Type="Boolean" Nullable="false" />
+          <Property Name="DYCSH_QuarantineStore_FK" Type="Int32" Nullable="false" />
+          <Property Name="DYCSH_DyeKitchen_FK" Type="Int32" />
+          <Property Name="DYCSH_SOHQuar" Type="Decimal" Nullable="false" Precision="18" Scale="4" />
+          <Property Name="DYCSH_SOHKitchen" Type="Decimal" Nullable="false" Precision="18" Scale="4" />
         </EntityType>
         <EntityType Name="TLKNI_GreigeCommissionTransctions">
           <Key>
@@ -6088,6 +6105,8 @@
           <Property Name="TLCUTSHR_InReceiptCage" Type="Boolean" Nullable="false" />
           <Property Name="TLCUTSHR_WhsePanStore_FK" Type="Int32" Nullable="false" />
           <Property Name="TLCUTSHR_WhseBunStore_FK" Type="Int32" Nullable="false" />
+          <Property Name="TLCUTSHR_WastePanels" Type="Decimal" Nullable="false" Precision="18" Scale="4" />
+          <Property Name="TLCUTSHR_WasteCutSheet" Type="Decimal" Nullable="false" Precision="18" Scale="4" />
         </EntityType>
         <EntityType Name="TLCUT_ExpectedUnits">
           <Key>
@@ -6428,6 +6447,7 @@
           <Property Name="DYEBO_BIFInTransit" Type="Boolean" Nullable="false" />
           <Property Name="DYEBO_WasRejected" Type="Boolean" Nullable="false" />
           <Property Name="DYEBO_Notes" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="DYEBO_FWAtCutting" Type="Decimal" Nullable="false" Precision="18" Scale="4" />
         </EntityType>
         <EntityType Name="TLDYE_ConSummableReceived">
           <Key>
@@ -8314,6 +8334,7 @@
           <EntitySetMapping Name="TLCUT_CutSheetReceiptDetail">
             <EntityTypeMapping TypeName="TTI2Model.TLCUT_CutSheetReceiptDetail">
               <MappingFragment StoreEntitySet="TLCUT_CutSheetReceiptDetail">
+                <ScalarProperty Name="TLCUTSHRD_WasteMeasurement" ColumnName="TLCUTSHRD_WasteMeasurement" />
                 <ScalarProperty Name="TLCUTSHRD_OnHold_FK" ColumnName="TLCUTSHRD_OnHold_FK" />
                 <ScalarProperty Name="TLCUTSHRD_OnHold" ColumnName="TLCUTSHRD_OnHold" />
                 <ScalarProperty Name="TLCUTSHRD_ToCMTDate" ColumnName="TLCUTSHRD_ToCMTDate" />
@@ -8351,6 +8372,12 @@
           <EntitySetMapping Name="TLDYE_ConsumableSOH">
             <EntityTypeMapping TypeName="TTI2Model.TLDYE_ConsumableSOH">
               <MappingFragment StoreEntitySet="TLDYE_ConsumableSOH">
+                <ScalarProperty Name="DYCSH_SOHKitchen" ColumnName="DYCSH_SOHKitchen" />
+                <ScalarProperty Name="DYCSH_SOHQuar" ColumnName="DYCSH_SOHQuar" />
+                <ScalarProperty Name="DYCSH_DyeKitchen_FK" ColumnName="DYCSH_DyeKitchen_FK" />
+                <ScalarProperty Name="DYCSH_QuarantineStore_FK" ColumnName="DYCSH_QuarantineStore_FK" />
+                <ScalarProperty Name="DYCSH_Pass" ColumnName="DYCSH_Pass" />
+                <ScalarProperty Name="DYCSH_Quarantine" ColumnName="DYCSH_Quarantine" />
                 <ScalarProperty Name="DYCSH_DyeKitchen" ColumnName="DYCSH_DyeKitchen" />
                 <ScalarProperty Name="DYCSH_TransNumber" ColumnName="DYCSH_TransNumber" />
                 <ScalarProperty Name="DYCSH_StockOnHand" ColumnName="DYCSH_StockOnHand" />
@@ -9187,6 +9214,8 @@
           <EntitySetMapping Name="TLCUT_CutSheetReceipt">
             <EntityTypeMapping TypeName="TTI2Model.TLCUT_CutSheetReceipt">
               <MappingFragment StoreEntitySet="TLCUT_CutSheetReceipt">
+                <ScalarProperty Name="TLCUTSHR_WasteCutSheet" ColumnName="TLCUTSHR_WasteCutSheet" />
+                <ScalarProperty Name="TLCUTSHR_WastePanels" ColumnName="TLCUTSHR_WastePanels" />
                 <ScalarProperty Name="TLCUTSHR_WhseBunStore_FK" ColumnName="TLCUTSHR_WhseBunStore_FK" />
                 <ScalarProperty Name="TLCUTSHR_WhsePanStore_FK" ColumnName="TLCUTSHR_WhsePanStore_FK" />
                 <ScalarProperty Name="TLCUTSHR_InReceiptCage" ColumnName="TLCUTSHR_InReceiptCage" />
@@ -9512,6 +9541,7 @@
           <EntitySetMapping Name="TLDYE_DyeBatchDetails">
             <EntityTypeMapping TypeName="TTI2Model.TLDYE_DyeBatchDetails">
               <MappingFragment StoreEntitySet="TLDYE_DyeBatchDetails">
+                <ScalarProperty Name="DYEBO_FWAtCutting" ColumnName="DYEBO_FWAtCutting" />
                 <ScalarProperty Name="DYEBO_Notes" ColumnName="DYEBO_Notes" />
                 <ScalarProperty Name="DYEBO_WasRejected" ColumnName="DYEBO_WasRejected" />
                 <ScalarProperty Name="DYEBO_BIFInTransit" ColumnName="DYEBO_BIFInTransit" />

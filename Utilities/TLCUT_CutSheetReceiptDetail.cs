@@ -34,5 +34,6 @@ namespace Utilities
         public Nullable<System.DateTime> TLCUTSHRD_ToCMTDate { get; set; }
         public bool TLCUTSHRD_OnHold { get; set; }
         public int TLCUTSHRD_OnHold_FK { get; set; }
+        public decimal TLCUTSHRD_WasteMeasurement { get; set; }
     }
 }

@@ -17,6 +17,7 @@ namespace DyeHouse
         DataColumn column;
         BindingSource Bind;
         bool FormLoaded;
+        Util core; 
 
         DataGridViewTextBoxColumn selecta;    // index of consumable Record 
         DataGridViewTextBoxColumn selectb;    // Consumables 
@@ -33,8 +34,9 @@ namespace DyeHouse
             dt = new DataTable();
             column = new DataColumn();
             Bind = new BindingSource();
+            core = new Util();
             dataGridView1.AutoGenerateColumns = false;
-
+            dataGridView1.AllowUserToAddRows = false;
             
             //==========================================================================================
             // 1st task is to create the data table
@@ -176,7 +178,6 @@ namespace DyeHouse
             selectf.DataPropertyName = dt.Columns[6].ColumnName;
             selectf.HeaderText = "Quantities";
             selectf.Visible = true;
-            selectf.ReadOnly = true;
             dataGridView1.Columns.Add(selectf);
             dataGridView1.Columns[6].DisplayIndex = 6;
             
@@ -199,27 +200,34 @@ namespace DyeHouse
             FormLoaded = false;
             using ( var Context = new TTI2Entities())
             {
-                
+                cmboWhseStore.DataSource = Context.TLADM_WhseStore.Where(x => x.WhStore_ChemicalStore && !x.WhStore_Default && !x.WhStore_DyeKitchen).ToList();
+                cmboWhseStore.ValueMember = "WhStore_Id";
+                cmboWhseStore.DisplayMember = "WhStore_Description";
+                cmboWhseStore.SelectedValue = -1;
+
                 dt.Rows.Clear();
 
-                var Consumables = Context.TLDYE_ConSummableReceived.Where(x => !x.DYECON_Pass).ToList();
-
-                foreach(var Consumable in Consumables)
+                var ConsumablesSOH = Context.TLDYE_ConsumableSOH.Where(x => !x.DYCSH_Pass && x.DYCSH_Quarantine).ToList();
+                foreach(var ConSOH in ConsumablesSOH)
                 {
                     var NewRow = dt.NewRow();
-                    NewRow[0] = Consumable.DYECON_Pk;
+                    NewRow[0] = ConSOH.DYCSH_Pk;
                     NewRow[1] = false;
-                    NewRow[2] = Context.TLADM_ConsumablesDC.Find(Consumable.DYECON_Consumable_FK).ConsDC_Description;
-                    var Supplier = Context.TLADM_Suppliers.Find(Consumable.DYECON_Supplier_FK);
-                    if (Supplier != null)
-                    {
-                        NewRow[3] = Supplier.Sup_Description;
-                    }
-                    NewRow[4] = Consumable.DYECON_ContainerId;
-                    NewRow[5] = Consumable.DYECON_OrderNo;
-                    NewRow[6] = Consumable.DYECON_Amount;
-                    NewRow[7] = Context.TLADM_UOM.Find(Consumable.DYECON_UOM_FK).UOM_Description;
+                    NewRow[2] = Context.TLADM_ConsumablesDC.Find(ConSOH.DYCSH_Consumable_FK).ConsDC_Description;
 
+                    var ConSumerRec = Context.TLDYE_ConSummableReceived.FirstOrDefault(s=>s.DYECON_Consumable_FK == ConSOH.DYCSH_Consumable_FK && s.DYECON_TransNumber == ConSOH.DYCSH_TransNumber);
+                    if (ConSumerRec != null)
+                    {
+                        var Supplier = Context.TLADM_Suppliers.Find(ConSumerRec.DYECON_Supplier_FK);
+                        if (Supplier != null)
+                        {
+                            NewRow[3] = Supplier.Sup_Description;
+                        }
+                        NewRow[4] = ConSumerRec.DYECON_ContainerId;
+                        NewRow[5] = ConSumerRec.DYECON_OrderNo;
+                        NewRow[6] = ConSumerRec.DYECON_Amount;
+                        NewRow[7] = Context.TLADM_UOM.Find(ConSumerRec.DYECON_UOM_FK).UOM_Description;
+                    }
                     dt.Rows.Add(NewRow);
                 }
             }
@@ -232,8 +240,18 @@ namespace DyeHouse
             Button oBtn = sender as Button;
             if(oBtn != null && FormLoaded)
             {
+                var StoreSelected = (TLADM_WhseStore)cmboWhseStore.SelectedItem;
+                if(StoreSelected == null)
+                {
+                    MessageBox.Show("Please select a Store");
+                    return;
+                }
+
+                
                 using (var Context = new TTI2Entities())
                 {
+                    var StorePk = StoreSelected.WhStore_Id; 
+                    
                     foreach (DataRow Row in dt.Rows)
                     {
                         if (!Row.Field<bool>(1))
@@ -242,19 +260,61 @@ namespace DyeHouse
                         }
 
                         var Pk = Row.Field<int>(0);
+                        var Amt = Row.Field<decimal>(6);
 
-                        var ConsumRec = Context.TLDYE_ConSummableReceived.Find(Pk);
-
-                        if(ConsumRec != null)
+                        var soh = Context.TLDYE_ConsumableSOH.Find(Pk);
+                        if (soh != null)
                         {
-                            ConsumRec.DYECON_Pass = true;
-                            var TranType = Context.TLADM_TranactionType.Where(x => x.TrxT_Number == 1500 && x.TrxT_Department_FK == 12).FirstOrDefault();
-                            if(TranType != null)
+                            soh.DYCSH_Consumable_FK = StorePk;
+                            soh.DYCSH_SOHQuar -= Amt;
+                            soh.DYCSH_StockOnHand = Amt;
+                            if(soh.DYCSH_SOHQuar <= 0 )
                             {
-                                ConsumRec.DYECON_WhseStore_FK = (int)TranType.TrxT_ToWhse_FK;
+                                soh.DYCSH_Quarantine = false;
+                                soh.DYCSH_Pass = true;
                             }
                         }
+                            
+                    }
 
+                    try
+                    {
+                        Context.SaveChanges();
+                        MessageBox.Show("Data successfully save to database");
+                        dt.Rows.Clear();
+                        return;
+                    }
+                    catch(Exception ex)
+                    {
+                        MessageBox.Show(ex.Message.ToString());
+                        return;
+                    }
+                }
+            }
+        }
+
+        private void dataGridView1_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
+        {
+            DataGridView oDgv = sender as DataGridView;
+            
+            if ( oDgv != null && FormLoaded)
+            {
+                if (oDgv.Focused && oDgv.CurrentCell is DataGridViewTextBoxCell)
+                {
+                    var Cell = oDgv.CurrentCell;
+
+                    if (Cell.ColumnIndex == 6)
+                       
+                    {
+                        e.Control.KeyDown -= new KeyEventHandler(core.txtWin_KeyDownOEM);
+                        e.Control.KeyDown += new KeyEventHandler(core.txtWin_KeyDownOEM);
+                        e.Control.KeyPress -= new KeyPressEventHandler(core.txtWin_KeyPress);
+                        e.Control.KeyPress += new KeyPressEventHandler(core.txtWin_KeyPress);
+                    }
+                    else
+                    {
+                        e.Control.KeyDown -= new KeyEventHandler(core.txtWin_KeyDownOEM);
+                        e.Control.KeyPress -= new KeyPressEventHandler(core.txtWin_KeyPress);
                     }
                 }
             }
