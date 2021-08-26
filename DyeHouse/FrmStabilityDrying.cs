@@ -51,9 +51,9 @@ namespace DyeHouse
             dataGridView1.AutoGenerateColumns = false;
 
             if (StabAfterDrying)
-                this.Text = "Stability Check After Drying";
+                this.Text = "Measurements After Drying";
             else
-                this.Text = "Fabric Stability check after compacting";
+                this.Text = "Measurements After Compacting";
 
            _StabAfterDrying = StabAfterDrying;
             SetUp(true);

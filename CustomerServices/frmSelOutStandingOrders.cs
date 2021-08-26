@@ -29,7 +29,7 @@ namespace CustomerServices
             this.cmboStyles.CheckStateChanged += new System.EventHandler(this.cmboStyles_CheckStateChanged);
             this.cmboColours.CheckStateChanged += new System.EventHandler(this.cmboColours_CheckStateChanged);
             this.cmboSizes.CheckStateChanged += new System.EventHandler(this.cmboSizes_CheckStateChanged);
-
+            this.cmboMonths.CheckStateChanged += new System.EventHandler(this.cmboMonths_CheckStateChanged);
             repo = new Repository();
         }
 
@@ -62,6 +62,13 @@ namespace CustomerServices
                 {
                     cmboSizes.Items.Add(new CustomerServices.CheckComboBoxItem(Size.SI_id, Size.SI_Description, false));
                 }
+
+                var Months = context.TLADM_Months.ToList();
+                foreach (var Mnth in Months)
+                {
+                    cmboMonths.Items.Add(new CustomerServices.CheckComboBoxItem(Mnth.Mth_Pk, Mnth.Mth_Description, false));
+                }
+                               
             }
 
             QueryParms = new CustomerServicesParameters();
@@ -90,6 +97,24 @@ namespace CustomerServices
             }
         }
 
+        private void cmboMonths_CheckStateChanged(object sender, EventArgs e)
+        {
+            if (sender is CustomerServices.CheckComboBoxItem && FormLoaded)
+            {
+                CustomerServices.CheckComboBoxItem item = (CustomerServices.CheckComboBoxItem)sender;
+                if (item.CheckState)
+                {
+                    QueryParms.Months.Add(repo.LoadMonths(item._Pk));
+
+                }
+                else
+                {
+                    var value = QueryParms.Months.Find(it => it.Mth_Pk == item._Pk);
+                    if (value != null)
+                        QueryParms.Months.Remove(value);
+                }
+            }
+        }
         //-------------------------------------------------------------------------------------
         // this message handler gets called when the user checks/unchecks an item the combo box
         //----------------------------------------------------------------------------------------
@@ -164,8 +189,13 @@ namespace CustomerServices
             Button oBtn = (Button)sender;
             if (oBtn != null && FormLoaded)
             {
-                CSVServices svcs = new CSVServices();
+                if(QueryParms.Customers.Count == 0)
+                {
+                    MessageBox.Show("Please select at least one customer");
+                    return;
+                }
 
+                CSVServices svcs = new CSVServices();
                 frmCSViewRep vRep = new frmCSViewRep(17, QueryParms, svcs);
                 int h = Screen.PrimaryScreen.WorkingArea.Height;
                 int w = Screen.PrimaryScreen.WorkingArea.Width;
@@ -180,7 +210,7 @@ namespace CustomerServices
                 cmboCustomers.Items.Clear();
                 cmboStyles.Items.Clear();
                 cmboSizes.Items.Clear();
-
+                cmboMonths.Items.Clear();
                 frmSelOutStandingOrders_Load(this, null);
 
             }
@@ -210,6 +240,13 @@ namespace CustomerServices
         }
 
         private void cmboSizes_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ComboBox oCmbo = (ComboBox)sender;
+            if (oCmbo != null && !oCmbo.DroppedDown)
+                oCmbo.DroppedDown = true;
+        }
+
+        private void cmboMonths_SelectedIndexChanged(object sender, EventArgs e)
         {
             ComboBox oCmbo = (ComboBox)sender;
             if (oCmbo != null && !oCmbo.DroppedDown)

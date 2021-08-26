@@ -33,6 +33,8 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.btnSubmit = new System.Windows.Forms.Button();
+            this.label5 = new System.Windows.Forms.Label();
+            this.cmboMonths = new CustomerServices.CheckComboBox();
             this.cmboSizes = new CustomerServices.CheckComboBox();
             this.cmboColours = new CustomerServices.CheckComboBox();
             this.cmboStyles = new CustomerServices.CheckComboBox();
@@ -51,7 +53,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(123, 145);
+            this.label2.Location = new System.Drawing.Point(123, 203);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(35, 13);
             this.label2.TabIndex = 3;
@@ -60,7 +62,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(123, 213);
+            this.label3.Location = new System.Drawing.Point(123, 271);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(42, 13);
             this.label3.TabIndex = 4;
@@ -69,7 +71,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(126, 283);
+            this.label4.Location = new System.Drawing.Point(126, 339);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(32, 13);
             this.label4.TabIndex = 6;
@@ -77,7 +79,7 @@
             // 
             // btnSubmit
             // 
-            this.btnSubmit.Location = new System.Drawing.Point(489, 373);
+            this.btnSubmit.Location = new System.Drawing.Point(494, 452);
             this.btnSubmit.Name = "btnSubmit";
             this.btnSubmit.Size = new System.Drawing.Size(75, 23);
             this.btnSubmit.TabIndex = 8;
@@ -85,11 +87,31 @@
             this.btnSubmit.UseVisualStyleBackColor = true;
             this.btnSubmit.Click += new System.EventHandler(this.btnSubmit_Click);
             // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(129, 135);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(42, 13);
+            this.label5.TabIndex = 9;
+            this.label5.Text = "Months";
+            // 
+            // cmboMonths
+            // 
+            this.cmboMonths.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cmboMonths.FormattingEnabled = true;
+            this.cmboMonths.Location = new System.Drawing.Point(224, 131);
+            this.cmboMonths.Name = "cmboMonths";
+            this.cmboMonths.Size = new System.Drawing.Size(233, 21);
+            this.cmboMonths.TabIndex = 10;
+            this.cmboMonths.Text = "Select Options";
+            this.cmboMonths.SelectedIndexChanged += new System.EventHandler(this.cmboMonths_SelectedIndexChanged);
+            // 
             // cmboSizes
             // 
             this.cmboSizes.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
             this.cmboSizes.FormattingEnabled = true;
-            this.cmboSizes.Location = new System.Drawing.Point(224, 275);
+            this.cmboSizes.Location = new System.Drawing.Point(224, 332);
             this.cmboSizes.Name = "cmboSizes";
             this.cmboSizes.Size = new System.Drawing.Size(233, 21);
             this.cmboSizes.TabIndex = 7;
@@ -100,7 +122,7 @@
             // 
             this.cmboColours.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
             this.cmboColours.FormattingEnabled = true;
-            this.cmboColours.Location = new System.Drawing.Point(224, 213);
+            this.cmboColours.Location = new System.Drawing.Point(224, 265);
             this.cmboColours.Name = "cmboColours";
             this.cmboColours.Size = new System.Drawing.Size(233, 21);
             this.cmboColours.TabIndex = 5;
@@ -111,7 +133,7 @@
             // 
             this.cmboStyles.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
             this.cmboStyles.FormattingEnabled = true;
-            this.cmboStyles.Location = new System.Drawing.Point(224, 138);
+            this.cmboStyles.Location = new System.Drawing.Point(224, 198);
             this.cmboStyles.Name = "cmboStyles";
             this.cmboStyles.Size = new System.Drawing.Size(233, 21);
             this.cmboStyles.TabIndex = 2;
@@ -133,7 +155,9 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(609, 429);
+            this.ClientSize = new System.Drawing.Size(609, 514);
+            this.Controls.Add(this.cmboMonths);
+            this.Controls.Add(this.label5);
             this.Controls.Add(this.btnSubmit);
             this.Controls.Add(this.cmboSizes);
             this.Controls.Add(this.label4);
@@ -162,5 +186,7 @@
         private System.Windows.Forms.Label label4;
         private /*System.Windows.Forms.ComboBox*/ CustomerServices.CheckComboBox cmboSizes;
         private System.Windows.Forms.Button btnSubmit;
+        private System.Windows.Forms.Label label5;
+        private /*System.Windows.Forms.ComboBox*/ CustomerServices.CheckComboBox cmboMonths;
     }
 }

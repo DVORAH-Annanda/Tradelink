@@ -400,6 +400,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DataSet53.xsd</DependentUpon>
     </Compile>
+    <Compile Include="DataSet54.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSet54.xsd</DependentUpon>
+    </Compile>
     <Compile Include="DataSet6.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -496,6 +501,12 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>DODetails.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="DyeGreigeAnalysis.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DyeGreigeAnalysis.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="DyeingProcessLoss.cs">
@@ -786,6 +797,12 @@
     </Compile>
     <Compile Include="frmFinalApproval.Designer.cs">
       <DependentUpon>frmFinalApproval.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmGreigeAnalysis.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmGreigeAnalysis.Designer.cs">
+      <DependentUpon>frmGreigeAnalysis.cs</DependentUpon>
     </Compile>
     <Compile Include="frmHydroResults.cs">
       <SubType>Form</SubType>
@@ -1215,6 +1232,10 @@
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>DODetails.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="DyeGreigeAnalysis.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>DyeGreigeAnalysis.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="DyeingProcessLoss.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>DyeingProcessLoss.cs</LastGenOutput>
@@ -1369,6 +1390,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmFinalApproval.resx">
       <DependentUpon>frmFinalApproval.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmGreigeAnalysis.resx">
+      <DependentUpon>frmGreigeAnalysis.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmHydroResults.resx">
       <DependentUpon>frmHydroResults.cs</DependentUpon>
@@ -2110,6 +2134,17 @@
     </None>
     <None Include="DataSet53.xss">
       <DependentUpon>DataSet53.xsd</DependentUpon>
+    </None>
+    <None Include="DataSet54.xsc">
+      <DependentUpon>DataSet54.xsd</DependentUpon>
+    </None>
+    <None Include="DataSet54.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSet54.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="DataSet54.xss">
+      <DependentUpon>DataSet54.xsd</DependentUpon>
     </None>
     <None Include="DataSet6.xsc">
       <DependentUpon>DataSet6.xsd</DependentUpon>

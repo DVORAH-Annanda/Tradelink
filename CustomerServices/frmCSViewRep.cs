@@ -1912,7 +1912,15 @@ namespace CustomerServices
                         foreach (var Mnth in GroupedByMonth)
                         {
                             string Mth = Mnth.FirstOrDefault().TLCUSTO_DateRequired.Value.Month.ToString().PadLeft(2, '0');
-
+                            if (_QueryParms.Months.Count != 0)
+                            {
+                                int MthKey = Mnth.FirstOrDefault().TLCUSTO_DateRequired.Value.Month;
+                                var SelectedMths = _QueryParms.Months.Where(x => x.Mth_Pk == MthKey).FirstOrDefault();
+                                if(SelectedMths == null)
+                                {
+                                    continue;
+                                }
+                            }
                             var Picked = Mnth.Sum(x => (int?)x.TLCUSTO_QtyPicked_ToDate) ?? 0;
                             var Ordered = Mnth.Sum(x => (int?)x.TLCUSTO_Qty) ?? 0;
 
@@ -1941,6 +1949,11 @@ namespace CustomerServices
                         {
                             nr.Size = _Sizes.FirstOrDefault(s => s.SI_id == Row.Field<int>(2)).SI_ContiSize.ToString();
                         }
+                        var StyK = Row.Field<int>(0);
+                        var ColK = Row.Field<int>(1);
+                        var SzeK = Row.Field<int>(2);
+
+                        nr.StockAvail = context.TLCSV_StockOnHand.Where(x => x.TLSOH_Style_FK == StyK && x.TLSOH_Colour_FK == ColK && x.TLSOH_Size_FK == SzeK && !x.TLSOH_Picked).Sum(x =>(int ?)x.TLSOH_BoxedQty) ?? 0;
                         nr.Jan = Row.Field<int>(3);
                         nr.Feb = Row.Field<int>(4);
                         nr.Mar = Row.Field<int>(5);
@@ -1953,6 +1966,10 @@ namespace CustomerServices
                         nr.Oct = Row.Field<int>(12);
                         nr.Nov = Row.Field<int>(13);
                         nr.Dec = Row.Field<int>(14);
+                        if(nr.Jan + nr.Feb + nr.Mar + nr.Apr + nr.May + nr.Jun + nr.Jul + nr.Aug + nr.Sep + nr.Aug + nr.Sep + nr.Oct + nr.Nov + nr.Dec == 0)
+                        {
+                            continue;
+                        }
 
                         dataTable1.AddDataTable1Row(nr);
                     }

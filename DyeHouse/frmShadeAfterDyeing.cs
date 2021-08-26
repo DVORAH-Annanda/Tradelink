@@ -27,24 +27,29 @@ namespace DyeHouse
         public frmShadeAfterDyeing(int Stage)
         {
             InitializeComponent();
+
+            formloaded = false;
+            
             _Stage = Stage;
             if (Stage == 3)
-                this.Text = "Colour matching after dyeing";
+            {
+                this.Text = "Colour Results after Dyeing";
+            }
             else if (Stage == 4)
             {
-                this.Text = "Stability check after drying";
+                this.Text = "Measurement Results after Drying";
                 this.rbAll.Visible = false;
                 this.rbRejected.Visible = false;
-                
+
                 label7.Visible = false;
                 cmboCause.Visible = false;
                 label8.Visible = false;
                 cmboRemedy.Visible = false;
-                cmboReportOptions.Visible = false;
+             
             }
             else if (Stage == 5)
             {
-                this.Text = "QA check after compacting";
+                this.Text = "Measurement Results after Compacting";
                 this.rbRejected.Visible = false;
                 this.rbAll.Visible = false;
 
@@ -52,9 +57,20 @@ namespace DyeHouse
                 cmboCause.Visible = false;
                 label8.Visible = false;
                 cmboRemedy.Visible = false;
-                cmboReportOptions.Visible = false;
+             
             }
+            else if (Stage == 6)
+            {
+                this.Text = "Measurement Results after Hydro";
+                this.rbRejected.Visible = false;
+                this.rbAll.Visible = false;
 
+                label7.Visible = false;
+                cmboCause.Visible = false;
+                label8.Visible = false;
+                cmboRemedy.Visible = false;
+              
+            }
             repo = new DyeRepository();
             //--------------------------------------------------------
             // wire up the check state changed event
@@ -71,6 +87,7 @@ namespace DyeHouse
         {
             repOps = new DyeReportOptions();
             QueryParms = new DyeQueryParameters();
+            QueryParms.DyeStage = _Stage;
 
             formloaded = false;
             using (var context = new TTI2Entities())
@@ -123,8 +140,8 @@ namespace DyeHouse
             var reportOptions = new BindingList<KeyValuePair<string, string>>();
             reportOptions.Add(new KeyValuePair<string, string>("1", "Quality"));
             reportOptions.Add(new KeyValuePair<string, string>("2", "Dye Machine"));
-            reportOptions.Add(new KeyValuePair<string, string>("3", "Dye Operator"));
-            reportOptions.Add(new KeyValuePair<string, string>("4", "Colour"));
+            reportOptions.Add(new KeyValuePair<string, string>("3", "Colour"));
+          
             if (_Stage == 3)
             {
                 reportOptions.Add(new KeyValuePair<string, string>("5", "Remedy"));
@@ -135,6 +152,8 @@ namespace DyeHouse
             cmboReportOptions.ValueMember = "Key";
             cmboReportOptions.DisplayMember = "Value";
             cmboReportOptions.SelectedIndex = -1;
+
+            cmboReportOptions.Visible = true;
 
             formloaded = true;
         }
@@ -170,8 +189,10 @@ namespace DyeHouse
                         vRep.Dispose();
                     }
                 }
-                else if (_Stage == 4)       //Stage 4 Stability Check after Drying;
+                else if (_Stage == 4 || _Stage == 6)       // Stage 4 Results after Drying;
+                                                           // Stage 6 Results After Hydro
                 {
+                    
                     frmDyeViewReport vRep = new frmDyeViewReport(32, QueryParms);
                     vRep.ShowDialog(this);
                     if (vRep != null)

@@ -285,6 +285,8 @@ namespace CustomerServices {
             
             private global::System.Data.DataColumn columnSize;
             
+            private global::System.Data.DataColumn columnStockAvail;
+            
             private global::System.Data.DataColumn columnJan;
             
             private global::System.Data.DataColumn columnFeb;
@@ -365,6 +367,14 @@ namespace CustomerServices {
             public global::System.Data.DataColumn SizeColumn {
                 get {
                     return this.columnSize;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn StockAvailColumn {
+                get {
+                    return this.columnStockAvail;
                 }
             }
             
@@ -513,6 +523,7 @@ namespace CustomerServices {
                         string Style, 
                         string Colour, 
                         string Size, 
+                        int StockAvail, 
                         int Jan, 
                         int Feb, 
                         int Mar, 
@@ -531,6 +542,7 @@ namespace CustomerServices {
                         Style,
                         Colour,
                         Size,
+                        StockAvail,
                         Jan,
                         Feb,
                         Mar,
@@ -569,6 +581,7 @@ namespace CustomerServices {
                 this.columnStyle = base.Columns["Style"];
                 this.columnColour = base.Columns["Colour"];
                 this.columnSize = base.Columns["Size"];
+                this.columnStockAvail = base.Columns["StockAvail"];
                 this.columnJan = base.Columns["Jan"];
                 this.columnFeb = base.Columns["Feb"];
                 this.columnMar = base.Columns["Mar"];
@@ -593,6 +606,8 @@ namespace CustomerServices {
                 base.Columns.Add(this.columnColour);
                 this.columnSize = new global::System.Data.DataColumn("Size", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnSize);
+                this.columnStockAvail = new global::System.Data.DataColumn("StockAvail", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnStockAvail);
                 this.columnJan = new global::System.Data.DataColumn("Jan", typeof(int), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnJan);
                 this.columnFeb = new global::System.Data.DataColumn("Feb", typeof(int), null, global::System.Data.MappingType.Element);
@@ -804,6 +819,22 @@ namespace CustomerServices {
                 }
                 set {
                     this[this.tableDataTable1.SizeColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public int StockAvail {
+                get {
+                    try {
+                        return ((int)(this[this.tableDataTable1.StockAvailColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'StockAvail\' in table \'DataTable1\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDataTable1.StockAvailColumn] = value;
                 }
             }
             
@@ -1049,6 +1080,18 @@ namespace CustomerServices {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public void SetSizeNull() {
                 this[this.tableDataTable1.SizeColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsStockAvailNull() {
+                return this.IsNull(this.tableDataTable1.StockAvailColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetStockAvailNull() {
+                this[this.tableDataTable1.StockAvailColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]

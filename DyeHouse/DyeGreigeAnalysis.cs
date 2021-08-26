@@ -16,14 +16,14 @@ namespace DyeHouse {
     using CrystalDecisions.CrystalReports.Engine;
     
     
-    public class DyeQAException : ReportClass {
+    public class DyeGreigeAnalysis : ReportClass {
         
-        public DyeQAException() {
+        public DyeGreigeAnalysis() {
         }
         
         public override string ResourceName {
             get {
-                return "DyeQAException.rpt";
+                return "DyeGreigeAnalysis.rpt";
             }
             set {
                 // Do nothing
@@ -41,7 +41,7 @@ namespace DyeHouse {
         
         public override string FullResourceName {
             get {
-                return "DyeHouse.DyeQAException.rpt";
+                return "DyeHouse.DyeGreigeAnalysis.rpt";
             }
             set {
                 // Do nothing
@@ -66,7 +66,7 @@ namespace DyeHouse {
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.CrystalReports.Engine.Section GroupHeaderSection1 {
+        public CrystalDecisions.CrystalReports.Engine.Section Section3 {
             get {
                 return this.ReportDefinition.Sections[2];
             }
@@ -74,7 +74,7 @@ namespace DyeHouse {
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.CrystalReports.Engine.Section Section3 {
+        public CrystalDecisions.CrystalReports.Engine.Section Section4 {
             get {
                 return this.ReportDefinition.Sections[3];
             }
@@ -82,33 +82,17 @@ namespace DyeHouse {
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.CrystalReports.Engine.Section GroupFooterSection1 {
-            get {
-                return this.ReportDefinition.Sections[4];
-            }
-        }
-        
-        [Browsable(false)]
-        [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.CrystalReports.Engine.Section Section4 {
-            get {
-                return this.ReportDefinition.Sections[5];
-            }
-        }
-        
-        [Browsable(false)]
-        [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
         public CrystalDecisions.CrystalReports.Engine.Section Section5 {
             get {
-                return this.ReportDefinition.Sections[6];
+                return this.ReportDefinition.Sections[4];
             }
         }
     }
     
     [System.Drawing.ToolboxBitmapAttribute(typeof(CrystalDecisions.Shared.ExportOptions), "report.bmp")]
-    public class CachedDyeQAException : Component, ICachedReport {
+    public class CachedDyeGreigeAnalysis : Component, ICachedReport {
         
-        public CachedDyeQAException() {
+        public CachedDyeGreigeAnalysis() {
         }
         
         [Browsable(false)]
@@ -145,7 +129,7 @@ namespace DyeHouse {
         }
         
         public virtual CrystalDecisions.CrystalReports.Engine.ReportDocument CreateReport() {
-            DyeQAException rpt = new DyeQAException();
+            DyeGreigeAnalysis rpt = new DyeGreigeAnalysis();
             rpt.Site = this.Site;
             return rpt;
         }

@@ -65,6 +65,10 @@ namespace CustomerServices
             return _context.TLADM_Styles.ToList(); 
         }
 
+        public TLADM_Months LoadMonths(int Pk)
+        {
+            return _context.TLADM_Months.FirstOrDefault(s => s.Mth_Pk == Pk);
+        }
         public TLADM_Colours LoadColour(int Pk)
         {
             return _context.TLADM_Colours.FirstOrDefault(s => s.Col_Id == Pk);
@@ -1500,6 +1504,7 @@ namespace CustomerServices
         public List<TLCSV_StockOnHand> PendingPickingSlips;
         public List<TLCSV_RePackConfig> RePackConfigs;
         public List<TLCSV_PurchaseOrder> PurchaseOrders;
+        public List<TLADM_Months> Months;
         public List<TLSEC_UserAccess> UserAccesses;
         public int FromWhse;
         public int ToWhse;
@@ -1531,7 +1536,7 @@ namespace CustomerServices
             Customers = new List<TLADM_CustomerFile>();
             PurchaseOrders = new List<TLCSV_PurchaseOrder>();
             UserAccesses = new List<TLSEC_UserAccess>();
-
+            Months = new List<TLADM_Months>();
             OrdersAllocated = new List<TLCSV_OrderAllocated>();
             PendingPickingSlips = new List<TLCSV_StockOnHand>();
             StockOnHand = new List<TLCSV_StockOnHand>();

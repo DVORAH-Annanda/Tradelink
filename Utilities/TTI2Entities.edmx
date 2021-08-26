@@ -664,6 +664,13 @@
           <Property Name="MachOp_Discontinued" Type="bit" Nullable="false" />
           <Property Name="MachOp_Discontinued_Date" Type="date" />
         </EntityType>
+        <EntityType Name="TLADM_Months">
+          <Key>
+            <PropertyRef Name="Mth_Pk" />
+          </Key>
+          <Property Name="Mth_Pk" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Mth_Description" Type="varchar" MaxLength="5" Nullable="false" />
+        </EntityType>
         <EntityType Name="TLADM_NonStockCat">
           <Key>
             <PropertyRef Name="NSC_Pk" />
@@ -1275,6 +1282,7 @@
           <Property Name="CMTPI_CutSheetSummary" Type="bit" Nullable="false" />
           <Property Name="CMTPI_FromWhse_FK" Type="int" Nullable="false" />
           <Property Name="CMTPI_Display" Type="varchar" MaxLength="20" />
+          <Property Name="CMTPI_Cancelled" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="TLCMT_PanelIssueDetail">
           <Key>
@@ -3028,6 +3036,7 @@
           <EntitySet Name="TLADM_MachineMaintenance" EntityType="Self.TLADM_MachineMaintenance" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TLADM_MachineMaintenanceTasks" EntityType="Self.TLADM_MachineMaintenanceTasks" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TLADM_MachineOperators" EntityType="Self.TLADM_MachineOperators" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TLADM_Months" EntityType="Self.TLADM_Months" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TLADM_NonStockCat" EntityType="Self.TLADM_NonStockCat" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TLADM_NonStockItems" EntityType="Self.TLADM_NonStockItems" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TLADM_PanelAttributes" EntityType="Self.TLADM_PanelAttributes" Schema="dbo" store:Type="Tables" />
@@ -3842,6 +3851,7 @@
             <End Role="TLADM_ConsumablesOther" EntitySet="TLADM_ConsumablesOther" />
           </AssociationSet>
           <EntitySet Name="TLCSV_PuchaseOrderDetail" EntityType="TTI2Model.TLCSV_PuchaseOrderDetail" />
+          <EntitySet Name="TLADM_Months" EntityType="TTI2Model.TLADM_Months" />
           </EntityContainer>
         <EntityType Name="TLADM_FabricProduct">
           <Key>
@@ -5319,6 +5329,7 @@
           <Property Name="CMTPI_CutSheetSummary" Type="Boolean" Nullable="false" />
           <Property Name="CMTPI_FromWhse_FK" Type="Int32" Nullable="false" />
           <Property Name="CMTPI_Display" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="CMTPI_Cancelled" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="TLCMT_DeflectFlaw">
           <Key>
@@ -6708,6 +6719,13 @@
           <Property Name="TLCUSTO_Quality_FK" Type="Int32" />
           <Property Name="TLCUSTO_QtyMeters" Type="Decimal" Nullable="false" Precision="18" Scale="4" />
           <Property Name="TLCUSTO_QtyMeters_Delivered" Type="Decimal" Nullable="false" Precision="18" Scale="4" />
+        </EntityType>
+        <EntityType Name="TLADM_Months">
+          <Key>
+            <PropertyRef Name="Mth_Pk" />
+          </Key>
+          <Property Name="Mth_Pk" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Mth_Description" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="false" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -8478,6 +8496,7 @@
           <EntitySetMapping Name="TLCMT_PanelIssue">
             <EntityTypeMapping TypeName="TTI2Model.TLCMT_PanelIssue">
               <MappingFragment StoreEntitySet="TLCMT_PanelIssue">
+                <ScalarProperty Name="CMTPI_Cancelled" ColumnName="CMTPI_Cancelled" />
                 <ScalarProperty Name="CMTPI_Display" ColumnName="CMTPI_Display" />
                 <ScalarProperty Name="CMTPI_FromWhse_FK" ColumnName="CMTPI_FromWhse_FK" />
                 <ScalarProperty Name="CMTPI_CutSheetSummary" ColumnName="CMTPI_CutSheetSummary" />
@@ -9831,6 +9850,14 @@
                 <ScalarProperty Name="TLCUSTO_Style_FK" ColumnName="TLCUSTO_Style_FK" />
                 <ScalarProperty Name="TLCUSTO_PurchaseOrder_FK" ColumnName="TLCUSTO_PurchaseOrder_FK" />
                 <ScalarProperty Name="TLCUSTO_Pk" ColumnName="TLCUSTO_Pk" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TLADM_Months">
+            <EntityTypeMapping TypeName="TTI2Model.TLADM_Months">
+              <MappingFragment StoreEntitySet="TLADM_Months">
+                <ScalarProperty Name="Mth_Description" ColumnName="Mth_Description" />
+                <ScalarProperty Name="Mth_Pk" ColumnName="Mth_Pk" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

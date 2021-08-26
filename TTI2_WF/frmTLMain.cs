@@ -10270,6 +10270,102 @@ namespace TTI2_WF
 
             }
         }
+
+        private void shadeResultsAfterHydroToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ToolStripMenuItem oTi = sender as ToolStripMenuItem;
+            if (core.GetUserAuthorisation(ud, oTi.Name))
+            {
+                try
+                {
+                    frmShadeAfterDyeing vRep = new frmShadeAfterDyeing(6);
+                    vRep.ShowDialog(this);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+            else
+            {
+                using (DialogCenteringService centeringService = new DialogCenteringService(this)) // center message box
+                {
+                    MessageBox.Show(ud._NotAuthorisedMessage, ud._UserName);
+                }
+            }
+        }
+
+        private void panelIssueCancelationsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ToolStripMenuItem oTi = sender as ToolStripMenuItem;
+            if (core.GetUserAuthorisation(ud, oTi.Name))
+            {
+                try
+                {
+                    CMT.frmCancelTLInstruction PICancel = new CMT.frmCancelTLInstruction(); ;
+                    PICancel.ShowDialog(this);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+            else
+            {
+                using (DialogCenteringService centeringService = new DialogCenteringService(this)) // center message box
+                {
+                    MessageBox.Show(ud._NotAuthorisedMessage, ud._UserName);
+                }
+            }
+        }
+
+        private void greigeQualityAnalysisToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ToolStripMenuItem oTi = sender as ToolStripMenuItem;
+            if (core.GetUserAuthorisation(ud, oTi.Name))
+            {
+                try
+                {
+                    DyeHouse.frmGreigeAnalysis PICancel = new DyeHouse.frmGreigeAnalysis();
+                    PICancel.ShowDialog(this);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+            else
+            {
+                using (DialogCenteringService centeringService = new DialogCenteringService(this)) // center message box
+                {
+                    MessageBox.Show(ud._NotAuthorisedMessage, ud._UserName);
+                }
+            }
+        }
+
+        private void fabricPieceQAHistoryToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ToolStripMenuItem oTi = sender as ToolStripMenuItem;
+            if (core.GetUserAuthorisation(ud, oTi.Name))
+            {
+                try
+                {
+                    Cutting.frmPieceQAHistory PICancel = new Cutting.frmPieceQAHistory();
+                    PICancel.ShowDialog(this);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+            else
+            {
+                using (DialogCenteringService centeringService = new DialogCenteringService(this)) // center message box
+                {
+                    MessageBox.Show(ud._NotAuthorisedMessage, ud._UserName);
+                }
+            }
+        }
     }
        
 }

@@ -211,6 +211,7 @@ namespace Utilities
         public virtual DbSet<TLCSV_StockOnHand> TLCSV_StockOnHand { get; set; }
         public virtual DbSet<TLADM_Sizes> TLADM_Sizes { get; set; }
         public virtual DbSet<TLCSV_PuchaseOrderDetail> TLCSV_PuchaseOrderDetail { get; set; }
+        public virtual DbSet<TLADM_Months> TLADM_Months { get; set; }
     
         public virtual int SelectCottonRecords(Nullable<int> contractNo, Nullable<int> supplierNo)
         {

@@ -202,6 +202,7 @@
         <EntityTypeShape EntityType="TTI2Model.TLADM_Sizes" Width="1.5" PointX="0.75" PointY="45" />
         <AssociationConnector Association="TTI2Model.FK_TLADM_ConsumablesOther_TLADM_Sizes" />
         <EntityTypeShape EntityType="TTI2Model.TLCSV_PuchaseOrderDetail" Width="1.5" PointX="3.375" PointY="47.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_Months" Width="1.5" PointX="27.375" PointY="19.75" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

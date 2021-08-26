@@ -205,6 +205,7 @@
             this.shadeResultsAfterCompactingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.nCRResultsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
+            this.greigeQualityAnalysisToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dyeOrdersToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.commissionBatchesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -248,11 +249,14 @@
             this.cutSheetNumberRegisterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cutSheetProductionPlanningResultsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cutSheetOnHoldReportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.cuttingWasteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.fabricPieceQAHistoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewsToolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.cutSheetDetailsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cMTToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cMTTransactionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panelIssueSelectionScreenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.panelIssueCancelationsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panelIssueReceiptToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cMTReturnsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cutsheetPriorityToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -464,7 +468,6 @@
             this.dataClearDownToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.inUseResetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
-            this.cuttingWasteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             this.SuspendLayout();
@@ -1827,7 +1830,8 @@
             this.shadeResultsAfterDryingToolStripMenuItem,
             this.shadeResultsAfterCompactingToolStripMenuItem,
             this.nCRResultsToolStripMenuItem,
-            this.toolStripMenuItem2});
+            this.toolStripMenuItem2,
+            this.greigeQualityAnalysisToolStripMenuItem});
             this.aQReportsToolStripMenuItem.Name = "aQReportsToolStripMenuItem";
             this.aQReportsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.aQReportsToolStripMenuItem.Text = "QA Reports";
@@ -1850,27 +1854,28 @@
             // 
             this.shadeResultsAfterDyeingToolStripMenuItem.Name = "shadeResultsAfterDyeingToolStripMenuItem";
             this.shadeResultsAfterDyeingToolStripMenuItem.Size = new System.Drawing.Size(375, 22);
-            this.shadeResultsAfterDyeingToolStripMenuItem.Text = "Shade Results After Dyeing";
+            this.shadeResultsAfterDyeingToolStripMenuItem.Text = "Colour Results after Drying";
             this.shadeResultsAfterDyeingToolStripMenuItem.Click += new System.EventHandler(this.shadeResultsAfterDyeingToolStripMenuItem_Click);
             // 
             // shadeResultsAfterHydroToolStripMenuItem
             // 
             this.shadeResultsAfterHydroToolStripMenuItem.Name = "shadeResultsAfterHydroToolStripMenuItem";
             this.shadeResultsAfterHydroToolStripMenuItem.Size = new System.Drawing.Size(375, 22);
-            this.shadeResultsAfterHydroToolStripMenuItem.Text = "Shade Results After Hydro";
+            this.shadeResultsAfterHydroToolStripMenuItem.Text = "Measurement Results After Hydro";
+            this.shadeResultsAfterHydroToolStripMenuItem.Click += new System.EventHandler(this.shadeResultsAfterHydroToolStripMenuItem_Click);
             // 
             // shadeResultsAfterDryingToolStripMenuItem
             // 
             this.shadeResultsAfterDryingToolStripMenuItem.Name = "shadeResultsAfterDryingToolStripMenuItem";
             this.shadeResultsAfterDryingToolStripMenuItem.Size = new System.Drawing.Size(375, 22);
-            this.shadeResultsAfterDryingToolStripMenuItem.Text = "Shade Results After Drying";
+            this.shadeResultsAfterDryingToolStripMenuItem.Text = "Measurement Results After Drying";
             this.shadeResultsAfterDryingToolStripMenuItem.Click += new System.EventHandler(this.shadeResultsAfterDryingToolStripMenuItem_Click);
             // 
             // shadeResultsAfterCompactingToolStripMenuItem
             // 
             this.shadeResultsAfterCompactingToolStripMenuItem.Name = "shadeResultsAfterCompactingToolStripMenuItem";
             this.shadeResultsAfterCompactingToolStripMenuItem.Size = new System.Drawing.Size(375, 22);
-            this.shadeResultsAfterCompactingToolStripMenuItem.Text = "Shade Results After Compacting";
+            this.shadeResultsAfterCompactingToolStripMenuItem.Text = "Measurement Results After Compacting";
             this.shadeResultsAfterCompactingToolStripMenuItem.Click += new System.EventHandler(this.shadeResultsAfterCompactingToolStripMenuItem_Click);
             // 
             // nCRResultsToolStripMenuItem
@@ -1886,6 +1891,13 @@
             this.toolStripMenuItem2.Size = new System.Drawing.Size(375, 22);
             this.toolStripMenuItem2.Text = "Fabric Quality Summary                                                          ";
             this.toolStripMenuItem2.Click += new System.EventHandler(this.toolStripMenuItem2_Click);
+            // 
+            // greigeQualityAnalysisToolStripMenuItem
+            // 
+            this.greigeQualityAnalysisToolStripMenuItem.Name = "greigeQualityAnalysisToolStripMenuItem";
+            this.greigeQualityAnalysisToolStripMenuItem.Size = new System.Drawing.Size(375, 22);
+            this.greigeQualityAnalysisToolStripMenuItem.Text = "Greige Quality Analysis";
+            this.greigeQualityAnalysisToolStripMenuItem.Click += new System.EventHandler(this.greigeQualityAnalysisToolStripMenuItem_Click);
             // 
             // viewsToolStripMenuItem
             // 
@@ -2143,7 +2155,8 @@
             this.cutSheetNumberRegisterToolStripMenuItem,
             this.cutSheetProductionPlanningResultsToolStripMenuItem,
             this.cutSheetOnHoldReportToolStripMenuItem,
-            this.cuttingWasteToolStripMenuItem});
+            this.cuttingWasteToolStripMenuItem,
+            this.fabricPieceQAHistoryToolStripMenuItem});
             this.reportingToolStripMenuItem1.Name = "reportingToolStripMenuItem1";
             this.reportingToolStripMenuItem1.Size = new System.Drawing.Size(206, 22);
             this.reportingToolStripMenuItem1.Text = "Cutting Reporting";
@@ -2232,6 +2245,20 @@
             this.cutSheetOnHoldReportToolStripMenuItem.Text = "Cut Sheet On Hold Report";
             this.cutSheetOnHoldReportToolStripMenuItem.Click += new System.EventHandler(this.cutSheetOnHoldReportToolStripMenuItem_Click);
             // 
+            // cuttingWasteToolStripMenuItem
+            // 
+            this.cuttingWasteToolStripMenuItem.Name = "cuttingWasteToolStripMenuItem";
+            this.cuttingWasteToolStripMenuItem.Size = new System.Drawing.Size(277, 22);
+            this.cuttingWasteToolStripMenuItem.Text = "Cutting Waste";
+            this.cuttingWasteToolStripMenuItem.Click += new System.EventHandler(this.cuttingWasteToolStripMenuItem_Click);
+            // 
+            // fabricPieceQAHistoryToolStripMenuItem
+            // 
+            this.fabricPieceQAHistoryToolStripMenuItem.Name = "fabricPieceQAHistoryToolStripMenuItem";
+            this.fabricPieceQAHistoryToolStripMenuItem.Size = new System.Drawing.Size(277, 22);
+            this.fabricPieceQAHistoryToolStripMenuItem.Text = "Fabric Piece QA History";
+            this.fabricPieceQAHistoryToolStripMenuItem.Click += new System.EventHandler(this.fabricPieceQAHistoryToolStripMenuItem_Click);
+            // 
             // viewsToolStripMenuItem2
             // 
             this.viewsToolStripMenuItem2.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -2262,6 +2289,7 @@
             // 
             this.cMTTransactionsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.panelIssueSelectionScreenToolStripMenuItem,
+            this.panelIssueCancelationsToolStripMenuItem,
             this.panelIssueReceiptToolStripMenuItem,
             this.cMTReturnsToolStripMenuItem,
             this.cutsheetPriorityToolStripMenuItem,
@@ -2285,6 +2313,13 @@
             this.panelIssueSelectionScreenToolStripMenuItem.Size = new System.Drawing.Size(253, 22);
             this.panelIssueSelectionScreenToolStripMenuItem.Text = "Panel Issue selection screen";
             this.panelIssueSelectionScreenToolStripMenuItem.Click += new System.EventHandler(this.panelIssueSelectionScreenToolStripMenuItem_Click);
+            // 
+            // panelIssueCancelationsToolStripMenuItem
+            // 
+            this.panelIssueCancelationsToolStripMenuItem.Name = "panelIssueCancelationsToolStripMenuItem";
+            this.panelIssueCancelationsToolStripMenuItem.Size = new System.Drawing.Size(253, 22);
+            this.panelIssueCancelationsToolStripMenuItem.Text = "Panel Issue - Cancelations";
+            this.panelIssueCancelationsToolStripMenuItem.Click += new System.EventHandler(this.panelIssueCancelationsToolStripMenuItem_Click);
             // 
             // panelIssueReceiptToolStripMenuItem
             // 
@@ -3953,13 +3988,6 @@
             // 
             this.errorProvider1.ContainerControl = this;
             // 
-            // cuttingWasteToolStripMenuItem
-            // 
-            this.cuttingWasteToolStripMenuItem.Name = "cuttingWasteToolStripMenuItem";
-            this.cuttingWasteToolStripMenuItem.Size = new System.Drawing.Size(277, 22);
-            this.cuttingWasteToolStripMenuItem.Text = "Cutting Waste";
-            this.cuttingWasteToolStripMenuItem.Click += new System.EventHandler(this.cuttingWasteToolStripMenuItem_Click);
-            // 
             // frmTLMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -4417,5 +4445,8 @@
         private System.Windows.Forms.ToolStripMenuItem contiWorkWearReceiptsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem fabricWidthBeforeCuttingToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem cuttingWasteToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem panelIssueCancelationsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem greigeQualityAnalysisToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem fabricPieceQAHistoryToolStripMenuItem;
     }
 }

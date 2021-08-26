@@ -25,5 +25,6 @@ namespace Utilities
         public bool CMTPI_CutSheetSummary { get; set; }
         public int CMTPI_FromWhse_FK { get; set; }
         public string CMTPI_Display { get; set; }
+        public bool CMTPI_Cancelled { get; set; }
     }
 }

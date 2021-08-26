@@ -3041,7 +3041,7 @@ namespace Cutting
                 crystalReportViewer1.ReportSource = OnHold;
 
             }
-            else if (_RepNo == 22)      // Cutting On Hold Report  
+            else if (_RepNo == 22)      // Cutting Waste  
             {
                 DataSet ds = new DataSet();
                 DataSet22.DataTable1DataTable dataTable = new DataSet22.DataTable1DataTable();
@@ -3057,30 +3057,40 @@ namespace Cutting
 
                 using (var context = new TTI2Entities())
                 {
-                    var CutSheets = context.TLCUT_CutSheet.Where(x => x.TLCutSH_Date >= _parms.FromDate && x.TLCutSH_Date <= _parms.ToDate).ToList();
+                    // var CutSheets = context.TLCUT_CutSheet.Where(x => x.TLCutSH_Date >= _parms.FromDate && x.TLCutSH_Date <= _parms.ToDate).ToList();
+                    var CutSheets = (from T1 in context.TLCUT_CutSheet
+                                 join T2 in context.TLCUT_CutSheetReceipt
+                                 on T1.TLCutSH_Pk equals T2.TLCUTSHR_CutSheet_FK
+                                 where T2.TLCUTSHR_WastePanels > 0 && T2.TLCUTSHR_WasteCutSheet > 0
+                                 select T1).GroupBy(x => x.TLCutSH_No).ToList();
+
                     foreach(var CutSheet in CutSheets)
                     {
                         DataSet22.DataTable2Row xnr = dataTable2.NewDataTable2Row();
                         xnr.Pk = 1;
-                        xnr.CutSheetNo = CutSheet.TLCutSH_No;
-                        var DB = context.TLDYE_DyeBatch.Find(CutSheet.TLCutSH_DyeBatch_FK);
+                        xnr.CutSheetNo = CutSheet.FirstOrDefault().TLCutSH_No;
+                        xnr.CutDate = CutSheet.FirstOrDefault().TLCutSH_Date;
+                        var DBatchKey = CutSheet.FirstOrDefault().TLCutSH_DyeBatch_FK; 
+                        var DB = context.TLDYE_DyeBatch.Find(DBatchKey);
                         if (DB != null)
                         {
                             xnr.DyeBatchNo = DB.DYEB_BatchNo;
                             xnr.FabNetWeight = (from T1 in context.TLDYE_DyeBatch
                                        join T2 in context.TLDYE_DyeBatchDetails
                                        on T1.DYEB_Pk equals T2.DYEBD_DyeBatch_FK
-                                       where T1.DYEB_Pk == CutSheet.TLCutSH_DyeBatch_FK && T2.DYEBD_BodyTrim
+                                       where T1.DYEB_Pk == DBatchKey && T2.DYEBD_BodyTrim
                                        select T2).Sum(x =>(decimal?)x.DYEBO_Nett) ?? 0.00M;
                         }
-                        var CutReceipt = context.TLCUT_CutSheetReceipt.Where(x => x.TLCUTSHR_CutSheet_FK == CutSheet.TLCutSH_Pk).FirstOrDefault();
+                        var CutSheetKey = CutSheet.FirstOrDefault().TLCutSH_Pk;
+
+                        var CutReceipt = context.TLCUT_CutSheetReceipt.Where(x => x.TLCUTSHR_CutSheet_FK == CutSheetKey).FirstOrDefault();
                         if (CutReceipt != null)
                         {
                             xnr.Machine = context.TLADM_MachineDefinitions.Find(CutReceipt.TLCUTSHR_Machine_FK).MD_Description;
                             xnr.GoodPanels = (from T1 in context.TLCUT_CutSheetReceipt
                                                 join T2 in context.TLCUT_CutSheetReceiptDetail
                                                 on T1.TLCUTSHR_Pk equals T2.TLCUTSHRD_CutSheet_FK
-                                                where T1.TLCUTSHR_Pk == CutReceipt.TLCUTSHR_CutSheet_FK
+                                                where T1.TLCUTSHR_CutSheet_FK == CutReceipt.TLCUTSHR_CutSheet_FK
                                                 select T2).Sum(x => (int ?)x.TLCUTSHRD_BundleQty ) ?? 0;
 
                             xnr.RecordedCuttingWeight = CutReceipt.TLCUTSHR_WasteCutSheet;
@@ -3088,26 +3098,26 @@ namespace Cutting
 
                             if (xnr.RecordedCuttingWeight != 0 && xnr.FabNetWeight != 0)
                             {
-                                xnr.CuttingWastePerc = Math.Round(xnr.RecordedCuttingWeight / xnr.FabNetWeight * 100, 1);
+                                xnr.CuttingWastePerc = xnr.RecordedCuttingWeight / xnr.FabNetWeight * 100;
                             }
 
                             if (xnr.RecordedPanelWaste != 0 && xnr.FabNetWeight != 0)
                             {
-                                xnr.PanelWastePerc = Math.Round(xnr.RecordedPanelWaste / xnr.FabNetWeight * 100, 1);
+                                xnr.PanelWastePerc = xnr.RecordedPanelWaste / xnr.FabNetWeight * 100;
                             }
 
                             xnr.TotalWaste = xnr.RecordedCuttingWeight + xnr.RecordedPanelWaste;
 
                             if(xnr.TotalWaste != 0 && xnr.FabNetWeight != 0)
                             {
-                                xnr.TotalWastePerc = Math.Round(xnr.TotalWaste / xnr.FabNetWeight * 100, 1);
+                                xnr.TotalWastePerc = xnr.TotalWaste / xnr.FabNetWeight * 100;
                             }
 
                         }
                         
-                        xnr.Quality = context.TLADM_Griege.Find(CutSheet.TLCutSH_Quality_FK).TLGreige_Description;
-                        xnr.Size = context.TLADM_Sizes.Find(CutSheet.TLCutSH_Size_FK).SI_Description;
-                        xnr.Colour = context.TLADM_Colours.Find(CutSheet.TLCutSH_Colour_FK).Col_Display;
+                        xnr.Quality = context.TLADM_Griege.Find(CutSheet.FirstOrDefault().TLCutSH_Quality_FK).TLGreige_Description;
+                        xnr.Size = context.TLADM_Sizes.Find(CutSheet.FirstOrDefault().TLCutSH_Size_FK).SI_Description;
+                        xnr.Colour = context.TLADM_Colours.Find(CutSheet.FirstOrDefault().TLCutSH_Colour_FK).Col_Display;
 
 
 
@@ -3117,9 +3127,124 @@ namespace Cutting
                 }
                 ds.Tables.Add(dataTable);
                 ds.Tables.Add(dataTable2);
-                // CuttingWasteMangement OnHold = new CuttingWasteManagement();
-                // OnHold.SetDataSource(ds);
-                // crystalReportViewer1.ReportSource = OnHold;
+                Cutting.CuttingWasteMangement WasteMan = new Cutting.CuttingWasteMangement();
+                WasteMan.SetDataSource(ds);
+                crystalReportViewer1.ReportSource = WasteMan;
+            }
+            else if(_RepNo == 23)
+            {
+                DataSet ds = new DataSet();
+                DataSet23.DataTable1DataTable dataTable = new DataSet23.DataTable1DataTable();
+                DataSet23.DataTable2DataTable dataTable2 = new DataSet23.DataTable2DataTable();
+                Util core = new Util();
+
+                DataSet23.DataTable1Row nr = dataTable.NewDataTable1Row();
+                nr.Pk = 1;
+                nr.FromDate = _parms.FromDate;
+                nr.ToDate = _parms.ToDate;
+                nr.Title = "Fabric Piece QA History - Width Measurements";
+                dataTable.AddDataTable1Row(nr);
+
+                using(var context = new TTI2Entities())
+                {
+                    var NonComAnal = context.TLDYE_NonComplianceAnalysis.Where(x => x.TLDYEDC_Date >= _parms.FromDate && x.TLDYEDC_Date <= _parms.ToDate && x.TLDYEDC_NCStage == 4 && x.TLDYEDC_Code_FK == 53).ToList();
+                    foreach(var NCA in NonComAnal)
+                    {
+                        DataSet23.DataTable2Row xnr = dataTable2.NewDataTable2Row();
+                        xnr.Pk = 1;
+                        xnr.Fabric_Compacting = 0;
+                        xnr.Fabric_Cutting = 0;
+                        xnr.Fabric_Drying = 0;
+                        xnr.Fabric_Hydro = 0;
+                        xnr.Fabric_Knitting = 0;
+                        xnr.Fabric_Standard = 0;
+
+                        xnr.Std_ToCut = 0;
+                        xnr.Compact_ToCut = 0;
+                        xnr.Dry_ToCut = 0;
+                        xnr.Hydro_ToCut = 0;
+
+                        var GProd = context.TLKNI_GreigeProduction.Find(NCA.TLDYEDC_PieceNo_FK);
+                        if (GProd != null)
+                        {
+                            // At the moment this is not recorded;
+                            xnr.Fabric_Knitting = 0;
+
+                            xnr.PieceNo = GProd.GreigeP_PieceNo;
+                            var Quality = context.TLADM_Griege.Find(GProd.GreigeP_Greige_Fk);
+                            if(Quality != null)
+                            {
+                                xnr.Quality = Quality.TLGreige_Description;
+                                xnr.Fabric_Standard = context.TLADM_FabWidth.Find(Quality.TLGreige_FabricWidth_FK).FW_Calculation_Value;
+                            }
+
+                        }
+                        var DyeBatch = context.TLDYE_DyeBatch.Find(NCA.TLDYEDC_BatchNo);
+                        if (DyeBatch != null)
+                        {
+                            xnr.BatchNo = DyeBatch.DYEB_BatchNo;
+                            xnr.Colour = context.TLADM_Colours.Find(DyeBatch.DYEB_Colour_FK).Col_Display;
+                            var Hydro = context.TLDYE_NonComplianceAnalysis.Where(x => x.TLDYEDC_NCStage == 4 && x.TLDYEDC_Code_FK == 50 && x.TLDYEDC_BatchNo == DyeBatch.DYEB_Pk).FirstOrDefault();
+                            if (Hydro != null)
+                            {
+                                xnr.Fabric_Hydro = Hydro.TLDYEDC_Value;
+                            }
+                            
+                            var Compact = context.TLDYE_NonComplianceAnalysis.Where(x => x.TLDYEDC_NCStage == 5 && x.TLDYEDC_Code_FK == 58 && x.TLDYEDC_BatchNo == DyeBatch.DYEB_Pk).FirstOrDefault();
+                                
+                            if (Compact != null)
+                            {
+                                xnr.Fabric_Compacting = Compact.TLDYEDC_Value;
+                            }
+                            
+                            var DbDetails = context.TLDYE_DyeBatchDetails.Where(x => x.DYEBD_DyeBatch_FK == DyeBatch.DYEB_Pk && x.DYEBO_FWAtCutting != 0).FirstOrDefault();
+                            if (DbDetails != null)
+                            {
+                                    xnr.Fabric_Cutting = DbDetails.DYEBO_FWAtCutting;
+                            }
+                            
+                        }
+
+                        xnr.Fabric_Drying = NCA.TLDYEDC_Value;
+
+                        if (xnr.Fabric_Cutting != 0 && xnr.Fabric_Standard != 0)
+                        {
+                            xnr.Std_ToCut = (xnr.Fabric_Cutting - xnr.Fabric_Standard) / xnr.Fabric_Cutting * 100;
+                        }
+
+                        if (xnr.Fabric_Cutting != 0 && xnr.Fabric_Hydro != 0)
+                        {
+                            xnr.Hydro_ToCut = (xnr.Fabric_Cutting - xnr.Fabric_Hydro) / xnr.Fabric_Cutting * 100;
+                        }
+
+                        if (xnr.Fabric_Cutting != 0 && xnr.Fabric_Drying != 0)
+                        {
+                            xnr.Dry_ToCut = (xnr.Fabric_Cutting - xnr.Fabric_Drying) / xnr.Fabric_Cutting * 100;
+                        }
+
+                        if (xnr.Fabric_Cutting != 0 && xnr.Fabric_Compacting != 0)
+                        {
+                            xnr.Compact_ToCut = (xnr.Fabric_Cutting - xnr.Fabric_Compacting) / xnr.Fabric_Cutting * 100;
+                        }
+
+                        dataTable2.Rows.Add(xnr);
+                    }
+
+                }
+                ds.Tables.Add(dataTable);
+                if(dataTable2.Rows.Count == 0)
+                {
+                    DataSet23.DataTable2Row xnr = dataTable2.NewDataTable2Row();
+                    xnr.Pk = 1;
+                    xnr.ErrorLog = "No records found for dates selected";
+                    dataTable2.Rows.Add(xnr);
+                }
+
+                ds.Tables.Add(dataTable2);
+                Cutting.FabricPieceQAHistory WasteMan = new Cutting.FabricPieceQAHistory();
+                WasteMan.SetDataSource(ds);
+                crystalReportViewer1.ReportSource = WasteMan;
+
             }
             crystalReportViewer1.Refresh();
         }

@@ -498,6 +498,18 @@
     <Compile Include="frmBFASel.Designer.cs">
       <DependentUpon>frmBFASel.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmCancelIndividual.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmCancelIndividual.Designer.cs">
+      <DependentUpon>frmCancelIndividual.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmCancelTLInstruction.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmCancelTLInstruction.Designer.cs">
+      <DependentUpon>frmCancelTLInstruction.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmCMTBoxedQtyAdjustment.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -954,6 +966,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmBFASel.resx">
       <DependentUpon>frmBFASel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmCancelIndividual.resx">
+      <DependentUpon>frmCancelIndividual.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmCancelTLInstruction.resx">
+      <DependentUpon>frmCancelTLInstruction.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmCMTBoxedQtyAdjustment.resx">
       <DependentUpon>frmCMTBoxedQtyAdjustment.cs</DependentUpon>

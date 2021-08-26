@@ -214,6 +214,7 @@ namespace DyeHouse
                     nca.TLDYEDC_Pass = true;
                     nca.TLDYEDC_NCStage = 6;
                     nca.TLDYEDC_Value = DRow.Field<int>(2);
+                    nca.TLDYEDC_Date = DateTime.Now;
 
                     if (Add)
                         _context.TLDYE_NonComplianceAnalysis.Add(nca);

@@ -251,6 +251,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DataSet22.xsd</DependentUpon>
     </Compile>
+    <Compile Include="DataSet23.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSet23.xsd</DependentUpon>
+    </Compile>
     <Compile Include="DataSet3.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -291,6 +296,12 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>DataSet9.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="FabricPieceQAHistory.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>FabricPieceQAHistory.rpt</DependentUpon>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="fmtCuttingBoxesAdjustment.cs">
       <SubType>Form</SubType>
@@ -417,6 +428,12 @@
     </Compile>
     <Compile Include="frmPanelReject.Designer.cs">
       <DependentUpon>frmPanelReject.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmPieceQAHistory.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmPieceQAHistory.Designer.cs">
+      <DependentUpon>frmPieceQAHistory.cs</DependentUpon>
     </Compile>
     <Compile Include="frmQAInput.cs">
       <SubType>Form</SubType>
@@ -640,6 +657,10 @@
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>CuttingWasteMangement.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="FabricPieceQAHistory.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>FabricPieceQAHistory.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="fmtCuttingBoxesAdjustment.resx">
       <DependentUpon>fmtCuttingBoxesAdjustment.cs</DependentUpon>
     </EmbeddedResource>
@@ -702,6 +723,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmPanelReject.resx">
       <DependentUpon>frmPanelReject.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmPieceQAHistory.resx">
+      <DependentUpon>frmPieceQAHistory.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmQAInput.resx">
       <DependentUpon>frmQAInput.cs</DependentUpon>
@@ -961,6 +985,17 @@
     </None>
     <None Include="DataSet22.xss">
       <DependentUpon>DataSet22.xsd</DependentUpon>
+    </None>
+    <None Include="DataSet23.xsc">
+      <DependentUpon>DataSet23.xsd</DependentUpon>
+    </None>
+    <None Include="DataSet23.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSet23.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="DataSet23.xss">
+      <DependentUpon>DataSet23.xsd</DependentUpon>
     </None>
     <None Include="DataSet3.xsc">
       <DependentUpon>DataSet3.xsd</DependentUpon>

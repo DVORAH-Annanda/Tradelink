@@ -263,6 +263,9 @@
     <Compile Include="TLADM_MachineOperators.cs">
       <DependentUpon>TTI2Entities.tt</DependentUpon>
     </Compile>
+    <Compile Include="TLADM_Months.cs">
+      <DependentUpon>TTI2Entities.tt</DependentUpon>
+    </Compile>
     <Compile Include="TLADM_NonStockCat.cs">
       <DependentUpon>TTI2Entities.tt</DependentUpon>
     </Compile>

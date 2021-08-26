@@ -12,7 +12,7 @@
   <xs:element name="DataSet42" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="DataSet42" msprop:Generator_UserDSName="DataSet42">
     <xs:complexType>
       <xs:choice minOccurs="0" maxOccurs="unbounded">
-        <xs:element name="DataTable1" msprop:Generator_TableClassName="DataTable1DataTable" msprop:Generator_TableVarName="tableDataTable1" msprop:Generator_RowChangedName="DataTable1RowChanged" msprop:Generator_TablePropName="DataTable1" msprop:Generator_RowDeletingName="DataTable1RowDeleting" msprop:Generator_RowChangingName="DataTable1RowChanging" msprop:Generator_RowEvHandlerName="DataTable1RowChangeEventHandler" msprop:Generator_RowDeletedName="DataTable1RowDeleted" msprop:Generator_RowClassName="DataTable1Row" msprop:Generator_UserTableName="DataTable1" msprop:Generator_RowEvArgName="DataTable1RowChangeEvent">
+        <xs:element name="DataTable1" msprop:Generator_TableClassName="DataTable1DataTable" msprop:Generator_TableVarName="tableDataTable1" msprop:Generator_TablePropName="DataTable1" msprop:Generator_RowDeletingName="DataTable1RowDeleting" msprop:Generator_RowChangingName="DataTable1RowChanging" msprop:Generator_RowEvHandlerName="DataTable1RowChangeEventHandler" msprop:Generator_RowDeletedName="DataTable1RowDeleted" msprop:Generator_UserTableName="DataTable1" msprop:Generator_RowChangedName="DataTable1RowChanged" msprop:Generator_RowEvArgName="DataTable1RowChangeEvent" msprop:Generator_RowClassName="DataTable1Row">
           <xs:complexType>
             <xs:sequence>
               <xs:element name="NCRPk" msprop:Generator_ColumnVarNameInTable="columnNCRPk" msprop:Generator_ColumnPropNameInRow="NCRPk" msprop:Generator_ColumnPropNameInTable="NCRPkColumn" msprop:Generator_UserColumnName="NCRPk" type="xs:int" minOccurs="0" />
@@ -24,7 +24,7 @@
             </xs:sequence>
           </xs:complexType>
         </xs:element>
-        <xs:element name="DataTable2" msprop:Generator_TableClassName="DataTable2DataTable" msprop:Generator_TableVarName="tableDataTable2" msprop:Generator_RowChangedName="DataTable2RowChanged" msprop:Generator_TablePropName="DataTable2" msprop:Generator_RowDeletingName="DataTable2RowDeleting" msprop:Generator_RowChangingName="DataTable2RowChanging" msprop:Generator_RowEvHandlerName="DataTable2RowChangeEventHandler" msprop:Generator_RowDeletedName="DataTable2RowDeleted" msprop:Generator_RowClassName="DataTable2Row" msprop:Generator_UserTableName="DataTable2" msprop:Generator_RowEvArgName="DataTable2RowChangeEvent">
+        <xs:element name="DataTable2" msprop:Generator_TableClassName="DataTable2DataTable" msprop:Generator_TableVarName="tableDataTable2" msprop:Generator_TablePropName="DataTable2" msprop:Generator_RowDeletingName="DataTable2RowDeleting" msprop:Generator_RowChangingName="DataTable2RowChanging" msprop:Generator_RowEvHandlerName="DataTable2RowChangeEventHandler" msprop:Generator_RowDeletedName="DataTable2RowDeleted" msprop:Generator_UserTableName="DataTable2" msprop:Generator_RowChangedName="DataTable2RowChanged" msprop:Generator_RowEvArgName="DataTable2RowChangeEvent" msprop:Generator_RowClassName="DataTable2Row">
           <xs:complexType>
             <xs:sequence>
               <xs:element name="NCRPk" msprop:Generator_ColumnVarNameInTable="columnNCRPk" msprop:Generator_ColumnPropNameInRow="NCRPk" msprop:Generator_ColumnPropNameInTable="NCRPkColumn" msprop:Generator_UserColumnName="NCRPk" type="xs:int" minOccurs="0" />
@@ -37,6 +37,10 @@
               <xs:element name="NCRSpiral" msprop:Generator_ColumnVarNameInTable="columnNCRSpiral" msprop:Generator_ColumnPropNameInRow="NCRSpiral" msprop:Generator_ColumnPropNameInTable="NCRSpiralColumn" msprop:Generator_UserColumnName="NCRSpiral" type="xs:decimal" minOccurs="0" />
               <xs:element name="NCRCourse" msprop:Generator_ColumnVarNameInTable="columnNCRCourse" msprop:Generator_ColumnPropNameInRow="NCRCourse" msprop:Generator_ColumnPropNameInTable="NCRCourseColumn" msprop:Generator_UserColumnName="NCRCourse" type="xs:decimal" minOccurs="0" />
               <xs:element name="NCRWales" msprop:Generator_ColumnVarNameInTable="columnNCRWales" msprop:Generator_ColumnPropNameInRow="NCRWales" msprop:Generator_ColumnPropNameInTable="NCRWalesColumn" msprop:Generator_UserColumnName="NCRWales" type="xs:decimal" minOccurs="0" />
+              <xs:element name="NCRWidthB4" msprop:Generator_ColumnVarNameInTable="columnNCRWidthB4" msprop:Generator_ColumnPropNameInRow="NCRWidthB4" msprop:Generator_ColumnPropNameInTable="NCRWidthB4Column" msprop:Generator_UserColumnName="NCRWidthB4" type="xs:decimal" minOccurs="0" />
+              <xs:element name="NCRCompaction" msprop:Generator_ColumnVarNameInTable="columnNCRCompaction" msprop:Generator_ColumnPropNameInRow="NCRCompaction" msprop:Generator_ColumnPropNameInTable="NCRCompactionColumn" msprop:Generator_UserColumnName="NCRCompaction" type="xs:decimal" minOccurs="0" />
+              <xs:element name="NCRWidth_AFT" msprop:Generator_ColumnVarNameInTable="columnNCRWidth_AFT" msprop:Generator_ColumnPropNameInRow="NCRWidth_AFT" msprop:Generator_ColumnPropNameInTable="NCRWidth_AFTColumn" msprop:Generator_UserColumnName="NCRWidth_AFT" type="xs:decimal" minOccurs="0" />
+              <xs:element name="NCRWeight_AFT" msprop:Generator_ColumnVarNameInTable="columnNCRWeight_AFT" msprop:Generator_ColumnPropNameInRow="NCRWeight_AFT" msprop:Generator_ColumnPropNameInTable="NCRWeight_AFTColumn" msprop:Generator_UserColumnName="NCRWeight_AFT" type="xs:decimal" minOccurs="0" />
             </xs:sequence>
           </xs:complexType>
         </xs:element>
@@ -45,7 +49,7 @@
   </xs:element>
   <xs:annotation>
     <xs:appinfo>
-      <msdata:Relationship name="DataTable1_DataTable2" msdata:parent="DataTable1" msdata:child="DataTable2" msdata:parentkey="NCRPk" msdata:childkey="NCRPk" msprop:Generator_UserChildTable="DataTable2" msprop:Generator_ChildPropName="GetDataTable2Rows" msprop:Generator_UserRelationName="DataTable1_DataTable2" msprop:Generator_ParentPropName="DataTable1Row" msprop:Generator_RelationVarName="relationDataTable1_DataTable2" msprop:Generator_UserParentTable="DataTable1" />
+      <msdata:Relationship name="DataTable1_DataTable2" msdata:parent="DataTable1" msdata:child="DataTable2" msdata:parentkey="NCRPk" msdata:childkey="NCRPk" msprop:Generator_UserChildTable="DataTable2" msprop:Generator_ChildPropName="GetDataTable2Rows" msprop:Generator_UserRelationName="DataTable1_DataTable2" msprop:Generator_RelationVarName="relationDataTable1_DataTable2" msprop:Generator_UserParentTable="DataTable1" msprop:Generator_ParentPropName="DataTable1Row" />
     </xs:appinfo>
   </xs:annotation>
 </xs:schema>

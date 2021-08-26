@@ -667,6 +667,7 @@ namespace DyeHouse
         public bool ProdWIPCompleted;
         public bool DConsumablesFullDetail;
         public int Consumable_Whse_FK;
+        public int DyeStage;
         public DyeQueryParameters()
         {
             Sizes = new List<TLADM_Sizes>();
@@ -709,7 +710,9 @@ namespace DyeHouse
             WidthMagnitude = 0.0M; 
 
             Consumable_Whse_FK = 0;
-            
+
+            DyeStage = 0;
+
             Notes = new StringBuilder();
 
         }
