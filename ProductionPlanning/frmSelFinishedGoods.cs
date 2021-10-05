@@ -449,7 +449,7 @@ namespace ProductionPlanning
                     _Styles = context.TLADM_Styles.ToList();
                     _Colours = context.TLADM_Colours.ToList();
                     _Sizes = context.TLADM_Sizes.ToList();
-                    _Qualities = context.TLADM_Griege.Where(x => !(bool)x.TLGriege_Discontinued).ToList();
+                    _Qualities = context.TLADM_Griege.ToList();
                     //---------------------------------------------------------------
                     // This variable is used in the 1st Task 
                     //--------------------------------------------------------------
@@ -516,7 +516,7 @@ namespace ProductionPlanning
                             //    for this style, colour, size combination and the order line must not be closed as well as the order itself
                             //============================================================================
 
-                            var Orders = PODetail.Where(x => x.TLCUSTO_Style_FK == Item.TLREP_Style_FK && x.TLCUSTO_Colour_FK == Item.TLREP_Colour_FK && x.TLCUSTO_Size_FK == Item.TLREP_Size_FK && !x.TLCUSTO_Closed);
+                            var Orders = PODetail.Where(x => x.TLCUSTO_Style_FK == Item.TLREP_Style_FK && x.TLCUSTO_Colour_FK == Item.TLREP_Colour_FK && x.TLCUSTO_Size_FK == Item.TLREP_Size_FK);
                             var GrpByCustomer = Orders.GroupBy(x => x.TLCUSTO_Customer_FK);
                             foreach (var Grouped in GrpByCustomer)
                             {
@@ -1065,12 +1065,18 @@ namespace ProductionPlanning
                                     select T2).ToList();
                         
                         var GrpPoDetail = PODetail.GroupBy(x => new { x.TLCUSTO_Quality_FK, x.TLCUSTO_Colour_FK }).ToList();
-                        
+                        Decimal FabYield = 0.00M;
+
                         foreach (var item in GrpPoDetail)
                         {
                             DataRow Row = dt.NewRow();
 
                             var QualPk = item.FirstOrDefault().TLCUSTO_Quality_FK;
+                            if(QualPk == 0)
+                            {
+                                continue;
+                            }
+
                             var ColorPk = item.FirstOrDefault().TLCUSTO_Colour_FK;
 
                             Row[0] = QualPk;
@@ -1098,19 +1104,31 @@ namespace ProductionPlanning
                                     var _GriegeQual = _Qualities.FirstOrDefault(s => s.TLGreige_Id == QualPk);
                                     if (_GriegeQual != null)
                                     {
-                                        var FWW = context.TLADM_FabWidth.Find(_GriegeQual.TLGreige_FabricWidth_FK);
-                                        var FW = context.TLADM_FabricWeight.Find(_GriegeQual.TLGreige_FabricWeight_FK);
-                                        if (FWW != null && FW != null)
+                                        var FWidth = context.TLADM_FabWidth.Find(_GriegeQual.TLGreige_FabricWidth_FK);
+                                        var FWeight = context.TLADM_FabricWeight.Find(_GriegeQual.TLGreige_FabricWeight_FK);
+                                        if (FWidth != null && FWeight != null)
                                         {
-                                            var FabYield = core.FabricYield(FW.FWW_Calculation_Value, FWW.FW_Calculation_Value);
+                                            FabYield = core.FabricYield(FWidth.FW_Calculation_Value, FWeight.FWW_Calculation_Value);
                                             Nett = Nett / FabYield;
                                         }
                                     }
                                     
                                     Row[ColIndex] = Row.Field<int>(ColIndex) + Nett;
-                                    Row[OTIndex] = Row.Field<int>(OTIndex) + Nett;  
-                                }
+                                    Row[OTIndex] = Row.Field<int>(OTIndex) + Nett;
 
+                                    var GrpByMonth = Grouped.GroupBy(x => x.TLCUSTO_DateRequired.Value.Month.ToString().PadLeft(2, '0'));
+                                    foreach(var Mnth in GrpByMonth)
+                                    {
+                                        QtyOrdered = Mnth.Sum(x => (decimal ?) x.TLCUSTO_QtyMeters ?? 0.00M) / FabYield;
+                                        AllReadyPicked = Mnth.Sum(x => (decimal ?)x.TLCUSTO_QtyMeters_Delivered?? 0.00M) / FabYield;
+                                        Nett = QtyOrdered - AllReadyPicked;
+                                        var MthIndex = dt.Columns.IndexOf("C" + Mnth.Key);
+                                        if(Nett > 0 && MthIndex >= 0)
+                                        {
+                                            Row[MthIndex] = Row.Field<int>(MthIndex) + Nett;
+                                        }
+                                    }
+                                }
                             }
 
                             //--------------------------------------------------------------------
@@ -1416,42 +1434,56 @@ namespace ProductionPlanning
                             }
                         }
 
-                        osheet.Columns.AutoFit();
+                       
 
-                        SaveFileDialog sfd = new SaveFileDialog();
-                        sfd.InitialDirectory = "C:\\Temp";
-                        sfd.Filter = "Excel |*.xlsx";
-
-                        DialogResult xdr = sfd.ShowDialog();
-                        if (xdr == DialogResult.OK)
+                        if (!chkManagementSummary.Checked)
                         {
-                            try
+                            osheet.Columns.AutoFit();
+
+                            SaveFileDialog sfd = new SaveFileDialog();
+                            sfd.InitialDirectory = "C:\\Temp";
+                            sfd.Filter = "Excel |*.xlsx";
+
+                            DialogResult xdr = sfd.ShowDialog();
+                            if (xdr == DialogResult.OK)
                             {
-                                obook.SaveAs(sfd.FileName);
-                                obook.Saved = true;
+                                try
+                                {
+                                    obook.SaveAs(sfd.FileName);
+                                    obook.Saved = true;
+                                }
+                                catch (Exception ex)
+                                {
+                                    MessageBox.Show(ex.Message);
+                                }
+
                             }
-                            catch (Exception ex)
-                            {
-                                MessageBox.Show(ex.Message);
-                            }
-                          
+
+                            //=====================================================
+                            //Release and terminate excel
+                            //====================================================================
+                            obook.Close();
+                            oexcel.Quit();
+
+                            releaseObject(osheet);
+                            releaseObject(obook);
+                            releaseObject(oexcel);
+                            GC.Collect();
+
+                            PBar1.Visible = false;
+
+                            MessageBox.Show("Export finished successfully");
                         }
+                        else
+                        {
+                            PBar1.Visible = false;
 
-                        //=====================================================
-                        //Release and terminate excel
-                        //====================================================================
-                        obook.Close();
-                        oexcel.Quit();
-
-                        releaseObject(osheet);
-                        releaseObject(obook);
-                        releaseObject(oexcel);
-                        GC.Collect();
-
-                        PBar1.Visible = false;
-                                                
-                        MessageBox.Show("Export finished successfully");
-
+                            ProductionPlanning.frmPPSViewRep vRep = new frmPPSViewRep(9, dt);
+                            int h = Screen.PrimaryScreen.WorkingArea.Height;
+                            int w = Screen.PrimaryScreen.WorkingArea.Width;
+                            vRep.ClientSize = new Size(w, h);
+                            vRep.ShowDialog(this);
+                        }
                     }
                     catch (Exception ex)
                     {

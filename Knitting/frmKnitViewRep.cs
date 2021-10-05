@@ -2566,7 +2566,7 @@ namespace Knitting
                         new string[] {"Text13", "A Grade Pieces(kg) with Warning"},
                         new string[] {"Text8", "B Grade Pieces(kg) Knitted"},
                         new string[] {"Text9", "C Grade Pieces(kg) Knitted"},
-                        new string[] {"Text14", "Dsk Variance"}
+                        new string[] {"Text14", "Dsk Variance %"}
                     };
                 }
                 else if (_opts.K7rbQA2)
@@ -2580,7 +2580,7 @@ namespace Knitting
                         new string[] {"Text13", "A Grade Pieces(kg) with Warning"},
                         new string[] {"Text8", "B Grade Pieces(kg) Knitted"},
                         new string[] {"Text9", "C Grade Pieces(kg) Knitted"},
-                        new string[] {"Text14", "Dsk Variance"}
+                        new string[] {"Text14", "Dsk Variance %"}
                     };
                 }
                 else if (_opts.K7rbQA3)
@@ -2594,7 +2594,7 @@ namespace Knitting
                         new string[] {"Text13", "A Grade Pieces(kg) with Warning"},
                         new string[] {"Text8", "B Grade Pieces(kg) Knitted"},
                         new string[] {"Text9", "C Grade Pieces(kg) Knitted"},
-                        new string[] {"Text14", "Dsk Variance"}
+                        new string[] {"Text14", "Dsk Variance %"}
                     };
                 }
 
@@ -2630,6 +2630,7 @@ namespace Knitting
                                     nr.DataColumn6 = 0.0M;
                                     nr.DataColumn7 = 0.0M;
                                     nr.DataColumn8 = 0.0M;
+                                    nr.DataColumn9 = 0.00M;
                                     nr.PrimaryKey = 1;
 
                                     if (nr.DataColumn3 == 0)
@@ -2657,7 +2658,7 @@ namespace Knitting
                                         nr.DataColumn8 = mGroup.Where(x => x.GreigeP_Grade == "A" && x.GreigeP_WarningMessage).Sum(x => (decimal?)x.GreigeP_weight) ?? 0.0M;
                                         nr.DataColumn6 = mGroup.Where(x => x.GreigeP_Grade == "B").Sum(x => (decimal?)x.GreigeP_weight) ?? 0.0M;
                                         nr.DataColumn7 = mGroup.Where(x => x.GreigeP_Grade == "C").Sum(x => (decimal?)x.GreigeP_weight) ?? 0.0M;
-                                
+                                        nr.DataColumn9 = mGroup.Average(x => x.GreigeP_VarianceDiskWeight);
                                         nr.PrimaryKey = 1;
                                         if (nr.DataColumn3 == 0)
                                             continue;
@@ -2691,7 +2692,7 @@ namespace Knitting
                                 nr.DataColumn8 = Group.Where(x => x.GreigeP_Grade == "A" && x.GreigeP_WarningMessage).Sum(x => (decimal?)x.GreigeP_weight) ?? 0.0M;
                                 nr.DataColumn6 = Group.Where(x => x.GreigeP_Grade == "B").Sum(x => (decimal ?)x.GreigeP_weight) ?? 0.0M;
                                 nr.DataColumn7 = Group.Where(x => x.GreigeP_Grade == "C").Sum(x => (decimal ?) x.GreigeP_weight) ?? 0.0M;
-                                 
+                                nr.DataColumn9 = Group.Average(x => x.GreigeP_VarianceDiskWeight);
                                 nr.PrimaryKey = 1;
                                 if (nr.DataColumn3 == 0)
                                     continue;
@@ -2715,6 +2716,7 @@ namespace Knitting
                                 nr.DataColumn8 = Group.Where(x => x.GreigeP_Grade == "A" && x.GreigeP_WarningMessage).Sum(x => (decimal?)x.GreigeP_weight) ?? 0.0M;
                                 nr.DataColumn6 = Group.Where(x => x.GreigeP_Grade == "B").Sum(x => (decimal ?)x.GreigeP_weight) ?? 0.0M;
                                 nr.DataColumn7 = Group.Where(x => x.GreigeP_Grade == "C").Sum(x => (decimal ?)x.GreigeP_weight) ?? 0.0M;
+                                nr.DataColumn9 = Group.Average(x => x.GreigeP_VarianceDiskWeight);
                                 nr.PrimaryKey = 1;
 
                                 if (nr.DataColumn3 == 0)

@@ -168,6 +168,12 @@
       <DependentUpon>CutSheetTickets.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="CuttingPanelsWasteAdjustment.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CuttingPanelsWasteAdjustment.Designer.cs">
+      <DependentUpon>CuttingPanelsWasteAdjustment.cs</DependentUpon>
+    </Compile>
     <Compile Include="CuttingRepository.cs" />
     <Compile Include="CuttingWasteMangement.cs">
       <AutoGen>True</AutoGen>
@@ -652,6 +658,9 @@
     <EmbeddedResource Include="CutSheetTickets.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>CutSheetTickets.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CuttingPanelsWasteAdjustment.resx">
+      <DependentUpon>CuttingPanelsWasteAdjustment.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="CuttingWasteMangement.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>

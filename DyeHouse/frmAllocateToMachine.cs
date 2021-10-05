@@ -148,7 +148,7 @@ namespace DyeHouse
 
                     try
                     {
-                        UpdateDyeKitchen_Balance(db.DYEB_Colour_FK, db.DYEB_BatchKG);
+                        // UpdateDyeKitchen_Balance(db.DYEB_Colour_FK, db.DYEB_BatchKG);
                         _context.SaveChanges();
 
                         MessageBox.Show("Data saved to database successfully");

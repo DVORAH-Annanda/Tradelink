@@ -21,7 +21,7 @@ namespace TTI2_WF
         DataGridViewTextBoxColumn selectf;    // Department power no
         DataGridViewCheckBoxColumn oChkA;     // Is Cmt Yes or No;
         DataGridViewCheckBoxColumn oChkB;     // Is Cutting Department Yes or No;
-        DataGridViewCheckBoxColumn oChkC;     // Is Department a quarantine store Yes or No;
+        // DataGridViewCheckBoxColumn oChkC;     // Is Department a quarantine store Yes or No;
         public frmTLADMDeptdef()
         {
            InitializeComponent();

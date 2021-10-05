@@ -468,6 +468,7 @@
             this.dataClearDownToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.inUseResetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
+            this.cuttingPanelsWasteAdjustmentToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             this.SuspendLayout();
@@ -1769,7 +1770,7 @@
             // 
             this.fabricSalesDeliveryNoteToolStripMenuItem.Name = "fabricSalesDeliveryNoteToolStripMenuItem";
             this.fabricSalesDeliveryNoteToolStripMenuItem.Size = new System.Drawing.Size(290, 22);
-            this.fabricSalesDeliveryNoteToolStripMenuItem.Text = "Fabric Sales Delivery Note";
+            this.fabricSalesDeliveryNoteToolStripMenuItem.Text = "Fabric Sales Forthe Period";
             this.fabricSalesDeliveryNoteToolStripMenuItem.Click += new System.EventHandler(this.fabricSalesDeliveryNoteToolStripMenuItem_Click);
             // 
             // fabricStockOnHandToolStripMenuItem
@@ -1805,6 +1806,7 @@
             this.fabricQualityToolStripMenuItem.Name = "fabricQualityToolStripMenuItem";
             this.fabricQualityToolStripMenuItem.Size = new System.Drawing.Size(290, 22);
             this.fabricQualityToolStripMenuItem.Text = "Fabric Quality";
+            this.fabricQualityToolStripMenuItem.Click += new System.EventHandler(this.fabricQualityToolStripMenuItem_Click);
             // 
             // fabricBasicQualityInformationToolStripMenuItem
             // 
@@ -2079,7 +2081,8 @@
             this.boxNumberAdjustmentToolStripMenuItem,
             this.cutProductionDateRequiredEditToolStripMenuItem,
             this.cutSheetsOnOffHoldToolStripMenuItem,
-            this.recalculateExpectedUnitsToolStripMenuItem});
+            this.recalculateExpectedUnitsToolStripMenuItem,
+            this.cuttingPanelsWasteAdjustmentToolStripMenuItem});
             this.cutTransactionsToolStripMenuItem.Name = "cutTransactionsToolStripMenuItem";
             this.cutTransactionsToolStripMenuItem.Size = new System.Drawing.Size(206, 22);
             this.cutTransactionsToolStripMenuItem.Text = "Cutting Cut Transactions";
@@ -3988,6 +3991,13 @@
             // 
             this.errorProvider1.ContainerControl = this;
             // 
+            // cuttingPanelsWasteAdjustmentToolStripMenuItem
+            // 
+            this.cuttingPanelsWasteAdjustmentToolStripMenuItem.Name = "cuttingPanelsWasteAdjustmentToolStripMenuItem";
+            this.cuttingPanelsWasteAdjustmentToolStripMenuItem.Size = new System.Drawing.Size(285, 22);
+            this.cuttingPanelsWasteAdjustmentToolStripMenuItem.Text = "Cutting / Panels Waste Adjustment";
+            this.cuttingPanelsWasteAdjustmentToolStripMenuItem.Click += new System.EventHandler(this.cuttingPanelsWasteAdjustmentToolStripMenuItem_Click);
+            // 
             // frmTLMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -4448,5 +4458,6 @@
         private System.Windows.Forms.ToolStripMenuItem panelIssueCancelationsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem greigeQualityAnalysisToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem fabricPieceQAHistoryToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem cuttingPanelsWasteAdjustmentToolStripMenuItem;
     }
 }

@@ -1514,35 +1514,38 @@ namespace TTI2_WF
                    
                     else if (frmNumber == 1 && Id == 1006)
                     {
-                        if (oDgv.Rows[oDgv.CurrentCell.RowIndex].Cells[3].Value != null)
+                        if (oDgv.Rows[oDgv.CurrentCell.RowIndex].Cells[3].Value == null)
                         {
-                            pn = Convert.ToInt32(oDgv.Rows[oDgv.CurrentCell.RowIndex].Cells[3].Value);
-                            if (pn != 0)
-                            {
+                            MessageBox.Show("Please save master record prior to setting either colours or Trims");
+                            return;
+                        }
+                        pn = Convert.ToInt32(oDgv.Rows[oDgv.CurrentCell.RowIndex].Cells[3].Value);
+                        if (pn != 0)
+                        {
                                 frmTLADMGardProp aprop = new frmTLADMGardProp(Id, pn);
                                 aprop.ShowDialog();
                                 if(!aprop.UserFormClosed)
                                     oDgv.CurrentCell.Value = aprop.TotalPN.ToString();
-                            }
                         }
-                        else
+                                              
+                    }
+                    else if (frmNumber == 1 && Id == 1007) //DJL
+                    {
+                        if (oDgv.Rows[oDgv.CurrentCell.RowIndex].Cells[6].Value == null)
                         {
                             MessageBox.Show("Please save master record prior to setting either colours or Trims");
+                            return;
                         }
-                    }
-                    else if (frmNumber == 1 && Id == 1007)
-                    {
-                        if (oDgv.Rows[oDgv.CurrentCell.RowIndex].Cells[6].Value != null)
-                        {
-                            // Get the Styles Key Value link to TLADM_StyTrim 
-                            //=================================================
-                            pn = Convert.ToInt32(oDgv.Rows[oDgv.CurrentCell.RowIndex].Cells[3].Value);
-                            frmTLADMGardProp aprop = new frmTLADMGardProp(Id, pn);
-                            aprop.ShowDialog();
-                            if(!aprop.UserFormClosed)
-                                oDgv.CurrentCell.Value = aprop.TotalPN.ToString();
+                        
+                        // Get the Styles Key Value link to TLADM_StyTrim 
+                        //=================================================
+                        pn = Convert.ToInt32(oDgv.Rows[oDgv.CurrentCell.RowIndex].Cells[3].Value);
+                        frmTLADMGardProp aprop = new frmTLADMGardProp(Id, pn);
+                        aprop.ShowDialog();
+                        if(!aprop.UserFormClosed)
+                            oDgv.CurrentCell.Value = aprop.TotalPN.ToString();
                             
-                        }
+                       
                         
                     }
                     else

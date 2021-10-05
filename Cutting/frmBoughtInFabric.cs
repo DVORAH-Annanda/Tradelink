@@ -218,7 +218,8 @@ namespace Cutting
                     return;
                 }
 
-                TransNo = core.CenturyDayNumber(DateTime.Now) + DateTime.Now.Hour + DateTime.Now.Minute;
+                TransNo = core.CenturyDayNumber(DateTime.Now);
+                
                 using (var context = new TTI2Entities())
                 {
                     foreach (DataGridViewRow Row in dataGridView1.Rows)
@@ -341,16 +342,6 @@ namespace Cutting
             if (oTxt != null && FormLoaded)
             {
                 
-                /*
-                  dataGridView1.Columns.Add(oTxtA);    // Our Piece No    0
-                  dataGridView1.Columns.Add(oTxtB);    // Their Piece No  1
-                  dataGridView1.Columns.Add(oTxtC);    // dsk Weight      2 
-                  dataGridView1.Columns.Add(oTxtD);    // dsk Width       3
-                  dataGridView1.Columns.Add(oTxtE);    // Nett Weight     4
-                  dataGridView1.Columns.Add(oTxtF);    // Meters Per Roll 5
-                 
-                 */
-
                 var Origin = (TLADM_CottonOrigin)cmboCountry.SelectedItem;
                 if (Origin == null)
                 {
@@ -377,15 +368,15 @@ namespace Cutting
 
 
                     var NoofRolls = Convert.ToInt32(oTxt.Text);
-                    var Mth = DateTime.Now.Month;
+                    var Mth = Origin.CottonOrigin_Pk;
                     var Year = DateTime.Now.Year;
-
+                    var DOY = DateTime.Now.DayOfYear;
                     var Index = 0;
 
                     do
                     {
                         var RowIndex = dataGridView1.Rows.Add();
-                        dataGridView1.Rows[RowIndex].Cells[0].Value = Mth.ToString().PadLeft(2, '0') + Year.ToString() + " " + (++BIFLstNumberUsed).ToString().PadLeft(6, '0');
+                        dataGridView1.Rows[RowIndex].Cells[0].Value = Mth.ToString().PadLeft(2, '0') + Year.ToString() + DOY.ToString().PadLeft(3, '0') +  " " + (++BIFLstNumberUsed).ToString().PadLeft(6, '0');
                         dataGridView1.Rows[RowIndex].Cells[1].Value = "0";
                         dataGridView1.Rows[RowIndex].Cells[2].Value = Convert.ToDecimal(txtDskWeight.Text);
                         dataGridView1.Rows[RowIndex].Cells[3].Value = Convert.ToDecimal(txtDskWidth.Text);
@@ -395,7 +386,7 @@ namespace Cutting
 
                     } while (++Index < NoofRolls);
 
-                    OriginDet.CottonOrigin_LastNumber = BIFLstNumberUsed + 1;
+                    OriginDet.CottonOrigin_LastNumber = BIFLstNumberUsed;
 
                     try
                     {

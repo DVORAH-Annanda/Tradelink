@@ -946,8 +946,8 @@ namespace Cutting
                                 dr[6] = CSDetail.Sum(x => (double?)x.TLCUTSHD_NettWeight) ?? 0.00;
                             else
                                 dr[6] = 0.00;
-                            var BoxedUnits = (decimal)context.TLCUT_CutSheetReceiptDetail.Where(x => x.TLCUTSHRD_CutSheet_FK == row.TLCUTSHR_Pk).Sum(x => x.TLCUTSHRD_BoxUnits);
-                            var ExpectedUnits = (decimal)context.TLCUT_ExpectedUnits.Where(x => x.TLCUTE_CutSheet_FK == CS.TLCutSH_Pk).Sum(x => x.TLCUTE_NoofGarments);
+                            var BoxedUnits = context.TLCUT_CutSheetReceiptDetail.Where(x => x.TLCUTSHRD_CutSheet_FK == row.TLCUTSHR_Pk).Sum(x => (decimal ?)x.TLCUTSHRD_BoxUnits) ?? 0.00M;
+                            var ExpectedUnits = context.TLCUT_ExpectedUnits.Where(x => x.TLCUTE_CutSheet_FK == CS.TLCutSH_Pk).Sum(x => (decimal ?) x.TLCUTE_NoofGarments) ?? 0.00M;
                             Decimal Difference = 0.00M;
                             if (ExpectedUnits != 0)
                                 Difference = ((BoxedUnits - ExpectedUnits) / ExpectedUnits) * 100;
@@ -3052,7 +3052,7 @@ namespace Cutting
                 nr.Pk = 1;
                 nr.FromDate = _parms.FromDate;
                 nr.ToDate = _parms.ToDate;
-                nr.Title = "Cutting Waste Anaysis";
+                nr.Title = "Cutting Waste Analysis";
                 dataTable.AddDataTable1Row(nr);
 
                 using (var context = new TTI2Entities())
@@ -3062,30 +3062,43 @@ namespace Cutting
                                  join T2 in context.TLCUT_CutSheetReceipt
                                  on T1.TLCutSH_Pk equals T2.TLCUTSHR_CutSheet_FK
                                  where T2.TLCUTSHR_WastePanels > 0 && T2.TLCUTSHR_WasteCutSheet > 0
-                                 select T1).GroupBy(x => x.TLCutSH_No).ToList();
+                                 && T2.TLCUTSHR_DateIntoPanelStore >= _parms.FromDate && T2.TLCUTSHR_DateIntoPanelStore <= _parms.ToDate
+                                 select T1).ToList();
 
                     foreach(var CutSheet in CutSheets)
                     {
                         DataSet22.DataTable2Row xnr = dataTable2.NewDataTable2Row();
                         xnr.Pk = 1;
-                        xnr.CutSheetNo = CutSheet.FirstOrDefault().TLCutSH_No;
-                        xnr.CutDate = CutSheet.FirstOrDefault().TLCutSH_Date;
-                        var DBatchKey = CutSheet.FirstOrDefault().TLCutSH_DyeBatch_FK; 
+                        xnr.CutSheetNo = CutSheet.TLCutSH_No;
+                        xnr.CutDate = (DateTime)context.TLCUT_CutSheetReceipt.FirstOrDefault(x=>x.TLCUTSHR_CutSheet_FK == CutSheet.TLCutSH_Pk).TLCUTSHR_DateIntoPanelStore;
+                        var DBatchKey = CutSheet.TLCutSH_DyeBatch_FK; 
                         var DB = context.TLDYE_DyeBatch.Find(DBatchKey);
                         if (DB != null)
                         {
+                            if(_parms.Qualities.Count != 0)
+                            {
+                                var Selected = _parms.Qualities.Find(x => x.TLGreige_Id == DB.DYEB_Greige_FK);
+                                if(Selected == null)
+                                {
+                                    continue;
+                                }
+                            }
                             xnr.DyeBatchNo = DB.DYEB_BatchNo;
-                            xnr.FabNetWeight = (from T1 in context.TLDYE_DyeBatch
-                                       join T2 in context.TLDYE_DyeBatchDetails
-                                       on T1.DYEB_Pk equals T2.DYEBD_DyeBatch_FK
-                                       where T1.DYEB_Pk == DBatchKey && T2.DYEBD_BodyTrim
-                                       select T2).Sum(x =>(decimal?)x.DYEBO_Nett) ?? 0.00M;
+                            xnr.FabNetWeight = context.TLCUT_CutSheetDetail.Where(x=>x.TLCutSHD_CutSheet_FK == CutSheet.TLCutSH_Pk).Sum(x=>(decimal ?)x.TLCUTSHD_NettWeight) ?? 0.00M;
                         }
-                        var CutSheetKey = CutSheet.FirstOrDefault().TLCutSH_Pk;
+                        var CutSheetKey = CutSheet.TLCutSH_Pk;
 
-                        var CutReceipt = context.TLCUT_CutSheetReceipt.Where(x => x.TLCUTSHR_CutSheet_FK == CutSheetKey).FirstOrDefault();
+                        var CutReceipt = context.TLCUT_CutSheetReceipt.FirstOrDefault(x => x.TLCUTSHR_CutSheet_FK == CutSheetKey);
                         if (CutReceipt != null)
                         {
+                            if(_parms.Machines.Count != 0)
+                            {
+                                var Selected = _parms.Machines.Find(x => x.MD_Pk == CutReceipt.TLCUTSHR_Machine_FK);
+                                if(Selected == null)
+                                {
+                                    continue;
+                                }
+                            }
                             xnr.Machine = context.TLADM_MachineDefinitions.Find(CutReceipt.TLCUTSHR_Machine_FK).MD_Description;
                             xnr.GoodPanels = (from T1 in context.TLCUT_CutSheetReceipt
                                                 join T2 in context.TLCUT_CutSheetReceiptDetail
@@ -3115,11 +3128,9 @@ namespace Cutting
 
                         }
                         
-                        xnr.Quality = context.TLADM_Griege.Find(CutSheet.FirstOrDefault().TLCutSH_Quality_FK).TLGreige_Description;
-                        xnr.Size = context.TLADM_Sizes.Find(CutSheet.FirstOrDefault().TLCutSH_Size_FK).SI_Description;
-                        xnr.Colour = context.TLADM_Colours.Find(CutSheet.FirstOrDefault().TLCutSH_Colour_FK).Col_Display;
-
-
+                        xnr.Quality = context.TLADM_Griege.Find(CutSheet.TLCutSH_Quality_FK).TLGreige_Description;
+                        xnr.Size = context.TLADM_Sizes.Find(CutSheet.TLCutSH_Size_FK).SI_Description;
+                        xnr.Colour = context.TLADM_Colours.Find(CutSheet.TLCutSH_Colour_FK).Col_Display;
 
                         dataTable2.AddDataTable2Row(xnr);
                     }
@@ -3128,6 +3139,21 @@ namespace Cutting
                 ds.Tables.Add(dataTable);
                 ds.Tables.Add(dataTable2);
                 Cutting.CuttingWasteMangement WasteMan = new Cutting.CuttingWasteMangement();
+                if (_parms.RepSortOption == 1)
+                {
+                    // DyeBatch
+                    WasteMan.DataDefinition.Groups[0].ConditionField = WasteMan.Database.Tables[1].Fields[16];
+                }
+                else if (_parms.RepSortOption == 2)
+                {
+                    // Machine
+                    WasteMan.DataDefinition.Groups[0].ConditionField = WasteMan.Database.Tables[1].Fields[4];
+                }
+                else if (_parms.RepSortOption == 3)
+                {
+                    //Quality
+                    WasteMan.DataDefinition.Groups[0].ConditionField = WasteMan.Database.Tables[1].Fields[5];
+                }
                 WasteMan.SetDataSource(ds);
                 crystalReportViewer1.ReportSource = WasteMan;
             }

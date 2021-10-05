@@ -553,6 +553,7 @@
           <Property Name="TLGreige_IsBoughtIn" Type="bit" Nullable="false" />
           <Property Name="TLGreige_IsLining" Type="bit" Nullable="false" />
           <Property Name="TLGreige_CubicWeight" Type="decimal" Precision="18" Scale="4" Nullable="false" />
+          <Property Name="TLGreige_Body" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="TLADM_Labels">
           <Key>
@@ -1519,7 +1520,7 @@
           <Property Name="TLCSVPO_SpecialOrder" Type="bit" Nullable="false" />
           <Property Name="TLCSVPO_RepackTransaction" Type="bit" Nullable="false" />
           <Property Name="TLCSVPO_Provisional" Type="bit" Nullable="false" />
-          <Property Name="TLCSV_FabricCustomer" Type="bit" Nullable="false" />
+          <Property Name="TLCSVPO_FabricCustomer" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="TLCSV_RePackConfig">
           <Key>
@@ -2093,6 +2094,9 @@
           <Property Name="TLDYEF_Colours_FK" Type="int" Nullable="false" />
           <Property Name="TLDYEF_LineNo" Type="int" Nullable="false" />
           <Property Name="TLDYEF_Closed" Type="bit" Nullable="false" />
+          <Property Name="TLDYEF_FabricOrder_FK" Type="int" Nullable="false" />
+          <Property Name="TLDYEF_DyeOrderNumeric" Type="int" Nullable="false" />
+          <Property Name="TLDYEF_Body" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="TLDYE_DyeTransactions">
           <Key>
@@ -3703,7 +3707,6 @@
           <EntitySet Name="TLCSV_BoxSplit" EntityType="TTI2Model.TLCSV_BoxSplit" />
           <EntitySet Name="TLDYE_DyeOrderDetails" EntityType="TTI2Model.TLDYE_DyeOrderDetails" />
           <EntitySet Name="TLSEC_UserSections" EntityType="TTI2Model.TLSEC_UserSections" />
-          <EntitySet Name="TLDYE_DyeOrderFabric" EntityType="TTI2Model.TLDYE_DyeOrderFabric" />
           <EntitySet Name="TLADM_DailyLog" EntityType="TTI2Model.TLADM_DailyLog" />
           <EntitySet Name="TLADM_Cotton" EntityType="TTI2Model.TLADM_Cotton" />
           <EntitySet Name="TLADM_StyleColour" EntityType="TTI2Model.TLADM_StyleColour" />
@@ -3780,7 +3783,6 @@
           <EntitySet Name="TLADM_Transporters" EntityType="TTI2Model.TLADM_Transporters" />
           <EntitySet Name="TLCMT_ProductionCosts" EntityType="TTI2Model.TLCMT_ProductionCosts" />
           <EntitySet Name="TLADM_CMTMeasurementPoints" EntityType="TTI2Model.TLADM_CMTMeasurementPoints" />
-          <EntitySet Name="TLCSV_PurchaseOrder" EntityType="TTI2Model.TLCSV_PurchaseOrder" />
           <EntitySet Name="TLADM_FabWidth" EntityType="TTI2Model.TLADM_FabWidth" />
           <EntitySet Name="TLADM_QualityDefinition" EntityType="TTI2Model.TLADM_QualityDefinition" />
           <AssociationSet Name="FK_TLADM_QualityDefinition_TLADM_RejectReasons1" Association="TTI2Model.FK_TLADM_QualityDefinition_TLADM_RejectReasons1">
@@ -3825,13 +3827,11 @@
           <EntitySet Name="TLADM_Trims" EntityType="TTI2Model.TLADM_Trims" />
           <EntitySet Name="TLCUT_CutSheet" EntityType="TTI2Model.TLCUT_CutSheet" />
           <EntitySet Name="TLPPS_InterDept" EntityType="TTI2Model.TLPPS_InterDept" />
-          <EntitySet Name="TLADM_Griege" EntityType="TTI2Model.TLADM_Griege" />
           <EntitySet Name="TLADM_MachineDefinitions" EntityType="TTI2Model.TLADM_MachineDefinitions" />
           <AssociationSet Name="FK_TLSPN_YarnProductionPerMachine_TLADM_MachineDefinitions" Association="TTI2Model.FK_TLSPN_YarnProductionPerMachine_TLADM_MachineDefinitions">
             <End Role="TLADM_MachineDefinitions" EntitySet="TLADM_MachineDefinitions" />
             <End Role="TLSPN_YarnProductionPerMachine" EntitySet="TLSPN_YarnProductionPerMachine" />
           </AssociationSet>
-          <EntitySet Name="TLKNI_GreigeProduction" EntityType="TTI2Model.TLKNI_GreigeProduction" />
           <EntitySet Name="TLDYE_NonCompliance" EntityType="TTI2Model.TLDYE_NonCompliance" />
           <EntitySet Name="TLDYE_DyeingStandards" EntityType="TTI2Model.TLDYE_DyeingStandards" />
           <EntitySet Name="TLADM_QADyeProcessFields" EntityType="TTI2Model.TLADM_QADyeProcessFields" />
@@ -3852,6 +3852,10 @@
           </AssociationSet>
           <EntitySet Name="TLCSV_PuchaseOrderDetail" EntityType="TTI2Model.TLCSV_PuchaseOrderDetail" />
           <EntitySet Name="TLADM_Months" EntityType="TTI2Model.TLADM_Months" />
+          <EntitySet Name="TLCSV_PurchaseOrder" EntityType="TTI2Model.TLCSV_PurchaseOrder" />
+          <EntitySet Name="TLADM_Griege" EntityType="TTI2Model.TLADM_Griege" />
+          <EntitySet Name="TLDYE_DyeOrderFabric" EntityType="TTI2Model.TLDYE_DyeOrderFabric" />
+          <EntitySet Name="TLKNI_GreigeProduction" EntityType="TTI2Model.TLKNI_GreigeProduction" />
           </EntityContainer>
         <EntityType Name="TLADM_FabricProduct">
           <Key>
@@ -4805,26 +4809,6 @@
           <Property Name="TLSECDEP_Section_FK" Type="Int32" Nullable="false" />
           <Property Name="TLSECDEP_Department_FK" Type="Int32" Nullable="false" />
           <Property Name="TLSECDEP_AccessGranted" Type="Boolean" Nullable="false" />
-        </EntityType>
-        <EntityType Name="TLDYE_DyeOrderFabric">
-          <Key>
-            <PropertyRef Name="TLDYEF_Pk" />
-          </Key>
-          <Property Name="TLDYEF_Pk" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="TLDYEF_OrderDate" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="TLDYEF_Customer_FK" Type="Int32" Nullable="false" />
-          <Property Name="TLDYEF_DyeWeek" Type="Int32" Nullable="false" />
-          <Property Name="TLDYEF_PLoss" Type="Decimal" Nullable="false" Precision="18" Scale="4" />
-          <Property Name="TLDYEF_CustomerOrder" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="TLDYEF_DyeOrderNo" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="TLDYEF_Greige_FK" Type="Int32" Nullable="false" />
-          <Property Name="TLDYEF_Yield" Type="Decimal" Nullable="false" Precision="18" Scale="4" />
-          <Property Name="TLDYEF_Quantity" Type="Decimal" Nullable="false" Precision="18" Scale="4" />
-          <Property Name="TLDYEF_ProjectedLoss" Type="Decimal" Nullable="false" Precision="18" Scale="4" />
-          <Property Name="TLDYEF_Demand" Type="Decimal" Nullable="false" Precision="18" Scale="4" />
-          <Property Name="TLDYEF_Colours_FK" Type="Int32" Nullable="false" />
-          <Property Name="TLDYEF_LineNo" Type="Int32" Nullable="false" />
-          <Property Name="TLDYEF_Closed" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="TLADM_DailyLog">
           <Key>
@@ -5825,23 +5809,6 @@
           <Property Name="CMTMP_DisplayOrder" Type="Int32" Nullable="false" />
           <Property Name="CMTMP_Active" Type="Boolean" Nullable="false" />
         </EntityType>
-        <EntityType Name="TLCSV_PurchaseOrder">
-          <Key>
-            <PropertyRef Name="TLCSVPO_Pk" />
-          </Key>
-          <Property Name="TLCSVPO_Pk" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="TLCSVPO_Customer_FK" Type="Int32" Nullable="false" />
-          <Property Name="TLCSVPO_TransDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="TLCSVPO_RequiredDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="TLCSVPO_PurchaseOrder" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="TLCSVPO_Closeed" Type="Boolean" Nullable="false" />
-          <Property Name="TLCSVPO_ClosedDate" Type="DateTime" Precision="3" />
-          <Property Name="TLCVSPO_SequenceNo" Type="Int32" Nullable="false" />
-          <Property Name="TLCSVPO_SpecialOrder" Type="Boolean" Nullable="false" />
-          <Property Name="TLCSVPO_RepackTransaction" Type="Boolean" Nullable="false" />
-          <Property Name="TLCSVPO_Provisional" Type="Boolean" Nullable="false" />
-          <Property Name="TLCSV_FabricCustomer" Type="Boolean" Nullable="false" />
-        </EntityType>
         <EntityType Name="TLADM_FabWidth">
           <Key>
             <PropertyRef Name="FW_Id" />
@@ -6246,36 +6213,6 @@
           <Property Name="TLInter_Dying_Fk" Type="Int32" Nullable="false" />
           <Property Name="TLInter_CMT_Fk" Type="Int32" Nullable="false" />
         </EntityType>
-        <EntityType Name="TLADM_Griege">
-          <Key>
-            <PropertyRef Name="TLGreige_Id" />
-          </Key>
-          <Property Name="TLGreige_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="TLGreige_Description" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="TLGreige_OldCode" Type="Int32" />
-          <Property Name="TLGreige_PowerN" Type="Int32" Nullable="false" />
-          <Property Name="TLGriege_Discontinued" Type="Boolean" />
-          <Property Name="TLGreige_Discontinued_Date" Type="DateTime" Precision="0" />
-          <Property Name="TLGreige_BarCode" Type="Boolean" Nullable="false" />
-          <Property Name="TLGreige_FabricWeight_FK" Type="Int32" Nullable="false" />
-          <Property Name="TLGreige_FabricWidth_FK" Type="Int32" Nullable="false" />
-          <Property Name="TLGreige_Machine_FK" Type="Int32" Nullable="false" />
-          <Property Name="TLGreige_ProductType_FK" Type="Int32" Nullable="false" />
-          <Property Name="TLGreige_Quality_FK" Type="Int32" Nullable="false" />
-          <Property Name="TLGreige_ROL" Type="Int32" Nullable="false" />
-          <Property Name="TLGreige_ROQ" Type="Int32" Nullable="false" />
-          <Property Name="TLGreige_ShowQty" Type="Boolean" Nullable="false" />
-          <Property Name="TLGreige_StockTakeFreq_FK" Type="Int32" Nullable="false" />
-          <Property Name="TLGreige_UOM_Fk" Type="Int32" Nullable="false" />
-          <Property Name="TLGreige_YarnPowerN" Type="Int32" Nullable="false" />
-          <Property Name="TLGreige_KgPerPiece" Type="Decimal" Nullable="false" Precision="18" Scale="1" />
-          <Property Name="TLGreige_LatestSuggest" Type="Decimal" Nullable="false" Precision="18" Scale="4" />
-          <Property Name="TLGreige_Meters" Type="Int32" Nullable="false" />
-          <Property Name="TLGreige_FaultsAllowed" Type="Int32" Nullable="false" />
-          <Property Name="TLGreige_IsBoughtIn" Type="Boolean" Nullable="false" />
-          <Property Name="TLGreige_IsLining" Type="Boolean" Nullable="false" />
-          <Property Name="TLGreige_CubicWeight" Type="Decimal" Nullable="false" Precision="18" Scale="4" />
-        </EntityType>
         <EntityType Name="TLADM_MachineDefinitions">
           <Key>
             <PropertyRef Name="MD_Pk" />
@@ -6330,57 +6267,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="TLKNI_GreigeProduction">
-          <Key>
-            <PropertyRef Name="GreigeP_Pk" />
-          </Key>
-          <Property Name="GreigeP_Pk" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="GreigeP_KnitO_Fk" Type="Int32" />
-          <Property Name="GreigeP_Greige_Fk" Type="Int32" />
-          <Property Name="GreigeP_PieceNo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="GreigeP_weight" Type="Decimal" Nullable="false" Precision="18" Scale="4" />
-          <Property Name="GreigeP_weightAvail" Type="Decimal" Nullable="false" Precision="18" Scale="4" />
-          <Property Name="GreigeP_PDate" Type="DateTime" Precision="0" />
-          <Property Name="GreigeP_Machine_FK" Type="Int32" />
-          <Property Name="GreigeP_Shift_FK" Type="Int32" />
-          <Property Name="GreigeP_Operator_FK" Type="Int32" />
-          <Property Name="GreigeP_Captured" Type="Boolean" Nullable="false" />
-          <Property Name="GreigeP_Grade" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
-          <Property Name="GreigeP_Remarks" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="GreigeP_Meas1" Type="Int32" Nullable="false" />
-          <Property Name="GreigeP_Meas2" Type="Int32" Nullable="false" />
-          <Property Name="GreigeP_Meas3" Type="Int32" Nullable="false" />
-          <Property Name="GreigeP_Meas4" Type="Int32" Nullable="false" />
-          <Property Name="GreigeP_Meas5" Type="Int32" Nullable="false" />
-          <Property Name="GreigeP_Meas6" Type="Int32" Nullable="false" />
-          <Property Name="GreigeP_Meas7" Type="Int32" Nullable="false" />
-          <Property Name="GreigeP_Meas8" Type="Int32" Nullable="false" />
-          <Property Name="GreigeP_Inspected" Type="Boolean" Nullable="false" />
-          <Property Name="GreigeP_InspDate" Type="DateTime" Precision="0" />
-          <Property Name="GreigeP_Inspector_FK" Type="Int32" />
-          <Property Name="GreigeP_Store_FK" Type="Int32" />
-          <Property Name="GreigeP_Dye" Type="Boolean" Nullable="false" />
-          <Property Name="GreigeP_DyeBatch_FK" Type="Int32" />
-          <Property Name="GreigeP_CommisionCust" Type="Boolean" Nullable="false" />
-          <Property Name="GreigeP_CommissionCust_FK" Type="Int32" />
-          <Property Name="GreigeP_PalletNo" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="GreigeP_BoughtIn" Type="Boolean" Nullable="false" />
-          <Property Name="GreigeP_BoughtIn_FabWidth" Type="Decimal" Nullable="false" Precision="18" Scale="4" />
-          <Property Name="GreigeP_BoughtIn_FabWeight" Type="Decimal" Nullable="false" Precision="18" Scale="4" />
-          <Property Name="GreigeP_CommissionGrn" Type="Int32" Nullable="false" />
-          <Property Name="GreigeP_InTransit" Type="Boolean" Nullable="false" />
-          <Property Name="GreigeP_Receipted" Type="Boolean" Nullable="false" />
-          <Property Name="GreigeP_BIFColour_FK" Type="Int32" Nullable="false" />
-          <Property Name="GreigeP_YarnSupplier" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="GreigeP_YarnTex" Type="Decimal" Nullable="false" Precision="18" Scale="4" />
-          <Property Name="GreigeP_Meters" Type="Decimal" Nullable="false" Precision="18" Scale="4" />
-          <Property Name="GreigeP_BoughtIn_Fk" Type="Int32" />
-          <Property Name="GreigeP_MergeDetail" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
-          <Property Name="GreigeP_Size_Fk" Type="Int32" />
-          <Property Name="GreigeP_WarningMessage" Type="Boolean" Nullable="false" />
-          <Property Name="GreigeP_DskWeight" Type="Decimal" Nullable="false" Precision="18" Scale="4" />
-          <Property Name="GreigeP_VarianceDiskWeight" Type="Decimal" Nullable="false" Precision="18" Scale="4" />
-        </EntityType>
         <EntityType Name="TLDYE_NonCompliance">
           <Key>
             <PropertyRef Name="TLDYE_NcrPk" />
@@ -6726,6 +6612,128 @@
           </Key>
           <Property Name="Mth_Pk" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Mth_Description" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="TLCSV_PurchaseOrder">
+          <Key>
+            <PropertyRef Name="TLCSVPO_Pk" />
+          </Key>
+          <Property Name="TLCSVPO_Pk" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TLCSVPO_Customer_FK" Type="Int32" Nullable="false" />
+          <Property Name="TLCSVPO_TransDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TLCSVPO_RequiredDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TLCSVPO_PurchaseOrder" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="TLCSVPO_Closeed" Type="Boolean" Nullable="false" />
+          <Property Name="TLCSVPO_ClosedDate" Type="DateTime" Precision="3" />
+          <Property Name="TLCVSPO_SequenceNo" Type="Int32" Nullable="false" />
+          <Property Name="TLCSVPO_SpecialOrder" Type="Boolean" Nullable="false" />
+          <Property Name="TLCSVPO_RepackTransaction" Type="Boolean" Nullable="false" />
+          <Property Name="TLCSVPO_Provisional" Type="Boolean" Nullable="false" />
+          <Property Name="TLCSVPO_FabricCustomer" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TLADM_Griege">
+          <Key>
+            <PropertyRef Name="TLGreige_Id" />
+          </Key>
+          <Property Name="TLGreige_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TLGreige_Description" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="TLGreige_OldCode" Type="Int32" />
+          <Property Name="TLGreige_PowerN" Type="Int32" Nullable="false" />
+          <Property Name="TLGriege_Discontinued" Type="Boolean" />
+          <Property Name="TLGreige_Discontinued_Date" Type="DateTime" Precision="0" />
+          <Property Name="TLGreige_BarCode" Type="Boolean" Nullable="false" />
+          <Property Name="TLGreige_FabricWeight_FK" Type="Int32" Nullable="false" />
+          <Property Name="TLGreige_FabricWidth_FK" Type="Int32" Nullable="false" />
+          <Property Name="TLGreige_Machine_FK" Type="Int32" Nullable="false" />
+          <Property Name="TLGreige_ProductType_FK" Type="Int32" Nullable="false" />
+          <Property Name="TLGreige_Quality_FK" Type="Int32" Nullable="false" />
+          <Property Name="TLGreige_ROL" Type="Int32" Nullable="false" />
+          <Property Name="TLGreige_ROQ" Type="Int32" Nullable="false" />
+          <Property Name="TLGreige_ShowQty" Type="Boolean" Nullable="false" />
+          <Property Name="TLGreige_StockTakeFreq_FK" Type="Int32" Nullable="false" />
+          <Property Name="TLGreige_UOM_Fk" Type="Int32" Nullable="false" />
+          <Property Name="TLGreige_YarnPowerN" Type="Int32" Nullable="false" />
+          <Property Name="TLGreige_KgPerPiece" Type="Decimal" Nullable="false" Precision="18" Scale="1" />
+          <Property Name="TLGreige_LatestSuggest" Type="Decimal" Nullable="false" Precision="18" Scale="4" />
+          <Property Name="TLGreige_Meters" Type="Int32" Nullable="false" />
+          <Property Name="TLGreige_FaultsAllowed" Type="Int32" Nullable="false" />
+          <Property Name="TLGreige_IsBoughtIn" Type="Boolean" Nullable="false" />
+          <Property Name="TLGreige_IsLining" Type="Boolean" Nullable="false" />
+          <Property Name="TLGreige_CubicWeight" Type="Decimal" Nullable="false" Precision="18" Scale="4" />
+          <Property Name="TLGreige_Body" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TLDYE_DyeOrderFabric">
+          <Key>
+            <PropertyRef Name="TLDYEF_Pk" />
+          </Key>
+          <Property Name="TLDYEF_Pk" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TLDYEF_OrderDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="TLDYEF_Customer_FK" Type="Int32" Nullable="false" />
+          <Property Name="TLDYEF_DyeWeek" Type="Int32" Nullable="false" />
+          <Property Name="TLDYEF_PLoss" Type="Decimal" Nullable="false" Precision="18" Scale="4" />
+          <Property Name="TLDYEF_CustomerOrder" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="TLDYEF_DyeOrderNo" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="TLDYEF_Greige_FK" Type="Int32" Nullable="false" />
+          <Property Name="TLDYEF_Yield" Type="Decimal" Nullable="false" Precision="18" Scale="4" />
+          <Property Name="TLDYEF_Quantity" Type="Decimal" Nullable="false" Precision="18" Scale="4" />
+          <Property Name="TLDYEF_ProjectedLoss" Type="Decimal" Nullable="false" Precision="18" Scale="4" />
+          <Property Name="TLDYEF_Demand" Type="Decimal" Nullable="false" Precision="18" Scale="4" />
+          <Property Name="TLDYEF_Colours_FK" Type="Int32" Nullable="false" />
+          <Property Name="TLDYEF_LineNo" Type="Int32" Nullable="false" />
+          <Property Name="TLDYEF_Closed" Type="Boolean" Nullable="false" />
+          <Property Name="TLDYEF_FabricOrder_FK" Type="Int32" Nullable="false" />
+          <Property Name="TLDYEF_DyeOrderNumeric" Type="Int32" Nullable="false" />
+          <Property Name="TLDYEF_Body" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TLKNI_GreigeProduction">
+          <Key>
+            <PropertyRef Name="GreigeP_Pk" />
+          </Key>
+          <Property Name="GreigeP_Pk" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="GreigeP_KnitO_Fk" Type="Int32" />
+          <Property Name="GreigeP_Greige_Fk" Type="Int32" />
+          <Property Name="GreigeP_PieceNo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="GreigeP_weight" Type="Decimal" Nullable="false" Precision="18" Scale="4" />
+          <Property Name="GreigeP_weightAvail" Type="Decimal" Nullable="false" Precision="18" Scale="4" />
+          <Property Name="GreigeP_PDate" Type="DateTime" Precision="0" />
+          <Property Name="GreigeP_Machine_FK" Type="Int32" />
+          <Property Name="GreigeP_Shift_FK" Type="Int32" />
+          <Property Name="GreigeP_Operator_FK" Type="Int32" />
+          <Property Name="GreigeP_Captured" Type="Boolean" Nullable="false" />
+          <Property Name="GreigeP_Grade" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="GreigeP_Remarks" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="GreigeP_Meas1" Type="Int32" Nullable="false" />
+          <Property Name="GreigeP_Meas2" Type="Int32" Nullable="false" />
+          <Property Name="GreigeP_Meas3" Type="Int32" Nullable="false" />
+          <Property Name="GreigeP_Meas4" Type="Int32" Nullable="false" />
+          <Property Name="GreigeP_Meas5" Type="Int32" Nullable="false" />
+          <Property Name="GreigeP_Meas6" Type="Int32" Nullable="false" />
+          <Property Name="GreigeP_Meas7" Type="Int32" Nullable="false" />
+          <Property Name="GreigeP_Meas8" Type="Int32" Nullable="false" />
+          <Property Name="GreigeP_Inspected" Type="Boolean" Nullable="false" />
+          <Property Name="GreigeP_InspDate" Type="DateTime" Precision="0" />
+          <Property Name="GreigeP_Inspector_FK" Type="Int32" />
+          <Property Name="GreigeP_Store_FK" Type="Int32" />
+          <Property Name="GreigeP_Dye" Type="Boolean" Nullable="false" />
+          <Property Name="GreigeP_DyeBatch_FK" Type="Int32" />
+          <Property Name="GreigeP_CommisionCust" Type="Boolean" Nullable="false" />
+          <Property Name="GreigeP_CommissionCust_FK" Type="Int32" />
+          <Property Name="GreigeP_PalletNo" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="GreigeP_BoughtIn" Type="Boolean" Nullable="false" />
+          <Property Name="GreigeP_BoughtIn_FabWidth" Type="Decimal" Nullable="false" Precision="18" Scale="4" />
+          <Property Name="GreigeP_BoughtIn_FabWeight" Type="Decimal" Nullable="false" Precision="18" Scale="4" />
+          <Property Name="GreigeP_CommissionGrn" Type="Int32" Nullable="false" />
+          <Property Name="GreigeP_InTransit" Type="Boolean" Nullable="false" />
+          <Property Name="GreigeP_Receipted" Type="Boolean" Nullable="false" />
+          <Property Name="GreigeP_BIFColour_FK" Type="Int32" Nullable="false" />
+          <Property Name="GreigeP_YarnSupplier" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="GreigeP_YarnTex" Type="Decimal" Nullable="false" Precision="18" Scale="4" />
+          <Property Name="GreigeP_Meters" Type="Decimal" Nullable="false" Precision="18" Scale="4" />
+          <Property Name="GreigeP_BoughtIn_Fk" Type="Int32" />
+          <Property Name="GreigeP_MergeDetail" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="GreigeP_Size_Fk" Type="Int32" />
+          <Property Name="GreigeP_WarningMessage" Type="Boolean" Nullable="false" />
+          <Property Name="GreigeP_DskWeight" Type="Decimal" Nullable="false" Precision="18" Scale="4" />
+          <Property Name="GreigeP_VarianceDiskWeight" Type="Decimal" Nullable="false" Precision="18" Scale="4" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -7950,27 +7958,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="TLDYE_DyeOrderFabric">
-            <EntityTypeMapping TypeName="TTI2Model.TLDYE_DyeOrderFabric">
-              <MappingFragment StoreEntitySet="TLDYE_DyeOrderFabric">
-                <ScalarProperty Name="TLDYEF_Closed" ColumnName="TLDYEF_Closed" />
-                <ScalarProperty Name="TLDYEF_LineNo" ColumnName="TLDYEF_LineNo" />
-                <ScalarProperty Name="TLDYEF_Colours_FK" ColumnName="TLDYEF_Colours_FK" />
-                <ScalarProperty Name="TLDYEF_Demand" ColumnName="TLDYEF_Demand" />
-                <ScalarProperty Name="TLDYEF_ProjectedLoss" ColumnName="TLDYEF_ProjectedLoss" />
-                <ScalarProperty Name="TLDYEF_Quantity" ColumnName="TLDYEF_Quantity" />
-                <ScalarProperty Name="TLDYEF_Yield" ColumnName="TLDYEF_Yield" />
-                <ScalarProperty Name="TLDYEF_Greige_FK" ColumnName="TLDYEF_Greige_FK" />
-                <ScalarProperty Name="TLDYEF_DyeOrderNo" ColumnName="TLDYEF_DyeOrderNo" />
-                <ScalarProperty Name="TLDYEF_CustomerOrder" ColumnName="TLDYEF_CustomerOrder" />
-                <ScalarProperty Name="TLDYEF_PLoss" ColumnName="TLDYEF_PLoss" />
-                <ScalarProperty Name="TLDYEF_DyeWeek" ColumnName="TLDYEF_DyeWeek" />
-                <ScalarProperty Name="TLDYEF_Customer_FK" ColumnName="TLDYEF_Customer_FK" />
-                <ScalarProperty Name="TLDYEF_OrderDate" ColumnName="TLDYEF_OrderDate" />
-                <ScalarProperty Name="TLDYEF_Pk" ColumnName="TLDYEF_Pk" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="TLADM_DailyLog">
             <EntityTypeMapping TypeName="TTI2Model.TLADM_DailyLog">
               <MappingFragment StoreEntitySet="TLADM_DailyLog">
@@ -9025,24 +9012,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="TLCSV_PurchaseOrder">
-            <EntityTypeMapping TypeName="TTI2Model.TLCSV_PurchaseOrder">
-              <MappingFragment StoreEntitySet="TLCSV_PurchaseOrder">
-                <ScalarProperty Name="TLCSV_FabricCustomer" ColumnName="TLCSV_FabricCustomer" />
-                <ScalarProperty Name="TLCSVPO_Provisional" ColumnName="TLCSVPO_Provisional" />
-                <ScalarProperty Name="TLCSVPO_RepackTransaction" ColumnName="TLCSVPO_RepackTransaction" />
-                <ScalarProperty Name="TLCSVPO_SpecialOrder" ColumnName="TLCSVPO_SpecialOrder" />
-                <ScalarProperty Name="TLCVSPO_SequenceNo" ColumnName="TLCVSPO_SequenceNo" />
-                <ScalarProperty Name="TLCSVPO_ClosedDate" ColumnName="TLCSVPO_ClosedDate" />
-                <ScalarProperty Name="TLCSVPO_Closeed" ColumnName="TLCSVPO_Closeed" />
-                <ScalarProperty Name="TLCSVPO_PurchaseOrder" ColumnName="TLCSVPO_PurchaseOrder" />
-                <ScalarProperty Name="TLCSVPO_RequiredDate" ColumnName="TLCSVPO_RequiredDate" />
-                <ScalarProperty Name="TLCSVPO_TransDate" ColumnName="TLCSVPO_TransDate" />
-                <ScalarProperty Name="TLCSVPO_Customer_FK" ColumnName="TLCSVPO_Customer_FK" />
-                <ScalarProperty Name="TLCSVPO_Pk" ColumnName="TLCSVPO_Pk" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="TLADM_FabWidth">
             <EntityTypeMapping TypeName="TTI2Model.TLADM_FabWidth">
               <MappingFragment StoreEntitySet="TLADM_FabWidth">
@@ -9387,37 +9356,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="TLADM_Griege">
-            <EntityTypeMapping TypeName="TTI2Model.TLADM_Griege">
-              <MappingFragment StoreEntitySet="TLADM_Griege">
-                <ScalarProperty Name="TLGreige_CubicWeight" ColumnName="TLGreige_CubicWeight" />
-                <ScalarProperty Name="TLGreige_IsLining" ColumnName="TLGreige_IsLining" />
-                <ScalarProperty Name="TLGreige_IsBoughtIn" ColumnName="TLGreige_IsBoughtIn" />
-                <ScalarProperty Name="TLGreige_FaultsAllowed" ColumnName="TLGreige_FaultsAllowed" />
-                <ScalarProperty Name="TLGreige_Meters" ColumnName="TLGreige_Meters" />
-                <ScalarProperty Name="TLGreige_LatestSuggest" ColumnName="TLGreige_LatestSuggest" />
-                <ScalarProperty Name="TLGreige_KgPerPiece" ColumnName="TLGreige_KgPerPiece" />
-                <ScalarProperty Name="TLGreige_YarnPowerN" ColumnName="TLGreige_YarnPowerN" />
-                <ScalarProperty Name="TLGreige_UOM_Fk" ColumnName="TLGreige_UOM_Fk" />
-                <ScalarProperty Name="TLGreige_StockTakeFreq_FK" ColumnName="TLGreige_StockTakeFreq_FK" />
-                <ScalarProperty Name="TLGreige_ShowQty" ColumnName="TLGreige_ShowQty" />
-                <ScalarProperty Name="TLGreige_ROQ" ColumnName="TLGreige_ROQ" />
-                <ScalarProperty Name="TLGreige_ROL" ColumnName="TLGreige_ROL" />
-                <ScalarProperty Name="TLGreige_Quality_FK" ColumnName="TLGreige_Quality_FK" />
-                <ScalarProperty Name="TLGreige_ProductType_FK" ColumnName="TLGreige_ProductType_FK" />
-                <ScalarProperty Name="TLGreige_Machine_FK" ColumnName="TLGreige_Machine_FK" />
-                <ScalarProperty Name="TLGreige_FabricWidth_FK" ColumnName="TLGreige_FabricWidth_FK" />
-                <ScalarProperty Name="TLGreige_FabricWeight_FK" ColumnName="TLGreige_FabricWeight_FK" />
-                <ScalarProperty Name="TLGreige_BarCode" ColumnName="TLGreige_BarCode" />
-                <ScalarProperty Name="TLGreige_Discontinued_Date" ColumnName="TLGreige_Discontinued_Date" />
-                <ScalarProperty Name="TLGriege_Discontinued" ColumnName="TLGriege_Discontinued" />
-                <ScalarProperty Name="TLGreige_PowerN" ColumnName="TLGreige_PowerN" />
-                <ScalarProperty Name="TLGreige_OldCode" ColumnName="TLGreige_OldCode" />
-                <ScalarProperty Name="TLGreige_Description" ColumnName="TLGreige_Description" />
-                <ScalarProperty Name="TLGreige_Id" ColumnName="TLGreige_Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="TLADM_MachineDefinitions">
             <EntityTypeMapping TypeName="TTI2Model.TLADM_MachineDefinitions">
               <MappingFragment StoreEntitySet="TLADM_MachineDefinitions">
@@ -9457,58 +9395,6 @@
                 <ScalarProperty Name="MD_Department_FK" ColumnName="MD_Department_FK" />
                 <ScalarProperty Name="MD_MachineCode" ColumnName="MD_MachineCode" />
                 <ScalarProperty Name="MD_Pk" ColumnName="MD_Pk" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="TLKNI_GreigeProduction">
-            <EntityTypeMapping TypeName="TTI2Model.TLKNI_GreigeProduction">
-              <MappingFragment StoreEntitySet="TLKNI_GreigeProduction">
-                <ScalarProperty Name="GreigeP_VarianceDiskWeight" ColumnName="GreigeP_VarianceDiskWeight" />
-                <ScalarProperty Name="GreigeP_DskWeight" ColumnName="GreigeP_DskWeight" />
-                <ScalarProperty Name="GreigeP_WarningMessage" ColumnName="GreigeP_WarningMessage" />
-                <ScalarProperty Name="GreigeP_Size_Fk" ColumnName="GreigeP_Size_Fk" />
-                <ScalarProperty Name="GreigeP_MergeDetail" ColumnName="GreigeP_MergeDetail" />
-                <ScalarProperty Name="GreigeP_BoughtIn_Fk" ColumnName="GreigeP_BoughtIn_Fk" />
-                <ScalarProperty Name="GreigeP_Meters" ColumnName="GreigeP_Meters" />
-                <ScalarProperty Name="GreigeP_YarnTex" ColumnName="GreigeP_YarnTex" />
-                <ScalarProperty Name="GreigeP_YarnSupplier" ColumnName="GreigeP_YarnSupplier" />
-                <ScalarProperty Name="GreigeP_BIFColour_FK" ColumnName="GreigeP_BIFColour_FK" />
-                <ScalarProperty Name="GreigeP_Receipted" ColumnName="GreigeP_Receipted" />
-                <ScalarProperty Name="GreigeP_InTransit" ColumnName="GreigeP_InTransit" />
-                <ScalarProperty Name="GreigeP_CommissionGrn" ColumnName="GreigeP_CommissionGrn" />
-                <ScalarProperty Name="GreigeP_BoughtIn_FabWeight" ColumnName="GreigeP_BoughtIn_FabWeight" />
-                <ScalarProperty Name="GreigeP_BoughtIn_FabWidth" ColumnName="GreigeP_BoughtIn_FabWidth" />
-                <ScalarProperty Name="GreigeP_BoughtIn" ColumnName="GreigeP_BoughtIn" />
-                <ScalarProperty Name="GreigeP_PalletNo" ColumnName="GreigeP_PalletNo" />
-                <ScalarProperty Name="GreigeP_CommissionCust_FK" ColumnName="GreigeP_CommissionCust_FK" />
-                <ScalarProperty Name="GreigeP_CommisionCust" ColumnName="GreigeP_CommisionCust" />
-                <ScalarProperty Name="GreigeP_DyeBatch_FK" ColumnName="GreigeP_DyeBatch_FK" />
-                <ScalarProperty Name="GreigeP_Dye" ColumnName="GreigeP_Dye" />
-                <ScalarProperty Name="GreigeP_Store_FK" ColumnName="GreigeP_Store_FK" />
-                <ScalarProperty Name="GreigeP_Inspector_FK" ColumnName="GreigeP_Inspector_FK" />
-                <ScalarProperty Name="GreigeP_InspDate" ColumnName="GreigeP_InspDate" />
-                <ScalarProperty Name="GreigeP_Inspected" ColumnName="GreigeP_Inspected" />
-                <ScalarProperty Name="GreigeP_Meas8" ColumnName="GreigeP_Meas8" />
-                <ScalarProperty Name="GreigeP_Meas7" ColumnName="GreigeP_Meas7" />
-                <ScalarProperty Name="GreigeP_Meas6" ColumnName="GreigeP_Meas6" />
-                <ScalarProperty Name="GreigeP_Meas5" ColumnName="GreigeP_Meas5" />
-                <ScalarProperty Name="GreigeP_Meas4" ColumnName="GreigeP_Meas4" />
-                <ScalarProperty Name="GreigeP_Meas3" ColumnName="GreigeP_Meas3" />
-                <ScalarProperty Name="GreigeP_Meas2" ColumnName="GreigeP_Meas2" />
-                <ScalarProperty Name="GreigeP_Meas1" ColumnName="GreigeP_Meas1" />
-                <ScalarProperty Name="GreigeP_Remarks" ColumnName="GreigeP_Remarks" />
-                <ScalarProperty Name="GreigeP_Grade" ColumnName="GreigeP_Grade" />
-                <ScalarProperty Name="GreigeP_Captured" ColumnName="GreigeP_Captured" />
-                <ScalarProperty Name="GreigeP_Operator_FK" ColumnName="GreigeP_Operator_FK" />
-                <ScalarProperty Name="GreigeP_Shift_FK" ColumnName="GreigeP_Shift_FK" />
-                <ScalarProperty Name="GreigeP_Machine_FK" ColumnName="GreigeP_Machine_FK" />
-                <ScalarProperty Name="GreigeP_PDate" ColumnName="GreigeP_PDate" />
-                <ScalarProperty Name="GreigeP_weightAvail" ColumnName="GreigeP_weightAvail" />
-                <ScalarProperty Name="GreigeP_weight" ColumnName="GreigeP_weight" />
-                <ScalarProperty Name="GreigeP_PieceNo" ColumnName="GreigeP_PieceNo" />
-                <ScalarProperty Name="GreigeP_Greige_Fk" ColumnName="GreigeP_Greige_Fk" />
-                <ScalarProperty Name="GreigeP_KnitO_Fk" ColumnName="GreigeP_KnitO_Fk" />
-                <ScalarProperty Name="GreigeP_Pk" ColumnName="GreigeP_Pk" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -9858,6 +9744,132 @@
               <MappingFragment StoreEntitySet="TLADM_Months">
                 <ScalarProperty Name="Mth_Description" ColumnName="Mth_Description" />
                 <ScalarProperty Name="Mth_Pk" ColumnName="Mth_Pk" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TLCSV_PurchaseOrder">
+            <EntityTypeMapping TypeName="TTI2Model.TLCSV_PurchaseOrder">
+              <MappingFragment StoreEntitySet="TLCSV_PurchaseOrder">
+                <ScalarProperty Name="TLCSVPO_FabricCustomer" ColumnName="TLCSVPO_FabricCustomer" />
+                <ScalarProperty Name="TLCSVPO_Provisional" ColumnName="TLCSVPO_Provisional" />
+                <ScalarProperty Name="TLCSVPO_RepackTransaction" ColumnName="TLCSVPO_RepackTransaction" />
+                <ScalarProperty Name="TLCSVPO_SpecialOrder" ColumnName="TLCSVPO_SpecialOrder" />
+                <ScalarProperty Name="TLCVSPO_SequenceNo" ColumnName="TLCVSPO_SequenceNo" />
+                <ScalarProperty Name="TLCSVPO_ClosedDate" ColumnName="TLCSVPO_ClosedDate" />
+                <ScalarProperty Name="TLCSVPO_Closeed" ColumnName="TLCSVPO_Closeed" />
+                <ScalarProperty Name="TLCSVPO_PurchaseOrder" ColumnName="TLCSVPO_PurchaseOrder" />
+                <ScalarProperty Name="TLCSVPO_RequiredDate" ColumnName="TLCSVPO_RequiredDate" />
+                <ScalarProperty Name="TLCSVPO_TransDate" ColumnName="TLCSVPO_TransDate" />
+                <ScalarProperty Name="TLCSVPO_Customer_FK" ColumnName="TLCSVPO_Customer_FK" />
+                <ScalarProperty Name="TLCSVPO_Pk" ColumnName="TLCSVPO_Pk" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TLADM_Griege">
+            <EntityTypeMapping TypeName="TTI2Model.TLADM_Griege">
+              <MappingFragment StoreEntitySet="TLADM_Griege">
+                <ScalarProperty Name="TLGreige_Body" ColumnName="TLGreige_Body" />
+                <ScalarProperty Name="TLGreige_CubicWeight" ColumnName="TLGreige_CubicWeight" />
+                <ScalarProperty Name="TLGreige_IsLining" ColumnName="TLGreige_IsLining" />
+                <ScalarProperty Name="TLGreige_IsBoughtIn" ColumnName="TLGreige_IsBoughtIn" />
+                <ScalarProperty Name="TLGreige_FaultsAllowed" ColumnName="TLGreige_FaultsAllowed" />
+                <ScalarProperty Name="TLGreige_Meters" ColumnName="TLGreige_Meters" />
+                <ScalarProperty Name="TLGreige_LatestSuggest" ColumnName="TLGreige_LatestSuggest" />
+                <ScalarProperty Name="TLGreige_KgPerPiece" ColumnName="TLGreige_KgPerPiece" />
+                <ScalarProperty Name="TLGreige_YarnPowerN" ColumnName="TLGreige_YarnPowerN" />
+                <ScalarProperty Name="TLGreige_UOM_Fk" ColumnName="TLGreige_UOM_Fk" />
+                <ScalarProperty Name="TLGreige_StockTakeFreq_FK" ColumnName="TLGreige_StockTakeFreq_FK" />
+                <ScalarProperty Name="TLGreige_ShowQty" ColumnName="TLGreige_ShowQty" />
+                <ScalarProperty Name="TLGreige_ROQ" ColumnName="TLGreige_ROQ" />
+                <ScalarProperty Name="TLGreige_ROL" ColumnName="TLGreige_ROL" />
+                <ScalarProperty Name="TLGreige_Quality_FK" ColumnName="TLGreige_Quality_FK" />
+                <ScalarProperty Name="TLGreige_ProductType_FK" ColumnName="TLGreige_ProductType_FK" />
+                <ScalarProperty Name="TLGreige_Machine_FK" ColumnName="TLGreige_Machine_FK" />
+                <ScalarProperty Name="TLGreige_FabricWidth_FK" ColumnName="TLGreige_FabricWidth_FK" />
+                <ScalarProperty Name="TLGreige_FabricWeight_FK" ColumnName="TLGreige_FabricWeight_FK" />
+                <ScalarProperty Name="TLGreige_BarCode" ColumnName="TLGreige_BarCode" />
+                <ScalarProperty Name="TLGreige_Discontinued_Date" ColumnName="TLGreige_Discontinued_Date" />
+                <ScalarProperty Name="TLGriege_Discontinued" ColumnName="TLGriege_Discontinued" />
+                <ScalarProperty Name="TLGreige_PowerN" ColumnName="TLGreige_PowerN" />
+                <ScalarProperty Name="TLGreige_OldCode" ColumnName="TLGreige_OldCode" />
+                <ScalarProperty Name="TLGreige_Description" ColumnName="TLGreige_Description" />
+                <ScalarProperty Name="TLGreige_Id" ColumnName="TLGreige_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TLDYE_DyeOrderFabric">
+            <EntityTypeMapping TypeName="TTI2Model.TLDYE_DyeOrderFabric">
+              <MappingFragment StoreEntitySet="TLDYE_DyeOrderFabric">
+                <ScalarProperty Name="TLDYEF_Body" ColumnName="TLDYEF_Body" />
+                <ScalarProperty Name="TLDYEF_DyeOrderNumeric" ColumnName="TLDYEF_DyeOrderNumeric" />
+                <ScalarProperty Name="TLDYEF_FabricOrder_FK" ColumnName="TLDYEF_FabricOrder_FK" />
+                <ScalarProperty Name="TLDYEF_Closed" ColumnName="TLDYEF_Closed" />
+                <ScalarProperty Name="TLDYEF_LineNo" ColumnName="TLDYEF_LineNo" />
+                <ScalarProperty Name="TLDYEF_Colours_FK" ColumnName="TLDYEF_Colours_FK" />
+                <ScalarProperty Name="TLDYEF_Demand" ColumnName="TLDYEF_Demand" />
+                <ScalarProperty Name="TLDYEF_ProjectedLoss" ColumnName="TLDYEF_ProjectedLoss" />
+                <ScalarProperty Name="TLDYEF_Quantity" ColumnName="TLDYEF_Quantity" />
+                <ScalarProperty Name="TLDYEF_Yield" ColumnName="TLDYEF_Yield" />
+                <ScalarProperty Name="TLDYEF_Greige_FK" ColumnName="TLDYEF_Greige_FK" />
+                <ScalarProperty Name="TLDYEF_DyeOrderNo" ColumnName="TLDYEF_DyeOrderNo" />
+                <ScalarProperty Name="TLDYEF_CustomerOrder" ColumnName="TLDYEF_CustomerOrder" />
+                <ScalarProperty Name="TLDYEF_PLoss" ColumnName="TLDYEF_PLoss" />
+                <ScalarProperty Name="TLDYEF_DyeWeek" ColumnName="TLDYEF_DyeWeek" />
+                <ScalarProperty Name="TLDYEF_Customer_FK" ColumnName="TLDYEF_Customer_FK" />
+                <ScalarProperty Name="TLDYEF_OrderDate" ColumnName="TLDYEF_OrderDate" />
+                <ScalarProperty Name="TLDYEF_Pk" ColumnName="TLDYEF_Pk" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TLKNI_GreigeProduction">
+            <EntityTypeMapping TypeName="TTI2Model.TLKNI_GreigeProduction">
+              <MappingFragment StoreEntitySet="TLKNI_GreigeProduction">
+                <ScalarProperty Name="GreigeP_VarianceDiskWeight" ColumnName="GreigeP_VarianceDiskWeight" />
+                <ScalarProperty Name="GreigeP_DskWeight" ColumnName="GreigeP_DskWeight" />
+                <ScalarProperty Name="GreigeP_WarningMessage" ColumnName="GreigeP_WarningMessage" />
+                <ScalarProperty Name="GreigeP_Size_Fk" ColumnName="GreigeP_Size_Fk" />
+                <ScalarProperty Name="GreigeP_MergeDetail" ColumnName="GreigeP_MergeDetail" />
+                <ScalarProperty Name="GreigeP_BoughtIn_Fk" ColumnName="GreigeP_BoughtIn_Fk" />
+                <ScalarProperty Name="GreigeP_Meters" ColumnName="GreigeP_Meters" />
+                <ScalarProperty Name="GreigeP_YarnTex" ColumnName="GreigeP_YarnTex" />
+                <ScalarProperty Name="GreigeP_YarnSupplier" ColumnName="GreigeP_YarnSupplier" />
+                <ScalarProperty Name="GreigeP_BIFColour_FK" ColumnName="GreigeP_BIFColour_FK" />
+                <ScalarProperty Name="GreigeP_Receipted" ColumnName="GreigeP_Receipted" />
+                <ScalarProperty Name="GreigeP_InTransit" ColumnName="GreigeP_InTransit" />
+                <ScalarProperty Name="GreigeP_CommissionGrn" ColumnName="GreigeP_CommissionGrn" />
+                <ScalarProperty Name="GreigeP_BoughtIn_FabWeight" ColumnName="GreigeP_BoughtIn_FabWeight" />
+                <ScalarProperty Name="GreigeP_BoughtIn_FabWidth" ColumnName="GreigeP_BoughtIn_FabWidth" />
+                <ScalarProperty Name="GreigeP_BoughtIn" ColumnName="GreigeP_BoughtIn" />
+                <ScalarProperty Name="GreigeP_PalletNo" ColumnName="GreigeP_PalletNo" />
+                <ScalarProperty Name="GreigeP_CommissionCust_FK" ColumnName="GreigeP_CommissionCust_FK" />
+                <ScalarProperty Name="GreigeP_CommisionCust" ColumnName="GreigeP_CommisionCust" />
+                <ScalarProperty Name="GreigeP_DyeBatch_FK" ColumnName="GreigeP_DyeBatch_FK" />
+                <ScalarProperty Name="GreigeP_Dye" ColumnName="GreigeP_Dye" />
+                <ScalarProperty Name="GreigeP_Store_FK" ColumnName="GreigeP_Store_FK" />
+                <ScalarProperty Name="GreigeP_Inspector_FK" ColumnName="GreigeP_Inspector_FK" />
+                <ScalarProperty Name="GreigeP_InspDate" ColumnName="GreigeP_InspDate" />
+                <ScalarProperty Name="GreigeP_Inspected" ColumnName="GreigeP_Inspected" />
+                <ScalarProperty Name="GreigeP_Meas8" ColumnName="GreigeP_Meas8" />
+                <ScalarProperty Name="GreigeP_Meas7" ColumnName="GreigeP_Meas7" />
+                <ScalarProperty Name="GreigeP_Meas6" ColumnName="GreigeP_Meas6" />
+                <ScalarProperty Name="GreigeP_Meas5" ColumnName="GreigeP_Meas5" />
+                <ScalarProperty Name="GreigeP_Meas4" ColumnName="GreigeP_Meas4" />
+                <ScalarProperty Name="GreigeP_Meas3" ColumnName="GreigeP_Meas3" />
+                <ScalarProperty Name="GreigeP_Meas2" ColumnName="GreigeP_Meas2" />
+                <ScalarProperty Name="GreigeP_Meas1" ColumnName="GreigeP_Meas1" />
+                <ScalarProperty Name="GreigeP_Remarks" ColumnName="GreigeP_Remarks" />
+                <ScalarProperty Name="GreigeP_Grade" ColumnName="GreigeP_Grade" />
+                <ScalarProperty Name="GreigeP_Captured" ColumnName="GreigeP_Captured" />
+                <ScalarProperty Name="GreigeP_Operator_FK" ColumnName="GreigeP_Operator_FK" />
+                <ScalarProperty Name="GreigeP_Shift_FK" ColumnName="GreigeP_Shift_FK" />
+                <ScalarProperty Name="GreigeP_Machine_FK" ColumnName="GreigeP_Machine_FK" />
+                <ScalarProperty Name="GreigeP_PDate" ColumnName="GreigeP_PDate" />
+                <ScalarProperty Name="GreigeP_weightAvail" ColumnName="GreigeP_weightAvail" />
+                <ScalarProperty Name="GreigeP_weight" ColumnName="GreigeP_weight" />
+                <ScalarProperty Name="GreigeP_PieceNo" ColumnName="GreigeP_PieceNo" />
+                <ScalarProperty Name="GreigeP_Greige_Fk" ColumnName="GreigeP_Greige_Fk" />
+                <ScalarProperty Name="GreigeP_KnitO_Fk" ColumnName="GreigeP_KnitO_Fk" />
+                <ScalarProperty Name="GreigeP_Pk" ColumnName="GreigeP_Pk" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

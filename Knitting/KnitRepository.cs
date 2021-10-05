@@ -353,7 +353,22 @@ namespace Knitting
                 GreigeProduction = _context.TLKNI_GreigeProduction.Where(x => x.GreigeP_Captured && !x.GreigeP_Dye && x.GreigeP_weightAvail > 0 && x.GreigeP_BoughtIn && x.GreigeP_Grade != null).AsQueryable();
             }
             
-            if (parameters.Greiges.Count > 0)
+            if(parameters.ProductQualities.Count != 0)
+            {
+                var ProductQualPredicate = PredicateBuilder.New<TLKNI_GreigeProduction>();
+                foreach(var ProdQual in parameters.ProductQualities)
+                {
+                    var Items = _context.TLADM_Griege.Where(x => x.TLGreige_Quality_FK == ProdQual.GQ_Pk).ToList();
+                    foreach (var Item in Items)
+                    {
+                        ProductQualPredicate = ProductQualPredicate.Or(s => s.GreigeP_Greige_Fk  == Item.TLGreige_Id);
+                    }
+                }
+
+                GreigeProduction = GreigeProduction.AsExpandable().Where(ProductQualPredicate);
+
+            }
+            if (parameters.Greiges.Count != 0)
             {
                var GreigePredicate = PredicateBuilder.New<TLKNI_GreigeProduction>();
                foreach (var Greige in parameters.Greiges)
@@ -365,7 +380,7 @@ namespace Knitting
                GreigeProduction = GreigeProduction.AsExpandable().Where(GreigePredicate);
             }
 
-            if (parameters.WhseStores.Count > 0)
+            if (parameters.WhseStores.Count != 0)
             {
                var WhsePredicate = PredicateBuilder.New<TLKNI_GreigeProduction>();
                foreach (var whse in parameters.WhseStores)

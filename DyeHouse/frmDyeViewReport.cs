@@ -156,7 +156,7 @@ namespace DyeHouse
             {
                 DataSet ds = new DataSet();
                 DataSet2.DataTable1DataTable dataTable = new DataSet2.DataTable1DataTable();
-
+                DataSet2.DataTable2DataTable dataTable2 = new DataSet2.DataTable2DataTable();
                 IList<TLADM_Griege> _Greiges = null;
                 IList<TLADM_Colours> _Colours = null;
                 IList<TLADM_CustomerFile> _Customers = null;
@@ -167,45 +167,57 @@ namespace DyeHouse
                     _Colours = context.TLADM_Colours.ToList();
                     _Customers = context.TLADM_CustomerFile.ToList();
 
-                    var Existing = context.TLDYE_DyeOrderFabric.Find(_Pk);
+                    var Existing = context.TLDYE_DyeOrderFabric.Where(x=>x.TLDYEF_DyeOrderNumeric == _Pk).ToList();
                     if (Existing != null)
                     {
-                        DataSet2.DataTable1Row nr = dataTable.NewDataTable1Row();
+                        DataSet2.DataTable2Row nr = dataTable2.NewDataTable2Row();
 
-                        nr.DyeOrder = Existing.TLDYEF_DyeOrderNo;
-                        nr.OrderDate = Existing.TLDYEF_OrderDate;
-                        nr.Rating = Existing.TLDYEF_Yield;
-                        nr.WeekNo = Existing.TLDYEF_DyeWeek;
-                        nr.Demand = Existing.TLDYEF_Demand;
+                        nr.Pk = 1;
+                        nr.DyeOrder = Existing.FirstOrDefault().TLDYEF_DyeOrderNo;
+                        nr.OrderDate = Existing.FirstOrDefault().TLDYEF_OrderDate;
+                        nr.Customer = _Customers.FirstOrDefault(s => s.Cust_Pk == Existing.FirstOrDefault().TLDYEF_Customer_FK).Cust_Description;
+                        nr.WeekNo = Existing.FirstOrDefault().TLDYEF_DyeWeek;
 
-                        var Greige = _Greiges.FirstOrDefault(s => s.TLGreige_Id == Existing.TLDYEF_Greige_FK);
-                        if (Greige != null)
+                        dataTable2.AddDataTable2Row(nr);
+
+                        foreach (var Item in Existing)
                         {
-                            nr.Quality = Greige.TLGreige_Description;
+                            DataSet2.DataTable1Row hnr = dataTable.NewDataTable1Row();
+                            hnr.Pk = 1;
+                            var Greige = _Greiges.FirstOrDefault(s => s.TLGreige_Id == Item.TLDYEF_Greige_FK);
+                            if (Greige != null)
+                            {
+                                hnr.Quality = Greige.TLGreige_Description;
 
-                            var fabwidth = context.TLADM_FabWidth.Find(Greige.TLGreige_FabricWidth_FK);
-                            if (fabwidth != null)
-                                nr.Wth = Convert.ToInt32(fabwidth.FW_Description);
+                                var fabwidth = context.TLADM_FabWidth.Find(Greige.TLGreige_FabricWidth_FK);
+                                if (fabwidth != null)
+                                    hnr.Wth = Convert.ToInt32(fabwidth.FW_Description);
 
-                            var fabWeight = context.TLADM_FabricWeight.Find(Greige.TLGreige_FabricWeight_FK);
-                            if (fabWeight != null)
-                                nr.Disk = fabWeight.FWW_Calculation_Value;
+                                var fabWeight = context.TLADM_FabricWeight.Find(Greige.TLGreige_FabricWeight_FK);
+                                if (fabWeight != null)
+                                    hnr.Disk = fabWeight.FWW_Calculation_Value;
 
+                                if(fabwidth != null && fabWeight != null)
+                                {
+                                    var Rating = (decimal)50000 / (decimal)fabwidth.FW_Calculation_Value / (decimal)fabWeight.FWW_Calculation_Value;
+                                    hnr.Rating = Math.Round(Rating, 4);
+                                }
+                            }
+                            
+                            hnr.Colour = _Colours.FirstOrDefault(s => s.Col_Id == Item.TLDYEF_Colours_FK).Col_Display;
+                            hnr.Weight = Item.TLDYEF_Quantity;
+                            hnr.Demand = Item.TLDYEF_Demand;
+                            
+
+                            DateTime dt = core.FirstDateOfWeek(Item.TLDYEF_OrderDate.Year, Item.TLDYEF_DyeWeek);
+                            nr.WeekEndingDate = dt.AddDays(5);
+
+                            dataTable.AddDataTable1Row(hnr);
                         }
-
-                        nr.Customer = _Customers.FirstOrDefault(s => s.Cust_Pk == Existing.TLDYEF_Customer_FK).Cust_Description;
-
-                        nr.Colour = _Colours.FirstOrDefault(s => s.Col_Id == Existing.TLDYEF_Colours_FK).Col_Display;
-                        nr.Weight = Existing.TLDYEF_Demand;
-
-                        DateTime dt = core.FirstDateOfWeek(Existing.TLDYEF_OrderDate.Year, Existing.TLDYEF_DyeWeek);
-                        nr.WeekEndingDate = dt.AddDays(5);
-
-                        dataTable.AddDataTable1Row(nr);
                     }
                 }
                 ds.Tables.Add(dataTable);
-
+                ds.Tables.Add(dataTable2);
                 FDyeOrder fDyeO = new FDyeOrder();
                 fDyeO.SetDataSource(ds);
                 crystalReportViewer1.ReportSource = fDyeO;
@@ -1867,28 +1879,33 @@ namespace DyeHouse
 
                 using (var context = new TTI2Entities())
                 {
-                    var GroupDCSoh = context.TLDYE_ConsumableSOH.ToList();
+                    var GroupDCSoh = context.TLADM_ConsumablesDC.ToList();
                     foreach (var item in GroupDCSoh)
                     {
                         DataSet43.DataTable1Row nr = dataTable1.NewDataTable1Row();
 
-                        var ConsPk = item.DYCSH_Consumable_FK;
+                        nr.Code = item.ConsDC_Code;
+                        nr.Description = item.ConsDC_Description;
+                        nr.StdCost = item.ConsDC_StandardCost;
+                        nr.ReOrderLevel = item.ConsDC_ReOrderLevel;
+                        nr.SOHQuarantine = 0; // item.DYCSH_SOHQuar;
+                        nr.SOHStore = 0;      //  item.DYCSH_StockOnHand;
+                        nr.SOHDyeKitchen = 0; //  item.DYCSH_SOHKitchen;
+                        nr.StockTakeFreq = context.TLADM_StockTakeFreq.Find(item.ConsDC_StockTake_FK).STF_Description;
+                        nr.PreferredSupplier = context.TLADM_Suppliers.Find(item.ConsDC_PreferedSupplier_FK).Sup_Description;
 
-                        var Cons = context.TLADM_ConsumablesDC.Find(ConsPk);
+                        var ConsPk = item.ConsDC_Pk;
+
+                        var Cons = context.TLDYE_ConsumableSOH.Where(x => x.DYCSH_Consumable_FK == ConsPk).FirstOrDefault();
                         if (Cons != null)
                         {
-                            nr.Code = Cons.ConsDC_Code;
-                            nr.Description = Cons.ConsDC_Description;
-                            nr.StdCost = Cons.ConsDC_StandardCost;
-                            nr.ReOrderLevel = Cons.ConsDC_ReOrderLevel;
-                            nr.SOHQuarantine = item.DYCSH_SOHQuar;
-                            nr.SOHStore = item.DYCSH_StockOnHand;
-                            nr.SOHDyeKitchen = item.DYCSH_SOHKitchen;
-                            nr.StockTakeFreq = context.TLADM_StockTakeFreq.Find(Cons.ConsDC_StockTake_FK).STF_Description;
-                            nr.PreferredSupplier = context.TLADM_Suppliers.Find(Cons.ConsDC_PreferedSupplier_FK).Sup_Description;
-
-                            dataTable1.AddDataTable1Row(nr);
+                            nr.SOHQuarantine = Cons.DYCSH_SOHQuar;
+                            nr.SOHStore = Cons.DYCSH_StockOnHand;
+                            nr.SOHDyeKitchen = Cons.DYCSH_SOHKitchen;
+                         
                         }
+
+                        dataTable1.AddDataTable1Row(nr);
                     }
                 }
 
@@ -2240,7 +2257,14 @@ namespace DyeHouse
                             }
                             else
                             {
-                                var ExistingGrps = context.TLDYE_DyeBatchDetails.Where(x => x.DYEBD_DyeBatch_FK == DB.DYEB_Pk).GroupBy(x => x.DYEBD_DyeBatch_FK);
+                                var ExistingGrps = context.TLDYE_DyeBatchDetails.Where(x => x.DYEBD_DyeBatch_FK == DB.DYEB_Pk).GroupBy(x => new { x.DYEBD_QualityKey });
+                                /*var ExistingGrps = (from T1 in context.TLDYE_DyeBatch
+                                           join T2 in context.TLDYE_DyeBatchDetails
+                                           on T1.DYEB_Pk equals T2.DYEBD_DyeBatch_FK
+                                           where T2.DYEBD_DyeBatch_FK == DB.DYEB_Pk
+                                           select new { T2, T1 }).GroupBy(x => new { x.T2.DYEBD_QualityKey, x.T1.DYEB_Colour_FK }).ToList();*/
+
+
                                 foreach (var Grp in ExistingGrps)
                                 {
                                     DataSet17.DataTable2Row tr2 = datatable2.NewDataTable2Row();
@@ -2250,7 +2274,7 @@ namespace DyeHouse
                                     tr2.TotalPieces = Grp.Count();
                                     tr2.ColourCode = context.TLADM_Colours.Find(DB.DYEB_Colour_FK).Col_FinishedCode;
                                     tr2.ColourDescription = context.TLADM_Colours.Find(DB.DYEB_Colour_FK).Col_Description;
-                                    tr2.Quality = context.TLADM_Griege.Find(Grp.First().DYEBD_QualityKey).TLGreige_Description;
+                                    tr2.Quality = context.TLADM_Griege.Find(Grp.FirstOrDefault().DYEBD_QualityKey).TLGreige_Description;
                                     tr2.Gross = Grp.Sum(x => x.DYEBD_GreigeProduction_Weight);
                                     tr2.Nett = Grp.Sum(x => x.DYEBO_Nett);
                                     tr2.Meters = Grp.Sum(x => x.DYEBO_Meters);
@@ -2290,28 +2314,32 @@ namespace DyeHouse
                                         tr.PostalCode = Customer.Cust_Code;
                                         datatable1.AddDataTable1Row(tr);
 
-                                        var ExistingGrps = context.TLDYE_DyeBatchDetails.Where(x => x.DYEBO_TransactionNo == DyeTran.TLDYET_TransactionNumber).GroupBy(x => x.DYEBD_DyeBatch_FK);
+                                        var ExistingGrps = context.TLDYE_DyeBatchDetails
+                                                           .Where(x => x.DYEBO_TransactionNo == DyeTran.TLDYET_TransactionNumber)
+                                                           .GroupBy(x => new { x.DYEBD_DyeBatch_FK, x.DYEBD_QualityKey});
+
+                                                                              
+
                                         foreach (var Grp in ExistingGrps)
                                         {
-                                            var xDB = context.TLDYE_DyeBatch.Find(Grp.FirstOrDefault().DYEBD_DyeBatch_FK);
-
                                             DataSet17.DataTable2Row tr2 = datatable2.NewDataTable2Row();
                                             tr2.Pk = 1;
                                             tr2.YourOrderRef = "";
                                             tr2.YourRef = "";
-                                            tr2.TotalPieces = Grp.Count();
+                                            tr2.TotalPieces = Grp.Count(); // Grp.T2..FirstOrDefault().T2.Count();
 
-
+                                            var xDB = context.TLDYE_DyeBatch.Find(Grp.FirstOrDefault().DYEBD_DyeBatch_FK);
                                             if (xDB != null)
                                             {
                                                 tr2.ColourCode = context.TLADM_Colours.Find(xDB.DYEB_Colour_FK).Col_FinishedCode;
                                                 tr2.ColourDescription = context.TLADM_Colours.Find(xDB.DYEB_Colour_FK).Col_Description;
+                                                tr2.OurBatch = xDB.DYEB_BatchNo;
                                             }
-                                            tr2.Quality = context.TLADM_Griege.Find(Grp.First().DYEBD_QualityKey).TLGreige_Description;
-                                            tr2.Gross = Grp.Sum(x => (decimal?)x.DYEBD_GreigeProduction_Weight) ?? 0.00M;
+
+                                            tr2.Quality = context.TLADM_Griege.Find(Grp.FirstOrDefault().DYEBD_QualityKey).TLGreige_Description;
+                                            tr2.Gross = Grp.Sum(x => (decimal?)x.DYEBD_GreigeProduction_Weight ) ?? 0.00M;
                                             tr2.Nett = Grp.Sum(x => (decimal?)x.DYEBO_Nett) ?? 0.0M;
                                             tr2.Meters = Grp.Sum(x => (decimal?)x.DYEBO_Meters) ?? 0M;
-                                            tr2.OurBatch = xDB.DYEB_BatchNo;
                                             tr2.Date = (DateTime)Grp.FirstOrDefault().DYEBO_DateSold;
 
                                             datatable2.AddDataTable2Row(tr2);
@@ -2420,7 +2448,7 @@ namespace DyeHouse
                                         tr2.OurBatch = DB.DYEB_BatchNo;
                                         tr2.ColourCode = context.TLADM_Colours.Find(DB.DYEB_Colour_FK).Col_Display;
                                         tr2.ColourDescription = context.TLADM_Colours.Find(DB.DYEB_Colour_FK).Col_Description;
-                                        tr2.Quality = context.TLADM_Griege.Find(DB.DYEB_Greige_FK).TLGreige_Description;
+                                        tr2.Quality = context.TLADM_Griege.Find(DyeDetail.DYEBD_QualityKey).TLGreige_Description;
 
                                         tr2.Date = (DateTime)DyeDetail.DYEBO_DateSold;
 
@@ -2517,7 +2545,7 @@ namespace DyeHouse
                                     foreach (var DBDetail in DBDetails)
                                     {
                                         var xDB = context.TLDYE_DyeBatch.Find(DBDetail.DYEBD_DyeBatch_FK);
-
+                                       
                                         DataSet17.DataTable2Row tr2 = datatable2.NewDataTable2Row();
                                         tr2.Pk = PrimeKey;
                                         tr2.YourOrderRef = DyeTran.TLDYET_CustomerOrderNo;
@@ -2527,7 +2555,7 @@ namespace DyeHouse
                                         tr2.OurBatch = xDB.DYEB_BatchNo;
                                         tr2.ColourCode = context.TLADM_Colours.Find(xDB.DYEB_Colour_FK).Col_Display;
                                         tr2.ColourDescription = context.TLADM_Colours.Find(xDB.DYEB_Colour_FK).Col_Description;
-                                        tr2.Quality = context.TLADM_Griege.Find(xDB.DYEB_Greige_FK).TLGreige_Description;
+                                        tr2.Quality = context.TLADM_Griege.Find(DBDetail.DYEBD_QualityKey).TLGreige_Description;
 
                                         var GP = context.TLKNI_GreigeProduction.Find(DBDetail.DYEBD_GreigeProduction_FK);
                                         if (GP != null)
@@ -3807,6 +3835,7 @@ namespace DyeHouse
 
                             xnr.NCRBatchNo = DyeBatches.DYEB_BatchNo;
                             xnr.NCRKg = DyeBatches.DYEB_BatchKG;
+                            xnr.NCRNoOfPieces = context.TLDYE_DyeBatchDetails.Where(x => x.DYEBD_DyeBatch_FK == DyeBatches.DYEB_Pk).Count();
                             xnr.NCRQuality = context.TLADM_Griege.Find(DyeBatches.DYEB_Greige_FK).TLGreige_Description;
                             xnr.NCRColour = context.TLADM_Colours.Find(DyeBatches.DYEB_Colour_FK).Col_Display;
                             var OperatorAlloc = context.TLDYE_AllocatedOperator.Where(x => x.DYEOP_BatchNo_FK == DyeBatches.DYEB_Pk).FirstOrDefault();
@@ -4307,13 +4336,25 @@ namespace DyeHouse
 
                 dataTable1.AddDataTable1Row(nr);
                 string[][] ColumnNames = null;
-                ColumnNames = new string[][]
+                if (_parms.DyeStage == 4)
+                {
+                    ColumnNames = new string[][]
                     {   new string[] {"Text5", "Batch No"},
                         new string[] {"Text6", "Piece No"},
                         new string[] {"Text7", string.Empty},
                         new string[] {"Text8", string.Empty},
-                        new string[] {"Text9", string.Empty}
+                        new string[] {"Text9", string.Empty},
                     };
+                }
+                else
+                {
+                    ColumnNames = new string[][]
+                    {  new string[] {"Text5", "Batch No"},
+                        new string[] {"Text6", "Piece No"},
+                        new string[] {"Text7", string.Empty},
+                        new string[] {"Text9", string.Empty},
+                    };
+                }
                 using (var context = new TTI2Entities())
                 {
                     if (_parms.DyeStage == 4)
@@ -5858,7 +5899,12 @@ namespace DyeHouse
                         {
                             NRow.Description += " ****";
                         }
-                        NRow.Standard = context.TLDYE_DyeingStandards.Where(x => x.DyeStan_QAProccessField_FK == Meas.TLQADPF_Pk && x.DyeStan_Quality_FK == DyeBatch.DYEB_Greige_FK).FirstOrDefault().DyeStan_Value.ToString();
+
+                        var Standard = context.TLDYE_DyeingStandards.Where(x => x.DyeStan_QAProccessField_FK == Meas.TLQADPF_Pk && x.DyeStan_Quality_FK == DyeBatch.DYEB_Greige_FK).FirstOrDefault();
+                        if (Standard != null)
+                        {
+                            NRow.Standard = Standard.DyeStan_Value.ToString();
+                        }
                         NRow.Section = 3;
                         NRow.SectionDescription = "Compacter";
                         dataTable2.Rows.Add(NRow);

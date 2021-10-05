@@ -21,6 +21,8 @@ namespace ProductionPlanning
         int _Pk;
         ProdQueryParameters _ProdQParms;
         Util core;
+        System.Data.DataTable _dt; 
+
         bool[] _Selected;
 
         public frmPPSViewRep()
@@ -57,6 +59,13 @@ namespace ProductionPlanning
 
         }
 
+        public frmPPSViewRep(int RepNo, System.Data.DataTable dt)
+        {
+            InitializeComponent();
+            _RepNo = RepNo;
+            _dt = dt;
+
+        }
         private void frmPPSViewRep_Load(object sender, EventArgs e)
         {
             if (_RepNo == 1) // Printing of Replenishment Levels 
@@ -2040,9 +2049,178 @@ namespace ProductionPlanning
                 crystalReportViewer1.ReportSource = SItem;
 
             }
+            if (_RepNo == 9) // Printing of management summary Finished Goods 
+            {
+                PPSRepository repo = new PPSRepository();
+
+                DataSet ds = new DataSet();
+                DataSet8.DataTable1DataTable dataTable1 = new DataSet8.DataTable1DataTable();
+
+                IList<DATA> MonthsInYear = new List<DATA>();
+                
+                MonthsInYear.Add(new DATA(1, "C01", "Jan"));
+                MonthsInYear.Add(new DATA(2, "C02", "Feb"));
+                MonthsInYear.Add(new DATA(3, "C03", "Mar"));
+                MonthsInYear.Add(new DATA(4, "C04", "Apr"));
+                MonthsInYear.Add(new DATA(5, "C05", "May"));
+                MonthsInYear.Add(new DATA(6, "C06", "Jun"));
+                MonthsInYear.Add(new DATA(7, "C07", "Jul"));
+                MonthsInYear.Add(new DATA(8, "C08", "Aug"));
+                MonthsInYear.Add(new DATA(9, "C09", "Sep"));
+                MonthsInYear.Add(new DATA(10, "C10", "Oct"));
+                MonthsInYear.Add(new DATA(11, "C11", "Nov"));
+                MonthsInYear.Add(new DATA(12, "C12", "Dec"));
+
+                var CMth = DateTime.Now.Month;
+                if(CMth + 1 < 13)
+                {
+                    CMth += 1;
+                }
+                else
+                {
+                    CMth = 1;
+                }
+
+                string[][] ColumnNames = null;
+                ColumnNames = new string[][]
+                {   new string[] {"Text12", string.Empty, String.Empty},
+                    new string[] {"Text13", string.Empty, String.Empty},
+                    new string[] {"Text14", string.Empty, String.Empty},
+                    new string[] {"Text15", string.Empty, String.Empty},
+                    new string[] {"Text16", string.Empty, String.Empty},
+                    new string[] {"Text17", string.Empty, String.Empty}
+                }; 
+                foreach(var Box in ColumnNames)
+                {
+                    var Record = MonthsInYear.FirstOrDefault(x => x.MonthIndex == CMth);
+                    var Index = MonthsInYear.IndexOf(Record);
+                    if (Index >= 0)
+                    {
+                        Box[1] = MonthsInYear[Index].cellvalue;
+                        Box[2] = MonthsInYear[Index].MonthName;
+                        if (CMth - 1 > 0 )
+                        {
+                            CMth -= 1;
+                        }
+                        else
+                        {
+                            CMth = 12;
+                        }
+                    }
+                    
+
+                   
+                }
+                using (var context = new TTI2Entities())
+                {
+                    var OrderT = _dt.Columns.IndexOf("Order Total");
+                    var StockT = _dt.Columns.IndexOf("Stock Total");
+                    var Diff = _dt.Columns.IndexOf("Difference");
+                    //--------------------------------------------------------
+                    var EU_DO = _dt.Columns.IndexOf("Expected Units DO");
+                    var EU_WIP = _dt.Columns.IndexOf("Expected Units - WIP Dyeing");
+                    var EU_WIPDyePrep = _dt.Columns.IndexOf("Expected Units - Dyeing Prep");
+                    var EU_FQS = _dt.Columns.IndexOf("Expected Units - Fabric Quarantine Store");
+                    var EU_FS =  _dt.Columns.IndexOf("Expected Units - Fabric Store");
+                    //-----------------------------------------------------------------------------------------------------
+                    var EU_WipCut = _dt.Columns.IndexOf("Expected Units - WIP Cutting");
+                    var EU_CutPS = _dt.Columns.IndexOf("Expected Units - CUT Panel Store");
+                    var EU_CmtRec = _dt.Columns.IndexOf("Expected Units - CMT Store (Receipt Cage)");
+                    var EU_WipCMT = _dt.Columns.IndexOf("Expected Units - CMT WIP");
+                    var EU_WipCMTDespatch = _dt.Columns.IndexOf("Expected Units - CMT Store (Despatch Cage)");
+                    //---------------------------------------------------------------   
+                    var WIP_Total = _dt.Columns.IndexOf("WIP Total");
+                    var FirstM = _dt.Columns.IndexOf(ColumnNames[0][2]);
+                    var SecondM = _dt.Columns.IndexOf(ColumnNames[1][2]);
+                    var ThirdM = _dt.Columns.IndexOf(ColumnNames[2][2]);
+                    var FourthM = _dt.Columns.IndexOf(ColumnNames[3][2]);
+                    var FiveM = _dt.Columns.IndexOf(ColumnNames[4][2]);
+                    var SixM = _dt.Columns.IndexOf(ColumnNames[5][2]);
+                    
+                    foreach (DataRow row in _dt.Rows)
+                    {
+                        DataSet8.DataTable1Row Tab1 = dataTable1.NewDataTable1Row();
+
+                        Tab1.Style = context.TLADM_Styles.Find(row.Field<int>(0)).Sty_Description;
+                        Tab1.Colour = context.TLADM_Colours.Find(row.Field<int>(1)).Col_Display;
+                        Tab1.Size = context.TLADM_Sizes.Find(row.Field<int>(2)).SI_Description;
+                        //--------------------------------------------------------
+                        Tab1.OrderTotal = row.Field<int>(OrderT);
+                        Tab1.StockTotal = row.Field<int>(StockT);
+                        Tab1.Difference = row.Field<int>(Diff);
+                        //------------------------------------------------
+                        Tab1.EU_DyeOrder = row.Field<int>(EU_DO);
+                        Tab1.EU_WipDyeingPrep = row.Field<int>(EU_WIPDyePrep);
+                        Tab1.EU_WipDyeing = row.Field<int>(EU_WIP);
+                        Tab1.EU_DyeFQS = row.Field<int>(EU_FQS);
+                        Tab1.EU_DyeFS = row.Field<int>(EU_FS);
+                        //----------------------------------------------
+                        Tab1.EU_WipCutting = row.Field<int>(EU_WipCut);
+                        Tab1.EU_CuttingPS = row.Field<int>(EU_CutPS);
+                        //---------------------------------------------------
+                        Tab1.EU_CMT_RC = row.Field<int>(EU_CmtRec);
+                        Tab1.EU_WipCMT = row.Field<int>(EU_WipCMT);
+                        Tab1.EU_CMTDespatch = row.Field<int>(EU_WipCMTDespatch);
+                        //--------------------------------------------------
+                        Tab1.WipTotal = row.Field<int>(WIP_Total);
+                        //---------------------------------------------------
+                        Tab1.ExpectedUnits = 0;
+                        Tab1.FirstMonth = row.Field<int>(FirstM);
+                        Tab1.SecondMonth = row.Field<int>(SecondM);
+                        Tab1.ThirdMonth = row.Field<int>(ThirdM);
+                        Tab1.FourthMonth = row.Field<int>(FourthM);
+                        Tab1.FifthMonth = row.Field<int>(FiveM);
+                        Tab1.SixMonth = row.Field<int>(SixM);
+                        dataTable1.Rows.Add(Tab1);
+                    }
+                }
+
+                ds.Tables.Add(dataTable1);
+                ProductionPlanning.PPSFinishedGoodsMS SItem = new ProductionPlanning.PPSFinishedGoodsMS();
+                IEnumerator ie = SItem.Section2.ReportObjects.GetEnumerator();
+
+                foreach (var Col in ColumnNames)
+                {
+                    while (ie.MoveNext())
+                    {
+                        if (ie.Current != null && ie.Current.GetType().ToString().Equals("CrystalDecisions.CrystalReports.Engine.TextObject"))
+                        {
+                            CrystalDecisions.CrystalReports.Engine.TextObject to = (CrystalDecisions.CrystalReports.Engine.TextObject)ie.Current;
+
+                            if (!String.IsNullOrEmpty(to.Text))
+                            {
+                                continue;
+                            }
+
+                            to.Text = Col[1];
+                            break;
+
+
+                        }
+                    }
+                }
+                SItem.SetDataSource(ds);
+                crystalReportViewer1.ReportSource = SItem;
+            }
+            
             crystalReportViewer1.Refresh();
         }
 
+        public struct DATA
+        {
+            public int MonthIndex;
+            // Name of the button selected 
+            public string MonthName;
+            // Value of the button X / O
+            public string cellvalue;
+
+            public DATA(int MonthInd, string MName, string value)
+            {
+                this.MonthIndex = MonthInd;
+                this.MonthName = MName;
+                this.cellvalue = value;
+            }
+        }
         public class TopSellers
         {
             public TopSellers(int Styles, int Clrs, int Szs, int TBoxQty, int BoxQty)

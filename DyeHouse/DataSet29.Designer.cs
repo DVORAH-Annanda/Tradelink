@@ -662,6 +662,8 @@ namespace DyeHouse {
             
             private global::System.Data.DataColumn columnNCRResult;
             
+            private global::System.Data.DataColumn columnNCRNoOfPieces;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public DataTable2DataTable() {
@@ -793,6 +795,14 @@ namespace DyeHouse {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn NCRNoOfPiecesColumn {
+                get {
+                    return this.columnNCRNoOfPieces;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -828,7 +838,7 @@ namespace DyeHouse {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public DataTable2Row AddDataTable2Row(DataTable1Row parentDataTable1RowByDataTable1_DataTable2, string NCRBatchNo, decimal NCRKg, string NCRQuality, string NCRMachine, string NCROperator, string NCRFault, string NCRRemedy, string NCRYarnOrder, int NCRNumber, string NCRColour, string NCRResult) {
+            public DataTable2Row AddDataTable2Row(DataTable1Row parentDataTable1RowByDataTable1_DataTable2, string NCRBatchNo, decimal NCRKg, string NCRQuality, string NCRMachine, string NCROperator, string NCRFault, string NCRRemedy, string NCRYarnOrder, int NCRNumber, string NCRColour, string NCRResult, int NCRNoOfPieces) {
                 DataTable2Row rowDataTable2Row = ((DataTable2Row)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         null,
@@ -842,7 +852,8 @@ namespace DyeHouse {
                         NCRYarnOrder,
                         NCRNumber,
                         NCRColour,
-                        NCRResult};
+                        NCRResult,
+                        NCRNoOfPieces};
                 if ((parentDataTable1RowByDataTable1_DataTable2 != null)) {
                     columnValuesArray[0] = parentDataTable1RowByDataTable1_DataTable2[0];
                 }
@@ -880,6 +891,7 @@ namespace DyeHouse {
                 this.columnNCRNumber = base.Columns["NCRNumber"];
                 this.columnNCRColour = base.Columns["NCRColour"];
                 this.columnNCRResult = base.Columns["NCRResult"];
+                this.columnNCRNoOfPieces = base.Columns["NCRNoOfPieces"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -909,6 +921,8 @@ namespace DyeHouse {
                 base.Columns.Add(this.columnNCRColour);
                 this.columnNCRResult = new global::System.Data.DataColumn("NCRResult", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnNCRResult);
+                this.columnNCRNoOfPieces = new global::System.Data.DataColumn("NCRNoOfPieces", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnNCRNoOfPieces);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1437,6 +1451,22 @@ namespace DyeHouse {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public int NCRNoOfPieces {
+                get {
+                    try {
+                        return ((int)(this[this.tableDataTable2.NCRNoOfPiecesColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'NCRNoOfPieces\' in table \'DataTable2\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDataTable2.NCRNoOfPiecesColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public DataTable1Row DataTable1Row {
                 get {
                     return ((DataTable1Row)(this.GetParentRow(this.Table.ParentRelations["DataTable1_DataTable2"])));
@@ -1588,6 +1618,18 @@ namespace DyeHouse {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public void SetNCRResultNull() {
                 this[this.tableDataTable2.NCRResultColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsNCRNoOfPiecesNull() {
+                return this.IsNull(this.tableDataTable2.NCRNoOfPiecesColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetNCRNoOfPiecesNull() {
+                this[this.tableDataTable2.NCRNoOfPiecesColumn] = global::System.Convert.DBNull;
             }
         }
         

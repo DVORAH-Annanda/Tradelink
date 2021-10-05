@@ -43,8 +43,9 @@
             this.cmboStyles = new ProductionPlanning.CheckComboBox();
             this.PBar1 = new System.Windows.Forms.ProgressBar();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.rbFinishedGoods = new System.Windows.Forms.RadioButton();
             this.rbFabric = new System.Windows.Forms.RadioButton();
+            this.rbFinishedGoods = new System.Windows.Forms.RadioButton();
+            this.chkManagementSummary = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -67,7 +68,7 @@
             // 
             // btnSubmit
             // 
-            this.btnSubmit.Location = new System.Drawing.Point(629, 388);
+            this.btnSubmit.Location = new System.Drawing.Point(628, 447);
             this.btnSubmit.Name = "btnSubmit";
             this.btnSubmit.Size = new System.Drawing.Size(75, 23);
             this.btnSubmit.TabIndex = 2;
@@ -174,7 +175,7 @@
             // 
             // PBar1
             // 
-            this.PBar1.Location = new System.Drawing.Point(176, 388);
+            this.PBar1.Location = new System.Drawing.Point(175, 447);
             this.PBar1.Name = "PBar1";
             this.PBar1.Size = new System.Drawing.Size(402, 23);
             this.PBar1.TabIndex = 4;
@@ -183,11 +184,21 @@
             // 
             this.groupBox2.Controls.Add(this.rbFabric);
             this.groupBox2.Controls.Add(this.rbFinishedGoods);
-            this.groupBox2.Location = new System.Drawing.Point(259, 250);
+            this.groupBox2.Location = new System.Drawing.Point(261, 302);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(225, 100);
             this.groupBox2.TabIndex = 5;
             this.groupBox2.TabStop = false;
+            // 
+            // rbFabric
+            // 
+            this.rbFabric.AutoSize = true;
+            this.rbFabric.Location = new System.Drawing.Point(69, 63);
+            this.rbFabric.Name = "rbFabric";
+            this.rbFabric.Size = new System.Drawing.Size(54, 17);
+            this.rbFabric.TabIndex = 1;
+            this.rbFabric.Text = "Fabric";
+            this.rbFabric.UseVisualStyleBackColor = true;
             // 
             // rbFinishedGoods
             // 
@@ -201,21 +212,22 @@
             this.rbFinishedGoods.Text = "Finished Goods";
             this.rbFinishedGoods.UseVisualStyleBackColor = true;
             // 
-            // rbFabric
+            // chkManagementSummary
             // 
-            this.rbFabric.AutoSize = true;
-            this.rbFabric.Location = new System.Drawing.Point(69, 63);
-            this.rbFabric.Name = "rbFabric";
-            this.rbFabric.Size = new System.Drawing.Size(54, 17);
-            this.rbFabric.TabIndex = 1;
-            this.rbFabric.Text = "Fabric";
-            this.rbFabric.UseVisualStyleBackColor = true;
+            this.chkManagementSummary.AutoSize = true;
+            this.chkManagementSummary.Location = new System.Drawing.Point(318, 263);
+            this.chkManagementSummary.Name = "chkManagementSummary";
+            this.chkManagementSummary.Size = new System.Drawing.Size(134, 17);
+            this.chkManagementSummary.TabIndex = 6;
+            this.chkManagementSummary.Text = "Management Summary";
+            this.chkManagementSummary.UseVisualStyleBackColor = true;
             // 
             // frmSelFinishedGoods
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(725, 458);
+            this.ClientSize = new System.Drawing.Size(725, 496);
+            this.Controls.Add(this.chkManagementSummary);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.PBar1);
             this.Controls.Add(this.groupBox1);
@@ -253,5 +265,6 @@
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.RadioButton rbFabric;
         private System.Windows.Forms.RadioButton rbFinishedGoods;
+        private System.Windows.Forms.CheckBox chkManagementSummary;
     }
 }

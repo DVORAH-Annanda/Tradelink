@@ -265,7 +265,7 @@ namespace DyeHouse
                         var soh = Context.TLDYE_ConsumableSOH.Find(Pk);
                         if (soh != null)
                         {
-                            soh.DYCSH_Consumable_FK = StorePk;
+                            soh.DYCSH_WhseStore_FK = StorePk;
                             soh.DYCSH_SOHQuar -= Amt;
                             soh.DYCSH_StockOnHand = Amt;
                             if(soh.DYCSH_SOHQuar <= 0 )

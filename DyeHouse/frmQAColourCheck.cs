@@ -285,7 +285,7 @@ namespace DyeHouse
                                             //--------------------------------------------------------
                                             if (SOH == null)
                                             {
-                                                var Whse = context.TLADM_WhseStore.Where(x => x.WhStore_DepartmentFK == Dept.Dep_Id && x.WhStore_DyeKitchen).FirstOrDefault();
+                                                /* var Whse = context.TLADM_WhseStore.Where(x => x.WhStore_DepartmentFK == Dept.Dep_Id && x.WhStore_DyeKitchen).FirstOrDefault();
  
                                                 TLDYE_ConsumableSOH cons = new TLDYE_ConsumableSOH();
                                                 cons.DYCSH_Consumable_FK = Definition.TLDYED_Cosumables_FK;
@@ -301,11 +301,19 @@ namespace DyeHouse
                                                 {
                                                     MessageBox.Show("Unable to adjust consummable Stock on hand table" + ex.Message);
                                                     continue;
-                                                }
+                                                } */
+
                                             }
                                             else
                                             {
-                                                SOH.DYCSH_StockOnHand -= Kgs;
+                                                if (SOH.DYCSH_SOHKitchen - Kgs > 0)
+                                                {
+                                                    SOH.DYCSH_SOHKitchen -= Kgs;
+                                                }
+                                                else
+                                                {
+                                                    SOH.DYCSH_SOHKitchen = 0;
+                                                }
                                             }
                                         }
                                     }
@@ -324,6 +332,7 @@ namespace DyeHouse
                                         //--------------------------------------------------------
                                         if (SOH == null)
                                         {
+                                            /*
                                             var Whse = context.TLADM_WhseStore.Where(x => x.WhStore_DepartmentFK == Dept.Dep_Id && x.WhStore_DyeKitchen).FirstOrDefault();
 
                                             TLDYE_ConsumableSOH cons = new TLDYE_ConsumableSOH();
@@ -341,10 +350,18 @@ namespace DyeHouse
                                                 MessageBox.Show("Unable to adjust consummable Stock on hand table" + ex.Message);
                                                 continue;
                                             }
+                                            */
                                         }
                                         else
                                         {
-                                            SOH.DYCSH_StockOnHand -= Kgs;
+                                            if (SOH.DYCSH_SOHKitchen - Kgs > 0)
+                                            {
+                                                SOH.DYCSH_SOHKitchen -= Kgs;
+                                            }
+                                            else
+                                            {
+                                                SOH.DYCSH_SOHKitchen = 0;
+                                            }
                                         }
                                     }
                                 }

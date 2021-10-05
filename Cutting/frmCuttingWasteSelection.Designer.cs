@@ -40,6 +40,8 @@ namespace Cutting
             this.comboCutSheet = new Cutting.CheckComboBox();
             this.comboQuality = new Cutting.CheckComboBox();
             this.comboMachines = new Cutting.CheckComboBox();
+            this.cmboReportOptions = new System.Windows.Forms.ComboBox();
+            this.label6 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label1
@@ -77,7 +79,7 @@ namespace Cutting
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(262, 128);
+            this.label3.Location = new System.Drawing.Point(268, 128);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(94, 13);
             this.label3.TabIndex = 4;
@@ -86,7 +88,7 @@ namespace Cutting
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(265, 200);
+            this.label4.Location = new System.Drawing.Point(268, 200);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(39, 13);
             this.label4.TabIndex = 5;
@@ -141,11 +143,30 @@ namespace Cutting
             this.comboMachines.TabIndex = 10;
             this.comboMachines.Text = "Select Options";
             // 
+            // cmboReportOptions
+            // 
+            this.cmboReportOptions.FormattingEnabled = true;
+            this.cmboReportOptions.Location = new System.Drawing.Point(377, 348);
+            this.cmboReportOptions.Name = "cmboReportOptions";
+            this.cmboReportOptions.Size = new System.Drawing.Size(161, 21);
+            this.cmboReportOptions.TabIndex = 11;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(268, 356);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(78, 13);
+            this.label6.TabIndex = 12;
+            this.label6.Text = "Report Options";
+            // 
             // frmCuttingWasteSelection
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 427);
+            this.Controls.Add(this.label6);
+            this.Controls.Add(this.cmboReportOptions);
             this.Controls.Add(this.comboMachines);
             this.Controls.Add(this.comboQuality);
             this.Controls.Add(this.comboCutSheet);
@@ -179,5 +200,7 @@ namespace Cutting
         private Cutting.CheckComboBox comboCutSheet;
         private Cutting.CheckComboBox comboQuality;
         private Cutting.CheckComboBox comboMachines;
+        private System.Windows.Forms.ComboBox cmboReportOptions;
+        private System.Windows.Forms.Label label6;
     }
 }

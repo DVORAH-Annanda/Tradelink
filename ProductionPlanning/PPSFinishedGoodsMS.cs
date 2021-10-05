@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace CustomerServices {
+namespace ProductionPlanning {
     using System;
     using System.ComponentModel;
     using CrystalDecisions.Shared;
@@ -16,14 +16,14 @@ namespace CustomerServices {
     using CrystalDecisions.CrystalReports.Engine;
     
     
-    public class OutStandingOrdersByMonth : ReportClass {
+    public class PPSFinishedGoodsMS : ReportClass {
         
-        public OutStandingOrdersByMonth() {
+        public PPSFinishedGoodsMS() {
         }
         
         public override string ResourceName {
             get {
-                return "OutStandingOrdersByMonth.rpt";
+                return "PPSFinishedGoodsMS.rpt";
             }
             set {
                 // Do nothing
@@ -41,7 +41,7 @@ namespace CustomerServices {
         
         public override string FullResourceName {
             get {
-                return "CustomerServices.OutStandingOrdersByMonth.rpt";
+                return "ProductionPlanning.PPSFinishedGoodsMS.rpt";
             }
             set {
                 // Do nothing
@@ -106,9 +106,9 @@ namespace CustomerServices {
     }
     
     [System.Drawing.ToolboxBitmapAttribute(typeof(CrystalDecisions.Shared.ExportOptions), "report.bmp")]
-    public class CachedOutStandingOrdersByMonth : Component, ICachedReport {
+    public class CachedPPSFinishedGoodsMS : Component, ICachedReport {
         
-        public CachedOutStandingOrdersByMonth() {
+        public CachedPPSFinishedGoodsMS() {
         }
         
         [Browsable(false)]
@@ -145,7 +145,7 @@ namespace CustomerServices {
         }
         
         public virtual CrystalDecisions.CrystalReports.Engine.ReportDocument CreateReport() {
-            OutStandingOrdersByMonth rpt = new OutStandingOrdersByMonth();
+            PPSFinishedGoodsMS rpt = new PPSFinishedGoodsMS();
             rpt.Site = this.Site;
             return rpt;
         }

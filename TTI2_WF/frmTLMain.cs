@@ -267,7 +267,9 @@ namespace TTI2_WF
                     DialogResult res = MessageBox.Show("Would you like to view the KPI's", "KPI", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                     if (res == DialogResult.Yes)
                     {
+                        this.Cursor = Cursors.WaitCursor;
                         ShowKPIs();
+                        this.Cursor = Cursors.Default;
                     }
                 }
             }
@@ -280,7 +282,9 @@ namespace TTI2_WF
                 DialogResult res = MessageBox.Show("Would you like to view the KPI's", "KPI", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (res == DialogResult.Yes)
                 {
+                    this.Cursor = Cursors.WaitCursor;
                     ShowKPIs();
+                    this.Cursor = Cursors.Default;
                 }
             }
         }
@@ -3422,15 +3426,18 @@ namespace TTI2_WF
             ToolStripMenuItem oTi = sender as ToolStripMenuItem;
             if (core.GetUserAuthorisation(ud, oTi.Name))
             {
+                
                 try
                 {
-                    frmDyeBatch gd = new frmDyeBatch();
+                    frmDyeBatch gd = new frmDyeBatch(true);
                     gd.ShowDialog();
                 }
                 catch (Exception ex)
                 {
                     MessageBox.Show(ex.Message);
                 }
+                
+
             }
             else
             {
@@ -3820,15 +3827,18 @@ namespace TTI2_WF
             ToolStripMenuItem oTi = sender as ToolStripMenuItem;
             if (core.GetUserAuthorisation(ud, oTi.Name))
             {
+                MessageBox.Show("Facility current under development");
+                /*
                 try
                 {
-                    frmDyeBatch gd = new frmDyeBatch();
+                    frmDyeBatch gd = new frmDyeBatch(false);
                     gd.ShowDialog(this);
                 }
                 catch (Exception ex)
                 {
                     MessageBox.Show(ex.Message);
                 }
+                */
             }
             else
             {
@@ -5783,7 +5793,7 @@ namespace TTI2_WF
 
         private void ShowKPIs()
         {
-            frmKPI KPIs = new frmKPI();
+            frmKPIQuality KPIs = new frmKPIQuality();
             KPIs.Show();
         }
 
@@ -9060,6 +9070,10 @@ namespace TTI2_WF
             ToolStripMenuItem oTi = sender as ToolStripMenuItem;
             if (core.GetUserAuthorisation(ud, oTi.Name))
             {
+                MessageBox.Show("This report has been superceded. No longer required");
+                return;
+
+                /*
                 try
                 {
                     frmQAQualityException QualException = new frmQAQualityException();
@@ -9069,6 +9083,7 @@ namespace TTI2_WF
                 {
                     MessageBox.Show(ex.Message);
                 }
+                */
             }
             else
             {
@@ -10351,6 +10366,35 @@ namespace TTI2_WF
                 try
                 {
                     Cutting.frmPieceQAHistory PICancel = new Cutting.frmPieceQAHistory();
+                    PICancel.ShowDialog(this);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+            else
+            {
+                using (DialogCenteringService centeringService = new DialogCenteringService(this)) // center message box
+                {
+                    MessageBox.Show(ud._NotAuthorisedMessage, ud._UserName);
+                }
+            }
+        }
+
+        private void fabricQualityToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("This report has been superceded. Please view Quality Assurance under QA Reports");
+        }
+
+        private void cuttingPanelsWasteAdjustmentToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ToolStripMenuItem oTi = sender as ToolStripMenuItem;
+            if (core.GetUserAuthorisation(ud, oTi.Name))
+            {
+                try
+                {
+                    Cutting.CuttingPanelsWasteAdjustment PICancel = new Cutting.CuttingPanelsWasteAdjustment();
                     PICancel.ShowDialog(this);
                 }
                 catch (Exception ex)

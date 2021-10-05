@@ -1851,7 +1851,6 @@ namespace CustomerServices
             {
                 DataSet ds = new DataSet();
                 DataSet17.DataTable1DataTable dataTable1 = new DataSet17.DataTable1DataTable();
-                IList<TLCSV_PurchaseOrder> _POOrder = null;
                 IList<TLCSV_StockOnHand> _SOH = null;
 
                 Repository repo = new Repository();
@@ -1886,8 +1885,10 @@ namespace CustomerServices
                 dt.Columns[13].DefaultValue = 0;
                 dt.Columns.Add("12", typeof(int));       // 14   
                 dt.Columns[14].DefaultValue = 0;
+                dt.Columns.Add("Customer", typeof(int));       // 15 
+                dt.Columns[15].DefaultValue = 0;
 
-                var PGroupOrderDetails = repo.OutStandingOrders(_QueryParms).GroupBy(x => new { x.TLCUSTO_Style_FK, x.TLCUSTO_Colour_FK, x.TLCUSTO_Size_FK });
+                var PGroupOrderDetails = repo.OutStandingOrders(_QueryParms).GroupBy(x => new { x.TLCUSTO_Customer_FK,x.TLCUSTO_Style_FK, x.TLCUSTO_Colour_FK, x.TLCUSTO_Size_FK });
 
                 using (var context = new TTI2Entities())
                 {
@@ -1896,7 +1897,7 @@ namespace CustomerServices
                         var StylePk = Group.FirstOrDefault().TLCUSTO_Style_FK;
                         var ColourPk = Group.FirstOrDefault().TLCUSTO_Colour_FK;
                         var SizePk = Group.FirstOrDefault().TLCUSTO_Size_FK;
-
+                        var CustPk = Group.FirstOrDefault().TLCUSTO_Customer_FK;
                         //=====================================================
                         // Add a new Record to the data table;
                         //=================================================
@@ -1931,6 +1932,8 @@ namespace CustomerServices
                             }
 
                         }
+                        
+                        Row[15] = CustPk;
 
                         dt.Rows.Add(Row);
                     }
@@ -1949,11 +1952,24 @@ namespace CustomerServices
                         {
                             nr.Size = _Sizes.FirstOrDefault(s => s.SI_id == Row.Field<int>(2)).SI_ContiSize.ToString();
                         }
+                        
                         var StyK = Row.Field<int>(0);
                         var ColK = Row.Field<int>(1);
                         var SzeK = Row.Field<int>(2);
-
-                        nr.StockAvail = context.TLCSV_StockOnHand.Where(x => x.TLSOH_Style_FK == StyK && x.TLSOH_Colour_FK == ColK && x.TLSOH_Size_FK == SzeK && !x.TLSOH_Picked).Sum(x =>(int ?)x.TLSOH_BoxedQty) ?? 0;
+                                             
+                        nr.StockAvail = (from T1 in context.TLCSV_StockOnHand
+                                    join T2 in context.TLADM_WhseStore
+                                    on T1.TLSOH_WareHouse_FK equals T2.WhStore_Id
+                                    where T1.TLSOH_Style_FK == StyK
+                                    && T1.TLSOH_Colour_FK == ColK 
+                                    && T1.TLSOH_Size_FK == SzeK
+                                    && T1.TLSOH_Is_A 
+                                    && !T1.TLSOH_Picked 
+                                    && T2.WhStore_GradeA && !T1.TLSOH_Sold  
+                                    && !T1.TLSOH_Write_Off && !T1.TLSOH_InTransit    
+                                    select T1).Sum(x=>(int ?)x.TLSOH_BoxedQty) ?? 0;
+                            
+                        
                         nr.Jan = Row.Field<int>(3);
                         nr.Feb = Row.Field<int>(4);
                         nr.Mar = Row.Field<int>(5);
@@ -1966,11 +1982,14 @@ namespace CustomerServices
                         nr.Oct = Row.Field<int>(12);
                         nr.Nov = Row.Field<int>(13);
                         nr.Dec = Row.Field<int>(14);
-                        if(nr.Jan + nr.Feb + nr.Mar + nr.Apr + nr.May + nr.Jun + nr.Jul + nr.Aug + nr.Sep + nr.Aug + nr.Sep + nr.Oct + nr.Nov + nr.Dec == 0)
+                        if(nr.Jan + nr.Feb + nr.Mar + nr.Apr
+                            + nr.May + nr.Jun + nr.Jul + nr.Aug 
+                            + nr.Sep +  nr.Oct + nr.Nov + nr.Dec == 0)
                         {
                             continue;
                         }
 
+                        nr.Customer = context.TLADM_CustomerFile.Find(Row.Field<int>(15)).Cust_Description;
                         dataTable1.AddDataTable1Row(nr);
                     }
 

@@ -39,5 +39,6 @@ namespace Utilities
         public bool TLGreige_IsBoughtIn { get; set; }
         public bool TLGreige_IsLining { get; set; }
         public decimal TLGreige_CubicWeight { get; set; }
+        public bool TLGreige_Body { get; set; }
     }
 }

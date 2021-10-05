@@ -71,7 +71,7 @@ namespace DyeHouse
             label5.Visible = false;
             cmboOperator.Visible = false;
 
-            var TwelveMonths = DateTime.Now.AddMonths(-12);
+            var TwelveMonths = DateTime.Now.AddMonths(-18);
 
             rbPassYes.Checked = true;
 

@@ -853,6 +853,7 @@
             this.rbtnProduction.TabStop = true;
             this.rbtnProduction.Text = "Production";
             this.rbtnProduction.UseVisualStyleBackColor = true;
+            this.rbtnProduction.CheckedChanged += new System.EventHandler(this.rbtnProduction_CheckedChanged);
             // 
             // backgroundWorkerKPI
             // 
@@ -874,6 +875,7 @@
             this.Controls.Add(this.grpbxSpinning);
             this.Name = "frmKPI";
             this.Text = "Key Perfomance Indexes";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.frmKPI_FormClosed);
             this.grpbxDatePicker.ResumeLayout(false);
             this.grpbxDatePicker.PerformLayout();
             this.grpKnitting.ResumeLayout(false);
@@ -961,7 +963,7 @@
         private System.Windows.Forms.Button button23;
         private System.Windows.Forms.Button button21;
         private System.Windows.Forms.Button button19;
-        private System.Windows.Forms.GroupBox grpKPIType;
+        private System.Windows.Forms.GroupBox grpKPIType;        
         private System.Windows.Forms.RadioButton rbtnCommercial;
         private System.Windows.Forms.RadioButton rbtnQuality;
         private System.Windows.Forms.RadioButton rbtnProduction;

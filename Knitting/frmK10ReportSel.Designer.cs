@@ -45,6 +45,8 @@
             this.chkNonStandardGrades = new System.Windows.Forms.CheckBox();
             this.cmboProduct = new Knitting.CheckComboBox();
             this.cmboStore = new Knitting.CheckComboBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.cmboGreigeQuality = new Knitting.CheckComboBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -81,7 +83,7 @@
             // chkBoughtInFabric
             // 
             this.chkBoughtInFabric.AutoSize = true;
-            this.chkBoughtInFabric.Location = new System.Drawing.Point(277, 338);
+            this.chkBoughtInFabric.Location = new System.Drawing.Point(270, 394);
             this.chkBoughtInFabric.Name = "chkBoughtInFabric";
             this.chkBoughtInFabric.Size = new System.Drawing.Size(104, 17);
             this.chkBoughtInFabric.TabIndex = 11;
@@ -92,7 +94,7 @@
             // 
             this.groupBox1.Controls.Add(this.rbDetail);
             this.groupBox1.Controls.Add(this.rbBIFSummarised);
-            this.groupBox1.Location = new System.Drawing.Point(260, 381);
+            this.groupBox1.Location = new System.Drawing.Point(253, 437);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(254, 64);
             this.groupBox1.TabIndex = 12;
@@ -177,7 +179,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(152, 298);
+            this.label6.Location = new System.Drawing.Point(145, 354);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(39, 13);
             this.label6.TabIndex = 4;
@@ -206,7 +208,7 @@
             // 
             this.cmboProduct.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
             this.cmboProduct.FormattingEnabled = true;
-            this.cmboProduct.Location = new System.Drawing.Point(277, 290);
+            this.cmboProduct.Location = new System.Drawing.Point(270, 346);
             this.cmboProduct.Name = "cmboProduct";
             this.cmboProduct.Size = new System.Drawing.Size(226, 21);
             this.cmboProduct.TabIndex = 5;
@@ -224,11 +226,33 @@
             this.cmboStore.Text = "Select Options";
             this.cmboStore.SelectedIndexChanged += new System.EventHandler(this.cmboStore_SelectedIndexChanged);
             // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(148, 296);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(81, 13);
+            this.label3.TabIndex = 15;
+            this.label3.Text = "Product Groups";
+            // 
+            // cmboGreigeQuality
+            // 
+            this.cmboGreigeQuality.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cmboGreigeQuality.FormattingEnabled = true;
+            this.cmboGreigeQuality.Location = new System.Drawing.Point(270, 288);
+            this.cmboGreigeQuality.Name = "cmboGreigeQuality";
+            this.cmboGreigeQuality.Size = new System.Drawing.Size(226, 21);
+            this.cmboGreigeQuality.TabIndex = 16;
+            this.cmboGreigeQuality.Text = "Select Options";
+            this.cmboGreigeQuality.SelectedIndexChanged += new System.EventHandler(this.cmboGreigeQuality_SelectedIndexChanged);
+            // 
             // frmK10ReportSel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(642, 552);
+            this.ClientSize = new System.Drawing.Size(642, 572);
+            this.Controls.Add(this.cmboGreigeQuality);
+            this.Controls.Add(this.label3);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
@@ -263,7 +287,7 @@
 
         private Knitting.CheckComboBox cmboStore;
         private Knitting.CheckComboBox cmboProduct;
-
+        private Knitting.CheckComboBox cmboGreigeQuality;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.CheckBox chkBoughtInFabric;
@@ -278,5 +302,6 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.CheckBox chkNonStandardGrades;
+        private System.Windows.Forms.Label label3;
     }
 }

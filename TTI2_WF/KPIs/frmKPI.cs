@@ -28,8 +28,11 @@ namespace TTI2_WF
         DateTime KPIToDate;
 
         public frmKPI()
-        {            
-            InitializeComponent();            
+        {
+            this.Cursor = Cursors.WaitCursor;
+            InitializeComponent();
+
+            this.rbtnProduction.Checked = true;
 
             KPIFromDate = dtpDateFromKPI.Value = DateTime.Now.AddDays(-1).Date.AddHours(7);
             KPIFromDate = dtpDateFromKPI.Value = DateTime.Now.AddDays(-7).Date.AddHours(7); //Testing
@@ -49,6 +52,18 @@ namespace TTI2_WF
                 }
             }
             cmbMachines.SelectedItem = "All Machines";
+
+            this.Cursor = Cursors.Default;
+        }
+
+        private void rbtnProduction_CheckedChanged(object sender, EventArgs e)
+        {
+            if (rbtnQuality.Checked)
+            {
+                this.Cursor = Cursors.WaitCursor;
+                new frmKPIQuality().Show();
+                this.Close();
+            }            
         }
 
         private void btnTotalCuttingProduced_Click(object sender, EventArgs e)
@@ -2225,6 +2240,9 @@ namespace TTI2_WF
             vRep.ShowDialog(this);
         }
 
-
+        private void frmKPI_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            this.Cursor = Cursors.Default;
+        }
     }
 }

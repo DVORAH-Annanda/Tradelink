@@ -36,9 +36,9 @@ namespace Knitting
 
             this.cmboProduct.CheckStateChanged      += new System.EventHandler(this.cmboGreigeProduct_CheckStateChanged);
             this.cmboStore.CheckStateChanged        += new EventHandler(this.cmboStore_CheckStateChanged);
-                  
-      
-            core = new Util();
+            this.cmboGreigeQuality.CheckStateChanged += new EventHandler(this.cmboGreigeQuality_CheckStateChanged);
+
+      core = new Util();
 
             rbBIFSummarised.Checked = true;
 
@@ -81,6 +81,24 @@ namespace Knitting
             }
         }
 
+        private void cmboGreigeQuality_CheckStateChanged(object sender, EventArgs e)
+        {
+
+            if (sender is Knitting.CheckComboBoxItem)
+            {
+                Knitting.CheckComboBoxItem item = (Knitting.CheckComboBoxItem)sender;
+                if (item.CheckState)
+                {
+                    QueryParms.ProductQualities.Add(repo.LoadGreigeQuality(item._Pk));
+                }
+                else
+                {
+                    var value = QueryParms.ProductQualities.Find(it => it.GQ_Pk == item._Pk);
+                    if (value != null)
+                        QueryParms.ProductQualities.Remove(value);
+                }
+            }
+        }
         //-------------------------------------------------------------------------------------
         // this message handler gets called when the user checks/unchecks an item the combo box
         //----------------------------------------------------------------------------------------
@@ -114,6 +132,13 @@ namespace Knitting
                 foreach (var Greige in Greiges)
                 {
                     cmboProduct.Items.Add(new Knitting.CheckComboBoxItem(Greige.TLGreige_Id, Greige.TLGreige_Description, false));
+                }
+
+                var GreigeQualities = context.TLADM_GreigeQuality.OrderBy(x => x.GQ_Description).ToList();
+                foreach(var Quality in GreigeQualities)
+                {
+                    cmboGreigeQuality.Items.Add(new Knitting.CheckComboBoxItem(Quality.GQ_Pk, Quality.GQ_Description, false));
+
                 }
 
                 chkBoughtInFabric.Checked = false;
@@ -238,6 +263,7 @@ namespace Knitting
                 
                 cmboProduct.Items.Clear();
                 cmboStore.Items.Clear();
+                cmboGreigeQuality.Items.Clear();
                 chkBoughtInFabric.Checked = false;
                 rbBIFSummarised.Checked = true;
                 
@@ -352,6 +378,11 @@ namespace Knitting
             }
         }
 
-      
+        private void cmboGreigeQuality_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ComboBox oCmbo = sender as ComboBox;
+            if (oCmbo != null && !oCmbo.DroppedDown)
+               oCmbo.DroppedDown = true;
+        }
     }
 }

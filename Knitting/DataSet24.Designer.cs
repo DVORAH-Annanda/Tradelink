@@ -491,7 +491,7 @@ namespace Knitting {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public DataTable1Row AddDataTable1Row(DataTable2Row parentDataTable2RowByDataTable2_DataTable1, string DataColumn1, string DataColumn2, int DataColumn3, decimal DataColumn4, decimal DataColumn5, decimal DataColumn6, decimal DataColumn7, decimal DataColumn8, string DataColumn9) {
+            public DataTable1Row AddDataTable1Row(DataTable2Row parentDataTable2RowByDataTable2_DataTable1, string DataColumn1, string DataColumn2, int DataColumn3, decimal DataColumn4, decimal DataColumn5, decimal DataColumn6, decimal DataColumn7, decimal DataColumn8, decimal DataColumn9) {
                 DataTable1Row rowDataTable1Row = ((DataTable1Row)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         null,
@@ -562,7 +562,7 @@ namespace Knitting {
                 base.Columns.Add(this.columnDataColumn7);
                 this.columnDataColumn8 = new global::System.Data.DataColumn("DataColumn8", typeof(decimal), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnDataColumn8);
-                this.columnDataColumn9 = new global::System.Data.DataColumn("DataColumn9", typeof(string), null, global::System.Data.MappingType.Element);
+                this.columnDataColumn9 = new global::System.Data.DataColumn("DataColumn9", typeof(decimal), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnDataColumn9);
             }
             
@@ -1125,10 +1125,10 @@ namespace Knitting {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public string DataColumn9 {
+            public decimal DataColumn9 {
                 get {
                     try {
-                        return ((string)(this[this.tableDataTable1.DataColumn9Column]));
+                        return ((decimal)(this[this.tableDataTable1.DataColumn9Column]));
                     }
                     catch (global::System.InvalidCastException e) {
                         throw new global::System.Data.StrongTypingException("The value for column \'DataColumn9\' in table \'DataTable1\' is DBNull.", e);

@@ -1137,7 +1137,7 @@ namespace Utilities
             DateTime now = centuryBegin.AddDays(CDN);
             return now;
         }
-
+        
         public Int32 CenturyDayNumber(DateTime today)
         {
             DateTime centuryBegin = new DateTime(2001, 1, 1);
@@ -1149,7 +1149,7 @@ namespace Utilities
             return elapsedSpan.Days;
 
         }
-         */
+        */
               
         public int GetWorkingDays(DateTime from, DateTime to)
         {
@@ -2691,13 +2691,11 @@ namespace Utilities
 
         public Int32 CenturyDayNumber(DateTime today)
         {
-            DateTime centuryBegin = new DateTime(2001, 1, 1);
-            DateTime currentDate = today;
+            var now = today;
+            var zeroDate = DateTime.MinValue.AddHours(now.Hour).AddMinutes(now.Minute).AddSeconds(now.Second).AddMilliseconds(now.Millisecond);
+            int uniqueId = (int)(zeroDate.Ticks / 10000);
 
-            long elapsedTicks = currentDate.Ticks - centuryBegin.Ticks;
-            TimeSpan elapsedSpan = new TimeSpan(elapsedTicks);
-
-            return  elapsedSpan.Days;
+            return  uniqueId;
 
         }
 
@@ -2870,46 +2868,18 @@ namespace Utilities
                             clrs.Sty_Buttons = false;
                         }
 
-                        try
-                        {
+                        clrs.Sty_BoughtIn = false;
+                        if(row.Cells[15].Value != null)
                             clrs.Sty_BoughtIn = Convert.ToBoolean(row.Cells[15].Value.ToString());
-                        }
-                        catch (System.Exception ex)
-                        {
-                            clrs.Sty_BoughtIn = false;
-                        }
-
-                        try
-                        {
-                            if (row.Cells[16].Value != null)
-                            {
-                                clrs.Sty_DisplayOrder = Convert.ToInt32(row.Cells[16].Value.ToString());
-                            }
-                            else
-                            {
-                                clrs.Sty_DisplayOrder = 0;
-                            }
-                        }
-                        catch (System.Exception ex)
-                        {
-                            clrs.Sty_DisplayOrder = 0;
-                        }
-
-                        try
-                        {
-                            if (row.Cells[17].Value != null)
-                            {
-                                clrs.Sty_WorkWear = Convert.ToBoolean(row.Cells[17].Value.ToString());
-                            }
-                            else
-                            {
-                                clrs.Sty_WorkWear = false;
-                            }
-                        }
-                        catch (System.Exception ex)
-                        {
-                            clrs.Sty_WorkWear = false;
-                        }
+                        
+                        clrs.Sty_DisplayOrder = 0;
+                        if (row.Cells[16].Value != null)
+                           clrs.Sty_DisplayOrder = Convert.ToInt32(row.Cells[16].Value.ToString());
+                        
+                        clrs.Sty_WorkWear = false;
+                        if(row.Cells[17].Value != null)
+                           clrs.Sty_WorkWear = Convert.ToBoolean(row.Cells[17].Value.ToString());
+                        
 
                         clrs.Sty_Label_FK = SelectedLabel;
 

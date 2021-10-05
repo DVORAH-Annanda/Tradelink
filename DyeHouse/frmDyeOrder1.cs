@@ -1674,12 +1674,18 @@ namespace DyeHouse
                         MandSelected = core.PopulateArray(MandSelected.Length, true);
                         
                         prodRatingBody = context.TLADM_ProductRating.Where(x => x.Pr_Style_FK == selected.TLDYO_Style_FK && x.Pr_Customer_FK == selected.TLDYO_Customer_FK && x.Pr_BodyorRibbing == 1).ToList();
+                        
                         foreach (var row in prodRatingBody)
                         {
                             StringBuilder description = new StringBuilder();
                             xx = core.ExtrapNumber(row.Pr_PowerN, context.TLADM_Sizes.Count());
                             xx.Sort();
                      
+                            if(SelectedBody == null)
+                            {
+                                SelectedBody = row;
+                            }
+
                             foreach (var rw in xx)
                             {
                                 foreach (var dd in Listsizes)
@@ -1736,6 +1742,10 @@ namespace DyeHouse
 
                             pr = row;
 
+                            if(SelectedTrim == null)
+                            {
+                                SelectedTrim = pr;
+                            }
                             var Trims = context.TLADM_Trims.Find(row.Pr_Trim_FK);
                             if (Trims != null)
                             {

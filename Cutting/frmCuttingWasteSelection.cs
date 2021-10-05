@@ -19,12 +19,15 @@ namespace Cutting
         Cutting.CuttingRepository repo;
         Cutting.CuttingQueryParameters QParms;
         bool FormLoaded;
+        BindingList<KeyValuePair<int, string>> ReportOptions;
+        
         public frmCuttingWasteSelection()
         {
             InitializeComponent();
             _context = new TTI2Entities();
             core = new Util();
             repo = new CuttingRepository();
+            ReportOptions = new BindingList<KeyValuePair<int, string>>();
 
             this.comboCutSheet.CheckStateChanged += new System.EventHandler(this.comboCutSheet_CheckStateChanged);
             this.comboQuality.CheckStateChanged += new EventHandler(this.comboQuality_CheckStateChanged);
@@ -35,6 +38,21 @@ namespace Cutting
         private void frmCuttingWasteSelection_Load(object sender, EventArgs e)
         {
             FormLoaded = false;
+
+            ReportOptions = new BindingList<KeyValuePair<int, string>>();
+
+            QParms = new Cutting.CuttingQueryParameters();
+
+            ReportOptions.Add(new KeyValuePair<int, string>(1, "Dye Batch"));
+            ReportOptions.Add(new KeyValuePair<int, string>(2, "Machine"));
+            ReportOptions.Add(new KeyValuePair<int, string>(3, "Quality"));
+          
+
+            cmboReportOptions.DataSource = ReportOptions;
+            cmboReportOptions.ValueMember = "Key";
+            cmboReportOptions.DisplayMember = "Value";
+            cmboReportOptions.SelectedIndex = -1;
+
 
             var Dept = _context.TLADM_Departments.Where(x => x.Dep_ShortCode.Contains("CUT")).FirstOrDefault();
             if (Dept != null)
@@ -148,6 +166,18 @@ namespace Cutting
             {
                 QParms.FromDate = dtpFromDate.Value;
                 QParms.ToDate = dtpToDate.Value;
+                if (cmboReportOptions.SelectedValue != null)
+                {
+                    QParms.RepSortOption = (int)cmboReportOptions.SelectedValue;
+                    if (QParms.RepSortOption == 0)
+                    {
+                        QParms.RepSortOption = 1;
+                    }
+                }
+                else
+                {
+                    QParms.RepSortOption = 1;
+                }
 
                 try
                 {

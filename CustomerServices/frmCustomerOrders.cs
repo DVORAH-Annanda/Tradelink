@@ -699,6 +699,7 @@ namespace CustomerServices
                             PO.TLCSVPO_TransDate = dtpCustOrderDate.Value;
                             PO.TLCSVPO_Customer_FK = CustSelected.Cust_Pk;
 
+                            PO.TLCSVPO_FabricCustomer = CustSelected.Cust_FabricCustomer;
                             PO.TLCSVPO_PurchaseOrder = txtCustomerPO.Text;
                             PO.TLCVSPO_SequenceNo = TransNumber;
 

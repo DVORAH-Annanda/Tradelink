@@ -38,27 +38,25 @@
             this.txtDyeProductionLoss = new System.Windows.Forms.TextBox();
             this.txtWFDye = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
-            this.cmboFabric = new System.Windows.Forms.ComboBox();
-            this.label8 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.txtYieldFactor = new System.Windows.Forms.TextBox();
-            this.label11 = new System.Windows.Forms.Label();
-            this.cmboColors = new System.Windows.Forms.ComboBox();
             this.label13 = new System.Windows.Forms.Label();
-            this.txtCustomerOrder = new System.Windows.Forms.TextBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.cmboDyeOrders = new System.Windows.Forms.ComboBox();
             this.label6 = new System.Windows.Forms.Label();
             this.txtDyeOrder = new System.Windows.Forms.TextBox();
+            this.dataGridView2 = new System.Windows.Forms.DataGridView();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.cmboFabricOrder = new System.Windows.Forms.ComboBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
+            this.groupBox3.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(715, 480);
+            this.btnSave.Location = new System.Drawing.Point(690, 554);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(75, 23);
             this.btnSave.TabIndex = 0;
@@ -115,7 +113,7 @@
             this.groupBox1.Controls.Add(this.txtDyeProductionLoss);
             this.groupBox1.Controls.Add(this.txtWFDye);
             this.groupBox1.Controls.Add(this.label5);
-            this.groupBox1.Location = new System.Drawing.Point(394, 99);
+            this.groupBox1.Location = new System.Drawing.Point(425, 57);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(317, 70);
             this.groupBox1.TabIndex = 9;
@@ -147,85 +145,24 @@
             this.label5.TabIndex = 0;
             this.label5.Text = "Dye";
             // 
-            // cmboFabric
-            // 
-            this.cmboFabric.FormattingEnabled = true;
-            this.cmboFabric.Location = new System.Drawing.Point(128, 151);
-            this.cmboFabric.Name = "cmboFabric";
-            this.cmboFabric.Size = new System.Drawing.Size(158, 21);
-            this.cmboFabric.TabIndex = 10;
-            this.cmboFabric.SelectedIndexChanged += new System.EventHandler(this.cmboFabric_SelectedIndexChanged);
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(12, 156);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(36, 13);
-            this.label8.TabIndex = 12;
-            this.label8.Text = "Fabric";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(12, 203);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(63, 13);
-            this.label4.TabIndex = 13;
-            this.label4.Text = "Yield Factor";
-            // 
-            // txtYieldFactor
-            // 
-            this.txtYieldFactor.Location = new System.Drawing.Point(128, 198);
-            this.txtYieldFactor.Name = "txtYieldFactor";
-            this.txtYieldFactor.ReadOnly = true;
-            this.txtYieldFactor.Size = new System.Drawing.Size(100, 20);
-            this.txtYieldFactor.TabIndex = 14;
-            // 
-            // label11
-            // 
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(266, 205);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(83, 13);
-            this.label11.TabIndex = 16;
-            this.label11.Text = "Colour Required";
-            // 
-            // cmboColors
-            // 
-            this.cmboColors.FormattingEnabled = true;
-            this.cmboColors.Location = new System.Drawing.Point(394, 200);
-            this.cmboColors.Name = "cmboColors";
-            this.cmboColors.Size = new System.Drawing.Size(121, 21);
-            this.cmboColors.TabIndex = 17;
-            this.cmboColors.SelectedIndexChanged += new System.EventHandler(this.cmboColors_SelectedIndexChanged);
-            // 
             // label13
             // 
             this.label13.AutoSize = true;
             this.label13.Location = new System.Drawing.Point(12, 109);
             this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(97, 13);
+            this.label13.Size = new System.Drawing.Size(129, 13);
             this.label13.TabIndex = 18;
-            this.label13.Text = "Customer Order No";
-            // 
-            // txtCustomerOrder
-            // 
-            this.txtCustomerOrder.Location = new System.Drawing.Point(128, 105);
-            this.txtCustomerOrder.Name = "txtCustomerOrder";
-            this.txtCustomerOrder.Size = new System.Drawing.Size(100, 20);
-            this.txtCustomerOrder.TabIndex = 19;
-            this.txtCustomerOrder.TextChanged += new System.EventHandler(this.txtWFDye_TextChanged);
+            this.label13.Text = "Customer Fabric Order No";
             // 
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.dataGridView1);
-            this.groupBox2.Location = new System.Drawing.Point(82, 275);
+            this.groupBox2.Location = new System.Drawing.Point(86, 159);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(578, 191);
             this.groupBox2.TabIndex = 20;
             this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Requirements";
+            this.groupBox2.Text = "Fabric Requirements";
             // 
             // dataGridView1
             // 
@@ -240,6 +177,7 @@
             // 
             // cmboDyeOrders
             // 
+            this.cmboDyeOrders.Enabled = false;
             this.cmboDyeOrders.FormattingEnabled = true;
             this.cmboDyeOrders.Location = new System.Drawing.Point(425, 9);
             this.cmboDyeOrders.Name = "cmboDyeOrders";
@@ -264,23 +202,45 @@
             this.txtDyeOrder.Size = new System.Drawing.Size(100, 20);
             this.txtDyeOrder.TabIndex = 23;
             // 
+            // dataGridView2
+            // 
+            this.dataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView2.Location = new System.Drawing.Point(36, 20);
+            this.dataGridView2.Name = "dataGridView2";
+            this.dataGridView2.Size = new System.Drawing.Size(523, 150);
+            this.dataGridView2.TabIndex = 24;
+            // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.dataGridView2);
+            this.groupBox3.Location = new System.Drawing.Point(86, 356);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(578, 191);
+            this.groupBox3.TabIndex = 24;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Trims Requirements";
+            // 
+            // cmboFabricOrder
+            // 
+            this.cmboFabricOrder.FormattingEnabled = true;
+            this.cmboFabricOrder.Location = new System.Drawing.Point(147, 106);
+            this.cmboFabricOrder.Name = "cmboFabricOrder";
+            this.cmboFabricOrder.Size = new System.Drawing.Size(160, 21);
+            this.cmboFabricOrder.TabIndex = 25;
+            this.cmboFabricOrder.SelectedIndexChanged += new System.EventHandler(this.cmboFabricOrder_SelectedIndexChanged);
+            // 
             // frmDyeOrders
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(802, 515);
+            this.ClientSize = new System.Drawing.Size(802, 586);
+            this.Controls.Add(this.cmboFabricOrder);
+            this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.txtDyeOrder);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.cmboDyeOrders);
             this.Controls.Add(this.groupBox2);
-            this.Controls.Add(this.txtCustomerOrder);
             this.Controls.Add(this.label13);
-            this.Controls.Add(this.cmboColors);
-            this.Controls.Add(this.label11);
-            this.Controls.Add(this.txtYieldFactor);
-            this.Controls.Add(this.label4);
-            this.Controls.Add(this.label8);
-            this.Controls.Add(this.cmboFabric);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.cmboCustomerNo);
             this.Controls.Add(this.label3);
@@ -290,10 +250,13 @@
             this.Controls.Add(this.btnSave);
             this.Name = "frmDyeOrders";
             this.Text = "Dye Orders (Fabric)";
+            this.Load += new System.EventHandler(this.frmDyeOrders_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).EndInit();
+            this.groupBox3.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -310,19 +273,15 @@
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.TextBox txtWFDye;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.ComboBox cmboFabric;
-        private System.Windows.Forms.Label label8;
         private System.Windows.Forms.TextBox txtDyeProductionLoss;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.TextBox txtYieldFactor;
-        private System.Windows.Forms.Label label11;
-        private System.Windows.Forms.ComboBox cmboColors;
         private System.Windows.Forms.Label label13;
-        private System.Windows.Forms.TextBox txtCustomerOrder;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.ComboBox cmboDyeOrders;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.TextBox txtDyeOrder;
+        private System.Windows.Forms.DataGridView dataGridView2;
+        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.ComboBox cmboFabricOrder;
     }
 }
