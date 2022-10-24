@@ -295,11 +295,25 @@ namespace Knitting
                     {
                         YarnOpts.K7rbQA3 = true;
                     }
+                    else if (rbTotalsByMachineByDay.Checked)
+                    {
+                        YarnOpts.K7ByMachineByDay = true;
+                    }
 
                 if (_GreigeProd)
                 {
                     QueryParms.DiskVarianceReport = false;
-                    frmKnitViewRep vRep = new frmKnitViewRep(23, QueryParms, YarnOpts);
+                    frmKnitViewRep vRep = null;
+                    
+                    if (!rbTotalsByMachineByDay.Checked)
+                    {
+                        vRep  = new frmKnitViewRep(23, QueryParms, YarnOpts);
+                    }
+                    else
+                    {
+                        vRep = new frmKnitViewRep(35, QueryParms, YarnOpts);
+                    }
+                    
                     int h = Screen.PrimaryScreen.WorkingArea.Height;
                     int w = Screen.PrimaryScreen.WorkingArea.Width;
                     vRep.ClientSize = new Size(w, h);
@@ -324,7 +338,6 @@ namespace Knitting
                     {
                         vRep.Close();
                         vRep.Dispose();
-
                     }
                 }
                

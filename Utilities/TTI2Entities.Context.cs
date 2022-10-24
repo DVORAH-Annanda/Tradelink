@@ -49,7 +49,6 @@ namespace Utilities
         public virtual DbSet<TLFIN_FinancialYear> TLFIN_FinancialYear { get; set; }
         public virtual DbSet<TLADM_FabricProduct> TLADM_FabricProduct { get; set; }
         public virtual DbSet<TLADM_AdditionalAddress> TLADM_AdditionalAddress { get; set; }
-        public virtual DbSet<TLADM_PanelAttributes> TLADM_PanelAttributes { get; set; }
         public virtual DbSet<TLADM_StylesAdditional> TLADM_StylesAdditional { get; set; }
         public virtual DbSet<TLADM_CompanyDetails> TLADM_CompanyDetails { get; set; }
         public virtual DbSet<TLADM_CottonAgent> TLADM_CottonAgent { get; set; }
@@ -90,8 +89,6 @@ namespace Utilities
         public virtual DbSet<TLADM_DepartmentsArea> TLADM_DepartmentsArea { get; set; }
         public virtual DbSet<TLADM_DepartmentsAreaTransaction> TLADM_DepartmentsAreaTransaction { get; set; }
         public virtual DbSet<TLKNI_GreigeCommisionAdjustment> TLKNI_GreigeCommisionAdjustment { get; set; }
-        public virtual DbSet<TLDYE_NonComplianceAnalysis> TLDYE_NonComplianceAnalysis { get; set; }
-        public virtual DbSet<TLDYE_DyeOrder> TLDYE_DyeOrder { get; set; }
         public virtual DbSet<TLCUT_CutSheetReceiptBoxes> TLCUT_CutSheetReceiptBoxes { get; set; }
         public virtual DbSet<TLCUT_QCBerrie> TLCUT_QCBerrie { get; set; }
         public virtual DbSet<TLADM_CutMeasureArea> TLADM_CutMeasureArea { get; set; }
@@ -132,10 +129,8 @@ namespace Utilities
         public virtual DbSet<TLADM_WareHouseAssociation> TLADM_WareHouseAssociation { get; set; }
         public virtual DbSet<TLDYE_ReceipeGreigeQual> TLDYE_ReceipeGreigeQual { get; set; }
         public virtual DbSet<TLDYE_RecipeDefinition> TLDYE_RecipeDefinition { get; set; }
-        public virtual DbSet<TLDYE_NonComplianceConsDetail> TLDYE_NonComplianceConsDetail { get; set; }
         public virtual DbSet<TLCUT_CutSheetReceiptDetail> TLCUT_CutSheetReceiptDetail { get; set; }
         public virtual DbSet<TLADM_StyleTrim> TLADM_StyleTrim { get; set; }
-        public virtual DbSet<TLDYE_ConsumableSOH> TLDYE_ConsumableSOH { get; set; }
         public virtual DbSet<TLKNI_GreigeCommissionTransctions> TLKNI_GreigeCommissionTransctions { get; set; }
         public virtual DbSet<TLKNI_MachineLastNumber> TLKNI_MachineLastNumber { get; set; }
         public virtual DbSet<TLADM_LastNumberUsed> TLADM_LastNumberUsed { get; set; }
@@ -161,7 +156,6 @@ namespace Utilities
         public virtual DbSet<TLCSV_RePackConfig> TLCSV_RePackConfig { get; set; }
         public virtual DbSet<TLCSV_RePackTransactions> TLCSV_RePackTransactions { get; set; }
         public virtual DbSet<TLPPS_ProductionLeadTime> TLPPS_ProductionLeadTime { get; set; }
-        public virtual DbSet<TLDYE_DyeTransactions> TLDYE_DyeTransactions { get; set; }
         public virtual DbSet<TLCMT_UnitProductionTargets> TLCMT_UnitProductionTargets { get; set; }
         public virtual DbSet<TLSEC_Sections> TLSEC_Sections { get; set; }
         public virtual DbSet<TLKNI_YarnOrderPallets> TLKNI_YarnOrderPallets { get; set; }
@@ -203,15 +197,21 @@ namespace Utilities
         public virtual DbSet<TLADM_WhseStore> TLADM_WhseStore { get; set; }
         public virtual DbSet<TLADM_Styles> TLADM_Styles { get; set; }
         public virtual DbSet<TLCSV_BoughtInGoods> TLCSV_BoughtInGoods { get; set; }
-        public virtual DbSet<TLADM_Colours> TLADM_Colours { get; set; }
         public virtual DbSet<TLCSV_StockOnHand> TLCSV_StockOnHand { get; set; }
         public virtual DbSet<TLADM_Sizes> TLADM_Sizes { get; set; }
         public virtual DbSet<TLCSV_PuchaseOrderDetail> TLCSV_PuchaseOrderDetail { get; set; }
         public virtual DbSet<TLADM_Months> TLADM_Months { get; set; }
         public virtual DbSet<TLCSV_PurchaseOrder> TLCSV_PurchaseOrder { get; set; }
         public virtual DbSet<TLADM_Griege> TLADM_Griege { get; set; }
-        public virtual DbSet<TLDYE_DyeOrderFabric> TLDYE_DyeOrderFabric { get; set; }
         public virtual DbSet<TLKNI_GreigeProduction> TLKNI_GreigeProduction { get; set; }
+        public virtual DbSet<TLDYE_DyeOrder> TLDYE_DyeOrder { get; set; }
+        public virtual DbSet<TLDYE_DyeOrderFabric> TLDYE_DyeOrderFabric { get; set; }
+        public virtual DbSet<TLDYE_DyeTransactions> TLDYE_DyeTransactions { get; set; }
+        public virtual DbSet<TLDYE_NonComplianceConsDetail> TLDYE_NonComplianceConsDetail { get; set; }
+        public virtual DbSet<TLDYE_NonComplianceAnalysis> TLDYE_NonComplianceAnalysis { get; set; }
+        public virtual DbSet<TLADM_PanelAttributes> TLADM_PanelAttributes { get; set; }
+        public virtual DbSet<TLDYE_ConsumableSOH> TLDYE_ConsumableSOH { get; set; }
+        public virtual DbSet<TLADM_Colours> TLADM_Colours { get; set; }
     
         public virtual int SelectCottonRecords(Nullable<int> contractNo, Nullable<int> supplierNo)
         {
@@ -366,6 +366,15 @@ namespace Utilities
                 new ObjectParameter("PODetail", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("CustomerServiceClearDown", pODetailParameter);
+        }
+    
+        public virtual ObjectResult<SelectWhsePickList_Result> SelectWhsePickList(Nullable<int> deptNo)
+        {
+            var deptNoParameter = deptNo.HasValue ?
+                new ObjectParameter("DeptNo", deptNo) :
+                new ObjectParameter("DeptNo", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SelectWhsePickList_Result>("SelectWhsePickList", deptNoParameter);
         }
     }
 }

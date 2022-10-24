@@ -60,7 +60,7 @@ namespace TTI2_WF
             if (ApplicationDeployment.IsNetworkDeployed)
             {
                 var ver = ApplicationDeployment.CurrentDeployment.CurrentVersion;
-                this.Text = string.Format("Your Application Name v{0}.{1}", ver.Major, ver.Revision);
+                this.Text = string.Format("Your Application Name v{0}.v{1}", ver.Major, ver.Revision);
             }
 
         }
@@ -70,6 +70,8 @@ namespace TTI2_WF
             this.AutoSize = true;
             this.WindowState = FormWindowState.Normal;
             core = new Util();
+            PBar1.Visible = false;
+
             //========================================================================
             // This only needs to updated when either a new Department ie "CMT" or "Cutting" is added
             // or a new sub menu is added to either "CMT" or "Cutting" as an example
@@ -653,7 +655,8 @@ namespace TTI2_WF
                 //-------------------------------------------------------------------------------
                 try
                 {
-                    frmTLADMGardDef gd = new frmTLADMGardDef(2);
+                    // frmTLADMGardDef gd = new frmTLADMGardDef(2);
+                    Administration.frmNewForm gd = new frmNewForm(2);
                     gd.ShowDialog();
                 }
                 catch (Exception ex)
@@ -1391,7 +1394,8 @@ namespace TTI2_WF
             {
                 try
                 {
-                    frmTLADMGardDef gd = new frmTLADMGardDef(17);
+                    Administration.frmNewForm  gd = new Administration.frmNewForm(17);
+                    // frmTLADMGardDef gd = new frmTLADMGardDef(17);
                     gd.ShowDialog();
                 }
                 catch (Exception ex)
@@ -3827,8 +3831,7 @@ namespace TTI2_WF
             ToolStripMenuItem oTi = sender as ToolStripMenuItem;
             if (core.GetUserAuthorisation(ud, oTi.Name))
             {
-                MessageBox.Show("Facility current under development");
-                /*
+                
                 try
                 {
                     frmDyeBatch gd = new frmDyeBatch(false);
@@ -3838,7 +3841,7 @@ namespace TTI2_WF
                 {
                     MessageBox.Show(ex.Message);
                 }
-                */
+                
             }
             else
             {
@@ -7624,7 +7627,6 @@ namespace TTI2_WF
                 {
                     MessageBox.Show(ud._NotAuthorisedMessage, ud._UserName);
                 }
-
             }
         }
 
@@ -7641,7 +7643,6 @@ namespace TTI2_WF
 
                     }
                 }
-
             }
             else
             {
@@ -9047,7 +9048,7 @@ namespace TTI2_WF
             {
                 try
                 {
-                    frmInsAfterDrying QInsAfterDrying = new frmInsAfterDrying(ud, true);
+                    DyeHouse.frmInsAfterDrying QInsAfterDrying = new DyeHouse.frmInsAfterDrying(ud, true);
                     QInsAfterDrying.ShowDialog(this);
                 }
                 catch (Exception ex)
@@ -10401,6 +10402,136 @@ namespace TTI2_WF
                 {
                     MessageBox.Show(ex.Message);
                 }
+            }
+            else
+            {
+                using (DialogCenteringService centeringService = new DialogCenteringService(this)) // center message box
+                {
+                    MessageBox.Show(ud._NotAuthorisedMessage, ud._UserName);
+                }
+            }
+        }
+
+        private void fabricSalesToolStripMenuItem2_Click(object sender, EventArgs e)
+        {
+            ToolStripMenuItem oTi = sender as ToolStripMenuItem;
+            if (core.GetUserAuthorisation(ud, oTi.Name))
+            {
+                try
+                {
+                    DyeHouse.frmFabricSales gd = new DyeHouse.frmFabricSales();
+                    gd.ShowDialog(this);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+            else
+            {
+                using (DialogCenteringService centeringService = new DialogCenteringService(this)) // center message box
+                {
+                    MessageBox.Show(ud._NotAuthorisedMessage, ud._UserName);
+                }
+            }
+        }
+
+        private void processLossPerCutSheetAcrossProductionToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ToolStripMenuItem oTi = sender as ToolStripMenuItem;
+            if (core.GetUserAuthorisation(ud, oTi.Name))
+            {
+                try
+                {
+                    ProductionPlanning.frmProcessLossAcrossProd ProcessL = new ProductionPlanning.frmProcessLossAcrossProd(); ;
+                    ProcessL.ShowDialog(this);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+            else
+            {
+                using (DialogCenteringService centeringService = new DialogCenteringService(this)) // center message box
+                {
+                    MessageBox.Show(ud._NotAuthorisedMessage, ud._UserName);
+                }
+            }
+        }
+
+        private void dyeChemicalsStockAdjustmentToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ToolStripMenuItem oTi = sender as ToolStripMenuItem;
+            if (core.GetUserAuthorisation(ud, oTi.Name))
+            {
+                try
+                {
+                    DyeHouse.frmDyesChemicalStockAdjustment  ProcessL = new DyeHouse.frmDyesChemicalStockAdjustment(); ;
+                    ProcessL.ShowDialog(this);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+            else
+            {
+                using (DialogCenteringService centeringService = new DialogCenteringService(this)) // center message box
+                {
+                    MessageBox.Show(ud._NotAuthorisedMessage, ud._UserName);
+                }
+            }
+        }
+
+        private void dyeChemicalsStockClosingToOpeningToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ToolStripMenuItem oTi = sender as ToolStripMenuItem;
+            if (core.GetUserAuthorisation(ud, oTi.Name))
+            {
+                using (DialogCenteringService centeringService = new DialogCenteringService(this)) // center message box
+                {
+                    DialogResult Result = MessageBox.Show("Please confirm this transaction", "Confirmation Required", MessageBoxButtons.YesNo , MessageBoxIcon.Question );   
+                    if(Result == DialogResult.Yes)
+                    {
+                        // Display the ProgressBar control.
+                        PBar1.Visible = true;
+                        // Set Minimum to 1 
+                        PBar1.Minimum = 1;
+                        // Set the initial value of ProgessBar
+                        PBar1.Value = 1;
+                        // Set the Step property to a value of 1 to represent PPS Record processed
+                        PBar1.Step = 1;
+                        using (var context = new TTI2Entities())
+                        {
+                            foreach(var Record in context.TLDYE_ConsumableSOH)
+                            {
+                                Record.DYCSH_K_Closing = Record.DYCSH_K_Opening + Record.DYCSH_SOHKitchen - Record.DYCSH_K_Used + Record.DCSH_K_Adjusted;
+                                Record.DYCSH_K_Opening = Record.DYCSH_K_Closing;
+                                Record.DYCSH_SOHKitchen = 0.00M;
+                                Record.DYCSH_K_Used = 0.00M;
+                                Record.DCSH_K_Adjusted = 0.00M;
+
+                                PBar1.PerformStep();
+                            }
+
+                            try
+                            {
+                                context.SaveChanges();
+                                MessageBox.Show("Data successfully saved to database");
+                                
+
+                            }
+                            catch(Exception ex)
+                            {
+                                MessageBox.Show(ex.InnerException.Message);
+                            }
+
+                            PBar1.Visible = false;
+                        }
+                    }
+                }
+                
             }
             else
             {

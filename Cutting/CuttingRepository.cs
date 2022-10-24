@@ -158,6 +158,26 @@ namespace Cutting
             return CS;
         }
 
+        public IQueryable<TLCUT_CutSheet> SelCost(CuttingQueryParameters parameters)
+        {
+            var Cutsheet = (from T1 in _context.TLCUT_CutSheet
+                            join T2 in _context.TLCUT_CutSheetReceipt
+                            on T1.TLCutSH_Pk equals T2.TLCUTSHR_CutSheet_FK
+                            where T2.TLCUTSHR_InPanelStore && !T2.TLCUTSHR_Issued
+                            select T1).AsQueryable();
+
+            if(parameters.Colours.Count != 0)
+            {
+                var ColourPredicate = PredicateBuilder.New<TLCUT_CutSheet>();
+                foreach (var Clr in parameters.Colours)
+                {
+                    var temp = Clr;
+                    ColourPredicate = ColourPredicate.Or(s => s.TLCutSH_Colour_FK == temp.Col_Id);
+                }
+                Cutsheet = Cutsheet.AsExpandable().Where(ColourPredicate);
+            }
+            return Cutsheet; 
+        }
         public IQueryable<TLCUT_CutSheetReceipt> SelCutReceiptByLoc(CuttingQueryParameters parameters)
         {
             var CutRec = _context.TLCUT_CutSheetReceipt.Where(x=>!x.TLCUTSHR_Issued && x.TLCUTSHR_InPanelStore).AsQueryable();

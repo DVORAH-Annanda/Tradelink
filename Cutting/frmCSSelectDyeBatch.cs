@@ -108,7 +108,7 @@ namespace Cutting
             {
                 var DBatches = (from T1 in context.TLDYE_DyeBatch
                                   join T2 in context.TLDYE_DyeBatchDetails on T1.DYEB_Pk equals T2.DYEBD_DyeBatch_FK
-                                  where T2.DYEBO_QAApproved && !T2.DYEBO_Sold && !T2.DYEBO_WriteOff && !T2.DYEBO_CutSheet && !T1.DYEB_CommissinCust
+                                  where !T1.DYEB_FabicSales && T2.DYEBO_QAApproved && !T2.DYEBO_Sold && !T2.DYEBO_WriteOff && !T2.DYEBO_CutSheet && !T1.DYEB_CommissinCust
                                   select T1).GroupBy(x=>x.DYEB_Pk);
 
                 foreach (var DBatch in DBatches)

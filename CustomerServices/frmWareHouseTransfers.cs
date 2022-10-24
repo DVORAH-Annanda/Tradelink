@@ -243,6 +243,7 @@ namespace CustomerServices
 
                 QueryParms.Depts.Add(repo.LoadDepart(Depts.Dep_Id));
                
+               
                 var BoxesAvailable = repo.Query(QueryParms);
 
                 if (BoxesAvailable.Count() == 0)
@@ -250,6 +251,7 @@ namespace CustomerServices
                     MessageBox.Show("There are no Boxes available");
                     return;
                 }
+                
 
                 DGVResults.Rows.Clear();
 
@@ -259,7 +261,7 @@ namespace CustomerServices
                     {
                         var index = DGVResults.Rows.Add();
                         DGVResults.Rows[index].Cells[0].Value = Box.TLCMTWC_Pk;
-                        DGVResults.Rows[index].Cells[1].Value = false;          
+                        DGVResults.Rows[index].Cells[1].Value = true;          
                         DGVResults.Rows[index].Cells[2].Value = Box.TLCMTWC_BoxNumber;
                         DGVResults.Rows[index].Cells[3].Value = Box.TLCMTWC_Qty;
                         DGVResults.Rows[index].Cells[4].Value = Box.TLCMTWC_Weight;

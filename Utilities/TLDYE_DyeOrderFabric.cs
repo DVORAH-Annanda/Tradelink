@@ -32,5 +32,6 @@ namespace Utilities
         public int TLDYEF_FabricOrder_FK { get; set; }
         public int TLDYEF_DyeOrderNumeric { get; set; }
         public bool TLDYEF_Body { get; set; }
+        public decimal TLDYEF_BatchedToDate { get; set; }
     }
 }

@@ -626,6 +626,8 @@ namespace ProductionPlanning {
             
             private global::System.Data.DataColumn columnMeasurement3;
             
+            private global::System.Data.DataColumn columnQuality;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public DataTable2DataTable() {
@@ -725,6 +727,14 @@ namespace ProductionPlanning {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn QualityColumn {
+                get {
+                    return this.columnQuality;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -760,7 +770,7 @@ namespace ProductionPlanning {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public DataTable2Row AddDataTable2Row(DataTable1Row parentDataTable1RowByDataTable1_DataTable2, string PieceNo, int Measurement1, string CutSheet, string ErrorLog, int Measurement2, string MeasurementDescrip, int Measurement3) {
+            public DataTable2Row AddDataTable2Row(DataTable1Row parentDataTable1RowByDataTable1_DataTable2, string PieceNo, int Measurement1, string CutSheet, string ErrorLog, int Measurement2, string MeasurementDescrip, int Measurement3, string Quality) {
                 DataTable2Row rowDataTable2Row = ((DataTable2Row)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         null,
@@ -770,7 +780,8 @@ namespace ProductionPlanning {
                         ErrorLog,
                         Measurement2,
                         MeasurementDescrip,
-                        Measurement3};
+                        Measurement3,
+                        Quality};
                 if ((parentDataTable1RowByDataTable1_DataTable2 != null)) {
                     columnValuesArray[0] = parentDataTable1RowByDataTable1_DataTable2[0];
                 }
@@ -804,6 +815,7 @@ namespace ProductionPlanning {
                 this.columnMeasurement2 = base.Columns["Measurement2"];
                 this.columnMeasurementDescrip = base.Columns["MeasurementDescrip"];
                 this.columnMeasurement3 = base.Columns["Measurement3"];
+                this.columnQuality = base.Columns["Quality"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -825,6 +837,8 @@ namespace ProductionPlanning {
                 base.Columns.Add(this.columnMeasurementDescrip);
                 this.columnMeasurement3 = new global::System.Data.DataColumn("Measurement3", typeof(int), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnMeasurement3);
+                this.columnQuality = new global::System.Data.DataColumn("Quality", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnQuality);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1233,6 +1247,22 @@ namespace ProductionPlanning {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public string Quality {
+                get {
+                    try {
+                        return ((string)(this[this.tableDataTable2.QualityColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Quality\' in table \'DataTable2\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDataTable2.QualityColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public DataTable1Row DataTable1Row {
                 get {
                     return ((DataTable1Row)(this.GetParentRow(this.Table.ParentRelations["DataTable1_DataTable2"])));
@@ -1336,6 +1366,18 @@ namespace ProductionPlanning {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public void SetMeasurement3Null() {
                 this[this.tableDataTable2.Measurement3Column] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsQualityNull() {
+                return this.IsNull(this.tableDataTable2.QualityColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetQualityNull() {
+                this[this.tableDataTable2.QualityColumn] = global::System.Convert.DBNull;
             }
         }
         

@@ -29,6 +29,8 @@
         private void InitializeComponent()
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.btnSearch = new System.Windows.Forms.Button();
+            this.txtBatchNo = new System.Windows.Forms.TextBox();
             this.oCmboPieceNumber = new System.Windows.Forms.ComboBox();
             this.label6 = new System.Windows.Forms.Label();
             this.cmboOperator = new System.Windows.Forms.ComboBox();
@@ -38,15 +40,14 @@
             this.txtColour = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.cmboBatchNumber = new System.Windows.Forms.ComboBox();
             this.dtpStability = new System.Windows.Forms.DateTimePicker();
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.btnSave = new System.Windows.Forms.Button();
-            this.rbPassYes = new System.Windows.Forms.RadioButton();
             this.rbPassNo = new System.Windows.Forms.RadioButton();
+            this.rbPassYes = new System.Windows.Forms.RadioButton();
+            this.btnSave = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
@@ -55,6 +56,8 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.btnSearch);
+            this.groupBox1.Controls.Add(this.txtBatchNo);
             this.groupBox1.Controls.Add(this.oCmboPieceNumber);
             this.groupBox1.Controls.Add(this.label6);
             this.groupBox1.Controls.Add(this.cmboOperator);
@@ -64,7 +67,6 @@
             this.groupBox1.Controls.Add(this.txtColour);
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.label2);
-            this.groupBox1.Controls.Add(this.cmboBatchNumber);
             this.groupBox1.Controls.Add(this.dtpStability);
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Location = new System.Drawing.Point(148, 25);
@@ -72,6 +74,23 @@
             this.groupBox1.Size = new System.Drawing.Size(455, 245);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
+            // 
+            // btnSearch
+            // 
+            this.btnSearch.Location = new System.Drawing.Point(324, 51);
+            this.btnSearch.Name = "btnSearch";
+            this.btnSearch.Size = new System.Drawing.Size(75, 23);
+            this.btnSearch.TabIndex = 13;
+            this.btnSearch.Text = "Search";
+            this.btnSearch.UseVisualStyleBackColor = true;
+            this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
+            // 
+            // txtBatchNo
+            // 
+            this.txtBatchNo.Location = new System.Drawing.Point(157, 53);
+            this.txtBatchNo.Name = "txtBatchNo";
+            this.txtBatchNo.Size = new System.Drawing.Size(142, 20);
+            this.txtBatchNo.TabIndex = 12;
             // 
             // oCmboPieceNumber
             // 
@@ -151,15 +170,6 @@
             this.label2.TabIndex = 3;
             this.label2.Text = "Batch Number";
             // 
-            // cmboBatchNumber
-            // 
-            this.cmboBatchNumber.FormattingEnabled = true;
-            this.cmboBatchNumber.Location = new System.Drawing.Point(157, 54);
-            this.cmboBatchNumber.Name = "cmboBatchNumber";
-            this.cmboBatchNumber.Size = new System.Drawing.Size(121, 21);
-            this.cmboBatchNumber.TabIndex = 2;
-            this.cmboBatchNumber.SelectedIndexChanged += new System.EventHandler(this.cmboBatchNumber_SelectedIndexChanged);
-            // 
             // dtpStability
             // 
             this.dtpStability.Location = new System.Drawing.Point(157, 14);
@@ -206,27 +216,6 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Status";
             // 
-            // btnSave
-            // 
-            this.btnSave.Location = new System.Drawing.Point(633, 594);
-            this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(75, 23);
-            this.btnSave.TabIndex = 4;
-            this.btnSave.Text = "Save";
-            this.btnSave.UseVisualStyleBackColor = true;
-            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
-            // 
-            // rbPassYes
-            // 
-            this.rbPassYes.AutoSize = true;
-            this.rbPassYes.Location = new System.Drawing.Point(32, 35);
-            this.rbPassYes.Name = "rbPassYes";
-            this.rbPassYes.Size = new System.Drawing.Size(69, 17);
-            this.rbPassYes.TabIndex = 0;
-            this.rbPassYes.TabStop = true;
-            this.rbPassYes.Text = "Pass Yes";
-            this.rbPassYes.UseVisualStyleBackColor = true;
-            // 
             // rbPassNo
             // 
             this.rbPassNo.AutoSize = true;
@@ -239,6 +228,27 @@
             this.rbPassNo.UseVisualStyleBackColor = true;
             this.rbPassNo.CheckedChanged += new System.EventHandler(this.rbPassNo_CheckedChanged);
             // 
+            // rbPassYes
+            // 
+            this.rbPassYes.AutoSize = true;
+            this.rbPassYes.Location = new System.Drawing.Point(32, 35);
+            this.rbPassYes.Name = "rbPassYes";
+            this.rbPassYes.Size = new System.Drawing.Size(69, 17);
+            this.rbPassYes.TabIndex = 0;
+            this.rbPassYes.TabStop = true;
+            this.rbPassYes.Text = "Pass Yes";
+            this.rbPassYes.UseVisualStyleBackColor = true;
+            // 
+            // btnSave
+            // 
+            this.btnSave.Location = new System.Drawing.Point(633, 594);
+            this.btnSave.Name = "btnSave";
+            this.btnSave.Size = new System.Drawing.Size(75, 23);
+            this.btnSave.TabIndex = 4;
+            this.btnSave.Text = "Save";
+            this.btnSave.UseVisualStyleBackColor = true;
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
+            // 
             // FrmStabilityDrying
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -250,6 +260,7 @@
             this.Controls.Add(this.groupBox1);
             this.Name = "FrmStabilityDrying";
             this.Text = "Stability after Drying";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FrmStabilityDrying_FormClosing);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox3.ResumeLayout(false);
@@ -268,7 +279,6 @@
         private System.Windows.Forms.TextBox txtColour;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.ComboBox cmboBatchNumber;
         private System.Windows.Forms.DateTimePicker dtpStability;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.GroupBox groupBox3;
@@ -281,5 +291,7 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.RadioButton rbPassNo;
         private System.Windows.Forms.RadioButton rbPassYes;
+        private System.Windows.Forms.Button btnSearch;
+        private System.Windows.Forms.TextBox txtBatchNo;
     }
 }

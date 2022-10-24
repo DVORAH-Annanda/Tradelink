@@ -203,7 +203,6 @@ namespace ProductionPlanning
         
              if (oBtn != null && formloaded)
             {
-                PBar1.Visible = true;
                 // Display the ProgressBar control.
                 PBar1.Visible = true;
                 // Set Minimum to 1 
@@ -764,7 +763,8 @@ namespace ProductionPlanning
                                            join T2 in context.TLDYE_DyeBatch on T1.TLDYO_Pk equals T2.DYEB_DyeOrder_FK
                                            join T3 in context.TLDYE_DyeBatchDetails on T2.DYEB_Pk equals T3.DYEBD_DyeBatch_FK
                                            join T4 in context.TLADM_WhseStore on T3.DYEBO_CurrentStore_FK equals T4.WhStore_Id
-                                           where !T2.DYEB_CommissinCust && T2.DYEB_OutProcess && T3.DYEBD_BodyTrim && T4.WhStore_Quarantine && !T3.DYEBO_CutSheet
+                                           where !T2.DYEB_CommissinCust && T2.DYEB_OutProcess && T3.DYEBD_BodyTrim && T4.WhStore_Quarantine
+                                           && !T3.DYEBO_CutSheet && T3.DYEBO_QAApproved && !T3.DYEBO_Rejected && !T3.DYEBO_Sold && !T3.DYEBO_WriteOff
                                            && T1.TLDYO_Style_FK == Item.TLREP_Style_FK && T1.TLDYO_Colour_FK == Item.TLREP_Colour_FK
                                            select new { T1.TLDYO_Pk, T2.DYEB_Pk, T3.DYEBO_Nett };
 
@@ -773,7 +773,7 @@ namespace ProductionPlanning
                             {
                                 BindingList<KeyValuePair<int, decimal>> Ratios = null;
                                 var FirstOrder = Order.FirstOrDefault();
-
+     
                                 var DyeOrderDetail = context.TLDYE_DyeOrderDetails.Where(x => x.TLDYOD_DyeOrder_Fk == FirstOrder.TLDYO_Pk && x.TLDYOD_BodyOrTrim).FirstOrDefault();
                                 if (DyeOrderDetail != null)
                                 {
@@ -1057,11 +1057,13 @@ namespace ProductionPlanning
 
                     }
                     else
+                    // This is where the fabric 
+                    // begins 
                     {
                         PBar1.Maximum = _Qualities.Count;
                         PODetail = (from T1 in context.TLCSV_PurchaseOrder
                                     join T2 in context.TLCSV_PuchaseOrderDetail on T1.TLCSVPO_Pk equals T2.TLCUSTO_PurchaseOrder_FK
-                                    where !T1.TLCSVPO_Closeed && !T2.TLCUSTO_Closed && T2.TLCUSTO_Quality_FK != null
+                                    where  T2.TLCUSTO_Quality_FK != null
                                     select T2).ToList();
                         
                         var GrpPoDetail = PODetail.GroupBy(x => new { x.TLCUSTO_Quality_FK, x.TLCUSTO_Colour_FK }).ToList();
@@ -1072,31 +1074,39 @@ namespace ProductionPlanning
                             DataRow Row = dt.NewRow();
 
                             var QualPk = item.FirstOrDefault().TLCUSTO_Quality_FK;
-                            if(QualPk == 0)
+                            if (QualPk == 0)
                             {
                                 continue;
                             }
 
+                            decimal TotalWeight = 0.00M;
+
                             var ColorPk = item.FirstOrDefault().TLCUSTO_Colour_FK;
+
+
+                            if (ColorPk == 339 && QualPk == 308)
+                            {
+                                int a = 0;
+                            }
 
                             Row[0] = QualPk;
                             Row[1] = ColorPk;
                             Row[2] = 0;
 
                             PBar1.PerformStep();
-                           
+                            
                             //===============================================================
                             //1st step is to get all the outstandings orders at this point in time
                             //============================================================================
 
-                            var GrpByCustomer = PODetail.Where(x => x.TLCUSTO_Quality_FK != null && (int)x.TLCUSTO_Quality_FK == QualPk && (int)x.TLCUSTO_Colour_FK == ColorPk).GroupBy(x=>x.TLCUSTO_Customer_FK);
+                            var GrpByCustomer = PODetail.Where(x => x.TLCUSTO_Quality_FK != null && (int)x.TLCUSTO_Quality_FK == QualPk && (int)x.TLCUSTO_Colour_FK == ColorPk).GroupBy(x => x.TLCUSTO_Customer_FK);
                             foreach (var Grouped in GrpByCustomer)
                             {
                                 TLCSV_PuchaseOrderDetail Order = Grouped.FirstOrDefault(); // Grouped.FirstOrDefault();
                                 var CustDetail = context.TLADM_CustomerFile.Find(Order.TLCUSTO_Customer_FK);
                                 ColIndex = dt.Columns.IndexOf(CustDetail.Cust_Code);
 
-                                var QtyOrdered = Grouped.Sum(x => (decimal?)x.TLCUSTO_QtyMeters ) ?? 0.0M; //  LineOrder.TLCUSTO_Qty;
+                                var QtyOrdered = Grouped.Sum(x => (decimal?)x.TLCUSTO_QtyMeters) ?? 0.0M; //  LineOrder.TLCUSTO_Qty;
                                 var AllReadyPicked = Grouped.Sum(x => (decimal?)x.TLCUSTO_QtyMeters_Delivered) ?? 0.0M; //  LineOrder.TLCUSTO_QtyPicked_ToDate;     //  context.TLCSV_StockOnHand.Where(x => x.TLSOH_POOrderDetail_FK == LineOrder.TLCUSTO_Pk && !x.TLSOH_Sold && x.TLSOH_Picked).Sum(x => (int?)x.TLSOH_BoxedQty) ?? 0;
                                 var Nett = QtyOrdered - AllReadyPicked;
                                 if (Nett > 0 && ColIndex >= 0)
@@ -1112,18 +1122,18 @@ namespace ProductionPlanning
                                             Nett = Nett / FabYield;
                                         }
                                     }
-                                    
+
                                     Row[ColIndex] = Row.Field<int>(ColIndex) + Nett;
                                     Row[OTIndex] = Row.Field<int>(OTIndex) + Nett;
 
                                     var GrpByMonth = Grouped.GroupBy(x => x.TLCUSTO_DateRequired.Value.Month.ToString().PadLeft(2, '0'));
-                                    foreach(var Mnth in GrpByMonth)
+                                    foreach (var Mnth in GrpByMonth)
                                     {
-                                        QtyOrdered = Mnth.Sum(x => (decimal ?) x.TLCUSTO_QtyMeters ?? 0.00M) / FabYield;
-                                        AllReadyPicked = Mnth.Sum(x => (decimal ?)x.TLCUSTO_QtyMeters_Delivered?? 0.00M) / FabYield;
+                                        QtyOrdered = Mnth.Sum(x => (decimal?)x.TLCUSTO_QtyMeters ?? 0.00M) / FabYield;
+                                        AllReadyPicked = Mnth.Sum(x => (decimal?)x.TLCUSTO_QtyMeters_Delivered ?? 0.00M) / FabYield;
                                         Nett = QtyOrdered - AllReadyPicked;
                                         var MthIndex = dt.Columns.IndexOf("C" + Mnth.Key);
-                                        if(Nett > 0 && MthIndex >= 0)
+                                        if (Nett > 0 && MthIndex >= 0)
                                         {
                                             Row[MthIndex] = Row.Field<int>(MthIndex) + Nett;
                                         }
@@ -1138,80 +1148,56 @@ namespace ProductionPlanning
                             //---------------------------------------------------------------
                             // 3rd Task -- Dye Orders 
                             //--------------------------------------------------------------
+                           
                             ColIndex = dt.Columns.IndexOf("Expected Kgs DO");
-                            var DyeOrders = context.TLDYE_DyeOrder.Where(x => x.TLDYO_Greige_FK == QualPk && x.TLDYO_Colour_FK == ColorPk && x.TLDYO_Closed == false).ToList();
-                            foreach (var DyeOrder in DyeOrders)
-                            {
-                                //------------------------------------------------------
-                                // Because of the concept of multi markers we have to calculate a ratio based on the the number of sizes
-                                // originally entered 
-                                //------------------------------------------------------------------
-                                var DyeOrderDetail = context.TLDYE_DyeOrderDetails.Where(x => x.TLDYOD_DyeOrder_Fk == DyeOrder.TLDYO_Pk && x.TLDYOD_BodyOrTrim).FirstOrDefault();
-                                if (DyeOrderDetail != null)
-                                {
-                                    decimal TotalWeight = (decimal)DyeOrderDetail.TLDYOD_Kgs;
-                                    Row[ColIndex] = Row.Field<int>(ColIndex) + TotalWeight;
-                                }
-                            }
 
+                            var DyeOrders = context.TLDYE_DyeOrderFabric.Where(x => x.TLDYEF_Greige_FK == QualPk && x.TLDYEF_Colours_FK == ColorPk).ToList();
+
+                            if (DyeOrders != null)
+                            {
+                                TotalWeight = DyeOrders.Sum(x => x.TLDYEF_Demand - x.TLDYEF_BatchedToDate);
+
+                                Row[ColIndex] = Row.Field<int>(ColIndex) + TotalWeight;
+                            }
+                            
+                            //---------------------------------------------------
                             // 4th Task -- DyeBatching (Preparation)
                             //--------------------------------------------------------------------
                             //----------------------------------------------------------------
                             //  Expected Kgs 
                             //---------------------------------------------------------------
                             ColIndex = dt.Columns.IndexOf("Expected Kgs - Dyeing Prep");
-                            var DOrders = from T1 in context.TLDYE_DyeOrder
-                                          join T2 in context.TLDYE_DyeBatch on T1.TLDYO_Pk equals T2.DYEB_DyeOrder_FK
-                                          join T3 in context.TLDYE_DyeBatchDetails on T2.DYEB_Pk equals T3.DYEBD_DyeBatch_FK
-                                          where !T2.DYEB_CommissinCust && T1.TLDYO_Greige_FK == QualPk && T1.TLDYO_Colour_FK == ColorPk
-                                          && !T2.DYEB_Closed && !T2.DYEB_Allocated && T3.DYEBD_BodyTrim
-                                          select new { T1.TLDYO_Pk, T2.DYEB_Pk, T2.DYEB_Greige_FK, T3.DYEBD_GreigeProduction_Weight };
 
-                            var DOrdersx = DOrders.GroupBy(x => x.TLDYO_Pk);
+                            TotalWeight = (from T1 in context.TLDYE_DyeOrderFabric
+                                               join T2 in context.TLDYE_DyeBatch on T1.TLDYEF_Pk equals T2.DYEB_DyeOrder_FK
+                                               join T3 in context.TLDYE_DyeBatchDetails on T2.DYEB_Pk equals T3.DYEBD_DyeBatch_FK
+                                               where !T2.DYEB_CommissinCust && T1.TLDYEF_Greige_FK == QualPk && T1.TLDYEF_Colours_FK == ColorPk
+                                               && !T2.DYEB_Closed && !T2.DYEB_Allocated && T2.DYEB_Transfered
+                                               select T3).Sum(x => (decimal?)x.DYEBD_GreigeProduction_Weight) ?? 0.00M;
 
-                            foreach (var DOOrder in DOrdersx)
-                            {
-                                var Order = DOOrder.FirstOrDefault();
+                            Row[ColIndex] = Row.Field<int>(ColIndex) + TotalWeight;
 
-                                var DyeOrderDetail = context.TLDYE_DyeOrderDetails.Where(x => x.TLDYOD_DyeOrder_Fk == Order.TLDYO_Pk && x.TLDYOD_BodyOrTrim).FirstOrDefault();
-                                if (DyeOrderDetail != null)
-                                {
-                                    var TotalWeight = DOOrder.Sum(x => (decimal?)x.DYEBD_GreigeProduction_Weight) ?? 0.00M;
-                                    // We dont need to allow for any losses
-                                    //------------------------------------------------------------
-                                    Row[ColIndex] = Row.Field<int>(ColIndex) + TotalWeight;
-                                }
-                            }
-                            //---------------------------------
-                            // Bring the Prep Total Up to date
-                            //-------------------------------------------------------
-                            Row[WIPIndex] = Row.Field<int>(WIPIndex) + Row.Field<int>(ColIndex);
-                            //-------------------------------------------------------------------
+                                //---------------------------------
+                                // Bring the Prep Total Up to date
+                                //-------------------------------------------------------
+                                Row[WIPIndex] = Row.Field<int>(WIPIndex) + Row.Field<int>(ColIndex);
+                            
+                                //-------------------------------------------------------------------
                             // 5th Task  -- DyeBatching (WIP) 
                             //----------------------------------------------------------------
                             // Expected Kgs WIP Dyeing  
                             //---------------------------------------------------------------
                             ColIndex = dt.Columns.IndexOf("Expected Kgs - WIP Dyeing");
-                            DOrders = from T1 in context.TLDYE_DyeOrder
-                                      join T2 in context.TLDYE_DyeBatch on T1.TLDYO_Pk equals T2.DYEB_DyeOrder_FK
-                                      join T3 in context.TLDYE_DyeBatchDetails on T2.DYEB_Pk equals T3.DYEBD_DyeBatch_FK
-                                      where !T2.DYEB_CommissinCust && T1.TLDYO_Greige_FK == QualPk && T1.TLDYO_Colour_FK == ColorPk
-                                      && !T2.DYEB_Closed && T2.DYEB_Allocated && !T2.DYEB_OutProcess && T3.DYEBD_BodyTrim
-                                      select new { T1.TLDYO_Pk, T2.DYEB_Pk, T2.DYEB_Greige_FK, T3.DYEBD_GreigeProduction_Weight };
 
-                            DOrdersx = DOrders.GroupBy(x => x.TLDYO_Pk);
+                            TotalWeight = (from T1 in context.TLDYE_DyeOrderFabric
+                                           join T2 in context.TLDYE_DyeBatch on T1.TLDYEF_Pk equals T2.DYEB_DyeOrder_FK
+                                           join T3 in context.TLDYE_DyeBatchDetails on T2.DYEB_Pk equals T3.DYEBD_DyeBatch_FK
+                                           where !T2.DYEB_CommissinCust && T1.TLDYEF_Greige_FK == QualPk && T1.TLDYEF_Colours_FK == ColorPk
+                                           && !T2.DYEB_Closed && T2.DYEB_Allocated && T2.DYEB_Transfered
+                                           select T3).Sum(x => (decimal?)x.DYEBD_GreigeProduction_Weight) ?? 0.00M;
 
-                            foreach (var DOOrder in DOrdersx)
-                            {
-                                var Order = DOOrder.FirstOrDefault();
-
-                                var DyeOrderDetail = context.TLDYE_DyeOrderDetails.Where(x => x.TLDYOD_DyeOrder_Fk == Order.TLDYO_Pk && x.TLDYOD_BodyOrTrim).FirstOrDefault();
-                                if (DyeOrderDetail != null)
-                                {
-                                     var TotalWeight = DOOrder.Sum(x => (decimal?)x.DYEBD_GreigeProduction_Weight) ?? 0.00M;
-                                     Row[ColIndex] = Row.Field<int>(ColIndex) + TotalWeight;
-                                }
-                            }
+                            Row[ColIndex] = Row.Field<int>(ColIndex) + TotalWeight;
+                         
 
                             //---------------------------------
                             // Bring the WIP Total Up to date
@@ -1221,66 +1207,89 @@ namespace ProductionPlanning
                             //******************************************************
                             // 6th Task  -- DyeBatching (Quarantine) 
                             //******************************************************
+                            var DOF = context.TLDYE_DyeOrderFabric.Where(x => x.TLDYEF_Greige_FK == QualPk && x.TLDYEF_Colours_FK == ColorPk).FirstOrDefault();
 
-                            ColIndex = dt.Columns.IndexOf("Expected Kgs - Fabric Quarantine Store");
-                            var DBOrders = from T1 in context.TLDYE_DyeOrder
-                                           join T2 in context.TLDYE_DyeBatch on T1.TLDYO_Pk equals T2.DYEB_DyeOrder_FK
-                                           join T3 in context.TLDYE_DyeBatchDetails on T2.DYEB_Pk equals T3.DYEBD_DyeBatch_FK
-                                           join T4 in context.TLADM_WhseStore on T3.DYEBO_CurrentStore_FK equals T4.WhStore_Id
-                                           where !T2.DYEB_CommissinCust && T2.DYEB_OutProcess && T3.DYEBD_BodyTrim && T4.WhStore_Quarantine && !T3.DYEBO_CutSheet
-                                           && T1.TLDYO_Greige_FK == QualPk && T1.TLDYO_Colour_FK == ColorPk
-                                           select new { T1.TLDYO_Pk, T2.DYEB_Pk, T3.DYEBO_Nett };
-
-                            var DBOrdersx = DBOrders.GroupBy(x => x.TLDYO_Pk);
-                            foreach (var Order in DBOrdersx)
+                            if(DOF == null)
                             {
-                                var FirstOrder = Order.FirstOrDefault();
-                                var DyeOrderDetail = context.TLDYE_DyeOrderDetails.Where(x => x.TLDYOD_DyeOrder_Fk == FirstOrder.TLDYO_Pk && x.TLDYOD_BodyOrTrim).FirstOrDefault();
-                                if (DyeOrderDetail != null)
-                                {
-                                    var TotalWeight = Order.Sum(x => (decimal?)x.DYEBO_Nett) ?? 0.00M;
-                                    Row[ColIndex] = (int)Row[ColIndex] + TotalWeight;
-                                }
+                                continue;
                             }
-                            //---------------------------------
-                            // Bring the WIP Total Up to date
-                            //-------------------------------------------------------
-                            Row[WIPIndex] = Row.Field<int>(WIPIndex) + Row.Field<int>(ColIndex);
-                            //-----------------------------------------------------------------
-                            // 7th Task  -- DyeBatching (FABRIC Store) 
-                            //--------------------------------------------------------------
-                            // Because Dye Batches have no specified Style, Colour and size Key 
-                            // We have to get it from the respective Dye Orders 
-                            //---------------------------------------------------------------
-                            ColIndex = dt.Columns.IndexOf("Expected Kgs - Fabric Store");
-                            DBOrders = from T1 in context.TLDYE_DyeOrder
-                                       join T2 in context.TLDYE_DyeBatch on T1.TLDYO_Pk equals T2.DYEB_DyeOrder_FK
-                                       join T3 in context.TLDYE_DyeBatchDetails on T2.DYEB_Pk equals T3.DYEBD_DyeBatch_FK
-                                       where !T2.DYEB_CommissinCust && T2.DYEB_OutProcess && !T3.DYEBO_Sold &&
-                                       T3.DYEBD_BodyTrim && T3.DYEBO_QAApproved && !T3.DYEBO_Rejected && !T3.DYEBO_WriteOff
-                                       && !T3.DYEBO_CutSheet && T1.TLDYO_Greige_FK == QualPk && T1.TLDYO_Colour_FK == ColorPk
-                                       select new { T1.TLDYO_Pk, T2.DYEB_Pk, T3.DYEBO_Nett };
-
-                            DBOrdersx = DBOrders.GroupBy(x => x.TLDYO_Pk);
-                            foreach (var Order in DBOrdersx)
+                         
+                            if (DOF.TLDYEF_Body)
                             {
-                                BindingList<KeyValuePair<int, decimal>> Ratios = null;
-                                var FirstOrder = Order.FirstOrDefault();
+                                ColIndex = dt.Columns.IndexOf("Expected Kgs - Fabric Quarantine Store");
+                                TotalWeight = (from T1 in context.TLDYE_DyeOrderFabric
+                                               join T2 in context.TLDYE_DyeBatch on T1.TLDYEF_Pk equals T2.DYEB_DyeOrder_FK
+                                               join T3 in context.TLDYE_DyeBatchDetails on T2.DYEB_Pk equals T3.DYEBD_DyeBatch_FK
+                                               join T4 in context.TLADM_WhseStore on T3.DYEBO_CurrentStore_FK equals T4.WhStore_Id
+                                               where !T2.DYEB_CommissinCust && T2.DYEB_OutProcess && T4.WhStore_Quarantine && !T3.DYEBO_CutSheet
+                                               && T3.DYEBD_BodyTrim && T3.DYEBD_QualityKey == QualPk && T2.DYEB_Colour_FK == ColorPk
+                                               select T3).Sum(x => (decimal?)x.DYEBO_Nett) ?? 0.00M;
 
-                                var DyeOrderDetail = context.TLDYE_DyeOrderDetails.Where(x => x.TLDYOD_DyeOrder_Fk == FirstOrder.TLDYO_Pk && x.TLDYOD_BodyOrTrim).FirstOrDefault();
-                                if (DyeOrderDetail != null)
-                                {
-                                    var TotalWeight = Order.Sum(x => (decimal?)x.DYEBO_Nett) ?? 0.00M;
-                                    Row[ColIndex] = (int)Row[ColIndex] + TotalWeight;
-                                    
-                                }
+
+                                Row[ColIndex] = (int)Row[ColIndex] + TotalWeight;
+
+                                //---------------------------------
+                                // Bring the WIP Total Up to date
+                                //-------------------------------------------------------
+                                Row[WIPIndex] = Row.Field<int>(WIPIndex) + Row.Field<int>(ColIndex);
+                                //-----------------------------------------------------------------
+                                // 7th Task  -- DyeBatching (FABRIC Store) 
+                                //--------------------------------------------------------------
+                                // Because Dye Batches have no specified Style, Colour and size Key 
+                                // We have to get it from the respective Dye Orders 
+                                //---------------------------------------------------------------
+                                ColIndex = dt.Columns.IndexOf("Expected Kgs - Fabric Store");
+                                TotalWeight = (from T1 in context.TLDYE_DyeOrderFabric
+                                               join T2 in context.TLDYE_DyeBatch on T1.TLDYEF_Pk equals T2.DYEB_DyeOrder_FK
+                                               join T3 in context.TLDYE_DyeBatchDetails on T2.DYEB_Pk equals T3.DYEBD_DyeBatch_FK
+                                               where !T2.DYEB_CommissinCust && T2.DYEB_OutProcess && !T3.DYEBO_Sold &&
+                                               T3.DYEBD_BodyTrim && T3.DYEBO_QAApproved && !T3.DYEBO_Rejected && !T3.DYEBO_WriteOff
+                                               && !T3.DYEBO_CutSheet && T3.DYEBD_QualityKey == QualPk && T2.DYEB_Colour_FK == ColorPk
+                                               select T3).Sum(x => (decimal?)x.DYEBO_Nett) ?? 0.00M;
+
+                                Row[ColIndex] = (int)Row[ColIndex] + TotalWeight;
+
+                            }
+                            else
+                            {
+                                ColIndex = dt.Columns.IndexOf("Expected Kgs - Fabric Quarantine Store");
+                                TotalWeight = (from T1 in context.TLDYE_DyeOrderFabric
+                                               join T2 in context.TLDYE_DyeBatch on T1.TLDYEF_Pk equals T2.DYEB_DyeOrder_FK
+                                               join T3 in context.TLDYE_DyeBatchDetails on T2.DYEB_Pk equals T3.DYEBD_DyeBatch_FK
+                                               join T4 in context.TLADM_WhseStore on T3.DYEBO_CurrentStore_FK equals T4.WhStore_Id
+                                               where !T2.DYEB_CommissinCust && T2.DYEB_OutProcess && T4.WhStore_Quarantine && !T3.DYEBO_CutSheet
+                                               && !T3.DYEBD_BodyTrim &&  T3.DYEBD_QualityKey == QualPk && T2.DYEB_Colour_FK == ColorPk
+                                               select T3).Sum(x => (decimal?)x.DYEBO_Nett) ?? 0.00M;
+
+
+                                Row[ColIndex] = (int)Row[ColIndex] + TotalWeight;
+
+                                //---------------------------------
+                                // Bring the WIP Total Up to date
+                                //-------------------------------------------------------
+                                Row[WIPIndex] = Row.Field<int>(WIPIndex) + Row.Field<int>(ColIndex);
+                                //-----------------------------------------------------------------
+                                // 7th Task  -- DyeBatching (FABRIC Store) 
+                                //--------------------------------------------------------------
+                                // Because Dye Batches have no specified Style, Colour and size Key 
+                                // We have to get it from the respective Dye Orders 
+                                //---------------------------------------------------------------
+                                ColIndex = dt.Columns.IndexOf("Expected Kgs - Fabric Store");
+                                TotalWeight = (from T1 in context.TLDYE_DyeOrderFabric
+                                               join T2 in context.TLDYE_DyeBatch on T1.TLDYEF_Pk equals T2.DYEB_DyeOrder_FK
+                                               join T3 in context.TLDYE_DyeBatchDetails on T2.DYEB_Pk equals T3.DYEBD_DyeBatch_FK
+                                               where !T2.DYEB_CommissinCust && T2.DYEB_OutProcess && !T3.DYEBO_Sold &&
+                                               !T3.DYEBD_BodyTrim && T3.DYEBO_QAApproved && !T3.DYEBO_Rejected && !T3.DYEBO_WriteOff
+                                               && !T3.DYEBO_CutSheet && T3.DYEBD_QualityKey == QualPk && T2.DYEB_Colour_FK == ColorPk
+                                               select T3).Sum(x => (decimal?)x.DYEBO_Nett) ?? 0.00M;
+
+                                Row[ColIndex] = (int)Row[ColIndex] + TotalWeight;
                             }
                             //---------------------------------
                             // Bring the WIP Total Up to date
                             //-------------------------------------------------------
                             Row[WIPIndex] = Row.Field<int>(WIPIndex) + Row.Field<int>(ColIndex);
                             //-------------------------------------------------------------------------------------------------------------
-                            // 8th Task Expected Units in Cutting WIP 
                             try
                             {
                                 dt.Rows.Add(Row);

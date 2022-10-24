@@ -491,30 +491,31 @@ namespace DyeHouse
  
                     using (var context = new TTI2Entities())
                     {
-                        var DO = context.TLDYE_DyeOrder.Find(selected.DYEB_DyeOrder_FK);
-
-                        if (DO != null && DO.TLDYO_Closed)
+                        if (DOGarments)
                         {
-                            MessageBox.Show("Dye Order " + DO.TLDYO_DyeOrderNum + " has been closed. No further activity permitted");
-                            return;
-                        }
-                        else if(DO == null)
-                        {
-                            MessageBox.Show("Dye Order not found");
-                            return;
+                            var DO = context.TLDYE_DyeOrder.Find(selected.DYEB_DyeOrder_FK);
+                            if (DO != null && DO.TLDYO_Closed)
+                            {
+                                MessageBox.Show("Dye Order " + DO.TLDYO_DyeOrderNum + " has been closed. No further activity permitted");
+                                return;
+                            }
+                            else if (DO == null)
+                            {
+                                MessageBox.Show("Dye Order not found");
+                                return;
 
-                        }
+                            }
 
-                        cmboDyeOrders.SelectedValue = DO.TLDYO_Pk;
+                            cmboDyeOrders.SelectedValue = DO.TLDYO_Pk;
 
-                        txtOrderedDate.Text = DO.TLDYO_OrderDate.ToString("dd/MM/yyyy");
-                        DateTime dt = core.FirstDateOfWeek(DO.TLDYO_OrderDate.Year, DO.TLDYO_CMTReqWeek);
-                        dt = dt.AddDays(5);
-                        dtpRequiredDate.Value = dt; // txtRequiredDate.Text = dt.ToString("dd/MM/yyyy");
-                        txtCustomerOrder.Text = DO.TLDYO_OrderNum;
-                        rcbNotes.Text = DO.TLDYO_Notes;
+                            txtOrderedDate.Text = DO.TLDYO_OrderDate.ToString("dd/MM/yyyy");
+                            DateTime dt = core.FirstDateOfWeek(DO.TLDYO_OrderDate.Year, DO.TLDYO_CMTReqWeek);
+                            dt = dt.AddDays(5);
+                            dtpRequiredDate.Value = dt; // txtRequiredDate.Text = dt.ToString("dd/MM/yyyy");
+                            txtCustomerOrder.Text = DO.TLDYO_OrderNum;
+                            rcbNotes.Text = DO.TLDYO_Notes;
 
-                        var customer = context.TLADM_CustomerFile.Find(DO.TLDYO_Customer_FK);
+                            var customer = context.TLADM_CustomerFile.Find(DO.TLDYO_Customer_FK);
                             if (customer != null)
                                 txtCustomer.Text = customer.Cust_Description;
 
@@ -534,14 +535,63 @@ namespace DyeHouse
                                         txtColour.Text = Colour.Col_Display;
                                 }
                             }
-                    }
-                    
-                 
-                    DODataTable.Rows.Clear();
-                    ProdDataTable.Rows.Clear();
 
-                    UpdateDyeOrderDetails(selected.DYEB_DyeOrder_FK, true);
-                  
+                            DODataTable.Rows.Clear();
+                            ProdDataTable.Rows.Clear();
+
+                           //  UpdateKnitProduction((int)selected.DYEB_DyeOrder_FK, PrevDyeBatch, (int)selected.DYEB_Greige_FK, 0, 0, DOGarments);
+                            UpdateDyeOrderDetails(selected.DYEB_DyeOrder_FK, DOGarments);
+                        }
+                        else
+                        {
+                            var DO = context.TLDYE_DyeOrderFabric.Find(selected.DYEB_DyeOrder_FK);
+                            if (DO != null && DO.TLDYEF_Closed)
+                            {
+                                MessageBox.Show("Dye Order " + DO.TLDYEF_DyeOrderNo + " has been closed. No further activity permitted");
+                                return;
+                            }
+                            else if (DO == null)
+                            {
+                                MessageBox.Show("Dye Order not found");
+                                return;
+
+                            }
+
+                            cmboDyeOrders.SelectedValue = DO.TLDYEF_Pk;
+
+                            txtOrderedDate.Text = DO.TLDYEF_OrderDate.ToString("dd/MM/yyyy");
+                            DateTime dt = core.FirstDateOfWeek(DO.TLDYEF_OrderDate.Year, DO.TLDYEF_DyeWeek);
+                            dt = dt.AddDays(5);
+                            dtpRequiredDate.Value = dt; // txtRequiredDate.Text = dt.ToString("dd/MM/yyyy");
+                            txtCustomerOrder.Text = DO.TLDYEF_DyeOrderNo;
+                            rcbNotes.Text = string.Empty;
+
+                            var customer = context.TLADM_CustomerFile.Find(DO.TLDYEF_Customer_FK);
+                            if (customer != null)
+                                txtCustomer.Text = customer.Cust_Description;
+
+                            if (rbStandardMode.Checked)
+                            {
+                                var colour = context.TLADM_Colours.Find(DO.TLDYEF_Colours_FK);
+                                if (colour != null)
+                                    txtColour.Text = colour.Col_Display;
+                            }
+                            else if (rbReprocessMode.Checked)
+                            {
+                                var DB = (TLDYE_DyeBatch)cmboBatches.SelectedItem;
+                                if (DB != null)
+                                {
+                                    var Colour = context.TLADM_Colours.Find(DB.DYEB_Colour_FK);
+                                    if (Colour != null)
+                                        txtColour.Text = Colour.Col_Display;
+                                }
+                            }
+
+                            UpdateKnitProduction((int)DO.TLDYEF_Pk, PrevDyeBatch, (int)DO.TLDYEF_Greige_FK, 0, 0, DOGarments);
+
+                           // UpdateDyeOrderDetails( selected.DYEB_DyeOrder_FK, false);
+                        }
+                    }
                 }
             }
         }
@@ -606,6 +656,7 @@ namespace DyeHouse
                     var selected = (TLDYE_DyeOrderFabric)cmboDyeOrders.SelectedItem;
                     if (selected != null)
                     {
+                      
                         txtOrderedDate.Text = selected.TLDYEF_OrderDate.ToString("dd/MM/yyyy");
                         DateTime dt = core.FirstDateOfWeek(selected.TLDYEF_OrderDate.Year, selected.TLDYEF_DyeWeek);
                         dt = dt.AddDays(5);
@@ -617,6 +668,14 @@ namespace DyeHouse
                         //--------------------------------------------------------------------
                         using (var context = new TTI2Entities())
                         {
+                            formLoaded = false;
+                            cmboBatches.DataSource = null;
+                            cmboBatches.DataSource = context.TLDYE_DyeBatch.Where(x => x.DYEB_DyeOrder_FK == selected.TLDYEF_Pk && !x.DYEB_Closed).ToList();
+                            cmboBatches.ValueMember = "DYEB_Pk";
+                            cmboBatches.DisplayMember = "DYEB_BatchNo";
+                            cmboBatches.SelectedValue = 0;
+                            formLoaded = true;
+
                             var customer = context.TLADM_CustomerFile.Find(selected.TLDYEF_Customer_FK);
                             if (customer != null)
                                 txtCustomer.Text = customer.Cust_Description;
@@ -769,26 +828,25 @@ namespace DyeHouse
                         {
                             Row[3] = "Trims";
                         }
-                        if (row.TLDYEF_Body)
-                        {
-                            var qual = context.TLADM_Griege.Find(row.TLDYEF_Greige_FK);
-                            if (qual != null)
+                        var qual = context.TLADM_Griege.Find(row.TLDYEF_Greige_FK);
+                        
+                        if (qual != null)
                                 Row[4] = qual.TLGreige_Description;
-                        }
-                        else
-                        {
-                            /*var qual = context.TLADM_Trims.Find(row...TLDYOD_Trims_FK);
-                            if (qual != null)
-                                Row[4] = qual.TR_Description;
-                            */
-
-                        }
+                            
+                        
 
                         Row[5] = Math.Round(row.TLDYEF_Demand,2);
 
+                        Tot = (from T1 in context.TLDYE_DyeOrderFabric
+                               join T2 in context.TLDYE_DyeBatchDetails
+                               on T1.TLDYEF_Pk equals T2.DYEBD_DyeOrderDet_FK
+                               select T2).Sum(x => (decimal ?)x.DYEBD_GreigeProduction_Weight) ?? 0.00M; 
+
+
                         Row[6] = Math.Round(Tot, 2);
                         Row[7] = 0.00M;
-                        // Row[8] = ;
+
+                        Row[8] = 0;
                         Row[9] = row.TLDYEF_Greige_FK;
                         if (row.TLDYEF_Body)
                         {
@@ -806,9 +864,10 @@ namespace DyeHouse
             }
         }
 
-        private void UpdateKnitProduction(int RowN, bool PDyeBatch, int Greige_P, int Colour_P, int Size_P)
+        private void UpdateKnitProduction(int RowN, bool PDyeBatch, int Greige_P, int Colour_P, int Size_P, bool Garment)
         {
             int Pieces = 0;
+            decimal Weight = 0.00M; 
 
             IList<TLKNI_GreigeProduction> Production = null;
           
@@ -848,22 +907,24 @@ namespace DyeHouse
                        var Prev = context.TLKNI_GreigeProduction.Where(x => x.GreigeP_DyeBatch_FK == PrevDyeBatch_Fk).ToList();
                        Production = Production.Concat(Prev).OrderBy(x=>x.GreigeP_PalletNo).ThenBy(x => x.GreigeP_PieceNo).ToList();
                    }
-
-                   if (radbGradeA.Checked)
+                   else
                    {
+                        if (radbGradeA.Checked)
+                        {
                             Production = Production.Where(x => x.GreigeP_Grade == "A" && !x.GreigeP_WarningMessage).ToList();
-                   }
-                   else if (radbGradeB.Checked)
-                   {
+                        }
+                        else if (radbGradeB.Checked)
+                        {
                             Production = Production.Where(x => x.GreigeP_Grade == "B").ToList();
-                   }
-                   else if (radbBoth.Checked)
-                   {
+                        }
+                        else if (radbBoth.Checked)
+                        {
                             Production = Production.Where(x => x.GreigeP_Grade == "A" || x.GreigeP_Grade == "B").ToList();
-                   }
-                   else if (radWithWarning.Checked)
-                   {
-                       Production = Production.Where(x => x.GreigeP_Grade == "A" && x.GreigeP_WarningMessage).ToList();
+                        }
+                        else if (radWithWarning.Checked)
+                        {
+                            Production = Production.Where(x => x.GreigeP_Grade == "A" && x.GreigeP_WarningMessage).ToList();
+                        }
                    }
                 }
 
@@ -873,28 +934,32 @@ namespace DyeHouse
                     return;
                 }
 
-
-                 var SingleRow = dataGridView2.CurrentRow;
-
+                var SingleRow = dataGridView2.CurrentRow;
+                
                 foreach (var prow in Production)
                 {
                     DataRow Row = ProdDataTable.NewRow();
 
+                    var RowIndex = dataGridView2.CurrentRow.Index;
+                    
                     Row[0] = 0;
                     Row[1] = prow.GreigeP_Pk;
                     if (prow.GreigeP_Dye)
                     {
-                        PieceSelected.Add(new DATA((int)SingleRow.Index, prow.GreigeP_Pk, prow.GreigeP_Dye));
+                        PieceSelected.Add(new DATA(RowIndex, prow.GreigeP_Pk, prow.GreigeP_Dye));
                     }
                     var Record = PieceSelected.Find(x => x.DGV1_Greige_Pk  == prow.GreigeP_Pk);
                     var RecordIndex = PieceSelected.IndexOf(Record);
                     if (RecordIndex != -1)
                     {
-                        if (Record.DGV1_Row != RowN)
-                            continue;
-
+                        if (!PrevDyeBatch)
+                        {
+                            if (Record.DGV1_Row != RowN)
+                                continue;
+                        }
                         Row[2] = true;
                         Pieces += 1;
+                        Weight += prow.GreigeP_weightAvail; 
                     }
                     else
                     {
@@ -1007,6 +1072,8 @@ namespace DyeHouse
                 }
 
                 txtNoOfPieces.Text = Pieces.ToString();
+                txtBatchKg.Text = Math.Round(Weight, 2).ToString();
+
             }
 
             
@@ -1119,15 +1186,21 @@ namespace DyeHouse
                                             Size = (int)Trim.TR_Size_FK;
                                     }
 
-                                    UpdateKnitProduction((int)CurrentRow.Cells[0].Value, PrevDyeBatch, (int)CurrentRow.Cells[9].Value, Dye_Order.TLDYO_Colour_FK, Size);
+                                    UpdateKnitProduction((int)CurrentRow.Cells[0].Value, PrevDyeBatch, (int)CurrentRow.Cells[9].Value, Dye_Order.TLDYO_Colour_FK, Size, DOGarments);
                                 }
                                 else
                                 {
-                                    UpdateKnitProduction((int)CurrentRow.Cells[0].Value, PrevDyeBatch, (int)CurrentRow.Cells[9].Value, 0, 0);
+                                    UpdateKnitProduction((int)CurrentRow.Cells[0].Value, PrevDyeBatch, (int)CurrentRow.Cells[9].Value, 0, 0, DOGarments);
                                 }
 
                             }
                         }
+                    }
+                    else
+                    {
+                        UpdateKnitProduction((int)CurrentRow.Cells[0].Value, PrevDyeBatch, (int)CurrentRow.Cells[9].Value, 0, 0, DOGarments);
+                       
+
                     }
                 }
                 
@@ -1171,39 +1244,34 @@ namespace DyeHouse
                          //-----------------------------------
                          // Put code here
                          //----------------------------------------------------
-                         var SingleRow = (
-                                       from Rows in dataGridView2.Rows.Cast<DataGridViewRow>()
-                                       where (bool)Rows.Cells[2].Value == true
-                                       select Rows).FirstOrDefault();
-
-                         if (SingleRow != null)
+                         
+                         PieceSelected.Add(new DATA(rowindex, (int)CurrentRow.Cells[1].Value,false));
+                         DataRow Row = DODataTable.Rows.Find(rowindex);
+                         if (Row != null)
                          {
-                             PieceSelected.Add(new DATA(SingleRow.Index, (int)CurrentRow.Cells[1].Value,false));
-                             DataRow Row = DODataTable.Rows.Find(SingleRow.Index);
-                             if (Row != null)
-                             {
-                                 var Ordered = (decimal)Row[5];
+                            var Ordered = Row.Field<decimal>(5);
 
-                                 //Batched Previous session
-                                 var BatchedPrev = Math.Round((decimal)Row[6], 2);
+                            //Batched Previous session
+                            var BatchedPrev = Math.Round(Row.Field<decimal>(6), 2);
                                
-                                 var Selected = (decimal)CurrentRow.Cells[4].Value;
-                                 var OutStanding = (decimal)SingleRow.Cells[8].Value;
+                            var Selected = (decimal)CurrentRow.Cells[4].Value;
+                            var OutStanding = Row.Field<decimal>(8);
                                 
-                                 var BatchedCurrentSession = Math.Round((decimal)Row[7], 2);
-                                 var TotalThisSession = BatchedCurrentSession + Selected;
-                                 Row[7] =  Math.Round(TotalThisSession, 2);
-                                 Row[8] = Math.Round(Ordered - BatchedPrev - TotalThisSession, 2);
+                            var BatchedCurrentSession = Math.Round(Row.Field<decimal>(7), 2);
+                            var TotalThisSession = BatchedCurrentSession + Selected;
+                            
+                            Row[7] =  Math.Round(TotalThisSession, 2);
+                            Row[8] = Math.Round(Ordered - BatchedPrev - TotalThisSession, 2);
 
-                                 decimal curBal = Convert.ToDecimal(txtBatchKg.Text);
-                                 curBal += Selected;
-                                 txtBatchKg.Text = Math.Round(curBal, 2).ToString();
+                            decimal curBal = Convert.ToDecimal(txtBatchKg.Text);
+                            curBal += Selected;
+                            txtBatchKg.Text = Math.Round(curBal, 2).ToString();
 
-                                 var NoOfPieces = Int16.Parse(txtNoOfPieces.Text.ToString());
-                                 txtNoOfPieces.Text = (1 + NoOfPieces).ToString(); 
-                             }
-
+                            var NoOfPieces = Int16.Parse(txtNoOfPieces.Text.ToString());
+                            txtNoOfPieces.Text = (1 + NoOfPieces).ToString(); 
                          }
+
+                         
                         
                     }
                  }
@@ -1212,64 +1280,63 @@ namespace DyeHouse
                      CurrentRow = oDgv.CurrentRow;
                      if (CurrentRow != null)
                      {
-                         var SingleRow = (
-                                     from Rows in dataGridView2.Rows.Cast<DataGridViewRow>()
-                                     where (bool)Rows.Cells[2].Value == true
-                                     select Rows).FirstOrDefault();
+                        var Record = PieceSelected.Find(x => x.DGV1_Greige_Pk == (int)CurrentRow.Cells[1].Value);
+                        var RecordIndex = PieceSelected.IndexOf(Record);
+                        if (RecordIndex != -1)
+                        {
+                            if (Record.PrevDyeBatch)
+                            {
+                                using (var context = new TTI2Entities())
+                                {
+                                    var DB = context.TLDYE_DyeBatchDetails.Where(x => x.DYEBD_GreigeProduction_FK == Record.DGV1_Greige_Pk).FirstOrDefault();
+                                    if (DB != null)
+                                    {
+                                        context.TLDYE_DyeBatchDetails.Remove(DB);
 
-                         var Record = PieceSelected.Find(x => x.DGV1_Greige_Pk == (int)CurrentRow.Cells[1].Value);
-                         var RecordIndex = PieceSelected.IndexOf(Record);
-                         if (RecordIndex != -1)
-                         {
-                             if (Record.PrevDyeBatch)
-                             {
-                                 using (var context = new TTI2Entities())
-                                 {
-                                     var DB = context.TLDYE_DyeBatchDetails.Where(x => x.DYEBD_GreigeProduction_FK == Record.DGV1_Greige_Pk).FirstOrDefault();
-                                     if (DB != null)
-                                     {
-                                         context.TLDYE_DyeBatchDetails.Remove(DB);
-
-                                         var GP = context.TLKNI_GreigeProduction.Find(Record.DGV1_Greige_Pk);
-                                         if (GP != null)
-                                         {
-                                             GP.GreigeP_Dye = false;
-                                             GP.GreigeP_DyeBatch_FK = 0;
+                                        var GP = context.TLKNI_GreigeProduction.Find(Record.DGV1_Greige_Pk);
+                                        if (GP != null)
+                                        {
+                                            GP.GreigeP_Dye = false;
+                                            GP.GreigeP_DyeBatch_FK = 0;
 
 
-                                             var Mach_IP = Dns.GetHostEntry(Dns.GetHostName())
-                                                          .AddressList.First(f => f.AddressFamily == AddressFamily.InterNetwork)
-                                                          .ToString();
+                                            var Mach_IP = Dns.GetHostEntry(Dns.GetHostName())
+                                                         .AddressList.First(f => f.AddressFamily == AddressFamily.InterNetwork)
+                                                         .ToString();
 
-                                             TLADM_DailyLog Log = new TLADM_DailyLog();
-                                             Log.TLDL_IPAddress = Mach_IP;
-                                             Log.TLDL_Date = DateTime.Now;
-                                             Log.TLDL_Comments = "Piece Removed from DB " + DB.DYEBD_DyeBatch_FK.ToString();
-                                             Log.TLDL_Dept_Fk = 12;
-                                             Log.TLDL_TransDetail = "Piece Number " + GP.GreigeP_PieceNo;
+                                            TLADM_DailyLog Log = new TLADM_DailyLog();
+                                            Log.TLDL_IPAddress = Mach_IP;
+                                            Log.TLDL_Date = DateTime.Now;
+                                            Log.TLDL_Comments = "Piece Removed from DB " + context.TLDYE_DyeBatch.Find(DB.DYEBD_DyeBatch_FK).DYEB_BatchNo;
+                                            Log.TLDL_Dept_Fk = 12;
+                                            Log.TLDL_TransDetail = "Piece Number " + GP.GreigeP_PieceNo;
 
-                                             context.TLADM_DailyLog.Add(Log);
+                                            context.TLADM_DailyLog.Add(Log);
 
-                                             context.SaveChanges();
-
-
-                                         }
-                                     }
-                                 }
-                             }
+                                            context.SaveChanges();
 
 
-                             PieceSelected.RemoveAt(RecordIndex);
+                                        }
+                                    }
+                                }
+                            }
 
-                             var NoOfPieces = Int16.Parse(txtNoOfPieces.Text.ToString());
-                             if (NoOfPieces > 0)
+                            PieceSelected.RemoveAt(RecordIndex);
+
+                            var NoOfPieces = Int16.Parse(txtNoOfPieces.Text.ToString());
+                            if (NoOfPieces > 0)
                                 txtNoOfPieces.Text = (-1 + NoOfPieces).ToString();
 
-                             DataRow Row = DODataTable.Rows.Find(SingleRow.Index);
 
-                             var Selected = (decimal)CurrentRow.Cells[4].Value;
-                             Row[7] = Math.Round((decimal)Row[7] - Selected, 2);
-                             Row[8] = Math.Round((decimal)Row[8] + Selected, 2);
+                            DataRow Row = DODataTable.Rows.Find(Record.DGV1_Row);
+                            var Selected = (decimal)CurrentRow.Cells[4].Value;
+
+                            if (Row != null)
+                            {
+                                
+                                Row[7] = Math.Round((decimal)Row[7] - Selected, 2);
+                                Row[8] = Math.Round((decimal)Row[8] + Selected, 2);
+                            }
 
                              decimal curBal = Convert.ToDecimal(txtBatchKg.Text);
                              curBal -= Selected;
@@ -1369,6 +1436,8 @@ namespace DyeHouse
                         }
                         else
                         {
+                            db.DYEB_FabicSales = true;
+
                             if (rbStandardMode.Checked)
                                 db.DYEB_Colour_FK = ((TLDYE_DyeOrderFabric)cmboDyeOrders.SelectedItem).TLDYEF_Colours_FK;
                             else
@@ -1395,6 +1464,12 @@ namespace DyeHouse
                                     // DateTime dt = core.FirstDateOfWeek(selected.TLDYEF_OrderDate.Year, selected.TLDYEF_DyeWeek);
                                     db.DYEB_RequiredDate = dtpRequiredDate.Value; // dt.AddDays(5);
                                     db.DYEB_Greige_FK = selected.TLDYEF_Greige_FK;
+
+                                    var DYEOrderFabric = context.TLDYE_DyeOrderFabric.Find(selected.TLDYEF_Pk);
+                                    if(DYEOrderFabric != null)
+                                    {
+
+                                    }
                                 }
                             }
                         }
@@ -1523,28 +1598,44 @@ namespace DyeHouse
                     }
                     else
                     {
-                        DyeBatchKey = (int)cmboBatches.SelectedValue;
+                        if(DyeBatchKey == 0 )
+                        {
+                            var SelectedItem = (TLDYE_DyeBatch)cmboBatches.SelectedItem;
+                            if(SelectedItem != null)
+                            {
+                                DyeBatchKey = SelectedItem.DYEB_Pk;
+                            }
+                        }
+
                         TLDYE_DyeBatch db = new TLDYE_DyeBatch();
                         db = context.TLDYE_DyeBatch.Find(DyeBatchKey);
                         if (db != null)
                         {
-                            var ColorSelected = (TLADM_Colours)cmboColours.SelectedItem;
-                            if (ColorSelected != null)
-                            {
-                                if (ColorSelected.Col_Id != db.DYEB_Colour_FK)
-                                    db.DYEB_Colour_FK = ColorSelected.Col_Id;
-                            }
-                            db.DYEB_BatchKG = Convert.ToDecimal(txtBatchKg.Text);
+                           var ColorSelected = (TLADM_Colours)cmboColours.SelectedItem;
+                           if (ColorSelected != null)
+                           {
+                                    if (ColorSelected.Col_Id != db.DYEB_Colour_FK)
+                                        db.DYEB_Colour_FK = ColorSelected.Col_Id;
+                           }
+                           db.DYEB_BatchKG = Convert.ToDecimal(txtBatchKg.Text);
 
                             if (chkLabReport.Checked)
+                            {
                                 db.DYEB_Lab = true;
+                            }
                             else
+                            {
                                 db.DYEB_Lab = false;
+                            }
 
                             if (chkWrap.Checked)
+                            {
                                 db.DYEB_Wrap = true;
+                            }
                             else
+                            {
                                 db.DYEB_Wrap = false;
+                            }
                         }
                     }
                     // now for each record in the PieceSelected struct
@@ -1617,12 +1708,9 @@ namespace DyeHouse
                             }
 
                             data.DYEBD_DyeBatch_FK = DyeBatchKey;
-                           
-                           
-  
                         }
                     }
-                    
+                  
 
                     try
                     {
@@ -1641,7 +1729,7 @@ namespace DyeHouse
                             }
                         }
                         
-                        SetUp(false);
+                   
                         frmDyeViewReport vRep = new frmDyeViewReport(4, DyeBatchKey);
                         int h = Screen.PrimaryScreen.WorkingArea.Height;
                         int w = Screen.PrimaryScreen.WorkingArea.Width;

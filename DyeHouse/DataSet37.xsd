@@ -37,6 +37,8 @@
               <xs:element name="CustNo" msprop:Generator_ColumnVarNameInTable="columnCustNo" msprop:Generator_ColumnPropNameInRow="CustNo" msprop:Generator_ColumnPropNameInTable="CustNoColumn" msprop:Generator_UserColumnName="CustNo" type="xs:string" minOccurs="0" />
               <xs:element name="CustName" msprop:Generator_ColumnVarNameInTable="columnCustName" msprop:Generator_ColumnPropNameInRow="CustName" msprop:Generator_ColumnPropNameInTable="CustNameColumn" msprop:Generator_UserColumnName="CustName" type="xs:string" minOccurs="0" />
               <xs:element name="TransDate" msprop:Generator_ColumnVarNameInTable="columnTransDate" msprop:Generator_ColumnPropNameInRow="TransDate" msprop:Generator_ColumnPropNameInTable="TransDateColumn" msprop:Generator_UserColumnName="TransDate" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="TransNo" msprop:Generator_ColumnVarNameInTable="columnTransNo" msprop:Generator_ColumnPropNameInRow="TransNo" msprop:Generator_ColumnPropNameInTable="TransNoColumn" msprop:Generator_UserColumnName="TransNo" type="xs:string" minOccurs="0" />
+              <xs:element name="OrderNo" msprop:Generator_ColumnVarNameInTable="columnOrderNo" msprop:Generator_ColumnPropNameInRow="OrderNo" msprop:Generator_ColumnPropNameInTable="OrderNoColumn" msprop:Generator_UserColumnName="OrderNo" type="xs:string" minOccurs="0" />
             </xs:sequence>
           </xs:complexType>
         </xs:element>

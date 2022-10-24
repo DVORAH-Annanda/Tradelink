@@ -2030,6 +2030,8 @@ namespace CMT
                         //==========================================
                         nr.Panels = 0;
                         nr.Short = 0;
+                        nr.PAGrade = 0.0M;
+                        nr.PBGrade = 0.0M;
 
                         nr.Col1 = nr.Col2 = nr.Col3 = nr.Col4 = nr.Col5 = nr.Col6 = 0;
                         nr.Col7 = nr.Col8 = nr.Col9 = nr.Col10 = nr.Col11 = nr.Col12 = 0;
@@ -2042,6 +2044,15 @@ namespace CMT
                             nr.Short = (Stats.CMTS_Total_A_Grades + Stats.CMTS_Total_B_Grades + Stats.CMTS_Panels) - nr.TotalCS;
                             nr.AGrade = Stats.CMTS_Total_A_Grades;
                             nr.BGrade = Stats.CMTS_Total_B_Grades;
+
+                            if(nr.TotalIssued != 0 && nr.AGrade != 0)
+                            {
+                                nr.PAGrade = ((decimal)nr.AGrade / (decimal)nr.TotalIssued) * 100;
+                            }
+                            if (nr.TotalIssued != 0 && nr.BGrade != 0)
+                            {
+                                nr.PBGrade = ((decimal)nr.BGrade / (decimal)nr.TotalIssued) * 100;
+                            }
                         }
 
                         //===========================================================
@@ -2083,6 +2094,8 @@ namespace CMT
                             }
                         }
 
+                       
+
                         if (nr.TotalCS > 0 && nr.BGrade > 0)
                         {
                             var Percentage = (decimal)nr.BGrade / (nr.AGrade + nr.BGrade) * 100;
@@ -2094,6 +2107,60 @@ namespace CMT
                             nr.Col13 = Percentage;
                         }
 
+                        var Total_Faults = nr.Col1 + nr.Col2 + nr.Col3 + nr.Col4 + nr.Col5 + nr.Col6 + nr.Col7;
+                        Total_Faults += nr.Col8 + nr.Col9 + nr.Col10 + nr.Col11 + nr.Col12;
+
+                        if(Total_Faults != 0)
+                        {
+                            if(nr.Col1 != 0)
+                            {
+                                nr.PCol1 = ((decimal)nr.Col1 / (decimal) Total_Faults) * 100;
+                            }
+                            if(nr.Col2 != 0)
+                            {
+                                nr.PCol2 = ((decimal)nr.Col2 / (decimal)Total_Faults) * 100;
+                            }
+                            if(nr.Col3 != 0)
+                            {
+                                nr.PCol3 = ((decimal)nr.Col3 / (decimal)Total_Faults) * 100;
+                            }
+                            if(nr.Col4 != 0)
+                            {
+                                nr.PCol4 = ((decimal)nr.Col4 / (decimal)Total_Faults) * 100;
+                            }
+                            if(nr.Col5 != 0)
+                            {
+                                nr.PCol5 = ((decimal)nr.Col5 / (decimal)Total_Faults) * 100;
+                            }
+                            if(nr.Col6 != 0)
+                            {
+                                nr.PCol6 = ((decimal)nr.Col6 / (decimal)Total_Faults) * 100;
+                            }
+                            if(nr.Col7 != 0)
+                            {
+                                nr.PCol7 = ((decimal)nr.Col7 / (decimal)Total_Faults) * 100;
+                            }
+                            if(nr.Col8 != 0 )
+                            {
+                                nr.PCol8 = ((decimal)nr.Col8 / (decimal)Total_Faults) * 100;
+                            }
+                            if(nr.Col9 != 0)
+                            {
+                                nr.PCol9 = ((decimal)nr.Col9 / (decimal)Total_Faults) * 100;
+                            }
+                            if(nr.Col10 != 0)
+                            {
+                                nr.PCol10 = ((decimal)nr.Col10 / (decimal)Total_Faults) * 100;
+                            }
+                            if(nr.Col11 != 0)
+                            {
+                                nr.PCol11 = ((decimal)nr.Col11 / (decimal)Total_Faults) * 100;
+                            }
+                            if(nr.Col12 != 0)
+                            {
+                                nr.PCol2 = ((decimal)nr.Col12 / (decimal)Total_Faults) * 100;
+                            }
+                        }
                         dataTable1.AddDataTable1Row(nr);
                     }
                 }

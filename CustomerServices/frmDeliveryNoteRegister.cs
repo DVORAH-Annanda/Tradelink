@@ -20,9 +20,15 @@ namespace CustomerServices
             InitializeComponent();
             _DeliveryNote = DeliveryNote;
             if (DeliveryNote)
+            {
                 this.Text = "Register of Delivery Notes";
+                rbByTransporter.Checked = true;
+            }
             else
+            {
                 this.Text = "Register of Picking Lists";
+                groupBox1.Visible = false;
+            }
         }
 
 
@@ -38,7 +44,14 @@ namespace CustomerServices
                 svces.toDate = svces.toDate.AddHours(23);
 
                 if (_DeliveryNote)
+                {
                     svces.DeliveryNote = _DeliveryNote;
+                }
+
+                if(rbByCustomer.Checked )
+                {
+                    svces.GroupByCustomer = true;
+                }
 
                 frmCSViewRep vRep = new frmCSViewRep(15, svces);
                 int h = Screen.PrimaryScreen.WorkingArea.Height;

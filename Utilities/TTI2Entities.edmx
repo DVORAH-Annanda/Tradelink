@@ -83,6 +83,8 @@
           <Property Name="Col_Added_InSession" Type="bit" Nullable="false" />
           <Property Name="Col_Padding" Type="bit" />
           <Property Name="Col_Pastel" Type="varchar" MaxLength="10" />
+          <Property Name="Col_Ratio" Type="decimal" Precision="18" Scale="4" Nullable="false" />
+          <Property Name="Col_ColCosting" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="TLADM_CompanyDetails">
           <Key>
@@ -703,13 +705,10 @@
           <Property Name="Pan_Discontinued" Type="bit" />
           <Property Name="Pan_Discontinued_Date" Type="date" />
           <Property Name="Pan_PowerN" Type="int" Nullable="false" />
-          <Property Name="Pan_Grade" Type="varchar" MaxLength="5" Nullable="false" />
-          <Property Name="Pan_Size_FK" Type="int" Nullable="false" />
-          <Property Name="Pan_Blocked" Type="bit" Nullable="false" />
-          <Property Name="Pan_UOM_FK" Type="int" Nullable="false" />
-          <Property Name="Pan_PreferedSupplier_FK" Type="int" Nullable="false" />
           <Property Name="Pan_ShowQty" Type="bit" Nullable="false" />
-          <Property Name="Pan_FabricAtributes_FK" Type="int" Nullable="false" />
+          <Property Name="Pan_Single_Colour" Type="bit" Nullable="false" />
+          <Property Name="Pan_Single_Colour_FK" Type="int" />
+          <Property Name="Pan_Style_FK" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="TLADM_ProductionLoss">
           <Key>
@@ -1696,6 +1695,7 @@
           <Property Name="TLCutSHD_CurrentStore_FK" Type="int" Nullable="false" />
           <Property Name="TLCutSHD_Transaction_Type" Type="int" />
           <Property Name="TLCUTSHD_NettWeight" Type="decimal" Precision="18" Scale="4" Nullable="false" />
+          <Property Name="TLCUTSHD_Body" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="TLCUT_CutSheetReceipt">
           <Key>
@@ -1910,6 +1910,10 @@
           <Property Name="DYCSH_DyeKitchen_FK" Type="int" />
           <Property Name="DYCSH_SOHQuar" Type="decimal" Precision="18" Scale="4" Nullable="false" />
           <Property Name="DYCSH_SOHKitchen" Type="decimal" Precision="18" Scale="4" Nullable="false" />
+          <Property Name="DYCSH_K_Opening" Type="decimal" Precision="18" Scale="4" Nullable="false" />
+          <Property Name="DYCSH_K_Closing" Type="decimal" Precision="18" Scale="4" Nullable="false" />
+          <Property Name="DYCSH_K_Used" Type="decimal" Precision="18" Scale="4" Nullable="false" />
+          <Property Name="DCSH_K_Adjusted" Type="decimal" Precision="18" Scale="4" Nullable="false" />
         </EntityType>
         <EntityType Name="TLDYE_ConSummableReceived">
           <Key>
@@ -1975,6 +1979,7 @@
           <Property Name="DYEB_OnHold_Date" Type="date" />
           <Property Name="DYEB_OnHold_Reason" Type="varchar" MaxLength="50" />
           <Property Name="DYEB_QAInspected" Type="bit" Nullable="false" />
+          <Property Name="DYEB_FabicSales" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="TLDYE_DyeBatchAllocated">
           <Key>
@@ -2022,6 +2027,10 @@
           <Property Name="DYEBO_WasRejected" Type="bit" Nullable="false" />
           <Property Name="DYEBO_Notes" Type="varchar" MaxLength="50" />
           <Property Name="DYEBO_FWAtCutting" Type="decimal" Precision="18" Scale="4" Nullable="false" />
+          <Property Name="DYEBO_PurchaseOrderDetail_FK" Type="int" Nullable="false" />
+          <Property Name="DYEBO_PendingDelivery" Type="bit" Nullable="false" />
+          <Property Name="DYEBO_SaleConfirmed" Type="bit" Nullable="false" />
+          <Property Name="DYEBO_FabricDespatched" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="TLDYE_DyeingStandards">
           <Key>
@@ -2055,6 +2064,7 @@
           <Property Name="TLDYO_GarmOrFab" Type="bit" Nullable="false" />
           <Property Name="TLDYO_Notes" Type="varchar(max)" />
           <Property Name="TLDYO_Closed" Type="bit" Nullable="false" />
+          <Property Name="TLDYO_CustomerOrder_Fk" Type="int" />
         </EntityType>
         <EntityType Name="TLDYE_DyeOrderDetails">
           <Key>
@@ -2097,6 +2107,7 @@
           <Property Name="TLDYEF_FabricOrder_FK" Type="int" Nullable="false" />
           <Property Name="TLDYEF_DyeOrderNumeric" Type="int" Nullable="false" />
           <Property Name="TLDYEF_Body" Type="bit" Nullable="false" />
+          <Property Name="TLDYEF_BatchedToDate" Type="decimal" Precision="18" Scale="4" Nullable="false" />
         </EntityType>
         <EntityType Name="TLDYE_DyeTransactions">
           <Key>
@@ -2152,6 +2163,7 @@
           <Property Name="TLDYEDC_Operator_FK" Type="int" Nullable="false" />
           <Property Name="TLDYEDC_Pass" Type="bit" Nullable="false" />
           <Property Name="TLDYEDC_Date" Type="date" />
+          <Property Name="TLDYEDC_Quality_FK" Type="int" />
         </EntityType>
         <EntityType Name="TLDYE_NonComplianceConsDetail">
           <Key>
@@ -2194,6 +2206,7 @@
           <Property Name="TLGQ_Pk" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="TLGQ_ReceipeDef_FK" Type="int" Nullable="false" />
           <Property Name="TLGQ_GreigeQuality_FK" Type="int" Nullable="false" />
+          <Property Name="TLGQ_ColourChart_FK" Type="int" />
         </EntityType>
         <EntityType Name="TLDYE_RecipeColourDefinition">
           <Key>
@@ -2350,6 +2363,7 @@
           <Property Name="GreigeP_WarningMessage" Type="bit" Nullable="false" />
           <Property Name="GreigeP_DskWeight" Type="decimal" Precision="18" Scale="4" Nullable="false" />
           <Property Name="GreigeP_VarianceDiskWeight" Type="decimal" Precision="18" Scale="4" Nullable="false" />
+          <Property Name="GreigeP_PieceWidth" Type="decimal" Precision="18" Scale="4" Nullable="false" />
         </EntityType>
         <EntityType Name="TLKNI_GreigeTransactions">
           <Key>
@@ -3631,7 +3645,6 @@
             <End Role="TLADM_FabricType" EntitySet="TLADM_FabricType" />
           </AssociationSet>
           <EntitySet Name="TLADM_AdditionalAddress" EntityType="TTI2Model.TLADM_AdditionalAddress" />
-          <EntitySet Name="TLADM_PanelAttributes" EntityType="TTI2Model.TLADM_PanelAttributes" />
           <EntitySet Name="TLADM_StylesAdditional" EntityType="TTI2Model.TLADM_StylesAdditional" />
           <EntitySet Name="TLADM_CompanyDetails" EntityType="TTI2Model.TLADM_CompanyDetails" />
           <EntitySet Name="TLADM_CottonAgent" EntityType="TTI2Model.TLADM_CottonAgent" />
@@ -3684,8 +3697,6 @@
           <EntitySet Name="TLADM_DepartmentsArea" EntityType="TTI2Model.TLADM_DepartmentsArea" />
           <EntitySet Name="TLADM_DepartmentsAreaTransaction" EntityType="TTI2Model.TLADM_DepartmentsAreaTransaction" />
           <EntitySet Name="TLKNI_GreigeCommisionAdjustment" EntityType="TTI2Model.TLKNI_GreigeCommisionAdjustment" />
-          <EntitySet Name="TLDYE_NonComplianceAnalysis" EntityType="TTI2Model.TLDYE_NonComplianceAnalysis" />
-          <EntitySet Name="TLDYE_DyeOrder" EntityType="TTI2Model.TLDYE_DyeOrder" />
           <EntitySet Name="TLCUT_CutSheetReceiptBoxes" EntityType="TTI2Model.TLCUT_CutSheetReceiptBoxes" />
           <EntitySet Name="TLCUT_QCBerrie" EntityType="TTI2Model.TLCUT_QCBerrie" />
           <EntitySet Name="TLADM_CutMeasureArea" EntityType="TTI2Model.TLADM_CutMeasureArea" />
@@ -3732,14 +3743,12 @@
           <EntitySet Name="TLDYE_ReceipeGreigeQual" EntityType="TTI2Model.TLDYE_ReceipeGreigeQual" />
           <FunctionImport Name="UpdateCompletedWork" />
           <EntitySet Name="TLDYE_RecipeDefinition" EntityType="TTI2Model.TLDYE_RecipeDefinition" />
-          <EntitySet Name="TLDYE_NonComplianceConsDetail" EntityType="TTI2Model.TLDYE_NonComplianceConsDetail" />
           <FunctionImport Name="UpdateCompletedWork1">
             <Parameter Name="DT" Mode="In" Type="DateTime" />
             <Parameter Name="CMT" Mode="In" Type="Int32" />
           </FunctionImport>
           <EntitySet Name="TLCUT_CutSheetReceiptDetail" EntityType="TTI2Model.TLCUT_CutSheetReceiptDetail" />
           <EntitySet Name="TLADM_StyleTrim" EntityType="TTI2Model.TLADM_StyleTrim" />
-          <EntitySet Name="TLDYE_ConsumableSOH" EntityType="TTI2Model.TLDYE_ConsumableSOH" />
           <EntitySet Name="TLKNI_GreigeCommissionTransctions" EntityType="TTI2Model.TLKNI_GreigeCommissionTransctions" />
           <EntitySet Name="TLKNI_MachineLastNumber" EntityType="TTI2Model.TLKNI_MachineLastNumber" />
           <EntitySet Name="TLADM_LastNumberUsed" EntityType="TTI2Model.TLADM_LastNumberUsed" />
@@ -3765,7 +3774,6 @@
           <EntitySet Name="TLCSV_RePackConfig" EntityType="TTI2Model.TLCSV_RePackConfig" />
           <EntitySet Name="TLCSV_RePackTransactions" EntityType="TTI2Model.TLCSV_RePackTransactions" />
           <EntitySet Name="TLPPS_ProductionLeadTime" EntityType="TTI2Model.TLPPS_ProductionLeadTime" />
-          <EntitySet Name="TLDYE_DyeTransactions" EntityType="TTI2Model.TLDYE_DyeTransactions" />
           <EntitySet Name="TLCMT_UnitProductionTargets" EntityType="TTI2Model.TLCMT_UnitProductionTargets" />
           <EntitySet Name="TLSEC_Sections" EntityType="TTI2Model.TLSEC_Sections" />
           <EntitySet Name="TLKNI_YarnOrderPallets" EntityType="TTI2Model.TLKNI_YarnOrderPallets" />
@@ -3843,7 +3851,6 @@
           <EntitySet Name="TLADM_WhseStore" EntityType="TTI2Model.TLADM_WhseStore" />
           <EntitySet Name="TLADM_Styles" EntityType="TTI2Model.TLADM_Styles" />
           <EntitySet Name="TLCSV_BoughtInGoods" EntityType="TTI2Model.TLCSV_BoughtInGoods" />
-          <EntitySet Name="TLADM_Colours" EntityType="TTI2Model.TLADM_Colours" />
           <EntitySet Name="TLCSV_StockOnHand" EntityType="TTI2Model.TLCSV_StockOnHand" />
           <EntitySet Name="TLADM_Sizes" EntityType="TTI2Model.TLADM_Sizes" />
           <AssociationSet Name="FK_TLADM_ConsumablesOther_TLADM_Sizes" Association="TTI2Model.FK_TLADM_ConsumablesOther_TLADM_Sizes">
@@ -3854,8 +3861,18 @@
           <EntitySet Name="TLADM_Months" EntityType="TTI2Model.TLADM_Months" />
           <EntitySet Name="TLCSV_PurchaseOrder" EntityType="TTI2Model.TLCSV_PurchaseOrder" />
           <EntitySet Name="TLADM_Griege" EntityType="TTI2Model.TLADM_Griege" />
-          <EntitySet Name="TLDYE_DyeOrderFabric" EntityType="TTI2Model.TLDYE_DyeOrderFabric" />
           <EntitySet Name="TLKNI_GreigeProduction" EntityType="TTI2Model.TLKNI_GreigeProduction" />
+          <FunctionImport Name="SelectWhsePickList" ReturnType="Collection(TTI2Model.SelectWhsePickList_Result)" >
+            <Parameter Name="DeptNo" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <EntitySet Name="TLDYE_DyeOrder" EntityType="TTI2Model.TLDYE_DyeOrder" />
+          <EntitySet Name="TLDYE_DyeOrderFabric" EntityType="TTI2Model.TLDYE_DyeOrderFabric" />
+          <EntitySet Name="TLDYE_DyeTransactions" EntityType="TTI2Model.TLDYE_DyeTransactions" />
+          <EntitySet Name="TLDYE_NonComplianceConsDetail" EntityType="TTI2Model.TLDYE_NonComplianceConsDetail" />
+          <EntitySet Name="TLDYE_NonComplianceAnalysis" EntityType="TTI2Model.TLDYE_NonComplianceAnalysis" />
+          <EntitySet Name="TLADM_PanelAttributes" EntityType="TTI2Model.TLADM_PanelAttributes" />
+          <EntitySet Name="TLDYE_ConsumableSOH" EntityType="TTI2Model.TLDYE_ConsumableSOH" />
+          <EntitySet Name="TLADM_Colours" EntityType="TTI2Model.TLADM_Colours" />
           </EntityContainer>
         <EntityType Name="TLADM_FabricProduct">
           <Key>
@@ -3890,23 +3907,6 @@
           <Property Name="Addit_Notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="Addit_IsCustomer" Type="Boolean" Nullable="false" />
           <Property Name="Addit_FK" Type="Int32" Nullable="false" />
-        </EntityType>
-        <EntityType Name="TLADM_PanelAttributes">
-          <Key>
-            <PropertyRef Name="Pan_PK" />
-          </Key>
-          <Property Name="Pan_PK" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Pan_Description" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Pan_Discontinued" Type="Boolean" />
-          <Property Name="Pan_Discontinued_Date" Type="DateTime" Precision="0" />
-          <Property Name="Pan_PowerN" Type="Int32" Nullable="false" />
-          <Property Name="Pan_Grade" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="false" />
-          <Property Name="Pan_Size_FK" Type="Int32" Nullable="false" />
-          <Property Name="Pan_Blocked" Type="Boolean" Nullable="false" />
-          <Property Name="Pan_UOM_FK" Type="Int32" Nullable="false" />
-          <Property Name="Pan_PreferedSupplier_FK" Type="Int32" Nullable="false" />
-          <Property Name="Pan_ShowQty" Type="Boolean" Nullable="false" />
-          <Property Name="Pan_FabricAtributes_FK" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="TLADM_StylesAdditional">
           <Key>
@@ -4522,43 +4522,6 @@
           <Property Name="GreigeComAJ_GrnNumber" Type="Int32" Nullable="false" />
           <Property Name="GreigeComAJ_GreigeProduction_FK" Type="Int32" Nullable="false" />
         </EntityType>
-        <EntityType Name="TLDYE_NonComplianceAnalysis">
-          <Key>
-            <PropertyRef Name="TLDYEDC_Pk" />
-          </Key>
-          <Property Name="TLDYEDC_Pk" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="TLDYEDC_BatchNo" Type="Int32" Nullable="false" />
-          <Property Name="TLDYEDC_NCStage" Type="Int32" Nullable="false" />
-          <Property Name="TLDYEDC_PieceNo_FK" Type="Int32" Nullable="false" />
-          <Property Name="TLDYEDC_Code_FK" Type="Int32" Nullable="false" />
-          <Property Name="TLDYEDC_Value" Type="Decimal" Nullable="false" Precision="18" Scale="4" />
-          <Property Name="TLDYEDC_Operator_FK" Type="Int32" Nullable="false" />
-          <Property Name="TLDYEDC_Pass" Type="Boolean" Nullable="false" />
-          <Property Name="TLDYEDC_Date" Type="DateTime" Precision="0" />
-        </EntityType>
-        <EntityType Name="TLDYE_DyeOrder">
-          <Key>
-            <PropertyRef Name="TLDYO_Pk" />
-          </Key>
-          <Property Name="TLDYO_Pk" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="TLDYO_DyeOrderNum" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="TLDYO_OrderNum" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="TLDYO_Customer_FK" Type="Int32" Nullable="false" />
-          <Property Name="TLDYO_Style_FK" Type="Int32" Nullable="false" />
-          <Property Name="TLDYO_Greige_FK" Type="Int32" Nullable="false" />
-          <Property Name="TLDYO_Colour_FK" Type="Int32" Nullable="false" />
-          <Property Name="TLDYO_Label_FK" Type="Int32" Nullable="false" />
-          <Property Name="TLDYO_DyeReqWeek" Type="Int32" Nullable="false" />
-          <Property Name="TLDYO_CutReqWeek" Type="Int32" Nullable="false" />
-          <Property Name="TLDYO_CMTReqWeek" Type="Int32" Nullable="false" />
-          <Property Name="TLDYO_DyePLoss" Type="Decimal" Nullable="false" Precision="18" Scale="4" />
-          <Property Name="TLDYO_CutPLoss" Type="Decimal" Nullable="false" Precision="18" Scale="4" />
-          <Property Name="TLDYO_CMTPLoss" Type="Decimal" Nullable="false" Precision="18" Scale="4" />
-          <Property Name="TLDYO_OrderDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="TLDYO_GarmOrFab" Type="Boolean" Nullable="false" />
-          <Property Name="TLDYO_Notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="TLDYO_Closed" Type="Boolean" Nullable="false" />
-        </EntityType>
         <EntityType Name="TLCUT_CutSheetReceiptBoxes">
           <Key>
             <PropertyRef Name="TLCUTSHB_Pk" />
@@ -4682,6 +4645,7 @@
           <Property Name="TLCutSHD_CurrentStore_FK" Type="Int32" Nullable="false" />
           <Property Name="TLCutSHD_Transaction_Type" Type="Int32" />
           <Property Name="TLCUTSHD_NettWeight" Type="Decimal" Nullable="false" Precision="18" Scale="4" />
+          <Property Name="TLCUTSHD_Body" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="TLADM_StandardProduct">
           <Key>
@@ -5136,6 +5100,7 @@
           <Property Name="TLGQ_Pk" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="TLGQ_ReceipeDef_FK" Type="Int32" Nullable="false" />
           <Property Name="TLGQ_GreigeQuality_FK" Type="Int32" Nullable="false" />
+          <Property Name="TLGQ_ColourChart_FK" Type="Int32" />
         </EntityType>
         <EntityType Name="TLDYE_RecipeDefinition">
           <Key>
@@ -5148,19 +5113,6 @@
           <Property Name="TLDYE_ProgramLoad" Type="Int32" Nullable="false" />
           <Property Name="TLDYE_LiquidLoad" Type="Int32" Nullable="false" />
           <Property Name="TLDYE_StandardReceipe" Type="Boolean" Nullable="false" />
-        </EntityType>
-        <EntityType Name="TLDYE_NonComplianceConsDetail">
-          <Key>
-            <PropertyRef Name="DYENCCON_Pk" />
-          </Key>
-          <Property Name="DYENCCON_Pk" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="DYENCCON_ConNumber" Type="Int32" Nullable="false" />
-          <Property Name="DYENCCON_BatchNo_FK" Type="Int32" Nullable="false" />
-          <Property Name="DYENCCON_Code_FK" Type="Int32" Nullable="false" />
-          <Property Name="DYENCCON_ConOrNon" Type="Boolean" Nullable="false" />
-          <Property Name="DYENCCON_Qunatities" Type="Decimal" Nullable="false" Precision="18" Scale="4" />
-          <Property Name="DYENCCON_LiqCalc" Type="Boolean" Nullable="false" />
-          <Property Name="DYENCCON_LiqRatio" Type="Decimal" Nullable="false" Precision="18" Scale="4" />
         </EntityType>
         <EntityType Name="TLCUT_CutSheetReceiptDetail">
           <Key>
@@ -5197,23 +5149,6 @@
           <Property Name="StyTrim_Trim_Fk" Type="Int32" Nullable="false" />
           <Property Name="StyTrim_ProdRating_FK" Type="Int32" Nullable="false" />
           <Property Name="StyTrim_Discontinued" Type="Boolean" Nullable="false" />
-        </EntityType>
-        <EntityType Name="TLDYE_ConsumableSOH">
-          <Key>
-            <PropertyRef Name="DYCSH_Pk" />
-          </Key>
-          <Property Name="DYCSH_Pk" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="DYCSH_Consumable_FK" Type="Int32" Nullable="false" />
-          <Property Name="DYCSH_WhseStore_FK" Type="Int32" />
-          <Property Name="DYCSH_StockOnHand" Type="Decimal" Nullable="false" Precision="18" Scale="4" />
-          <Property Name="DYCSH_TransNumber" Type="Int32" Nullable="false" />
-          <Property Name="DYCSH_DyeKitchen" Type="Boolean" Nullable="false" />
-          <Property Name="DYCSH_Quarantine" Type="Boolean" Nullable="false" />
-          <Property Name="DYCSH_Pass" Type="Boolean" Nullable="false" />
-          <Property Name="DYCSH_QuarantineStore_FK" Type="Int32" Nullable="false" />
-          <Property Name="DYCSH_DyeKitchen_FK" Type="Int32" />
-          <Property Name="DYCSH_SOHQuar" Type="Decimal" Nullable="false" Precision="18" Scale="4" />
-          <Property Name="DYCSH_SOHKitchen" Type="Decimal" Nullable="false" Precision="18" Scale="4" />
         </EntityType>
         <EntityType Name="TLKNI_GreigeCommissionTransctions">
           <Key>
@@ -5559,31 +5494,6 @@
           <Property Name="TLPDL_Description" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="TLPDL_LineNo" Type="Int32" Nullable="false" />
           <Property Name="TLPDL_LeadTimeDays" Type="Int32" Nullable="false" />
-        </EntityType>
-        <EntityType Name="TLDYE_DyeTransactions">
-          <Key>
-            <PropertyRef Name="TLDYET_Pk" />
-          </Key>
-          <Property Name="TLDYET_Pk" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="TLDYET_Date" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="TLDYET_RejectDate" Type="DateTime" Precision="0" />
-          <Property Name="TLDYET_BatchNo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="TLDYET_SequenceNo" Type="Int32" Nullable="false" />
-          <Property Name="TLDYET_TransactionNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="TLDYET_TransactionType" Type="Int32" Nullable="false" />
-          <Property Name="TLDYET_BatchWeight" Type="Decimal" Nullable="false" Precision="18" Scale="4" />
-          <Property Name="TLDYET_TransactionWeight" Type="Decimal" Nullable="false" Precision="18" Scale="4" />
-          <Property Name="TLDYET_AuthorisedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="TLDYET_Batch_FK" Type="Int32" Nullable="false" />
-          <Property Name="TLDYET_Customer_FK" Type="Int32" />
-          <Property Name="TLDYET_CurrentStore_FK" Type="Int32" Nullable="false" />
-          <Property Name="TLDYET_Adjustment_Reasons" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="TLDYET_Stage" Type="Int32" Nullable="false" />
-          <Property Name="TLDYET_Rejected" Type="Boolean" Nullable="false" />
-          <Property Name="TLDYET_WriteOff" Type="Boolean" />
-          <Property Name="TLDYET_FabricSales" Type="Boolean" Nullable="false" />
-          <Property Name="TLDYET_CustomerOrderNo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="TLDYET_MeasurementField_FK" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="TLCMT_UnitProductionTargets">
           <Key>
@@ -5992,6 +5902,7 @@
           <Property Name="DYEB_OnHold_Reason" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="DYEB_QAInspected" Type="Boolean" Nullable="false" />
           <Property Name="DYEB_Stage4" Type="Boolean" Nullable="false" />
+          <Property Name="DYEB_FabicSales" Type="Boolean" Nullable="false" />
         </EntityType>
         <ComplexType Name="CottonAdjustments_Result">
           <Property Type="Int32" Name="cotrx_Return_No" Nullable="false" />
@@ -6345,6 +6256,10 @@
           <Property Name="DYEBO_WasRejected" Type="Boolean" Nullable="false" />
           <Property Name="DYEBO_Notes" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="DYEBO_FWAtCutting" Type="Decimal" Nullable="false" Precision="18" Scale="4" />
+          <Property Name="DYEBO_PurchaseOrderDetail_FK" Type="Int32" Nullable="false" />
+          <Property Name="DYEBO_PendingDelivery" Type="Boolean" Nullable="false" />
+          <Property Name="DYEBO_SaleConfirmed" Type="Boolean" Nullable="false" />
+          <Property Name="DYEBO_FabricDespatched" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="TLDYE_ConSummableReceived">
           <Key>
@@ -6469,26 +6384,6 @@
           <Property Name="TLBIG_Supplier_FK" Type="Int32" Nullable="false" />
           <Property Name="TLBIG_SupplierDelNo" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="TLBIG_WareHouse_FK" Type="Int32" Nullable="false" />
-        </EntityType>
-        <EntityType Name="TLADM_Colours">
-          <Key>
-            <PropertyRef Name="Col_Id" />
-          </Key>
-          <Property Name="Col_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Col_Description" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Col_PowerN" Type="Int32" Nullable="false" />
-          <Property Name="Col_Discontinued" Type="Boolean" />
-          <Property Name="Col_Discontinued_Date" Type="DateTime" Precision="0" />
-          <Property Name="Col_FinishedCode" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
-          <Property Name="Col_HasAuxColors" Type="Boolean" Nullable="false" />
-          <Property Name="Col_AuxPowerN" Type="Int32" Nullable="false" />
-          <Property Name="Col_Display" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Col_StandardTime" Type="Decimal" Nullable="false" Precision="18" Scale="4" />
-          <Property Name="Col_Benchmark" Type="Boolean" Nullable="false" />
-          <Property Name="Col_Removed_InSession" Type="Boolean" Nullable="false" />
-          <Property Name="Col_Added_InSession" Type="Boolean" Nullable="false" />
-          <Property Name="Col_Padding" Type="Boolean" />
-          <Property Name="Col_Pastel" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="TLCSV_StockOnHand">
           <Key>
@@ -6661,29 +6556,6 @@
           <Property Name="TLGreige_CubicWeight" Type="Decimal" Nullable="false" Precision="18" Scale="4" />
           <Property Name="TLGreige_Body" Type="Boolean" Nullable="false" />
         </EntityType>
-        <EntityType Name="TLDYE_DyeOrderFabric">
-          <Key>
-            <PropertyRef Name="TLDYEF_Pk" />
-          </Key>
-          <Property Name="TLDYEF_Pk" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="TLDYEF_OrderDate" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="TLDYEF_Customer_FK" Type="Int32" Nullable="false" />
-          <Property Name="TLDYEF_DyeWeek" Type="Int32" Nullable="false" />
-          <Property Name="TLDYEF_PLoss" Type="Decimal" Nullable="false" Precision="18" Scale="4" />
-          <Property Name="TLDYEF_CustomerOrder" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="TLDYEF_DyeOrderNo" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="TLDYEF_Greige_FK" Type="Int32" Nullable="false" />
-          <Property Name="TLDYEF_Yield" Type="Decimal" Nullable="false" Precision="18" Scale="4" />
-          <Property Name="TLDYEF_Quantity" Type="Decimal" Nullable="false" Precision="18" Scale="4" />
-          <Property Name="TLDYEF_ProjectedLoss" Type="Decimal" Nullable="false" Precision="18" Scale="4" />
-          <Property Name="TLDYEF_Demand" Type="Decimal" Nullable="false" Precision="18" Scale="4" />
-          <Property Name="TLDYEF_Colours_FK" Type="Int32" Nullable="false" />
-          <Property Name="TLDYEF_LineNo" Type="Int32" Nullable="false" />
-          <Property Name="TLDYEF_Closed" Type="Boolean" Nullable="false" />
-          <Property Name="TLDYEF_FabricOrder_FK" Type="Int32" Nullable="false" />
-          <Property Name="TLDYEF_DyeOrderNumeric" Type="Int32" Nullable="false" />
-          <Property Name="TLDYEF_Body" Type="Boolean" Nullable="false" />
-        </EntityType>
         <EntityType Name="TLKNI_GreigeProduction">
           <Key>
             <PropertyRef Name="GreigeP_Pk" />
@@ -6734,6 +6606,214 @@
           <Property Name="GreigeP_WarningMessage" Type="Boolean" Nullable="false" />
           <Property Name="GreigeP_DskWeight" Type="Decimal" Nullable="false" Precision="18" Scale="4" />
           <Property Name="GreigeP_VarianceDiskWeight" Type="Decimal" Nullable="false" Precision="18" Scale="4" />
+          <Property Name="GreigeP_PieceWidth" Type="Decimal" Nullable="false" Precision="18" Scale="4" />
+        </EntityType>
+        <ComplexType Name="SelectWhsePickList_Result">
+          <Property Type="Int32" Name="TLCMTWC_Pk" Nullable="false" />
+          <Property Type="Int32" Name="TLCMTWC_PanelIssue_FK" Nullable="false" />
+          <Property Type="DateTime" Name="TLCMTWC_TransactionDate" Nullable="false" Precision="23" />
+          <Property Type="Int32" Name="TLCMTWC_LineIssue_FK" Nullable="false" />
+          <Property Type="Int32" Name="TLCMTWC_ToWhse_FK" Nullable="false" />
+          <Property Type="String" Name="TLCMTWC_BoxNumber" Nullable="false" MaxLength="20" />
+          <Property Type="String" Name="TLCMTWC_PastelNumber" Nullable="false" MaxLength="20" />
+          <Property Type="Int32" Name="TLCMTWC_Size_FK" Nullable="false" />
+          <Property Type="String" Name="TLCMTWC_Grade" Nullable="false" MaxLength="5" />
+          <Property Type="Int32" Name="TLCMTWC_Qty" Nullable="false" />
+          <Property Type="Decimal" Name="TLCMTWC_Weight" Nullable="false" Precision="18" Scale="4" />
+          <Property Type="Int32" Name="TLCMTWC_CutSheet_FK" Nullable="false" />
+          <Property Type="Boolean" Name="TLCMTWC_Despatched" Nullable="false" />
+          <Property Type="Int32" Name="TLCMTWC_DepatchedList_FK" Nullable="true" />
+          <Property Type="Int32" Name="TLCMTWC_Style_FK" Nullable="false" />
+          <Property Type="Int32" Name="TLCMTWC_Colour_FK" Nullable="false" />
+          <Property Type="Int32" Name="TLCMTWC_CMTFacility_FK" Nullable="false" />
+          <Property Type="Boolean" Name="TLCMTWC_Picked" Nullable="false" />
+          <Property Type="Int32" Name="TLCMTWC_PickList_FK" Nullable="true" />
+          <Property Type="Int32" Name="TLCMTWC_BoxType_FK" Nullable="false" />
+          <Property Type="Boolean" Name="TLCMTWC_BoxReceiptedWhse" Nullable="false" />
+          <Property Type="Boolean" Name="TLCMTWC_CMTBilled" Nullable="false" />
+          <Property Type="Boolean" Name="TLCMTWC_Is_A" Nullable="false" />
+          <Property Type="Boolean" Name="TLCMTWC_MarkedForDeletion" Nullable="false" />
+          <Property Type="Int32" Name="TLCMTLI_Pk" Nullable="false" />
+          <Property Type="DateTime" Name="TLCMTLI_Date" Nullable="false" />
+          <Property Type="Int32" Name="TLCMTLI_CutSheet_FK" Nullable="false" />
+          <Property Type="Int32" Name="TLCMTLI_CmtFacility_FK" Nullable="false" />
+          <Property Type="Int32" Name="TLCMTLI_LineNo_FK" Nullable="false" />
+          <Property Type="Int32" Name="TLCMTLI_PanelIssue_FK" Nullable="false" />
+          <Property Type="Boolean" Name="TLCMTLI_WorkCompleted" Nullable="false" />
+          <Property Type="DateTime" Name="TLCMTLI_WorkCompletedDate" Nullable="true" />
+          <Property Type="String" Name="TLCMTLI_TransferApproved" Nullable="true" MaxLength="50" />
+          <Property Type="DateTime" Name="TLCMTLI_TransferDate" Nullable="true" />
+          <Property Type="String" Name="TLCMTLI_Reason" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="TLCMTLI_ToLineNo_FK" Nullable="true" />
+          <Property Type="Int32" Name="TLCMTLI_TransactionNo" Nullable="true" />
+          <Property Type="Int32" Name="TLCMTLI_IssueQty" Nullable="false" />
+          <Property Type="Int32" Name="TLCMTLI_WhStore_FK" Nullable="false" />
+          <Property Type="Boolean" Name="TLCMTLI_IssuedToLine" Nullable="false" />
+          <Property Type="String" Name="TLCMTLI_CutSheetDetails" Nullable="true" MaxLength="15" />
+          <Property Type="Boolean" Name="TLCMTLI_OnHold" Nullable="false" />
+          <Property Type="Int32" Name="TLCMTLI_BoxType_FK" Nullable="false" />
+          <Property Type="Boolean" Name="TLCMTLI_Priority" Nullable="false" />
+          <Property Type="DateTime" Name="TLCMTLI_Priority_Date" Nullable="true" />
+          <Property Type="DateTime" Name="TLCMTLI_Required_Date" Nullable="true" />
+          <Property Type="Boolean" Name="TLCMTLI_MarkedForDeltion" Nullable="false" />
+        </ComplexType>
+        <EntityType Name="TLDYE_DyeOrder">
+          <Key>
+            <PropertyRef Name="TLDYO_Pk" />
+          </Key>
+          <Property Name="TLDYO_Pk" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TLDYO_DyeOrderNum" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="TLDYO_OrderNum" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="TLDYO_Customer_FK" Type="Int32" Nullable="false" />
+          <Property Name="TLDYO_Style_FK" Type="Int32" Nullable="false" />
+          <Property Name="TLDYO_Greige_FK" Type="Int32" Nullable="false" />
+          <Property Name="TLDYO_Colour_FK" Type="Int32" Nullable="false" />
+          <Property Name="TLDYO_Label_FK" Type="Int32" Nullable="false" />
+          <Property Name="TLDYO_DyeReqWeek" Type="Int32" Nullable="false" />
+          <Property Name="TLDYO_CutReqWeek" Type="Int32" Nullable="false" />
+          <Property Name="TLDYO_CMTReqWeek" Type="Int32" Nullable="false" />
+          <Property Name="TLDYO_DyePLoss" Type="Decimal" Nullable="false" Precision="18" Scale="4" />
+          <Property Name="TLDYO_CutPLoss" Type="Decimal" Nullable="false" Precision="18" Scale="4" />
+          <Property Name="TLDYO_CMTPLoss" Type="Decimal" Nullable="false" Precision="18" Scale="4" />
+          <Property Name="TLDYO_OrderDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TLDYO_GarmOrFab" Type="Boolean" Nullable="false" />
+          <Property Name="TLDYO_Notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="TLDYO_Closed" Type="Boolean" Nullable="false" />
+          <Property Name="TLDYO_CustomerOrder_Fk" Type="Int32" />
+        </EntityType>
+        <EntityType Name="TLDYE_DyeOrderFabric">
+          <Key>
+            <PropertyRef Name="TLDYEF_Pk" />
+          </Key>
+          <Property Name="TLDYEF_Pk" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TLDYEF_OrderDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="TLDYEF_Customer_FK" Type="Int32" Nullable="false" />
+          <Property Name="TLDYEF_DyeWeek" Type="Int32" Nullable="false" />
+          <Property Name="TLDYEF_PLoss" Type="Decimal" Nullable="false" Precision="18" Scale="4" />
+          <Property Name="TLDYEF_CustomerOrder" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="TLDYEF_DyeOrderNo" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="TLDYEF_Greige_FK" Type="Int32" Nullable="false" />
+          <Property Name="TLDYEF_Yield" Type="Decimal" Nullable="false" Precision="18" Scale="4" />
+          <Property Name="TLDYEF_Quantity" Type="Decimal" Nullable="false" Precision="18" Scale="4" />
+          <Property Name="TLDYEF_ProjectedLoss" Type="Decimal" Nullable="false" Precision="18" Scale="4" />
+          <Property Name="TLDYEF_Demand" Type="Decimal" Nullable="false" Precision="18" Scale="4" />
+          <Property Name="TLDYEF_Colours_FK" Type="Int32" Nullable="false" />
+          <Property Name="TLDYEF_LineNo" Type="Int32" Nullable="false" />
+          <Property Name="TLDYEF_Closed" Type="Boolean" Nullable="false" />
+          <Property Name="TLDYEF_FabricOrder_FK" Type="Int32" Nullable="false" />
+          <Property Name="TLDYEF_DyeOrderNumeric" Type="Int32" Nullable="false" />
+          <Property Name="TLDYEF_Body" Type="Boolean" Nullable="false" />
+          <Property Name="TLDYEF_BatchedToDate" Type="Decimal" Nullable="false" Precision="18" Scale="4" />
+        </EntityType>
+        <EntityType Name="TLDYE_DyeTransactions">
+          <Key>
+            <PropertyRef Name="TLDYET_Pk" />
+          </Key>
+          <Property Name="TLDYET_Pk" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TLDYET_Date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TLDYET_RejectDate" Type="DateTime" Precision="0" />
+          <Property Name="TLDYET_BatchNo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="TLDYET_SequenceNo" Type="Int32" Nullable="false" />
+          <Property Name="TLDYET_TransactionNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="TLDYET_TransactionType" Type="Int32" Nullable="false" />
+          <Property Name="TLDYET_BatchWeight" Type="Decimal" Nullable="false" Precision="18" Scale="4" />
+          <Property Name="TLDYET_TransactionWeight" Type="Decimal" Nullable="false" Precision="18" Scale="4" />
+          <Property Name="TLDYET_AuthorisedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="TLDYET_Batch_FK" Type="Int32" Nullable="false" />
+          <Property Name="TLDYET_Customer_FK" Type="Int32" />
+          <Property Name="TLDYET_CurrentStore_FK" Type="Int32" Nullable="false" />
+          <Property Name="TLDYET_Adjustment_Reasons" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="TLDYET_Stage" Type="Int32" Nullable="false" />
+          <Property Name="TLDYET_Rejected" Type="Boolean" Nullable="false" />
+          <Property Name="TLDYET_WriteOff" Type="Boolean" />
+          <Property Name="TLDYET_FabricSales" Type="Boolean" Nullable="false" />
+          <Property Name="TLDYET_CustomerOrderNo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="TLDYET_MeasurementField_FK" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TLDYE_NonComplianceConsDetail">
+          <Key>
+            <PropertyRef Name="DYENCCON_Pk" />
+          </Key>
+          <Property Name="DYENCCON_Pk" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DYENCCON_ConNumber" Type="Int32" Nullable="false" />
+          <Property Name="DYENCCON_BatchNo_FK" Type="Int32" Nullable="false" />
+          <Property Name="DYENCCON_Code_FK" Type="Int32" Nullable="false" />
+          <Property Name="DYENCCON_ConOrNon" Type="Boolean" Nullable="false" />
+          <Property Name="DYENCCON_Qunatities" Type="Decimal" Nullable="false" Precision="18" Scale="4" />
+          <Property Name="DYENCCON_LiqCalc" Type="Boolean" Nullable="false" />
+          <Property Name="DYENCCON_LiqRatio" Type="Decimal" Nullable="false" Precision="18" Scale="4" />
+        </EntityType>
+        <EntityType Name="TLDYE_NonComplianceAnalysis">
+          <Key>
+            <PropertyRef Name="TLDYEDC_Pk" />
+          </Key>
+          <Property Name="TLDYEDC_Pk" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TLDYEDC_BatchNo" Type="Int32" Nullable="false" />
+          <Property Name="TLDYEDC_NCStage" Type="Int32" Nullable="false" />
+          <Property Name="TLDYEDC_PieceNo_FK" Type="Int32" Nullable="false" />
+          <Property Name="TLDYEDC_Code_FK" Type="Int32" Nullable="false" />
+          <Property Name="TLDYEDC_Value" Type="Decimal" Nullable="false" Precision="18" Scale="4" />
+          <Property Name="TLDYEDC_Operator_FK" Type="Int32" Nullable="false" />
+          <Property Name="TLDYEDC_Pass" Type="Boolean" Nullable="false" />
+          <Property Name="TLDYEDC_Date" Type="DateTime" Precision="0" />
+          <Property Name="TLDYEDC_Quality_FK" Type="Int32" />
+        </EntityType>
+        <EntityType Name="TLADM_PanelAttributes">
+          <Key>
+            <PropertyRef Name="Pan_PK" />
+          </Key>
+          <Property Name="Pan_PK" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Pan_Description" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Pan_Discontinued" Type="Boolean" />
+          <Property Name="Pan_Discontinued_Date" Type="DateTime" Precision="0" />
+          <Property Name="Pan_PowerN" Type="Int32" Nullable="false" />
+          <Property Name="Pan_ShowQty" Type="Boolean" Nullable="false" />
+          <Property Name="Pan_Single_Colour" Type="Boolean" Nullable="false" />
+          <Property Name="Pan_Single_Colour_FK" Type="Int32" />
+          <Property Name="Pan_Style_FK" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TLDYE_ConsumableSOH">
+          <Key>
+            <PropertyRef Name="DYCSH_Pk" />
+          </Key>
+          <Property Name="DYCSH_Pk" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DYCSH_Consumable_FK" Type="Int32" Nullable="false" />
+          <Property Name="DYCSH_WhseStore_FK" Type="Int32" />
+          <Property Name="DYCSH_StockOnHand" Type="Decimal" Nullable="false" Precision="18" Scale="4" />
+          <Property Name="DYCSH_TransNumber" Type="Int32" Nullable="false" />
+          <Property Name="DYCSH_DyeKitchen" Type="Boolean" Nullable="false" />
+          <Property Name="DYCSH_Quarantine" Type="Boolean" Nullable="false" />
+          <Property Name="DYCSH_Pass" Type="Boolean" Nullable="false" />
+          <Property Name="DYCSH_QuarantineStore_FK" Type="Int32" Nullable="false" />
+          <Property Name="DYCSH_DyeKitchen_FK" Type="Int32" />
+          <Property Name="DYCSH_SOHQuar" Type="Decimal" Nullable="false" Precision="18" Scale="4" />
+          <Property Name="DYCSH_SOHKitchen" Type="Decimal" Nullable="false" Precision="18" Scale="4" />
+          <Property Name="DYCSH_K_Opening" Type="Decimal" Nullable="false" Precision="18" Scale="4" />
+          <Property Name="DYCSH_K_Closing" Type="Decimal" Nullable="false" Precision="18" Scale="4" />
+          <Property Name="DYCSH_K_Used" Type="Decimal" Nullable="false" Precision="18" Scale="4" />
+          <Property Name="DCSH_K_Adjusted" Type="Decimal" Nullable="false" Precision="18" Scale="4" />
+        </EntityType>
+        <EntityType Name="TLADM_Colours">
+          <Key>
+            <PropertyRef Name="Col_Id" />
+          </Key>
+          <Property Name="Col_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Col_Description" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Col_PowerN" Type="Int32" Nullable="false" />
+          <Property Name="Col_Discontinued" Type="Boolean" />
+          <Property Name="Col_Discontinued_Date" Type="DateTime" Precision="0" />
+          <Property Name="Col_FinishedCode" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="Col_HasAuxColors" Type="Boolean" Nullable="false" />
+          <Property Name="Col_AuxPowerN" Type="Int32" Nullable="false" />
+          <Property Name="Col_Display" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Col_StandardTime" Type="Decimal" Nullable="false" Precision="18" Scale="4" />
+          <Property Name="Col_Benchmark" Type="Boolean" Nullable="false" />
+          <Property Name="Col_Removed_InSession" Type="Boolean" Nullable="false" />
+          <Property Name="Col_Added_InSession" Type="Boolean" Nullable="false" />
+          <Property Name="Col_Padding" Type="Boolean" />
+          <Property Name="Col_Pastel" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="Col_Ratio" Type="Decimal" Nullable="false" Precision="18" Scale="4" />
+          <Property Name="Col_ColCosting" Type="Boolean" Nullable="false" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -7004,24 +7084,6 @@
                 <ScalarProperty Name="Addit_Address" ColumnName="Addit_Address" />
                 <ScalarProperty Name="Addit_Description" ColumnName="Addit_Description" />
                 <ScalarProperty Name="Addit_Pk" ColumnName="Addit_Pk" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="TLADM_PanelAttributes">
-            <EntityTypeMapping TypeName="TTI2Model.TLADM_PanelAttributes">
-              <MappingFragment StoreEntitySet="TLADM_PanelAttributes">
-                <ScalarProperty Name="Pan_FabricAtributes_FK" ColumnName="Pan_FabricAtributes_FK" />
-                <ScalarProperty Name="Pan_ShowQty" ColumnName="Pan_ShowQty" />
-                <ScalarProperty Name="Pan_PreferedSupplier_FK" ColumnName="Pan_PreferedSupplier_FK" />
-                <ScalarProperty Name="Pan_UOM_FK" ColumnName="Pan_UOM_FK" />
-                <ScalarProperty Name="Pan_Blocked" ColumnName="Pan_Blocked" />
-                <ScalarProperty Name="Pan_Size_FK" ColumnName="Pan_Size_FK" />
-                <ScalarProperty Name="Pan_Grade" ColumnName="Pan_Grade" />
-                <ScalarProperty Name="Pan_PowerN" ColumnName="Pan_PowerN" />
-                <ScalarProperty Name="Pan_Discontinued_Date" ColumnName="Pan_Discontinued_Date" />
-                <ScalarProperty Name="Pan_Discontinued" ColumnName="Pan_Discontinued" />
-                <ScalarProperty Name="Pan_Description" ColumnName="Pan_Description" />
-                <ScalarProperty Name="Pan_PK" ColumnName="Pan_PK" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -7647,45 +7709,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="TLDYE_NonComplianceAnalysis">
-            <EntityTypeMapping TypeName="TTI2Model.TLDYE_NonComplianceAnalysis">
-              <MappingFragment StoreEntitySet="TLDYE_NonComplianceAnalysis">
-                <ScalarProperty Name="TLDYEDC_Date" ColumnName="TLDYEDC_Date" />
-                <ScalarProperty Name="TLDYEDC_Pass" ColumnName="TLDYEDC_Pass" />
-                <ScalarProperty Name="TLDYEDC_Operator_FK" ColumnName="TLDYEDC_Operator_FK" />
-                <ScalarProperty Name="TLDYEDC_Value" ColumnName="TLDYEDC_Value" />
-                <ScalarProperty Name="TLDYEDC_Code_FK" ColumnName="TLDYEDC_Code_FK" />
-                <ScalarProperty Name="TLDYEDC_PieceNo_FK" ColumnName="TLDYEDC_PieceNo_FK" />
-                <ScalarProperty Name="TLDYEDC_NCStage" ColumnName="TLDYEDC_NCStage" />
-                <ScalarProperty Name="TLDYEDC_BatchNo" ColumnName="TLDYEDC_BatchNo" />
-                <ScalarProperty Name="TLDYEDC_Pk" ColumnName="TLDYEDC_Pk" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="TLDYE_DyeOrder">
-            <EntityTypeMapping TypeName="TTI2Model.TLDYE_DyeOrder">
-              <MappingFragment StoreEntitySet="TLDYE_DyeOrder">
-                <ScalarProperty Name="TLDYO_Closed" ColumnName="TLDYO_Closed" />
-                <ScalarProperty Name="TLDYO_Notes" ColumnName="TLDYO_Notes" />
-                <ScalarProperty Name="TLDYO_GarmOrFab" ColumnName="TLDYO_GarmOrFab" />
-                <ScalarProperty Name="TLDYO_OrderDate" ColumnName="TLDYO_OrderDate" />
-                <ScalarProperty Name="TLDYO_CMTPLoss" ColumnName="TLDYO_CMTPLoss" />
-                <ScalarProperty Name="TLDYO_CutPLoss" ColumnName="TLDYO_CutPLoss" />
-                <ScalarProperty Name="TLDYO_DyePLoss" ColumnName="TLDYO_DyePLoss" />
-                <ScalarProperty Name="TLDYO_CMTReqWeek" ColumnName="TLDYO_CMTReqWeek" />
-                <ScalarProperty Name="TLDYO_CutReqWeek" ColumnName="TLDYO_CutReqWeek" />
-                <ScalarProperty Name="TLDYO_DyeReqWeek" ColumnName="TLDYO_DyeReqWeek" />
-                <ScalarProperty Name="TLDYO_Label_FK" ColumnName="TLDYO_Label_FK" />
-                <ScalarProperty Name="TLDYO_Colour_FK" ColumnName="TLDYO_Colour_FK" />
-                <ScalarProperty Name="TLDYO_Greige_FK" ColumnName="TLDYO_Greige_FK" />
-                <ScalarProperty Name="TLDYO_Style_FK" ColumnName="TLDYO_Style_FK" />
-                <ScalarProperty Name="TLDYO_Customer_FK" ColumnName="TLDYO_Customer_FK" />
-                <ScalarProperty Name="TLDYO_OrderNum" ColumnName="TLDYO_OrderNum" />
-                <ScalarProperty Name="TLDYO_DyeOrderNum" ColumnName="TLDYO_DyeOrderNum" />
-                <ScalarProperty Name="TLDYO_Pk" ColumnName="TLDYO_Pk" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="TLCUT_CutSheetReceiptBoxes">
             <EntityTypeMapping TypeName="TTI2Model.TLCUT_CutSheetReceiptBoxes">
               <MappingFragment StoreEntitySet="TLCUT_CutSheetReceiptBoxes">
@@ -7813,6 +7836,7 @@
           <EntitySetMapping Name="TLCUT_CutSheetDetail">
             <EntityTypeMapping TypeName="TTI2Model.TLCUT_CutSheetDetail">
               <MappingFragment StoreEntitySet="TLCUT_CutSheetDetail">
+                <ScalarProperty Name="TLCUTSHD_Body" ColumnName="TLCUTSHD_Body" />
                 <ScalarProperty Name="TLCUTSHD_NettWeight" ColumnName="TLCUTSHD_NettWeight" />
                 <ScalarProperty Name="TLCutSHD_Transaction_Type" ColumnName="TLCutSHD_Transaction_Type" />
                 <ScalarProperty Name="TLCutSHD_CurrentStore_FK" ColumnName="TLCutSHD_CurrentStore_FK" />
@@ -8302,6 +8326,7 @@
           <EntitySetMapping Name="TLDYE_ReceipeGreigeQual">
             <EntityTypeMapping TypeName="TTI2Model.TLDYE_ReceipeGreigeQual">
               <MappingFragment StoreEntitySet="TLDYE_ReceipeGreigeQual">
+                <ScalarProperty Name="TLGQ_ColourChart_FK" ColumnName="TLGQ_ColourChart_FK" />
                 <ScalarProperty Name="TLGQ_GreigeQuality_FK" ColumnName="TLGQ_GreigeQuality_FK" />
                 <ScalarProperty Name="TLGQ_ReceipeDef_FK" ColumnName="TLGQ_ReceipeDef_FK" />
                 <ScalarProperty Name="TLGQ_Pk" ColumnName="TLGQ_Pk" />
@@ -8318,20 +8343,6 @@
                 <ScalarProperty Name="TLDYE_DefineDescription" ColumnName="TLDYE_DefineDescription" />
                 <ScalarProperty Name="TLDYE_DefineCode" ColumnName="TLDYE_DefineCode" />
                 <ScalarProperty Name="TLDYE_DefinePk" ColumnName="TLDYE_DefinePk" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="TLDYE_NonComplianceConsDetail">
-            <EntityTypeMapping TypeName="TTI2Model.TLDYE_NonComplianceConsDetail">
-              <MappingFragment StoreEntitySet="TLDYE_NonComplianceConsDetail">
-                <ScalarProperty Name="DYENCCON_LiqRatio" ColumnName="DYENCCON_LiqRatio" />
-                <ScalarProperty Name="DYENCCON_LiqCalc" ColumnName="DYENCCON_LiqCalc" />
-                <ScalarProperty Name="DYENCCON_Qunatities" ColumnName="DYENCCON_Qunatities" />
-                <ScalarProperty Name="DYENCCON_ConOrNon" ColumnName="DYENCCON_ConOrNon" />
-                <ScalarProperty Name="DYENCCON_Code_FK" ColumnName="DYENCCON_Code_FK" />
-                <ScalarProperty Name="DYENCCON_BatchNo_FK" ColumnName="DYENCCON_BatchNo_FK" />
-                <ScalarProperty Name="DYENCCON_ConNumber" ColumnName="DYENCCON_ConNumber" />
-                <ScalarProperty Name="DYENCCON_Pk" ColumnName="DYENCCON_Pk" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -8371,24 +8382,6 @@
                 <ScalarProperty Name="StyTrim_Trim_Fk" ColumnName="StyTrim_Trim_Fk" />
                 <ScalarProperty Name="StyTrim_Styles_Fk" ColumnName="StyTrim_Styles_Fk" />
                 <ScalarProperty Name="StyTrim_Pk" ColumnName="StyTrim_Pk" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="TLDYE_ConsumableSOH">
-            <EntityTypeMapping TypeName="TTI2Model.TLDYE_ConsumableSOH">
-              <MappingFragment StoreEntitySet="TLDYE_ConsumableSOH">
-                <ScalarProperty Name="DYCSH_SOHKitchen" ColumnName="DYCSH_SOHKitchen" />
-                <ScalarProperty Name="DYCSH_SOHQuar" ColumnName="DYCSH_SOHQuar" />
-                <ScalarProperty Name="DYCSH_DyeKitchen_FK" ColumnName="DYCSH_DyeKitchen_FK" />
-                <ScalarProperty Name="DYCSH_QuarantineStore_FK" ColumnName="DYCSH_QuarantineStore_FK" />
-                <ScalarProperty Name="DYCSH_Pass" ColumnName="DYCSH_Pass" />
-                <ScalarProperty Name="DYCSH_Quarantine" ColumnName="DYCSH_Quarantine" />
-                <ScalarProperty Name="DYCSH_DyeKitchen" ColumnName="DYCSH_DyeKitchen" />
-                <ScalarProperty Name="DYCSH_TransNumber" ColumnName="DYCSH_TransNumber" />
-                <ScalarProperty Name="DYCSH_StockOnHand" ColumnName="DYCSH_StockOnHand" />
-                <ScalarProperty Name="DYCSH_WhseStore_FK" ColumnName="DYCSH_WhseStore_FK" />
-                <ScalarProperty Name="DYCSH_Consumable_FK" ColumnName="DYCSH_Consumable_FK" />
-                <ScalarProperty Name="DYCSH_Pk" ColumnName="DYCSH_Pk" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -8762,32 +8755,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="TLDYE_DyeTransactions">
-            <EntityTypeMapping TypeName="TTI2Model.TLDYE_DyeTransactions">
-              <MappingFragment StoreEntitySet="TLDYE_DyeTransactions">
-                <ScalarProperty Name="TLDYET_MeasurementField_FK" ColumnName="TLDYET_MeasurementField_FK" />
-                <ScalarProperty Name="TLDYET_CustomerOrderNo" ColumnName="TLDYET_CustomerOrderNo" />
-                <ScalarProperty Name="TLDYET_FabricSales" ColumnName="TLDYET_FabricSales" />
-                <ScalarProperty Name="TLDYET_WriteOff" ColumnName="TLDYET_WriteOff" />
-                <ScalarProperty Name="TLDYET_Rejected" ColumnName="TLDYET_Rejected" />
-                <ScalarProperty Name="TLDYET_Stage" ColumnName="TLDYET_Stage" />
-                <ScalarProperty Name="TLDYET_Adjustment_Reasons" ColumnName="TLDYET_Adjustment_Reasons" />
-                <ScalarProperty Name="TLDYET_CurrentStore_FK" ColumnName="TLDYET_CurrentStore_FK" />
-                <ScalarProperty Name="TLDYET_Customer_FK" ColumnName="TLDYET_Customer_FK" />
-                <ScalarProperty Name="TLDYET_Batch_FK" ColumnName="TLDYET_Batch_FK" />
-                <ScalarProperty Name="TLDYET_AuthorisedBy" ColumnName="TLDYET_AuthorisedBy" />
-                <ScalarProperty Name="TLDYET_TransactionWeight" ColumnName="TLDYET_TransactionWeight" />
-                <ScalarProperty Name="TLDYET_BatchWeight" ColumnName="TLDYET_BatchWeight" />
-                <ScalarProperty Name="TLDYET_TransactionType" ColumnName="TLDYET_TransactionType" />
-                <ScalarProperty Name="TLDYET_TransactionNumber" ColumnName="TLDYET_TransactionNumber" />
-                <ScalarProperty Name="TLDYET_SequenceNo" ColumnName="TLDYET_SequenceNo" />
-                <ScalarProperty Name="TLDYET_BatchNo" ColumnName="TLDYET_BatchNo" />
-                <ScalarProperty Name="TLDYET_RejectDate" ColumnName="TLDYET_RejectDate" />
-                <ScalarProperty Name="TLDYET_Date" ColumnName="TLDYET_Date" />
-                <ScalarProperty Name="TLDYET_Pk" ColumnName="TLDYET_Pk" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="TLCMT_UnitProductionTargets">
             <EntityTypeMapping TypeName="TTI2Model.TLCMT_UnitProductionTargets">
               <MappingFragment StoreEntitySet="TLCMT_UnitProductionTargets">
@@ -9082,6 +9049,7 @@
           <EntitySetMapping Name="TLDYE_DyeBatch">
             <EntityTypeMapping TypeName="TTI2Model.TLDYE_DyeBatch">
               <MappingFragment StoreEntitySet="TLDYE_DyeBatch">
+                <ScalarProperty Name="DYEB_FabicSales" ColumnName="DYEB_FabicSales" />
                 <ScalarProperty Name="DYEB_Stage4" ColumnName="DYEB_Stage4" />
                 <ScalarProperty Name="DYEB_QAInspected" ColumnName="DYEB_QAInspected" />
                 <ScalarProperty Name="DYEB_OnHold_Reason" ColumnName="DYEB_OnHold_Reason" />
@@ -9446,6 +9414,10 @@
           <EntitySetMapping Name="TLDYE_DyeBatchDetails">
             <EntityTypeMapping TypeName="TTI2Model.TLDYE_DyeBatchDetails">
               <MappingFragment StoreEntitySet="TLDYE_DyeBatchDetails">
+                <ScalarProperty Name="DYEBO_FabricDespatched" ColumnName="DYEBO_FabricDespatched" />
+                <ScalarProperty Name="DYEBO_SaleConfirmed" ColumnName="DYEBO_SaleConfirmed" />
+                <ScalarProperty Name="DYEBO_PendingDelivery" ColumnName="DYEBO_PendingDelivery" />
+                <ScalarProperty Name="DYEBO_PurchaseOrderDetail_FK" ColumnName="DYEBO_PurchaseOrderDetail_FK" />
                 <ScalarProperty Name="DYEBO_FWAtCutting" ColumnName="DYEBO_FWAtCutting" />
                 <ScalarProperty Name="DYEBO_Notes" ColumnName="DYEBO_Notes" />
                 <ScalarProperty Name="DYEBO_WasRejected" ColumnName="DYEBO_WasRejected" />
@@ -9609,27 +9581,6 @@
                 <ScalarProperty Name="TLBIG_TransNumber" ColumnName="TLBIG_TransNumber" />
                 <ScalarProperty Name="TLBIG_TransDate" ColumnName="TLBIG_TransDate" />
                 <ScalarProperty Name="TLBIG_Pk" ColumnName="TLBIG_Pk" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="TLADM_Colours">
-            <EntityTypeMapping TypeName="TTI2Model.TLADM_Colours">
-              <MappingFragment StoreEntitySet="TLADM_Colours">
-                <ScalarProperty Name="Col_Pastel" ColumnName="Col_Pastel" />
-                <ScalarProperty Name="Col_Padding" ColumnName="Col_Padding" />
-                <ScalarProperty Name="Col_Added_InSession" ColumnName="Col_Added_InSession" />
-                <ScalarProperty Name="Col_Removed_InSession" ColumnName="Col_Removed_InSession" />
-                <ScalarProperty Name="Col_Benchmark" ColumnName="Col_Benchmark" />
-                <ScalarProperty Name="Col_StandardTime" ColumnName="Col_StandardTime" />
-                <ScalarProperty Name="Col_Display" ColumnName="Col_Display" />
-                <ScalarProperty Name="Col_AuxPowerN" ColumnName="Col_AuxPowerN" />
-                <ScalarProperty Name="Col_HasAuxColors" ColumnName="Col_HasAuxColors" />
-                <ScalarProperty Name="Col_FinishedCode" ColumnName="Col_FinishedCode" />
-                <ScalarProperty Name="Col_Discontinued_Date" ColumnName="Col_Discontinued_Date" />
-                <ScalarProperty Name="Col_Discontinued" ColumnName="Col_Discontinued" />
-                <ScalarProperty Name="Col_PowerN" ColumnName="Col_PowerN" />
-                <ScalarProperty Name="Col_Description" ColumnName="Col_Description" />
-                <ScalarProperty Name="Col_Id" ColumnName="Col_Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -9797,33 +9748,10 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="TLDYE_DyeOrderFabric">
-            <EntityTypeMapping TypeName="TTI2Model.TLDYE_DyeOrderFabric">
-              <MappingFragment StoreEntitySet="TLDYE_DyeOrderFabric">
-                <ScalarProperty Name="TLDYEF_Body" ColumnName="TLDYEF_Body" />
-                <ScalarProperty Name="TLDYEF_DyeOrderNumeric" ColumnName="TLDYEF_DyeOrderNumeric" />
-                <ScalarProperty Name="TLDYEF_FabricOrder_FK" ColumnName="TLDYEF_FabricOrder_FK" />
-                <ScalarProperty Name="TLDYEF_Closed" ColumnName="TLDYEF_Closed" />
-                <ScalarProperty Name="TLDYEF_LineNo" ColumnName="TLDYEF_LineNo" />
-                <ScalarProperty Name="TLDYEF_Colours_FK" ColumnName="TLDYEF_Colours_FK" />
-                <ScalarProperty Name="TLDYEF_Demand" ColumnName="TLDYEF_Demand" />
-                <ScalarProperty Name="TLDYEF_ProjectedLoss" ColumnName="TLDYEF_ProjectedLoss" />
-                <ScalarProperty Name="TLDYEF_Quantity" ColumnName="TLDYEF_Quantity" />
-                <ScalarProperty Name="TLDYEF_Yield" ColumnName="TLDYEF_Yield" />
-                <ScalarProperty Name="TLDYEF_Greige_FK" ColumnName="TLDYEF_Greige_FK" />
-                <ScalarProperty Name="TLDYEF_DyeOrderNo" ColumnName="TLDYEF_DyeOrderNo" />
-                <ScalarProperty Name="TLDYEF_CustomerOrder" ColumnName="TLDYEF_CustomerOrder" />
-                <ScalarProperty Name="TLDYEF_PLoss" ColumnName="TLDYEF_PLoss" />
-                <ScalarProperty Name="TLDYEF_DyeWeek" ColumnName="TLDYEF_DyeWeek" />
-                <ScalarProperty Name="TLDYEF_Customer_FK" ColumnName="TLDYEF_Customer_FK" />
-                <ScalarProperty Name="TLDYEF_OrderDate" ColumnName="TLDYEF_OrderDate" />
-                <ScalarProperty Name="TLDYEF_Pk" ColumnName="TLDYEF_Pk" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="TLKNI_GreigeProduction">
             <EntityTypeMapping TypeName="TTI2Model.TLKNI_GreigeProduction">
               <MappingFragment StoreEntitySet="TLKNI_GreigeProduction">
+                <ScalarProperty Name="GreigeP_PieceWidth" ColumnName="GreigeP_PieceWidth" />
                 <ScalarProperty Name="GreigeP_VarianceDiskWeight" ColumnName="GreigeP_VarianceDiskWeight" />
                 <ScalarProperty Name="GreigeP_DskWeight" ColumnName="GreigeP_DskWeight" />
                 <ScalarProperty Name="GreigeP_WarningMessage" ColumnName="GreigeP_WarningMessage" />
@@ -9870,6 +9798,172 @@
                 <ScalarProperty Name="GreigeP_Greige_Fk" ColumnName="GreigeP_Greige_Fk" />
                 <ScalarProperty Name="GreigeP_KnitO_Fk" ColumnName="GreigeP_KnitO_Fk" />
                 <ScalarProperty Name="GreigeP_Pk" ColumnName="GreigeP_Pk" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TLDYE_DyeOrder">
+            <EntityTypeMapping TypeName="TTI2Model.TLDYE_DyeOrder">
+              <MappingFragment StoreEntitySet="TLDYE_DyeOrder">
+                <ScalarProperty Name="TLDYO_CustomerOrder_Fk" ColumnName="TLDYO_CustomerOrder_Fk" />
+                <ScalarProperty Name="TLDYO_Closed" ColumnName="TLDYO_Closed" />
+                <ScalarProperty Name="TLDYO_Notes" ColumnName="TLDYO_Notes" />
+                <ScalarProperty Name="TLDYO_GarmOrFab" ColumnName="TLDYO_GarmOrFab" />
+                <ScalarProperty Name="TLDYO_OrderDate" ColumnName="TLDYO_OrderDate" />
+                <ScalarProperty Name="TLDYO_CMTPLoss" ColumnName="TLDYO_CMTPLoss" />
+                <ScalarProperty Name="TLDYO_CutPLoss" ColumnName="TLDYO_CutPLoss" />
+                <ScalarProperty Name="TLDYO_DyePLoss" ColumnName="TLDYO_DyePLoss" />
+                <ScalarProperty Name="TLDYO_CMTReqWeek" ColumnName="TLDYO_CMTReqWeek" />
+                <ScalarProperty Name="TLDYO_CutReqWeek" ColumnName="TLDYO_CutReqWeek" />
+                <ScalarProperty Name="TLDYO_DyeReqWeek" ColumnName="TLDYO_DyeReqWeek" />
+                <ScalarProperty Name="TLDYO_Label_FK" ColumnName="TLDYO_Label_FK" />
+                <ScalarProperty Name="TLDYO_Colour_FK" ColumnName="TLDYO_Colour_FK" />
+                <ScalarProperty Name="TLDYO_Greige_FK" ColumnName="TLDYO_Greige_FK" />
+                <ScalarProperty Name="TLDYO_Style_FK" ColumnName="TLDYO_Style_FK" />
+                <ScalarProperty Name="TLDYO_Customer_FK" ColumnName="TLDYO_Customer_FK" />
+                <ScalarProperty Name="TLDYO_OrderNum" ColumnName="TLDYO_OrderNum" />
+                <ScalarProperty Name="TLDYO_DyeOrderNum" ColumnName="TLDYO_DyeOrderNum" />
+                <ScalarProperty Name="TLDYO_Pk" ColumnName="TLDYO_Pk" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TLDYE_DyeOrderFabric">
+            <EntityTypeMapping TypeName="TTI2Model.TLDYE_DyeOrderFabric">
+              <MappingFragment StoreEntitySet="TLDYE_DyeOrderFabric">
+                <ScalarProperty Name="TLDYEF_BatchedToDate" ColumnName="TLDYEF_BatchedToDate" />
+                <ScalarProperty Name="TLDYEF_Body" ColumnName="TLDYEF_Body" />
+                <ScalarProperty Name="TLDYEF_DyeOrderNumeric" ColumnName="TLDYEF_DyeOrderNumeric" />
+                <ScalarProperty Name="TLDYEF_FabricOrder_FK" ColumnName="TLDYEF_FabricOrder_FK" />
+                <ScalarProperty Name="TLDYEF_Closed" ColumnName="TLDYEF_Closed" />
+                <ScalarProperty Name="TLDYEF_LineNo" ColumnName="TLDYEF_LineNo" />
+                <ScalarProperty Name="TLDYEF_Colours_FK" ColumnName="TLDYEF_Colours_FK" />
+                <ScalarProperty Name="TLDYEF_Demand" ColumnName="TLDYEF_Demand" />
+                <ScalarProperty Name="TLDYEF_ProjectedLoss" ColumnName="TLDYEF_ProjectedLoss" />
+                <ScalarProperty Name="TLDYEF_Quantity" ColumnName="TLDYEF_Quantity" />
+                <ScalarProperty Name="TLDYEF_Yield" ColumnName="TLDYEF_Yield" />
+                <ScalarProperty Name="TLDYEF_Greige_FK" ColumnName="TLDYEF_Greige_FK" />
+                <ScalarProperty Name="TLDYEF_DyeOrderNo" ColumnName="TLDYEF_DyeOrderNo" />
+                <ScalarProperty Name="TLDYEF_CustomerOrder" ColumnName="TLDYEF_CustomerOrder" />
+                <ScalarProperty Name="TLDYEF_PLoss" ColumnName="TLDYEF_PLoss" />
+                <ScalarProperty Name="TLDYEF_DyeWeek" ColumnName="TLDYEF_DyeWeek" />
+                <ScalarProperty Name="TLDYEF_Customer_FK" ColumnName="TLDYEF_Customer_FK" />
+                <ScalarProperty Name="TLDYEF_OrderDate" ColumnName="TLDYEF_OrderDate" />
+                <ScalarProperty Name="TLDYEF_Pk" ColumnName="TLDYEF_Pk" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TLDYE_DyeTransactions">
+            <EntityTypeMapping TypeName="TTI2Model.TLDYE_DyeTransactions">
+              <MappingFragment StoreEntitySet="TLDYE_DyeTransactions">
+                <ScalarProperty Name="TLDYET_MeasurementField_FK" ColumnName="TLDYET_MeasurementField_FK" />
+                <ScalarProperty Name="TLDYET_CustomerOrderNo" ColumnName="TLDYET_CustomerOrderNo" />
+                <ScalarProperty Name="TLDYET_FabricSales" ColumnName="TLDYET_FabricSales" />
+                <ScalarProperty Name="TLDYET_WriteOff" ColumnName="TLDYET_WriteOff" />
+                <ScalarProperty Name="TLDYET_Rejected" ColumnName="TLDYET_Rejected" />
+                <ScalarProperty Name="TLDYET_Stage" ColumnName="TLDYET_Stage" />
+                <ScalarProperty Name="TLDYET_Adjustment_Reasons" ColumnName="TLDYET_Adjustment_Reasons" />
+                <ScalarProperty Name="TLDYET_CurrentStore_FK" ColumnName="TLDYET_CurrentStore_FK" />
+                <ScalarProperty Name="TLDYET_Customer_FK" ColumnName="TLDYET_Customer_FK" />
+                <ScalarProperty Name="TLDYET_Batch_FK" ColumnName="TLDYET_Batch_FK" />
+                <ScalarProperty Name="TLDYET_AuthorisedBy" ColumnName="TLDYET_AuthorisedBy" />
+                <ScalarProperty Name="TLDYET_TransactionWeight" ColumnName="TLDYET_TransactionWeight" />
+                <ScalarProperty Name="TLDYET_BatchWeight" ColumnName="TLDYET_BatchWeight" />
+                <ScalarProperty Name="TLDYET_TransactionType" ColumnName="TLDYET_TransactionType" />
+                <ScalarProperty Name="TLDYET_TransactionNumber" ColumnName="TLDYET_TransactionNumber" />
+                <ScalarProperty Name="TLDYET_SequenceNo" ColumnName="TLDYET_SequenceNo" />
+                <ScalarProperty Name="TLDYET_BatchNo" ColumnName="TLDYET_BatchNo" />
+                <ScalarProperty Name="TLDYET_RejectDate" ColumnName="TLDYET_RejectDate" />
+                <ScalarProperty Name="TLDYET_Date" ColumnName="TLDYET_Date" />
+                <ScalarProperty Name="TLDYET_Pk" ColumnName="TLDYET_Pk" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TLDYE_NonComplianceConsDetail">
+            <EntityTypeMapping TypeName="TTI2Model.TLDYE_NonComplianceConsDetail">
+              <MappingFragment StoreEntitySet="TLDYE_NonComplianceConsDetail">
+                <ScalarProperty Name="DYENCCON_LiqRatio" ColumnName="DYENCCON_LiqRatio" />
+                <ScalarProperty Name="DYENCCON_LiqCalc" ColumnName="DYENCCON_LiqCalc" />
+                <ScalarProperty Name="DYENCCON_Qunatities" ColumnName="DYENCCON_Qunatities" />
+                <ScalarProperty Name="DYENCCON_ConOrNon" ColumnName="DYENCCON_ConOrNon" />
+                <ScalarProperty Name="DYENCCON_Code_FK" ColumnName="DYENCCON_Code_FK" />
+                <ScalarProperty Name="DYENCCON_BatchNo_FK" ColumnName="DYENCCON_BatchNo_FK" />
+                <ScalarProperty Name="DYENCCON_ConNumber" ColumnName="DYENCCON_ConNumber" />
+                <ScalarProperty Name="DYENCCON_Pk" ColumnName="DYENCCON_Pk" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TLDYE_NonComplianceAnalysis">
+            <EntityTypeMapping TypeName="TTI2Model.TLDYE_NonComplianceAnalysis">
+              <MappingFragment StoreEntitySet="TLDYE_NonComplianceAnalysis">
+                <ScalarProperty Name="TLDYEDC_Quality_FK" ColumnName="TLDYEDC_Quality_FK" />
+                <ScalarProperty Name="TLDYEDC_Date" ColumnName="TLDYEDC_Date" />
+                <ScalarProperty Name="TLDYEDC_Pass" ColumnName="TLDYEDC_Pass" />
+                <ScalarProperty Name="TLDYEDC_Operator_FK" ColumnName="TLDYEDC_Operator_FK" />
+                <ScalarProperty Name="TLDYEDC_Value" ColumnName="TLDYEDC_Value" />
+                <ScalarProperty Name="TLDYEDC_Code_FK" ColumnName="TLDYEDC_Code_FK" />
+                <ScalarProperty Name="TLDYEDC_PieceNo_FK" ColumnName="TLDYEDC_PieceNo_FK" />
+                <ScalarProperty Name="TLDYEDC_NCStage" ColumnName="TLDYEDC_NCStage" />
+                <ScalarProperty Name="TLDYEDC_BatchNo" ColumnName="TLDYEDC_BatchNo" />
+                <ScalarProperty Name="TLDYEDC_Pk" ColumnName="TLDYEDC_Pk" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TLADM_PanelAttributes">
+            <EntityTypeMapping TypeName="TTI2Model.TLADM_PanelAttributes">
+              <MappingFragment StoreEntitySet="TLADM_PanelAttributes">
+                <ScalarProperty Name="Pan_Style_FK" ColumnName="Pan_Style_FK" />
+                <ScalarProperty Name="Pan_Single_Colour_FK" ColumnName="Pan_Single_Colour_FK" />
+                <ScalarProperty Name="Pan_Single_Colour" ColumnName="Pan_Single_Colour" />
+                <ScalarProperty Name="Pan_ShowQty" ColumnName="Pan_ShowQty" />
+                <ScalarProperty Name="Pan_PowerN" ColumnName="Pan_PowerN" />
+                <ScalarProperty Name="Pan_Discontinued_Date" ColumnName="Pan_Discontinued_Date" />
+                <ScalarProperty Name="Pan_Discontinued" ColumnName="Pan_Discontinued" />
+                <ScalarProperty Name="Pan_Description" ColumnName="Pan_Description" />
+                <ScalarProperty Name="Pan_PK" ColumnName="Pan_PK" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TLDYE_ConsumableSOH">
+            <EntityTypeMapping TypeName="TTI2Model.TLDYE_ConsumableSOH">
+              <MappingFragment StoreEntitySet="TLDYE_ConsumableSOH">
+                <ScalarProperty Name="DCSH_K_Adjusted" ColumnName="DCSH_K_Adjusted" />
+                <ScalarProperty Name="DYCSH_K_Used" ColumnName="DYCSH_K_Used" />
+                <ScalarProperty Name="DYCSH_K_Closing" ColumnName="DYCSH_K_Closing" />
+                <ScalarProperty Name="DYCSH_K_Opening" ColumnName="DYCSH_K_Opening" />
+                <ScalarProperty Name="DYCSH_SOHKitchen" ColumnName="DYCSH_SOHKitchen" />
+                <ScalarProperty Name="DYCSH_SOHQuar" ColumnName="DYCSH_SOHQuar" />
+                <ScalarProperty Name="DYCSH_DyeKitchen_FK" ColumnName="DYCSH_DyeKitchen_FK" />
+                <ScalarProperty Name="DYCSH_QuarantineStore_FK" ColumnName="DYCSH_QuarantineStore_FK" />
+                <ScalarProperty Name="DYCSH_Pass" ColumnName="DYCSH_Pass" />
+                <ScalarProperty Name="DYCSH_Quarantine" ColumnName="DYCSH_Quarantine" />
+                <ScalarProperty Name="DYCSH_DyeKitchen" ColumnName="DYCSH_DyeKitchen" />
+                <ScalarProperty Name="DYCSH_TransNumber" ColumnName="DYCSH_TransNumber" />
+                <ScalarProperty Name="DYCSH_StockOnHand" ColumnName="DYCSH_StockOnHand" />
+                <ScalarProperty Name="DYCSH_WhseStore_FK" ColumnName="DYCSH_WhseStore_FK" />
+                <ScalarProperty Name="DYCSH_Consumable_FK" ColumnName="DYCSH_Consumable_FK" />
+                <ScalarProperty Name="DYCSH_Pk" ColumnName="DYCSH_Pk" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TLADM_Colours">
+            <EntityTypeMapping TypeName="TTI2Model.TLADM_Colours">
+              <MappingFragment StoreEntitySet="TLADM_Colours">
+                <ScalarProperty Name="Col_ColCosting" ColumnName="Col_ColCosting" />
+                <ScalarProperty Name="Col_Ratio" ColumnName="Col_Ratio" />
+                <ScalarProperty Name="Col_Pastel" ColumnName="Col_Pastel" />
+                <ScalarProperty Name="Col_Padding" ColumnName="Col_Padding" />
+                <ScalarProperty Name="Col_Added_InSession" ColumnName="Col_Added_InSession" />
+                <ScalarProperty Name="Col_Removed_InSession" ColumnName="Col_Removed_InSession" />
+                <ScalarProperty Name="Col_Benchmark" ColumnName="Col_Benchmark" />
+                <ScalarProperty Name="Col_StandardTime" ColumnName="Col_StandardTime" />
+                <ScalarProperty Name="Col_Display" ColumnName="Col_Display" />
+                <ScalarProperty Name="Col_AuxPowerN" ColumnName="Col_AuxPowerN" />
+                <ScalarProperty Name="Col_HasAuxColors" ColumnName="Col_HasAuxColors" />
+                <ScalarProperty Name="Col_FinishedCode" ColumnName="Col_FinishedCode" />
+                <ScalarProperty Name="Col_Discontinued_Date" ColumnName="Col_Discontinued_Date" />
+                <ScalarProperty Name="Col_Discontinued" ColumnName="Col_Discontinued" />
+                <ScalarProperty Name="Col_PowerN" ColumnName="Col_PowerN" />
+                <ScalarProperty Name="Col_Description" ColumnName="Col_Description" />
+                <ScalarProperty Name="Col_Id" ColumnName="Col_Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -483,5 +483,18 @@ namespace Spinning
             }
 
         }
+
+        private void dtpTransDate_ValueChanged(object sender, EventArgs e)
+        {
+            DateTimePicker Pick = sender as DateTimePicker;
+            if(Pick != null && formloaded)
+            {
+                if(Pick.Value > DateTime.Now)
+                {
+                    MessageBox.Show("Date Time Selected Greater Than Today","Warning");
+
+                }
+            }
+        }
     }
 }

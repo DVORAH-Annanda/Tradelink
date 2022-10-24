@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CrystalDecisions.CrystalReports.Engine;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -9,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Utilities;
+using System.Reflection; 
 
 namespace Knitting
 {
@@ -2725,7 +2727,77 @@ namespace Knitting
                                 dataTable1.AddDataTable1Row(nr);
                             }
                         }
+                        else if (_opts.K7ByMachineByDay)
+                        {
+                            /*
+                            Data = _Repo.GreigeProduction(_QueryParms);
+                            var MachineGroups = Data.GroupBy(x => x.GreigeP_Machine_FK);
+                            foreach(var Mach in MachineGroups)
+                            {
+                                if (Mach.FirstOrDefault().GreigeP_Machine_FK == null)
+                                {
+                                    continue;
+                                }
+
+                                var DailyData = Mach.GroupBy(x => x.GreigeP_PDate);
+                                DataSet24.DataTable3Row nr = dataTable3.NewDataTable3Row();
+                                nr.PrimaryKey = 1;
+                                
+                                nr.Day1 = 0;
+                                nr.Day2 = 0;
+                                nr.Day3 = 0;
+                                nr.Day4 = 0;
+                                nr.Day5 = 0;
+                                nr.Day6 = 0;
+                                nr.Day7 = 0;
+                                nr.Day8 = 0;
+                                nr.Day9 = 0;
+                                nr.Day10 = 0;
+                                nr.Day11 = 0;
+                                nr.Day12 = 0;
+                                nr.Day13 = 0;
+                                nr.Day14 = 0;
+                                nr.Day15 = 0;
+                                nr.Day16 = 0;
+                                nr.Day17 = 0;
+                                nr.Day18 = 0;
+                                nr.Day19 = 0;
+                                nr.Day20 = 0;
+                                nr.Day21 = 0;
+                                nr.Day22 = 0;
+                                nr.Day23 = 0;
+                                nr.Day24 = 0;
+                                nr.Day25 = 0;
+                                nr.Day26 = 0;
+                                nr.Day27 = 0;
+                                nr.Day28 = 0;
+                                nr.Day29 = 0;
+                                nr.Day30 = 0;
+                                nr.Day31 = 0;
+
+                                nr.Machine = context.TLADM_MachineDefinitions.Find(Mach.FirstOrDefault().GreigeP_Machine_FK).MD_MachineCode;
+                                
+
+                                foreach (var Day in DailyData)
+                                {
+                                    var ProdDate = (DateTime)Day.FirstOrDefault().GreigeP_PDate;
+                                    var DayOfMth = ProdDate.Day;
+                                    var Ind = dataTable3.Columns.IndexOf("Day" + DayOfMth.ToString());
+                                    nr[Ind] = Day.Sum(x=>x.GreigeP_weightAvail);
+
+                                 
+                                }
+
+                                dataTable3.AddDataTable3Row(nr);
+                            }
+                            */
+
+
+                        }
+                            
+
                     }
+                  
                 }
 
                 DataSet24.DataTable2Row hr = dataTable2.NewDataTable2Row();
@@ -2737,7 +2809,7 @@ namespace Knitting
                 
                 ds.Tables.Add(dataTable1);
                 ds.Tables.Add(dataTable2);
-
+              
                 GreigeProdByTradeL rep = new GreigeProdByTradeL();
                 if(_opts.QASummary)
                     rep.ReportDefinition.Sections["Section3"].SectionFormat.EnableSuppress = true;
@@ -2763,17 +2835,19 @@ namespace Knitting
             }
             else if (_RepNo == 24)  // Greige Stock on Hand   
             {
-                List<DATA> GreigeP = new List<DATA>();
                 DataSet ds = new DataSet();
                 DataSet25.DataTable1DataTable datatable1 = new DataSet25.DataTable1DataTable();
                 DataSet25.TLADM_StockTakeFreqDataTable freqTable = new DataSet25.TLADM_StockTakeFreqDataTable();
                 DataSet25.TLADM_WhseStoreDataTable storeTable = new DataSet25.TLADM_WhseStoreDataTable();
+                IList<TLADM_QualityDefinition> QualityDefinitions = null;
                 _Repo = new KnitRepository();
 
-    
+                Type fieldsType = typeof(TLKNI_GreigeProduction);
 
                 using (var context = new TTI2Entities())
                 {
+                    QualityDefinitions = context.TLADM_QualityDefinition.Where(x => x.QD_ReportingDept_FK == 11).OrderBy(x => x.QD_ColumnIndex).ToList();
+
                     var GProduction = _Repo.SOHGreigeProduction(_QueryParms);
                     foreach (var row in GProduction)
                     {   //-----------------------------------------------------------------
@@ -2783,10 +2857,10 @@ namespace Knitting
                         var xGreige = context.TLADM_Griege.Find(row.GreigeP_Greige_Fk);
                         if (xGreige != null)
                         {
-                                nr.DataColumn1 = xGreige.TLGreige_Description;
-                                nr.DataColumn6 = xGreige.TLGreige_StockTakeFreq_FK;
+                            nr.DataColumn1 = xGreige.TLGreige_Description;
+                            nr.DataColumn6 = xGreige.TLGreige_StockTakeFreq_FK;
                         }
-                        
+
                         nr.DataColumn2 = row.GreigeP_PieceNo;
                         nr.DataColumn3 = row.GreigeP_Grade;
                         nr.DataColumn4 = row.GreigeP_weightAvail;
@@ -2794,7 +2868,7 @@ namespace Knitting
                         nr.Remarks = row.GreigeP_Remarks;
                         nr.MergeDetail = row.GreigeP_MergeDetail;
 
-                       // nr.DskWeight = (decimal)row.GreigeP_DskWeight;
+                        // nr.DskWeight = (decimal)row.GreigeP_DskWeight;
 
                         if (row.GreigeP_BoughtIn)
                         {
@@ -2802,30 +2876,118 @@ namespace Knitting
                         }
                         else
                         {
+                            if (_opts.K10IncludeFaults)
+                            {
+                                /*TLKNI_GreigeProduction Cols = new TLKNI_GreigeProduction();
+
+                                Object tst = Cols.Col;
+                                
+
+                                foreach (PropertyInfo prop in tst.GetType().GetProperties())
+                                {
+                                    if (prop.Name == "Key")
+                                    {
+                                     
+                                    }
+                                }*/
+
+
+                                StringBuilder sb = new StringBuilder();
+
+                                foreach(var QualityD in QualityDefinitions)
+                                {
+                                    if (QualityD.QD_ColumnIndex == 1)
+                                    {
+                                        if (row.GreigeP_Meas1 != 0)
+                                        {
+                                            sb.Append(QualityD.QD_ShortCode + " " + row.GreigeP_Meas1.ToString() + " ");
+                                        }
+
+                                    }
+                                     else if (QualityD.QD_ColumnIndex == 2)
+                                    {
+                                        if (row.GreigeP_Meas2 != 0)
+                                        {
+                                            sb.Append(QualityD.QD_ShortCode + " " + row.GreigeP_Meas2.ToString() + " ");
+                                        }
+                                    }
+                                    else if (QualityD.QD_ColumnIndex == 3)
+                                    {
+                                        if (row.GreigeP_Meas3 != 0)
+                                        {
+                                            sb.Append(QualityD.QD_ShortCode + " " + row.GreigeP_Meas3.ToString() + " ");
+                                        }
+
+                                    }
+                                    else if (QualityD.QD_ColumnIndex == 4)
+                                    {
+                                        if (row.GreigeP_Meas4 != 0)
+                                        {
+                                            sb.Append(QualityD.QD_ShortCode + " " + row.GreigeP_Meas4.ToString() + " ");
+                                        }
+
+                                    }
+                                    else if (QualityD.QD_ColumnIndex == 5)
+                                    {
+                                        if (row.GreigeP_Meas5 != 0)
+                                        {
+                                            sb.Append(QualityD.QD_ShortCode + " " + row.GreigeP_Meas5.ToString() + " ");
+                                        }
+                                    }
+                                    else if (QualityD.QD_ColumnIndex == 6)
+                                    {
+                                        if (row.GreigeP_Meas6 != 0)
+                                        {
+                                            sb.Append(QualityD.QD_ShortCode + " " + row.GreigeP_Meas6.ToString() + " ");
+                                        }
+                                    }
+                                    else if (QualityD.QD_ColumnIndex == 7)
+                                    {
+                                        if (row.GreigeP_Meas7 != 0)
+                                        {
+                                            sb.Append(QualityD.QD_ShortCode + " " + row.GreigeP_Meas7.ToString() + " ");
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (row.GreigeP_Meas8 != 0)
+                                        {
+                                            sb.Append(QualityD.QD_ShortCode + " " + row.GreigeP_Meas8.ToString() + " " );
+                                        }
+                                    }
+                                }
+                                if (sb.Length != 0)
+                                {
+                                    nr.Faults = "Faults : " + sb.ToString();
+                                }
+                            }
                             nr.DataColumn7 = row.GreigeP_Remarks;
 
                             var KnitOrder = context.TLKNI_Order.Find(row.GreigeP_KnitO_Fk);
                             if (KnitOrder != null)
                             {
-                                var YarnOrder = context.TLSPN_YarnOrder.Find(KnitOrder.KnitO_YarnO_FK);
-                                if (YarnOrder != null)
-                                {
-                                    nr.YarnOrderNo = YarnOrder.YarnO_OrderNumber.ToString();
-
-                                    if (YarnOrder.YarnO_MergeContract_FK > 0)
+                                    var YarnOrder = context.TLSPN_YarnOrder.Find(KnitOrder.KnitO_YarnO_FK);
+                                    if (YarnOrder != null)
                                     {
-                                        var MergeDetail = context.TLSPN_CottonMerge.Find(YarnOrder.YarnO_MergeContract_FK);
-                                        if (MergeDetail != null)
+                                        nr.YarnOrderNo = YarnOrder.YarnO_OrderNumber.ToString();
+
+                                        if (YarnOrder.YarnO_MergeContract_FK > 0)
                                         {
-                                            nr.MergeDetail = MergeDetail.TLCTM_Description; 
+                                            var MergeDetail = context.TLSPN_CottonMerge.Find(YarnOrder.YarnO_MergeContract_FK);
+                                            if (MergeDetail != null)
+                                            {
+                                                nr.MergeDetail = MergeDetail.TLCTM_Description;
+                                            }
                                         }
                                     }
-                                }
                             }
+                            
                         }
                         datatable1.AddDataTable1Row(nr);
                     }
-                    
+                    // Type FieldsType = typeof(TLKNI_GreigeProduction);
+                    // PropertyInfo[] props = FieldsType.GetProperties(BindingFlags.Public| BindingFlags.Instance);
+                                   
 
                     var STF = context.TLADM_StockTakeFreq.ToList();
                     foreach (var row in STF)
@@ -3199,7 +3361,8 @@ namespace Knitting
                 DataSet31.DataTable1DataTable dataTable1 = new DataSet31.DataTable1DataTable();
                 _Repo = new KnitRepository();
                 Util core = new Util();
-
+                IList<TLADM_QualityDefinition> QualityDefinitions = null;
+                         
                 string[][] ColumnNames = null;
 
                 if (!_QueryParms.NonStandardGrades)
@@ -3207,7 +3370,6 @@ namespace Knitting
                     ColumnNames = new string[][]
                     {   
                       new string[] {"Text12", "Qualified"}
-                        
                     };
                 }
                 else
@@ -3215,13 +3377,13 @@ namespace Knitting
                     ColumnNames = new string[][]
                    {
                       new string[] {"Text12", "Non Standard"}
-
                    };
                 }
                 var GreigeSOHGroup = _Repo.SOHGreigeProduction(_QueryParms).GroupBy(x => x.GreigeP_Greige_Fk).ToList();
 
                 using (var context = new TTI2Entities())
                 {
+                    QualityDefinitions = context.TLADM_QualityDefinition.Where(x => x.QD_ReportingDept_FK == 11).OrderBy(x => x.QD_ShortCode).ToList();
                     foreach (var Group in GreigeSOHGroup)
                     {
                         var Pk = Group.FirstOrDefault().GreigeP_Greige_Fk;
@@ -3305,7 +3467,9 @@ namespace Knitting
                                 nr.DO_GT8 -= (decimal)AlreadyBatched.Sum(x => (decimal?)x.DYEB_BatchKG ?? 0.00M);
                             }
                         }
-                        
+
+                     
+
 
                         dataTable1.AddDataTable1Row(nr);
                     }
@@ -3509,8 +3673,102 @@ namespace Knitting
                 Knitting.KnittingDskVariance KnittingVariance = new Knitting.KnittingDskVariance();
                 KnittingVariance.SetDataSource(ds);
                 crystalReportViewer1.ReportSource = KnittingVariance;
+
+
+            }
+            else if (_RepNo == 35)
+            {
+                DataSet ds = new DataSet();
+                DataSet36.DataTable1DataTable dataTable1 = new DataSet36.DataTable1DataTable();
+                DataSet36.DataTable2DataTable dataTable2 = new DataSet36.DataTable2DataTable();
+                Util core = new Util();
+                IList<TLKNI_GreigeProduction> GreigeP = new List<TLKNI_GreigeProduction>();
+                bool AddLogMess = false;
+
+                _Repo = new KnitRepository();
+
+                DataSet36.DataTable1Row HeadRow = dataTable1.NewDataTable1Row();
+                HeadRow.Title = "Greige Produced on a Daily Basis by Machine";
+                HeadRow.PrimarkKey = 1;
+                HeadRow.FromDate = _QueryParms.FromDate;
+                HeadRow.ToDate = _QueryParms.ToDate;
+                dataTable1.AddDataTable1Row(HeadRow);
+
+                using (var context = new TTI2Entities())
+                {
+                    var MachineGroups = (from T1 in context.TLADM_MachineDefinitions
+                                         join T2 in context.TLKNI_GreigeProduction
+                                         on T1.MD_Pk equals T2.GreigeP_Machine_FK
+                                         where T1.MD_Department_FK == 11 && T2.GreigeP_PDate >= _QueryParms.FromDate && T2.GreigeP_PDate <= _QueryParms.ToDate
+                                         select new { T1.MD_MachineCode, T2.GreigeP_PDate, T2.GreigeP_weightAvail, T2.GreigeP_Machine_FK }).GroupBy(x=>x.MD_MachineCode).ToList();
+                    
+
+                    foreach(var MachG in MachineGroups)
+                    {
+                        DataSet36.DataTable2Row nr = dataTable2.NewDataTable2Row();
+                        nr.PrimaryKey = 1;
+
+                        nr.Day01 = nr.Day02 = nr.Day03 = nr.Day04 = nr.Day05 = nr.Day06 = nr.Day07 = 0;
+                        nr.Day08 = nr.Day09 = nr.Day10 = nr.Day11 = nr.Day12 = nr.Day13 = nr.Day14 = 0;
+                        nr.Day15 = nr.Day16 = nr.Day17 = nr.Day18 = nr.Day19 = nr.Day20 = nr.Day21 = 0;
+                        nr.Day22 = nr.Day23 = nr.Day24 = nr.Day25 = nr.Day26 = nr.Day27 = nr.Day28 = 0;
+                        nr.Day29 = nr.Day30 = nr.Day31 = 0;
+
+                        nr.Machine = context.TLADM_MachineDefinitions.Find(MachG.FirstOrDefault().GreigeP_Machine_FK).MD_MachineCode;
+                        nr.Quality = string.Empty; // context.TLADM_Griege.Find(MachG.FirstOrDefault().GreigeP_Greige_Fk).TLGreige_Description;
+
+                        foreach (var Day in MachG)
+                        {
+                            var ProdDate = (DateTime)Day.GreigeP_PDate;
+                            var DayOfMth = ProdDate.Day;
+                            var Ind = dataTable2.Columns.IndexOf("Day" + DayOfMth.ToString().PadLeft(2, '0'));
+                            var CurrentVal = Convert.ToDecimal(nr[Ind].ToString());
+                            nr[Ind] = CurrentVal + Day.GreigeP_weightAvail;  
+                        }
+
+                        dataTable2.AddDataTable2Row(nr);
+                    }
+
+                    if(dataTable2.Count == 0)
+                    {
+                        AddLogMess = true;
+                    }
+                          
+                }
+
                 
-                
+                if (AddLogMess)
+                {
+                    DataSet36.DataTable2Row NewRow = dataTable2.NewDataTable2Row();
+                    NewRow.PrimaryKey = 1;
+                    NewRow.ErrorLog = "No data found for parameters entered";
+                    dataTable2.AddDataTable2Row(NewRow);
+                }
+               
+
+                ds.Tables.Add(dataTable1);
+                ds.Tables.Add(dataTable2);
+                Knitting.GreigeProdByDay GProdByDay = new Knitting.GreigeProdByDay();
+                int I = 0;
+                var IndPos = 5;
+                DateTime StartDate = new DateTime(_QueryParms.FromDate.Year, _QueryParms.FromDate.Month, 1);
+                DateTime LastDate = StartDate.AddMonths(1).AddDays(-1);
+                StartDate = StartDate.AddDays(-1);
+                do
+                {
+                    if (++IndPos < 37)
+                    {
+                        TextObject text = (TextObject)GProdByDay.ReportDefinition.Sections["Section2"].ReportObjects["Text" + IndPos.ToString()];
+                        if (text != null)
+                        {
+                            StartDate = StartDate.AddDays(1);
+                            text.Text = StartDate.ToString("dd/MM/yy"); ;
+                        }
+                    }
+                } while (++I < LastDate.Day);
+
+                GProdByDay.SetDataSource(ds);
+                crystalReportViewer1.ReportSource = GProdByDay;
             }
             crystalReportViewer1.Refresh();
 

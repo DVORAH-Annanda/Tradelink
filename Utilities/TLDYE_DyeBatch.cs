@@ -47,5 +47,6 @@ namespace Utilities
         public string DYEB_OnHold_Reason { get; set; }
         public bool DYEB_QAInspected { get; set; }
         public bool DYEB_Stage4 { get; set; }
+        public bool DYEB_FabicSales { get; set; }
     }
 }

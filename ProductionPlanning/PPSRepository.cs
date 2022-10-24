@@ -62,6 +62,57 @@ namespace ProductionPlanning
                 }
          }
 
+        public IQueryable<TLCUT_CutSheet> CSProcessLossAcrossProd(ProdQueryParameters parameters)
+        {
+            IQueryable<TLCUT_CutSheet> CutSheets = null;
+            CutSheets = _context.TLCUT_CutSheet.Where(x => x.TLCUTSH_Completed_Date >= parameters.FromDate && x.TLCUTSH_Completed_Date <= parameters.ToDate && x.TLCutSH_WIPComplete).AsQueryable();
+
+            if (parameters.Styles.Count() != 0)
+            {
+                var StylePredicate = PredicateBuilder.New<TLCUT_CutSheet>();
+                foreach (var Style in parameters.Styles)
+                {
+                    var temp = Style;
+                    StylePredicate = StylePredicate.Or(s => s.TLCutSH_Styles_FK == temp.Sty_Id);
+                }
+                CutSheets = CutSheets.AsExpandable().Where(StylePredicate);
+            }
+
+            if (parameters.Colours.Count() != 0)
+            {
+                var ColourPredicate = PredicateBuilder.New<TLCUT_CutSheet>();
+                foreach (var Style in parameters.Colours)
+                {
+                    var temp = Style;
+                    ColourPredicate = ColourPredicate.Or(s => s.TLCutSH_Colour_FK == temp.Col_Id);
+                }
+                CutSheets = CutSheets.AsExpandable().Where(ColourPredicate);
+            }
+
+            if (parameters.Sizes.Count() != 0)
+            {
+                var SizePredicate = PredicateBuilder.New<TLCUT_CutSheet>();
+                foreach (var Style in parameters.Sizes)
+                {
+                    var temp = Style;
+                    SizePredicate = SizePredicate.Or(s => s.TLCutSH_Size_FK == temp.SI_id);
+                }
+                CutSheets = CutSheets.AsExpandable().Where(SizePredicate);
+            }
+
+            if (parameters.Greiges.Count() != 0)
+            {
+                var QualityPredicate = PredicateBuilder.New<TLCUT_CutSheet>();
+                foreach (var Style in parameters.Greiges)
+                {
+                    var temp = Style;
+                    QualityPredicate = QualityPredicate.Or(s => s.TLCutSH_Quality_FK == temp.TLGreige_Id);
+                }
+                CutSheets = CutSheets.AsExpandable().Where(QualityPredicate);
+            }
+
+            return CutSheets;
+        }
          public IQueryable<TLADM_Griege> GreigeQuery(ProdQueryParameters parameters)
          {
             IQueryable<TLADM_Griege> GreigeItems = null;

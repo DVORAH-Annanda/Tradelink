@@ -32,5 +32,6 @@ namespace Utilities
         public bool TLDYO_GarmOrFab { get; set; }
         public string TLDYO_Notes { get; set; }
         public bool TLDYO_Closed { get; set; }
+        public Nullable<int> TLDYO_CustomerOrder_Fk { get; set; }
     }
 }

@@ -634,6 +634,10 @@ namespace DyeHouse {
             
             private global::System.Data.DataColumn columnTransDate;
             
+            private global::System.Data.DataColumn columnTransNo;
+            
+            private global::System.Data.DataColumn columnOrderNo;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public DataTable2DataTable() {
@@ -765,6 +769,22 @@ namespace DyeHouse {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn TransNoColumn {
+                get {
+                    return this.columnTransNo;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn OrderNoColumn {
+                get {
+                    return this.columnOrderNo;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -800,7 +820,7 @@ namespace DyeHouse {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public DataTable2Row AddDataTable2Row(DataTable1Row parentDataTable1RowByDataTable1_DataTable2, string PieceNo, string Quality, string Colour, decimal Meters, int Disk, int Wth, decimal Nett, string ErrorLog, string CustNo, string CustName, System.DateTime TransDate) {
+            public DataTable2Row AddDataTable2Row(DataTable1Row parentDataTable1RowByDataTable1_DataTable2, string PieceNo, string Quality, string Colour, decimal Meters, int Disk, int Wth, decimal Nett, string ErrorLog, string CustNo, string CustName, System.DateTime TransDate, string TransNo, string OrderNo) {
                 DataTable2Row rowDataTable2Row = ((DataTable2Row)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         null,
@@ -814,7 +834,9 @@ namespace DyeHouse {
                         ErrorLog,
                         CustNo,
                         CustName,
-                        TransDate};
+                        TransDate,
+                        TransNo,
+                        OrderNo};
                 if ((parentDataTable1RowByDataTable1_DataTable2 != null)) {
                     columnValuesArray[0] = parentDataTable1RowByDataTable1_DataTable2[0];
                 }
@@ -852,6 +874,8 @@ namespace DyeHouse {
                 this.columnCustNo = base.Columns["CustNo"];
                 this.columnCustName = base.Columns["CustName"];
                 this.columnTransDate = base.Columns["TransDate"];
+                this.columnTransNo = base.Columns["TransNo"];
+                this.columnOrderNo = base.Columns["OrderNo"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -881,6 +905,10 @@ namespace DyeHouse {
                 base.Columns.Add(this.columnCustName);
                 this.columnTransDate = new global::System.Data.DataColumn("TransDate", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnTransDate);
+                this.columnTransNo = new global::System.Data.DataColumn("TransNo", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnTransNo);
+                this.columnOrderNo = new global::System.Data.DataColumn("OrderNo", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnOrderNo);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1353,6 +1381,38 @@ namespace DyeHouse {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public string TransNo {
+                get {
+                    try {
+                        return ((string)(this[this.tableDataTable2.TransNoColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'TransNo\' in table \'DataTable2\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDataTable2.TransNoColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public string OrderNo {
+                get {
+                    try {
+                        return ((string)(this[this.tableDataTable2.OrderNoColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'OrderNo\' in table \'DataTable2\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDataTable2.OrderNoColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public DataTable1Row DataTable1Row {
                 get {
                     return ((DataTable1Row)(this.GetParentRow(this.Table.ParentRelations["DataTable1_DataTable2"])));
@@ -1504,6 +1564,30 @@ namespace DyeHouse {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public void SetTransDateNull() {
                 this[this.tableDataTable2.TransDateColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsTransNoNull() {
+                return this.IsNull(this.tableDataTable2.TransNoColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetTransNoNull() {
+                this[this.tableDataTable2.TransNoColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsOrderNoNull() {
+                return this.IsNull(this.tableDataTable2.OrderNoColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetOrderNoNull() {
+                this[this.tableDataTable2.OrderNoColumn] = global::System.Convert.DBNull;
             }
         }
         

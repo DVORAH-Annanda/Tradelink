@@ -306,14 +306,8 @@ namespace DyeHouse
                                             }
                                             else
                                             {
-                                                if (SOH.DYCSH_SOHKitchen - Kgs > 0)
-                                                {
-                                                    SOH.DYCSH_SOHKitchen -= Kgs;
-                                                }
-                                                else
-                                                {
-                                                    SOH.DYCSH_SOHKitchen = 0;
-                                                }
+                                                SOH.DYCSH_K_Used += Kgs;
+                                                
                                             }
                                         }
                                     }
@@ -354,14 +348,8 @@ namespace DyeHouse
                                         }
                                         else
                                         {
-                                            if (SOH.DYCSH_SOHKitchen - Kgs > 0)
-                                            {
-                                                SOH.DYCSH_SOHKitchen -= Kgs;
-                                            }
-                                            else
-                                            {
-                                                SOH.DYCSH_SOHKitchen = 0;
-                                            }
+                                            SOH.DYCSH_K_Used += Kgs;
+                                            
                                         }
                                     }
                                 }

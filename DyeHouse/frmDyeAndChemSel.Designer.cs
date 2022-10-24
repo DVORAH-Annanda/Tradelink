@@ -29,25 +29,59 @@
         private void InitializeComponent()
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.btnSubmit = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.dtpFromDate = new System.Windows.Forms.DateTimePicker();
             this.dtpToDate = new System.Windows.Forms.DateTimePicker();
+            this.dtpFromDate = new System.Windows.Forms.DateTimePicker();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.btnSubmit = new System.Windows.Forms.Button();
+            this.chkNonReceipeOnly = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.chkNonReceipeOnly);
             this.groupBox1.Controls.Add(this.dtpToDate);
             this.groupBox1.Controls.Add(this.dtpFromDate);
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Location = new System.Drawing.Point(125, 49);
+            this.groupBox1.Location = new System.Drawing.Point(101, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(275, 144);
+            this.groupBox1.Size = new System.Drawing.Size(330, 238);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
+            // 
+            // dtpToDate
+            // 
+            this.dtpToDate.Location = new System.Drawing.Point(122, 84);
+            this.dtpToDate.Name = "dtpToDate";
+            this.dtpToDate.Size = new System.Drawing.Size(125, 20);
+            this.dtpToDate.TabIndex = 3;
+            // 
+            // dtpFromDate
+            // 
+            this.dtpFromDate.Location = new System.Drawing.Point(122, 31);
+            this.dtpFromDate.Name = "dtpFromDate";
+            this.dtpFromDate.Size = new System.Drawing.Size(119, 20);
+            this.dtpFromDate.TabIndex = 2;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(34, 91);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(46, 13);
+            this.label2.TabIndex = 1;
+            this.label2.Text = "To Date";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(31, 31);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(56, 13);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "From Date";
             // 
             // btnSubmit
             // 
@@ -59,37 +93,15 @@
             this.btnSubmit.UseVisualStyleBackColor = true;
             this.btnSubmit.Click += new System.EventHandler(this.btnSubmit_Click);
             // 
-            // label1
+            // chkNonReceipeOnly
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(31, 31);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(56, 13);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "From Date";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(34, 91);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(46, 13);
-            this.label2.TabIndex = 1;
-            this.label2.Text = "To Date";
-            // 
-            // dtpFromDate
-            // 
-            this.dtpFromDate.Location = new System.Drawing.Point(122, 31);
-            this.dtpFromDate.Name = "dtpFromDate";
-            this.dtpFromDate.Size = new System.Drawing.Size(119, 20);
-            this.dtpFromDate.TabIndex = 2;
-            // 
-            // dtpToDate
-            // 
-            this.dtpToDate.Location = new System.Drawing.Point(122, 84);
-            this.dtpToDate.Name = "dtpToDate";
-            this.dtpToDate.Size = new System.Drawing.Size(125, 20);
-            this.dtpToDate.TabIndex = 3;
+            this.chkNonReceipeOnly.AutoSize = true;
+            this.chkNonReceipeOnly.Location = new System.Drawing.Point(22, 133);
+            this.chkNonReceipeOnly.Name = "chkNonReceipeOnly";
+            this.chkNonReceipeOnly.Size = new System.Drawing.Size(241, 17);
+            this.chkNonReceipeOnly.TabIndex = 4;
+            this.chkNonReceipeOnly.Text = "List Dye Batches Processed with No Receipe";
+            this.chkNonReceipeOnly.UseVisualStyleBackColor = true;
             // 
             // frmDyeAndChemSel
             // 
@@ -114,5 +126,6 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button btnSubmit;
+        private System.Windows.Forms.CheckBox chkNonReceipeOnly;
     }
 }

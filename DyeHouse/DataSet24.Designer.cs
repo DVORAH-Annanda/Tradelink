@@ -616,6 +616,12 @@ namespace DyeHouse {
             
             private global::System.Data.DataColumn columnBatchWeight;
             
+            private global::System.Data.DataColumn columnBatchNo;
+            
+            private global::System.Data.DataColumn columnQuality;
+            
+            private global::System.Data.DataColumn columnReceipeDescription;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public DataTable2DataTable() {
@@ -731,6 +737,30 @@ namespace DyeHouse {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn BatchNoColumn {
+                get {
+                    return this.columnBatchNo;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn QualityColumn {
+                get {
+                    return this.columnQuality;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn ReceipeDescriptionColumn {
+                get {
+                    return this.columnReceipeDescription;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -766,7 +796,7 @@ namespace DyeHouse {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public DataTable2Row AddDataTable2Row(DataTable1Row parentDataTable1RowByDataTable1_DataTable2, string Item, string ItemDescription, decimal StdQtyKG, decimal ReprocessKG, decimal TotalKG, decimal StandardCost, decimal TotalCost, string Colour, decimal BatchWeight) {
+            public DataTable2Row AddDataTable2Row(DataTable1Row parentDataTable1RowByDataTable1_DataTable2, string Item, string ItemDescription, decimal StdQtyKG, decimal ReprocessKG, decimal TotalKG, decimal StandardCost, decimal TotalCost, string Colour, decimal BatchWeight, string BatchNo, string Quality, string ReceipeDescription) {
                 DataTable2Row rowDataTable2Row = ((DataTable2Row)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         null,
@@ -778,7 +808,10 @@ namespace DyeHouse {
                         StandardCost,
                         TotalCost,
                         Colour,
-                        BatchWeight};
+                        BatchWeight,
+                        BatchNo,
+                        Quality,
+                        ReceipeDescription};
                 if ((parentDataTable1RowByDataTable1_DataTable2 != null)) {
                     columnValuesArray[0] = parentDataTable1RowByDataTable1_DataTable2[0];
                 }
@@ -814,6 +847,9 @@ namespace DyeHouse {
                 this.columnTotalCost = base.Columns["TotalCost"];
                 this.columnColour = base.Columns["Colour"];
                 this.columnBatchWeight = base.Columns["BatchWeight"];
+                this.columnBatchNo = base.Columns["BatchNo"];
+                this.columnQuality = base.Columns["Quality"];
+                this.columnReceipeDescription = base.Columns["ReceipeDescription"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -843,6 +879,12 @@ namespace DyeHouse {
                 base.Columns.Add(this.columnColour);
                 this.columnBatchWeight = new global::System.Data.DataColumn("BatchWeight", typeof(decimal), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnBatchWeight);
+                this.columnBatchNo = new global::System.Data.DataColumn("BatchNo", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnBatchNo);
+                this.columnQuality = new global::System.Data.DataColumn("Quality", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnQuality);
+                this.columnReceipeDescription = new global::System.Data.DataColumn("ReceipeDescription", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnReceipeDescription);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1255,6 +1297,54 @@ namespace DyeHouse {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public string BatchNo {
+                get {
+                    try {
+                        return ((string)(this[this.tableDataTable2.BatchNoColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'BatchNo\' in table \'DataTable2\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDataTable2.BatchNoColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public string Quality {
+                get {
+                    try {
+                        return ((string)(this[this.tableDataTable2.QualityColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Quality\' in table \'DataTable2\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDataTable2.QualityColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public string ReceipeDescription {
+                get {
+                    try {
+                        return ((string)(this[this.tableDataTable2.ReceipeDescriptionColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'ReceipeDescription\' in table \'DataTable2\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDataTable2.ReceipeDescriptionColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public DataTable1Row DataTable1Row {
                 get {
                     return ((DataTable1Row)(this.GetParentRow(this.Table.ParentRelations["DataTable1_DataTable2"])));
@@ -1382,6 +1472,42 @@ namespace DyeHouse {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public void SetBatchWeightNull() {
                 this[this.tableDataTable2.BatchWeightColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsBatchNoNull() {
+                return this.IsNull(this.tableDataTable2.BatchNoColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetBatchNoNull() {
+                this[this.tableDataTable2.BatchNoColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsQualityNull() {
+                return this.IsNull(this.tableDataTable2.QualityColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetQualityNull() {
+                this[this.tableDataTable2.QualityColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsReceipeDescriptionNull() {
+                return this.IsNull(this.tableDataTable2.ReceipeDescriptionColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetReceipeDescriptionNull() {
+                this[this.tableDataTable2.ReceipeDescriptionColumn] = global::System.Convert.DBNull;
             }
         }
         

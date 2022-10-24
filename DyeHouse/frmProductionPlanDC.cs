@@ -18,13 +18,7 @@ namespace DyeHouse
         DyeQueryParameters QueryParms;
 
         Util core;
-        DataGridViewComboBoxColumn oCmboA;
-
-        DataGridViewTextBoxColumn selecta;    // index of the main record 
-        DataGridViewCheckBoxColumn oChkA;     // Selected Yes or No 
-        DataGridViewTextBoxColumn selectb;    // Colour Description 
-        DataGridViewTextBoxColumn selectc;    // Amount
-        DataGridViewTextBoxColumn selectd;    // Amount
+        
         
         DataTable dt;
         DataColumn column;
@@ -42,13 +36,7 @@ namespace DyeHouse
             column = new DataColumn();
             BindSrc = new BindingSource();
 
-            dataGridView1.AutoGenerateColumns = false;
-            dataGridView1.AllowUserToAddRows = false;
-            dataGridView1.AllowUserToOrderColumns = false;
-            dataGridView1.AllowUserToDeleteRows = false;
-
-
-            //==========================================================================================
+                        //==========================================================================================
             // 1st task is to create the data table
             // Col 0
             //=====================================================================
@@ -101,54 +89,14 @@ namespace DyeHouse
             column.DefaultValue = 0.00M;
             dt.Columns.Add(column);
 
-            //0 -- index of record 
-            //--------------------------------------------
-            selecta = new DataGridViewTextBoxColumn();
-            selecta.ValueType = typeof(Int32);
-            selecta.DataPropertyName = dt.Columns[0].ColumnName;
-            selecta.HeaderText = "Colour Index";
-            selecta.Visible = false;
-            dataGridView1.Columns.Add(selecta);
-            dataGridView1.Columns[0].DisplayIndex = 0;
+                 
 
-            oChkA = new DataGridViewCheckBoxColumn();
-            oChkA.HeaderText = "Select";
-            oChkA.DataPropertyName = dt.Columns[1].ColumnName;
-            oChkA.ValueType = typeof(bool);
-            dataGridView1.Columns.Add(oChkA);
-            dataGridView1.Columns[1].DisplayIndex = 1;
-
-            selectb = new DataGridViewTextBoxColumn();
-            selectb.ValueType = typeof(string);
-            selectb.DataPropertyName = dt.Columns[2].ColumnName;
-            selectb.HeaderText = "Colour Descrip";
-            dataGridView1.Columns.Add(selectb);
-            dataGridView1.Columns[2].DisplayIndex = 2;
-
-            using (var context = new TTI2Entities())
-            {
-                oCmboA = new DataGridViewComboBoxColumn();
-                oCmboA.HeaderText = "Quality";
-                oCmboA.DataSource = context.TLADM_Griege.Where(x=>!(bool)x.TLGriege_Discontinued).OrderBy(x => x.TLGreige_Description).ToList();
-                oCmboA.ValueMember = "TLGreige_Id";
-                oCmboA.DisplayMember = "TLGreige_Description";
-                oCmboA.DataPropertyName = dt.Columns[3].ColumnName;
-                dataGridView1.Columns.Add(oCmboA);
-                dataGridView1.Columns[3].DisplayIndex = 3;
-            }
-
-            selectc = new DataGridViewTextBoxColumn();
-            selectc.ValueType = typeof(string);
-            selectc.DataPropertyName = dt.Columns[4].ColumnName;
-            selectc.HeaderText = "Load Value";
-            dataGridView1.Columns.Add(selectc);
-            dataGridView1.Columns[4].DisplayIndex = 4;
+           
                         
-            BindSrc.DataSource = dt;
-            dataGridView1.DataSource = BindSrc;
+        
 
             this.cmboDyeBatches.CheckStateChanged += new System.EventHandler(this.cmboDyeBatches_CheckStateChanged);
-            dataGridView1.EditingControlShowing += new DataGridViewEditingControlShowingEventHandler(dataGridView1_EditingControlShowing);
+            
         }
 
         //-------------------------------------------------------------------------------------
@@ -243,7 +191,7 @@ namespace DyeHouse
                         prodDetail.Add(prodDet);
                     }
                 }
-                else
+               /* else
                 {
                     foreach(DataRow Row in dt.Rows)
                     {
@@ -259,7 +207,7 @@ namespace DyeHouse
                         prodDetail.Add(prodDet);
 
                     }
-                }
+                } */
 
                 if (prodDetail.Count != 0)
                 {
@@ -281,6 +229,13 @@ namespace DyeHouse
         private void dataGridView1_DefaultValuesNeeded(object sender, DataGridViewRowEventArgs e)
         {
             e.Row.Cells[1].Value = 0;
+        }
+
+        private void cmboDyeBatches_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ComboBox oCmbo = (ComboBox)sender;
+            if (oCmbo != null && !oCmbo.DroppedDown)
+                oCmbo.DroppedDown = true;
         }
     }
 }

@@ -381,6 +381,34 @@ namespace CMT {
             
             private global::System.Data.DataColumn columnYarnOrder;
             
+            private global::System.Data.DataColumn columnPAGrade;
+            
+            private global::System.Data.DataColumn columnPBGrade;
+            
+            private global::System.Data.DataColumn columnPCol1;
+            
+            private global::System.Data.DataColumn columnPCol2;
+            
+            private global::System.Data.DataColumn columnPCol3;
+            
+            private global::System.Data.DataColumn columnPCol4;
+            
+            private global::System.Data.DataColumn columnPCol5;
+            
+            private global::System.Data.DataColumn columnPCol6;
+            
+            private global::System.Data.DataColumn columnPCol7;
+            
+            private global::System.Data.DataColumn columnPCol8;
+            
+            private global::System.Data.DataColumn columnPCol9;
+            
+            private global::System.Data.DataColumn columnPCol10;
+            
+            private global::System.Data.DataColumn columnPCol11;
+            
+            private global::System.Data.DataColumn columnPCol12;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public DataTable1DataTable() {
@@ -656,6 +684,118 @@ namespace CMT {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn PAGradeColumn {
+                get {
+                    return this.columnPAGrade;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn PBGradeColumn {
+                get {
+                    return this.columnPBGrade;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn PCol1Column {
+                get {
+                    return this.columnPCol1;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn PCol2Column {
+                get {
+                    return this.columnPCol2;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn PCol3Column {
+                get {
+                    return this.columnPCol3;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn PCol4Column {
+                get {
+                    return this.columnPCol4;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn PCol5Column {
+                get {
+                    return this.columnPCol5;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn PCol6Column {
+                get {
+                    return this.columnPCol6;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn PCol7Column {
+                get {
+                    return this.columnPCol7;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn PCol8Column {
+                get {
+                    return this.columnPCol8;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn PCol9Column {
+                get {
+                    return this.columnPCol9;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn PCol10Column {
+                get {
+                    return this.columnPCol10;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn PCol11Column {
+                get {
+                    return this.columnPCol11;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn PCol12Column {
+                get {
+                    return this.columnPCol12;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -721,7 +861,21 @@ namespace CMT {
                         decimal Col13, 
                         string LineNumber, 
                         int TotalIssued, 
-                        string YarnOrder) {
+                        string YarnOrder, 
+                        decimal PAGrade, 
+                        decimal PBGrade, 
+                        decimal PCol1, 
+                        decimal PCol2, 
+                        decimal PCol3, 
+                        decimal PCol4, 
+                        decimal PCol5, 
+                        decimal PCol6, 
+                        decimal PCol7, 
+                        decimal PCol8, 
+                        decimal PCol9, 
+                        decimal PCol10, 
+                        decimal PCol11, 
+                        decimal PCol12) {
                 DataTable1Row rowDataTable1Row = ((DataTable1Row)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         NR,
@@ -753,7 +907,21 @@ namespace CMT {
                         Col13,
                         LineNumber,
                         TotalIssued,
-                        YarnOrder};
+                        YarnOrder,
+                        PAGrade,
+                        PBGrade,
+                        PCol1,
+                        PCol2,
+                        PCol3,
+                        PCol4,
+                        PCol5,
+                        PCol6,
+                        PCol7,
+                        PCol8,
+                        PCol9,
+                        PCol10,
+                        PCol11,
+                        PCol12};
                 if ((parentDataTable2RowByDataTable2_DataTable1 != null)) {
                     columnValuesArray[2] = parentDataTable2RowByDataTable2_DataTable1[3];
                 }
@@ -809,6 +977,20 @@ namespace CMT {
                 this.columnLineNumber = base.Columns["LineNumber"];
                 this.columnTotalIssued = base.Columns["TotalIssued"];
                 this.columnYarnOrder = base.Columns["YarnOrder"];
+                this.columnPAGrade = base.Columns["PAGrade"];
+                this.columnPBGrade = base.Columns["PBGrade"];
+                this.columnPCol1 = base.Columns["PCol1"];
+                this.columnPCol2 = base.Columns["PCol2"];
+                this.columnPCol3 = base.Columns["PCol3"];
+                this.columnPCol4 = base.Columns["PCol4"];
+                this.columnPCol5 = base.Columns["PCol5"];
+                this.columnPCol6 = base.Columns["PCol6"];
+                this.columnPCol7 = base.Columns["PCol7"];
+                this.columnPCol8 = base.Columns["PCol8"];
+                this.columnPCol9 = base.Columns["PCol9"];
+                this.columnPCol10 = base.Columns["PCol10"];
+                this.columnPCol11 = base.Columns["PCol11"];
+                this.columnPCol12 = base.Columns["PCol12"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -874,6 +1056,34 @@ namespace CMT {
                 base.Columns.Add(this.columnTotalIssued);
                 this.columnYarnOrder = new global::System.Data.DataColumn("YarnOrder", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnYarnOrder);
+                this.columnPAGrade = new global::System.Data.DataColumn("PAGrade", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPAGrade);
+                this.columnPBGrade = new global::System.Data.DataColumn("PBGrade", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPBGrade);
+                this.columnPCol1 = new global::System.Data.DataColumn("PCol1", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPCol1);
+                this.columnPCol2 = new global::System.Data.DataColumn("PCol2", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPCol2);
+                this.columnPCol3 = new global::System.Data.DataColumn("PCol3", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPCol3);
+                this.columnPCol4 = new global::System.Data.DataColumn("PCol4", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPCol4);
+                this.columnPCol5 = new global::System.Data.DataColumn("PCol5", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPCol5);
+                this.columnPCol6 = new global::System.Data.DataColumn("PCol6", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPCol6);
+                this.columnPCol7 = new global::System.Data.DataColumn("PCol7", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPCol7);
+                this.columnPCol8 = new global::System.Data.DataColumn("PCol8", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPCol8);
+                this.columnPCol9 = new global::System.Data.DataColumn("PCol9", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPCol9);
+                this.columnPCol10 = new global::System.Data.DataColumn("PCol10", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPCol10);
+                this.columnPCol11 = new global::System.Data.DataColumn("PCol11", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPCol11);
+                this.columnPCol12 = new global::System.Data.DataColumn("PCol12", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPCol12);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1785,6 +1995,230 @@ namespace CMT {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public decimal PAGrade {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableDataTable1.PAGradeColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'PAGrade\' in table \'DataTable1\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDataTable1.PAGradeColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public decimal PBGrade {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableDataTable1.PBGradeColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'PBGrade\' in table \'DataTable1\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDataTable1.PBGradeColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public decimal PCol1 {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableDataTable1.PCol1Column]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'PCol1\' in table \'DataTable1\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDataTable1.PCol1Column] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public decimal PCol2 {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableDataTable1.PCol2Column]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'PCol2\' in table \'DataTable1\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDataTable1.PCol2Column] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public decimal PCol3 {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableDataTable1.PCol3Column]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'PCol3\' in table \'DataTable1\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDataTable1.PCol3Column] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public decimal PCol4 {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableDataTable1.PCol4Column]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'PCol4\' in table \'DataTable1\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDataTable1.PCol4Column] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public decimal PCol5 {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableDataTable1.PCol5Column]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'PCol5\' in table \'DataTable1\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDataTable1.PCol5Column] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public decimal PCol6 {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableDataTable1.PCol6Column]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'PCol6\' in table \'DataTable1\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDataTable1.PCol6Column] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public decimal PCol7 {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableDataTable1.PCol7Column]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'PCol7\' in table \'DataTable1\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDataTable1.PCol7Column] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public decimal PCol8 {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableDataTable1.PCol8Column]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'PCol8\' in table \'DataTable1\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDataTable1.PCol8Column] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public decimal PCol9 {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableDataTable1.PCol9Column]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'PCol9\' in table \'DataTable1\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDataTable1.PCol9Column] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public decimal PCol10 {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableDataTable1.PCol10Column]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'PCol10\' in table \'DataTable1\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDataTable1.PCol10Column] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public decimal PCol11 {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableDataTable1.PCol11Column]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'PCol11\' in table \'DataTable1\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDataTable1.PCol11Column] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public decimal PCol12 {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableDataTable1.PCol12Column]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'PCol12\' in table \'DataTable1\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDataTable1.PCol12Column] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public DataTable2Row DataTable2Row {
                 get {
                     return ((DataTable2Row)(this.GetParentRow(this.Table.ParentRelations["DataTable2_DataTable1"])));
@@ -2152,6 +2586,174 @@ namespace CMT {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public void SetYarnOrderNull() {
                 this[this.tableDataTable1.YarnOrderColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsPAGradeNull() {
+                return this.IsNull(this.tableDataTable1.PAGradeColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetPAGradeNull() {
+                this[this.tableDataTable1.PAGradeColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsPBGradeNull() {
+                return this.IsNull(this.tableDataTable1.PBGradeColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetPBGradeNull() {
+                this[this.tableDataTable1.PBGradeColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsPCol1Null() {
+                return this.IsNull(this.tableDataTable1.PCol1Column);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetPCol1Null() {
+                this[this.tableDataTable1.PCol1Column] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsPCol2Null() {
+                return this.IsNull(this.tableDataTable1.PCol2Column);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetPCol2Null() {
+                this[this.tableDataTable1.PCol2Column] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsPCol3Null() {
+                return this.IsNull(this.tableDataTable1.PCol3Column);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetPCol3Null() {
+                this[this.tableDataTable1.PCol3Column] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsPCol4Null() {
+                return this.IsNull(this.tableDataTable1.PCol4Column);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetPCol4Null() {
+                this[this.tableDataTable1.PCol4Column] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsPCol5Null() {
+                return this.IsNull(this.tableDataTable1.PCol5Column);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetPCol5Null() {
+                this[this.tableDataTable1.PCol5Column] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsPCol6Null() {
+                return this.IsNull(this.tableDataTable1.PCol6Column);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetPCol6Null() {
+                this[this.tableDataTable1.PCol6Column] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsPCol7Null() {
+                return this.IsNull(this.tableDataTable1.PCol7Column);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetPCol7Null() {
+                this[this.tableDataTable1.PCol7Column] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsPCol8Null() {
+                return this.IsNull(this.tableDataTable1.PCol8Column);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetPCol8Null() {
+                this[this.tableDataTable1.PCol8Column] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsPCol9Null() {
+                return this.IsNull(this.tableDataTable1.PCol9Column);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetPCol9Null() {
+                this[this.tableDataTable1.PCol9Column] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsPCol10Null() {
+                return this.IsNull(this.tableDataTable1.PCol10Column);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetPCol10Null() {
+                this[this.tableDataTable1.PCol10Column] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsPCol11Null() {
+                return this.IsNull(this.tableDataTable1.PCol11Column);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetPCol11Null() {
+                this[this.tableDataTable1.PCol11Column] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsPCol12Null() {
+                return this.IsNull(this.tableDataTable1.PCol12Column);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetPCol12Null() {
+                this[this.tableDataTable1.PCol12Column] = global::System.Convert.DBNull;
             }
         }
         

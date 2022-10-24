@@ -80,7 +80,6 @@
             this.txtCutSheet.Name = "txtCutSheet";
             this.txtCutSheet.Size = new System.Drawing.Size(193, 20);
             this.txtCutSheet.TabIndex = 1;
-          
             // 
             // groupBox1
             // 
@@ -233,11 +232,11 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(32, 130);
+            this.label8.Location = new System.Drawing.Point(24, 130);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(103, 13);
+            this.label8.Size = new System.Drawing.Size(98, 13);
             this.label8.TabIndex = 13;
-            this.label8.Text = "Transaction Number";
+            this.label8.Text = "PStore Del Number";
             // 
             // dataGridView1
             // 
@@ -267,7 +266,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(32, 279);
+            this.label6.Location = new System.Drawing.Point(24, 279);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(27, 13);
             this.label6.TabIndex = 8;
@@ -292,7 +291,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(32, 232);
+            this.label5.Location = new System.Drawing.Point(24, 232);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(37, 13);
             this.label5.TabIndex = 5;
@@ -301,7 +300,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(32, 185);
+            this.label4.Location = new System.Drawing.Point(24, 185);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(30, 13);
             this.label4.TabIndex = 4;
@@ -318,7 +317,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(32, 90);
+            this.label3.Location = new System.Drawing.Point(24, 90);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(30, 13);
             this.label3.TabIndex = 2;
@@ -335,7 +334,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(32, 43);
+            this.label2.Location = new System.Drawing.Point(24, 43);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(33, 13);
             this.label2.TabIndex = 0;

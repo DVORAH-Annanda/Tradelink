@@ -8,6 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Utilities;
+using EntityFramework.Extensions;
+
 
 namespace DyeHouse
 {
@@ -439,7 +441,8 @@ namespace DyeHouse
                         //------------------------------------------------------------------------------------
                         // First we must ensure that any previous records that may exist are deleted and that we start with a clean slate
                         //---------------------------------------------------------------------------
-                        context.TLDYE_ReceipeGreigeQual.RemoveRange(context.TLDYE_ReceipeGreigeQual.Where(x => x.TLGQ_ReceipeDef_FK == rd.TLDYE_DefinePk));
+                        // context.TLDYE_ReceipeGreigeQual.RemoveRange(context.TLDYE_ReceipeGreigeQual.Where(x => x.TLGQ_ReceipeDef_FK == rd.TLDYE_DefinePk));
+                        context.TLDYE_ReceipeGreigeQual.Where(x => x.TLGQ_ReceipeDef_FK == rd.TLDYE_DefinePk).Delete();
                         //------------------------------------------------------
                         // new development 
                         //----------------------------------------------------------
@@ -448,7 +451,7 @@ namespace DyeHouse
                             TLDYE_ReceipeGreigeQual repQual = new TLDYE_ReceipeGreigeQual();
                             repQual.TLGQ_GreigeQuality_FK = Qual.GQ_Pk;
                             repQual.TLGQ_ReceipeDef_FK = rd.TLDYE_DefinePk;
-
+                            repQual.TLGQ_ColourChart_FK = (int)rd.TLDYE_ColorChart_FK;
                             context.TLDYE_ReceipeGreigeQual.Add(repQual);
                         }
                     }

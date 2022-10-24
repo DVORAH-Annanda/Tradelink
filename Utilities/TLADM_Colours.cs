@@ -29,5 +29,7 @@ namespace Utilities
         public bool Col_Added_InSession { get; set; }
         public Nullable<bool> Col_Padding { get; set; }
         public string Col_Pastel { get; set; }
+        public decimal Col_Ratio { get; set; }
+        public bool Col_ColCosting { get; set; }
     }
 }

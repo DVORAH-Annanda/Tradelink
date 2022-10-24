@@ -74,12 +74,12 @@ namespace CMT
             {
                 using (var context = new TTI2Entities())
                 {
-                    TLCUT_CutSheet CS = context.TLCUT_CutSheet.Where(x => x.TLCutSH_No == txtCutSheet.Text).FirstOrDefault();
+                    TLCUT_CutSheet CS = context.TLCUT_CutSheet.FirstOrDefault(x => x.TLCutSH_No == txtCutSheet.Text);
                     if (CS != null)
                     {
                         frmCMTView_Load(this, null);
 
-                        var CSR = context.TLCUT_CutSheetReceipt.Where(x => x.TLCUTSHR_CutSheet_FK == CS.TLCutSH_Pk).FirstOrDefault();
+                        var CSR = context.TLCUT_CutSheetReceipt.FirstOrDefault(x => x.TLCUTSHR_CutSheet_FK == CS.TLCutSH_Pk);
                         if (CSR != null)
                         {
                             if (!CSR.TLCUTSHR_Issued)
@@ -108,7 +108,7 @@ namespace CMT
                                 if (PI != null)
                                 {
                                     txtTransferDate.Text = PI.CMTPI_Date.ToShortDateString();
-                                    txtTransnumber.Text = PI.CMTPI_Number.ToString();
+                                    txtTransnumber.Text = PI.CMTPI_DeliveryNumber.ToString();
                                     txtPanelStore.Text = context.TLADM_Departments.Find(PI.CMTPI_Department_FK).Dep_Description;
                                 }
                             }

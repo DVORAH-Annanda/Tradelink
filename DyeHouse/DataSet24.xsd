@@ -34,6 +34,9 @@
               <xs:element name="TotalCost" msprop:Generator_ColumnVarNameInTable="columnTotalCost" msprop:Generator_ColumnPropNameInRow="TotalCost" msprop:Generator_ColumnPropNameInTable="TotalCostColumn" msprop:Generator_UserColumnName="TotalCost" type="xs:decimal" minOccurs="0" />
               <xs:element name="Colour" msprop:Generator_ColumnVarNameInTable="columnColour" msprop:Generator_ColumnPropNameInRow="Colour" msprop:Generator_ColumnPropNameInTable="ColourColumn" msprop:Generator_UserColumnName="Colour" type="xs:string" minOccurs="0" />
               <xs:element name="BatchWeight" msprop:Generator_ColumnVarNameInTable="columnBatchWeight" msprop:Generator_ColumnPropNameInRow="BatchWeight" msprop:Generator_ColumnPropNameInTable="BatchWeightColumn" msprop:Generator_UserColumnName="BatchWeight" type="xs:decimal" minOccurs="0" />
+              <xs:element name="BatchNo" msprop:Generator_ColumnVarNameInTable="columnBatchNo" msprop:Generator_ColumnPropNameInRow="BatchNo" msprop:Generator_ColumnPropNameInTable="BatchNoColumn" msprop:Generator_UserColumnName="BatchNo" type="xs:string" minOccurs="0" />
+              <xs:element name="Quality" msprop:Generator_ColumnVarNameInTable="columnQuality" msprop:Generator_ColumnPropNameInRow="Quality" msprop:Generator_ColumnPropNameInTable="QualityColumn" msprop:Generator_UserColumnName="Quality" type="xs:string" minOccurs="0" />
+              <xs:element name="ReceipeDescription" msprop:Generator_ColumnVarNameInTable="columnReceipeDescription" msprop:Generator_ColumnPropNameInRow="ReceipeDescription" msprop:Generator_ColumnPropNameInTable="ReceipeDescriptionColumn" msprop:Generator_UserColumnName="ReceipeDescription" type="xs:string" minOccurs="0" />
             </xs:sequence>
           </xs:complexType>
         </xs:element>

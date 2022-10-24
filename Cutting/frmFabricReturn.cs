@@ -40,7 +40,7 @@ namespace Cutting
 
             using (var context = new TTI2Entities())
             {
-                cmboCutSheets.DataSource = context.TLCUT_CutSheet.OrderBy(x => x.TLCutSH_Pk).ToList();
+                cmboCutSheets.DataSource = context.TLCUT_CutSheet.Where(x=>!x.TLCutSH_WIPComplete).OrderBy(x => x.TLCutSH_Pk).ToList();
                 cmboCutSheets.ValueMember = "TLCutSH_Pk";
                 cmboCutSheets.DisplayMember = "TLCutSH_No";
                 cmboCutSheets.SelectedValue = -1;
@@ -114,35 +114,30 @@ namespace Cutting
                 {
                     using (var context = new TTI2Entities())
                     {
-
-                        txtDyeBatchNo.Text = context.TLDYE_DyeBatch.Find(selected.TLCutSH_DyeBatch_FK).DYEB_BatchNo;
+                                            
                         var DB = context.TLDYE_DyeBatch.Find(selected.TLCutSH_DyeBatch_FK);
                         if (DB != null)
                         {
+                            txtDyeBatchNo.Text = DB.DYEB_BatchNo;
                             txtColour.Text = context.TLADM_Colours.Find(DB.DYEB_Colour_FK).Col_Display;
-                        }
 
-                        var Existing = context.TLCUT_CutSheetDetail.Where(x => x.TLCutSHD_CutSheet_FK == selected.TLCutSH_Pk);
-                        foreach (var Record in Existing)
-                        {
-                            var index = dataGridView1.Rows.Add();
-                            dataGridView1.Rows[index].Cells[0].Value = Record.TLCutSHD_Pk;
-                            var DBD = context.TLDYE_DyeBatchDetails.Find(Record.TLCutSHD_DyeBatchDet_FK);
-                            if (DBD != null)
+                            var Existing = context.TLDYE_DyeBatchDetails.Where(x => x.DYEBD_DyeBatch_FK == DB.DYEB_Pk);
+                            foreach (var Record in Existing)
                             {
-                                var GP = context.TLKNI_GreigeProduction.Find(DBD.DYEBD_GreigeProduction_FK);
-                                if(GP != null)
+                                var index = dataGridView1.Rows.Add();
+                                dataGridView1.Rows[index].Cells[0].Value = Record.DYEBD_Pk;
+                             
+                                var GP = context.TLKNI_GreigeProduction.Find(Record.DYEBD_GreigeProduction_FK);
+                                if (GP != null)
                                 {
                                     dataGridView1.Rows[index].Cells[1].Value = false;
                                     dataGridView1.Rows[index].Cells[2].Value = GP.GreigeP_PieceNo;
                                     dataGridView1.Rows[index].Cells[3].Value = context.TLADM_Griege.Find(GP.GreigeP_Greige_Fk).TLGreige_Description;
-                                    dataGridView1.Rows[index].Cells[4].Value = Math.Round(GP.GreigeP_weight,2);
-                                    dataGridView1.Rows[index].Cells[5].Value = Math.Round(GP.GreigeP_weight, 2); 
+                                    dataGridView1.Rows[index].Cells[4].Value = Math.Round(GP.GreigeP_weight, 2);
+                                    dataGridView1.Rows[index].Cells[5].Value = Math.Round(GP.GreigeP_weight, 2);
                                 }
-                            }
+                                                            }
                         }
-                        
-                        
                         var Dept = context.TLADM_Departments.Where(x=>x.Dep_ShortCode.Contains("DYE")).FirstOrDefault();
                         if(Dept != null)
                         {
@@ -201,57 +196,45 @@ namespace Cutting
                         if (!(bool)row.Cells[1].Value)
                             continue;
 
-                        var CSD_Pk = (int)row.Cells[0].Value;
+                        var DyeB_Pk = (int)row.Cells[0].Value;
 
-                        var CSDetail = context.TLCUT_CutSheetDetail.Find(CSD_Pk);
-                        if (CSDetail != null)
+                        var DyeBatchDetail = context.TLDYE_DyeBatchDetails.Find(DyeB_Pk);
+                        if (DyeBatchDetail != null)
                         {
-                            CS_PK = CSDetail.TLCutSHD_CutSheet_FK;
- 
-                            var DyeBatchDetail = context.TLDYE_DyeBatchDetails.Find(CSDetail.TLCutSHD_DyeBatchDet_FK);
-                            if (DyeBatchDetail != null)
-                            {
-                                DyeBatchDetail.DYEBO_CutSheet = false;
-                                DyeBatchDetail.DYEBO_QAApproved = false;
+                            DyeBatchDetail.DYEBO_CutSheet = false;
+                            DyeBatchDetail.DYEBO_QAApproved = false;
 
-                                if(row.Cells[7].Value != null)
+                            if (row.Cells[7].Value != null)
+                            {
+                                DyeBatchDetail.DYEBO_CurrentStore_FK = (int)row.Cells[7].Value;
+                            }
+                            else
+                            {
+                                var Dept = context.TLADM_Departments.FirstOrDefault(x => x.Dep_ShortCode == "CUT");
+                                if (Dept != null)
                                 {
-                                    DyeBatchDetail.DYEBO_CurrentStore_FK = (int)row.Cells[7].Value;
-                                }
-                                else
-                                {
-                                    var Dept = context.TLADM_Departments.FirstOrDefault(x => x.Dep_ShortCode == "CUT");
-                                    if(Dept != null)
+                                    var TranType = context.TLADM_TranactionType.FirstOrDefault(x => x.TrxT_Department_FK == Dept.Dep_Id && x.TrxT_Number == 100);
+                                    if (TranType != null)
                                     {
-                                        var TranType = context.TLADM_TranactionType.FirstOrDefault(x => x.TrxT_Department_FK == Dept.Dep_Id && x.TrxT_Number == 100);
-                                        if(TranType != null)
-                                        {
-                                            DyeBatchDetail.DYEBO_CurrentStore_FK = (int)TranType.TrxT_ToWhse_FK;
-                                        }
+                                        DyeBatchDetail.DYEBO_CurrentStore_FK = (int)TranType.TrxT_ToWhse_FK;
                                     }
                                 }
-                                var DyeBatch = context.TLDYE_DyeBatch.Find(DyeBatchDetail.DYEBD_DyeBatch_FK);
-                                if (DyeBatch != null && DyeBatch.DYEB_Closed)
-                                {
+                            }
+                        
+                            var DyeBatch = context.TLDYE_DyeBatch.Find(DyeBatchDetail.DYEBD_DyeBatch_FK);
+                            if (DyeBatch != null && DyeBatch.DYEB_Closed)
+                            {
                                     DyeBatch.DYEB_Closed = false;
-                                }
+                            }
+
+                            var CutSheetRDetail = context.TLCUT_CutSheetReceiptDetail.Where(x => x.TLCUTSHRD_CutSheet_FK == DyeB_Pk).FirstOrDefault();
+                            if(CutSheetRDetail != null)
+                            {
+                                context.TLCUT_CutSheetReceiptDetail.Remove(CutSheetRDetail);
                             }
                         }
                     }
                     //---------------------------------------
-                    if (CS_PK != 0)
-                    {
-                        DialogResult Res = MessageBox.Show("Would you like to close this CutSheet", "Enquiry", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                        if (Res == DialogResult.Yes)
-                        {
-                            var CutSheet = context.TLCUT_CutSheet.Find(CS_PK);
-                            if (CutSheet != null)
-                            {
-                                CutSheet.TLCutSH_Closed = true;
-                                CutSheet.TLCutSH_ClosedDate = DateTime.Now;
-                            }
-                        }
-                    }
                     //----------------------------------------------------
                     try
                     {

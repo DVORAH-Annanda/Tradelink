@@ -45,14 +45,20 @@ namespace CustomerServices
             QueryParms = new CustomerServicesParameters();
 
             if (_OptionNo == 1)
+            {
                 this.Text = "Stock quantities on hand";
+            }
             else
+            {
                 this.Text = "Boxes in stock";
-
+                rbCostingPastel.Visible = false;
+            }
             rbGradeA.Checked = true;
 
             using (var context = new TTI2Entities())
             {
+                rbCostingPastel.Checked = false;
+
                 if (_Ud == null || !_Ud._External)
                 {
                     Whses = context.TLADM_WhseStore.Where(x => x.WhStore_WhseOrStore && x.WhStore_GradeA).ToList();
@@ -237,7 +243,20 @@ namespace CustomerServices
                 else
                     csvService.SplitBoxOnly = true;
 
-
+                if(rbCostingPastel.Checked)
+                {
+                    QueryParms.Colours.Clear();
+                    QueryParms.CostColoursChecked = rbCostingPastel.Checked;
+                    
+                    using ( var context = new TTI2Entities())
+                    {
+                        var Clrs = context.TLADM_Colours.Where(x=>x.Col_ColCosting).ToList();
+                        foreach(var Clr in Clrs)
+                        {
+                            QueryParms.Colours.Add(repo.LoadColour(Clr.Col_Id));
+                        }
+                    }
+                }
                 csvService.DateIntoStock = dtpDateinStock.Value;
                 
                 if (rbGradeA.Checked)

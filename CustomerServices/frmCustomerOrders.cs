@@ -738,8 +738,16 @@ namespace CustomerServices
                         {
                             foreach (DataGridViewRow row in dataGridView1.Rows)
                             {
-                                if (row.Cells[1].Value == null)
-                                    continue;
+                                if (!FabricMode)
+                                {
+                                    if (row.Cells[1].Value == null)
+                                        continue;
+                                }
+                                else
+                                {
+                                    if (row.Cells[3].Value == null)
+                                        continue;
+                                }
 
                                 if (!FabricMode)
                                 {

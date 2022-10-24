@@ -987,6 +987,8 @@ namespace Knitting {
             
             private global::System.Data.DataColumn columnDskWeight;
             
+            private global::System.Data.DataColumn columnFaults;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public DataTable1DataTable() {
@@ -1110,6 +1112,14 @@ namespace Knitting {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn FaultsColumn {
+                get {
+                    return this.columnFaults;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -1145,7 +1155,7 @@ namespace Knitting {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public DataTable1Row AddDataTable1Row(string DataColumn1, string DataColumn2, string DataColumn3, decimal DataColumn4, TLADM_WhseStoreRow parentTLADM_WhseStoreRowByTLADM_WhseStore_DataTable1, TLADM_StockTakeFreqRow parentTLADM_StockTakeFreqRowByTLADM_StockTakeFreq_DataTable1, string DataColumn7, string YarnOrderNo, string MergeDetail, string Remarks, decimal DskWeight) {
+            public DataTable1Row AddDataTable1Row(string DataColumn1, string DataColumn2, string DataColumn3, decimal DataColumn4, TLADM_WhseStoreRow parentTLADM_WhseStoreRowByTLADM_WhseStore_DataTable1, TLADM_StockTakeFreqRow parentTLADM_StockTakeFreqRowByTLADM_StockTakeFreq_DataTable1, string DataColumn7, string YarnOrderNo, string MergeDetail, string Remarks, decimal DskWeight, string Faults) {
                 DataTable1Row rowDataTable1Row = ((DataTable1Row)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         DataColumn1,
@@ -1158,7 +1168,8 @@ namespace Knitting {
                         YarnOrderNo,
                         MergeDetail,
                         Remarks,
-                        DskWeight};
+                        DskWeight,
+                        Faults};
                 if ((parentTLADM_WhseStoreRowByTLADM_WhseStore_DataTable1 != null)) {
                     columnValuesArray[4] = parentTLADM_WhseStoreRowByTLADM_WhseStore_DataTable1[0];
                 }
@@ -1198,6 +1209,7 @@ namespace Knitting {
                 this.columnMergeDetail = base.Columns["MergeDetail"];
                 this.columnRemarks = base.Columns["Remarks"];
                 this.columnDskWeight = base.Columns["DskWeight"];
+                this.columnFaults = base.Columns["Faults"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1225,6 +1237,8 @@ namespace Knitting {
                 base.Columns.Add(this.columnRemarks);
                 this.columnDskWeight = new global::System.Data.DataColumn("DskWeight", typeof(decimal), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnDskWeight);
+                this.columnFaults = new global::System.Data.DataColumn("Faults", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnFaults);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1689,6 +1703,22 @@ namespace Knitting {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public string Faults {
+                get {
+                    try {
+                        return ((string)(this[this.tableDataTable1.FaultsColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Faults\' in table \'DataTable1\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDataTable1.FaultsColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public TLADM_StockTakeFreqRow TLADM_StockTakeFreqRow {
                 get {
                     return ((TLADM_StockTakeFreqRow)(this.GetParentRow(this.Table.ParentRelations["TLADM_StockTakeFreq_DataTable1"])));
@@ -1839,6 +1869,18 @@ namespace Knitting {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public void SetDskWeightNull() {
                 this[this.tableDataTable1.DskWeightColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsFaultsNull() {
+                return this.IsNull(this.tableDataTable1.FaultsColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetFaultsNull() {
+                this[this.tableDataTable1.FaultsColumn] = global::System.Convert.DBNull;
             }
         }
         

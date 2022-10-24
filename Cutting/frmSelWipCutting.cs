@@ -52,7 +52,7 @@ namespace Cutting
                     cmboStyles.Items.Add(new Cutting.CheckComboBoxItem(Style.Sty_Id, Style.Sty_Description, false));
                 }
 
-                var Colours = context.TLADM_Colours.ToList();
+                var Colours = context.TLADM_Colours.OrderBy(x=>x.Col_Display).ToList();
                 foreach (var Colour in Colours)
                 {
                     cmboColour.Items.Add(new Cutting.CheckComboBoxItem(Colour.Col_Id, Colour.Col_Display, false));

@@ -42,7 +42,6 @@
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.cmboDyeOrders = new System.Windows.Forms.ComboBox();
-            this.label6 = new System.Windows.Forms.Label();
             this.txtDyeOrder = new System.Windows.Forms.TextBox();
             this.dataGridView2 = new System.Windows.Forms.DataGridView();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
@@ -185,15 +184,6 @@
             this.cmboDyeOrders.TabIndex = 21;
             this.cmboDyeOrders.SelectedIndexChanged += new System.EventHandler(this.cmboDyeOrders_SelectedIndexChanged);
             // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(349, 14);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(60, 13);
-            this.label6.TabIndex = 22;
-            this.label6.Text = "Dye Orders";
-            // 
             // txtDyeOrder
             // 
             this.txtDyeOrder.Location = new System.Drawing.Point(128, 12);
@@ -237,7 +227,6 @@
             this.Controls.Add(this.cmboFabricOrder);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.txtDyeOrder);
-            this.Controls.Add(this.label6);
             this.Controls.Add(this.cmboDyeOrders);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.label13);
@@ -250,6 +239,7 @@
             this.Controls.Add(this.btnSave);
             this.Name = "frmDyeOrders";
             this.Text = "Dye Orders (Fabric)";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmDyeOrders_FormClosing);
             this.Load += new System.EventHandler(this.frmDyeOrders_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
@@ -278,7 +268,6 @@
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.ComboBox cmboDyeOrders;
-        private System.Windows.Forms.Label label6;
         private System.Windows.Forms.TextBox txtDyeOrder;
         private System.Windows.Forms.DataGridView dataGridView2;
         private System.Windows.Forms.GroupBox groupBox3;

@@ -642,6 +642,8 @@ namespace Cutting {
             
             private global::System.Data.DataColumn columnStyles;
             
+            private global::System.Data.DataColumn columnSizes;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public DataTable2DataTable() {
@@ -805,6 +807,14 @@ namespace Cutting {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn SizesColumn {
+                get {
+                    return this.columnSizes;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -856,7 +866,8 @@ namespace Cutting {
                         string OrderNo, 
                         System.DateTime DueDate, 
                         string ErrorLog, 
-                        string Styles) {
+                        string Styles, 
+                        string Sizes) {
                 DataTable2Row rowDataTable2Row = ((DataTable2Row)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         null,
@@ -874,7 +885,8 @@ namespace Cutting {
                         OrderNo,
                         DueDate,
                         ErrorLog,
-                        Styles};
+                        Styles,
+                        Sizes};
                 if ((parentDataTable1RowByDataTable1_DataTable2 != null)) {
                     columnValuesArray[0] = parentDataTable1RowByDataTable1_DataTable2[0];
                 }
@@ -916,6 +928,7 @@ namespace Cutting {
                 this.columnDueDate = base.Columns["DueDate"];
                 this.columnErrorLog = base.Columns["ErrorLog"];
                 this.columnStyles = base.Columns["Styles"];
+                this.columnSizes = base.Columns["Sizes"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -953,6 +966,8 @@ namespace Cutting {
                 base.Columns.Add(this.columnErrorLog);
                 this.columnStyles = new global::System.Data.DataColumn("Styles", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnStyles);
+                this.columnSizes = new global::System.Data.DataColumn("Sizes", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnSizes);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1489,6 +1504,22 @@ namespace Cutting {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public string Sizes {
+                get {
+                    try {
+                        return ((string)(this[this.tableDataTable2.SizesColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Sizes\' in table \'DataTable2\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDataTable2.SizesColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public DataTable1Row DataTable1Row {
                 get {
                     return ((DataTable1Row)(this.GetParentRow(this.Table.ParentRelations["DataTable1_DataTable2"])));
@@ -1688,6 +1719,18 @@ namespace Cutting {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public void SetStylesNull() {
                 this[this.tableDataTable2.StylesColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsSizesNull() {
+                return this.IsNull(this.tableDataTable2.SizesColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetSizesNull() {
+                this[this.tableDataTable2.SizesColumn] = global::System.Convert.DBNull;
             }
         }
         

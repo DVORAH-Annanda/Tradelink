@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\EntityFramework.6.4.4\build\EntityFramework.props" Condition="Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -12,6 +13,8 @@
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -63,16 +66,14 @@
       <HintPath>..\..\..\..\..\..\..\CRVS_Extended_DLL\CrystalDecisions.Windows.Forms.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework.Extended, Version=6.0.0.0, Culture=neutral, PublicKeyToken=05b7e29bdd433584, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\EntityFramework.Extended.6.1.0.168\lib\net45\EntityFramework.Extended.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="LinqKit, Version=1.1.15.0, Culture=neutral, PublicKeyToken=bc217f8844052a91, processorArchitecture=MSIL">
       <HintPath>..\packages\LinqKit.1.1.15\lib\net45\LinqKit.dll</HintPath>
@@ -146,6 +147,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DataSet8.xsd</DependentUpon>
     </Compile>
+    <Compile Include="DataSet9.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSet9.xsd</DependentUpon>
+    </Compile>
     <Compile Include="DaysOfSales.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -194,6 +200,12 @@
     <Compile Include="frmPPSViewRep.Designer.cs">
       <DependentUpon>frmPPSViewRep.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmProcessLossAcrossProd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmProcessLossAcrossProd.Designer.cs">
+      <DependentUpon>frmProcessLossAcrossProd.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmReplenishment.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -224,6 +236,12 @@
     <Compile Include="frmPlanningKnitStock.Designer.cs">
       <DependentUpon>frmPlanningKnitStock.cs</DependentUpon>
     </Compile>
+    <Compile Include="InterDeptComByDyeBatches.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>InterDeptComByDyeBatches.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="InterDeptComparison.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -246,6 +264,12 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>PPSFinishedGoodsMS.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ProcessLossOverProd.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ProcessLossOverProd.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="ProductionDays.cs">
@@ -301,6 +325,9 @@
     <EmbeddedResource Include="frmPPSViewRep.resx">
       <DependentUpon>frmPPSViewRep.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="frmProcessLossAcrossProd.resx">
+      <DependentUpon>frmProcessLossAcrossProd.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frmReplenishment.resx">
       <DependentUpon>frmReplenishment.cs</DependentUpon>
     </EmbeddedResource>
@@ -315,6 +342,10 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmPlanningKnitStock.resx">
       <DependentUpon>frmPlanningKnitStock.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="InterDeptComByDyeBatches.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>InterDeptComByDyeBatches.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="InterDeptComparison.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
@@ -331,6 +362,10 @@
     <EmbeddedResource Include="PPSFinishedGoodsMS.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>PPSFinishedGoodsMS.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProcessLossOverProd.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>ProcessLossOverProd.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="ProductionDays.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
@@ -446,6 +481,17 @@
     <None Include="DataSet8.xss">
       <DependentUpon>DataSet8.xsd</DependentUpon>
     </None>
+    <None Include="DataSet9.xsc">
+      <DependentUpon>DataSet9.xsd</DependentUpon>
+    </None>
+    <None Include="DataSet9.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSet9.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="DataSet9.xss">
+      <DependentUpon>DataSet9.xsd</DependentUpon>
+    </None>
     <None Include="packages.config" />
     <None Include="ProdPlanning.pfx" />
     <None Include="Properties\Settings.settings">
@@ -471,6 +517,14 @@
     <Service Include="{C0C07587-41A7-46C8-8FBD-3F9C8EBE2DDC}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.4\build\EntityFramework.props'))" />
+    <Error Condition="!Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.4\build\EntityFramework.targets'))" />
+  </Target>
+  <Import Project="..\packages\EntityFramework.6.4.4\build\EntityFramework.targets" Condition="Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

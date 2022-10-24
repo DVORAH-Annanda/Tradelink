@@ -15,10 +15,17 @@ namespace Knitting
     {
         DataGridViewTextBoxColumn oTxtBoxA;  // 0 Reserved for Piece No index 
         DataGridViewTextBoxColumn oTxtBoxB;  // 1 Reserved for Machine Used Fk
-        DataGridViewTextBoxColumn oTxtBoxC;  // 2 Reserved for Piece No
+        DataGridViewTextBoxColumn oTxtBoxC;  // 2 Reserved for Piece No index DyeBatch
         DataGridViewTextBoxColumn oTxtBoxD;  // 3 Reserved for Piece Weight
+        DataGridViewTextBoxColumn oTxtBoxE;  // 4 Reserved for Piece Width - decimal
         DataGridViewComboBoxColumn oCmbBoxA;
         DataGridViewComboBoxColumn oCmbBoxB;
+
+        protected readonly TTI2Entities _context;
+
+        DataTable DataT;
+        BindingSource BindingSrc; 
+        
 
         List<DATA> fieldSelected = new List<DATA>();
 
@@ -34,30 +41,139 @@ namespace Knitting
         {
             InitializeComponent();
 
+            BindingSrc = new BindingSource();
+            _context = new TTI2Entities();
+
             core = new Util();
             dataGridView1.AutoGenerateColumns = false;
+
+            //============================================================
+            //---------Define the datatable 
+            //=================================================================
+            DataT = new System.Data.DataTable();
+            DataColumn column;
+
+            //------------------------------------------------------
+            // Create column 0. // Reserved for Piece No Key
+            //----------------------------------------------
+            column = new DataColumn();
+            column.DataType = typeof(int);
+            column.ColumnName = "Col0";
+            column.Caption = "Col0";
+            column.DefaultValue = 0;
+            DataT.Columns.Add(column);
             
+            //------------------------------------------------------
+            // Create column 1. // Reserved for Machine Used FK
+            //----------------------------------------------
+            column = new DataColumn();
+            column.DataType = typeof(Int32);
+            column.ColumnName = "Col1";
+            column.DefaultValue = 0;
+            DataT.Columns.Add(column);
+          
+            //------------------------------------------------------
+            // Create column 2. // Reserved for Piece No
+            //----------------------------------------------
+            column = new DataColumn();
+            column.DataType = typeof(String);
+            column.ColumnName = "Col2";
+            column.DefaultValue = String.Empty;
+            DataT.Columns.Add(column);
+
+            //------------------------------------------------------
+            // Create column 3. // Reserved for Piece Weight
+            //----------------------------------------------
+            column = new DataColumn();
+            column.DataType = typeof(decimal);
+            column.ColumnName = "Col3";
+            column.DefaultValue = 0.0M;
+            DataT.Columns.Add(column);
+
+            //------------------------------------------------------
+            // Create column 4. // Reserved for Piece Width
+            //----------------------------------------------
+            column = new DataColumn();
+            column.DataType = typeof(decimal);
+            column.ColumnName = "Col4";
+            column.DefaultValue = 0.0M;
+            DataT.Columns.Add(column);
+
+            //------------------------------------------------------
+            // Create column 5. // Reserved for a Combo Box
+            //----------------------------------------------
+            column = new DataColumn();
+            column.DataType = typeof(Int32);
+            column.ColumnName = "Col5";
+            column.DefaultValue = 0;
+            DataT.Columns.Add(column);
+
+            //------------------------------------------------------
+            // Create column 4. // Reserved for a Combo Box
+            //----------------------------------------------
+            column = new DataColumn();
+            column.DataType = typeof(Int32);
+            column.ColumnName = "Col6";
+            column.DefaultValue = 0;
+            DataT.Columns.Add(column);
+
+
             oTxtBoxA = new DataGridViewTextBoxColumn(); //0
             oTxtBoxA.HeaderText = "Piece Number Key";
+            oTxtBoxA.DataPropertyName = DataT.Columns[0].ColumnName;
             oTxtBoxA.ReadOnly = true;
             oTxtBoxA.Visible = false;
+            dataGridView1.Columns.Add(oTxtBoxA);
+            dataGridView1.Columns[0].DisplayIndex = 0;
+
 
             oTxtBoxB = new DataGridViewTextBoxColumn(); //1
-            oTxtBoxB.HeaderText = "Piece Number";
+            oTxtBoxB.HeaderText = "Machine No Used";
+            oTxtBoxB.DataPropertyName = DataT.Columns[1].ColumnName;
             oTxtBoxB.ReadOnly = true;
             oTxtBoxB.Visible = false;
+            dataGridView1.Columns.Add(oTxtBoxB);
+            dataGridView1.Columns[1].DisplayIndex = 1;
+
 
             oTxtBoxC = new DataGridViewTextBoxColumn(); //2
             oTxtBoxC.HeaderText = "Piece Number";
+            oTxtBoxC.DataPropertyName = DataT.Columns[2].ColumnName;
             oTxtBoxC.ValueType = typeof(string);
             oTxtBoxC.Visible = true;
             oTxtBoxC.ReadOnly = true;
+            dataGridView1.Columns.Add(oTxtBoxC);
+            dataGridView1.Columns[2].DisplayIndex = 2;
 
             oTxtBoxD = new DataGridViewTextBoxColumn(); //3
             oTxtBoxD.HeaderText = "Piece Weight";
+            oTxtBoxD.DataPropertyName = DataT.Columns[3].ColumnName;
             oTxtBoxD.ValueType = typeof(decimal);
             oTxtBoxD.Visible = true;
-        
+            dataGridView1.Columns.Add(oTxtBoxD);
+            dataGridView1.Columns[3].DisplayIndex = 3;
+
+            oTxtBoxE = new DataGridViewTextBoxColumn(); //4
+            oTxtBoxE.HeaderText = "Piece Width";
+            oTxtBoxE.DataPropertyName = DataT.Columns[4].ColumnName;
+            oTxtBoxE.ValueType = typeof(decimal);
+            oTxtBoxE.Visible = true;
+            dataGridView1.Columns.Add(oTxtBoxE);
+            dataGridView1.Columns[4].DisplayIndex = 4;
+
+            oCmbBoxA = new DataGridViewComboBoxColumn();
+            oCmbBoxA.HeaderText = "Shifts";
+            oCmbBoxA.DataPropertyName = DataT.Columns[5].ColumnName;
+            oCmbBoxA.ValueType = typeof(Int32);
+            dataGridView1.Columns.Add(oCmbBoxA);
+            dataGridView1.Columns[5].DisplayIndex = 5;
+
+            oCmbBoxB = new DataGridViewComboBoxColumn();
+            oCmbBoxB.HeaderText = "Operators";
+            oCmbBoxB.DataPropertyName = DataT.Columns[6].ColumnName;
+            oCmbBoxB.ValueType = typeof(Int32);
+            dataGridView1.Columns.Add(oCmbBoxB);
+            dataGridView1.Columns[6].DisplayIndex = 6;
 
             txtNoOfPieces.KeyPress += core.txtWin_KeyPress;
             txtNoOfPieces.KeyDown += core.txtWin_KeyDownJI;
@@ -67,20 +183,12 @@ namespace Knitting
 
             txtPieceNo.KeyPress += core.txtWin_KeyPress;
             txtPieceNo.KeyDown += core.txtWin_KeyDownJI;
- 
-            SetUp();
 
-            dataGridView1.Columns.Add(oTxtBoxA);
-            dataGridView1.Columns.Add(oTxtBoxB);
-            dataGridView1.Columns.Add(oTxtBoxC);
-            dataGridView1.Columns.Add(oTxtBoxD);
-            dataGridView1.Columns.Add(oCmbBoxA);
-            dataGridView1.Columns.Add(oCmbBoxB);
-
+            BindingSrc.DataSource = DataT;
+            dataGridView1.DataSource = BindingSrc;
             dataGridView1.EditingControlShowing += new DataGridViewEditingControlShowingEventHandler(dataGridView1_EditingControlShowing);
         }
-
-        void SetUp()
+        private void frmGreigeRecordOfProd_Load(object sender, EventArgs e)
         {
             formloaded = false;
             dtpTime.Format = DateTimePickerFormat.Time;
@@ -97,48 +205,45 @@ namespace Knitting
 
             txtPieceNo.Text = _LastNumber.ToString();
 
-            using (var context = new TTI2Entities())
-            {
-                cmboKnitOrders.DataSource = context.TLKNI_Order.Where(x=>x.KnitO_OrderConfirmed && !x.KnitO_Closed).OrderBy(x=>x.KnitO_OrderNumber).ToList();
-                cmboKnitOrders.ValueMember = "KnitO_Pk";
-                cmboKnitOrders.DisplayMember = "KnitO_OrderNumber";
-                cmboKnitOrders.SelectedValue = -1;
+           
+            cmboKnitOrders.DataSource = _context.TLKNI_Order.Where(x => x.KnitO_OrderConfirmed && !x.KnitO_Closed).OrderBy(x => x.KnitO_OrderNumber).ToList();
+            cmboKnitOrders.ValueMember = "KnitO_Pk";
+            cmboKnitOrders.DisplayMember = "KnitO_OrderNumber";
+            cmboKnitOrders.SelectedValue = -1;
 
-                var Dept = context.TLADM_Departments.Where(x => x.Dep_ShortCode.Contains("KNIT")).FirstOrDefault();
-                if (Dept != null)
-                {
-                    oCmbBoxA = new DataGridViewComboBoxColumn();
-                    oCmbBoxA.DataSource = context.TLADM_Shifts.Where(x => x.Shft_Dept_FK == Dept.Dep_Id).ToList();
+            var Dept = _context.TLADM_Departments.Where(x => x.Dep_ShortCode.Contains("KNIT")).FirstOrDefault();
+            if (Dept != null)
+            {
+                    oCmbBoxA.DataSource = _context.TLADM_Shifts.Where(x => x.Shft_Dept_FK == Dept.Dep_Id).ToList();
                     oCmbBoxA.ValueMember = "shft_Pk";
                     oCmbBoxA.DisplayMember = "Shft_Description";
                     oCmbBoxA.HeaderText = "Shifts";
 
-                    cmboDefaultShift.DataSource = context.TLADM_Shifts.Where(x => x.Shft_Dept_FK == Dept.Dep_Id).ToList();
+                    cmboDefaultShift.DataSource = _context.TLADM_Shifts.Where(x => x.Shft_Dept_FK == Dept.Dep_Id).ToList();
                     cmboDefaultShift.ValueMember = "Shft_Pk";
                     cmboDefaultShift.DisplayMember = "Shft_Description";
                     cmboDefaultShift.SelectedValue = -1;
 
-                    oCmbBoxB = new DataGridViewComboBoxColumn();
-                    oCmbBoxB.DataSource = context.TLADM_MachineOperators.Where(x=>x.MachOp_Department_FK == Dept.Dep_Id && !x.MachOp_Discontinued).ToList();
+                    oCmbBoxB.DataSource = _context.TLADM_MachineOperators.Where(x => x.MachOp_Department_FK == Dept.Dep_Id && !x.MachOp_Discontinued).ToList();
                     oCmbBoxB.ValueMember = "MachOp_Pk";
                     oCmbBoxB.DisplayMember = "MachOp_Description";
                     oCmbBoxB.HeaderText = "Operator";
 
-                    cmboDefaultOperator.DataSource = context.TLADM_MachineOperators.Where(x => x.MachOp_Department_FK == Dept.Dep_Id && !x.MachOp_Discontinued).ToList();
+                    cmboDefaultOperator.DataSource = _context.TLADM_MachineOperators.Where(x => x.MachOp_Department_FK == Dept.Dep_Id && !x.MachOp_Discontinued).ToList();
                     cmboDefaultOperator.ValueMember = "MachOp_Pk";
                     cmboDefaultOperator.DisplayMember = "MachOP_Description";
                     cmboDefaultOperator.SelectedValue = -1;
 
-                    var Department = context.TLADM_Departments.Where(x => x.Dep_ShortCode.Contains("KNIT")).FirstOrDefault();
+                    var Department = _context.TLADM_Departments.Where(x => x.Dep_ShortCode.Contains("KNIT")).FirstOrDefault();
                     if (Department != null)
                     {
-                      
+
                     }
-                }
             }
+            
             formloaded = true;
         }
-
+     
         void dataGridView1_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
         {
             DataGridView oDgv = sender as DataGridView;
@@ -148,7 +253,7 @@ namespace Knitting
                 if (oDgv.Focused && oDgv.CurrentCell is DataGridViewTextBoxCell)
                 {
                     var Cell = oDgv.CurrentCell;
-                    if (Cell.ColumnIndex == 3)
+                    if (Cell.ColumnIndex == 3 || Cell.ColumnIndex == 4)
                     {
                         e.Control.KeyDown -= new KeyEventHandler(core.txtWin_KeyDownOEM);
                         e.Control.KeyDown += new KeyEventHandler(core.txtWin_KeyDownOEM);
@@ -253,110 +358,134 @@ namespace Knitting
 
                         var TLADMGreige = context.TLADM_Griege.Find(KO.KnitO_Product_FK);
 
-                        foreach (DataGridViewRow row in oDgv.Rows)
+                        foreach (DataRow row in DataT.Rows)
                         {
-                            if ((decimal)row.Cells[3].Value > 0)
+                            TLKNI_GreigeProduction griegP = new TLKNI_GreigeProduction();
+                            var _Key = row.Field<int>(0);
+                            if (_Key != 0)
                             {
-                                if (row.Cells[4].Value == null || row.Cells[5].Value == null)
-                                {
-                                    MessageBox.Show("Row Number " + (row.Index + 1).ToString() + " incomplete");
-                                    return;
-                                }
-
-                                TLKNI_GreigeProduction griegP = new TLKNI_GreigeProduction();
-                                var _Key = (int)row.Cells[0].Value;
-                               
-                                if (_Key != 0)
-                                    griegP = context.TLKNI_GreigeProduction.Find(_Key);
-                                else
-                                { 
-                                    griegP.GreigeP_KnitO_Fk = KO.KnitO_Pk;
-                                    griegP.GreigeP_Greige_Fk = KO.KnitO_Product_FK;
-                                    griegP.GreigeP_Machine_FK = (int)row.Cells[1].Value;
-                                    griegP.GreigeP_PieceNo = row.Cells[2].Value.ToString();
-                                    if(KO.KnitO_Size_Fk != null)
-                                        griegP.GreigeP_Size_Fk = (int)KO.KnitO_Size_Fk;
-                                    if(KO.KnitO_Colour_Fk != null)
-                                        griegP.GreigeP_BIFColour_FK = (int)KO.KnitO_Colour_Fk;
-                                }
-
-                                griegP.GreigeP_MergeDetail = MergeDetails;
-
-                                griegP.GreigeP_weight = (decimal)row.Cells[3].Value;
-                                griegP.GreigeP_weightAvail = (decimal)row.Cells[3].Value;
-                               
-                                if (row.Cells[4].Value != null)
-                                    griegP.GreigeP_Shift_FK = (int)row.Cells[4].Value;
-                                if (row.Cells[5].Value != null)
-                                    griegP.GreigeP_Operator_FK = (int)row.Cells[5].Value;
-                                if (griegP.GreigeP_PDate == null)
-                                    griegP.GreigeP_PDate = dtpProduction.Value;
-
-                           
-                                BatchBalanceCaptured += (decimal)row.Cells[3].Value;
-
-                                griegP.GreigeP_Captured = true;
-                                
-                                griegP.GreigeP_PalletNo = PalletNo;
-                                griegP.GreigeP_YarnSupplier = YarnSupplier;
-                                griegP.GreigeP_YarnTex = YarnTex;
-                                griegP.GreigeP_DskWeight = DskWght;
-                                if (TLADMGreige.TLGreige_CubicWeight != 0 && DskWght != 0)
-                                {
-                                    griegP.GreigeP_VarianceDiskWeight = core.CalculateDskVariance(TLADMGreige.TLGreige_CubicWeight, DskWght);
-                                }
-
-                                if (TLADMGreige != null)
-                                {
-                                    // We need to start storing the meters knitted for statistical purposes
-                                    //===========================================================================
-                                    var FabWeight = context.TLADM_FabricWeight.Find(TLADMGreige.TLGreige_FabricWeight_FK);
-                                    var FabWidth = context.TLADM_FabWidth.Find(TLADMGreige.TLGreige_FabricWidth_FK);
-                                    var FabricYield = core.FabricYield(FabWeight.FWW_Calculation_Value, FabWidth.FW_Calculation_Value);
-                                    griegP.GreigeP_Meters = FabricYield * griegP.GreigeP_weightAvail;
-
-                                }
-                                var Dept = context.TLADM_Departments.Where(x => x.Dep_ShortCode.Contains("KNIT")).FirstOrDefault();
-                                if (Dept != null)
-                                {
-                                    if (KO.KnitO_YarnO_FK != null)
-                                    {
-                                        var TranType = context.TLADM_TranactionType.Where(x => x.TrxT_Department_FK == Dept.Dep_Id && x.TrxT_Number == 1400).FirstOrDefault();
-                                        if (TranType != null)
-                                        {
-                                            griegP.GreigeP_Store_FK = TranType.TrxT_Pk;
-                                        }
-                                    }
-                                    else
-                                    {
-                                        if (KO.KnitO_CommisionCust)
-                                        {
-                                            var TranType = context.TLADM_TranactionType.Where(x => x.TrxT_Department_FK == Dept.Dep_Id && x.TrxT_Number == 1300).FirstOrDefault();
-                                            if (TranType != null)
-                                            {
-                                                griegP.GreigeP_Store_FK = TranType.TrxT_Pk;
-                                            }
-                                        }
-                                        else
-                                        {
-                                            var TranType = context.TLADM_TranactionType.Where(x => x.TrxT_Department_FK == Dept.Dep_Id && x.TrxT_Number == 1200).FirstOrDefault();
-                                            if (TranType != null)
-                                            {
-                                                griegP.GreigeP_Store_FK = TranType.TrxT_Pk;
-                                            }
-                                        }
-                                    }
-                                }
-                                //==============================================================================
-                                if (_Key == 0)
-                                    context.TLKNI_GreigeProduction.Add(griegP);
+                                griegP = context.TLKNI_GreigeProduction.Find(_Key);
                             }
-                            
+                            else
+                            {
+                                griegP.GreigeP_KnitO_Fk = KO.KnitO_Pk;
+                                griegP.GreigeP_Greige_Fk = KO.KnitO_Product_FK;
+                                griegP.GreigeP_Machine_FK = row.Field<int>(1);
+                                griegP.GreigeP_PieceNo = row.Field<string>(2);
+                                if (KO.KnitO_Size_Fk != null)
+                                    griegP.GreigeP_Size_Fk = (int)KO.KnitO_Size_Fk;
+                                if (KO.KnitO_Colour_Fk != null)
+                                    griegP.GreigeP_BIFColour_FK = (int)KO.KnitO_Colour_Fk;
+                            }
+
+                            griegP.GreigeP_MergeDetail = MergeDetails;
+                            griegP.GreigeP_weight = row.Field<decimal>(3);
+                            griegP.GreigeP_weightAvail = row.Field<decimal>(3);
+                            griegP.GreigeP_PieceWidth = row.Field<decimal>(4);
+
+
+                            if (row.Field<int>(5) != 0)
+                            {
+                                griegP.GreigeP_Shift_FK = row.Field<int>(5);
+                            }
+                            else
+                            {
+                                griegP.GreigeP_Shift_FK = _context.TLADM_Shifts.FirstOrDefault().Shft_Pk; 
+                            }
+                            if (row.Field<int>(6) != 0)
+                            {
+                                griegP.GreigeP_Operator_FK = row.Field<int>(6);
+                            }
+                            else
+                            {
+                                griegP.GreigeP_Operator_FK = (from T1 in _context.TLADM_Departments
+                                          join T2 in _context.TLADM_MachineOperators
+                                          on T1.Dep_Id equals T2.MachOp_Department_FK
+                                          where !T2.MachOp_Discontinued && T1.Dep_Id == 11
+                                          select T2).FirstOrDefault().MachOp_Pk;
+
+                            }
+                            if (griegP.GreigeP_PDate == null)
+                            {
+                                griegP.GreigeP_PDate = dtpProduction.Value;
+                            }
+                           
+                            BatchBalanceCaptured += row.Field<decimal>(3);
+
+                            griegP.GreigeP_Captured = true;
+                                
+                            griegP.GreigeP_PalletNo = PalletNo;
+                            griegP.GreigeP_YarnSupplier = YarnSupplier;
+                            griegP.GreigeP_YarnTex = YarnTex;
+                            griegP.GreigeP_DskWeight = DskWght;
+                            if (TLADMGreige.TLGreige_CubicWeight != 0 && DskWght != 0)
+                            {
+                                griegP.GreigeP_VarianceDiskWeight = core.CalculateDskVariance(TLADMGreige.TLGreige_CubicWeight, DskWght);
+                            }
+
+                            if (TLADMGreige != null)
+                            {
+                               // We need to start storing the meters knitted for statistical purposes
+                               //===========================================================================
+                               var FabWeight = context.TLADM_FabricWeight.Find(TLADMGreige.TLGreige_FabricWeight_FK);
+                               var FabWidth = context.TLADM_FabWidth.Find(TLADMGreige.TLGreige_FabricWidth_FK);
+                               var FabricYield = core.FabricYield(FabWeight.FWW_Calculation_Value, FabWidth.FW_Calculation_Value);
+                               griegP.GreigeP_Meters = FabricYield * griegP.GreigeP_weightAvail;
+
+                            }
+                            var Dept = context.TLADM_Departments.Where(x => x.Dep_ShortCode.Contains("KNIT")).FirstOrDefault();
+                            if (Dept != null)
+                            {
+                                var CustDetails = context.TLADM_CustomerFile.Find(KO.KnitO_Customer_FK);
+                                if (CustDetails != null)
+                                {
+                                   if (!CustDetails.Cust_FabricCustomer && !CustDetails.Cust_CommissionCust)
+                                   {
+                                       var TranType = context.TLADM_TranactionType.Where(x => x.TrxT_Department_FK == Dept.Dep_Id && x.TrxT_Number == 1400).FirstOrDefault();
+                                       if (TranType != null)
+                                       {
+                                           griegP.GreigeP_Store_FK = TranType.TrxT_Pk;
+                                       }
+                                   }
+                                   else if (CustDetails.Cust_CommissionCust)
+                                   {
+                                       var TranType = context.TLADM_TranactionType.Where(x => x.TrxT_Department_FK == Dept.Dep_Id && x.TrxT_Number == 1300).FirstOrDefault();
+                                       if (TranType != null)
+                                       {
+                                           griegP.GreigeP_Store_FK = TranType.TrxT_Pk;
+                                       }
+                                   }
+                                   else
+                                   {
+                                      // DJL 25/10/2021....Not a bug as per Thys Greef 3rd Party yarn goes into TTS Store pending payment.
+                                      var TranType = context.TLADM_TranactionType.Where(x => x.TrxT_Department_FK == Dept.Dep_Id && x.TrxT_Number == 1400).FirstOrDefault();
+                                      if (TranType != null)
+                                      {
+                                         griegP.GreigeP_Store_FK = TranType.TrxT_Pk;
+                                      }
+                                   }
+                                }
+                                else
+                                {
+                                    var TranType = context.TLADM_TranactionType.Where(x => x.TrxT_Department_FK == Dept.Dep_Id && x.TrxT_Number == 1400).FirstOrDefault();
+                                    if (TranType != null)
+                                    {
+                                            griegP.GreigeP_Store_FK = TranType.TrxT_Pk;
+                                    }
+                                }
+                            }
+                            //==============================================================================
+                            if (_Key == 0)
+                            {
+                                _context.TLKNI_GreigeProduction.Add(griegP);
+                            }
                         }
 
                         if (BatchBalanceCaptured >= KO.KnitO_Weight)
+                        {
                             KO.KnitO_ProductionCaptured = true;
-
+                        }
+                        
                         var MachDet = context.TLADM_MachineDefinitions.Find(KO.KnitO_Pk);
                         if(MachDet != null)
                         {
@@ -414,8 +543,9 @@ namespace Knitting
 
                         try
                         {
-                            context.SaveChanges();
-                            oDgv.Rows.Clear();
+                            _context.SaveChanges();
+                            DataT.Rows.Clear();
+
                             txtNoOfPieces.Text = "0";
                             _LastNumber = 0;
                             MessageBox.Show("Data saved to database");
@@ -436,7 +566,7 @@ namespace Knitting
             BatchBalanceCaptured = 0.00M;
             if (oCmbo != null && formloaded)
             {
-                dataGridView1.Rows.Clear();
+                DataT.Rows.Clear();
                 var KO = (TLKNI_Order)cmboKnitOrders.SelectedItem;
                 if (KO != null)
                 {
@@ -472,16 +602,25 @@ namespace Knitting
                         formloaded = false;
                         foreach (var row in Existing)
                         {
-                            var index = oDgv.Rows.Add();
-                            oDgv.Rows[index].Cells[0].Value = row.GreigeP_Pk;
-                            oDgv.Rows[index].Cells[1].Value = row.GreigeP_Machine_FK;
-                            oDgv.Rows[index].Cells[2].Value = row.GreigeP_PieceNo;
-                            oDgv.Rows[index].Cells[3].Value = Math.Round(row.GreigeP_weight,1);
-                            if (row.GreigeP_Shift_FK != null)
-                                oDgv.Rows[index].Cells[4].Value = row.GreigeP_Shift_FK;
-                            if (row.GreigeP_Operator_FK != null)
-                                oDgv.Rows[index].Cells[5].Value = row.GreigeP_Operator_FK;
-                            
+                            DataRow Row = DataT.NewRow();
+
+                            Row[0] = row.GreigeP_Pk;
+                            Row[1] = row.GreigeP_Machine_FK;
+                            Row[2] = row.GreigeP_PieceNo;
+                            Row[3] = Math.Round(row.GreigeP_weight,1);
+                            Row[4] = Math.Round(row.GreigeP_PieceWidth, 1);
+
+                            if(row.GreigeP_Shift_FK != 0)
+                            {
+                                Row[5] = (int)row.GreigeP_Shift_FK;
+                            }
+
+                            if (row.GreigeP_Operator_FK != 0)
+                            {
+                                Row[6] = (int)row.GreigeP_Operator_FK;
+                            }
+                            DataT.Rows.Add(Row);
+
                         }
                         if (this.dataGridView1.Rows.Count != 0)
                         {
@@ -515,9 +654,7 @@ namespace Knitting
                 {
                     vRep.Close();
                     vRep.Dispose();
-
                 }
-
             }
         }
 
@@ -528,6 +665,7 @@ namespace Knitting
             {
                 var CurrentRow = oDgv.CurrentRow;
 
+                /*
                 if (e.ColumnIndex == 3 && Convert.ToDecimal(oDgv.CurrentRow.Cells[e.ColumnIndex].EditedFormattedValue.ToString()) > 0)
                 {
                     if (CurrentRow != null)
@@ -535,17 +673,18 @@ namespace Knitting
                         var oShift = (TLADM_Shifts)cmboDefaultShift.SelectedItem;
                         if (oShift != null)
                         {
-                            CurrentRow.Cells[e.ColumnIndex + 1].Value = oShift.Shft_Pk;
+                            CurrentRow.Cells[e.ColumnIndex + 2].Value = oShift.Shft_Pk;
                         }
 
                         var oOperator = (TLADM_MachineOperators)cmboDefaultOperator.SelectedItem;
                         if (oOperator != null)
                         {
-                            CurrentRow.Cells[e.ColumnIndex + 2].Value = oOperator.MachOp_Pk;
+                            CurrentRow.Cells[e.ColumnIndex + 3].Value = oOperator.MachOp_Pk;
                         }
                     
                     }
-                }
+                }*/
+
             }
         }
 
@@ -579,9 +718,13 @@ namespace Knitting
                     {
                         Bal += Record._Weight;
                         if (Amount == 0)
+                        {
                             fieldSelected.RemoveAt(RecordIndex);
+                        }
                         else
-                            Record._Weight = Amount;  
+                        {
+                            Record._Weight = Amount;
+                        }
                     }
                     else
                     {
@@ -699,12 +842,20 @@ namespace Knitting
                                     var GriegProd = context.TLKNI_GreigeProduction.Where(x => x.GreigeP_PieceNo == PieceNo).FirstOrDefault();
                                     if (GriegProd == null)
                                     {
-                                        var index = dataGridView1.Rows.Add();
+                                        //  var index = dataGridView1.Rows.Add();
+                                        DataRow Row = DataT.NewRow();
+
                                         formloaded = false;
-                                        dataGridView1.Rows[index].Cells[0].Value = 0;  // this is the default for the moment
+                                        /*dataGridView1.Rows[index].Cells[0].Value = 0;  // this is the default for the moment
                                         dataGridView1.Rows[index].Cells[1].Value = MachineKey;
                                         dataGridView1.Rows[index].Cells[2].Value = PieceNo;
-                                        dataGridView1.Rows[index].Cells[3].Value = 0.0M;
+                                        dataGridView1.Rows[index].Cells[3].Value = 0.0M; */
+                                        Row[0] = 0;
+                                        Row[1] = MachineKey;
+                                        Row[2] = PieceNo;
+                                        Row[3] = 0.0M;
+                                        Row[4] = 0.0M;
+                                        DataT.Rows.Add(Row);
                                         formloaded = true;
                                         LastNumber += 1;
                                     }
@@ -798,5 +949,18 @@ namespace Knitting
                  }
              }
         }
+
+        private void frmGreigeRecordOfProd_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if(!e.Cancel)
+            {
+                if(_context != null)
+                {
+                    _context.Dispose();
+                }
+            }
+        }
+
+       
     }
 }

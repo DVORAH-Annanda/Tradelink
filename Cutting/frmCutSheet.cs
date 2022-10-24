@@ -546,7 +546,7 @@ namespace Cutting
                         cmboRatingTrims.DataSource = null;
                         cmboRatingTrims.ValueMember = "Pr_Id";
                         cmboRatingTrims.DisplayMember = "Pr_Display";
-                       
+
 
                         cmboLabels.DataSource = null;
                         cmboLabels.DataSource = context.TLADM_Labels.Where(x => x.Lbl_Customer_FK == DO.TLDYO_Customer_FK).ToList();
@@ -561,79 +561,83 @@ namespace Cutting
                         cmboStyles.ValueMember = "Sty_Id";
                         cmboStyles.SelectedValue = DO.TLDYO_Style_FK;
                         formloaded = true;
-                       
+
                         txtCustomer.Text = context.TLADM_CustomerFile.Find(DO.TLDYO_Customer_FK).Cust_Description;
                         txtCustomerOrder.Text = DO.TLDYO_OrderNum;
                         txtDyeBatchNumber.Text = DB.DYEB_BatchNo;
-                        
-                    }
 
-                    // txtColour.Text = context.TLADM_Colours.Find(DB.DYEB_Colour_FK).Col_Display;
 
-                    cmboColour.SelectedValue = DB.DYEB_Colour_FK;
 
-                    //---------------------------------------------------------------------------------
-                    // Dye Batch Details
-                    //-----------------------------------------------------------
-                    if(Flag)
-                      DbDetails = context.TLDYE_DyeBatchDetails.Where(x => x.DYEBD_DyeBatch_FK == DB.DYEB_Pk).OrderByDescending(x=>x.DYEBD_BodyTrim).ToList();
-                    else
-                      DbDetails = context.TLDYE_DyeBatchDetails.Where(x => x.DYEBD_DyeBatch_FK == DB.DYEB_Pk  && x.DYEBO_QAApproved && !x.DYEBO_CutSheet && !x.DYEBO_Sold && !x.DYEBO_WriteOff).OrderByDescending(x=>x.DYEBD_BodyTrim).ToList();
-                    
-                    foreach (var dbDetail in DbDetails)
-                    {
-                        // We may have situation where a dybatch is spli
-                        if (dbDetail.DYEBO_CutSheet)
+                        // txtColour.Text = context.TLADM_Colours.Find(DB.DYEB_Colour_FK).Col_Display;
+
+                        cmboColour.SelectedValue = DB.DYEB_Colour_FK;
+
+                        //---------------------------------------------------------------------------------
+                        // Dye Batch Details
+                        //-----------------------------------------------------------
+                        if (Flag)
                         {
-                            var tst = (from CSD in context.TLCUT_CutSheetDetail
-                                       join DBD in context.TLDYE_DyeBatchDetails
-                                       on CSD.TLCutSHD_DyeBatchDet_FK equals DBD.DYEBD_Pk
-                                       where CSD.TLCutSHD_DyeBatchDet_FK == dbDetail.DYEBD_Pk 
-                                       select CSD).FirstOrDefault();
-                            if (tst == null)
-                            {
-                                continue;
-                            }
+                            DbDetails = context.TLDYE_DyeBatchDetails.Where(x => x.DYEBD_DyeBatch_FK == DB.DYEB_Pk).OrderByDescending(x => x.DYEBD_BodyTrim).ToList();
                         }
-                        // Knitting Production
-                        var GP = context.TLKNI_GreigeProduction.Find(dbDetail.DYEBD_GreigeProduction_FK);
-                        if (GP != null)
+                        else
                         {
-                            var DetIndex = dataGridView1.Rows.Add();
-                            dataGridView1.Rows[DetIndex].Cells[0].Value = dbDetail.DYEBD_Pk;
-                            dataGridView1.Rows[DetIndex].Cells[2].Value = false;
-                            dataGridView1.Rows[DetIndex].Cells[3].Value = GP.GreigeP_PieceNo;
-                            dataGridView1.Rows[DetIndex].Cells[4].Value = dbDetail.DYEBO_Nett;
-                            dataGridView1.Rows[DetIndex].Cells[5].Value = context.TLADM_Griege.Find(dbDetail.DYEBD_QualityKey).TLGreige_Description;
-
-                            // Knit Order
-                            var KO = context.TLKNI_Order.Find(GP.GreigeP_KnitO_Fk);
-                            if(KO != null)
+                            DbDetails = context.TLDYE_DyeBatchDetails.Where(x => x.DYEBD_DyeBatch_FK == DB.DYEB_Pk && x.DYEBO_QAApproved && !x.DYEBO_CutSheet && !x.DYEBO_Sold && !x.DYEBO_WriteOff).OrderByDescending(x => x.DYEBD_BodyTrim).ToList();
+                        }
+                        foreach (var dbDetail in DbDetails)
+                        {
+                            // We may have situation where a dybatch is spli
+                            if (dbDetail.DYEBO_CutSheet)
                             {
-                                // Yarn Order
-                                var YO = context.TLADM_Yarn.Find(KO.KnitO_YarnO_FK);
-                                if (YO != null)
+                                var tst = (from CSD in context.TLCUT_CutSheetDetail
+                                           join DBD in context.TLDYE_DyeBatchDetails
+                                           on CSD.TLCutSHD_DyeBatchDet_FK equals DBD.DYEBD_Pk
+                                           where CSD.TLCutSHD_DyeBatchDet_FK == dbDetail.DYEBD_Pk
+                                           select CSD).FirstOrDefault();
+                                if (tst == null)
                                 {
-                                    dataGridView1.Rows[DetIndex].Cells[6].Value = YO.YA_Description;
-                                    dataGridView1.Rows[DetIndex].Cells[7].Value = context.TLADM_Suppliers.Find(YO.YA_Supplier_FK).Sup_Description;
+                                    continue;
                                 }
-                                dataGridView1.Rows[DetIndex].Cells[8].Value = "KO" + KO.KnitO_OrderNumber.ToString().PadLeft(6, '0');
-
-
                             }
+                            // Knitting Production
+                            var GP = context.TLKNI_GreigeProduction.Find(dbDetail.DYEBD_GreigeProduction_FK);
+                            if (GP != null)
+                            {
+                                var DetIndex = dataGridView1.Rows.Add();
+                                dataGridView1.Rows[DetIndex].Cells[0].Value = dbDetail.DYEBD_Pk;
+                                dataGridView1.Rows[DetIndex].Cells[2].Value = false;
+                                dataGridView1.Rows[DetIndex].Cells[3].Value = GP.GreigeP_PieceNo;
+                                dataGridView1.Rows[DetIndex].Cells[4].Value = dbDetail.DYEBO_Nett;
+                                dataGridView1.Rows[DetIndex].Cells[5].Value = context.TLADM_Griege.Find(dbDetail.DYEBD_QualityKey).TLGreige_Description;
 
-                            dataGridView1.Rows[DetIndex].Cells[9].Value = "Greige";
-                            dataGridView1.Rows[DetIndex].Cells[10].Value = GP.GreigeP_Grade;
-                            dataGridView1.Rows[DetIndex].Cells[11].Value = GP.GreigeP_Remarks + " " + dbDetail.DYEBO_Notes;
-                            dataGridView1.Rows[DetIndex].Cells[12].Value = GP.GreigeP_Meas1;
-                            dataGridView1.Rows[DetIndex].Cells[13].Value = GP.GreigeP_Meas2;
-                            dataGridView1.Rows[DetIndex].Cells[14].Value = GP.GreigeP_Meas3;
-                            dataGridView1.Rows[DetIndex].Cells[15].Value = GP.GreigeP_Meas4;
-                            dataGridView1.Rows[DetIndex].Cells[16].Value = GP.GreigeP_Meas5;
-                            dataGridView1.Rows[DetIndex].Cells[17].Value = GP.GreigeP_Meas6;
-                            dataGridView1.Rows[DetIndex].Cells[18].Value = GP.GreigeP_Meas7;
-                            dataGridView1.Rows[DetIndex].Cells[19].Value = GP.GreigeP_Meas8;
-                            dataGridView1.Rows[DetIndex].Cells[20].Value = dbDetail.DYEBO_ProductRating_FK;
+                                // Knit Order
+                                var KO = context.TLKNI_Order.Find(GP.GreigeP_KnitO_Fk);
+                                if (KO != null)
+                                {
+                                    // Yarn Order
+                                    var YO = context.TLADM_Yarn.Find(KO.KnitO_YarnO_FK);
+                                    if (YO != null)
+                                    {
+                                        dataGridView1.Rows[DetIndex].Cells[6].Value = YO.YA_Description;
+                                        dataGridView1.Rows[DetIndex].Cells[7].Value = context.TLADM_Suppliers.Find(YO.YA_Supplier_FK).Sup_Description;
+                                    }
+                                    dataGridView1.Rows[DetIndex].Cells[8].Value = "KO" + KO.KnitO_OrderNumber.ToString().PadLeft(6, '0');
+
+
+                                }
+
+                                dataGridView1.Rows[DetIndex].Cells[9].Value = "Greige";
+                                dataGridView1.Rows[DetIndex].Cells[10].Value = GP.GreigeP_Grade;
+                                dataGridView1.Rows[DetIndex].Cells[11].Value = GP.GreigeP_Remarks + " " + dbDetail.DYEBO_Notes;
+                                dataGridView1.Rows[DetIndex].Cells[12].Value = GP.GreigeP_Meas1;
+                                dataGridView1.Rows[DetIndex].Cells[13].Value = GP.GreigeP_Meas2;
+                                dataGridView1.Rows[DetIndex].Cells[14].Value = GP.GreigeP_Meas3;
+                                dataGridView1.Rows[DetIndex].Cells[15].Value = GP.GreigeP_Meas4;
+                                dataGridView1.Rows[DetIndex].Cells[16].Value = GP.GreigeP_Meas5;
+                                dataGridView1.Rows[DetIndex].Cells[17].Value = GP.GreigeP_Meas6;
+                                dataGridView1.Rows[DetIndex].Cells[18].Value = GP.GreigeP_Meas7;
+                                dataGridView1.Rows[DetIndex].Cells[19].Value = GP.GreigeP_Meas8;
+                                dataGridView1.Rows[DetIndex].Cells[20].Value = dbDetail.DYEBO_ProductRating_FK;
+                            }
                         }
                     }
                 }
@@ -1032,6 +1036,7 @@ namespace Cutting
                             if (DBD != null)
                             {
                                 DBD.DYEBO_CutSheet = true;
+                                cutSheetDetail.TLCUTSHD_Body = DBD.DYEBD_BodyTrim;
                             }
 
                             if (Add)

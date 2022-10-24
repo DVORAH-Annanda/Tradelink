@@ -32,7 +32,7 @@ namespace DyeHouse
                 var Deptment = context.TLADM_Departments.Where(x=>x.Dep_ShortCode.Contains("DYE")).FirstOrDefault();
                 if(Deptment != null)
                 {
-                    cmboStore.DataSource = context.TLADM_WhseStore.Where(x=>x.WhStore_DepartmentFK == Deptment.Dep_Id).ToList();
+                    cmboStore.DataSource = context.TLADM_WhseStore.Where(x => x.WhStore_Quarantine || x.WhStore_ChemicalStore || x.WhStore_DyeKitchen).ToList(); ;
                     cmboStore.ValueMember = "WhStore_Id";
                     cmboStore.DisplayMember = "WhStore_Description";
                     cmboStore.SelectedValue = -1;

@@ -328,6 +328,7 @@ namespace Utilities
         public int TransNumber { get; set; }
         public int PickListNo { get; set; }
         public bool DeliveryNote { get; set; } 
+        public bool GroupByCustomer { get; set; }
 
         //form frmCustomerReturns 
         //--------------------------------------------------
@@ -484,7 +485,8 @@ namespace Utilities
         public int C1SortOption { get; set; }
         public int C1CustSheet { get; set; }
         public int C1DyeBatch { get; set; } 
-
+        public bool CostingColour { get; set; } 
+        public bool CostingColourWhite { get; set; } 
 
         //---------------------------------------------------------------------------------
         // The following is used in the genetation of the BIF Fabric Delivery Note 
@@ -509,8 +511,9 @@ namespace Utilities
 
         //----------------------------------------------------------------------------------------------
         //// Bundle Store Reporting 
-        public int BSRRepSelection { get; set; }  
+        public int BSRRepSelection { get; set; }
 
+        public bool PanelStockByAttrib { get; set;  }
     }
     public class DyeReportOptions
     {
@@ -594,6 +597,8 @@ namespace Utilities
         //False = Bought in Fabric Only.
         //--------------------------------------------------------
         public bool FabricType { get; set; }
+        public bool FabPendingNotSoldNotDelivered { get; set; }
+        public bool FabPendingSoldNotDelivered { get; set; } 
 
         // Fabric that has completed Stage 1 only
         //-------------------------------------------------------
@@ -605,11 +610,11 @@ namespace Utilities
         
         // Fabric that has completed the whole process and has been QA'ed and moveed to the fabric store
         //-----------------------------------------------------------------------------------
-        public bool FabricToStore { get; set; } 
+        public bool FabricToStore { get; set; }
         //------------------------------
         // Dye and Chemical Consumption
         //-----------------------------------------------------
-
+        public bool NonReceipeOnly { get; set; }
         //---------------------------------------------------------
         // Dye Process Loss 
         //--------------------------------------------------------------------
@@ -747,6 +752,8 @@ namespace Utilities
         public bool K7MachineSel { get; set; }
         public bool K7GradeSel { get; set; }
         public bool K7OperatorSel { get; set; }
+        public bool K7ByMachineByDay { get; set; }
+
         //------------------------------------------------
         // K8 QA Results for Greige Knitted 
         //-----------------------------------------------------------
@@ -784,14 +791,15 @@ namespace Utilities
         public int K10GreigeProductQFK { get; set; }
         public int K10StockTakeFreqFK { get; set; }
 
-
+    
 
         public bool K10Store { get; set; }
         public bool K10Grade { get; set; }
         public bool K10Product { get; set; }
         public bool K10ProductQ { get; set; }
         public bool K10STF { get; set; }
-        public bool BIFSummarised { get; set; } 
+        public bool BIFSummarised { get; set; }
+        public bool K10IncludeFaults { get; set; }
         //
         //-------------------------------------------------------------
         // C Grade Report designated K12 
@@ -809,6 +817,7 @@ namespace Utilities
         public bool GKM_Quality  { get; set;}
         public bool GKM_Machines  { get; set;}
         public bool GKM_Operators { get; set; }
+      
 
     }
 
@@ -816,7 +825,21 @@ namespace Utilities
     {
 
         bool nonNumeric;
-        
+
+        public double standardDeviation(IEnumerable<double> sequence)
+        {
+
+            double result = 0;
+
+            if (sequence.Any())
+            {
+                double average = sequence.Average();
+                double sum = sequence.Sum(d => Math.Pow(d - average, 2));
+                result = Math.Sqrt((sum) / (sequence.Count() - 1));
+            }
+            return result;
+        }
+
         public int CalculateSelection(bool[] SelectionMade)
         {
             int Res = 0;
@@ -2932,17 +2955,17 @@ namespace Utilities
                     oDgv.Rows[index].Cells[4].Value = ExistingRow.Col_PowerN.ToString();
                     oDgv.Rows[index].Cells[5].Value = ExistingRow.Col_FinishedCode;
                     oDgv.Rows[index].Cells[6].Value = ExistingRow.Col_StandardTime;
-                    oDgv.Rows[index].Cells[7].Value = ExistingRow.Col_AuxPowerN.ToString();
+                    // oDgv.Rows[index].Cells[7].Value = ExistingRow.Col_AuxPowerN.ToString();
                     
                     if(ExistingRow.Col_Benchmark) 
-                        oDgv.Rows[index].Cells[8].Value = true;
+                        oDgv.Rows[index].Cells[7].Value = true;
                     else
-                        oDgv.Rows[index].Cells[8].Value = false;
+                        oDgv.Rows[index].Cells[7].Value = false;
 
-                    oDgv.Rows[index].Cells[9].Value = ExistingRow.Col_StandardTime;
+                    oDgv.Rows[index].Cells[8].Value = ExistingRow.Col_Ratio;
 
-                    oDgv.Rows[index].Cells[10].Value = (bool)ExistingRow.Col_Padding;
-
+                    oDgv.Rows[index].Cells[9].Value = (bool)ExistingRow.Col_Padding;
+                    oDgv.Rows[index].Cells[10].Value = ExistingRow.Col_Pastel;
                 }
             }
             return oDgv;
@@ -2976,27 +2999,21 @@ namespace Utilities
                         }
 
                         clrs.Col_Description = row.Cells[0].Value.ToString();
+                        
                         clrs.Col_Discontinued = false;
-
-                        if (row.Cells[1].Value != null)
+                        if (row.Cells[1].Value != null && row.Cells[1].Value.ToString() == bool.TrueString)
                         {
-                            if (row.Cells[1].Value.ToString() == bool.TrueString)
-                                clrs.Col_Discontinued = true;
-                            else
-                                clrs.Col_Discontinued = false;
-
+                            clrs.Col_Discontinued = true;
                         }
 
+                        clrs.Col_Discontinued_Date = null;
                         if (row.Cells[2].Value != null && !String.IsNullOrEmpty(row.Cells[2].Value.ToString()))
                         {
                             clrs.Col_Discontinued_Date = Convert.ToDateTime(row.Cells[2].Value.ToString());
                         }
-                        else
-                            clrs.Col_Discontinued_Date = null;
-
-                        clrs.Col_PowerN = (int)Math.Pow(2.00D, (double)row.Index);
-
                        
+                        clrs.Col_PowerN = (int)Math.Pow(2.00D, (double)row.Index);
+                                               
                         if (row.Cells[4].Value == null && lAdd)
                         {
                             ///clrs.Col_PowerN = (int)Math.Pow(2.00D, (double)row.Index);
@@ -3006,51 +3023,43 @@ namespace Utilities
                             //clrs.Col_PowerN = Convert.ToInt32(row.Cells[4].Value.ToString());
                             // clrs.Col_PowerN = 1;
 
+                        clrs.Col_FinishedCode = string.Empty;
                         if (row.Cells[5].Value != null)
                             clrs.Col_FinishedCode = row.Cells[5].Value.ToString();
-                        else
-                            clrs.Col_FinishedCode = string.Empty;
-                       
-
+                        
                         clrs.Col_Display = clrs.Col_FinishedCode + " " + clrs.Col_Description;
 
-                        
+                        clrs.Col_StandardTime = 0.00M;
                         if (row.Cells[6].Value != null)
                         {
-                            if (row.Cells[6].Value != null)
-                                clrs.Col_StandardTime = (decimal)row.Cells[6].Value;
-                            else
-                                clrs.Col_StandardTime = 0.00M;
-
+                            clrs.Col_StandardTime = (decimal)row.Cells[6].Value;
                         }
-                        
 
+                        clrs.Col_Benchmark = false;
+                        if (row.Cells[7].Value != null)
+                        {
+                            clrs.Col_Benchmark  = (bool)row.Cells[7].Value;
+                        }
+
+                        clrs.Col_Ratio = 0.00M;
                         if (row.Cells[8].Value != null)
                         {
-                            if (row.Cells[8].Value != null)
-                                clrs.Col_Benchmark  = (bool)row.Cells[8].Value;
-                            else
-                                clrs.Col_Benchmark = false;
-
+                            clrs.Col_Ratio = (decimal)row.Cells[8].Value;
+                            
                         }
 
-                        if (row.Cells[9].Value != null)
+                        clrs.Col_Padding = false;
+                        if ((bool)row.Cells[9].Value)
                         {
-                            if (row.Cells[9].Value != null)
-                                clrs.Col_StandardTime = (decimal)row.Cells[9].Value;
-                            else
-                                clrs.Col_StandardTime = 0.00M;
+                            clrs.Col_Padding = (bool)row.Cells[9].Value;
                         }
 
-                        if((bool)row.Cells[10].Value)
+                        clrs.Col_Pastel = string.Empty;
+                        if (row.Cells[10].Value.ToString() != null)
                         {
-                            clrs.Col_Padding = (bool)row.Cells[10].Value;
+                            clrs.Col_Pastel = row.Cells[10].Value.ToString();
                         }
-                        else
-                        {
-                            clrs.Col_Padding = false;
-                        }
-
+                        
                         if (lAdd)
                             Context.TLADM_Colours.Add(clrs);
 
@@ -4616,10 +4625,12 @@ namespace Utilities
             return lTransSuccessful;
         }
 
+        
         public DataGridView Get_PanelAttributes(DataGridView odgv)
         {
+            
             DataGridView oDgv = odgv;
-
+            /*
             using (var Context = new TTI2Entities())
             {
                 var ExistingData = Context.TLADM_PanelAttributes
@@ -4659,13 +4670,18 @@ namespace Utilities
 
                 }
             }
+            */
             return oDgv;
+            
         }
-
+        
         public bool Save_PanelAttributes(DataGridView oDgv)
         {
-            var lAdd = false;
+
             var lTransSuccessful = false;
+
+            /*var lAdd = false;
+                        
 
             using (var Context = new TTI2Entities())
             {
@@ -4767,8 +4783,11 @@ namespace Utilities
                     }
                 }
             }
+            */
             return lTransSuccessful;
+            
         }
+      
 
         public DataGridView Get_ProductionLoss(DataGridView oDgv)
         {

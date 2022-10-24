@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\EntityFramework.6.4.4\build\EntityFramework.props" Condition="Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -12,6 +13,8 @@
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -66,12 +69,10 @@
       <HintPath>..\..\..\..\..\..\..\CRVS_Extended_DLL\CrystalDecisions.Windows.Forms.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="LinqKit, Version=1.1.15.0, Culture=neutral, PublicKeyToken=bc217f8844052a91, processorArchitecture=MSIL">
       <HintPath>..\packages\LinqKit.1.1.15\lib\net45\LinqKit.dll</HintPath>
@@ -100,6 +101,9 @@
     <Compile Include="BoughtInFabric.Designer.cs">
       <DependentUpon>BoughtInFabric.cs</DependentUpon>
     </Compile>
+    <Compile Include="DataSet24.cs">
+      <DependentUpon>DataSet24.xsd</DependentUpon>
+    </Compile>
     <Compile Include="DataSet25.cs">
       <DependentUpon>DataSet25.xsd</DependentUpon>
     </Compile>
@@ -120,6 +124,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>DataSet35.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="DataSet36.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSet36.xsd</DependentUpon>
     </Compile>
     <Compile Include="frmCloseYarnPsallet.cs">
       <SubType>Form</SubType>
@@ -162,6 +171,12 @@
     </Compile>
     <Compile Include="frmLiningTransaction.Designer.cs">
       <DependentUpon>frmLiningTransaction.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GreigeProdByDay.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GreigeProdByDay.rpt</DependentUpon>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="KnittingDskVariance.cs">
       <AutoGen>True</AutoGen>
@@ -772,6 +787,10 @@
     <EmbeddedResource Include="frmLiningTransaction.resx">
       <DependentUpon>frmLiningTransaction.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="GreigeProdByDay.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>GreigeProdByDay.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="KnittingDskVariance.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>KnittingDskVariance.cs</LastGenOutput>
@@ -1346,6 +1365,17 @@
     <None Include="DataSet35.xss">
       <DependentUpon>DataSet35.xsd</DependentUpon>
     </None>
+    <None Include="DataSet36.xsc">
+      <DependentUpon>DataSet36.xsd</DependentUpon>
+    </None>
+    <None Include="DataSet36.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSet36.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="DataSet36.xss">
+      <DependentUpon>DataSet36.xsd</DependentUpon>
+    </None>
     <None Include="DataSet5.xsc">
       <DependentUpon>DataSet5.xsd</DependentUpon>
     </None>
@@ -1430,6 +1460,14 @@
     <Service Include="{C0C07587-41A7-46C8-8FBD-3F9C8EBE2DDC}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.4\build\EntityFramework.props'))" />
+    <Error Condition="!Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.4\build\EntityFramework.targets'))" />
+  </Target>
+  <Import Project="..\packages\EntityFramework.6.4.4\build\EntityFramework.targets" Condition="Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

@@ -83,6 +83,13 @@ namespace DyeHouse
             dt.Columns.Add(column);
 
             column = new DataColumn();
+            column.DataType = typeof(string);
+            column.ColumnName = "Dye_Batch";
+            column.Caption = "Dye Batch";
+            column.DefaultValue = String.Empty;
+            dt.Columns.Add(column);
+
+            column = new DataColumn();
             column.DataType = typeof(String);
             column.ColumnName = "Quality_Type";
             column.Caption = "Quality";
@@ -96,13 +103,7 @@ namespace DyeHouse
             column.DefaultValue = String.Empty;
             dt.Columns.Add(column);
 
-            column = new DataColumn();
-            column.DataType = typeof(Decimal);
-            column.ColumnName = "Gross_Weight";
-            column.Caption = "Gross Weight";
-            column.DefaultValue = 0.00M;
-            dt.Columns.Add(column);
-
+        
             column = new DataColumn();
             column.DataType = typeof(Decimal);
             column.ColumnName = "Nett_Weight";
@@ -110,6 +111,7 @@ namespace DyeHouse
             column.DefaultValue = 0.00M;
             dt.Columns.Add(column);
 
+            /*
             column = new DataColumn();
             column.DataType = typeof(Decimal);
             column.ColumnName = "Disk_Weight";
@@ -137,6 +139,7 @@ namespace DyeHouse
             column.Caption = "Spire Measurement";
             column.DefaultValue = 0.00M;
             dt.Columns.Add(column);
+            */
 
            /* dataGridView1.Columns.Add(oTxtIndex);  //0 Index
             dataGridView1.Columns.Add(oTxtA);        //1 Piece No
@@ -194,13 +197,13 @@ namespace DyeHouse
             dataGridView1.Columns["Colour"].DisplayIndex = 4;
 
             DataGridViewTextBoxColumn oTxtD = new DataGridViewTextBoxColumn();
-            oTxtD.HeaderText = "Gross Weight";
-            oTxtD.Name = "Gross_Weight";
+            oTxtD.HeaderText = "Dye Batch";
+            oTxtD.Name = "DyeBatch";
             oTxtD.ReadOnly = true;
             oTxtD.DataPropertyName = dt.Columns[5].ColumnName;
-            oTxtD.ValueType = typeof(decimal);
+            oTxtD.ValueType = typeof(string);
             dataGridView1.Columns.Add(oTxtD);
-            dataGridView1.Columns["Gross_Weight"].DisplayIndex = 5;
+            dataGridView1.Columns["DyeBatch"].DisplayIndex = 5;
 
             DataGridViewTextBoxColumn oTxtE = new DataGridViewTextBoxColumn();
             oTxtE.HeaderText = "Nett Weight";
@@ -210,6 +213,7 @@ namespace DyeHouse
             dataGridView1.Columns.Add(oTxtE);
             dataGridView1.Columns["Nett_Weight"].DisplayIndex = 6;
 
+            /*
             DataGridViewTextBoxColumn oTxtF = new DataGridViewTextBoxColumn();
             oTxtF.HeaderText = "Disk";
             oTxtF.Name = "Disk_Weight";
@@ -242,7 +246,8 @@ namespace DyeHouse
             oTxtJ.ReadOnly = true;
             dataGridView1.Columns.Add(oTxtJ);
             dataGridView1.Columns[10].DisplayIndex = 10;
-            
+            */
+
             /* DataGridViewTextBoxColumn oTxtK = new DataGridViewTextBoxColumn();
             oTxtK.HeaderText = "Index position of Batch";
             oTxtK.ValueType = typeof(decimal);
@@ -360,17 +365,19 @@ namespace DyeHouse
                             NewRow[0] = row.DYEBD_Pk;
                             NewRow[1] = false;
                             NewRow[2] = context.TLKNI_GreigeProduction.Find(row.DYEBD_GreigeProduction_FK).GreigeP_PieceNo;
-                            NewRow[3] = context.TLADM_Griege.Find(row.DYEBD_QualityKey).TLGreige_Description;
+                            NewRow[4] = context.TLADM_Griege.Find(row.DYEBD_QualityKey).TLGreige_Description;
                             var BD = context.TLDYE_DyeBatch.Find(row.DYEBD_DyeBatch_FK);
                             if (BD != null)
-                                NewRow[4] = context.TLADM_Colours.Find(BD.DYEB_Colour_FK).Col_Display;
-
-                            NewRow[5] = context.TLKNI_GreigeProduction.Find(row.DYEBD_GreigeProduction_FK).GreigeP_weight;
+                            {
+                                NewRow[3] = BD.DYEB_BatchNo;
+                                NewRow[5] = context.TLADM_Colours.Find(BD.DYEB_Colour_FK).Col_Display;
+                            }
+                            
                             NewRow[6] = row.DYEBO_Nett;
-                            NewRow[7] = row.DYEBO_DiskWeight;
+                           /* NewRow[7] = row.DYEBO_DiskWeight;
                             NewRow[8] = 0;
                             NewRow[9] = 0;
-                            NewRow[10] = 0;
+                            NewRow[10] = 0;*/
                             dt.Rows.Add(NewRow);
 
                         }
@@ -419,17 +426,20 @@ namespace DyeHouse
                             NewRow[0] = row.DYEBD_Pk;
                             NewRow[1] = false;
                             NewRow[2] = context.TLKNI_GreigeProduction.Find(row.DYEBD_GreigeProduction_FK).GreigeP_PieceNo;
-                            NewRow[3] = context.TLADM_Griege.Find(row.DYEBD_QualityKey).TLGreige_Description;
+                            NewRow[4] = context.TLADM_Griege.Find(row.DYEBD_QualityKey).TLGreige_Description;
                             var BD = context.TLDYE_DyeBatch.Find(row.DYEBD_DyeBatch_FK);
                             if (BD != null)
-                                NewRow[4] = context.TLADM_Colours.Find(BD.DYEB_Colour_FK).Col_Display;
-
-                            NewRow[5] = context.TLKNI_GreigeProduction.Find(row.DYEBD_GreigeProduction_FK).GreigeP_weight;
+                            {
+                                NewRow[5] = context.TLADM_Colours.Find(BD.DYEB_Colour_FK).Col_Display;
+                                NewRow[3] = BD.DYEB_BatchNo;
+                            }
                             NewRow[6] = row.DYEBO_Nett;
-                            NewRow[7] = row.DYEBO_DiskWeight;
+                            
+                            /*NewRow[7] = row.DYEBO_DiskWeight;
                             NewRow[8] = 0;
                             NewRow[9] = 0;
-                            NewRow[10] = 0;
+                            NewRow[10] = 0;*/
+
                             dt.Rows.Add(NewRow);
                         }
                     }
@@ -457,7 +467,7 @@ namespace DyeHouse
             TLADM_TranactionType TranType = null;
             Decimal BatchWeight = 0.00M;
             TLCSV_PurchaseOrder SelectedContract = null;
-
+                      
             if (oBtn != null && formloaded)
             {
                 var errorM = core.returnMessage(MandSelected, true, MandatoryFields);
@@ -518,17 +528,28 @@ namespace DyeHouse
                         {
                             DBD.DYEBO_CurrentStore_FK = TranType.TrxT_Pk;
                             DBD.DYEBO_TransactionNo = txtTransNumber.Text;
-                            DBD.DYEBO_DateSold = dtTransDate.Value;
-                            DBD.DYEBO_Sold = true;
 
+                            if (!SelectedCustomer.Cust_FabricCustomer)
+                            {
+                                DBD.DYEBO_DateSold = dtTransDate.Value;
+                                DBD.DYEBO_Sold = true;
+                            }
+                            else
+                            {
+                                DBD.DYEBO_PendingDelivery = true;
+                            }
                             BatchWeight += DBD.DYEBD_GreigeProduction_Weight;
                             Nett += DBD.DYEBO_Nett;
+
+                            
 
                             if(SelectedCustomer.Cust_FabricCustomer)
                             {
                                 var PurOrderDetail = context.TLCSV_PuchaseOrderDetail.Where(x => x.TLCUSTO_PurchaseOrder_FK == SelectedContract.TLCSVPO_Pk && x.TLCUSTO_Quality_FK == DBD.DYEBD_QualityKey).FirstOrDefault();
                                 if(PurOrderDetail != null)
                                 {
+                                    DBD.DYEBO_PurchaseOrderDetail_FK = PurOrderDetail.TLCUSTO_Pk;
+
                                     PurOrderDetail.TLCUSTO_QtyMeters_Delivered += DBD.DYEBO_Nett;
                                     if(PurOrderDetail.TLCUSTO_QtyMeters_Delivered >= PurOrderDetail.TLCUSTO_QtyMeters)
                                     {
@@ -547,7 +568,7 @@ namespace DyeHouse
                     tt.TLDYET_BatchNo = "0";
                     tt.TLDYET_BatchWeight = BatchWeight;
                     tt.TLDYET_SequenceNo = 0;
-                    tt.TLDYET_Batch_FK = 0;
+                    tt.TLDYET_Batch_FK  = 0;
                     tt.TLDYET_Date = dtTransDate.Value;
                     tt.TLDYET_TransactionWeight = Nett;
                     tt.TLDYET_TransactionNumber = txtTransNumber.Text;
@@ -556,7 +577,6 @@ namespace DyeHouse
                     tt.TLDYET_Customer_FK = ((TLADM_CustomerFile)cmboCustomers.SelectedItem).Cust_Pk;
                     tt.TLDYET_FabricSales = true;
                     tt.TLDYET_CustomerOrderNo = txtOrderNumber.Text;
- 
                     context.TLDYE_DyeTransactions.Add(tt);
                     try
                     {
@@ -568,6 +588,26 @@ namespace DyeHouse
                         frmFabricSales_Load(this, null);
                         formloaded = true;
                         MessageBox.Show("Data succesfully saved to database");
+                        if(context.TLADM_CustomerFile.Find(tt.TLDYET_Customer_FK).Cust_FabricCustomer)                        {
+                            DialogResult res = MessageBox.Show("Would you like to print a picking list", "Enquiry", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                            if(res == DialogResult.Yes)
+                            {
+                                QueryParms.DyeTransactions.Add(tt);
+                                QueryParms.FabricSalesPickingList = true;
+                                QueryParms.FabricSales = true;
+                                // 'FD000295'
+                                frmDyeViewReport vRep = new frmDyeViewReport(17, QueryParms, txtTransNumber.Text);
+                                int h = Screen.PrimaryScreen.WorkingArea.Height;
+                                int w = Screen.PrimaryScreen.WorkingArea.Width;
+                                vRep.ClientSize = new Size(w, h);
+                                vRep.ShowDialog(this);
+                                if (vRep != null)
+                                {
+                                    vRep.Dispose();
+                                }
+
+                            }
+                        }
                     }
                     catch (Exception ex)
                     {

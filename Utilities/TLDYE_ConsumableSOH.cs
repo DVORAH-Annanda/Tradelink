@@ -26,5 +26,9 @@ namespace Utilities
         public Nullable<int> DYCSH_DyeKitchen_FK { get; set; }
         public decimal DYCSH_SOHQuar { get; set; }
         public decimal DYCSH_SOHKitchen { get; set; }
+        public decimal DYCSH_K_Opening { get; set; }
+        public decimal DYCSH_K_Closing { get; set; }
+        public decimal DYCSH_K_Used { get; set; }
+        public decimal DCSH_K_Adjusted { get; set; }
     }
 }

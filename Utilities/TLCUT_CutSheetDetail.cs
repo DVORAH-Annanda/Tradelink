@@ -20,5 +20,6 @@ namespace Utilities
         public int TLCutSHD_CurrentStore_FK { get; set; }
         public Nullable<int> TLCutSHD_Transaction_Type { get; set; }
         public decimal TLCUTSHD_NettWeight { get; set; }
+        public bool TLCUTSHD_Body { get; set; }
     }
 }

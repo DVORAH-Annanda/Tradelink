@@ -13,31 +13,21 @@ namespace CMT
     public partial class frmBFASel : Form
     {
         bool formloaded;
+        protected readonly TTI2Entities _context;
 
         public frmBFASel()
         {
             InitializeComponent();
+            _context = new TTI2Entities();
+
         }
 
         private void frmBFASel_Load(object sender, EventArgs e)
         {
             formloaded = false;
-            IList<TLCUT_CutSheet> CutSheet = new List<TLCUT_CutSheet>();
-
-            using (var context = new TTI2Entities())
-            {
-                 var Existing =  (from li in context.TLCMT_LineIssue
-                                       join cs in context.TLCUT_CutSheet
-                                       on li.TLCMTLI_CutSheet_FK equals cs.TLCutSH_Pk
-                                       where li.TLCMTLI_IssuedToLine && !li.TLCMTLI_WorkCompleted
-                                       orderby cs.TLCutSH_No
-                                       select cs).ToList();
-
-                cmboCutSheet.DataSource = Existing;
-                cmboCutSheet.ValueMember = "TLCutSH_Pk";
-                cmboCutSheet.DisplayMember = "TLCutSH_No";
-                cmboCutSheet.SelectedValue = -1;
-            }
+            
+            txtCutSheet.Select();
+                        
 
             formloaded = true;
         }
@@ -47,14 +37,14 @@ namespace CMT
             Button oBtn = sender as Button;
             if (oBtn != null && formloaded)
             {
-                var selected = (TLCUT_CutSheet)cmboCutSheet.SelectedItem;
-                if (selected == null)
+                var CsSelected = _context.TLCUT_CutSheet.FirstOrDefault(x => x.TLCutSH_No == txtCutSheet.Text);
+                if(CsSelected == null)
                 {
-                    MessageBox.Show("Please select a cut sheet from the drop down list");
+                    MessageBox.Show("CutSheet Not Found");
                     return;
-                }
 
-                frmCMTViewRep vRep = new frmCMTViewRep(5, selected.TLCutSH_Pk);
+                }
+                frmCMTViewRep vRep = new frmCMTViewRep(5, CsSelected.TLCutSH_Pk);
                 //frmCMTViewRep vRep = new frmCMTViewRep(5, 73677);
                 int h = Screen.PrimaryScreen.WorkingArea.Height;
                 int w = Screen.PrimaryScreen.WorkingArea.Width;
@@ -65,6 +55,8 @@ namespace CMT
                     vRep.Close();
                     vRep.Dispose();
                 }
+                txtCutSheet.Text = string.Empty;
+
             }
         }
     }

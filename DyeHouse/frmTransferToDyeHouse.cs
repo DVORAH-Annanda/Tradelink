@@ -318,46 +318,73 @@ namespace DyeHouse
                             if (QueryParms.FabricWidths.Count > 0 && Quality != null)
                             {
                                 var FWW = QueryParms.FabricWidths.Find(s => s.FW_Id == Quality.TLGreige_FabricWidth_FK);
-                                if(FWW == null)
+                                if (FWW == null)
                                     continue;
                             }
 
-                            if(QueryParms.FabricQualities.Count > 0 && Quality != null)
+                            if (QueryParms.FabricQualities.Count > 0 && Quality != null)
                             {
                                 var FabricGroup = context.TLADM_GreigeQuality.Find(Quality.TLGreige_Quality_FK);
-                                if(FabricGroup != null)
+                                if (FabricGroup != null)
                                 {
                                     var FG = QueryParms.FabricQualities.Find(s => s.GQ_Pk == FabricGroup.GQ_Pk);
                                     if (FG == null)
                                         continue;
                                 }
                             }
-                        }
 
-                        var index = dataGridView1.Rows.Add();
-                        dataGridView1.Rows[index].Cells[0].Value = DyeBatch.DYEB_Pk;
-                        dataGridView1.Rows[index].Cells[1].Value = false;
-                        dataGridView1.Rows[index].Cells[2].Value = DyeBatch.DYEB_BatchNo;
-                        if (DyeOrder != null)
+
+                            var index = dataGridView1.Rows.Add();
+                            dataGridView1.Rows[index].Cells[0].Value = DyeBatch.DYEB_Pk;
+                            dataGridView1.Rows[index].Cells[1].Value = false;
+                            dataGridView1.Rows[index].Cells[2].Value = DyeBatch.DYEB_BatchNo;
+                            if (DyeOrder != null)
+                            {
+                                dataGridView1.Rows[index].Cells[3].Value = DyeOrder.TLDYO_OrderDate.ToString("dd/MM/yyyy");
+                                var colour = context.TLADM_Colours.Find(DyeOrder.TLDYO_Colour_FK);
+                                if (colour != null)
+                                {
+                                    dataGridView1.Rows[index].Cells[4].Value = colour.Col_Display;
+                                }
+
+                                dataGridView1.Rows[index].Cells[5].Value = DyeOrder.TLDYO_DyeReqWeek;
+
+
+                                var Style = context.TLADM_Styles.Find(DyeOrder.TLDYO_Style_FK);
+                                if (Style != null)
+                                {
+                                    dataGridView1.Rows[index].Cells[6].Value = Style.Sty_Description;
+                                }
+                                dataGridView1.Rows[index].Cells[7].Value = Math.Round(DyeBatch.DYEB_BatchKG, 2);
+                            }
+                        }
+                        else
                         {
-                            dataGridView1.Rows[index].Cells[3].Value = DyeOrder.TLDYO_OrderDate.ToString("dd/MM/yyyy");
-                            var colour = context.TLADM_Colours.Find(DyeOrder.TLDYO_Colour_FK);
-                            if (colour != null)
+                            var dof = context.TLDYE_DyeOrderFabric.Find(DyeBatch.DYEB_DyeOrder_FK);
+                            if(dof != null)
                             {
-                                dataGridView1.Rows[index].Cells[4].Value = colour.Col_Display;
-                            }
+                                var Quality = context.TLADM_Griege.Find(dof.TLDYEF_Greige_FK);
+                                var index = dataGridView1.Rows.Add();
+                                dataGridView1.Rows[index].Cells[0].Value = DyeBatch.DYEB_Pk;
+                                dataGridView1.Rows[index].Cells[1].Value = false;
+                                dataGridView1.Rows[index].Cells[2].Value = DyeBatch.DYEB_BatchNo;
+                                if (dof != null)
+                                {
+                                    dataGridView1.Rows[index].Cells[3].Value = dof.TLDYEF_OrderDate.ToString("dd/MM/yyyy");
+                                    var colour = context.TLADM_Colours.Find(dof.TLDYEF_Colours_FK);
+                                    if (colour != null)
+                                    {
+                                        dataGridView1.Rows[index].Cells[4].Value = colour.Col_Display;
+                                    }
 
-                            dataGridView1.Rows[index].Cells[5].Value = DyeOrder.TLDYO_DyeReqWeek;
-
-
-                            var Style = context.TLADM_Styles.Find(DyeOrder.TLDYO_Style_FK);
-                            if (Style != null)
-                            {
-                                dataGridView1.Rows[index].Cells[6].Value = Style.Sty_Description;
+                                    dataGridView1.Rows[index].Cells[5].Value = dof.TLDYEF_DyeWeek;
+                                    dataGridView1.Rows[index].Cells[6].Value = "Fabric Only";
+                                    dataGridView1.Rows[index].Cells[7].Value = Math.Round(DyeBatch.DYEB_BatchKG, 2);
+                                }
                             }
                         }
 
-                        dataGridView1.Rows[index].Cells[7].Value = Math.Round(DyeBatch.DYEB_BatchKG, 2);
+                       
                     }
 
 

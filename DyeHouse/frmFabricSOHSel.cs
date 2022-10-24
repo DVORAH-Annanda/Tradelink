@@ -107,6 +107,9 @@ namespace DyeHouse
                 else
                     repOps.FabricType = (bool)rbBoughtIn.Checked;
 
+                repOps.FabPendingNotSoldNotDelivered = rbPenNotSoldNotDeliv.Checked;
+                repOps.FabPendingSoldNotDelivered = rbPenSoldNotDeliv.Checked;
+                
                 frmDyeViewReport vRep = new frmDyeViewReport(22, repOps);
                 vRep.ShowDialog(this);
 

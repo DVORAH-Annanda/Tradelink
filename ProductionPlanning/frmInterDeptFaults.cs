@@ -48,7 +48,7 @@ namespace ProductionPlanning
             Button oBtn = (Button)sender;
             //===================================================== 
             // 0 = Piece Number
-            // 1 = Knit Order 
+            // 1 = All Dye Batches for Period Selected 
             // 2 = Dye Batch 
             // 3 = Cut Sheet 
             //====================================================
@@ -69,6 +69,9 @@ namespace ProductionPlanning
 
                 using (var context = new TTI2Entities())
                 {
+                    QueryParms.FromDate = DateTime.Now;
+                    QueryParms.ToDate = DateTime.Now;
+
                     if (rbCutSheet.Checked)
                     {
                         var CutSht = context.TLCUT_CutSheet.FirstOrDefault(x => x.TLCutSH_No == txtCutSheet.Text);
@@ -96,14 +99,30 @@ namespace ProductionPlanning
                         RecordKey[3] = CmtSheet.TLCMTLI_Pk;
                         SelectedOption[3] = true;
                     }
+                    else if(rbDyeButton.Checked)
+                    {
+                        var DyeBatch = context.TLDYE_DyeBatch.FirstOrDefault(x=>x.DYEB_BatchNo == txtCutSheet.Text);
+                        if (DyeBatch == null)
+                        {
+                            MessageBox.Show("Dye Batch Number Not Found");
+                            return;
+                        }
+
+                        RecordKey[2] = DyeBatch.DYEB_Pk;
+                 
+                        SelectedOption[2] = true;
+                    }
+                    else
+                    {
+                        SelectedOption[1] = true;
+                        QueryParms.FromDate = dtpFromDate.Value;
+                        QueryParms.ToDate = dtpToDate.Value;
+                    }
                 }
 
                 QueryParms.RecordKeys = RecordKey;
                 QueryParms.SelectedOptions = SelectedOption;
 
-                QueryParms.FromDate = DateTime.Now;
-                QueryParms.ToDate = DateTime.Now;
-                
                 frmPPSViewRep vRep = new frmPPSViewRep(7, QueryParms);
                 int h = Screen.PrimaryScreen.WorkingArea.Height;
                 int w = Screen.PrimaryScreen.WorkingArea.Width;

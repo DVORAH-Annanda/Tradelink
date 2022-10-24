@@ -14,6 +14,25 @@ namespace DyeHouse
     public partial class frmCommissionDeliveries : Form
     {
         bool formloaded;
+        DataTable dt;
+        DataColumn Col;
+        BindingSource BindSrc;
+
+        bool CancelPending;
+        bool SaleConfirmed;
+        bool FabDespatched; 
+
+        bool ManagementMode;
+
+        DataGridViewTextBoxColumn Col0;  //Index in File 
+        DataGridViewCheckBoxColumn Col1;  // Piece Selected
+        DataGridViewTextBoxColumn Col2;   // Piece Number
+        DataGridViewTextBoxColumn Col3;   // Colour 
+        DataGridViewTextBoxColumn Col4;   // Meters 
+        DataGridViewTextBoxColumn Col5;   // Gross 
+        DataGridViewTextBoxColumn Col6;   // Nett;
+                                          // 
+
         DyeHouse.DyeQueryParameters QueryParms;
         DyeHouse.DyeRepository repo;
 
@@ -34,8 +53,165 @@ namespace DyeHouse
             _Commission = Com;
 
             if (!Com)
+            {
                 groupBox2.Visible = false;
- 
+                dataGridView1.Visible = true;
+
+                dt = new DataTable();
+                BindSrc = new BindingSource();
+
+                Col = new DataColumn();
+
+                //------------------------------------------------------
+                // Create column 0. // This is Index Position of the measurement in the TLADM_QADyeProcessFields Table
+                //----------------------------------------------
+                Col = new DataColumn();
+                Col.DataType = typeof(Int32);
+                Col.ColumnName = "DyeBatchDetail_Pk";
+                Col.DefaultValue = 0;
+                dt.Columns.Add(Col);
+                //  DataT.PrimaryKey = new DataColumn[] { DataT.Columns[0] };
+
+                //------------------------------------------------------
+                // Create column 1. // This is Index Position of the quality in the TLADM_Greige Table
+                //----------------------------------------------
+                Col = new DataColumn();
+                Col.DataType = typeof(bool);
+                Col.ColumnName = "RecordSelected";
+                Col.Caption = "Select";
+                Col.DefaultValue = false;
+                dt.Columns.Add(Col);
+
+                //------------------------------------------------------
+                // Create column 2. // This is Index Position of the quality in the TLADM_Greige Table
+                //----------------------------------------------
+                Col = new DataColumn();
+                Col.DataType = typeof(string);
+                Col.ColumnName = "PieceNo";
+                Col.Caption = "Piece No";
+                Col.DefaultValue = String.Empty;
+                dt.Columns.Add(Col);
+
+                //------------------------------------------------------
+                // Create column 3. // This is Index Position of the quality in the TLADM_Greige Table
+                //----------------------------------------------
+                Col = new DataColumn();
+                Col.DataType = typeof(string);
+                Col.ColumnName = "PieceColour";
+                Col.Caption = "Colour";
+                Col.DefaultValue = String.Empty;
+                dt.Columns.Add(Col);
+
+                //------------------------------------------------------
+                // Create column 4. // This is Index Position of the quality in the TLADM_Greige Table
+                //----------------------------------------------
+                Col = new DataColumn();
+                Col.DataType = typeof(Decimal);
+                Col.ColumnName = "PieceMeters";
+                Col.Caption = "Meters";
+                Col.DefaultValue = 0.00M;
+                dt.Columns.Add(Col);
+
+                //------------------------------------------------------
+                // Create column 5. // This is Index Position of the quality in the TLADM_Greige Table
+                //----------------------------------------------
+                Col = new DataColumn();
+                Col.DataType = typeof(Decimal);
+                Col.ColumnName = "PieceMeterGross";
+                Col.Caption = "Gross";
+                Col.DefaultValue = 0.00M;
+                dt.Columns.Add(Col);
+
+                //------------------------------------------------------
+                // Create column 6. // This is Index Position of the quality in the TLADM_Greige Table
+                //----------------------------------------------
+                Col = new DataColumn();
+                Col.DataType = typeof(Decimal);
+                Col.ColumnName = "PieceNett";
+                Col.Caption = "Nett";
+                Col.DefaultValue = 0.00M;
+                dt.Columns.Add(Col);
+
+                //0 -- index of record 
+                //--------------------------------------------
+                Col0 = new DataGridViewTextBoxColumn();
+                Col0.Name = "DyeBatchIndex";
+                Col0.ValueType = typeof(Int32);
+                Col0.DataPropertyName = dt.Columns[0].ColumnName;
+                Col0.HeaderText = "DyeBatch Index";
+                dataGridView1.Columns.Add(Col0);
+                dataGridView1.Columns[0].Visible = false;
+                dataGridView1.Columns[0].DisplayIndex = 0;
+
+                //--------------------------------------------
+                Col1 = new DataGridViewCheckBoxColumn();
+                Col1.Name = "Select";
+                Col1.ValueType = typeof(bool);
+                Col1.HeaderText = "Select";
+                Col1.DataPropertyName = dt.Columns[1].ColumnName;
+                dataGridView1.Columns.Add(Col1);
+                dataGridView1.Columns[1].Visible = true;
+                dataGridView1.Columns[1].DisplayIndex = 1;
+
+                Col2 = new DataGridViewTextBoxColumn();
+                Col2.Name = "PieceNo";
+                Col2.ValueType = typeof(String);
+                Col2.HeaderText = "Piece No";
+                Col2.DataPropertyName = dt.Columns[2].ColumnName;
+                dataGridView1.Columns.Add(Col2);
+                dataGridView1.Columns[2].Visible = true;
+                dataGridView1.Columns[2].DisplayIndex = 2;
+
+                Col3 = new DataGridViewTextBoxColumn();
+                Col3.Name = "ColourDesc";
+                Col3.ValueType = typeof(String);
+                Col3.HeaderText = "Colour";
+                Col3.DataPropertyName = dt.Columns[3].ColumnName;
+                dataGridView1.Columns.Add(Col3);
+                dataGridView1.Columns[3].Visible = true;
+                dataGridView1.Columns[3].DisplayIndex = 3;
+
+                Col4 = new DataGridViewTextBoxColumn();
+                Col4.Name = "Meters";
+                Col4.ValueType = typeof(decimal);
+                Col4.HeaderText = "Meters";
+                Col4.DataPropertyName = dt.Columns[4].ColumnName;
+                dataGridView1.Columns.Add(Col4);
+                dataGridView1.Columns[4].Visible = true;
+                dataGridView1.Columns[4].DisplayIndex = 4;
+
+                Col5 = new DataGridViewTextBoxColumn();
+                Col5.Name = "Gross";
+                Col5.ValueType = typeof(decimal);
+                Col5.HeaderText = "Gross";
+                Col5.DataPropertyName = dt.Columns[5].ColumnName;
+                dataGridView1.Columns.Add(Col5);
+                dataGridView1.Columns[5].Visible = true;
+                dataGridView1.Columns[5].DisplayIndex = 5;
+
+                Col6 = new DataGridViewTextBoxColumn();
+                Col6.Name = "Nett";
+                Col6.ValueType = typeof(decimal);
+                Col6.HeaderText = "Nett";
+                Col6.DataPropertyName = dt.Columns[6].ColumnName;
+                dataGridView1.Columns.Add(Col6);
+                dataGridView1.Columns[6].Visible = true;
+                dataGridView1.Columns[6].DisplayIndex = 6;
+
+
+                dataGridView1.DataSource = dt;
+                dataGridView1.AllowUserToAddRows = false;
+                dataGridView1.AllowUserToOrderColumns = false;
+
+                BindSrc.DataSource = dt;
+                dataGridView1.DataSource = BindSrc;
+
+            }
+            else
+            {
+                dataGridView1.Visible = false;
+            }
+
             this.cmboCurrentBatches.CheckStateChanged += new System.EventHandler(this.cmboCurrentBatches_CheckStateChanged);
             this.cmboBatchesReprint.CheckStateChanged += new System.EventHandler(this.cmboCurrentBatchesReprint_CheckStateChanged);
         }
@@ -48,6 +224,8 @@ namespace DyeHouse
             IList<TLADM_CustomerFile> Customers = null;
 
             cmboBatchesReprint.Visible = false;
+
+            ManagementMode = false;
 
             using (var context = new TTI2Entities())
             {
@@ -98,10 +276,73 @@ namespace DyeHouse
                 if (item.CheckState)
                 {
                     if (_Commission)
+                    {
                         //Remember...The Item_Pk is a number aimed at the DyeBatchsDetails DYEBD_DyeBatch_FK
                         QueryParms.DyeBatches.Add(repo.LoadDyeBatch(item._Pk));
+                    }
                     else
+                    {
                         QueryParms.DyeTransactions.Add(repo.LoadDyeTrans(item._Pk));
+                        DialogResult Res = MessageBox.Show("Do you wish to modify this order?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                        if (Res == DialogResult.Yes)
+                        {
+                            DyeHouse.FrmFabricSaleInstr Instr = new DyeHouse.FrmFabricSaleInstr();
+                            Instr.ShowDialog(this);
+                            if (!Instr.SelectionMade)
+                            {
+                                this.Close();
+                            }
+
+                            CancelPending = Instr.rbPCanceled;
+                            SaleConfirmed = Instr.rbPConfirmed;
+                            FabDespatched = Instr.rbFDespatched;
+                            
+                            ManagementMode = true;
+
+                        }
+
+                           
+                        using (var context = new TTI2Entities())
+                        {
+                           var Existing = context.TLDYE_DyeBatchDetails.Where(x => x.DYEBO_TransactionNo == item.Text ).ToList();
+                           if (Existing.Count > 0)
+                           {
+                                    dt.Rows.Clear();
+                                    foreach (var Item in Existing)
+                                    {
+                                        DataRow NewRow = dt.NewRow();
+                                        NewRow[0] = Item.DYEBD_Pk;
+                                        if (CancelPending || SaleConfirmed || FabDespatched)
+                                        {
+                                          NewRow[1] = true;
+                                        }
+                                        else
+                                        {
+                                          NewRow[1] = false;
+                                        }
+                                    
+                                        NewRow[2] = context.TLKNI_GreigeProduction.Find(Item.DYEBD_GreigeProduction_FK).GreigeP_PieceNo;
+                                        var DB = context.TLDYE_DyeBatch.Find(Item.DYEBD_DyeBatch_FK);
+                                        if (DB != null)
+                                        {
+                                            NewRow[3] = context.TLADM_Colours.Find(DB.DYEB_Colour_FK).Col_Display;
+                                        }
+                                        NewRow[4] = Item.DYEBO_Meters;
+                                        NewRow[5] = Item.DYEBD_GreigeProduction_Weight;
+                                        NewRow[6] = Item.DYEBO_Nett;
+
+                                        dt.Rows.Add(NewRow);
+                                    }
+                                }
+                                else
+                                {
+                                    using (DialogCenteringService centeringService = new DialogCenteringService(this)) // center message box
+                                    {
+                                        MessageBox.Show("There are no records for Delivery Note selected ");
+                                    }
+                                }
+                           }
+                    }
                     
                 }
                 else
@@ -367,30 +608,86 @@ namespace DyeHouse
                         // This is for Fabric Sales 
                         //============================================================
                       
-                        QueryParms.FabricSales = true;
-                        StringBuilder sb = new StringBuilder();
-                        sb.Append(richTextBox1.Text);
-                        QueryParms.Notes = sb;
+                        if(ManagementMode)
+                        {
+                            foreach(DataRow Row in dt.Rows)
+                            {
+                                var DBD = context.TLDYE_DyeBatchDetails.Find(Row.Field<int>(0));
+                                if (DBD != null)
+                                { 
+                                    if (!Row.Field<bool>(1) && DBD.DYEBO_TransactionNo.Length != 0)
+                                    {
+                                        DBD.DYEBO_TransactionNo = string.Empty;
+                                        DBD.DYEBO_DateSold = null;
+                                        DBD.DYEBO_Sold = false;
+                                        DBD.DYEBO_PendingDelivery = false;
+                                        DBD.DYEBO_SaleConfirmed = false;
+                                        DBD.DYEBO_FabricDespatched = false;
 
-                        frmDyeViewReport vRep = new frmDyeViewReport(17, QueryParms);
-                        int h = Screen.PrimaryScreen.WorkingArea.Height;
-                        int w = Screen.PrimaryScreen.WorkingArea.Width;
-                        vRep.ClientSize = new Size(w, h);
-                        vRep.ShowDialog(this);
-                        if(vRep != null)
-                        {
-                            vRep.Dispose();
+                                        continue;
+                                    }
+
+                                    if(CancelPending)
+                                    {
+                                        DBD.DYEBO_PendingDelivery = false;
+                                    }
+                                    if (SaleConfirmed)
+                                    {
+                                        DBD.DYEBO_Sold = true;
+                                        DBD.DYEBO_DateSold = dtpTransDate.Value;
+                                        DBD.DYEBO_SaleConfirmed = true;
+                                        DBD.DYEBO_PendingDelivery = false;
+                                    }
+                                    else if(FabDespatched)
+                                    {
+                                        DBD.DYEBO_FabricDespatched = FabDespatched;
+                                    }
+                                }
+                            }
+                            try
+                            {
+                                context.SaveChanges();
+                                DialogResult Saved = MessageBox.Show("Data saved to database", "Close this interface option", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
+
+                                if(Saved == DialogResult.Yes)
+                                {
+                                    this.Close();
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                MessageBox.Show(ex.Message.ToString());
+                            }
+
                         }
-                        
-                        vRep = new frmDyeViewReport(16, QueryParms);
-                        h = Screen.PrimaryScreen.WorkingArea.Height;
-                        w = Screen.PrimaryScreen.WorkingArea.Width;
-                        vRep.ClientSize = new Size(w, h);
-                        vRep.ShowDialog(this);
-                        if(vRep != null)
-                        {
-                            vRep.Dispose();
-                        }
+                       // DialogResult Res = MessageBox.Show("Would you like to print the docmentation", "Customer Docunebtation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                       // if (Res == DialogResult.Yes)
+                       // {
+                            QueryParms.FabricSales = true;
+                            StringBuilder sb = new StringBuilder();
+                            sb.Append(richTextBox1.Text);
+                            QueryParms.Notes = sb;
+
+                            frmDyeViewReport vRep = new frmDyeViewReport(17, QueryParms);
+                            int h = Screen.PrimaryScreen.WorkingArea.Height;
+                            int w = Screen.PrimaryScreen.WorkingArea.Width;
+                            vRep.ClientSize = new Size(w, h);
+                            vRep.ShowDialog(this);
+                            if (vRep != null)
+                            {
+                                vRep.Dispose();
+                            }
+
+                            vRep = new frmDyeViewReport(16, QueryParms);
+                            h = Screen.PrimaryScreen.WorkingArea.Height;
+                            w = Screen.PrimaryScreen.WorkingArea.Width;
+                            vRep.ClientSize = new Size(w, h);
+                            vRep.ShowDialog(this);
+                            if (vRep != null)
+                            {
+                                vRep.Dispose();
+                            }
+                        // }
                         
                         frmCommissionDeliveries_Load(this, null);
                     }

@@ -43,13 +43,16 @@
             this.label6 = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.chkNonStandardGrades = new System.Windows.Forms.CheckBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.chkIncFaults = new System.Windows.Forms.CheckBox();
+            this.cmboGreigeQuality = new Knitting.CheckComboBox();
             this.cmboProduct = new Knitting.CheckComboBox();
             this.cmboStore = new Knitting.CheckComboBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.cmboGreigeQuality = new Knitting.CheckComboBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
+            this.groupBox4.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -92,11 +95,12 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.groupBox4);
             this.groupBox1.Controls.Add(this.rbDetail);
             this.groupBox1.Controls.Add(this.rbBIFSummarised);
             this.groupBox1.Location = new System.Drawing.Point(253, 437);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(254, 64);
+            this.groupBox1.Size = new System.Drawing.Size(349, 64);
             this.groupBox1.TabIndex = 12;
             this.groupBox1.TabStop = false;
             // 
@@ -110,6 +114,7 @@
             this.rbDetail.TabStop = true;
             this.rbDetail.Text = "Detail";
             this.rbDetail.UseVisualStyleBackColor = true;
+            this.rbDetail.CheckedChanged += new System.EventHandler(this.rbDetail_CheckedChanged);
             // 
             // rbBIFSummarised
             // 
@@ -121,6 +126,7 @@
             this.rbBIFSummarised.TabStop = true;
             this.rbBIFSummarised.Text = "Summarised";
             this.rbBIFSummarised.UseVisualStyleBackColor = true;
+            this.rbBIFSummarised.CheckedChanged += new System.EventHandler(this.rbBIFSummarised_CheckedChanged);
             // 
             // groupBox2
             // 
@@ -204,6 +210,45 @@
             this.chkNonStandardGrades.Text = "Non Standard Grades";
             this.chkNonStandardGrades.UseVisualStyleBackColor = true;
             // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(148, 296);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(81, 13);
+            this.label3.TabIndex = 15;
+            this.label3.Text = "Product Groups";
+            // 
+            // groupBox4
+            // 
+            this.groupBox4.Controls.Add(this.chkIncFaults);
+            this.groupBox4.Location = new System.Drawing.Point(196, 17);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(144, 33);
+            this.groupBox4.TabIndex = 14;
+            this.groupBox4.TabStop = false;
+            // 
+            // chkIncFaults
+            // 
+            this.chkIncFaults.AutoSize = true;
+            this.chkIncFaults.Location = new System.Drawing.Point(16, 10);
+            this.chkIncFaults.Name = "chkIncFaults";
+            this.chkIncFaults.Size = new System.Drawing.Size(84, 17);
+            this.chkIncFaults.TabIndex = 17;
+            this.chkIncFaults.Text = "Fault Details";
+            this.chkIncFaults.UseVisualStyleBackColor = true;
+            // 
+            // cmboGreigeQuality
+            // 
+            this.cmboGreigeQuality.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cmboGreigeQuality.FormattingEnabled = true;
+            this.cmboGreigeQuality.Location = new System.Drawing.Point(270, 288);
+            this.cmboGreigeQuality.Name = "cmboGreigeQuality";
+            this.cmboGreigeQuality.Size = new System.Drawing.Size(226, 21);
+            this.cmboGreigeQuality.TabIndex = 16;
+            this.cmboGreigeQuality.Text = "Select Options";
+            this.cmboGreigeQuality.SelectedIndexChanged += new System.EventHandler(this.cmboGreigeQuality_SelectedIndexChanged);
+            // 
             // cmboProduct
             // 
             this.cmboProduct.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
@@ -225,26 +270,6 @@
             this.cmboStore.TabIndex = 1;
             this.cmboStore.Text = "Select Options";
             this.cmboStore.SelectedIndexChanged += new System.EventHandler(this.cmboStore_SelectedIndexChanged);
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(148, 296);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(81, 13);
-            this.label3.TabIndex = 15;
-            this.label3.Text = "Product Groups";
-            // 
-            // cmboGreigeQuality
-            // 
-            this.cmboGreigeQuality.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.cmboGreigeQuality.FormattingEnabled = true;
-            this.cmboGreigeQuality.Location = new System.Drawing.Point(270, 288);
-            this.cmboGreigeQuality.Name = "cmboGreigeQuality";
-            this.cmboGreigeQuality.Size = new System.Drawing.Size(226, 21);
-            this.cmboGreigeQuality.TabIndex = 16;
-            this.cmboGreigeQuality.Text = "Select Options";
-            this.cmboGreigeQuality.SelectedIndexChanged += new System.EventHandler(this.cmboGreigeQuality_SelectedIndexChanged);
             // 
             // frmK10ReportSel
             // 
@@ -272,6 +297,8 @@
             this.groupBox2.PerformLayout();
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
+            this.groupBox4.ResumeLayout(false);
+            this.groupBox4.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -303,5 +330,7 @@
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.CheckBox chkNonStandardGrades;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.GroupBox groupBox4;
+        private System.Windows.Forms.CheckBox chkIncFaults;
     }
 }

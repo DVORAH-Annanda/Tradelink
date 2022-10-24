@@ -92,13 +92,57 @@ namespace Cutting
             {
                 CutReportOptions cutOpts = new CutReportOptions();
                 cutOpts.C2SortOption = sortOptions;
+                                
+                cutOpts.PanelStockByAttrib = chkPanelAttributes.Checked;
+                              
+                if (!chkPanelAttributes.Checked)
+                {
+                    if(rbCostingColoursOnly.Checked)
+                    {
+                        parms.Colours.Clear();
+                        cutOpts.CostingColour = true;
+       
+                        using (var context = new TTI2Entities())
+                        {
+                            var Clrs = context.TLADM_Colours.Where(x => x.Col_ColCosting).ToList();
+                            foreach(var Clr in Clrs)
+                            {
+                                parms.Colours.Add(repo.LoadColour(Clr.Col_Id));
+                            }
+                        }
+                    }
+                    else if(rbCostingWhiteOnly.Checked)
+                    {
+                        parms.Colours.Clear();
+                        cutOpts.CostingColourWhite = true;
+                        using (var context = new TTI2Entities())
+                        {
+                            var Clrs = context.TLADM_Colours.Where(x => !x.Col_ColCosting).ToList();
+                            foreach (var Clr in Clrs)
+                            {
+                                parms.Colours.Add(repo.LoadColour(Clr.Col_Id));
+                            }
+                        }
+                    }
 
-                frmCutViewRep vRep = new frmCutViewRep(6, cutOpts, parms);
-                int h = Screen.PrimaryScreen.WorkingArea.Height;
-                int w = Screen.PrimaryScreen.WorkingArea.Width;
-                vRep.ClientSize = new Size(w, h);
-                vRep.ShowDialog();
-
+                    frmCutViewRep vRep = new frmCutViewRep(6, cutOpts, parms);
+                    int h = Screen.PrimaryScreen.WorkingArea.Height;
+                    int w = Screen.PrimaryScreen.WorkingArea.Width;
+                    vRep.ClientSize = new Size(w, h);
+                    vRep.ShowDialog();
+                }
+                else
+                {
+                    parms.FromDate = Convert.ToDateTime(dtpFromDate.Value.ToShortDateString());
+                    parms.ToDate = Convert.ToDateTime(dtpToDate.Value.ToShortDateString());
+                    parms.ToDate = parms.ToDate.AddHours(23);
+                   
+                    frmCutViewRep vRep = new frmCutViewRep(24, cutOpts, parms);
+                    int h = Screen.PrimaryScreen.WorkingArea.Height;
+                    int w = Screen.PrimaryScreen.WorkingArea.Width;
+                    vRep.ClientSize = new Size(w, h);
+                    vRep.ShowDialog();
+                }
                 sortOptions = 1;
                 cmboWareHouseStore.Items.Clear();
                 frmSelPanelStock_Load(this, null);

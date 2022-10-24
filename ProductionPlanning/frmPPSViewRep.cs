@@ -12,6 +12,7 @@ using Microsoft.Office.Interop.Excel;
 using System.IO;
 using System.Collections;
 using System.Net.Mime;
+using CrystalDecisions.CrystalReports.Engine;
 
 namespace ProductionPlanning
 {
@@ -1840,16 +1841,12 @@ namespace ProductionPlanning
                 DataSet6.DataTable2DataTable dataTable2 = new DataSet6.DataTable2DataTable();
                 core = new Util();
 
-                List<TLKNI_GreigeProduction> GreigePieces = null;
-
                 //===================================================== 
                 // 0 = Piece Number
                 // 1 = Knit Order 
                 // 2 = Dye Batch 
                 // 3 = Cut Sheet 
                 //============================
-                // QueryParms.RecordKeys = RecordKey;
-                // QueryParms.SelectedOptions = SelectedOption;
 
                 DataSet6.DataTable1Row hrw = dataTable1.NewDataTable1Row();
                 hrw.Pk = 1;
@@ -1950,29 +1947,189 @@ namespace ProductionPlanning
                                             nr.Measurement2 = QualExp.TLDyeIns_Quantity;
                                         }
 
-
-
                                         dataTable2.AddDataTable2Row(nr);
                                     }
                                 }
                             }
                         }
                     }
+                    else
+                    {
+                        if (_ProdQParms.SelectedOptions[2])
+                        {
+                            var SelectedOpt = context.TLPPS_InterDept.Find(_ProdQParms.InterDeptOption);
+                            var RecKey = _ProdQParms.RecordKeys[2];
+                            var DbDetails = context.TLDYE_DyeBatchDetails.Where(x => x.DYEBD_DyeBatch_FK == RecKey).ToList();
+
+                            foreach (var DbDetail in DbDetails)
+                            {
+                                DataSet6.DataTable2Row nr = dataTable2.NewDataTable2Row();
+                                nr.Pk = 1;
+                                nr.MeasurementDescrip = SelectedOpt.TLInter_Description;
+                                nr.Measurement1 = 0;
+                                nr.Measurement2 = 0;
+                                nr.Measurement3 = 0;
+                                //==============================================
+                                // substitute dye batch no for cut sheet
+                                //============================================
+                                nr.CutSheet = context.TLDYE_DyeBatch.Find(RecKey).DYEB_BatchNo;
+
+                                var GriegeProd = context.TLKNI_GreigeProduction.Find(DbDetail.DYEBD_GreigeProduction_FK);
+                                if (GriegeProd != null)
+                                {
+                                    nr.PieceNo = GriegeProd.GreigeP_PieceNo;
+
+                                    var tst = context.TLADM_QualityDefinition.Find(SelectedOpt.TLInter_Knitting_Fk);
+                                    if (tst != null)
+                                    {
+                                        if (tst.QD_ColumnIndex == 1)
+                                        {
+                                            nr.Measurement1 = GriegeProd.GreigeP_Meas1;
+                                        }
+                                        else if (tst.QD_ColumnIndex == 2)
+                                        {
+                                            nr.Measurement1 = GriegeProd.GreigeP_Meas2;
+                                        }
+                                        else if (tst.QD_ColumnIndex == 3)
+                                        {
+                                            nr.Measurement1 = GriegeProd.GreigeP_Meas3;
+                                        }
+                                        else if (tst.QD_ColumnIndex == 4)
+                                        {
+                                            nr.Measurement1 = GriegeProd.GreigeP_Meas4;
+                                        }
+                                        else if (tst.QD_ColumnIndex == 5)
+                                        {
+                                            nr.Measurement1 = GriegeProd.GreigeP_Meas5;
+                                        }
+                                        else if (tst.QD_ColumnIndex == 6)
+                                        {
+                                            nr.Measurement1 = GriegeProd.GreigeP_Meas6;
+                                        }
+                                        else if (tst.QD_ColumnIndex == 7)
+                                        {
+                                            nr.Measurement1 = GriegeProd.GreigeP_Meas7;
+                                        }
+                                        else
+                                        {
+                                            nr.Measurement1 = GriegeProd.GreigeP_Meas8;
+                                        }
+
+                                    }
+                                }
+
+                                var QualExp = context.TLDye_QualityException.Where(x => x.TLDyeIns_GriegeProduct_Fk == DbDetail.DYEBD_GreigeProduction_FK && x.TLDyeIns_QADyeProcessField_Fk == SelectedOpt.TLInter_Dying_Fk).FirstOrDefault();
+                                if (QualExp != null)
+                                {
+                                    nr.Measurement2 = QualExp.TLDyeIns_Quantity;
+                                }
+                                dataTable2.AddDataTable2Row(nr);
+                            }
+                        }
+                        else if (_ProdQParms.SelectedOptions[1])
+                        {
+                            var DyeBatches = context.TLDYE_DyeBatch.Where(x => x.DYEB_OutProcess && x.DYEB_OutProcessDate >= _ProdQParms.FromDate && x.DYEB_OutProcessDate <= _ProdQParms.ToDate).ToList();
+                            foreach (var DyeBatch in DyeBatches)
+                            {
+                                var SelectedOpt = context.TLPPS_InterDept.Find(_ProdQParms.InterDeptOption);
+                                var RecKey = _ProdQParms.RecordKeys[2];
+                                var DbDetails = context.TLDYE_DyeBatchDetails.Where(x => x.DYEBD_DyeBatch_FK == DyeBatch.DYEB_Pk).ToList();
+                                foreach (var DbDetail in DbDetails)
+                                {
+                                    DataSet6.DataTable2Row nr = dataTable2.NewDataTable2Row();
+                                    nr.Pk = 1;
+                                    nr.MeasurementDescrip = SelectedOpt.TLInter_Description;
+                                    nr.Measurement1 = 0;
+                                    nr.Measurement2 = 0;
+                                    nr.Measurement3 = 0;
+
+                                    nr.CutSheet = DyeBatch.DYEB_BatchNo;
+
+                                    var GriegeProd = context.TLKNI_GreigeProduction.Find(DbDetail.DYEBD_GreigeProduction_FK);
+                                    if (GriegeProd != null)
+                                    {
+                                        nr.PieceNo = GriegeProd.GreigeP_PieceNo;
+                                        nr.Quality = context.TLADM_Griege.Find(GriegeProd.GreigeP_Greige_Fk).TLGreige_Description;
+                                        var tst = context.TLADM_QualityDefinition.Find(SelectedOpt.TLInter_Knitting_Fk);
+                                        if (tst != null)
+                                        {
+                                            if (tst.QD_ColumnIndex == 1)
+                                            {
+                                                nr.Measurement1 = GriegeProd.GreigeP_Meas1;
+                                            }
+                                            else if (tst.QD_ColumnIndex == 2)
+                                            {
+                                                nr.Measurement1 = GriegeProd.GreigeP_Meas2;
+                                            }
+                                            else if (tst.QD_ColumnIndex == 3)
+                                            {
+                                                nr.Measurement1 = GriegeProd.GreigeP_Meas3;
+                                            }
+                                            else if (tst.QD_ColumnIndex == 4)
+                                            {
+                                                nr.Measurement1 = GriegeProd.GreigeP_Meas4;
+                                            }
+                                            else if (tst.QD_ColumnIndex == 5)
+                                            {
+                                                nr.Measurement1 = GriegeProd.GreigeP_Meas5;
+                                            }
+                                            else if (tst.QD_ColumnIndex == 6)
+                                            {
+                                                nr.Measurement1 = GriegeProd.GreigeP_Meas6;
+                                            }
+                                            else if (tst.QD_ColumnIndex == 7)
+                                            {
+                                                nr.Measurement1 = GriegeProd.GreigeP_Meas7;
+                                            }
+                                            else
+                                            {
+                                                nr.Measurement1 = GriegeProd.GreigeP_Meas8;
+                                            }
+
+                                            var QualExp = context.TLDye_QualityException.Where(x => x.TLDyeIns_GriegeProduct_Fk == DbDetail.DYEBD_GreigeProduction_FK && x.TLDyeIns_QADyeProcessField_Fk == SelectedOpt.TLInter_Dying_Fk).FirstOrDefault();
+                                            if (QualExp != null)
+                                            {
+                                                nr.Measurement2 = QualExp.TLDyeIns_Quantity;
+                                            }
+                                        }
+                                        dataTable2.AddDataTable2Row(nr);
+                                    }
+                                }
+                            }
+
+                        }
+                    }
                 }
+
+
                 ds.Tables.Add(dataTable1);
                 if (dataTable2.Rows.Count == 0)
                 {
                     DataSet6.DataTable2Row bnr = dataTable2.NewDataTable2Row();
                     bnr.Pk = 1;
-                    bnr.ErrorLog = " No Records Found matching dates selection ";
+                    bnr.ErrorLog = " No Records Found ";
                     dataTable2.AddDataTable2Row(bnr);
                 }
                 ds.Tables.Add(dataTable2);
 
-                InterDeptComparison SItem = new InterDeptComparison();
-                SItem.SetDataSource(ds);
-                crystalReportViewer1.ReportSource = SItem;
-
+                if (_ProdQParms.SelectedOptions[2] || _ProdQParms.SelectedOptions[3])
+                {
+                    InterDeptComparison SItem = new InterDeptComparison();
+                    TextObject text = (TextObject)SItem.ReportDefinition.Sections["Section2"].ReportObjects["Text10"];
+                    text.Text = "CutSheet No ";
+                    if (_ProdQParms.SelectedOptions[3])
+                    {
+                        text.Text = "Dye Batch No ";
+                    }
+                    SItem.SetDataSource(ds);
+                    crystalReportViewer1.ReportSource = SItem;
+                }
+                else
+                {
+                    InterDeptComByDyeBatches SItem = new InterDeptComByDyeBatches();
+                    SItem.SetDataSource(ds);
+                    crystalReportViewer1.ReportSource = SItem;
+                }
             }
             else if (_RepNo == 8) //  
             {
@@ -1989,10 +2146,10 @@ namespace ProductionPlanning
                 dataTable2.Rows.Add(Tab2);
 
 
-                using ( var context = new TTI2Entities())
+                using (var context = new TTI2Entities())
                 {
                     var DyeBatchDetail = repo.SelectDskInfo(_ProdQParms);
-                    foreach(var Item in DyeBatchDetail)
+                    foreach (var Item in DyeBatchDetail)
                     {
                         DataSet7.DataTable1Row Tab1 = dataTable1.NewDataTable1Row();
                         Tab1.Pk = 1;
@@ -2004,23 +2161,23 @@ namespace ProductionPlanning
                         Tab1.DevKnitting = 0.00M;
                         Tab1.StdDsk = 0.00M;
                         var Quality = context.TLADM_Griege.Find(Item.DYEBD_QualityKey);
-                        if (Quality != null && Quality.TLGreige_CubicWeight != 0 && Item.DYEBO_DiskWeight!= 0)
+                        if (Quality != null && Quality.TLGreige_CubicWeight != 0 && Item.DYEBO_DiskWeight != 0)
                         {
                             var FabWeight = context.TLADM_FabricWeight.Find(Quality.TLGreige_FabricWeight_FK);
-                            if(FabWeight != null)
+                            if (FabWeight != null)
                             {
                                 Tab1.StdFinDsk = (Decimal)FabWeight.FWW_Calculation_Value / 100;
                                 Tab1.DevDyeing = core.CalculateDskVariance(Tab1.StdFinDsk, Item.DYEBO_DiskWeight / 100);
                             }
-                           
+
                             Tab1.Quality = Quality.TLGreige_Description;
                             Tab1.StdDsk = Quality.TLGreige_CubicWeight;
                             var DyeBat = context.TLDYE_DyeBatch.Find(Item.DYEBD_DyeBatch_FK);
-                            if(DyeBat != null)
+                            if (DyeBat != null)
                             {
-                                Tab1.Colour = context.TLADM_Colours.Find(DyeBat.DYEB_Colour_FK).Col_Display; 
+                                Tab1.Colour = context.TLADM_Colours.Find(DyeBat.DYEB_Colour_FK).Col_Display;
                             }
-                            
+
                             var GP = context.TLKNI_GreigeProduction.Find(Item.DYEBD_GreigeProduction_FK);
                             if (GP != null && GP.GreigeP_DskWeight != 0)
                             {
@@ -2028,14 +2185,14 @@ namespace ProductionPlanning
                                 Tab1.KnittingDsk = GP.GreigeP_DskWeight;
                                 Tab1.KnittingMeters = GP.GreigeP_Meters;
                                 Tab1.DevKnitting = core.CalculateDskVariance(Quality.TLGreige_CubicWeight, GP.GreigeP_DskWeight);
-                                
+
                                 dataTable1.Rows.Add(Tab1);
                             }
                         }
                     }
                 }
 
-                if(dataTable1.Rows.Count == 0)
+                if (dataTable1.Rows.Count == 0)
                 {
                     DataSet7.DataTable1Row Tab1 = dataTable1.NewDataTable1Row();
                     Tab1.Pk = 1;
@@ -2201,6 +2358,133 @@ namespace ProductionPlanning
                 }
                 SItem.SetDataSource(ds);
                 crystalReportViewer1.ReportSource = SItem;
+            }
+            if (_RepNo == 10) // Printing of Process Loss across Production 
+            {
+                PPSRepository repo = new PPSRepository();
+                DataSet ds = new DataSet();
+                DataSet9.DataTable1DataTable dataTable1 = new DataSet9.DataTable1DataTable();
+                DataSet9.DataTable2DataTable dataTable2 = new DataSet9.DataTable2DataTable();
+                
+                DataSet9.DataTable1Row Tab1 = dataTable1.NewDataTable1Row();
+                Tab1.Pk = 1;
+                Tab1.FromDate = _ProdQParms.FromDate;
+                Tab1.ToDate = _ProdQParms.ToDate;
+                Tab1.Title = "Production Loss Per CutSheet Production";
+                dataTable1.Rows.Add(Tab1);
+
+                using (var context = new TTI2Entities())
+                {
+                    var CompletedCutSheets = repo.CSProcessLossAcrossProd(_ProdQParms);
+                                
+                    foreach (var CutSheet in CompletedCutSheets)
+                    {
+                            DataSet9.DataTable2Row Tab2 = dataTable2.NewDataTable2Row();
+                            Tab2.Pk = 1;
+                            Tab2.Style = context.TLADM_Styles.Find(CutSheet.TLCutSH_Styles_FK).Sty_Description;
+                            Tab2.Colour = context.TLADM_Colours.Find(CutSheet.TLCutSH_Colour_FK).Col_Display;
+                            Tab2.Size = context.TLADM_Sizes.Find(CutSheet.TLCutSH_Size_FK).SI_Description;
+                            Tab2.CutSheetNo = CutSheet.TLCutSH_No;
+
+                            var CS_Pk       = CutSheet.TLCutSH_Pk;
+                            var YieldFactor = 0.00M;
+                            var Width       = 0.00M;
+                            var Weight      = 0.00M;
+
+                            var BatchDetails = (from T1 in context.TLCUT_CutSheetDetail
+                                            join T2 in context.TLDYE_DyeBatchDetails
+                                            on T1.TLCutSHD_DyeBatchDet_FK equals T2.DYEBD_Pk
+                                            where T1.TLCutSHD_CutSheet_FK == CutSheet.TLCutSH_Pk && T2.DYEBD_BodyTrim
+                                            select T2).ToList();
+
+                            if (BatchDetails.Count == 0)
+                                continue;
+                            
+                            var ProductRating_FK = BatchDetails.FirstOrDefault().DYEBO_ProductRating_FK;
+                            var Quality = context.TLADM_Griege.Find(BatchDetails.FirstOrDefault().DYEBD_QualityKey);
+                            if(Quality != null)
+                            {
+                                var WidthDetails = context.TLADM_FabWidth.Find(Quality.TLGreige_FabricWidth_FK);
+                                if(WidthDetails != null)
+                                {
+                                    Width = WidthDetails.FW_Calculation_Value;
+                                }
+
+                                var WeightDetails  =  context.TLADM_FabricWeight.Find(Quality.TLGreige_FabricWeight_FK);
+                                if (WeightDetails != null)
+                                {
+                                    Weight = WeightDetails.FWW_Calculation_Value;
+                                }
+
+                                if (Width > 0 && Weight > 0)
+                                {
+                                    YieldFactor = 50000.00M / Width / Weight;
+                                }
+
+                            }
+
+                            var ActualRating = context.TLADM_ProductRating.Find(ProductRating_FK).Pr_numeric_Rating;
+                            //==================================================
+                            // 
+                            //================================================================
+                            var GrossWeight = BatchDetails.Sum(x => (decimal?)x.DYEBD_GreigeProduction_Weight) ?? 0.00M;
+                            var NettWeight = BatchDetails.Sum(x=>(decimal ?)x.DYEBO_Nett) ?? 0.00M;
+                            
+                            if (YieldFactor > 0 && ActualRating > 0 && NettWeight > 0)
+                            {
+                                 //Dye Loss 
+                                 var GWeight = (GrossWeight * (decimal)0.95) * (decimal)0.95;
+                                 Tab2.ManufactStd = (int)Math.Round((YieldFactor / ActualRating) * GWeight, 0);
+                            }
+                            else
+                            {
+                                Tab2.ManufactStd = 0;
+                            }
+                            
+                            Tab2.Greige = GrossWeight;
+                            Tab2.Fabric = NettWeight;
+                        
+                            Tab2.ProcessLoss_Kg = NettWeight - GrossWeight;
+                            Tab2.ProcessLoss_Perc = Tab2.ProcessLoss_Kg / GrossWeight * 100;
+
+                            //===========================================================================
+                            //
+                            //=======================================================
+
+                            Tab2.ExpectedCutting = context.TLCUT_ExpectedUnits.Where(x=>x.TLCUTE_CutSheet_FK== CS_Pk).Sum(x => (int?)x.TLCUTE_NoofGarments) ?? 0;
+                            Tab2.ActualCutting = (from T1 in context.TLCUT_CutSheetReceipt
+                                                      join T2 in context.TLCUT_CutSheetReceiptDetail
+                                                      on T1.TLCUTSHR_Pk equals T2.TLCUTSHRD_CutSheet_FK
+                                                      where T1.TLCUTSHR_CutSheet_FK == CS_Pk
+                                                      select T2).Sum(x => (int?)x.TLCUTSHRD_BoxUnits) ?? 0;
+                            
+                            Tab2.CuttingProcessLoss = Tab2.ActualCutting - Tab2.ExpectedCutting;
+                            Tab2.CuttingProcessLoss_Perc = (decimal)Tab2.CuttingProcessLoss / (decimal)Tab2.ExpectedCutting * 100;
+
+                            Tab2.CuttingWaste_Kg = -1 * context.TLCUT_CutSheetReceipt.Where(x => x.TLCUTSHR_CutSheet_FK == CS_Pk).FirstOrDefault().TLCUTSHR_WasteCutSheet;
+                            Tab2.CuttingWaste_Perc = (decimal)Tab2.CuttingWaste_Kg / (decimal)Tab2.Fabric * 100;
+
+                            Tab2.CMTPanelQty = Tab2.ActualCutting;
+                            Tab2.CMTGarmentsQty = (from T1 in context.TLCMT_LineIssue
+                                                       join T2 in context.TLCMT_CompletedWork
+                                                       on T1.TLCMTLI_CutSheet_FK equals T2.TLCMTWC_CutSheet_FK
+                                                       where T1.TLCMTLI_CutSheet_FK == CS_Pk
+                                                       && T1.TLCMTLI_WorkCompleted && T2.TLCMTWC_Grade.Contains("A")
+                                                       select T2).Sum(x =>(int ?) x.TLCMTWC_Qty) ?? 0 ;
+
+                            Tab2.CMTLoss = Tab2.CMTGarmentsQty - Tab2.CMTPanelQty;
+                            Tab2.CMTLoss_Perc = (decimal)Tab2.CMTLoss / (decimal)Tab2.CMTPanelQty * 100;
+
+                            dataTable2.Rows.Add(Tab2);
+                        }
+                }
+                
+                ds.Tables.Add(dataTable1);
+                ds.Tables.Add(dataTable2);
+
+                ProductionPlanning.ProcessLossOverProd PLossOverProd = new ProductionPlanning.ProcessLossOverProd();
+                PLossOverProd.SetDataSource(ds);
+                crystalReportViewer1.ReportSource = PLossOverProd;
             }
             
             crystalReportViewer1.Refresh();

@@ -21,13 +21,22 @@ namespace DyeHouse
 
         DyeHouse.DyeRepository repo;
         DyeHouse.DyeQueryParameters QueryParms;
-
+       
         public frmSelFabricSales()
         {
             InitializeComponent();
             repo = new DyeRepository();
             _context = new TTI2Entities();
 
+            var reportOptions = new BindingList<KeyValuePair<int, string>>();
+            reportOptions.Add(new KeyValuePair<int, string>(0, "Delivery Note"));
+            reportOptions.Add(new KeyValuePair<int, string>(13, "Customer Order"));
+
+            cmboReportOptions.DataSource = reportOptions;
+            cmboReportOptions.ValueMember = "Key";
+            cmboReportOptions.DisplayMember = "Value";
+            cmboReportOptions.SelectedIndex = -1;
+            
             this.cmboCustomers.CheckStateChanged += new System.EventHandler(this.cmboCustomers_CheckStateChanged);
 
         }
@@ -75,7 +84,16 @@ namespace DyeHouse
                 QueryParms.FromDate = Convert.ToDateTime(dtpFromDate.Value.ToShortDateString());
                 QueryParms.ToDate = Convert.ToDateTime(dtpToDate.Value.ToShortDateString());
                 QueryParms.ToDate = QueryParms.ToDate.AddHours(23);
-                
+
+                if (cmboReportOptions.SelectedIndex < 0)
+                {
+                    QueryParms.FabricSalesReportOption = 0;
+                }
+                else
+                {
+                    QueryParms.FabricSalesReportOption = (int)cmboReportOptions.SelectedIndex;
+                }
+
                 frmDyeViewReport vRep = new frmDyeViewReport(36, QueryParms);
                 int h = Screen.PrimaryScreen.WorkingArea.Height;
                 int w = Screen.PrimaryScreen.WorkingArea.Width;

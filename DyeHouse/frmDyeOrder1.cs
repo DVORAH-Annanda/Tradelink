@@ -416,6 +416,16 @@ namespace DyeHouse
 
                     using (var context = new TTI2Entities())
                     {
+                        var cnt = context.TLADM_ProductRating.Where(x => x.Pr_Style_FK == selected.Sty_Id).Count();
+                        if(cnt == 0)
+                        {
+                            using (DialogCenteringService centeringService = new DialogCenteringService(this)) // center message box
+                            {
+                                MessageBox.Show("No rating data detected for Style selected. Please update Product Rating Table");
+                            }
+                            this.Close();
+                            return;
+                        }
                         var StyleColours = context.TLADM_StyleColour.Where(x => x.STYCOL_Style_FK == selected.Sty_Id).ToList();
                         foreach(var StyleColour in StyleColours)
                         {

@@ -50,6 +50,7 @@
             this.chkQASummary = new System.Windows.Forms.CheckBox();
             this.label8 = new System.Windows.Forms.Label();
             this.cmbYarnTypes = new Knitting.CheckComboBox();
+            this.rbTotalsByMachineByDay = new System.Windows.Forms.RadioButton();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -184,6 +185,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.rbTotalsByMachineByDay);
             this.groupBox1.Controls.Add(this.rbGPOperator);
             this.groupBox1.Controls.Add(this.rbGPByTotal);
             this.groupBox1.Controls.Add(this.rbGPByMachine);
@@ -266,6 +268,17 @@
             this.cmbYarnTypes.TabIndex = 22;
             this.cmbYarnTypes.Text = "Select Options";
             // 
+            // rbTotalsByMachineByDay
+            // 
+            this.rbTotalsByMachineByDay.AutoSize = true;
+            this.rbTotalsByMachineByDay.Location = new System.Drawing.Point(228, 62);
+            this.rbTotalsByMachineByDay.Name = "rbTotalsByMachineByDay";
+            this.rbTotalsByMachineByDay.Size = new System.Drawing.Size(156, 17);
+            this.rbTotalsByMachineByDay.TabIndex = 4;
+            this.rbTotalsByMachineByDay.TabStop = true;
+            this.rbTotalsByMachineByDay.Text = "Totals per Machine per Day";
+            this.rbTotalsByMachineByDay.UseVisualStyleBackColor = true;
+            // 
             // frmK07ReportSel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -328,5 +341,6 @@
         private System.Windows.Forms.CheckBox chkQASummary;
         private System.Windows.Forms.Label label8;
         private Knitting.CheckComboBox cmbYarnTypes;
+        private System.Windows.Forms.RadioButton rbTotalsByMachineByDay;
     }
 }

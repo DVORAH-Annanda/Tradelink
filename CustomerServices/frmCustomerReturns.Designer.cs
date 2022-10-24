@@ -197,7 +197,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(669, 604);
+            this.ClientSize = new System.Drawing.Size(687, 626);
             this.Controls.Add(this.cmboWareHouse);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.txtApprovedBy);

@@ -45,8 +45,10 @@
             this.cmboCurrentBatches = new DyeHouse.CheckComboBox();
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.label5 = new System.Windows.Forms.Label();
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -102,7 +104,7 @@
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(586, 527);
+            this.btnSave.Location = new System.Drawing.Point(667, 600);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(75, 23);
             this.btnSave.TabIndex = 7;
@@ -121,6 +123,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.dataGridView1);
             this.groupBox1.Controls.Add(this.cmboBatchesReprint);
             this.groupBox1.Controls.Add(this.groupBox2);
             this.groupBox1.Controls.Add(this.label1);
@@ -131,9 +134,9 @@
             this.groupBox1.Controls.Add(this.dtpTransDate);
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.cmboCustomer);
-            this.groupBox1.Location = new System.Drawing.Point(105, 62);
+            this.groupBox1.Location = new System.Drawing.Point(105, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(481, 315);
+            this.groupBox1.Size = new System.Drawing.Size(603, 502);
             this.groupBox1.TabIndex = 10;
             this.groupBox1.TabStop = false;
             // 
@@ -141,7 +144,7 @@
             // 
             this.cmboBatchesReprint.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
             this.cmboBatchesReprint.FormattingEnabled = true;
-            this.cmboBatchesReprint.Location = new System.Drawing.Point(176, 149);
+            this.cmboBatchesReprint.Location = new System.Drawing.Point(176, 154);
             this.cmboBatchesReprint.Name = "cmboBatchesReprint";
             this.cmboBatchesReprint.Size = new System.Drawing.Size(211, 21);
             this.cmboBatchesReprint.TabIndex = 11;
@@ -208,7 +211,7 @@
             // 
             // richTextBox1
             // 
-            this.richTextBox1.Location = new System.Drawing.Point(206, 392);
+            this.richTextBox1.Location = new System.Drawing.Point(196, 538);
             this.richTextBox1.Name = "richTextBox1";
             this.richTextBox1.Size = new System.Drawing.Size(307, 96);
             this.richTextBox1.TabIndex = 11;
@@ -217,17 +220,25 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(139, 395);
+            this.label5.Location = new System.Drawing.Point(129, 541);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(35, 13);
             this.label5.TabIndex = 12;
             this.label5.Text = "Notes";
             // 
+            // dataGridView1
+            // 
+            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.Location = new System.Drawing.Point(47, 294);
+            this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.Size = new System.Drawing.Size(527, 190);
+            this.dataGridView1.TabIndex = 12;
+            // 
             // frmCommissionDeliveries
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(673, 562);
+            this.ClientSize = new System.Drawing.Size(754, 646);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.richTextBox1);
             this.Controls.Add(this.groupBox1);
@@ -239,6 +250,7 @@
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -265,5 +277,6 @@
         private System.Windows.Forms.RadioButton rbCommissionDeliveriesReprint;
         // private System.Windows.Forms.ComboBox cmboBatchesReprint;
         private DyeHouse.CheckComboBox cmboBatchesReprint;
+        private System.Windows.Forms.DataGridView dataGridView1;
     }
 }

@@ -648,6 +648,8 @@ namespace Cutting {
             
             private global::System.Data.DataColumn columnRecordedPanelWaste;
             
+            private global::System.Data.DataColumn columnExpectedQty;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public DataTable2DataTable() {
@@ -835,6 +837,14 @@ namespace Cutting {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn ExpectedQtyColumn {
+                get {
+                    return this.columnExpectedQty;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -889,7 +899,8 @@ namespace Cutting {
                         decimal TotalWastePerc, 
                         string DyeBatchNo, 
                         decimal RecordedCuttingWeight, 
-                        decimal RecordedPanelWaste) {
+                        decimal RecordedPanelWaste, 
+                        int ExpectedQty) {
                 DataTable2Row rowDataTable2Row = ((DataTable2Row)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         null,
@@ -910,7 +921,8 @@ namespace Cutting {
                         TotalWastePerc,
                         DyeBatchNo,
                         RecordedCuttingWeight,
-                        RecordedPanelWaste};
+                        RecordedPanelWaste,
+                        ExpectedQty};
                 if ((parentDataTable1RowByDataTable1_DataTable2 != null)) {
                     columnValuesArray[0] = parentDataTable1RowByDataTable1_DataTable2[0];
                 }
@@ -955,6 +967,7 @@ namespace Cutting {
                 this.columnDyeBatchNo = base.Columns["DyeBatchNo"];
                 this.columnRecordedCuttingWeight = base.Columns["RecordedCuttingWeight"];
                 this.columnRecordedPanelWaste = base.Columns["RecordedPanelWaste"];
+                this.columnExpectedQty = base.Columns["ExpectedQty"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -998,6 +1011,8 @@ namespace Cutting {
                 base.Columns.Add(this.columnRecordedCuttingWeight);
                 this.columnRecordedPanelWaste = new global::System.Data.DataColumn("RecordedPanelWaste", typeof(decimal), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnRecordedPanelWaste);
+                this.columnExpectedQty = new global::System.Data.DataColumn("ExpectedQty", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnExpectedQty);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1582,6 +1597,22 @@ namespace Cutting {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public int ExpectedQty {
+                get {
+                    try {
+                        return ((int)(this[this.tableDataTable2.ExpectedQtyColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'ExpectedQty\' in table \'DataTable2\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDataTable2.ExpectedQtyColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public DataTable1Row DataTable1Row {
                 get {
                     return ((DataTable1Row)(this.GetParentRow(this.Table.ParentRelations["DataTable1_DataTable2"])));
@@ -1817,6 +1848,18 @@ namespace Cutting {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public void SetRecordedPanelWasteNull() {
                 this[this.tableDataTable2.RecordedPanelWasteColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsExpectedQtyNull() {
+                return this.IsNull(this.tableDataTable2.ExpectedQtyColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetExpectedQtyNull() {
+                this[this.tableDataTable2.ExpectedQtyColumn] = global::System.Convert.DBNull;
             }
         }
         

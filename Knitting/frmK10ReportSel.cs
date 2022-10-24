@@ -38,7 +38,7 @@ namespace Knitting
             this.cmboStore.CheckStateChanged        += new EventHandler(this.cmboStore_CheckStateChanged);
             this.cmboGreigeQuality.CheckStateChanged += new EventHandler(this.cmboGreigeQuality_CheckStateChanged);
 
-      core = new Util();
+            core = new Util();
 
             rbBIFSummarised.Checked = true;
 
@@ -143,6 +143,8 @@ namespace Knitting
 
                 chkBoughtInFabric.Checked = false;
 
+                groupBox4.Visible = false;
+                
                 var Dept = context.TLADM_Departments.Where(x => x.Dep_ShortCode.Contains("KNIT")).FirstOrDefault();
                 if (Dept != null)
                 {
@@ -193,6 +195,7 @@ namespace Knitting
                 var index = -1;
 
                 YarnOpts.BIFSummarised = rbBIFSummarised.Checked;
+                YarnOpts.K10IncludeFaults = chkIncFaults.Checked;
 
                 QueryParms.BoughtInFabric = chkBoughtInFabric.Checked;
                
@@ -383,6 +386,30 @@ namespace Knitting
             ComboBox oCmbo = sender as ComboBox;
             if (oCmbo != null && !oCmbo.DroppedDown)
                oCmbo.DroppedDown = true;
+        }
+
+        private void rbDetail_CheckedChanged(object sender, EventArgs e)
+        {
+            RadioButton oRadButton = sender as RadioButton;
+            if(oRadButton != null & formloaded && oRadButton.Checked)
+            {
+                if(!groupBox4.Visible)
+                {
+                    groupBox4.Visible = true;
+                }
+            }
+        }
+
+        private void rbBIFSummarised_CheckedChanged(object sender, EventArgs e)
+        {
+            RadioButton oRadButton = sender as RadioButton;
+            if (oRadButton != null & formloaded && oRadButton.Checked)
+            {
+                if (groupBox4.Visible)
+                {
+                    groupBox4.Visible = false;
+                }
+            }
         }
     }
 }

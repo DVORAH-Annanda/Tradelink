@@ -18,9 +18,14 @@ namespace DyeHouse
 
         List<DATA> fieldSelected = null;
 
+        DataTable DataT;
+        DataColumn Column;
+        BindingSource BindSrc;
+
         public frmFinalApproval()
         {
             InitializeComponent();
+        
             dataGridView1.AutoGenerateColumns = false;
             dataGridView1.AllowUserToAddRows = false;
 

@@ -22,10 +22,13 @@ namespace DyeHouse
             if (DOReprint)
             {
                 this.Text = "Dye Order Reprint";
+                groupBox1.Visible = true;
+                rbGarments.Checked = true;
             }
             else
             {
                 this.Text = "Dye Batch Reprint";
+                groupBox1.Visible = false;
             }
         }
 
@@ -39,20 +42,44 @@ namespace DyeHouse
                 {
                     if (DyeOrderReprint)
                     {
-                         var DyeOrder = context.TLDYE_DyeOrder.Where(x => x.TLDYO_DyeOrderNum == txtInput.Text).FirstOrDefault();
-                         if (DyeOrder == null)
-                         {
-                             MessageBox.Show("Dye Order as entered not found");
-                             txtInput.Text = string.Empty;
-                             
-                             return;
-                         }
+                        if (rbGarments.Checked)
+                        {
+                            var DyeOrder = context.TLDYE_DyeOrder.Where(x => x.TLDYO_DyeOrderNum == txtInput.Text).FirstOrDefault();
+                            if (DyeOrder == null)
+                            {
+                                MessageBox.Show("Dye Order as entered not found");
+                                txtInput.Text = string.Empty;
 
-                         frmDyeViewReport vRep = new frmDyeViewReport(3, DyeOrder.TLDYO_Pk);
-                         int h = Screen.PrimaryScreen.WorkingArea.Height;
-                         int w = Screen.PrimaryScreen.WorkingArea.Width;
-                         vRep.ClientSize = new Size(w, h);
-                         vRep.ShowDialog(this);
+                                return;
+                            }
+
+
+                            frmDyeViewReport vRep = new frmDyeViewReport(3, DyeOrder.TLDYO_Pk);
+                            int h = Screen.PrimaryScreen.WorkingArea.Height;
+                            int w = Screen.PrimaryScreen.WorkingArea.Width;
+                            vRep.ClientSize = new Size(w, h);
+                            vRep.ShowDialog(this);
+                        }
+                        else
+                        {
+                            var DyeOrderFab = context.TLDYE_DyeOrderFabric.Where(x => x.TLDYEF_DyeOrderNo == txtInput.Text).FirstOrDefault();
+                            if (DyeOrderFab == null)
+                            {
+                                MessageBox.Show("Dye Order (Fabric) as entered not found");
+                                txtInput.Text = string.Empty;
+
+                                return;
+                            }
+                            
+                            frmDyeViewReport vRep = new frmDyeViewReport(2, DyeOrderFab.TLDYEF_DyeOrderNumeric);
+                            int h = Screen.PrimaryScreen.WorkingArea.Height;
+                            int w = Screen.PrimaryScreen.WorkingArea.Width;
+                            vRep.ClientSize = new Size(w, h);
+                            vRep.ShowDialog(this);
+                        }
+
+                        rbGarments.Checked = true;
+                        groupBox1.Visible = true;
                     }
                     else
                     {
@@ -64,8 +91,6 @@ namespace DyeHouse
 
                             return;
                         }
-
-                      
 
                         frmDyeViewReport vRep = new frmDyeViewReport(4, DyeBatch.DYEB_Pk );
                         int h = Screen.PrimaryScreen.WorkingArea.Height;
@@ -103,6 +128,8 @@ namespace DyeHouse
 
                             }
                         }
+
+                        groupBox1.Visible = false;
                     }
                 }
             }

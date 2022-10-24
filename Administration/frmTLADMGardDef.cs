@@ -19,6 +19,11 @@ namespace TTI2_WF
         /// <summary>
         /// Text Box Objects for general use in the program
         /// </summary>
+        /// 
+
+        DataTable DataT;
+        BindingSource BindingS;
+
         DataGridViewTextBoxColumn oTxtBoxA;  // 1 Reserved for Description 
         DataGridViewTextBoxColumn oTxtBoxB;  // 3 Reserved For Disconcontinued Date 
         DataGridViewTextBoxColumn oTxtBoxC;  // 4 Reserved For Power Numbers
@@ -353,7 +358,7 @@ namespace TTI2_WF
             // General for Everybody 
             //-----------------------------------------------------------------------------------------------
          
-            if (frmNumber != 18 && frmNumber != 19) // form option 18 (Production Loss) / 19 Grade Codes does not require this facility 
+            if (frmNumber != 17 && frmNumber != 18 && frmNumber != 19) // form option 18 (Production Loss) / 19 Grade Codes does not require this facility 
             {
                 dataGridView1.Columns.Add(oTxtBoxA);     //0
 
@@ -366,15 +371,19 @@ namespace TTI2_WF
                 dataGridView1.Columns.Add(oTxtBoxB);
             }
 
-            oTxtBoxC = new DataGridViewTextBoxColumn();           // 3
-            oTxtBoxC.HeaderText = "Primary Key";
-            oTxtBoxC.Visible = false;
-            dataGridView1.Columns.Add(oTxtBoxC);
+            if (frmNumber != 17)
+            {
+                oTxtBoxC = new DataGridViewTextBoxColumn();           // 3
+                oTxtBoxC.HeaderText = "Primary Key";
+                oTxtBoxC.Visible = false;
+                dataGridView1.Columns.Add(oTxtBoxC);
 
-            oTxtBoxD = new DataGridViewTextBoxColumn();           // 4
-            oTxtBoxD.HeaderText = "Size Power Number";
-            oTxtBoxD.Visible = false;
-            dataGridView1.Columns.Add(oTxtBoxD); //0
+                oTxtBoxD = new DataGridViewTextBoxColumn();           // 4
+                oTxtBoxD.HeaderText = "Size Power Number";
+                oTxtBoxD.Visible = false;
+                dataGridView1.Columns.Add(oTxtBoxD); //0
+            }
+            
             //--------------------------------------------------------------------------------------------------------------
 
             if (frmNumber == 1) // Styles 
@@ -462,13 +471,16 @@ namespace TTI2_WF
                 oChkBoxC = new DataGridViewCheckBoxColumn();
                 oChkBoxC.HeaderText = "Padding Y/N";
 
+                oChkBoxD = new DataGridViewCheckBoxColumn();
+                oChkBoxD.HeaderText = "Measured Colour Y/N";
+
                 dataGridView1.Columns.Add(oTxtBoxD);    //5
                 dataGridView1.Columns.Add(oTxtBoxE);    //6
-                dataGridView1.Columns.Add(oBtnA);       //7
+                // dataGridView1.Columns.Add(oBtnA);       //7
                 dataGridView1.Columns.Add(oChkBoxB);    //8
                 dataGridView1.Columns.Add(oTxtBoxF);    //9
                 dataGridView1.Columns.Add(oChkBoxC);    //10
-
+                dataGridView1.Columns.Add(oChkBoxD);    //11
             }
           else if (frmNumber == 3)    // Yarn Definition 
           {
@@ -822,39 +834,241 @@ namespace TTI2_WF
             }
             else if (frmNumber == 17)   // Panel Attributes
             {
-                oTxtBoxE = new DataGridViewTextBoxColumn();
-                oTxtBoxE.HeaderText = "Grade";
-                oBtnA = new DataGridViewButtonColumn();        // Size
-                oBtnA.HeaderText = "Size";
-                oBtnB = new DataGridViewButtonColumn();        // Size
-                oBtnB.HeaderText = "Fabric";
-                oChkBoxB = new DataGridViewCheckBoxColumn();   // Blocked   
-                oChkBoxB.HeaderText = "Blocked";
-                oCmbBoxH = new DataGridViewComboBoxColumn();   // UOM 
-                oCmbBoxH.HeaderText = "UOM";
-                oCmbBoxE = new DataGridViewComboBoxColumn();   // Preferred Supplier    
-                oCmbBoxE.HeaderText = "Preferred Supplier";
-                oChkBoxC = new DataGridViewCheckBoxColumn();   // Show Qty
+                /*
+                 [Pan_PK] [int] IDENTITY(1,1) NOT NULL,
+	             [Pan_Description] [varchar](50) NOT NULL,
+	             [Pan_Discontinued] [bit] NULL,
+	             [Pan_Discontinued_Date] [date] NULL,
+	             [Pan_PowerN] [int] NOT NULL,
+	             [Pan_ShowQty] [bit] NOT NULL,
+	             [Pan_Single_Colour] [bit] NOT NULL,
+	             [Pan_Single_Colour_FK] [int] NULL,
+                 [Pan_Style_FK] [int] NULL,
+                */
+
+                DataTable DataT = new DataTable();
+                BindingSource BindingSrc = new BindingSource();
+                Util core = new Util();
+
+                DataColumn column; 
+
+                dataGridView1.AutoGenerateColumns = false;
+
+                //==========================================================================================
+                // 1st task is to create the data table
+                // Col 0
+                //=====================================================================
+                column = new DataColumn();
+                column.DataType = typeof(int);
+                column.ColumnName = "Panel_Pk";
+                column.Caption = "Panel Primary Key";
+                column.DefaultValue = 0;
+                DataT.Columns.Add(column);
+           
+                
+                //----------------------------------------------
+                // Col1 
+                //-----------------------------------------------
+                column = new DataColumn();
+                column.DataType = typeof(string);
+                column.ColumnName = "Description_Pk";
+                column.Caption = "Description";
+                column.DefaultValue = string.Empty;
+                DataT.Columns.Add(column);
+
+                //--------------------------------------------------------
+                // Col 2
+                //----------------------------------------------------------
+                column = new DataColumn();
+                column.DataType = typeof(bool);
+                column.ColumnName = "Discontinued_Pk";
+                column.Caption = "Discontinued";
+                column.DefaultValue = false;
+                DataT.Columns.Add(column);
+
+                //--------------------------------------------------------
+                // Col 3
+                //----------------------------------------------------------
+                column = new DataColumn();
+                column.DataType = typeof(DateTime);
+                column.ColumnName = "DateDiscontinued";
+                column.Caption = "Date";
+                DataT.Columns.Add(column);
+
+                //-----------------------
+                // Col 4
+                //-----------------------------------------------
+                column = new DataColumn();
+                column.DataType = typeof(Int32);
+                column.ColumnName = "Size_PN";
+                column.Caption = "Size Power No";
+                column.DefaultValue = 0;
+                DataT.Columns.Add(column);
+
+                //-----------------------
+                // Col 5
+                //-----------------------------------------------
+                column = new DataColumn();
+                column.DataType = typeof(bool);
+                column.ColumnName = "Show_Qty";
+                column.Caption = "Show Qty";
+                column.DefaultValue = false;
+                DataT.Columns.Add(column);
+
+                //------------------------------
+                // Col 6
+                //-----------------------------------------------
+                column = new DataColumn();
+                column.DataType = typeof(bool);
+                column.ColumnName = "SingleColour";
+                column.Caption = "Single Colour";
+                column.DefaultValue = false;
+                DataT.Columns.Add(column);
+
+                //-----------------------------------------------------
+                // col 7
+                //-------------------------------------------------
+                column = new DataColumn();
+                column.DataType = typeof(Int32);
+                column.ColumnName = "SingleColour_Pk";
+                column.Caption = "Single Colour";
+                column.DefaultValue = 0;
+                DataT.Columns.Add(column);
+
+                //-----------------------------------------------------
+                // col 8
+                //-------------------------------------------------
+                column = new DataColumn();
+                column.DataType = typeof(Int32);
+                column.ColumnName = "Style_Pk";
+                column.Caption = "Style";
+                column.DefaultValue = 0;
+                DataT.Columns.Add(column);
+
+                //1 -- 
+                //--------------------------------------------
+                oTxtBoxA = new DataGridViewTextBoxColumn();
+                oTxtBoxA.Name = "Panel_PK";
+                oTxtBoxA.ValueType = typeof(Int32);
+                oTxtBoxA.HeaderText = "Panel Key";
+                oTxtBoxA.DataPropertyName = DataT.Columns[0].ColumnName;
+                dataGridView1.Columns.Add(oTxtBoxA);
+                dataGridView1.Columns[0].DisplayIndex = 0;
+                dataGridView1.Columns["Panel_PK"].Visible = false;
+
+                //---- 1 
+                oTxtBoxB = new DataGridViewTextBoxColumn();
+                oTxtBoxB.Name = "Panel_PK";
+                oTxtBoxB.ValueType = typeof(String);
+                oTxtBoxB.HeaderText = "Description";
+                oTxtBoxB.Visible = true;
+                oTxtBoxB.DataPropertyName = DataT.Columns[1].ColumnName;
+                dataGridView1.Columns.Add(oTxtBoxB);
+                dataGridView1.Columns[1].DisplayIndex = 1;
+
+                //2 -- Open / Closed 
+                //------------------------------------------------
+
+                oChkBoxB = new DataGridViewCheckBoxColumn();
+                oChkBoxB.Name = "Discontinued";
+                oChkBoxB.HeaderText = "Discontinued";
+                oChkBoxB.DataPropertyName = DataT.Columns[2].ColumnName;
+                oChkBoxB.ValueType = typeof(bool);
+                dataGridView1.Columns.Add(oChkBoxB);
+                dataGridView1.Columns[2].DisplayIndex = 2;
+
+                //3 -- Column to Store Power No
+                //----------------------------------------------
+                oBtnA  = new DataGridViewButtonColumn();
+                oBtnA.Name = "PowerN";
+                oBtnA.ValueType = typeof(Int32);
+                oBtnA.DataPropertyName = DataT.Columns[4].ColumnName;
+                oBtnA.HeaderText = "Sizes";
+                dataGridView1.Columns.Add(oBtnA);
+                dataGridView1.Columns[3].DisplayIndex = 3;
+
+                //4 -- Show Quantity
+                //----------------------------------------------
+                oChkBoxC = new DataGridViewCheckBoxColumn();
+                oChkBoxC.Name = "Panel_ShowQty";
                 oChkBoxC.HeaderText = "Show Qty";
-                //---- Retrieve data from database-----------------------------------------------------------------              
+                oChkBoxC.ValueType = typeof(Boolean);
+                oChkBoxC.DataPropertyName = DataT.Columns[5].ColumnName;
+                dataGridView1.Columns.Add(oChkBoxC);
+                dataGridView1.Columns[4].DisplayIndex = 4;
+
+                //5 -- is it a Single Colour
+                //----------------------------------------------
+                oChkBoxD = new DataGridViewCheckBoxColumn();
+                oChkBoxD.Name = "Single_Clr";
+                oChkBoxD.HeaderText = "Single Colour";
+                oChkBoxD.ValueType = typeof(Boolean);
+                oChkBoxD.DataPropertyName = DataT.Columns[6].ColumnName;
+                dataGridView1.Columns.Add(oChkBoxD);
+                dataGridView1.Columns[5].DisplayIndex = 5;
+
+                // 6 -- Colours
+                //--------------------------------------------------------
+                oCmbBoxA = new DataGridViewComboBoxColumn();
+                oCmbBoxA.Name = "SingColours";
+                oCmbBoxA.HeaderText = "Colours";
+                oCmbBoxA.ValueType = typeof(Int32);
                 using (var context = new TTI2Entities())
                 {
-                    oCmbBoxH.DataSource = context.TLADM_UOM.OrderBy(x => x.UOM_Description).ToList();
-                    oCmbBoxH.ValueMember = "UOM_Pk";
-                    oCmbBoxH.DisplayMember = "UOM_Description";
-
-                    oCmbBoxE.DataSource = context.TLADM_Suppliers.OrderBy(x => x.Sup_Description).ToList();
-                    oCmbBoxE.ValueMember = "Sup_Pk";
-                    oCmbBoxE.DisplayMember = "Sup_Description";
+                    oCmbBoxA.DataSource = context.TLADM_Colours.Where(x => !(bool)x.Col_Discontinued).ToList();
+                    oCmbBoxA.DisplayMember = "Col_Display";
+                    oCmbBoxA.ValueMember = "Col_Id";
                 }
+                oCmbBoxA.DataPropertyName = DataT.Columns[7].ColumnName;
+                dataGridView1.Columns.Add(oCmbBoxA);
+                dataGridView1.Columns[6].DisplayIndex = 6;
+                
+                //7 -- Styles
+                //--------------------------------------------------------
+                oCmbBoxB = new DataGridViewComboBoxColumn();
+                oCmbBoxB.Name = "Styles";
+                oCmbBoxB.HeaderText = "Styles";
+                oCmbBoxB.ValueType = typeof(Int32);
+                using (var context = new TTI2Entities())
+                {
+                    oCmbBoxB.DataSource = context.TLADM_Styles.Where(x => !(bool)x.Sty_Discontinued).ToList();
+                    oCmbBoxB.DisplayMember = "Sty_Description";
+                    oCmbBoxB.ValueMember = "Sty_Id";
+                }
+                oCmbBoxB.DataPropertyName = DataT.Columns[8].ColumnName;
+                dataGridView1.Columns.Add(oCmbBoxB);
+                dataGridView1.Columns[7].DisplayIndex = 7;
 
-                dataGridView1.Columns.Add(oTxtBoxE);      // 6  Grade
-                dataGridView1.Columns.Add(oBtnA);         // 7  Size
-                dataGridView1.Columns.Add(oChkBoxB);      // 8  Blocked 
-                dataGridView1.Columns.Add(oCmbBoxH);      // 9  UOM  
-                dataGridView1.Columns.Add(oCmbBoxE);      //10  Preferred Supplier 
-                dataGridView1.Columns.Add(oChkBoxC);      //11  Show Qty 
-                dataGridView1.Columns.Add(oBtnB);         //14  Size
+                BindingSrc.DataSource = DataT;
+                dataGridView1.DataSource = BindingSrc;
+
+                using (var context = new TTI2Entities())
+                {
+                    var Entities = context.TLADM_PanelAttributes.OrderBy(x => x.Pan_Description).ToList();
+                    foreach (var Entity in Entities)
+                    {
+                        DataRow NRow = DataT.NewRow();
+                        NRow[0] = Entity.Pan_PK;
+                        NRow[1] = Entity.Pan_Description;
+                        NRow[2] = Entity.Pan_Discontinued;
+                        NRow[3] = DBNull.Value;
+                        NRow[4] = Entity.Pan_PowerN;
+                        NRow[5] = Entity.Pan_ShowQty;
+                        NRow[6] = Entity.Pan_Single_Colour;
+                        if (Entity.Pan_Single_Colour_FK != null)
+                            NRow[7] = Entity.Pan_Single_Colour_FK;
+                        else
+                            NRow[7] = DBNull.Value;
+
+                        //if (Entity.Pan_Style_FK != 0)
+                            NRow[8] = Entity.Pan_Style_FK;
+
+                        DataT.Rows.Add(NRow);
+                    }
+                }
+                dataGridView1.EditingControlShowing += new DataGridViewEditingControlShowingEventHandler(dataGridView1_EditingControlShowing);
+                dataGridView1.AllowUserToAddRows = true;
+                dataGridView1.AllowUserToOrderColumns = false;
                 
                 //-------------------------------------------------------------------------------------------------
                 // This is the row leave event that only needs to be fired for a select group of modules
@@ -1004,9 +1218,12 @@ namespace TTI2_WF
 
             else if (frmNumber == 17)
             {
+                /*
                 dataGridView1 = core.Get_PanelAttributes(dataGridView1);
                 if (dataGridView1.RowCount > 0)
                     MandSelected = core.PopulateArray(MandatoryFields.Length, true);
+                */
+
             }
 
             else if (frmNumber == 18)
@@ -1573,7 +1790,7 @@ namespace TTI2_WF
                         var data = context.TLADM_PanelAttributes.Where(x => x.Pan_PK == PanelPk).FirstOrDefault();
                         if (data != null)
                         {
-                            SizeFK = data.Pan_Size_FK;
+                            //SizeFK = data.Pan_Size_FK;
                         }
                         else
                         {

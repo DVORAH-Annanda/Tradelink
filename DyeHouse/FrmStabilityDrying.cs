@@ -20,13 +20,19 @@ namespace DyeHouse
         bool formloaded;
         bool _StabAfterDrying;
 
+        protected readonly TTI2Entities _context;
+
         Util core;
 
         bool Add;
 
+        TLDYE_DyeBatch DyeBatchSelected;
+
         public FrmStabilityDrying(bool StabAfterDrying)
         {
             InitializeComponent();
+
+            _context = new TTI2Entities();
 
             core = new Util();
 
@@ -65,6 +71,8 @@ namespace DyeHouse
             formloaded = false;
             dataGridView1.Enabled = false;
             dataGridView1.Rows.Clear();
+            DyeBatchSelected = null;
+
             List<TLADM_QADyeProcessFields> QAProcessItems = null;
             Add = true;
 
@@ -75,10 +83,11 @@ namespace DyeHouse
 
             rbPassYes.Checked = true;
 
-            using (var context = new TTI2Entities())
-            {
+            //using (var context = new TTI2Entities())
+            //{
                 if (IsSetUp)
                 {
+                    /*
                     if (_StabAfterDrying)
                     {
                         cmboBatchNumber.DataSource = context.TLDYE_DyeBatch.Where(x => x.DYEB_BatchDate >= TwelveMonths).OrderBy(x => x.DYEB_BatchNo).ToList();
@@ -93,7 +102,8 @@ namespace DyeHouse
                     cmboBatchNumber.ValueMember = "DYEB_Pk";
                     cmboBatchNumber.DisplayMember = "DYEB_BatchNo";
                     cmboBatchNumber.SelectedValue = 0;
-                    
+                    */
+
                    /* cmboOperator.DataSource = context.TLADM_MachineOperators.Where(x => !x.MachOp_Inspector && !x.MachOp_Discontinued).OrderBy(x => x.MachOp_Description).ToList();
                     cmboOperator.DisplayMember = "MachOp_Description";
                     cmboOperator.ValueMember = "MachOp_Pk";
@@ -105,11 +115,11 @@ namespace DyeHouse
                 //var QAProcessItems = context.TLADM_QADyeProcessFields.Where(x => x.TLQADPF_Process_FK == 2).ToList();
                 if (_StabAfterDrying)
                 {
-                    QAProcessItems = context.TLADM_QADyeProcessFields.Where(x=>x.TLQADPF_Drier).ToList();
+                    QAProcessItems = _context.TLADM_QADyeProcessFields.Where(x=>x.TLQADPF_Drier).ToList();
                 }
                 else
                 {
-                    QAProcessItems = context.TLADM_QADyeProcessFields.Where(x=>x.TLQAPF_Compactor || x.TLQADPF_Process_FK == 3).ToList();
+                    QAProcessItems = _context.TLADM_QADyeProcessFields.Where(x=>x.TLQAPF_Compactor || x.TLQADPF_Process_FK == 3).ToList();
                 }
 
                 foreach (var Record in QAProcessItems)
@@ -120,7 +130,7 @@ namespace DyeHouse
                     dataGridView1.Rows[index].Cells[2].Value = 0.00M;
                 }
                 dataGridView1.Enabled = true;
-            }
+            //}
             formloaded = true;
         }
 
@@ -154,6 +164,7 @@ namespace DyeHouse
             IList<TLADM_QADyeProcessFields> QAProcessItems = null;  // context.TLADM_QADyeProcessFields.Where(x => x.TLQADPF_Process_FK == 2).ToList();
             if (oCmbo != null && formloaded)
             {
+                /*
                 var selected = (TLDYE_DyeBatch)cmboBatchNumber.SelectedItem;
                 if (selected != null)
                 {
@@ -245,22 +256,32 @@ namespace DyeHouse
 
                     }
                 }
+                */
             }
         }
 
         private void chkNCRRequired_CheckedChanged(object sender, EventArgs e)
         {
             CheckBox oChk = sender as CheckBox;
+            TLDYE_DyeBatch DB = null;
             if (oChk != null && formloaded)
             {
                 if (oChk.Checked)
                 {
-                    var DB = (TLDYE_DyeBatch)cmboBatchNumber.SelectedItem;
-                    if (DB == null)
+                    if(txtBatchNo.Text.Length == 0 )
                     {
-                        MessageBox.Show("Please select a dye batch from the drop down list");
+                        MessageBox.Show("Please enter a Dye Batch Number");
                         return;
                     }
+
+                    DB = _context.TLDYE_DyeBatch.FirstOrDefault(x => x.DYEB_BatchNo == txtBatchNo.Text);
+
+                    if(DB == null)
+                    {
+                        MessageBox.Show("Please enter a valid Dye Batch Number");
+                        return;
+                    }
+                    
                     var Selected = (TLADM_MachineOperators)cmboOperator.SelectedItem;
                     if (Selected == null)
                     {
@@ -269,7 +290,6 @@ namespace DyeHouse
                     }
 
                    
-
                     if (_StabAfterDrying)
                     {
                         frmDye_NonCompliance nonCom = new frmDye_NonCompliance(DB.DYEB_Pk, Selected.MachOp_Pk, 2, 0);
@@ -292,10 +312,9 @@ namespace DyeHouse
 
             if (oBtn != null && formloaded)
             {
-                var DB = (TLDYE_DyeBatch)cmboBatchNumber.SelectedItem;
-                if (DB == null)
+                if (DyeBatchSelected == null)
                 {
-                    MessageBox.Show("Please select a dye batch from the drop down list");
+                    MessageBox.Show("Please enter a valid Dye Batch Number");
                     return;
                 }
 
@@ -320,21 +339,21 @@ namespace DyeHouse
                 {
                     if (_StabAfterDrying)
                     {
-                        trns = context.TLDYE_DyeTransactions.Where(x => x.TLDYET_Batch_FK == DB.DYEB_Pk && x.TLDYET_Stage == 2).FirstOrDefault(); 
+                        trns = context.TLDYE_DyeTransactions.Where(x => x.TLDYET_Batch_FK == DyeBatchSelected.DYEB_Pk && x.TLDYET_Stage == 2).FirstOrDefault(); 
                     }
                     else
                     {
-                        trns = context.TLDYE_DyeTransactions.Where(x => x.TLDYET_Batch_FK == DB.DYEB_Pk && x.TLDYET_Stage == 3).FirstOrDefault(); 
+                        trns = context.TLDYE_DyeTransactions.Where(x => x.TLDYET_Batch_FK == DyeBatchSelected.DYEB_Pk && x.TLDYET_Stage == 3).FirstOrDefault(); 
                     }
 
                     if (trns == null)
                     {
                         trns = new TLDYE_DyeTransactions();
-                        trns.TLDYET_BatchNo = DB.DYEB_BatchNo;
-                        trns.TLDYET_BatchWeight = DB.DYEB_BatchKG;
+                        trns.TLDYET_BatchNo = DyeBatchSelected.DYEB_BatchNo;
+                        trns.TLDYET_BatchWeight = DyeBatchSelected.DYEB_BatchKG;
                         trns.TLDYET_Date = DateTime.Now;
-                        trns.TLDYET_SequenceNo = DB.DYEB_SequenceNo;
-                        trns.TLDYET_Batch_FK = DB.DYEB_Pk;
+                        trns.TLDYET_SequenceNo = DyeBatchSelected.DYEB_SequenceNo;
+                        trns.TLDYET_Batch_FK = DyeBatchSelected.DYEB_Pk;
                         if (_StabAfterDrying)
                                trns.TLDYET_Stage = 2;
                         else
@@ -372,7 +391,7 @@ namespace DyeHouse
                        Add = true;
                            
                        nca.TLDYEDC_Code_FK = (int)row.Cells[0].Value;
-                       nca.TLDYEDC_BatchNo = DB.DYEB_Pk;
+                       nca.TLDYEDC_BatchNo = DyeBatchSelected.DYEB_Pk;
                        nca.TLDYEDC_Operator_FK = 0; // (int)cmboOperator.SelectedValue;
                        nca.TLDYEDC_PieceNo_FK = GP.GreigeP_Pk;
 
@@ -408,7 +427,7 @@ namespace DyeHouse
 
                     if (rbPassYes.Checked)
                     {
-                        var DBatch = context.TLDYE_DyeBatch.Find(DB.DYEB_Pk);
+                        var DBatch = context.TLDYE_DyeBatch.Find(DyeBatchSelected.DYEB_Pk);
                         if (DBatch != null)
                         {
                             if (_StabAfterDrying)
@@ -449,32 +468,153 @@ namespace DyeHouse
             {
                 if (oRad.Checked)
                 {
-                    var DB = (TLDYE_DyeBatch)cmboBatchNumber.SelectedItem;
-                    if (DB == null)
+                    if (txtBatchNo.Text.Length == 0)
                     {
-                        MessageBox.Show("Please select a dye batch from the drop down list");
+                        MessageBox.Show("Please enter a Dye Batch number");
                         return;
                     }
-
-                    /*
-                    var Selected = (TLADM_MachineOperators)cmboOperator.SelectedItem;
-                    if (Selected == null)
+                    
+                    if(txtBatchNo.Text.Length == 0)
                     {
-                        MessageBox.Show("Please select an operator from the drop down box");
+                        MessageBox.Show("Please enter a Dye Batch Number");
                         return;
-                    }*/
-
-
+                    }
+                    
+                    DyeBatchSelected = _context.TLDYE_DyeBatch.FirstOrDefault(s=>s.DYEB_BatchNo == txtBatchNo.Text);
+                    if (DyeBatchSelected == null)
+                    {
+                            MessageBox.Show("Please select a dye batch from the drop down list");
+                            return;
+                    }
+                    
                     if (_StabAfterDrying)
                     {
-                        frmDye_NonCompliance nonCom = new frmDye_NonCompliance(DB.DYEB_Pk, 0, 2, 0);
+                        frmDye_NonCompliance nonCom = new frmDye_NonCompliance(DyeBatchSelected.DYEB_Pk, 0, 2, 0);
                         nonCom.ShowDialog(this);
                     }
                     else
                     {
-                        frmDye_NonCompliance nonCom = new frmDye_NonCompliance(DB.DYEB_Pk, 0, 3, 0);
+                        frmDye_NonCompliance nonCom = new frmDye_NonCompliance(DyeBatchSelected.DYEB_Pk, 0, 3, 0);
                         nonCom.ShowDialog(this);
                     }
+                }
+            }
+        }
+
+        private void btnSearch_Click(object sender, EventArgs e)
+        {
+            Button oBtn = sender as Button;
+            TLDYE_NonComplianceAnalysis Existing;
+            bool first = true;
+            IList<TLADM_QADyeProcessFields> QAProcessItems = null;
+
+            if (oBtn != null && formloaded)
+            {
+                if(txtBatchNo.Text.Length == 0)
+                {
+                    MessageBox.Show("Please enter a Dye Batch Number");
+                    return;
+                }
+
+                DyeBatchSelected = _context.TLDYE_DyeBatch.FirstOrDefault(x => x.DYEB_BatchNo == txtBatchNo.Text);
+                if(DyeBatchSelected == null)
+                {
+                    MessageBox.Show("Please enter a valid Dye Batch Number");
+                    return;
+                }
+
+                oCmboPieceNumber.DataSource = null;
+                oCmboPieceNumber.Items.Clear();
+                dataGridView1.Rows.Clear();
+
+                if(!DyeBatchSelected.DYEB_CommissinCust)
+                {
+                    var DO = _context.TLDYE_DyeOrder.Find(DyeBatchSelected.DYEB_DyeOrder_FK);
+                    if (DO != null)
+                    {
+                        var color = _context.TLADM_Colours.Find(DO.TLDYO_Colour_FK);
+                        if (color != null)
+                        {
+                            txtColour.Text = color.Col_Display;
+                        }
+
+                        var Qual = _context.TLADM_Griege.Find(DO.TLDYO_Greige_FK);
+                        if (Qual != null)
+                        {
+                            txtQuality.Text = Qual.TLGreige_Description;
+                        }
+                    }
+                }
+                else
+                {
+                    txtColour.Text = _context.TLADM_Colours.Find(DyeBatchSelected.DYEB_Colour_FK).Col_Display;
+                }
+                
+                var Query = (from GProd in _context.TLKNI_GreigeProduction
+                             join DyeBatch in _context.TLDYE_DyeBatchDetails
+                             on GProd.GreigeP_Pk equals DyeBatch.DYEBD_GreigeProduction_FK
+                             where DyeBatch.DYEBD_DyeBatch_FK == DyeBatchSelected.DYEB_Pk
+                             select GProd).OrderBy(x => x.GreigeP_PieceNo).ToList();
+
+                formloaded = false;
+                oCmboPieceNumber.DataSource = null;
+                oCmboPieceNumber.DataSource = Query;
+                oCmboPieceNumber.ValueMember = "GreigeP_Pk";
+                oCmboPieceNumber.DisplayMember = "GreigeP_PieceNo";
+                oCmboPieceNumber.SelectedValue = -1;
+                formloaded = true;
+
+                dataGridView1.Rows.Clear();
+                
+                if (_StabAfterDrying)
+                {
+                    QAProcessItems = _context.TLADM_QADyeProcessFields.Where(x => x.TLQADPF_Drier).ToList();
+                }
+                else
+                {
+                    QAProcessItems = _context.TLADM_QADyeProcessFields.Where(x => x.TLQAPF_Compactor || x.TLQADPF_Process_FK == 3).ToList();
+                }
+                if (QAProcessItems.Count == 0)
+                {
+                    MessageBox.Show("No set up has been applied to QA Dye Process Fields table");
+                    return;
+                }
+                foreach (var Record in QAProcessItems)
+                {
+                    var index = dataGridView1.Rows.Add();
+                    dataGridView1.Rows[index].Cells[0].Value = Record.TLQADPF_Pk;
+                    dataGridView1.Rows[index].Cells[1].Value = Record.TLQADPF_Description;
+
+                    if (_StabAfterDrying)
+                        Existing = _context.TLDYE_NonComplianceAnalysis.Where(x => x.TLDYEDC_BatchNo == DyeBatchSelected.DYEB_Pk && x.TLDYEDC_Code_FK == Record.TLQADPF_Pk && x.TLDYEDC_NCStage == 4).FirstOrDefault();
+                    else
+                        Existing = _context.TLDYE_NonComplianceAnalysis.Where(x => x.TLDYEDC_BatchNo == DyeBatchSelected.DYEB_Pk && x.TLDYEDC_Code_FK == Record.TLQADPF_Pk && x.TLDYEDC_NCStage == 5).FirstOrDefault();
+
+                    if (Existing != null)
+                    {
+                        if (first)
+                        {
+                            Add = false;
+                            first = false;
+                            cmboOperator.SelectedValue = Existing.TLDYEDC_Operator_FK;
+                        }
+                        dataGridView1.Rows[index].Cells[2].Value = Existing.TLDYEDC_Value;
+                    }
+                    else
+                    {
+                        dataGridView1.Rows[index].Cells[2].Value = 0.00M;
+                    }
+                }
+            }
+        }
+
+        private void FrmStabilityDrying_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if(!e.Cancel)
+            {
+                if(_context != null)
+                {
+                    _context.Dispose();
                 }
             }
         }

@@ -17,5 +17,6 @@ namespace Utilities
         public int TLGQ_Pk { get; set; }
         public int TLGQ_ReceipeDef_FK { get; set; }
         public int TLGQ_GreigeQuality_FK { get; set; }
+        public Nullable<int> TLGQ_ColourChart_FK { get; set; }
     }
 }

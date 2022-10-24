@@ -36,7 +36,10 @@
             this.btnSubmit = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.cmboCustomers = new DyeHouse.CheckComboBox();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.cmboReportOptions = new System.Windows.Forms.ComboBox();
             this.groupBox1.SuspendLayout();
+            this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -45,7 +48,7 @@
             this.groupBox1.Controls.Add(this.dtpFromDate);
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Location = new System.Drawing.Point(138, 35);
+            this.groupBox1.Location = new System.Drawing.Point(206, 33);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(269, 125);
             this.groupBox1.TabIndex = 0;
@@ -86,7 +89,7 @@
             // 
             // btnSubmit
             // 
-            this.btnSubmit.Location = new System.Drawing.Point(503, 297);
+            this.btnSubmit.Location = new System.Drawing.Point(692, 423);
             this.btnSubmit.Name = "btnSubmit";
             this.btnSubmit.Size = new System.Drawing.Size(75, 23);
             this.btnSubmit.TabIndex = 1;
@@ -114,11 +117,30 @@
             this.cmboCustomers.Text = "Select Options";
             this.cmboCustomers.SelectedIndexChanged += new System.EventHandler(this.cmboCustomers_SelectedIndexChanged);
             // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.cmboReportOptions);
+            this.groupBox2.Location = new System.Drawing.Point(206, 267);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(269, 98);
+            this.groupBox2.TabIndex = 4;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Report Sort Options";
+            // 
+            // cmboReportOptions
+            // 
+            this.cmboReportOptions.FormattingEnabled = true;
+            this.cmboReportOptions.Location = new System.Drawing.Point(57, 42);
+            this.cmboReportOptions.Name = "cmboReportOptions";
+            this.cmboReportOptions.Size = new System.Drawing.Size(170, 21);
+            this.cmboReportOptions.TabIndex = 0;
+            // 
             // frmSelFabricSales
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(614, 350);
+            this.ClientSize = new System.Drawing.Size(812, 472);
+            this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.cmboCustomers);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.btnSubmit);
@@ -128,6 +150,7 @@
             this.Load += new System.EventHandler(this.frmSelFabricSales_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            this.groupBox2.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -143,5 +166,7 @@
         private System.Windows.Forms.Button btnSubmit;
         private System.Windows.Forms.Label label3;
         private DyeHouse.CheckComboBox cmboCustomers;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.ComboBox cmboReportOptions;
     }
 }

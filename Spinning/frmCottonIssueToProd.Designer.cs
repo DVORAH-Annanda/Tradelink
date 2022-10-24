@@ -121,6 +121,7 @@
             this.dtpTransDate.Name = "dtpTransDate";
             this.dtpTransDate.Size = new System.Drawing.Size(152, 20);
             this.dtpTransDate.TabIndex = 8;
+            this.dtpTransDate.ValueChanged += new System.EventHandler(this.dtpTransDate_ValueChanged);
             // 
             // frmCottonIssueToProd
             // 

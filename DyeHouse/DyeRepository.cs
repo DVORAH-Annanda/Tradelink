@@ -201,7 +201,8 @@ namespace DyeHouse
         public IQueryable<TLDYE_DyeBatch> SelectDyedBasicQuality(DyeQueryParameters parameters)
         {
             var DyeBatch = _context.TLDYE_DyeBatch.Where(x => x.DYEB_OutProcess && x.DYEB_OutProcessDate >= parameters.FromDate && x.DYEB_OutProcessDate <= parameters.ToDate).AsQueryable();
-            
+            DyeBatch = DyeBatch.Where(x => !x.DYEB_FabicSales).AsQueryable();
+
             if(parameters.Customers.Count != 0)
             {
                 var CustomerPredicate = PredicateBuilder.New<TLDYE_DyeBatch>();
@@ -458,6 +459,7 @@ namespace DyeHouse
                              && DBD.DYEBO_QAApproved
                              && !DBD.DYEBO_Rejected
                              && !DBD.DYEBO_Sold
+                             && !DBD.DYEBO_PendingDelivery
                              && !DBD.DYEBO_CutSheet
                              && !DBD.DYEBO_WriteOff
                              select DBD).AsQueryable(); 
@@ -660,6 +662,8 @@ namespace DyeHouse
         public StringBuilder Notes;
         public bool CommDyeing;
         public bool CommDyeingReprint;
+        public int FabricSalesReportOption;
+        public bool FabricSalesPickingList;
 
         public bool CalculateProdResults;
         public bool FabricSales;
@@ -711,6 +715,8 @@ namespace DyeHouse
 
             Consumable_Whse_FK = 0;
 
+            FabricSalesReportOption = 0;
+            FabricSalesPickingList = false;
             DyeStage = 0;
 
             Notes = new StringBuilder();

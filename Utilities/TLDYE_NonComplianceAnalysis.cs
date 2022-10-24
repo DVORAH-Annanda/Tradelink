@@ -23,5 +23,6 @@ namespace Utilities
         public int TLDYEDC_Operator_FK { get; set; }
         public bool TLDYEDC_Pass { get; set; }
         public Nullable<System.DateTime> TLDYEDC_Date { get; set; }
+        public Nullable<int> TLDYEDC_Quality_FK { get; set; }
     }
 }

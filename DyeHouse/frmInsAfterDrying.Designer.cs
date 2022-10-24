@@ -40,19 +40,22 @@
             this.txtColour = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.cmboBatchNumber = new System.Windows.Forms.ComboBox();
             this.dtpStability = new System.Windows.Forms.DateTimePicker();
             this.label1 = new System.Windows.Forms.Label();
             this.btnSave = new System.Windows.Forms.Button();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.label7 = new System.Windows.Forms.Label();
             this.txtCauses = new System.Windows.Forms.TextBox();
+            this.txtBatchNumber = new System.Windows.Forms.TextBox();
+            this.btnSearch = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.btnSearch);
+            this.groupBox1.Controls.Add(this.txtBatchNumber);
             this.groupBox1.Controls.Add(this.cmboQEMeasurements);
             this.groupBox1.Controls.Add(this.label8);
             this.groupBox1.Controls.Add(this.txtDyeMachine);
@@ -64,7 +67,6 @@
             this.groupBox1.Controls.Add(this.txtColour);
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.label2);
-            this.groupBox1.Controls.Add(this.cmboBatchNumber);
             this.groupBox1.Controls.Add(this.dtpStability);
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Location = new System.Drawing.Point(48, 64);
@@ -168,15 +170,6 @@
             this.label2.TabIndex = 3;
             this.label2.Text = "Batch Number";
             // 
-            // cmboBatchNumber
-            // 
-            this.cmboBatchNumber.FormattingEnabled = true;
-            this.cmboBatchNumber.Location = new System.Drawing.Point(219, 49);
-            this.cmboBatchNumber.Name = "cmboBatchNumber";
-            this.cmboBatchNumber.Size = new System.Drawing.Size(157, 21);
-            this.cmboBatchNumber.TabIndex = 2;
-            this.cmboBatchNumber.SelectedIndexChanged += new System.EventHandler(this.cmboBatchNumber_SelectedIndexChanged);
-            // 
             // dtpStability
             // 
             this.dtpStability.Location = new System.Drawing.Point(219, 14);
@@ -229,6 +222,23 @@
             this.txtCauses.Size = new System.Drawing.Size(336, 20);
             this.txtCauses.TabIndex = 5;
             // 
+            // txtBatchNumber
+            // 
+            this.txtBatchNumber.Location = new System.Drawing.Point(219, 54);
+            this.txtBatchNumber.Name = "txtBatchNumber";
+            this.txtBatchNumber.Size = new System.Drawing.Size(157, 20);
+            this.txtBatchNumber.TabIndex = 15;
+            // 
+            // btnSearch
+            // 
+            this.btnSearch.Location = new System.Drawing.Point(407, 56);
+            this.btnSearch.Name = "btnSearch";
+            this.btnSearch.Size = new System.Drawing.Size(75, 23);
+            this.btnSearch.TabIndex = 16;
+            this.btnSearch.Text = "Search";
+            this.btnSearch.UseVisualStyleBackColor = true;
+            this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
+            // 
             // frmInsAfterDrying
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -241,6 +251,7 @@
             this.Controls.Add(this.groupBox1);
             this.Name = "frmInsAfterDrying";
             this.Text = "Inspection After Drying";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmInsAfterDrying_FormClosing);
             this.Load += new System.EventHandler(this.frmInsAfterDrying_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
@@ -262,7 +273,6 @@
         private System.Windows.Forms.TextBox txtColour;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.ComboBox cmboBatchNumber;
         private System.Windows.Forms.DateTimePicker dtpStability;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button btnSave;
@@ -271,5 +281,7 @@
         private System.Windows.Forms.TextBox txtCauses;
         private System.Windows.Forms.ComboBox cmboQEMeasurements;
         private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.TextBox txtBatchNumber;
+        private System.Windows.Forms.Button btnSearch;
     }
 }

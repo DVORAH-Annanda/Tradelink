@@ -1372,9 +1372,12 @@ namespace CustomerServices
         public IQueryable<TLCMT_CompletedWork> Query(CustomerServicesParameters parameters)
         {
             var completedWork = (from LI in _context.TLCMT_LineIssue 
-                     join CW in _context.TLCMT_CompletedWork on LI.TLCMTLI_CutSheet_FK equals CW.TLCMTWC_CutSheet_FK 
-                     where LI.TLCMTLI_WorkCompleted && !CW.TLCMTWC_Picked
-                     select CW).AsQueryable();
+                                join CW in _context.TLCMT_CompletedWork
+                                on LI.TLCMTLI_CutSheet_FK equals CW.TLCMTWC_CutSheet_FK
+                                where LI.TLCMTLI_WorkCompleted && !CW.TLCMTWC_Picked
+                                select CW).AsQueryable();
+            
+
 
             if (parameters.Sizes.Count() > 0)
             {
@@ -1437,6 +1440,7 @@ namespace CustomerServices
 
                 completedWork = completedWork.AsExpandable().Where(deptPredicate);
             }
+            
             return completedWork;
         }
 
@@ -1525,7 +1529,8 @@ namespace CustomerServices
         public bool IncludeProvisional;
         public bool Both;
         public bool TransactHistory;
- 
+        public bool CostColoursChecked;
+
         public CustomerServicesParameters()
         {
             Sizes = new List <TLADM_Sizes>();
@@ -1552,6 +1557,7 @@ namespace CustomerServices
             FromDate = new DateTime();
             ToDate = new DateTime();
 
+            CostColoursChecked = false;
             SummarisedPurchaseOrders = false;
             SummarisedSalesByCustomer = false;
             SummarisedSalesByCompany = false;

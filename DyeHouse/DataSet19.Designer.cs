@@ -640,6 +640,8 @@ namespace DyeHouse {
             
             private global::System.Data.DataColumn columnStyle;
             
+            private global::System.Data.DataColumn columnTrims;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public DataTable2DataTable() {
@@ -795,6 +797,14 @@ namespace DyeHouse {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn TrimsColumn {
+                get {
+                    return this.columnTrims;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -830,7 +840,23 @@ namespace DyeHouse {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public DataTable2Row AddDataTable2Row(DataTable1Row parentDataTable1RowByDataTable1_DataTable2, string BatchNumber, System.DateTime TransDate, string DyeOrder, string Quality, string Colour, decimal Kg, decimal BodyKg, int Units, int Pieces, System.DateTime DueDate, string Customer, string CustomerOrder, bool Reprocess, string Style) {
+            public DataTable2Row AddDataTable2Row(
+                        DataTable1Row parentDataTable1RowByDataTable1_DataTable2, 
+                        string BatchNumber, 
+                        System.DateTime TransDate, 
+                        string DyeOrder, 
+                        string Quality, 
+                        string Colour, 
+                        decimal Kg, 
+                        decimal BodyKg, 
+                        int Units, 
+                        int Pieces, 
+                        System.DateTime DueDate, 
+                        string Customer, 
+                        string CustomerOrder, 
+                        bool Reprocess, 
+                        string Style, 
+                        decimal Trims) {
                 DataTable2Row rowDataTable2Row = ((DataTable2Row)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         null,
@@ -847,7 +873,8 @@ namespace DyeHouse {
                         Customer,
                         CustomerOrder,
                         Reprocess,
-                        Style};
+                        Style,
+                        Trims};
                 if ((parentDataTable1RowByDataTable1_DataTable2 != null)) {
                     columnValuesArray[0] = parentDataTable1RowByDataTable1_DataTable2[0];
                 }
@@ -888,6 +915,7 @@ namespace DyeHouse {
                 this.columnCustomerOrder = base.Columns["CustomerOrder"];
                 this.columnReprocess = base.Columns["Reprocess"];
                 this.columnStyle = base.Columns["Style"];
+                this.columnTrims = base.Columns["Trims"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -923,6 +951,8 @@ namespace DyeHouse {
                 base.Columns.Add(this.columnReprocess);
                 this.columnStyle = new global::System.Data.DataColumn("Style", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnStyle);
+                this.columnTrims = new global::System.Data.DataColumn("Trims", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnTrims);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1443,6 +1473,22 @@ namespace DyeHouse {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public decimal Trims {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableDataTable2.TrimsColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Trims\' in table \'DataTable2\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDataTable2.TrimsColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public DataTable1Row DataTable1Row {
                 get {
                     return ((DataTable1Row)(this.GetParentRow(this.Table.ParentRelations["DataTable1_DataTable2"])));
@@ -1630,6 +1676,18 @@ namespace DyeHouse {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public void SetStyleNull() {
                 this[this.tableDataTable2.StyleColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsTrimsNull() {
+                return this.IsNull(this.tableDataTable2.TrimsColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetTrimsNull() {
+                this[this.tableDataTable2.TrimsColumn] = global::System.Convert.DBNull;
             }
         }
         

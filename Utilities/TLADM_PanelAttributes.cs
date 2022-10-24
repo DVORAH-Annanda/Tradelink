@@ -19,12 +19,9 @@ namespace Utilities
         public Nullable<bool> Pan_Discontinued { get; set; }
         public Nullable<System.DateTime> Pan_Discontinued_Date { get; set; }
         public int Pan_PowerN { get; set; }
-        public string Pan_Grade { get; set; }
-        public int Pan_Size_FK { get; set; }
-        public bool Pan_Blocked { get; set; }
-        public int Pan_UOM_FK { get; set; }
-        public int Pan_PreferedSupplier_FK { get; set; }
         public bool Pan_ShowQty { get; set; }
-        public int Pan_FabricAtributes_FK { get; set; }
+        public bool Pan_Single_Colour { get; set; }
+        public Nullable<int> Pan_Single_Colour_FK { get; set; }
+        public int Pan_Style_FK { get; set; }
     }
 }

@@ -46,5 +46,9 @@ namespace Utilities
         public bool DYEBO_WasRejected { get; set; }
         public string DYEBO_Notes { get; set; }
         public decimal DYEBO_FWAtCutting { get; set; }
+        public int DYEBO_PurchaseOrderDetail_FK { get; set; }
+        public bool DYEBO_PendingDelivery { get; set; }
+        public bool DYEBO_SaleConfirmed { get; set; }
+        public bool DYEBO_FabricDespatched { get; set; }
     }
 }

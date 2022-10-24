@@ -428,19 +428,39 @@ namespace CustomerServices
                 // Have Allowed for 9 Warehouses;
                 //================================================================
                 DataTable dt = new DataTable();
-                dt.Columns.Add("Quality", typeof(int));   //0
-                dt.Columns.Add("Colour", typeof(int));    //1
-                dt.Columns.Add("Size", typeof(int));      //2
-                dt.Columns.Add("Column1", typeof(int));   //3   1st WareHouse 
-                dt.Columns.Add("Column2", typeof(int));   //4   2nd WareHouse
-                dt.Columns.Add("Column3", typeof(int));   //5   3rd WareHouse 
-                dt.Columns.Add("Column4", typeof(int));   //6   4th WareHouse
-                dt.Columns.Add("Column5", typeof(int));   //7   5th WareHouse 
-                dt.Columns.Add("Column6", typeof(int));   //8   6th WareHouse 
-                dt.Columns.Add("Column7", typeof(int));   //9   7th WareHouse 
-                dt.Columns.Add("Column8", typeof(int));   //10  8th WareHouse 
-                dt.Columns.Add("Column9", typeof(int));   //11  9th WareHouse 
-                dt.Columns.Add("Column10", typeof(int));  //12  Total for the Quality / Colour / Size
+                if (!_QueryParms.CostColoursChecked)
+                {
+                    dt.Columns.Add("Quality", typeof(int));   //0
+                    dt.Columns.Add("Colour", typeof(int));    //1
+                    dt.Columns.Add("Size", typeof(int));      //2
+                    dt.Columns.Add("Column1", typeof(int));   //3   1st WareHouse 
+                    dt.Columns.Add("Column2", typeof(int));   //4   2nd WareHouse
+                    dt.Columns.Add("Column3", typeof(int));   //5   3rd WareHouse 
+                    dt.Columns.Add("Column4", typeof(int));   //6   4th WareHouse
+                    dt.Columns.Add("Column5", typeof(int));   //7   5th WareHouse 
+                    dt.Columns.Add("Column6", typeof(int));   //8   6th WareHouse 
+                    dt.Columns.Add("Column7", typeof(int));   //9   7th WareHouse 
+                    dt.Columns.Add("Column8", typeof(int));   //10  8th WareHouse 
+                    dt.Columns.Add("Column9", typeof(int));   //11  9th WareHouse 
+                    dt.Columns.Add("Column10", typeof(int));  //12  Total for the Quality / Colour / Size
+                }
+                else
+                {
+                    //Colours are to be ignored for costing 
+                    dt.Columns.Add("Quality", typeof(int));   //0
+                    dt.Columns.Add("Size", typeof(int));      //1
+                    dt.Columns.Add("Column1", typeof(int));   //2   1st WareHouse 
+                    dt.Columns.Add("Column2", typeof(int));   //3   2nd WareHouse
+                    dt.Columns.Add("Column3", typeof(int));   //4   3rd WareHouse 
+                    dt.Columns.Add("Column4", typeof(int));   //5   4th WareHouse
+                    dt.Columns.Add("Column5", typeof(int));   //6   5th WareHouse 
+                    dt.Columns.Add("Column6", typeof(int));   //7   6th WareHouse 
+                    dt.Columns.Add("Column7", typeof(int));   //8   7th WareHouse 
+                    dt.Columns.Add("Column8", typeof(int));   //9  8th WareHouse 
+                    dt.Columns.Add("Column9", typeof(int));   //10  9th WareHouse 
+                    dt.Columns.Add("Column10", typeof(int));  //11  Total for the Quality / size
+                }
+                
                 Repository repo = new Repository();
 
                 List<TLADM_WhseStore> AllWhses = new List<TLADM_WhseStore>();
@@ -528,57 +548,104 @@ namespace CustomerServices
                     var Result = sohStockDetails.GroupBy(g => new { g.Style, g.Colour, g.Size });
                     foreach (var data in Result)
                     {
-                        DataRow drow = dt.AsEnumerable().Where(p => p.Field<Int32>(0) == data.FirstOrDefault().Style
-                                                               && p.Field<Int32>(1) == data.FirstOrDefault().Colour
-                                                               && p.Field<Int32>(2) == data.FirstOrDefault().Size).FirstOrDefault();
-
+                        DataRow drow = null;
+                        if (!_QueryParms.CostColoursChecked)
+                        {
+                            drow = dt.AsEnumerable().Where(p => p.Field<Int32>(0) == data.FirstOrDefault().Style
+                                                                   && p.Field<Int32>(1) == data.FirstOrDefault().Colour
+                                                                   && p.Field<Int32>(2) == data.FirstOrDefault().Size).FirstOrDefault();
+                        }
+                        else
+                        {
+                            drow = dt.AsEnumerable().Where(p => p.Field<Int32>(0) == data.FirstOrDefault().Style
+                                                                && p.Field<Int32>(1) == data.FirstOrDefault().Size).FirstOrDefault();
+                        }
                         if (drow == null)
                         {
                             drow = dt.NewRow();
-                            drow[0] = data.FirstOrDefault().Style;
-                            drow[1] = data.FirstOrDefault().Colour;
-                            drow[2] = data.FirstOrDefault().Size;
-                            drow[3] = 0;  // 1st WareHouse
-                            drow[4] = 0;  // 2nd WareHouse
-                            drow[5] = 0;  // 3rd WareHouse
-                            drow[6] = 0;  // 4th WareHouse
-                            drow[7] = 0;  // 5th WareHouse
-                            drow[8] = 0;  // 6th WareHouse
-                            drow[9] = 0;  // 7th WareHouse
-                            drow[10] = 0;  // 8th WareHouse
-                            drow[11] = 0;  // 9th WareHouse
-                            drow[12] = 0;  // Total
-
-                            var BoxedQty = data.Where(c => c.Whse == Whse.WhStore_Id).Sum(c => c.BoxedQty);
-
-                            var record = whseDetails.Find(x => x.WareHousePk == Whse.WhStore_Id);
-                            if (record != null)
+                            if (!_QueryParms.CostColoursChecked)
                             {
+                                drow[0] = data.FirstOrDefault().Style;
+                                drow[1] = data.FirstOrDefault().Colour;
+                                drow[2] = data.FirstOrDefault().Size;
+                                drow[3] = 0;  // 1st WareHouse
+                                drow[4] = 0;  // 2nd WareHouse
+                                drow[5] = 0;  // 3rd WareHouse
+                                drow[6] = 0;  // 4th WareHouse
+                                drow[7] = 0;  // 5th WareHouse
+                                drow[8] = 0;  // 6th WareHouse
+                                drow[9] = 0;  // 7th WareHouse
+                                drow[10] = 0;  // 8th WareHouse
+                                drow[11] = 0;  // 9th WareHouse
+                                drow[12] = 0;  // Total
+                            }
+                            else
+                            {
+                                drow[0] = data.FirstOrDefault().Style;
+                                drow[1] = data.FirstOrDefault().Size;
+                                drow[2] = 0;  // 1st WareHouse
+                                drow[3] = 0;  // 2nd WareHouse
+                                drow[4] = 0;  // 3rd WareHouse
+                                drow[5] = 0;  // 4th WareHouse
+                                drow[6] = 0;  // 5th WareHouse
+                                drow[7] = 0;  // 6th WareHouse
+                                drow[8] = 0;  // 7th WareHouse
+                                drow[9] = 0;  // 8th WareHouse
+                                drow[10] = 0;  // 9th WareHouse
+                                drow[11] = 0;  // total
+                            }
+                            var BoxedQty = data.Where(c => c.Whse == Whse.WhStore_Id).Sum(c => c.BoxedQty);
+                            var record = whseDetails.Find(x => x.WareHousePk == Whse.WhStore_Id);
+                            if (!_QueryParms.CostColoursChecked && record != null)
+                            {
+                                
                                 var index = record.WareHouseColNo;
-                                if (index == 10)
+                                if (index >= 10)
                                 {
-                                    continue;
+                                        continue;
                                 }
+                                
                                 drow[index + 2] = BoxedQty;
                                 drow[12] = BoxedQty;
+                                
                             }
-
+                            else if(record != null)
+                            {
+                                 var index = record.WareHouseColNo;
+                                 if (index >= 9)
+                                 {
+                                      continue;
+                                 }
+                               
+                                drow[index + 2] = BoxedQty;
+                                drow[11] = BoxedQty;
+                               
+                            }
                             dt.Rows.Add(drow);
                         }
                         else
                         {
                             var BoxedQty = data.Where(c => c.Whse == Whse.WhStore_Id).Sum(c => c.BoxedQty);
-
-
                             var record = whseDetails.Find(x => x.WareHousePk == Whse.WhStore_Id);
-                            if (record != null)
-                            {
-                                var index = record.WareHouseColNo;
-                                if (index + 3 > 10)
-                                    continue;
 
-                                drow[index + 2] = Convert.ToInt32(drow[index + 3].ToString()) + BoxedQty;
-                                drow[12] = Convert.ToInt32(drow[12].ToString()) + BoxedQty;
+                            if (!_QueryParms.CostColoursChecked && record != null)
+                            {
+                               var index = record.WareHouseColNo;
+                               if (index + 3 >= 10)
+                                  continue;
+
+                               drow[index + 2] = Convert.ToInt32(drow[index + 3].ToString()) + BoxedQty;
+                               drow[12] = Convert.ToInt32(drow[12].ToString()) + BoxedQty;
+                            }
+                            else if(record != null)
+                            {
+                               var index = record.WareHouseColNo;
+                               if (index + 2 >= 9)
+                                  continue;
+
+                               drow[index + 1] = Convert.ToInt32(drow[index + 2].ToString()) + BoxedQty;
+                               drow[11] = Convert.ToInt32(drow[11].ToString()) + BoxedQty;
+                                
                             }
                         }
 
@@ -607,27 +674,61 @@ namespace CustomerServices
                         nr.Style = _Styles.FirstOrDefault(s => s.Sty_Id == (int)row[0]).Sty_Description;
                         
                         var Sty =  _Styles.FirstOrDefault(s => s.Sty_Id == (int)row[0]);
-                        if (Sty != null && !Sty.Sty_WorkWear)
+                        if (!_QueryParms.CostColoursChecked)
                         {
-                            nr.Size = _Sizes.FirstOrDefault(s => s.SI_id == (int)row[2]).SI_Description;
+                            if (Sty != null && !Sty.Sty_WorkWear)
+                            {
+                                nr.Size = _Sizes.FirstOrDefault(s => s.SI_id == (int)row[2]).SI_Description;
+                            }
+                            else
+                            {
+                                nr.Size = _Sizes.FirstOrDefault(s => s.SI_id == (int)row[2]).SI_ContiSize.ToString();
+                            }
                         }
                         else
                         {
-                            nr.Size = _Sizes.FirstOrDefault(s => s.SI_id == (int)row[2]).SI_ContiSize.ToString();
+                            if (Sty != null && !Sty.Sty_WorkWear)
+                            {
+                                nr.Size = _Sizes.FirstOrDefault(s => s.SI_id == (int)row[1]).SI_Description;
+                            }
+                            else
+                            {
+                                nr.Size = _Sizes.FirstOrDefault(s => s.SI_id == (int)row[1]).SI_ContiSize.ToString();
+                            }
                         }
 
-                        nr.Colour = _Colours.FirstOrDefault(s => s.Col_Id == (int)row[1]).Col_Display;
-                        // nr.Size = _Sizes.FirstOrDefault(s => s.SI_id == (int)row[2]).SI_Description;
-                        nr.Col1 = (int)row[3];
-                        nr.Col2 = (int)row[4];
-                        nr.Col3 = (int)row[5];
-                        nr.Col4 = (int)row[6];
-                        nr.Col5 = (int)row[7];
-                        nr.Col6 = (int)row[8];
-                        nr.Col7 = (int)row[9];
-                        nr.Col8 = (int)row[10];
-                        nr.Col9 = (int)row[11];
-                        nr.Col10 = (int)row[12];
+                        if (!_QueryParms.CostColoursChecked)
+                        {
+                            nr.Style = _Styles.FirstOrDefault(s => s.Sty_Id == (int)row[0]).Sty_Description; 
+                            nr.Colour = _Colours.FirstOrDefault(s => s.Col_Id == (int)row[1]).Col_Display;
+                            nr.Size = _Sizes.FirstOrDefault(s => s.SI_id == (int)row[2]).SI_Description;
+                            nr.Col1 = (int)row[3];
+                            nr.Col2 = (int)row[4];
+                            nr.Col3 = (int)row[5];
+                            nr.Col4 = (int)row[6];
+                            nr.Col5 = (int)row[7];
+                            nr.Col6 = (int)row[8];
+                            nr.Col7 = (int)row[9];
+                            nr.Col8 = (int)row[10];
+                            nr.Col9 = (int)row[11];
+                            nr.Col10 = (int)row[12];
+                        }
+                        else
+                        {
+                            nr.Style = _Styles.FirstOrDefault(s => s.Sty_Id == (int)row[0]).Sty_Description;
+                            nr.Colour = "Colours";
+                            nr.Size = _Sizes.FirstOrDefault(s => s.SI_id == (int)row[1]).SI_Description;
+                            nr.Col1 = (int)row[2];
+                            nr.Col2 = (int)row[3];
+                            nr.Col3 = (int)row[4];
+                            nr.Col4 = (int)row[5];
+                            nr.Col5 = (int)row[6];
+                            nr.Col6 = (int)row[7];
+                            nr.Col7 = (int)row[8];
+                            nr.Col8 = (int)row[9];
+                            nr.Col9 = (int)row[10];
+                            nr.Col10 = (int)row[11];
+                        }
 
                         datatable1.AddDataTable1Row(nr);
                     }
@@ -1735,7 +1836,6 @@ namespace CustomerServices
                                 nr.DeliveryDate = (DateTime)Group.TLORDA_DeliveredDate;
                                 nr.Transporter = context.TLADM_Transporters.Find(Group.TLORDA_Transporter_FK).TLTRNS_Description;
                                 var Pk = Group.TLORDA_POOrder_FK;
-
                                 var PO = context.TLCSV_PurchaseOrder.Find(Pk);
                                 if (PO != null)
                                 {
@@ -1746,6 +1846,13 @@ namespace CustomerServices
                                 {
                                     nr.Customer = "Delivery Cancelled";
                                 }
+
+                                nr.TotalBoxes = (from T1 in context.TLCSV_StockOnHand
+                                                 join T2 in context.TLCSV_OrderAllocated
+                                                 on T1.TLSOH_DNListNo equals T2.TLORDA_DelTransNumber
+                                                 where T2.TLORDA_DelTransNumber == DeliveryNo
+                                                 select T1).Count();
+
 
                                 dataTable1.AddDataTable1Row(nr);
                                 break;
@@ -1762,9 +1869,9 @@ namespace CustomerServices
                                 DataSet15.DataTable1Row nr = dataTable1.NewDataTable1Row();
                                 nr.FromDate = _Svces.fromDate;
                                 nr.ToDate = _Svces.toDate;
-
                                 var DeliveryNo = Group.TLORDA_TransNumber;
-
+                                                            
+                               
                                 nr.Title = "Picking List Register";
                                 nr.DeliveryNote = "P" + DeliveryNo.ToString().PadLeft(5, '0');
                                 if (Group.TLORDA_PLStockOrder)
@@ -1790,6 +1897,10 @@ namespace CustomerServices
                     ds.Tables.Add(dataTable1);
                     CDNoteRegister StList = new CDNoteRegister();
                     StList.SetDataSource(ds);
+                    if(_Svces.DeliveryNote && _Svces.GroupByCustomer)
+                    {
+                       StList.DataDefinition.Groups[0].ConditionField = StList.Database.Tables[0].Fields[4];
+                    }
                     crystalReportViewer1.ReportSource = StList;
                 }
             }
@@ -1963,6 +2074,7 @@ namespace CustomerServices
                                     where T1.TLSOH_Style_FK == StyK
                                     && T1.TLSOH_Colour_FK == ColK 
                                     && T1.TLSOH_Size_FK == SzeK
+                                    && !T1.TLSOH_Split
                                     && T1.TLSOH_Is_A 
                                     && !T1.TLSOH_Picked 
                                     && T2.WhStore_GradeA && !T1.TLSOH_Sold  
@@ -2279,9 +2391,10 @@ namespace CustomerServices
 
                             var MthKey = _Customers.FirstOrDefault(s => s.Cust_Pk == CustKey).Cust_Code;
                             var ColIndex = dt.Columns.IndexOf(MthKey);
-                            if (ColIndex != 0)
+                            if (ColIndex >= 0)
+                            {
                                 Row[ColIndex] = Row.Field<int>(ColIndex) + Record.Sum(x => (int?)x.TLSOH_BoxedQty) ?? 0;
-
+                            }
                         }
                         dt.Rows.Add(Row);
                     }

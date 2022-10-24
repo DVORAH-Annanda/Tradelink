@@ -230,15 +230,12 @@ namespace DyeHouse
                 {
                     Decimal NettValue = Convert.ToDecimal(oDgv.CurrentRow.Cells[e.ColumnIndex].EditedFormattedValue.ToString());
                     Decimal GrossValue = Convert.ToDecimal(oDgv.CurrentRow.Cells[-1 + e.ColumnIndex].Value.ToString());
-
+                    Decimal Bm = 5.00M;
                     decimal ans = core.CalculateVariance(GrossValue, NettValue);
-                    if( ans > 5.00M || ans < -5.00M )
+                    if( ans > Bm || ans < 0)
                     {
-                        DialogResult res = MessageBox.Show("Possible incorrect amount entered -- Continue?", "Possible error variance " + Math.Round(ans,1) + " % ",  MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-                        if (res == DialogResult.No)
-                        {
-                            e.Cancel = true;
-                        }
+                        MessageBox.Show("Incorrect amount entered");
+                        e.Cancel = true;
                     }
                 }
             }
