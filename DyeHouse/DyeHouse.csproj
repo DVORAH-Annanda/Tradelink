@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>DyeHouse</RootNamespace>
     <AssemblyName>DyeHouse</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
@@ -92,9 +92,11 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
-    <Reference Include="LinqKit, Version=1.1.15.0, Culture=neutral, PublicKeyToken=bc217f8844052a91, processorArchitecture=MSIL">
-      <HintPath>..\packages\LinqKit.1.1.15\lib\net45\LinqKit.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="LinqKit, Version=1.2.2.0, Culture=neutral, PublicKeyToken=bc217f8844052a91, processorArchitecture=MSIL">
+      <HintPath>..\packages\LinqKit.1.2.2\lib\net45\LinqKit.dll</HintPath>
+    </Reference>
+    <Reference Include="LinqKit.Core, Version=1.2.2.0, Culture=neutral, PublicKeyToken=bc217f8844052a91, processorArchitecture=MSIL">
+      <HintPath>..\packages\LinqKit.Core.1.2.2\lib\net45\LinqKit.Core.dll</HintPath>
     </Reference>
     <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
       <HintPath>..\packages\log4net.1.2.10\lib\2.0\log4net.dll</HintPath>
@@ -405,10 +407,18 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DataSet53.xsd</DependentUpon>
     </Compile>
+    <Compile Include="DataSet54.cs">
+      <DependentUpon>DataSet54.xsd</DependentUpon>
+    </Compile>
     <Compile Include="DataSet54.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>DataSet54.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="DataSet55.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSet55.xsd</DependentUpon>
     </Compile>
     <Compile Include="DataSet6.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -440,6 +450,12 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>DBProductionResults.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="DCMonthlyConsumption.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DCMonthlyConsumption.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="DCProductionPlan.cs">
@@ -743,6 +759,12 @@
     <Compile Include="frmDyeReprint.Designer.cs">
       <DependentUpon>frmDyeReprint.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmDyeRFD.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmDyeRFD.Designer.cs">
+      <DependentUpon>frmDyeRFD.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmDyesChemicalStockAdjustment.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -905,11 +927,23 @@
     <Compile Include="frmReportOpts4.Designer.cs">
       <DependentUpon>frmReportOpts4.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmRFDCompleted.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmRFDCompleted.Designer.cs">
+      <DependentUpon>frmRFDCompleted.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmSelDyeMachPerformance.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="frmSelDyeMachPerformance.Designer.cs">
       <DependentUpon>frmSelDyeMachPerformance.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmSelDyesAndChem.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmSelDyesAndChem.Designer.cs">
+      <DependentUpon>frmSelDyesAndChem.cs</DependentUpon>
     </Compile>
     <Compile Include="frmSelectReceipeConsumable.cs">
       <SubType>Form</SubType>
@@ -1205,6 +1239,10 @@
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>DBProductionResults.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="DCMonthlyConsumption.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>DCMonthlyConsumption.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="DCProductionPlan.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>DCProductionPlan.cs</LastGenOutput>
@@ -1377,6 +1415,9 @@
     <EmbeddedResource Include="frmDyeReprint.resx">
       <DependentUpon>frmDyeReprint.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="frmDyeRFD.resx">
+      <DependentUpon>frmDyeRFD.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frmDyesChemicalStockAdjustment.resx">
       <DependentUpon>frmDyesChemicalStockAdjustment.cs</DependentUpon>
     </EmbeddedResource>
@@ -1459,8 +1500,14 @@
     <EmbeddedResource Include="frmReportOpts4.resx">
       <DependentUpon>frmReportOpts4.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="frmRFDCompleted.resx">
+      <DependentUpon>frmRFDCompleted.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frmSelDyeMachPerformance.resx">
       <DependentUpon>frmSelDyeMachPerformance.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmSelDyesAndChem.resx">
+      <DependentUpon>frmSelDyesAndChem.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmSelectReceipeConsumable.resx">
       <DependentUpon>frmSelectReceipeConsumable.cs</DependentUpon>
@@ -2168,6 +2215,17 @@
     </None>
     <None Include="DataSet54.xss">
       <DependentUpon>DataSet54.xsd</DependentUpon>
+    </None>
+    <None Include="DataSet55.xsc">
+      <DependentUpon>DataSet55.xsd</DependentUpon>
+    </None>
+    <None Include="DataSet55.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSet55.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="DataSet55.xss">
+      <DependentUpon>DataSet55.xsd</DependentUpon>
     </None>
     <None Include="DataSet6.xsc">
       <DependentUpon>DataSet6.xsd</DependentUpon>

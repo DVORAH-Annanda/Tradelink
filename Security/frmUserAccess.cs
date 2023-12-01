@@ -61,6 +61,8 @@ namespace Security
                 chkExternalUser.Checked = false;
                 chkQAFunction.Checked = false;
                 chkDownSizeAuthority.Checked = false;
+                chkIgnoreFivePercent.Checked = false;
+
                 txtHostName.Text = string.Empty;
 
                 dt = new DataTable();
@@ -304,7 +306,7 @@ namespace Security
                         user.TLSUCUA_EmailAddress = txtEMail_Address.Text;
                         user.TLSECUA_QAFunction = chkQAFunction.Checked;
                         user.TLSECUA_DownSizeAuthority = chkDownSizeAuthority.Checked;
-
+                        user.TLSECUA_IgnoreFivePercent = chkIgnoreFivePercent.Checked;
                         context.TLSEC_UserAccess.Add(user);
                         try
                         {
@@ -330,6 +332,7 @@ namespace Security
                         user.TLSUCUA_EmailAddress = txtEMail_Address.Text;
                         user.TLSECUA_QAFunction = chkQAFunction.Checked;
                         user.TLSECUA_DownSizeAuthority = chkDownSizeAuthority.Checked;
+                        user.TLSECUA_IgnoreFivePercent = chkIgnoreFivePercent.Checked;
 
                         if (chkResetPassword.Checked)
                         {
@@ -407,6 +410,8 @@ namespace Security
                         chkExternalUser.Checked = false;
                         chkSuperUser.Checked = false;
                         chkQAFunction.Checked = false;
+                        chkIgnoreFivePercent.Checked = false;
+
                         ResetTextFields();
                         cmboCurrentUsers.SelectedValue = -1;
                         cmboDepartments.SelectedValue = -1;
@@ -485,6 +490,7 @@ namespace Security
                             txtEMail_Address.Text = UserDet.TLSUCUA_EmailAddress;
                             chkDiscontinue.Checked = UserDet.TLSECUA_Discontinued;
                             chkQAFunction.Checked = UserDet.TLSECUA_QAFunction;
+                            chkIgnoreFivePercent.Checked = UserDet.TLSECUA_IgnoreFivePercent;
                             txtDiscontinuedReason.Text = UserDet.TLSECUA_Reason;
                         }
                     }

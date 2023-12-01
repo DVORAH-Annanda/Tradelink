@@ -197,6 +197,7 @@
             this.Controls.Add(this.cmboReportSelection);
             this.Name = "frmSelPanelStock";
             this.Text = "Panel Store Stock";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmSelPanelStock_FormClosing);
             this.Load += new System.EventHandler(this.frmSelPanelStock_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();

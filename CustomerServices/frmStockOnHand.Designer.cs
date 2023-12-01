@@ -135,6 +135,7 @@
             this.rbCostingPastel.TabIndex = 3;
             this.rbCostingPastel.Text = "Costing Colours";
             this.rbCostingPastel.UseVisualStyleBackColor = true;
+            this.rbCostingPastel.CheckedChanged += new System.EventHandler(this.rbCostingPastel_CheckedChanged);
             // 
             // button1
             // 

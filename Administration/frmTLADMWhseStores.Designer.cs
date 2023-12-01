@@ -81,6 +81,9 @@
             this.groupBox10 = new System.Windows.Forms.GroupBox();
             this.rbQuarantineNo = new System.Windows.Forms.RadioButton();
             this.rbIsQuarantineYes = new System.Windows.Forms.RadioButton();
+            this.groupBox11 = new System.Windows.Forms.GroupBox();
+            this.rbRFDNo = new System.Windows.Forms.RadioButton();
+            this.rbRFDYes = new System.Windows.Forms.RadioButton();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -91,6 +94,7 @@
             this.groupBox8.SuspendLayout();
             this.groupBox9.SuspendLayout();
             this.groupBox10.SuspendLayout();
+            this.groupBox11.SuspendLayout();
             this.SuspendLayout();
             // 
             // cmbWhse
@@ -616,11 +620,45 @@
             this.rbIsQuarantineYes.Text = "Yes";
             this.rbIsQuarantineYes.UseVisualStyleBackColor = true;
             // 
+            // groupBox11
+            // 
+            this.groupBox11.Controls.Add(this.rbRFDNo);
+            this.groupBox11.Controls.Add(this.rbRFDYes);
+            this.groupBox11.Location = new System.Drawing.Point(494, 220);
+            this.groupBox11.Name = "groupBox11";
+            this.groupBox11.Size = new System.Drawing.Size(180, 46);
+            this.groupBox11.TabIndex = 24;
+            this.groupBox11.TabStop = false;
+            this.groupBox11.Text = "RFD Store";
+            // 
+            // rbRFDNo
+            // 
+            this.rbRFDNo.AutoSize = true;
+            this.rbRFDNo.Location = new System.Drawing.Point(34, 19);
+            this.rbRFDNo.Name = "rbRFDNo";
+            this.rbRFDNo.Size = new System.Drawing.Size(39, 17);
+            this.rbRFDNo.TabIndex = 18;
+            this.rbRFDNo.TabStop = true;
+            this.rbRFDNo.Text = "No";
+            this.rbRFDNo.UseVisualStyleBackColor = true;
+            // 
+            // rbRFDYes
+            // 
+            this.rbRFDYes.AutoSize = true;
+            this.rbRFDYes.Location = new System.Drawing.Point(127, 19);
+            this.rbRFDYes.Name = "rbRFDYes";
+            this.rbRFDYes.Size = new System.Drawing.Size(43, 17);
+            this.rbRFDYes.TabIndex = 17;
+            this.rbRFDYes.TabStop = true;
+            this.rbRFDYes.Text = "Yes";
+            this.rbRFDYes.UseVisualStyleBackColor = true;
+            // 
             // frmTLADMWhseStores
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(699, 748);
+            this.Controls.Add(this.groupBox11);
             this.Controls.Add(this.groupBox10);
             this.Controls.Add(this.groupBox9);
             this.Controls.Add(this.groupBox8);
@@ -668,6 +706,8 @@
             this.groupBox9.PerformLayout();
             this.groupBox10.ResumeLayout(false);
             this.groupBox10.PerformLayout();
+            this.groupBox11.ResumeLayout(false);
+            this.groupBox11.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -728,5 +768,8 @@
         private System.Windows.Forms.GroupBox groupBox10;
         private System.Windows.Forms.RadioButton rbQuarantineNo;
         private System.Windows.Forms.RadioButton rbIsQuarantineYes;
+        private System.Windows.Forms.GroupBox groupBox11;
+        private System.Windows.Forms.RadioButton rbRFDNo;
+        private System.Windows.Forms.RadioButton rbRFDYes;
     }
 }

@@ -73,7 +73,7 @@ namespace CMT
             DataGridView oDgv = sender as DataGridView;
             var Cell = oDgv.CurrentCell;
 
-            if (oDgv.Focused && Cell is DataGridViewTextBoxCell && Cell.ColumnIndex > 3)
+            if (oDgv.Focused && Cell is DataGridViewTextBoxCell && Cell.ColumnIndex >= 2)
             {
                 e.Control.KeyDown -= new KeyEventHandler(core.txtWin_KeyDownOEM);
                 e.Control.KeyDown += new KeyEventHandler(core.txtWin_KeyDownOEM);
@@ -153,7 +153,7 @@ namespace CMT
                     using (var context = new TTI2Entities())
                     {
                         formloaded = false;
-                        cmboStyles.DataSource = context.TLADM_Styles.Where(x => x.Sty_Label_FK == selected.Cust_Pk).OrderBy(x => x.Sty_Description).ToList();
+                        cmboStyles.DataSource = context.TLADM_Styles.Where(x => x.Sty_Customer_Fk == selected.Cust_Pk).OrderBy(x => x.Sty_Description).ToList();
                         cmboStyles.ValueMember = "Sty_Id";
                         cmboStyles.DisplayMember = "Sty_Description";
                         cmboStyles.SelectedValue = -1;

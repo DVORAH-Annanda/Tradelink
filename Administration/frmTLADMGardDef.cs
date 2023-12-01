@@ -429,6 +429,9 @@ namespace TTI2_WF
                 oChkBoxD = new DataGridViewCheckBoxColumn();
                 oChkBoxD.HeaderText = "Conti Wear";
                 oChkBoxD.ValueType = typeof(bool);
+                oChkBoxE = new DataGridViewCheckBoxColumn();
+                oChkBoxE.HeaderText = "PFD";
+                oChkBoxE.ValueType = typeof(bool);
                 dataGridView1.Columns.Add(oBtnA);       //   5 Sizes 
                 dataGridView1.Columns.Add(oBtnB);       //   6 Trims 
                 dataGridView1.Columns.Add(oBtnC);       //   7 Style Colour  
@@ -442,6 +445,7 @@ namespace TTI2_WF
                 dataGridView1.Columns.Add(oChkBoxC);    //   15 Buttons
                 dataGridView1.Columns.Add(oTxtBoxL);    //   16 Display Position
                 dataGridView1.Columns.Add(oChkBoxD);    //   17 WorkWear
+                dataGridView1.Columns.Add(oChkBoxE);    //   18 PFD
                 //-------------------------------------------------------------------------------------------------
                 // This is the row leave event that only needs to be fired for a select group of modules
                 //------------------------------------------------------------------------------------------------------
@@ -1164,7 +1168,7 @@ namespace TTI2_WF
             }
             else if (frmNumber == 3)
             {
-                dataGridView1 = core.Get_Yarn(dataGridView1);
+                dataGridView1 = core.Get_Yarn(dataGridView1); 
                 if (dataGridView1.RowCount > 0)
                     MandSelected = core.PopulateArray(MandatoryFields.Length, true);
             }
@@ -1218,7 +1222,7 @@ namespace TTI2_WF
 
             else if (frmNumber == 17)
             {
-                /*
+               /*
                 dataGridView1 = core.Get_PanelAttributes(dataGridView1);
                 if (dataGridView1.RowCount > 0)
                     MandSelected = core.PopulateArray(MandatoryFields.Length, true);

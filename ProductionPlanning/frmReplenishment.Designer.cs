@@ -64,6 +64,7 @@
             this.Controls.Add(this.btnSave);
             this.Name = "frmReplenishment";
             this.Text = "Replenshment";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmReplenishment_FormClosing);
             this.Load += new System.EventHandler(this.frmReplenishment_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);

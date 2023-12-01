@@ -46,27 +46,62 @@ namespace CMT
                     cmboStyles.Items.Add(new CMT.CheckComboBoxItem(Style.Sty_Id, Style.Sty_Description, false));
                 }
 
+                //???2023/10/27
                 var Colours = context.TLADM_Colours.Where(x => !(bool)x.Col_Discontinued).OrderBy(x => x.Col_Display).ToList();
                 foreach (var Colour in Colours)
                 {
                     cmboColours.Items.Add(new CMT.CheckComboBoxItem(Colour.Col_Id, Colour.Col_Display, false));
                 }
+                //???2023/10/27
 
-                
             }
 
             FormLoaded = true;
         }
 
 
+        /// //???2023/10/27
+        private void LoadColoursBasedOnSelectedStyles()
+        {
+            using (var context = new TTI2Entities())
+            {
+                // Get the selected style IDs
+                var selectedStyleIds = QueryParms.Styles.Select(style => style.Sty_Id).ToList();
+
+                // Query the bridge table to get associated color IDs for the selected styles
+                var colorIds = context.TLADM_StyleColour
+                    .Where(sc => selectedStyleIds.Contains(sc.STYCOL_Style_FK))
+                    .Select(sc => sc.STYCOL_Colour_FK)
+                    .ToList();
+
+                // Get the colors based on the retrieved color IDs
+                var colors = context.TLADM_Colours
+                    .Where(c => !(bool)c.Col_Discontinued)
+                    .Where(c => colorIds.Contains(c.Col_Id))
+                    .OrderBy(c => c.Col_Display)
+                    .ToList();
+
+                // Clear the ComboBox
+                cmboColours.Items.Clear();
+
+                // Populate the ComboBox with the filtered colors
+                foreach (var color in colors)
+                {
+                    cmboColours.Items.Add(new CMT.CheckComboBoxItem(color.Col_Id, color.Col_Display, false));
+                }
+            }
+        }
+        /// //???2023/10/27
+
+
         //-------------------------------------------------------------------------------------
-        // this message handler gets called when the user checks/unchecks an item the combo box
+        // this message handler gets called when the user checks/unchecks an item the Styles combo box
         //----------------------------------------------------------------------------------------
         private void cmboStyles_CheckStateChanged(object sender, EventArgs e)
         {
-
             if (sender is CMT.CheckComboBoxItem && FormLoaded)
             {
+
                 CMT.CheckComboBoxItem item = (CMT.CheckComboBoxItem)sender;
                 if (item.CheckState)
                 {
@@ -80,6 +115,11 @@ namespace CMT
                         QueryParms.Styles.Remove(value);
 
                 }
+
+                //???2023/10/27
+                // Clear and reload the cmboColours based on the selected styles
+                LoadColoursBasedOnSelectedStyles();
+                //???2023/10/27
             }
         }
 

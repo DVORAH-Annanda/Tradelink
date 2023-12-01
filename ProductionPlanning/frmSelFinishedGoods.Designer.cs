@@ -46,6 +46,7 @@
             this.rbFabric = new System.Windows.Forms.RadioButton();
             this.rbFinishedGoods = new System.Windows.Forms.RadioButton();
             this.chkManagementSummary = new System.Windows.Forms.CheckBox();
+            this.chkIgnoreReorderLevels = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -222,11 +223,22 @@
             this.chkManagementSummary.Text = "Management Summary";
             this.chkManagementSummary.UseVisualStyleBackColor = true;
             // 
+            // chkIgnoreReorderLevels
+            // 
+            this.chkIgnoreReorderLevels.AutoSize = true;
+            this.chkIgnoreReorderLevels.Location = new System.Drawing.Point(512, 322);
+            this.chkIgnoreReorderLevels.Name = "chkIgnoreReorderLevels";
+            this.chkIgnoreReorderLevels.Size = new System.Drawing.Size(131, 17);
+            this.chkIgnoreReorderLevels.TabIndex = 7;
+            this.chkIgnoreReorderLevels.Text = "Ignore Reorder Levels";
+            this.chkIgnoreReorderLevels.UseVisualStyleBackColor = true;
+            // 
             // frmSelFinishedGoods
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(725, 496);
+            this.Controls.Add(this.chkIgnoreReorderLevels);
             this.Controls.Add(this.chkManagementSummary);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.PBar1);
@@ -266,5 +278,6 @@
         private System.Windows.Forms.RadioButton rbFabric;
         private System.Windows.Forms.RadioButton rbFinishedGoods;
         private System.Windows.Forms.CheckBox chkManagementSummary;
+        private System.Windows.Forms.CheckBox chkIgnoreReorderLevels;
     }
 }

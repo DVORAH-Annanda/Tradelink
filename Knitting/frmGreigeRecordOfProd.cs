@@ -91,29 +91,20 @@ namespace Knitting
             DataT.Columns.Add(column);
 
             //------------------------------------------------------
-            // Create column 4. // Reserved for Piece Width
-            //----------------------------------------------
-            column = new DataColumn();
-            column.DataType = typeof(decimal);
-            column.ColumnName = "Col4";
-            column.DefaultValue = 0.0M;
-            DataT.Columns.Add(column);
-
-            //------------------------------------------------------
-            // Create column 5. // Reserved for a Combo Box
-            //----------------------------------------------
-            column = new DataColumn();
-            column.DataType = typeof(Int32);
-            column.ColumnName = "Col5";
-            column.DefaultValue = 0;
-            DataT.Columns.Add(column);
-
-            //------------------------------------------------------
             // Create column 4. // Reserved for a Combo Box
             //----------------------------------------------
             column = new DataColumn();
             column.DataType = typeof(Int32);
-            column.ColumnName = "Col6";
+            column.ColumnName = "Col4";
+            column.DefaultValue = 0;
+            DataT.Columns.Add(column);
+
+            //------------------------------------------------------
+            // Create column 5 // Reserved for a Combo Box
+            //----------------------------------------------
+            column = new DataColumn();
+            column.DataType = typeof(Int32);
+            column.ColumnName = "Col5";
             column.DefaultValue = 0;
             DataT.Columns.Add(column);
 
@@ -153,33 +144,28 @@ namespace Knitting
             dataGridView1.Columns.Add(oTxtBoxD);
             dataGridView1.Columns[3].DisplayIndex = 3;
 
-            oTxtBoxE = new DataGridViewTextBoxColumn(); //4
-            oTxtBoxE.HeaderText = "Piece Width";
-            oTxtBoxE.DataPropertyName = DataT.Columns[4].ColumnName;
-            oTxtBoxE.ValueType = typeof(decimal);
-            oTxtBoxE.Visible = true;
-            dataGridView1.Columns.Add(oTxtBoxE);
-            dataGridView1.Columns[4].DisplayIndex = 4;
-
             oCmbBoxA = new DataGridViewComboBoxColumn();
             oCmbBoxA.HeaderText = "Shifts";
-            oCmbBoxA.DataPropertyName = DataT.Columns[5].ColumnName;
+            oCmbBoxA.DataPropertyName = DataT.Columns[4].ColumnName;
             oCmbBoxA.ValueType = typeof(Int32);
             dataGridView1.Columns.Add(oCmbBoxA);
-            dataGridView1.Columns[5].DisplayIndex = 5;
+            dataGridView1.Columns[4].DisplayIndex = 4;
 
             oCmbBoxB = new DataGridViewComboBoxColumn();
             oCmbBoxB.HeaderText = "Operators";
-            oCmbBoxB.DataPropertyName = DataT.Columns[6].ColumnName;
+            oCmbBoxB.DataPropertyName = DataT.Columns[5].ColumnName;
             oCmbBoxB.ValueType = typeof(Int32);
             dataGridView1.Columns.Add(oCmbBoxB);
-            dataGridView1.Columns[6].DisplayIndex = 6;
+            dataGridView1.Columns[5].DisplayIndex = 5;
 
             txtNoOfPieces.KeyPress += core.txtWin_KeyPress;
             txtNoOfPieces.KeyDown += core.txtWin_KeyDownJI;
 
             txtDskWeight.KeyPress += core.txtWin_KeyPress;
             txtDskWeight.KeyDown += core.txtWin_KeyDownOEM;
+
+            txtDiskWidth.KeyPress += core.txtWin_KeyPress;
+            txtDiskWidth.KeyDown += core.txtWin_KeyDownOEM;
 
             txtPieceNo.KeyPress += core.txtWin_KeyPress;
             txtPieceNo.KeyDown += core.txtWin_KeyDownJI;
@@ -198,6 +184,7 @@ namespace Knitting
             txtBalance.Text = BalanceOutstanding.ToString();
             txtNoOfPieces.Text = "0";
             txtDskWeight.Text = "0.0";
+            txtDiskWidth.Text = "0.0";
 
             MaintenanceTasks = false;
 
@@ -282,6 +269,7 @@ namespace Knitting
             TLADM_Yarn YarnType = null;
             string MergeDetails = string.Empty;
             Decimal DskWght = 0.0M;
+            Decimal DskWidth = 0.0M;
             Decimal MaintenanceValue = 0.00M;
 
             IList<TLKNI_YarnAllocTransctions> PalletTrans = null; 
@@ -294,6 +282,13 @@ namespace Knitting
                     if(DskWght <= 0 )
                     {
                         MessageBox.Show("Please enter a proper dsk weight");
+                        return;
+                    }
+
+                    DskWidth = decimal.Parse(txtDiskWidth.Text);
+                    if (DskWidth <= 0)
+                    {
+                        MessageBox.Show("Please enter a proper dsk width");
                         return;
                     }
                 }
@@ -381,20 +376,18 @@ namespace Knitting
                             griegP.GreigeP_MergeDetail = MergeDetails;
                             griegP.GreigeP_weight = row.Field<decimal>(3);
                             griegP.GreigeP_weightAvail = row.Field<decimal>(3);
-                            griegP.GreigeP_PieceWidth = row.Field<decimal>(4);
-
-
-                            if (row.Field<int>(5) != 0)
+                            
+                            if (row.Field<int>(4) != 0)
                             {
-                                griegP.GreigeP_Shift_FK = row.Field<int>(5);
+                                griegP.GreigeP_Shift_FK = row.Field<int>(4);
                             }
                             else
                             {
                                 griegP.GreigeP_Shift_FK = _context.TLADM_Shifts.FirstOrDefault().Shft_Pk; 
                             }
-                            if (row.Field<int>(6) != 0)
+                            if (row.Field<int>(5) != 0)
                             {
-                                griegP.GreigeP_Operator_FK = row.Field<int>(6);
+                                griegP.GreigeP_Operator_FK = row.Field<int>(5);
                             }
                             else
                             {
@@ -418,6 +411,8 @@ namespace Knitting
                             griegP.GreigeP_YarnSupplier = YarnSupplier;
                             griegP.GreigeP_YarnTex = YarnTex;
                             griegP.GreigeP_DskWeight = DskWght;
+                            griegP.GreigeP_DiskWidth = DskWidth;
+
                             if (TLADMGreige.TLGreige_CubicWeight != 0 && DskWght != 0)
                             {
                                 griegP.GreigeP_VarianceDiskWeight = core.CalculateDskVariance(TLADMGreige.TLGreige_CubicWeight, DskWght);
@@ -608,16 +603,15 @@ namespace Knitting
                             Row[1] = row.GreigeP_Machine_FK;
                             Row[2] = row.GreigeP_PieceNo;
                             Row[3] = Math.Round(row.GreigeP_weight,1);
-                            Row[4] = Math.Round(row.GreigeP_PieceWidth, 1);
-
+                           
                             if(row.GreigeP_Shift_FK != 0)
                             {
-                                Row[5] = (int)row.GreigeP_Shift_FK;
+                                Row[4] = (int)row.GreigeP_Shift_FK;
                             }
 
                             if (row.GreigeP_Operator_FK != 0)
                             {
-                                Row[6] = (int)row.GreigeP_Operator_FK;
+                                Row[5] = (int)row.GreigeP_Operator_FK;
                             }
                             DataT.Rows.Add(Row);
 
@@ -664,27 +658,18 @@ namespace Knitting
             if (oDgv != null && formloaded)
             {
                 var CurrentRow = oDgv.CurrentRow;
-
-                /*
-                if (e.ColumnIndex == 3 && Convert.ToDecimal(oDgv.CurrentRow.Cells[e.ColumnIndex].EditedFormattedValue.ToString()) > 0)
+                if(CurrentRow != null && e.ColumnIndex == 3)
                 {
-                    if (CurrentRow != null)
+                    if((TLADM_Shifts)cmboDefaultShift.SelectedItem != null)
                     {
-                        var oShift = (TLADM_Shifts)cmboDefaultShift.SelectedItem;
-                        if (oShift != null)
-                        {
-                            CurrentRow.Cells[e.ColumnIndex + 2].Value = oShift.Shft_Pk;
-                        }
-
-                        var oOperator = (TLADM_MachineOperators)cmboDefaultOperator.SelectedItem;
-                        if (oOperator != null)
-                        {
-                            CurrentRow.Cells[e.ColumnIndex + 3].Value = oOperator.MachOp_Pk;
-                        }
-                    
+                        CurrentRow.Cells[e.ColumnIndex + 1].Value = (int)cmboDefaultShift.SelectedValue;
                     }
-                }*/
-
+                    if ((TLADM_MachineOperators)cmboDefaultOperator.SelectedItem != null)
+                    {
+                        CurrentRow.Cells[e.ColumnIndex + 2].Value = (int)cmboDefaultOperator.SelectedValue;
+                    }
+                }
+               
             }
         }
 
@@ -815,11 +800,23 @@ namespace Knitting
             if (oTxt != null && formloaded)
             {
                 int NoOfPieces = 0;
+                int DefaultShift = (int)cmboDefaultShift.SelectedValue;
+                int DefaultOperator = (int)cmboDefaultOperator.SelectedValue;
                 var Result = int.TryParse(oTxt.Text, out NoOfPieces);
                 if (Result && NoOfPieces != 0)
                 {
                     using (var context = new TTI2Entities())
                     {
+                        if(DefaultShift == 0)
+                        {
+                            DefaultShift = cmboDefaultShift.Items.Count - 1;
+                        }
+
+                        if(DefaultOperator == 0)
+                        {
+                            DefaultOperator = cmboDefaultOperator.Items.Count - 1;
+                        }
+
                         string Code = string.Empty;
                         int LastNumber = 0;
                         int MachineKey = 0;
@@ -846,15 +843,13 @@ namespace Knitting
                                         DataRow Row = DataT.NewRow();
 
                                         formloaded = false;
-                                        /*dataGridView1.Rows[index].Cells[0].Value = 0;  // this is the default for the moment
-                                        dataGridView1.Rows[index].Cells[1].Value = MachineKey;
-                                        dataGridView1.Rows[index].Cells[2].Value = PieceNo;
-                                        dataGridView1.Rows[index].Cells[3].Value = 0.0M; */
                                         Row[0] = 0;
                                         Row[1] = MachineKey;
                                         Row[2] = PieceNo;
                                         Row[3] = 0.0M;
-                                        Row[4] = 0.0M;
+                                        Row[4] = DefaultShift;
+                                        Row[5] = DefaultOperator;
+
                                         DataT.Rows.Add(Row);
                                         formloaded = true;
                                         LastNumber += 1;

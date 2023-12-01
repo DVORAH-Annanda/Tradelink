@@ -8,12 +8,14 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Utilities;
+using EntityFramework.Extensions;
 namespace CustomerServices
 {
     public partial class frmCustDeliveries : Form
     {
         bool formloaded;
 
+        protected readonly TTI2Entities _context;
 
         DataGridViewTextBoxColumn oTxtA;    // 0 Pk
         DataGridViewCheckBoxColumn oChkA;   // 1 Select
@@ -31,98 +33,96 @@ namespace CustomerServices
         public frmCustDeliveries()
         {
             InitializeComponent();
+            _context = new TTI2Entities();
         }
 
         private void frmCustDeliveries_Load(object sender, EventArgs e)
         {
             formloaded = false;
             var reportOptions = new BindingList<KeyValuePair<int, string>>();
-            using (var context = new TTI2Entities())
+            
+            var Dept = _context.TLADM_Departments.Where(x => x.Dep_ShortCode.Contains("CSV")).FirstOrDefault();
+            if (Dept != null)
             {
-                var Dept = context.TLADM_Departments.Where(x => x.Dep_ShortCode.Contains("CSV")).FirstOrDefault();
-                if (Dept != null)
+                var LNU = _context.TLADM_LastNumberUsed.Where(x => x.LUN_Department_FK == Dept.Dep_Id).FirstOrDefault();
+                if (LNU != null)
                 {
-                    var LNU = context.TLADM_LastNumberUsed.Where(x => x.LUN_Department_FK == Dept.Dep_Id).FirstOrDefault();
-                    if (LNU != null)
-                    {
                         txtDeliveryNo.Text = "F" + LNU.col4.ToString().PadLeft(5, '0');
-                    }
                 }
-
-                cmboCustomers.DataSource = context.TLADM_CustomerFile.OrderBy(x=>x.Cust_Description).ToList();
-                cmboCustomers.DisplayMember = "Cust_Description";
-                cmboCustomers.ValueMember = "Cust_PK";
-                cmboCustomers.SelectedValue = -1;
-
-                cmboTransporters.DataSource = context.TLADM_Transporters.OrderBy(x => x.TLTRNS_Description).ToList();
-                cmboTransporters.DisplayMember = "TLTRNS_Description";
-                cmboTransporters.ValueMember = "TLTRNS_Pk";
-                cmboTransporters.SelectedValue = -1;
-    
-                oTxtA = new DataGridViewTextBoxColumn();
-                oTxtA.Visible = false;
-                oTxtA.ValueType = typeof(int);
-                dataGridView1.Columns.Add(oTxtA);
-
-                oChkA = new DataGridViewCheckBoxColumn();
-                oChkA.HeaderText = "Selected";
-                oChkA.ValueType = typeof(bool);
-                dataGridView1.Columns.Add(oChkA);
-
-                oTxtB = new DataGridViewTextBoxColumn();
-                oTxtB.ReadOnly = true;
-                oTxtB.HeaderText = "Pick Slip";
-                oTxtB.ValueType = typeof(string);
-                dataGridView1.Columns.Add(oTxtB);
-
-                oTxtC = new DataGridViewTextBoxColumn();
-                oTxtC.ReadOnly = true;
-                oTxtC.HeaderText = "Customer";
-                oTxtC.ValueType = typeof(string);
-                dataGridView1.Columns.Add(oTxtC);
-
-                oTxtD = new DataGridViewTextBoxColumn();
-                oTxtD.ReadOnly = true;
-                oTxtD.HeaderText = "PO Number";
-                oTxtD.ValueType = typeof(string);
-                dataGridView1.Columns.Add(oTxtD);
-
-                oTxtE = new DataGridViewTextBoxColumn();
-                oTxtE.ReadOnly = true;
-                oTxtE.HeaderText = "Created Date";
-                oTxtE.ValueType = typeof(string);
-                dataGridView1.Columns.Add(oTxtE);
-
-
-                oTxtF = new DataGridViewTextBoxColumn();
-                oTxtF.ReadOnly = true;
-                oTxtF.Visible = false;
-                oTxtF.ValueType = typeof(int);
-                dataGridView1.Columns.Add(oTxtF);
-
-                oTxtG = new DataGridViewTextBoxColumn();
-                oTxtG.ReadOnly = true;
-                oTxtG.Visible = false;
-                oTxtG.ValueType = typeof(int);
-                dataGridView1.Columns.Add(oTxtG);
-
-                oTxtH = new DataGridViewTextBoxColumn();
-                oTxtH.ReadOnly = true;
-                oTxtH.Visible = false;
-                oTxtH.ValueType = typeof(int);
-                dataGridView1.Columns.Add(oTxtH);
-
-                oBtnA = new DataGridViewButtonColumn();
-                oBtnA.HeaderText = "View PL";
-                dataGridView1.Columns.Add(oBtnA);
             }
 
+            cmboCustomers.DataSource = _context.TLADM_CustomerFile.OrderBy(x=>x.Cust_Description).ToList();
+            cmboCustomers.DisplayMember = "Cust_Description";
+            cmboCustomers.ValueMember = "Cust_PK";
+            cmboCustomers.SelectedValue = -1;
+
+            cmboTransporters.DataSource = _context.TLADM_Transporters.OrderBy(x => x.TLTRNS_Description).ToList();
+            cmboTransporters.DisplayMember = "TLTRNS_Description";
+            cmboTransporters.ValueMember = "TLTRNS_Pk";
+            cmboTransporters.SelectedValue = -1;
+    
+            oTxtA = new DataGridViewTextBoxColumn();
+            oTxtA.Visible = false;
+            oTxtA.ValueType = typeof(int);
+            dataGridView1.Columns.Add(oTxtA);
+
+            oChkA = new DataGridViewCheckBoxColumn();
+            oChkA.HeaderText = "Selected";
+            oChkA.ValueType = typeof(bool);
+            dataGridView1.Columns.Add(oChkA);
+
+            oTxtB = new DataGridViewTextBoxColumn();
+            oTxtB.ReadOnly = true;
+            oTxtB.HeaderText = "Pick Slip";
+            oTxtB.ValueType = typeof(string);
+            dataGridView1.Columns.Add(oTxtB);
+
+            oTxtC = new DataGridViewTextBoxColumn();
+            oTxtC.ReadOnly = true;
+            oTxtC.HeaderText = "Customer";
+            oTxtC.ValueType = typeof(string);
+            dataGridView1.Columns.Add(oTxtC);
+
+            oTxtD = new DataGridViewTextBoxColumn();
+            oTxtD.ReadOnly = true;
+            oTxtD.HeaderText = "PO Number";
+            oTxtD.ValueType = typeof(string);
+            dataGridView1.Columns.Add(oTxtD);
+
+            oTxtE = new DataGridViewTextBoxColumn();
+            oTxtE.ReadOnly = true;
+            oTxtE.HeaderText = "Created Date";
+            oTxtE.ValueType = typeof(string);
+            dataGridView1.Columns.Add(oTxtE);
+
+
+            oTxtF = new DataGridViewTextBoxColumn();
+            oTxtF.ReadOnly = true;
+            oTxtF.Visible = false;
+            oTxtF.ValueType = typeof(int);
+            dataGridView1.Columns.Add(oTxtF);
+
+            oTxtG = new DataGridViewTextBoxColumn();
+            oTxtG.ReadOnly = true;
+            oTxtG.Visible = false;
+            oTxtG.ValueType = typeof(int);
+            dataGridView1.Columns.Add(oTxtG);
+
+            oTxtH = new DataGridViewTextBoxColumn();
+            oTxtH.ReadOnly = true;
+            oTxtH.Visible = false;
+            oTxtH.ValueType = typeof(int);
+            dataGridView1.Columns.Add(oTxtH);
+
+            oBtnA = new DataGridViewButtonColumn();
+            oBtnA.HeaderText = "View PL";
+            dataGridView1.Columns.Add(oBtnA);
+            
             dataGridView1.AllowUserToAddRows = false;
             dataGridView1.AutoGenerateColumns = false;
             dataGridView1.AllowUserToOrderColumns = false;
 
             formloaded = true;
-
         }
 
         private void btnSave_Click(object sender, EventArgs e)
@@ -143,21 +143,24 @@ namespace CustomerServices
                     
                 }
 
-                using (var context = new TTI2Entities())
-                {
+                //using (var context = new TTI2Entities())
+                //{
                     var selected = (TLADM_CustomerFile)cmboCustomers.SelectedItem;
                     if (selected == null)
                     {
-                        MessageBox.Show("Please select a customer from the drop down box");
-                        return;
+                        using (DialogCenteringService svs = new DialogCenteringService(this))
+                        {
+                            MessageBox.Show("Please select a customer from the drop down box");
+                            return;
+                        }
                     }
 
                     parms.Customers.Add(repo.LoadCustomers(selected.Cust_Pk));
 
-                    var Dept = context.TLADM_Departments.Where(x => x.Dep_ShortCode.Contains("CSV")).FirstOrDefault();
+                    var Dept = _context.TLADM_Departments.Where(x => x.Dep_ShortCode.Contains("CSV")).FirstOrDefault();
                     if (Dept != null)
                     {
-                        var LNU = context.TLADM_LastNumberUsed.Where(x => x.LUN_Department_FK == Dept.Dep_Id).FirstOrDefault();
+                        var LNU = _context.TLADM_LastNumberUsed.Where(x => x.LUN_Department_FK == Dept.Dep_Id).FirstOrDefault();
                         if (LNU != null)
                         {
                             TransNumber = LNU.col4;
@@ -178,7 +181,7 @@ namespace CustomerServices
                         var pk = (int)row.Cells[0].Value;
                         parms.OrdersAllocated.Add(repo.LoadOrderAllocated(pk));
                         
-                        var Allocated = context.TLCSV_OrderAllocated.Find(pk);
+                        var Allocated = _context.TLCSV_OrderAllocated.Find(pk);
                         if (Allocated != null)
                         { 
                             Allocated.TLORDA_Delivered =      true;
@@ -189,7 +192,7 @@ namespace CustomerServices
                             Allocated.TLORDA_PLStockOrder   = false;
 
                             Fk = (int)row.Cells[6].Value;
-                            var soh = context.TLCSV_StockOnHand.Where(x => x.TLSOH_PickListNo == Fk && !x.TLSOH_Sold).ToList();
+                            var soh = _context.TLCSV_StockOnHand.Where(x => x.TLSOH_PickListNo == Fk && !x.TLSOH_Sold).ToList();
                             foreach (var rec in soh)
                             {
                                 rec.TLSOH_Sold = true;
@@ -198,7 +201,7 @@ namespace CustomerServices
                                 rec.TLSOH_DNListNo = TransNumber;
                                 rec.TLSOH_DNListDate = DateTime.Now;
 
-                                var POD = context.TLCSV_PuchaseOrderDetail.Find(rec.TLSOH_POOrderDetail_FK);
+                                var POD = _context.TLCSV_PuchaseOrderDetail.Find(rec.TLSOH_POOrderDetail_FK);
                                 if (POD != null)
                                 {
                                     POD.TLCUSTO_Delivered = true;
@@ -207,16 +210,18 @@ namespace CustomerServices
                                     POD.TLCUSTO_QtyDelivered_ToDate += rec.TLSOH_BoxedQty;
 
                                     if (POD.TLCUSTO_Qty - POD.TLCUSTO_QtyDelivered_ToDate <= 0)
+                                    {
                                         POD.TLCUSTO_Closed = true;
+                                    }
                                 }
                             }
 
                             //Make this a global transaction 
                             //===========================================================
-                            var RePackTransactions = context.TLCSV_RePackTransactions.Where(x => x.REPACT_PurchaseOrder_FK == Allocated.TLORDA_POOrder_FK).ToList();
+                            var RePackTransactions = _context.TLCSV_RePackTransactions.Where(x => x.REPACT_PurchaseOrder_FK == Allocated.TLORDA_POOrder_FK).ToList();
                             foreach (var RePackTransaction in RePackTransactions)
                             {
-                                var RePackConfig = context.TLCSV_RePackConfig.Find(RePackTransaction.REPACT_RePackConfig_FK);
+                                var RePackConfig = _context.TLCSV_RePackConfig.Find(RePackTransaction.REPACT_RePackConfig_FK);
                                 if (RePackConfig != null)
                                 {
                                     RePackConfig.PORConfig_SizeBoxQty_Delivered += RePackTransaction.REPACT_BoxedQty; 
@@ -227,9 +232,9 @@ namespace CustomerServices
 
                     try
                     {
-                        context.SaveChanges();
-                        
+                        _context.SaveChanges();
                         MessageBox.Show("data successfully saved to database");
+                    
                         dataGridView1.Rows.Clear();
                         cmboCustomers.SelectedValue = -1;
                     
@@ -253,7 +258,7 @@ namespace CustomerServices
                     {
                         MessageBox.Show(ex.Message);
                     }
-                }
+                //}
             }
         }
 
@@ -269,27 +274,30 @@ namespace CustomerServices
                 {
                     dataGridView1.Rows.Clear();
 
-                    using (var context = new TTI2Entities())
-                    {
-                        if(!chkPLStockOrders.Checked)
-                          Existing = context.TLCSV_OrderAllocated.Where(x => x.TLORDA_Customer_FK == selected.Cust_Pk && x.TLORDA_PickListPrint && !x.TLORDA_Delivered).ToList();
+                    //using (var context = new TTI2Entities())
+                    //{
+                        if (!chkPLStockOrders.Checked)
+                        {
+                            Existing = _context.TLCSV_OrderAllocated.Where(x => x.TLORDA_Customer_FK == selected.Cust_Pk && x.TLORDA_PLConfirmed && x.TLORDA_PickListPrint && !x.TLORDA_Delivered).ToList();
+                        }
                         else
-                          Existing = context.TLCSV_OrderAllocated.Where(x => x.TLORDA_Customer_FK == selected.Cust_Pk && x.TLORDA_PickListPrint && !x.TLORDA_Delivered && x.TLORDA_PLStockOrder).ToList();
-                        
+                        {
+                            Existing = _context.TLCSV_OrderAllocated.Where(x => x.TLORDA_Customer_FK == selected.Cust_Pk && x.TLORDA_PLConfirmed &&x.TLORDA_PickListPrint && !x.TLORDA_Delivered && x.TLORDA_PLStockOrder).ToList();
+                        }
+
                         foreach (var row in Existing)
                         {
                             var index = dataGridView1.Rows.Add();
-
                             dataGridView1.Rows[index].Cells[0].Value = row.TLORDA_Pk;
                             dataGridView1.Rows[index].Cells[1].Value = false;
                             dataGridView1.Rows[index].Cells[2].Value = "PL" + row.TLORDA_TransNumber.ToString().PadLeft(5, '0');
-                            dataGridView1.Rows[index].Cells[3].Value = context.TLADM_CustomerFile.Find(row.TLORDA_Customer_FK).Cust_Description;
-                            dataGridView1.Rows[index].Cells[4].Value = context.TLCSV_PurchaseOrder.Find(row.TLORDA_POOrder_FK).TLCSVPO_PurchaseOrder;
+                            dataGridView1.Rows[index].Cells[3].Value = _context.TLADM_CustomerFile.Find(row.TLORDA_Customer_FK).Cust_Description;
+                            dataGridView1.Rows[index].Cells[4].Value = _context.TLCSV_PurchaseOrder.Find(row.TLORDA_POOrder_FK).TLCSVPO_PurchaseOrder;
                             dataGridView1.Rows[index].Cells[5].Value = row.TLORDA_PLPrintDate.ToString();
                             dataGridView1.Rows[index].Cells[6].Value = row.TLORDA_TransNumber;
                             dataGridView1.Rows[index].Cells[7].Value = row.TLORDA_Customer_FK;
                         }
-                    }
+                    //}
                 }
             }
         }
@@ -320,6 +328,17 @@ namespace CustomerServices
                     }
                 }
 
+            }
+        }
+
+        private void frmCustDeliveries_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if(!e.Cancel)
+            {
+                if(_context != null)
+                {
+                    _context.Dispose();
+                }
             }
         }
     }

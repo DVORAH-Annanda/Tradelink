@@ -240,8 +240,116 @@ namespace DyeHouse
             //---------------------------------------------------------------------------
 
             dataGridView1.AllowUserToAddRows = false;
-            SetUp();
+            // SetUp();
            
+        }
+
+        private void frmDyeOrder1_Load(object sender, EventArgs e)
+        {
+            formloaded = false;
+
+            SelectedBody = null;
+            SelectedTrim = null;
+
+            dataGridView1.Rows.Clear();
+            dataGridView1.Rows.Add();
+
+            dataGridView2.Rows.Clear();
+            if (dataGridView3.Rows.Count > 0)
+            {
+                dataGridView3.DataSource = null;
+                dataGridView3.Rows.Clear();
+            }
+
+            if (!cmboColour.Enabled)
+            {
+                cmboColour.Enabled = true;
+            }
+
+            if (!cmboFabric.Enabled)
+            {
+                cmboFabric.Enabled = true;
+            }
+
+            if (!cmboStyles.Enabled)
+            {
+                cmboStyles.Enabled = true;
+            }
+
+            using (var context = new TTI2Entities())
+            {
+                Listsizes = context.TLADM_Sizes.ToList();
+                Trimsizes = context.TLADM_Trims.ToList();
+
+                var Dept = context.TLADM_Departments.Where(x => x.Dep_ShortCode.Contains("DYE")).FirstOrDefault();
+                if (Dept != null)
+                {
+                    var Existing = context.TLADM_ProductionLoss.ToList();
+                    if (Existing != null)
+                    {
+                        foreach (var row in Existing)
+                        {
+                            if (row.TLProdLoss_Dept_Fk == 12)
+                                txtDyePLoss.Text = row.TLProdLoss_Percent.ToString();
+                            if (row.TLProdLoss_Dept_Fk == 13)
+                                txtCutPLoss.Text = row.TLProdLoss_Percent.ToString();
+                            if (row.TLProdLoss_Dept_Fk == 16)
+                                txtCMTPLoss.Text = row.TLProdLoss_Percent.ToString();
+                        }
+
+                    }
+                }
+
+                var LastNum = context.TLADM_LastNumberUsed.Find(3);
+                if (LastNum != null)
+                {
+                    txtDyeOrderNo.Text = "DO" + LastNum.col1.ToString().PadLeft(6, '0');
+                }
+
+                cmboDyeOrders.DataSource = context.TLDYE_DyeOrder.Where(x => !x.TLDYO_Closed).OrderBy(x => x.TLDYO_DyeOrderNum).ToList();
+                cmboDyeOrders.DisplayMember = "TLDYO_DyeOrderNum";
+                cmboDyeOrders.ValueMember = "TLDYO_Pk";
+
+                cmboCustomer.DataSource = context.TLADM_CustomerFile.OrderBy(x => x.Cust_Description).ToList();
+                cmboCustomer.ValueMember = "Cust_Pk";
+                cmboCustomer.DisplayMember = "Cust_Description";
+                cmboCustomer.SelectedValue = 0;
+
+                cmboFabric.DataSource = context.TLADM_Griege.Where(x => !(bool)x.TLGriege_Discontinued).OrderBy(x => x.TLGreige_Description).ToList();
+                cmboFabric.ValueMember = "TLGreige_Id";
+                cmboFabric.DisplayMember = "TLGreige_Description";
+                cmboFabric.SelectedValue = 0;
+
+
+                cmboColour.ValueMember = "Col_Id";
+                cmboColour.DisplayMember = "Col_Display";
+                cmboColour.SelectedValue = 0;
+
+                cmboDyeOrders.SelectedValue = 0;
+                cmboStyles.SelectedValue = 0;
+
+                MandSelected = core.PopulateArray(MandatoryFields.Length, false);
+                MandRows = core.PopulateArray(MandatoryRows.Length, false);
+
+                txtTotalKgs.Text = "0.00";
+                FabricYield = 0;
+
+                txtCmtReq.Text = "0";
+                txtCutReq.Text = "0";
+                txtDyeReq.Text = "0";
+                txtCustomerOrder.Text = string.Empty;
+
+                if ((bool)dataGridView1.Columns[1].ReadOnly)
+                {
+                    dataGridView1.Columns[1].ReadOnly = false;
+                }
+                if ((bool)dataGridView2.Columns[1].ReadOnly)
+                {
+                    dataGridView2.Columns[1].ReadOnly = false;
+                }
+            }
+
+            formloaded = true;
         }
 
         void SetUp()
@@ -261,6 +369,21 @@ namespace DyeHouse
                 dataGridView3.Rows.Clear();
             }
 
+            if(!cmboColour.Enabled)
+            {
+                cmboColour.Enabled = true;
+            }
+
+            if (!cmboFabric.Enabled)
+            {
+                cmboFabric.Enabled = true;
+            }
+
+            if(!cmboStyles.Enabled)
+            {
+                cmboStyles.Enabled = true;
+            }
+           
             using (var context = new TTI2Entities())
             {
                 Listsizes = context.TLADM_Sizes.ToList();
@@ -382,8 +505,7 @@ namespace DyeHouse
         private void cmboStyles_SelectedIndexChanged(object sender, EventArgs e)
         {
             ComboBox oCmbo = sender as ComboBox;
-            decimal Greige_FK = 0.00M;
-
+          
             if (oCmbo != null && formloaded)
             {
                 var selected = (TLADM_Styles)cmboStyles.SelectedItem;
@@ -441,25 +563,6 @@ namespace DyeHouse
                         prodRatingBody = context.TLADM_ProductRating.Where(x => !x.Pr_Discontinued && x.Pr_Style_FK == selected.Sty_Id && x.Pr_Customer_FK == (int)custSelectedValue && x.Pr_BodyorRibbing == 1).ToList();
                         foreach (var row in prodRatingBody)
                         {
-                            /*
-                            StringBuilder description = new StringBuilder();
-                            List<int> xx = core.ExtrapNumber(row.Pr_PowerN, context.TLADM_Sizes.Count());
-                            xx.Sort();
-
-                            foreach (var rw in xx)
-                            {
-                                foreach (var dd in Listsizes)
-                                {
-                                    if (dd.SI_PowerN == rw)
-                                    {
-                                        if (description.Length == 0)
-                                            description.Append(dd.SI_Description);
-                                        else
-                                            description.Append(", " + dd.SI_Description);
-                                    }
-                                }
-                            }
-                            */
                             row.Pr_Display = row.Pr_Display;
                             try
                             {
@@ -484,14 +587,7 @@ namespace DyeHouse
                             // used to knit the trims. This is called later  
                             //=======================================================
                             pr = prod;
-                            
-                            /* var Trims = context.TLADM_Trims.Find(pr.Pr_Trim_FK);
-                            if (Trims != null)
-                            {
-                                pr.Pr_Display = Trims.TR_Description;
-                                pr.Pr_Size_Power = (int)Trims.TR_Greige_FK;
-                            }*/
-
+                         
                             oCmboZA.Items.Add(pr);
                         }
 
@@ -539,7 +635,7 @@ namespace DyeHouse
                         formloaded = false;
                         try
                         {
-                            cmboStyles.DataSource = context.TLADM_Styles.Where(x => x.Sty_Label_FK == selected.Cust_Pk).OrderBy(x => x.Sty_Description).ToList();
+                            cmboStyles.DataSource = context.TLADM_Styles.Where(x => x.Sty_Customer_Fk == selected.Cust_Pk && x.Sty_Discontinued == false).OrderBy(x => x.Sty_Description).ToList();
                             cmboStyles.DisplayMember = "Sty_Description";
                             cmboStyles.ValueMember = "Sty_Id";
                         }
@@ -1193,8 +1289,10 @@ namespace DyeHouse
                                 vRep.ShowDialog(this);
                                 
                             }
+
                             dataGridView3.DataSource = null;
-                            SetUp();
+                            frmDyeOrder1_Load(this, null);
+                            // SetUp();
                         }
                         catch (Exception ex)
                         {
@@ -1631,7 +1729,7 @@ namespace DyeHouse
 
                     oCmboA.Items.Clear();
                     oCmboZA.Items.Clear();
-                   
+
                     formloaded = true;
 
                     prodRatingBody = new List<TLADM_ProductRating>();
@@ -1650,9 +1748,14 @@ namespace DyeHouse
                     cmboCustomer.SelectedValue = (int)selected.TLDYO_Customer_FK;
 
                     formloaded = false;
+                    cmboColour.Enabled = false;
+                    cmboFabric.Enabled = false;
+                    cmboStyles.Enabled = false;
+                                                            
                     cmboFabric.SelectedValue = (int)selected.TLDYO_Greige_FK;
                     cmboLabels.SelectedValue = (int)selected.TLDYO_Label_FK;
                     cmboStyles.SelectedValue = (int)selected.TLDYO_Style_FK;
+                    
                     formloaded = true;
 
                     using (var context = new TTI2Entities())
@@ -1744,7 +1847,9 @@ namespace DyeHouse
                             //===============================================================
                             fieldEntered.Add(new LINEDATA(index, MandRows));
                         }
-                       
+
+                        dataGridView1.Columns[1].ReadOnly = true;
+
                         prodRatingTrims = context.TLADM_ProductRating.Where(x => x.Pr_Style_FK == selected.TLDYO_Style_FK && x.Pr_Customer_FK == selected.TLDYO_Customer_FK && x.Pr_BodyorRibbing == 0).OrderBy(x=>x.Pr_Display).ToList();
                         foreach (var row in prodRatingTrims)
                         {
@@ -1793,8 +1898,10 @@ namespace DyeHouse
                             dataGridView2.Rows[index].Cells[4].Value = row.TLDYOD_OriginalUnit;
                             dataGridView2.Rows[index].Cells[8].Value = row.TLDYOD_Kgs;
                         }
-                                   
-                     }
+
+                        dataGridView2.Columns[1].ReadOnly = true;
+
+                    }
                 }
             }
         }
@@ -1908,7 +2015,8 @@ namespace DyeHouse
                             {
                                 context.TLDYE_DyeOrder.Remove(locRec);
                                 context.SaveChanges();
-                                SetUp();
+                                frmDyeOrder1_Load(this, null);
+                                // SetUp();
                             }
                         }
                         catch (Exception ex)
@@ -2062,5 +2170,7 @@ namespace DyeHouse
                 }
             }
         }
+
+        
     }
 }

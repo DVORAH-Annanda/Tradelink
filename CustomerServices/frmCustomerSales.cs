@@ -29,6 +29,7 @@ namespace CustomerServices
             this.cmboStyles.CheckStateChanged += new System.EventHandler(this.cmboStyles_CheckStateChanged);
             this.cmboColours.CheckStateChanged += new System.EventHandler(this.cmboColours_CheckStateChanged);
             this.cmboSizes.CheckStateChanged += new System.EventHandler(this.cmboSizes_CheckStateChanged);
+            this.CmboWareHouses.CheckStateChanged += new System.EventHandler(this.CmboWareHouses_CheckStateChanged);
         }
 
         private void frmCustomerSales_Load(object sender, EventArgs e)
@@ -62,8 +63,21 @@ namespace CustomerServices
                 {
                     cmboSizes.Items.Add(new CustomerServices.CheckComboBoxItem(Size.SI_id, Size.SI_Display, false));
                 }
+
+                var Whses = context.TLADM_WhseStore.Where(x => x.WhStore_WhseOrStore).OrderBy(x => x.WhStore_Description).ToList();
+                foreach (var Whse in Whses)
+                {
+                    CmboWareHouses.Items.Add(new CustomerServices.CheckComboBoxItem(Whse.WhStore_Id, Whse.WhStore_Description, false));
+                }
             }
+
+
             rbSummarisedByCustomer.Checked = false;
+            rbSummarisedForCompany.Checked = false;
+            rbRankedByStyle.Checked = false;
+            rbRankedByStyleColor.Checked = false;
+            rbRankedByStyleSize.Checked = false;
+
             formloaded = true;
 
         }
@@ -155,6 +169,27 @@ namespace CustomerServices
                     var value = CustParameters.Sizes.Find(it => it.SI_id == item._Pk);
                     if (value != null)
                         CustParameters.Sizes.Remove(value);
+
+                }
+            }
+        }
+
+        private void CmboWareHouses_CheckStateChanged(object sender, EventArgs e)
+        {
+
+            if (sender is CustomerServices.CheckComboBoxItem && formloaded)
+            {
+                CustomerServices.CheckComboBoxItem item = (CustomerServices.CheckComboBoxItem)sender;
+                if (item.CheckState)
+                {
+                    CustParameters.Whses.Add(repo.LoadWhse(item._Pk));
+
+                }
+                else
+                {
+                    var value = CustParameters.Whses.Find(it => it.WhStore_Id == item._Pk);
+                    if (value != null)
+                        CustParameters.Whses.Remove(value);
 
                 }
             }

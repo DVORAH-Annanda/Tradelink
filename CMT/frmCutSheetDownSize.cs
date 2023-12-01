@@ -155,7 +155,15 @@ namespace CMT
                             {
                                 var Size = (int)Row.Cells[3].Value;
                                 if (Size != CompletedWork.TLCMTWC_Size_FK)
+                                {
                                     CompletedWork.TLCMTWC_Size_FK = (int)Row.Cells[3].Value;
+
+                                    // AS-20231201 *****
+                                    var SizeDefinitions = context.TLADM_Sizes.Find(CompletedWork.TLCMTWC_Size_FK);
+                                    string PastelNo = SizeDefinitions.SI_PastelNo.ToString();
+                                    CompletedWork.TLCMTWC_PastelNumber = CompletedWork.TLCMTWC_PastelNumber.Substring(0, CompletedWork.TLCMTWC_PastelNumber.Length - 2) + PastelNo;
+                                    // AS-20231201 *****
+                                }
 
                                 var BoxedQty = (int)Row.Cells[4].Value;
                                 if (BoxedQty != CompletedWork.TLCMTWC_Qty)
@@ -180,8 +188,8 @@ namespace CMT
                         
                     try
                     {
-                            context.SaveChanges();
-                            MessageBox.Show("Data successfully saved to database");
+                        context.SaveChanges();
+                        MessageBox.Show("Data successfully saved to database");
 
                             frmCutSheetDownSize_Load(this, null);
                             

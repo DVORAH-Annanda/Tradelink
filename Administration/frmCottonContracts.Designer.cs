@@ -79,9 +79,9 @@
             this.label15 = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
             this.groupBox9 = new System.Windows.Forms.GroupBox();
-            this.ChkContractClosed = new System.Windows.Forms.CheckBox();
-            this.label18 = new System.Windows.Forms.Label();
             this.dtpClosedDate = new System.Windows.Forms.DateTimePicker();
+            this.label18 = new System.Windows.Forms.Label();
+            this.ChkContractClosed = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -590,15 +590,12 @@
             this.groupBox9.TabStop = false;
             this.groupBox9.Text = "Contract Status";
             // 
-            // ChkContractClosed
+            // dtpClosedDate
             // 
-            this.ChkContractClosed.AutoSize = true;
-            this.ChkContractClosed.Location = new System.Drawing.Point(36, 33);
-            this.ChkContractClosed.Name = "ChkContractClosed";
-            this.ChkContractClosed.Size = new System.Drawing.Size(101, 17);
-            this.ChkContractClosed.TabIndex = 1;
-            this.ChkContractClosed.Text = "Contract Closed";
-            this.ChkContractClosed.UseVisualStyleBackColor = true;
+            this.dtpClosedDate.Location = new System.Drawing.Point(121, 62);
+            this.dtpClosedDate.Name = "dtpClosedDate";
+            this.dtpClosedDate.Size = new System.Drawing.Size(117, 20);
+            this.dtpClosedDate.TabIndex = 3;
             // 
             // label18
             // 
@@ -609,12 +606,15 @@
             this.label18.TabIndex = 2;
             this.label18.Text = "Closed Date";
             // 
-            // dtpClosedDate
+            // ChkContractClosed
             // 
-            this.dtpClosedDate.Location = new System.Drawing.Point(121, 62);
-            this.dtpClosedDate.Name = "dtpClosedDate";
-            this.dtpClosedDate.Size = new System.Drawing.Size(117, 20);
-            this.dtpClosedDate.TabIndex = 3;
+            this.ChkContractClosed.AutoSize = true;
+            this.ChkContractClosed.Location = new System.Drawing.Point(36, 33);
+            this.ChkContractClosed.Name = "ChkContractClosed";
+            this.ChkContractClosed.Size = new System.Drawing.Size(101, 17);
+            this.ChkContractClosed.TabIndex = 1;
+            this.ChkContractClosed.Text = "Contract Closed";
+            this.ChkContractClosed.UseVisualStyleBackColor = true;
             // 
             // frmCottonContracts
             // 
@@ -636,6 +636,7 @@
             this.Controls.Add(this.btnSave);
             this.Name = "frmCottonContracts";
             this.Text = "Current Contracts in force";
+            this.Load += new System.EventHandler(this.frmCottonContracts_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);

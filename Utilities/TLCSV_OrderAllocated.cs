@@ -37,5 +37,6 @@ namespace Utilities
         public bool TLORDA_BoxSelected { get; set; }
         public bool TLORDA_PLStockOrder { get; set; }
         public Nullable<int> TLORDA_Transporter_FK { get; set; }
+        public bool TLORDA_PLConfirmed { get; set; }
     }
 }

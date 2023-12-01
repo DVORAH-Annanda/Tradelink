@@ -365,5 +365,10 @@ namespace TTI2_WF
                 }
             }
         }
+
+        private void frmTLADM_Cotton_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

@@ -184,6 +184,9 @@ namespace ProductionPlanning
                 QueryParms.IncludeGradeAWithwarnings = (bool)cbIncludeWithWarnings.Checked;
                 
                 frmPPSViewRep vRep = new frmPPSViewRep(2, QueryParms);
+                int h = Screen.PrimaryScreen.WorkingArea.Height;
+                int w = Screen.PrimaryScreen.WorkingArea.Width;
+                vRep.ClientSize = new Size(w, h);
                 vRep.ShowDialog();
 
                 cmboGreige.Items.Clear();

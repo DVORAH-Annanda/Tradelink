@@ -352,13 +352,74 @@ namespace CustomerServices
          
             return POD;
        }
+        public IQueryable<TLCSV_PuchaseOrderDetail> OutStandingOrdersByMonth(CustomerServicesParameters parameters)
+        {
+            var Date6Prev = DateTime.Now.AddMonths(-6);
+            
+            var POD = (from T1 in _context.TLCSV_PurchaseOrder
+                       join T2 in _context.TLCSV_PuchaseOrderDetail
+                       on T1.TLCSVPO_Pk equals T2.TLCUSTO_PurchaseOrder_FK
+                       where !T2.TLCUSTO_Closed && T2.TLCUSTO_DateRequired != null
+                       && T2.TLCUSTO_DateRequired >= Date6Prev 
+                       && !T1.TLCSVPO_FabricCustomer
+                       select T2).AsQueryable();
 
-       public IQueryable<TLCSV_PuchaseOrderDetail> OutStandingOrders(CustomerServicesParameters parameters)
+            if (parameters.Customers.Count() > 0)
+            {
+                var custPredicate = PredicateBuilder.New<TLCSV_PuchaseOrderDetail>();
+                foreach (var cust in parameters.Customers)
+                {
+                    var temp = cust;
+                    custPredicate = custPredicate.Or(s => s.TLCUSTO_Customer_FK == temp.Cust_Pk);
+                }
+                POD = POD.AsExpandable().Where(custPredicate);
+            }
+
+            if (parameters.Styles.Count() > 0)
+            {
+                var stylePredicate = PredicateBuilder.New<TLCSV_PuchaseOrderDetail>();
+                foreach (var style in parameters.Styles)
+                {
+                    var temp = style;
+                    stylePredicate = stylePredicate.Or(s => s.TLCUSTO_Style_FK == temp.Sty_Id);
+                }
+                POD = POD.AsExpandable().Where(stylePredicate);
+            }
+
+            if (parameters.Colours.Count() > 0)
+            {
+                var colourPredicate = PredicateBuilder.New<TLCSV_PuchaseOrderDetail>();
+                foreach (var style in parameters.Colours)
+                {
+                    var temp = style;
+                    colourPredicate = colourPredicate.Or(s => s.TLCUSTO_Colour_FK == temp.Col_Id);
+                }
+                POD = POD.AsExpandable().Where(colourPredicate);
+            }
+
+            if (parameters.Sizes.Count() > 0)
+            {
+                var sizePredicate = PredicateBuilder.New<TLCSV_PuchaseOrderDetail>();
+                foreach (var style in parameters.Sizes)
+                {
+                    var temp = style;
+                    sizePredicate = sizePredicate.Or(s => s.TLCUSTO_Size_FK == temp.SI_id);
+                }
+
+                POD = POD.AsExpandable().Where(sizePredicate);
+            }
+
+            return POD;
+
+        }
+
+        public IQueryable<TLCSV_PuchaseOrderDetail> OutStandingOrders(CustomerServicesParameters parameters)
        {
            var POD = (from T1 in _context.TLCSV_PurchaseOrder
                       join T2 in _context.TLCSV_PuchaseOrderDetail
                       on T1.TLCSVPO_Pk equals T2.TLCUSTO_PurchaseOrder_FK
-                      where !T1.TLCSVPO_Closeed && !T2.TLCUSTO_Closed && T2.TLCUSTO_DateRequired != null
+                      where !T1.TLCSVPO_Closeed /*&& T2.TLCUSTO_DateRequired >= DateTime.Now*/ && !T2.TLCUSTO_Closed && T2.TLCUSTO_DateRequired != null
+                      && !T1.TLCSVPO_FabricCustomer
                       select T2).AsQueryable();
 
             if (parameters.Customers.Count() > 0)
@@ -1024,6 +1085,30 @@ namespace CustomerServices
                 SOH = SOH.AsExpandable().Where(stylePredicate);
             }
             
+            if (parameters.Colours.Count() > 0)
+            {
+                var colourPredicate = PredicateBuilder.New<TLCSV_StockOnHand>();
+                foreach (var colour in parameters.Colours)
+                {
+                    var temp = colour;
+                    colourPredicate = colourPredicate.Or(s => s.TLSOH_Colour_FK == temp.Col_Id);
+                }
+
+                SOH = SOH.AsExpandable().Where(colourPredicate);
+            }
+            
+            if (parameters.Sizes.Count() > 0)
+            {
+                var sizePredicate = PredicateBuilder.New<TLCSV_StockOnHand>();
+                foreach (var size in parameters.Sizes)
+                {
+                    var temp = size;
+                    sizePredicate = sizePredicate.Or(s => s.TLSOH_Style_FK == temp.SI_id);
+                }
+
+                SOH = SOH.AsExpandable().Where(sizePredicate);
+            }
+
             if (parameters.Customers.Count() > 0)
             {
                 var CustomerPredicate = PredicateBuilder.New<TLCSV_StockOnHand>();
@@ -1183,6 +1268,17 @@ namespace CustomerServices
                 SOH = SOH.AsExpandable().Where(sizePredicate);
             }
 
+            if (parameters.Whses.Count() > 0)
+            {
+                var WhsePredicate = PredicateBuilder.New<TLCSV_StockOnHand>();
+                foreach (var Whse in parameters.Whses)
+                {
+                    var temp = Whse;
+                    WhsePredicate = WhsePredicate.Or(s => s.TLSOH_WareHouse_FK == temp.WhStore_Id);
+                }
+
+                SOH = SOH.AsExpandable().Where(WhsePredicate);
+            }
             return SOH;
         }
 
@@ -1244,8 +1340,20 @@ namespace CustomerServices
             else
             {
                 PO = _context.TLCSV_PurchaseOrder.Where(x => !x.TLCSVPO_Closeed).AsQueryable();
+                
             }
 
+            if (parameters.PurchaseOrders.Count() > 0)
+            {
+                var OrderPredicate = PredicateBuilder.New<TLCSV_PurchaseOrder>();
+                foreach (var Order in parameters.PurchaseOrders)
+                {
+                    var temp = Order;
+                    OrderPredicate = OrderPredicate.Or(s => s.TLCSVPO_Pk == temp.TLCSVPO_Pk);
+                }
+
+                PO = PO.AsExpandable().Where(OrderPredicate);
+            }
             if (parameters.Customers.Count() > 0)
             {
                 var CustPredicate = PredicateBuilder.New<TLCSV_PurchaseOrder>();
@@ -1530,6 +1638,8 @@ namespace CustomerServices
         public bool Both;
         public bool TransactHistory;
         public bool CostColoursChecked;
+        public bool IncludeAllCustomers;
+
 
         public CustomerServicesParameters()
         {
@@ -1570,6 +1680,7 @@ namespace CustomerServices
             GroupByWeek = false;
             IncludeProvisional = false;
             Both = false;
+            IncludeAllCustomers = false;
 
         }
 

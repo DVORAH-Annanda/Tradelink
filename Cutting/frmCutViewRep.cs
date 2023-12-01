@@ -238,7 +238,8 @@ namespace Cutting
                                             xnr.Quality = context.TLADM_Griege.Find(GP.GreigeP_Greige_Fk).TLGreige_Description;
 
                                             if (GP.GreigeP_KnitO_Fk != null && !GP.GreigeP_BoughtIn)
-                                                xnr.KnitOrder = "KO" + context.TLKNI_Order.Find(GP.GreigeP_KnitO_Fk).KnitO_OrderNumber.ToString();
+                                                xnr.KnitOrder = string.Empty;
+                                                //xnr.KnitOrder = "KO" + context.TLKNI_Order.Find(GP.GreigeP_KnitO_Fk).KnitO_OrderNumber.ToString();
                                             else
                                                 xnr.KnitOrder = string.Empty;
 
@@ -391,8 +392,9 @@ namespace Cutting
                     new string[] {"1", "Text72", "", ""},
                     new string[] {"1", "Text73", "", ""},
                     new string[] {"1", "Text74", "", ""},
-                    new string[] {"1", "Text75", "", ""},
-                    new string[] {"1", "Text76", "", ""},
+                    new string[] {"1", "Text75", "Top", ""},
+                    new string[] {"1", "Text76", "Middle", ""},
+                    new string[] {"1", "Text115", "Bottom", ""},
                     new string[] {"2","Text77", "", ""},
                     new string[] {"2","Text104", "", ""},
                     new string[] {"2","Text105", "", ""},
@@ -432,8 +434,8 @@ namespace Cutting
                             {
                                 if (String.IsNullOrEmpty(row[3]))
                                 {
-                                    row[3] = EUnit.TLCUTE_Size_FK.ToString();
-                                    break;
+                                        row[3] = EUnit.TLCUTE_Size_FK.ToString();
+                                        break;
                                 }
                             }
                         }
@@ -956,17 +958,34 @@ namespace Cutting
                             dr[15] = string.Empty;
 
                             var BoxedUnits = context.TLCUT_CutSheetReceiptDetail.Where(x => x.TLCUTSHRD_CutSheet_FK == row.TLCUTSHR_Pk).Sum(x => (decimal?)x.TLCUTSHRD_BoxUnits) ?? 0.00M;
-                            var EUnits = context.TLCUT_ExpectedUnits.Where(x => x.TLCUTE_CutSheet_FK == CS.TLCutSH_Pk).FirstOrDefault();
+                            var EUnits = context.TLCUT_ExpectedUnits.Where(x => x.TLCUTE_CutSheet_FK == CS.TLCutSH_Pk).Sum(x=>(int?)x.TLCUTE_NoofGarments)??0;
+                            var EUnitsCounted = context.TLCUT_ExpectedUnits.Where(x => x.TLCUTE_CutSheet_FK == CS.TLCutSH_Pk).Count();
+
+                            var ExpUnitFk = context.TLCUT_ExpectedUnits.Where(x => x.TLCUTE_CutSheet_FK == CS.TLCutSH_Pk).FirstOrDefault();
                             dr[7] = (int)BoxedUnits;
 
                             Decimal Difference = 0.00M;
-                            if (EUnits != null)
+                            if (EUnits > 0)
                             {
-                                var ExpectedUnits = EUnits.TLCUTE_NoofGarments;
-                                Difference = ((BoxedUnits - ExpectedUnits) / ExpectedUnits) * 100;
+                                var ExpectedUnits = EUnits;
+                                try
+                                {
+                                    Difference = ((BoxedUnits - EUnits) / EUnits) * 100;
+                                }
+                                catch(Exception ex)
+                                {
+                                    MessageBox.Show(ex.InnerException.Message , CS.TLCutSH_No);
+                                }
                                 dr[8] = ExpectedUnits;
                                 dr[9] = Difference;
-                                dr[15] = context.TLADM_Sizes.Find(EUnits.TLCUTE_Size_FK).SI_Display;
+                                if (EUnitsCounted < 2)
+                                {
+                                    dr[15] = context.TLADM_Sizes.Find(ExpUnitFk.TLCUTE_Size_FK).SI_Description;
+                                }
+                                else
+                                {
+                                    dr[15] = "MM".ToString(); 
+                                }
                             }
 
 
@@ -1216,7 +1235,7 @@ namespace Cutting
                                               where T1.TLCutSH_Styles_FK == Style && T1.TLCutSH_Colour_FK == Colour
                                               && T3.TLCUTSHRD_Size_FK == Size && T2.TLCUTSHR_InPanelStore && !T2.TLCUTSHR_Issued
                                               select T3).Sum(x => (int?)x.TLCUTSHRD_BoxUnits) ?? 0;
-                            
+
                             DataSet6.DataTable2Row nr = dataTable2.NewDataTable2Row();
                             nr.Pk = 1;
                             nr.Style = context.TLADM_Styles.Find(Style).Sty_Description;
@@ -1293,7 +1312,7 @@ namespace Cutting
                     crystalReportViewer1.ReportSource = costwipCut;
                 }
             }
-        
+
             else if (_RepNo == 7) // Rejected panel store (C3) 
             {
                 DataSet ds = new DataSet();
@@ -3291,7 +3310,7 @@ namespace Cutting
                         xnr.Compact_ToCut = 0;
                         xnr.Dry_ToCut = 0;
                         xnr.Hydro_ToCut = 0;
-                       
+
                         var GProd = context.TLKNI_GreigeProduction.Find(NCA.TLDYEDC_PieceNo_FK);
                         if (GProd != null)
                         {
@@ -3388,25 +3407,25 @@ namespace Cutting
                 nr.Title = "Panel Stock Report By Panel Store (TOTALS)";
                 dataTable.AddDataTable1Row(nr);
                 ds.Tables.Add(dataTable);
-                using ( var context = new TTI2Entities())
+                using (var context = new TTI2Entities())
                 {
                     var Whses = context.TLCUT_CutSheetReceipt.Where(x => x.TLCUTSHR_DateIntoPanelStore >= _parms.FromDate && x.TLCUTSHR_DateIntoPanelStore <= _parms.ToDate).GroupBy(x => x.TLCUTSHR_WhsePanStore_FK);
-                    foreach(var Whse in Whses)
+                    foreach (var Whse in Whses)
                     {
                         var Attributes = context.TLADM_PanelAttributes.ToList();
-                        foreach(var Attribute in Attributes)
+                        foreach (var Attribute in Attributes)
                         {
                             var Sizes = core.ExtrapNumber(Attribute.Pan_PowerN, context.TLADM_Sizes.Count());
-                            foreach(var Size in Sizes)
+                            foreach (var Size in Sizes)
                             {
                                 var Qty = (from T1 in context.TLCUT_CutSheet
                                            join T2 in context.TLCUT_CutSheetReceipt
                                            on T1.TLCutSH_Pk equals T2.TLCUTSHR_CutSheet_FK
-                                           where T1.TLCutSH_Styles_FK == Attribute.Pan_Style_FK && T1.TLCutSH_Size_FK == Size && !T2.TLCUTSHR_Issued && 
+                                           where T1.TLCutSH_Styles_FK == Attribute.Pan_Style_FK && T1.TLCutSH_Size_FK == Size && !T2.TLCUTSHR_Issued &&
                                            T2.TLCUTSHR_DateIntoPanelStore >= _parms.FromDate && T2.TLCUTSHR_DateIntoPanelStore <= _parms.ToDate
                                            select T2).ToList();
 
-                                if(Qty.Count > 0)
+                                if (Qty.Count > 0)
                                 {
                                     DataSet24.DataTable2Row xnr = dataTable2.NewDataTable2Row();
                                     xnr.Pk = 1;
@@ -3415,7 +3434,7 @@ namespace Cutting
                                     xnr.Qty = (from T3 in context.TLCUT_CutSheetReceipt
                                                join T4 in context.TLCUT_CutSheetReceiptDetail
                                                on T3.TLCUTSHR_Pk equals T4.TLCUTSHRD_CutSheet_FK
-                                               select T4).Sum(x => (int ?)x.TLCUTSHRD_BoxUnits) ?? 0;
+                                               select T4).Sum(x => (int?)x.TLCUTSHRD_BoxUnits) ?? 0;
                                     dataTable2.Rows.Add(xnr);
                                 }
                             }
@@ -3437,8 +3456,53 @@ namespace Cutting
                 WasteMan.SetDataSource(ds);
                 crystalReportViewer1.ReportSource = WasteMan;
             }
+            else if (_RepNo == 25)
+            {
+                DataSet ds = new DataSet();
+                DataSet25.DataTable1DataTable dataTable = new DataSet25.DataTable1DataTable();
+                DataSet25.DataTable2DataTable dataTable2 = new DataSet25.DataTable2DataTable();
+                Util core = new Util();
+               
+                using (var context = new TTI2Entities())
+                {
+                    var CutSheets = (from T1 in context.TLCUT_CutSheet
+                                     join T2 in context.TLCUT_CutSheetReceipt
+                                     on T1.TLCutSH_Pk equals T2.TLCUTSHR_CutSheet_FK
+                                     where T2.TLCUTSHR_WasteCutSheet == 0 && T1.TLCutSH_Date >= _parms.FromDate
+                                     orderby T1.TLCutSH_No
+                                     select T1).ToList();
 
-            crystalReportViewer1.Refresh();
+                    foreach (var CutSheet in CutSheets)
+                    {
+                        DataSet25.DataTable2Row xnr = dataTable2.NewDataTable2Row();
+                        xnr.Pk = 1;
+                        xnr.CutSheetNo = CutSheet.TLCutSH_No;
+                        xnr.Style = context.TLADM_Styles.Find(CutSheet.TLCutSH_Styles_FK).Sty_Description;
+                        xnr.Colour = context.TLADM_Colours.Find(CutSheet.TLCutSH_Colour_FK).Col_Display;
+                        xnr.Size = context.TLADM_Sizes.Find(CutSheet.TLCutSH_Size_FK).SI_Description;
+                        xnr.Waste = 0.00M;
+                        dataTable2.Rows.Add(xnr);
+                    }
+                }
+
+                DataSet25.DataTable1Row nr = dataTable.NewDataTable1Row();
+                nr.Pk = 1;
+                nr.Date = _parms.FromDate;
+                nr.Title = "CutSheet Incomplete Waste Analysis Report";
+                dataTable.AddDataTable1Row(nr);
+                ds.Tables.Add(dataTable);
+
+                if (dataTable2.Rows.Count == 0)
+                {
+                    nr.ErrorLog = "No Records found for date selected";                 
+                }
+
+                ds.Tables.Add(dataTable2);
+                Cutting.IncompleteWaste WasteMan = new Cutting.IncompleteWaste();
+                WasteMan.SetDataSource(ds);
+                crystalReportViewer1.ReportSource = WasteMan;
+                crystalReportViewer1.Refresh();
+            }
         }
 
         private struct DATA

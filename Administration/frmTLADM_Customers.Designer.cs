@@ -78,6 +78,12 @@
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.rbFabricYes = new System.Windows.Forms.RadioButton();
             this.rbFabricNo = new System.Windows.Forms.RadioButton();
+            this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.rbRFDYes = new System.Windows.Forms.RadioButton();
+            this.rbRFDNo = new System.Windows.Forms.RadioButton();
+            this.groupBox7 = new System.Windows.Forms.GroupBox();
+            this.rbAllGradesNo = new System.Windows.Forms.RadioButton();
+            this.rbAllGradesYes = new System.Windows.Forms.RadioButton();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -85,6 +91,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.SuspendLayout();
             this.groupBox5.SuspendLayout();
+            this.groupBox6.SuspendLayout();
+            this.groupBox7.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnNew
@@ -233,7 +241,7 @@
             this.groupBox1.Controls.Add(this.txtEMailAddress);
             this.groupBox1.Controls.Add(this.rbDocsEmailedNo);
             this.groupBox1.Controls.Add(this.rbDocsEmailedYes);
-            this.groupBox1.Location = new System.Drawing.Point(385, 306);
+            this.groupBox1.Location = new System.Drawing.Point(328, 292);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(253, 88);
             this.groupBox1.TabIndex = 9;
@@ -323,7 +331,7 @@
             // cmbSelectCustomerCategory
             // 
             this.cmbSelectCustomerCategory.FormattingEnabled = true;
-            this.cmbSelectCustomerCategory.Location = new System.Drawing.Point(111, 337);
+            this.cmbSelectCustomerCategory.Location = new System.Drawing.Point(110, 402);
             this.cmbSelectCustomerCategory.Name = "cmbSelectCustomerCategory";
             this.cmbSelectCustomerCategory.Size = new System.Drawing.Size(195, 21);
             this.cmbSelectCustomerCategory.TabIndex = 8;
@@ -332,7 +340,7 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(9, 342);
+            this.label9.Location = new System.Drawing.Point(8, 407);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(96, 13);
             this.label9.TabIndex = 22;
@@ -356,7 +364,7 @@
             // 
             // rtbAddress1
             // 
-            this.rtbAddress1.Location = new System.Drawing.Point(109, 379);
+            this.rtbAddress1.Location = new System.Drawing.Point(108, 444);
             this.rtbAddress1.Name = "rtbAddress1";
             this.rtbAddress1.Size = new System.Drawing.Size(201, 96);
             this.rtbAddress1.TabIndex = 25;
@@ -366,7 +374,7 @@
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(12, 382);
+            this.label11.Location = new System.Drawing.Point(11, 447);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(86, 13);
             this.label11.TabIndex = 26;
@@ -384,7 +392,7 @@
             // 
             // rtbNotes
             // 
-            this.rtbNotes.Location = new System.Drawing.Point(108, 494);
+            this.rtbNotes.Location = new System.Drawing.Point(107, 559);
             this.rtbNotes.Name = "rtbNotes";
             this.rtbNotes.Size = new System.Drawing.Size(201, 96);
             this.rtbNotes.TabIndex = 28;
@@ -394,7 +402,7 @@
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(12, 497);
+            this.label12.Location = new System.Drawing.Point(11, 562);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(82, 13);
             this.label12.TabIndex = 29;
@@ -408,9 +416,9 @@
             this.groupBox3.Controls.Add(this.label13);
             this.groupBox3.Controls.Add(this.rbCCNo);
             this.groupBox3.Controls.Add(this.rbCCYes);
-            this.groupBox3.Location = new System.Drawing.Point(354, 404);
+            this.groupBox3.Location = new System.Drawing.Point(329, 392);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(168, 146);
+            this.groupBox3.Size = new System.Drawing.Size(152, 146);
             this.groupBox3.TabIndex = 30;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Commission Customer";
@@ -474,7 +482,7 @@
             this.groupBox4.Controls.Add(this.cmbWareHouse);
             this.groupBox4.Controls.Add(this.rbRepackNo);
             this.groupBox4.Controls.Add(this.rbRepackYes);
-            this.groupBox4.Location = new System.Drawing.Point(128, 212);
+            this.groupBox4.Location = new System.Drawing.Point(131, 277);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Size = new System.Drawing.Size(174, 119);
             this.groupBox4.TabIndex = 31;
@@ -564,11 +572,79 @@
             this.rbFabricNo.Text = "No";
             this.rbFabricNo.UseVisualStyleBackColor = true;
             // 
+            // groupBox6
+            // 
+            this.groupBox6.Controls.Add(this.rbRFDYes);
+            this.groupBox6.Controls.Add(this.rbRFDNo);
+            this.groupBox6.Location = new System.Drawing.Point(131, 212);
+            this.groupBox6.Name = "groupBox6";
+            this.groupBox6.Size = new System.Drawing.Size(120, 63);
+            this.groupBox6.TabIndex = 36;
+            this.groupBox6.TabStop = false;
+            this.groupBox6.Text = "RFD Customer";
+            // 
+            // rbRFDYes
+            // 
+            this.rbRFDYes.AutoSize = true;
+            this.rbRFDYes.Location = new System.Drawing.Point(6, 32);
+            this.rbRFDYes.Name = "rbRFDYes";
+            this.rbRFDYes.Size = new System.Drawing.Size(43, 17);
+            this.rbRFDYes.TabIndex = 20;
+            this.rbRFDYes.TabStop = true;
+            this.rbRFDYes.Text = "Yes";
+            this.rbRFDYes.UseVisualStyleBackColor = true;
+            // 
+            // rbRFDNo
+            // 
+            this.rbRFDNo.AutoSize = true;
+            this.rbRFDNo.Location = new System.Drawing.Point(61, 32);
+            this.rbRFDNo.Name = "rbRFDNo";
+            this.rbRFDNo.Size = new System.Drawing.Size(39, 17);
+            this.rbRFDNo.TabIndex = 0;
+            this.rbRFDNo.TabStop = true;
+            this.rbRFDNo.Text = "No";
+            this.rbRFDNo.UseVisualStyleBackColor = true;
+            // 
+            // groupBox7
+            // 
+            this.groupBox7.Controls.Add(this.rbAllGradesNo);
+            this.groupBox7.Controls.Add(this.rbAllGradesYes);
+            this.groupBox7.Location = new System.Drawing.Point(496, 392);
+            this.groupBox7.Name = "groupBox7";
+            this.groupBox7.Size = new System.Drawing.Size(126, 47);
+            this.groupBox7.TabIndex = 37;
+            this.groupBox7.TabStop = false;
+            this.groupBox7.Text = "Allow All Grades";
+            // 
+            // rbAllGradesNo
+            // 
+            this.rbAllGradesNo.AutoSize = true;
+            this.rbAllGradesNo.Location = new System.Drawing.Point(69, 20);
+            this.rbAllGradesNo.Name = "rbAllGradesNo";
+            this.rbAllGradesNo.Size = new System.Drawing.Size(39, 17);
+            this.rbAllGradesNo.TabIndex = 1;
+            this.rbAllGradesNo.TabStop = true;
+            this.rbAllGradesNo.Text = "No";
+            this.rbAllGradesNo.UseVisualStyleBackColor = true;
+            // 
+            // rbAllGradesYes
+            // 
+            this.rbAllGradesYes.AutoSize = true;
+            this.rbAllGradesYes.Location = new System.Drawing.Point(16, 19);
+            this.rbAllGradesYes.Name = "rbAllGradesYes";
+            this.rbAllGradesYes.Size = new System.Drawing.Size(43, 17);
+            this.rbAllGradesYes.TabIndex = 0;
+            this.rbAllGradesYes.TabStop = true;
+            this.rbAllGradesYes.Text = "Yes";
+            this.rbAllGradesYes.UseVisualStyleBackColor = true;
+            // 
             // frmTLADM_Customers
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(709, 637);
+            this.ClientSize = new System.Drawing.Size(709, 653);
+            this.Controls.Add(this.groupBox7);
+            this.Controls.Add(this.groupBox6);
             this.Controls.Add(this.groupBox5);
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.btnUsers);
@@ -617,6 +693,10 @@
             this.splitContainer1.ResumeLayout(false);
             this.groupBox5.ResumeLayout(false);
             this.groupBox5.PerformLayout();
+            this.groupBox6.ResumeLayout(false);
+            this.groupBox6.PerformLayout();
+            this.groupBox7.ResumeLayout(false);
+            this.groupBox7.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -674,5 +754,11 @@
         private System.Windows.Forms.GroupBox groupBox5;
         private System.Windows.Forms.RadioButton rbFabricYes;
         private System.Windows.Forms.RadioButton rbFabricNo;
+        private System.Windows.Forms.GroupBox groupBox6;
+        private System.Windows.Forms.RadioButton rbRFDYes;
+        private System.Windows.Forms.RadioButton rbRFDNo;
+        private System.Windows.Forms.GroupBox groupBox7;
+        private System.Windows.Forms.RadioButton rbAllGradesNo;
+        private System.Windows.Forms.RadioButton rbAllGradesYes;
     }
 }

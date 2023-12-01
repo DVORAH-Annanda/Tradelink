@@ -31,6 +31,7 @@
             this.btnSave = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.cmboCutSheet = new System.Windows.Forms.ComboBox();
             this.label4 = new System.Windows.Forms.Label();
             this.txtColour = new System.Windows.Forms.TextBox();
             this.txtDescription = new System.Windows.Forms.TextBox();
@@ -43,14 +44,13 @@
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.dtpTransDate = new System.Windows.Forms.DateTimePicker();
-            this.cmboCutSheet = new System.Windows.Forms.ComboBox();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(625, 593);
+            this.btnSave.Location = new System.Drawing.Point(605, 625);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(75, 23);
             this.btnSave.TabIndex = 0;
@@ -77,9 +77,18 @@
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Location = new System.Drawing.Point(101, 144);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(461, 139);
+            this.groupBox1.Size = new System.Drawing.Size(461, 142);
             this.groupBox1.TabIndex = 3;
             this.groupBox1.TabStop = false;
+            // 
+            // cmboCutSheet
+            // 
+            this.cmboCutSheet.FormattingEnabled = true;
+            this.cmboCutSheet.Location = new System.Drawing.Point(142, 24);
+            this.cmboCutSheet.Name = "cmboCutSheet";
+            this.cmboCutSheet.Size = new System.Drawing.Size(293, 21);
+            this.cmboCutSheet.TabIndex = 6;
+            this.cmboCutSheet.SelectedIndexChanged += new System.EventHandler(this.cmboCutSheet_SelectedIndexChanged);
             // 
             // label4
             // 
@@ -129,7 +138,7 @@
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Location = new System.Drawing.Point(60, 307);
             this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(620, 208);
+            this.dataGridView1.Size = new System.Drawing.Size(620, 272);
             this.dataGridView1.TabIndex = 4;
             this.dataGridView1.CellValidating += new System.Windows.Forms.DataGridViewCellValidatingEventHandler(this.dataGridView1_CellValidating);
             this.dataGridView1.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this.dataGridView1_EditingControlShowing);
@@ -150,7 +159,7 @@
             // 
             // btnBodyToMeasure
             // 
-            this.btnBodyToMeasure.Location = new System.Drawing.Point(625, 553);
+            this.btnBodyToMeasure.Location = new System.Drawing.Point(605, 585);
             this.btnBodyToMeasure.Name = "btnBodyToMeasure";
             this.btnBodyToMeasure.Size = new System.Drawing.Size(75, 23);
             this.btnBodyToMeasure.TabIndex = 6;
@@ -191,20 +200,11 @@
             this.dtpTransDate.Size = new System.Drawing.Size(134, 20);
             this.dtpTransDate.TabIndex = 10;
             // 
-            // cmboCutSheet
-            // 
-            this.cmboCutSheet.FormattingEnabled = true;
-            this.cmboCutSheet.Location = new System.Drawing.Point(142, 24);
-            this.cmboCutSheet.Name = "cmboCutSheet";
-            this.cmboCutSheet.Size = new System.Drawing.Size(293, 21);
-            this.cmboCutSheet.TabIndex = 6;
-            this.cmboCutSheet.SelectedIndexChanged += new System.EventHandler(this.cmboCutSheet_SelectedIndexChanged);
-            // 
             // frmLineFeederBC
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(712, 638);
+            this.ClientSize = new System.Drawing.Size(712, 660);
             this.Controls.Add(this.dtpTransDate);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.label5);

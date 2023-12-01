@@ -79,6 +79,7 @@ namespace TTI2_WF
             rbBundleStoreNo.Checked = true;
             rbPanelStoreNo.Checked = true;
             rbDyeKitchenNo.Checked = true;
+            rbRFDNo.Checked = true;
             rbStore.Checked = true;
             rbGradeA.Checked = true;
             rbRepackNo.Checked = true;
@@ -233,7 +234,17 @@ namespace TTI2_WF
                        whse.WhStore_DyeKitchen = true;
                    else
                        whse.WhStore_DyeKitchen = false;
-                   if (rbRepacYes.Checked)
+                   
+                   if(rbRFDYes .Checked)
+                    {
+                        whse.WhStore_RFD = true;
+                    }
+                   else
+                    {
+                        whse.WhStore_RFD = false; 
+                    }
+                    
+                    if (rbRepacYes.Checked)
                        whse.WhStore_RePack = true;
                    else
                        whse.WhStore_RePack = false;
@@ -344,20 +355,34 @@ namespace TTI2_WF
                             rbGradeOther.Checked = true;
 
                         if (whse.WhStore_BundleStore)
+                        {
                             rbBundleStoreYes.Checked = true;
-                        
+                        }
+                        if(whse.WhStore_RFD)
+                        {
+                            rbRFDYes.Checked = true;
+                        }
+
                         if (whse.WhStore_PanelStore)
+                        {
                             rbPanelStoreYes.Checked = true;
+                        }
 
                         if (whse.WhStore_DyeKitchen)
+                        {
                             rbDyeKitchYes.Checked = true;
+                        }
 
                         if (whse.WhStore_ChemicalStore)
+                        {
                             rbChemicalStoreYes.Checked = true;
+                        }
 
                         if (whse.WhStore_Quarantine)
+                        {
                             rbIsQuarantineYes.Checked = true;
-                        
+                        }
+
                         if (whse.WhStore_RePack)
                              rbRepacYes.Checked = true;
                          

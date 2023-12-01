@@ -48,5 +48,13 @@ namespace Utilities
         public bool DYEB_QAInspected { get; set; }
         public bool DYEB_Stage4 { get; set; }
         public bool DYEB_FabicSales { get; set; }
+        public bool DYEB_Stage5 { get; set; }
+        public bool DYEB_Stage6 { get; set; }
+        public Nullable<System.DateTime> DYEB_DateStage1 { get; set; }
+        public Nullable<System.DateTime> DYEB_DateStage2 { get; set; }
+        public Nullable<System.DateTime> DYEB_DateStage3 { get; set; }
+        public Nullable<System.DateTime> DYEB_DateStage4 { get; set; }
+        public Nullable<System.DateTime> DYEB_DateStage5 { get; set; }
+        public Nullable<System.DateTime> DYEB_DateStage6 { get; set; }
     }
 }

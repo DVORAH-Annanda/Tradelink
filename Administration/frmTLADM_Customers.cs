@@ -92,10 +92,12 @@ namespace TTI2_WF
             rbAccountBlockedNo.Checked = true;
             rbDocsEmailedNo.Checked = true;
             rbRepackNo.Checked = true;
- 
+            rbRFDNo.Checked = true;
             rtbNotes.Text = string.Empty;
 
             rbFabricNo.Checked = true;
+
+            rbAllGradesNo.Checked = true;
 
             rbCCNo.Checked = true;
             formloaded = true;
@@ -180,6 +182,15 @@ namespace TTI2_WF
                         customers.Cust_FabricCustomer = true;
                     }
 
+                    if(rbRFDYes.Checked)
+                    {
+                        customers.Cust_PFD = true;
+                    }
+                    else
+                    {
+                        customers.Cust_PFD = false;
+                    }
+
                     if (rbRepackYes.Checked)
                     {
                         var Whse = (TLADM_WhseStore)cmbWareHouse.SelectedItem;
@@ -196,6 +207,15 @@ namespace TTI2_WF
                         customers.Cust_RePack = false;
 
                     customers.Cust_CustomerCat_FK = Convert.ToInt32(cmbSelectCustomerCategory.SelectedValue.ToString());
+
+                    if(rbAllGradesYes.Checked)
+                    {
+                        customers.Cust_AllowAll = true;
+                    }
+                    else
+                    {
+                        customers.Cust_AllowAll = false;
+                    }
 
                     if (addRecord)
                         context.TLADM_CustomerFile.Add(customers);
@@ -335,6 +355,15 @@ namespace TTI2_WF
                     else
                         rbCCNo.Checked = true;
 
+                    if(customers.Cust_PFD)
+                    {
+                        rbRFDYes.Checked = true;
+                    }
+                    else
+                    {
+                        rbRFDNo.Checked = true;
+                    }
+
                     if (customers.Cust_RePack)
                     {
                         rbRepackYes.Checked = true;
@@ -358,7 +387,17 @@ namespace TTI2_WF
                     {
                         rbFabricNo.Checked = true;
                     }
+
                     FldEntered = core.PopulateArray(FldNames.Length, true);
+
+                    if(customers.Cust_AllowAll)
+                    {
+                        rbAllGradesYes.Checked = true; 
+                    }
+                    else
+                    {
+                        rbAllGradesNo.Checked = true;
+                    }
                 }
             }
         }

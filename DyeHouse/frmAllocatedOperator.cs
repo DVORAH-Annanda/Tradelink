@@ -26,7 +26,7 @@ namespace DyeHouse
             formloaded = false;
             using (var context = new TTI2Entities())
             {
-                cmboDyeBatch.DataSource = context.TLDYE_DyeBatch.Where(x=>x.DYEB_Transfered && x.DYEB_Stage3).OrderBy(x => x.DYEB_BatchNo).ToList();
+                cmboDyeBatch.DataSource = context.TLDYE_DyeBatch.Where(x=>x.DYEB_Transfered).OrderBy(x => x.DYEB_BatchNo).ToList();
                 cmboDyeBatch.ValueMember = "DYEB_BatchNo";
                 cmboDyeBatch.DisplayMember = "DYEB_BatchNo";
                 cmboDyeBatch.SelectedValue = 0;

@@ -42,6 +42,7 @@
             this.cmboReportOptions = new System.Windows.Forms.ComboBox();
             this.label4 = new System.Windows.Forms.Label();
             this.chkQASummary = new System.Windows.Forms.CheckBox();
+            this.chkMonthlyProd = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -113,7 +114,7 @@
             // 
             // btnSubmit
             // 
-            this.btnSubmit.Location = new System.Drawing.Point(550, 364);
+            this.btnSubmit.Location = new System.Drawing.Point(550, 400);
             this.btnSubmit.Name = "btnSubmit";
             this.btnSubmit.Size = new System.Drawing.Size(75, 23);
             this.btnSubmit.TabIndex = 1;
@@ -125,7 +126,7 @@
             // 
             this.groupBox2.Controls.Add(this.radReprocessed);
             this.groupBox2.Controls.Add(this.radFirstTime);
-            this.groupBox2.Location = new System.Drawing.Point(178, 252);
+            this.groupBox2.Location = new System.Drawing.Point(178, 285);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(267, 81);
             this.groupBox2.TabIndex = 2;
@@ -157,7 +158,7 @@
             // cmboReportOptions
             // 
             this.cmboReportOptions.FormattingEnabled = true;
-            this.cmboReportOptions.Location = new System.Drawing.Point(221, 366);
+            this.cmboReportOptions.Location = new System.Drawing.Point(221, 400);
             this.cmboReportOptions.Name = "cmboReportOptions";
             this.cmboReportOptions.Size = new System.Drawing.Size(197, 21);
             this.cmboReportOptions.TabIndex = 3;
@@ -166,7 +167,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(113, 364);
+            this.label4.Location = new System.Drawing.Point(113, 400);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(65, 13);
             this.label4.TabIndex = 4;
@@ -175,18 +176,29 @@
             // chkQASummary
             // 
             this.chkQASummary.AutoSize = true;
-            this.chkQASummary.Location = new System.Drawing.Point(286, 204);
+            this.chkQASummary.Location = new System.Drawing.Point(286, 226);
             this.chkQASummary.Name = "chkQASummary";
             this.chkQASummary.Size = new System.Drawing.Size(87, 17);
             this.chkQASummary.TabIndex = 5;
             this.chkQASummary.Text = "QA Summary";
             this.chkQASummary.UseVisualStyleBackColor = true;
             // 
+            // chkMonthlyProd
+            // 
+            this.chkMonthlyProd.AutoSize = true;
+            this.chkMonthlyProd.Location = new System.Drawing.Point(286, 192);
+            this.chkMonthlyProd.Name = "chkMonthlyProd";
+            this.chkMonthlyProd.Size = new System.Drawing.Size(117, 17);
+            this.chkMonthlyProd.TabIndex = 6;
+            this.chkMonthlyProd.Text = "Monthly Production";
+            this.chkMonthlyProd.UseVisualStyleBackColor = true;
+            // 
             // frmDyeProductionSel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(646, 457);
+            this.Controls.Add(this.chkMonthlyProd);
             this.Controls.Add(this.chkQASummary);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.cmboReportOptions);
@@ -221,5 +233,6 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.ComboBox cmboCustomers;
         private System.Windows.Forms.CheckBox chkQASummary;
+        private System.Windows.Forms.CheckBox chkMonthlyProd;
     }
 }

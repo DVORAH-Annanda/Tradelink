@@ -411,7 +411,7 @@ namespace DyeHouse
                 cmboCustomerNo.DisplayMember = "Cust_Description";
                 cmboCustomerNo.SelectedValue = 0;
 
-                var result = context.TLDYE_DyeOrderFabric.Where(x =>!x.TLDYEF_Closed).GroupBy(x=>x.TLDYEF_DyeOrderNumeric).FirstOrDefault() .ToList();
+                IList<TLDYE_DyeOrderFabric>result = null;
                 cmboDyeOrders.DataSource = result;
                 cmboDyeOrders.DisplayMember = "TLDYEF_DyeOrderNo";
                 cmboDyeOrders.ValueMember = "TLDYEF_Pk";
@@ -427,10 +427,12 @@ namespace DyeHouse
         private void cmboCustomerNo_SelectedIndexChanged(object sender, EventArgs e)
         {
             ComboBox oCmbo = sender as ComboBox;
+            IList<TLCSV_PurchaseOrder> ExistingOrders;
+            TLADM_CustomerFile SelectedCustomer; 
 
             if (oCmbo != null && formloaded)
             {
-                var SelectedCustomer = (TLADM_CustomerFile)oCmbo.SelectedItem;
+                SelectedCustomer = (TLADM_CustomerFile)oCmbo.SelectedItem;
                 if(!SelectedCustomer.Cust_FabricCustomer)
                 {
                     MessageBox.Show("Customer selected is not a fabric sales customer");
@@ -438,27 +440,27 @@ namespace DyeHouse
                     return;
                 }
 
-                cmboFabricOrder.DataSource = null;
-                using (var context = new TTI2Entities())
+                
+                formloaded = false;
+                ExistingOrders = _context.TLCSV_PurchaseOrder.Where(x => x.TLCSVPO_Customer_FK == SelectedCustomer.Cust_Pk && !x.TLCSVPO_Closeed).ToList();
+                if (ExistingOrders != null)
                 {
-                    var ExistingOrders = context.TLCSV_PurchaseOrder.Where(x => x.TLCSVPO_Customer_FK == SelectedCustomer.Cust_Pk && x.TLCSVPO_FabricCustomer && !x.TLCSVPO_Closeed).ToList();
-                    if(ExistingOrders.Count()== 0)
-                    {
-                        MessageBox.Show("There are no orders for the customer selected");
-                        frmDyeOrders_Load(this, null);
-                        return;
-                    }
-                    
-                    formloaded = false;
-                    cmboFabricOrder.DataSource = ExistingOrders;
-                    cmboFabricOrder.DisplayMember = "TLCSVPO_PurchaseOrder";
-                    cmboFabricOrder.ValueMember = "TLCSVPO_Pk";
-                    cmboFabricOrder.SelectedValue = -1;
-                    formloaded = true;
+                   if (ExistingOrders.Count() == 0)
+                   {
+                         MessageBox.Show("There are no orders for the customer selected");
+                         frmDyeOrders_Load(this, null);
+                         return;
+                   }
 
+                   cmboFabricOrder.DataSource = ExistingOrders;
+                   cmboFabricOrder.DisplayMember = "TLCSVPO_PurchaseOrder";
+                   cmboFabricOrder.ValueMember = "TLCSVPO_Pk";
+                   cmboFabricOrder.SelectedValue = -1;
                 }
+                
+                formloaded = true;
 
-                CustomerSelected = (TLADM_CustomerFile)oCmbo.SelectedItem;
+                CustomerSelected = SelectedCustomer;
 
                 var result = (from u in MandatoryFields
                               where u[0] == oCmbo.Name
@@ -469,6 +471,7 @@ namespace DyeHouse
                     int nbr = Convert.ToInt32(result[2].ToString());
                     MandSelected[nbr] = true;
                 }
+                
             }
         }
 
@@ -1163,6 +1166,11 @@ namespace DyeHouse
                         var OrderDetails = context.TLCSV_PuchaseOrderDetail.Where(x => x.TLCUSTO_PurchaseOrder_FK == OrderSelected.TLCSVPO_Pk && !OrderSelected.TLCSVPO_Closeed).ToList();
                         foreach (var OrderDetail in OrderDetails)
                         {
+                            if(OrderDetail.TLCUSTO_Closed)
+                            {
+                                continue;
+                            }
+
                             var Quality = context.TLADM_Griege.Find(OrderDetail.TLCUSTO_Quality_FK);
                             if (Quality != null && Quality.TLGreige_Body)
                             {
@@ -1204,7 +1212,14 @@ namespace DyeHouse
                             }
                         }
                     }
-                
+    
+                    if( DataT.Rows.Count == 0 )
+                    {
+                        using (DialogCenteringService centeringService = new DialogCenteringService(this)) // center message box
+                        {
+                            MessageBox.Show("There are no records to process", "Purchase Order Detail", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        }
+                    }
                 }
             }
         }

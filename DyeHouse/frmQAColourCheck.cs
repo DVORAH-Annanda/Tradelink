@@ -24,22 +24,56 @@ namespace DyeHouse
         {
             InitializeComponent();
             core = new Util();
-            SetUp();
-
+           
         }
 
-        void SetUp()
+        private void frmQAColourCheck_Load(object sender, EventArgs e)
+        {
+            formloaded = false;
+            rbBtnNo.Checked = true;
+
+            using (var context = new TTI2Entities())
+            {
+                var Existing = (from T1 in context.TLDYE_DyeBatchAllocated
+                                join T2 in context.TLDYE_DyeBatch
+                                on T1.TLDYEA_DyeBatch_FK equals T2.DYEB_Pk
+                                where T2.DYEB_Allocated && !T2.DYEB_OutProcess && !T2.DYEB_Stage1
+                                orderby T2.DYEB_BatchNo
+                                select T2).ToList();
+
+                cmboBatchNo.DataSource = Existing.ToList();
+                cmboBatchNo.ValueMember = "DYEB_Pk";
+                cmboBatchNo.DisplayMember = "DYEB_BatchNo";
+                cmboBatchNo.SelectedValue = -1;
+
+                oCmbA.DataSource = context.TLADM_NonStockItems.OrderBy(x => x.NSI_Description).ToList();
+
+                var Dept = context.TLADM_Departments.Where(x => x.Dep_ShortCode.Contains("DYE")).FirstOrDefault();
+                if (Dept != null)
+                {
+                    cmboOperator.DataSource = context.TLADM_MachineOperators.Where(x => x.MachOp_Department_FK == Dept.Dep_Id && !x.MachOp_Discontinued).ToList();
+                    cmboOperator.ValueMember = "MachOp_Pk";
+                    cmboOperator.DisplayMember = "MachOp_Description";
+                    cmboOperator.SelectedValue = -1;
+                }
+            }
+
+            formloaded = true;
+        }
+
+       /* void SetUp()
         {
             formloaded = false;
             rbBtnNo.Checked = true;
 
             using ( var context = new TTI2Entities())
             {
-                var Existing = from T1 in context.TLDYE_DyeBatchAllocated
-                               join T2 in context.TLDYE_DyeBatch on T1.TLDYEA_DyeBatch_FK equals T2.DYEB_Pk 
+                var Existing = (from T1 in context.TLDYE_DyeBatchAllocated
+                               join T2 in context.TLDYE_DyeBatch 
+                               on T1.TLDYEA_DyeBatch_FK equals T2.DYEB_Pk 
                                where T2.DYEB_Allocated && !T2.DYEB_OutProcess && !T2.DYEB_Stage1  
                                orderby T2.DYEB_BatchNo 
-                               select T2;
+                               select T2).ToList();
 
                 cmboBatchNo.DataSource = Existing.ToList();
                 cmboBatchNo.ValueMember = "DYEB_Pk";
@@ -60,6 +94,7 @@ namespace DyeHouse
 
             formloaded = true;
         }
+       */
 
         private void cmboBatchNo_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -181,7 +216,10 @@ namespace DyeHouse
                         // This does the dye batch
                         //------------------------------------------------------------
                         if (rbBtnNo.Checked)
+                        {
                             DB.DYEB_Stage1 = true;
+                            DB.DYEB_DateStage1 = dateTimePicker1.Value;
+                        }
 
                         var Dept = Depts.Where(x => x.Dep_ShortCode.Contains("DYE")).FirstOrDefault();
                         if (Dept != null)
@@ -369,7 +407,7 @@ namespace DyeHouse
                     try
                     {
                         context.SaveChanges();
-                        SetUp();
+                        frmQAColourCheck_Load(this, null);
                         MessageBox.Show("Data saved to database successfully");
                     }
                     catch (Exception ex)
@@ -432,5 +470,7 @@ namespace DyeHouse
                 }
             }
         }
+
+    
     }
 }

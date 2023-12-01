@@ -37,7 +37,7 @@ namespace Administration
             {
                 oCmboA = new DataGridViewComboBoxColumn();
                 oCmboA.HeaderText = "Quality Description";
-                oCmboA.DataSource = context.TLADM_Griege.Where(x => !(bool)x.TLGriege_Discontinued).ToList();
+                oCmboA.DataSource = context.TLADM_Griege.ToList();
                 oCmboA.ValueMember = "TLGreige_Id";
                 oCmboA.DisplayMember = "TLGreige_Description";
                 oCmboA.DataPropertyName = "Greige_Pk";

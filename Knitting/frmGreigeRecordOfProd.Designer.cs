@@ -52,6 +52,8 @@
             this.txtPieceNo = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
             this.txtDskWeight = new System.Windows.Forms.TextBox();
+            this.label11 = new System.Windows.Forms.Label();
+            this.txtDiskWidth = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -254,7 +256,7 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(165, 271);
+            this.label9.Location = new System.Drawing.Point(137, 267);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(87, 13);
             this.label9.TabIndex = 24;
@@ -262,16 +264,34 @@
             // 
             // txtDskWeight
             // 
-            this.txtDskWeight.Location = new System.Drawing.Point(269, 268);
+            this.txtDskWeight.Location = new System.Drawing.Point(241, 264);
             this.txtDskWeight.Name = "txtDskWeight";
             this.txtDskWeight.Size = new System.Drawing.Size(100, 20);
             this.txtDskWeight.TabIndex = 8;
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(359, 267);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(81, 13);
+            this.label11.TabIndex = 25;
+            this.label11.Text = "Shift Dsk Width";
+            // 
+            // txtDiskWidth
+            // 
+            this.txtDiskWidth.Location = new System.Drawing.Point(478, 264);
+            this.txtDiskWidth.Name = "txtDiskWidth";
+            this.txtDiskWidth.Size = new System.Drawing.Size(100, 20);
+            this.txtDiskWidth.TabIndex = 26;
             // 
             // frmGreigeRecordOfProd
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(641, 640);
+            this.Controls.Add(this.txtDiskWidth);
+            this.Controls.Add(this.label11);
             this.Controls.Add(this.txtDskWeight);
             this.Controls.Add(this.label9);
             this.Controls.Add(this.txtPieceNo);
@@ -332,5 +352,7 @@
         private System.Windows.Forms.TextBox txtPieceNo;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.TextBox txtDskWeight;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.TextBox txtDiskWidth;
     }
 }

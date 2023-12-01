@@ -82,6 +82,7 @@
             this.yarnReturnToSupplierCommissionKnittingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.closeYarnPalletToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.yarnStockStoreToStoreTransferToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.yarnPalletsSoldToCustomeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.knittingOrdersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.createAKnittingOrderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.yarnWithdrawalNoteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -98,6 +99,7 @@
             this.greigeConversionOldSystemToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.greigeStockWriteOffToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.greigeStockLiningsTransactionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.greigeWareHouseToWarehouseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.productionPlanningToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.yarnStockOnHandByStoreOwnYarnToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.yarnStockOnHandByStoreToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
@@ -142,6 +144,8 @@
             this.allocateBatchToDyeMachineToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dyeBatchesDateRequiredManagementToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.closeDyeBatchesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.rFDBatchRequestToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.rFDBatchRequesstCompletionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dataCaptureToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.colourCheckAfterDyeingToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.HydroMeasuresWidth = new System.Windows.Forms.ToolStripMenuItem();
@@ -188,6 +192,7 @@
             this.dyeStockTakeSheetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.discontinuedDyesAndChemicalsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dyeReceipesDifinitionByConsumableToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.dyesAndChemicalsConssumedByMonthToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fabricQualityTypesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fabricTypesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fabricSalesDeliveryNoteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -254,6 +259,7 @@
             this.cutSheetOnHoldReportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cuttingWasteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fabricPieceQAHistoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.incompleteCuttingWasteDetailsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewsToolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.cutSheetDetailsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cMTToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -474,6 +480,7 @@
             this.inUseResetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
             this.PBar1 = new System.Windows.Forms.ProgressBar();
+            this.cottonContractToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             this.SuspendLayout();
@@ -509,6 +516,7 @@
             // cottonToolStripMenuItem1
             // 
             this.cottonToolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.cottonContractToolStripMenuItem,
             this.cottonDeliveryToolStripMenuItem,
             this.cottonReturnsToolStripMenuItem,
             this.cottonStockToolStripMenuItem,
@@ -521,7 +529,7 @@
             this.cottonWasteSalesToolStripMenuItem,
             this.reportsToolStripMenuItem});
             this.cottonToolStripMenuItem1.Name = "cottonToolStripMenuItem1";
-            this.cottonToolStripMenuItem1.Size = new System.Drawing.Size(111, 22);
+            this.cottonToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
             this.cottonToolStripMenuItem1.Text = "Cotton";
             // 
             // cottonDeliveryToolStripMenuItem
@@ -646,7 +654,7 @@
             this.captureSliverPoductionToolStripMenuItem,
             this.sliverProductionReportToolStripMenuItem});
             this.sliverToolStripMenuItem.Name = "sliverToolStripMenuItem";
-            this.sliverToolStripMenuItem.Size = new System.Drawing.Size(111, 22);
+            this.sliverToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.sliverToolStripMenuItem.Text = "Sliver";
             // 
             // captureSliverPoductionToolStripMenuItem
@@ -675,7 +683,7 @@
             this.reinstateOrderToolStripMenuItem,
             this.reportingToolStripMenuItem});
             this.yarnToolStripMenuItem1.Name = "yarnToolStripMenuItem1";
-            this.yarnToolStripMenuItem1.Size = new System.Drawing.Size(111, 22);
+            this.yarnToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
             this.yarnToolStripMenuItem1.Text = "Yarn";
             // 
             // yarnOrderToolStripMenuItem
@@ -859,7 +867,8 @@
             this.yarnStockAdjustmentsToolStripMenuItem1,
             this.yarnReturnToSupplierCommissionKnittingToolStripMenuItem,
             this.closeYarnPalletToolStripMenuItem,
-            this.yarnStockStoreToStoreTransferToolStripMenuItem});
+            this.yarnStockStoreToStoreTransferToolStripMenuItem,
+            this.yarnPalletsSoldToCustomeToolStripMenuItem});
             this.knittingTransactionsToolStripMenuItem.Name = "knittingTransactionsToolStripMenuItem";
             this.knittingTransactionsToolStripMenuItem.Size = new System.Drawing.Size(221, 22);
             this.knittingTransactionsToolStripMenuItem.Text = "Knitting Transactions";
@@ -912,6 +921,13 @@
             this.yarnStockStoreToStoreTransferToolStripMenuItem.Size = new System.Drawing.Size(318, 22);
             this.yarnStockStoreToStoreTransferToolStripMenuItem.Text = "Yarn Stock Store To Store Transfer";
             this.yarnStockStoreToStoreTransferToolStripMenuItem.Click += new System.EventHandler(this.yarnStockStoreToStoreTransferToolStripMenuItem_Click);
+            // 
+            // yarnPalletsSoldToCustomeToolStripMenuItem
+            // 
+            this.yarnPalletsSoldToCustomeToolStripMenuItem.Name = "yarnPalletsSoldToCustomeToolStripMenuItem";
+            this.yarnPalletsSoldToCustomeToolStripMenuItem.Size = new System.Drawing.Size(318, 22);
+            this.yarnPalletsSoldToCustomeToolStripMenuItem.Text = "Yarn Pallets  Sold To Custome";
+            this.yarnPalletsSoldToCustomeToolStripMenuItem.Click += new System.EventHandler(this.yarnPalletsSoldToCustomeToolStripMenuItem_Click);
             // 
             // knittingOrdersToolStripMenuItem
             // 
@@ -970,7 +986,8 @@
             this.greigeReceivedFrom3rdPartiesToolStripMenuItem,
             this.greigeConversionOldSystemToolStripMenuItem,
             this.greigeStockWriteOffToolStripMenuItem,
-            this.greigeStockLiningsTransactionsToolStripMenuItem});
+            this.greigeStockLiningsTransactionsToolStripMenuItem,
+            this.greigeWareHouseToWarehouseToolStripMenuItem});
             this.greigeTransactionsToolStripMenuItem.Name = "greigeTransactionsToolStripMenuItem";
             this.greigeTransactionsToolStripMenuItem.Size = new System.Drawing.Size(221, 22);
             this.greigeTransactionsToolStripMenuItem.Text = "Knitting Greige Transactions";
@@ -978,21 +995,21 @@
             // greigeProductionRecordingToolStripMenuItem
             // 
             this.greigeProductionRecordingToolStripMenuItem.Name = "greigeProductionRecordingToolStripMenuItem";
-            this.greigeProductionRecordingToolStripMenuItem.Size = new System.Drawing.Size(249, 22);
+            this.greigeProductionRecordingToolStripMenuItem.Size = new System.Drawing.Size(251, 22);
             this.greigeProductionRecordingToolStripMenuItem.Text = "Greige Production & Recording";
             this.greigeProductionRecordingToolStripMenuItem.Click += new System.EventHandler(this.greigeProductionRecordingToolStripMenuItem_Click);
             // 
             // greigeInspectionResultsToolStripMenuItem
             // 
             this.greigeInspectionResultsToolStripMenuItem.Name = "greigeInspectionResultsToolStripMenuItem";
-            this.greigeInspectionResultsToolStripMenuItem.Size = new System.Drawing.Size(249, 22);
+            this.greigeInspectionResultsToolStripMenuItem.Size = new System.Drawing.Size(251, 22);
             this.greigeInspectionResultsToolStripMenuItem.Text = "Greige Inspection Results";
             this.greigeInspectionResultsToolStripMenuItem.Click += new System.EventHandler(this.greigeInspectionResultsToolStripMenuItem_Click);
             // 
             // greigeStockAdjustmentsToolStripMenuItem
             // 
             this.greigeStockAdjustmentsToolStripMenuItem.Name = "greigeStockAdjustmentsToolStripMenuItem";
-            this.greigeStockAdjustmentsToolStripMenuItem.Size = new System.Drawing.Size(249, 22);
+            this.greigeStockAdjustmentsToolStripMenuItem.Size = new System.Drawing.Size(251, 22);
             this.greigeStockAdjustmentsToolStripMenuItem.Text = "Greige Stock Adjustments";
             this.greigeStockAdjustmentsToolStripMenuItem.Click += new System.EventHandler(this.greigeStockAdjustmentsToolStripMenuItem_Click);
             // 
@@ -1002,7 +1019,7 @@
             this.thirdPartyGreigeReceivedForCommissionDyeingToolStripMenuItem,
             this.thirdPartyGreigeStockAdjustmentsToolStripMenuItem});
             this.greigeReceivedFrom3rdPartiesToolStripMenuItem.Name = "greigeReceivedFrom3rdPartiesToolStripMenuItem";
-            this.greigeReceivedFrom3rdPartiesToolStripMenuItem.Size = new System.Drawing.Size(249, 22);
+            this.greigeReceivedFrom3rdPartiesToolStripMenuItem.Size = new System.Drawing.Size(251, 22);
             this.greigeReceivedFrom3rdPartiesToolStripMenuItem.Text = "Greige Received from 3rd Parties";
             // 
             // thirdPartyGreigeReceivedForCommissionDyeingToolStripMenuItem
@@ -1022,23 +1039,30 @@
             // greigeConversionOldSystemToolStripMenuItem
             // 
             this.greigeConversionOldSystemToolStripMenuItem.Name = "greigeConversionOldSystemToolStripMenuItem";
-            this.greigeConversionOldSystemToolStripMenuItem.Size = new System.Drawing.Size(249, 22);
+            this.greigeConversionOldSystemToolStripMenuItem.Size = new System.Drawing.Size(251, 22);
             this.greigeConversionOldSystemToolStripMenuItem.Text = "Greige Stock Write On";
             this.greigeConversionOldSystemToolStripMenuItem.Click += new System.EventHandler(this.greigeConversionOldSystemToolStripMenuItem_Click);
             // 
             // greigeStockWriteOffToolStripMenuItem
             // 
             this.greigeStockWriteOffToolStripMenuItem.Name = "greigeStockWriteOffToolStripMenuItem";
-            this.greigeStockWriteOffToolStripMenuItem.Size = new System.Drawing.Size(249, 22);
+            this.greigeStockWriteOffToolStripMenuItem.Size = new System.Drawing.Size(251, 22);
             this.greigeStockWriteOffToolStripMenuItem.Text = "Greige Stock Write Off";
             this.greigeStockWriteOffToolStripMenuItem.Click += new System.EventHandler(this.greigeStockWriteOffToolStripMenuItem_Click);
             // 
             // greigeStockLiningsTransactionsToolStripMenuItem
             // 
             this.greigeStockLiningsTransactionsToolStripMenuItem.Name = "greigeStockLiningsTransactionsToolStripMenuItem";
-            this.greigeStockLiningsTransactionsToolStripMenuItem.Size = new System.Drawing.Size(249, 22);
+            this.greigeStockLiningsTransactionsToolStripMenuItem.Size = new System.Drawing.Size(251, 22);
             this.greigeStockLiningsTransactionsToolStripMenuItem.Text = "Greige Stock Linings Transactions";
             this.greigeStockLiningsTransactionsToolStripMenuItem.Click += new System.EventHandler(this.greigeStockLiningsTransactionsToolStripMenuItem_Click);
+            // 
+            // greigeWareHouseToWarehouseToolStripMenuItem
+            // 
+            this.greigeWareHouseToWarehouseToolStripMenuItem.Name = "greigeWareHouseToWarehouseToolStripMenuItem";
+            this.greigeWareHouseToWarehouseToolStripMenuItem.Size = new System.Drawing.Size(251, 22);
+            this.greigeWareHouseToWarehouseToolStripMenuItem.Text = "Greige WareHouse to Warehouse ";
+            this.greigeWareHouseToWarehouseToolStripMenuItem.Click += new System.EventHandler(this.greigeWareHouseToWarehouseToolStripMenuItem_Click);
             // 
             // productionPlanningToolStripMenuItem
             // 
@@ -1342,7 +1366,9 @@
             this.transferOfDyeBatchesToolStripMenuItem,
             this.allocateBatchToDyeMachineToolStripMenuItem,
             this.dyeBatchesDateRequiredManagementToolStripMenuItem,
-            this.closeDyeBatchesToolStripMenuItem});
+            this.closeDyeBatchesToolStripMenuItem,
+            this.rFDBatchRequestToolStripMenuItem,
+            this.rFDBatchRequesstCompletionToolStripMenuItem});
             this.dyeBatchingToolStripMenuItem.Name = "dyeBatchingToolStripMenuItem";
             this.dyeBatchingToolStripMenuItem.Size = new System.Drawing.Size(274, 22);
             this.dyeBatchingToolStripMenuItem.Text = "Dye Batching";
@@ -1395,6 +1421,20 @@
             this.closeDyeBatchesToolStripMenuItem.Size = new System.Drawing.Size(289, 22);
             this.closeDyeBatchesToolStripMenuItem.Text = "Close Dye Batches";
             this.closeDyeBatchesToolStripMenuItem.Click += new System.EventHandler(this.closeDyeBatchesToolStripMenuItem_Click);
+            // 
+            // rFDBatchRequestToolStripMenuItem
+            // 
+            this.rFDBatchRequestToolStripMenuItem.Name = "rFDBatchRequestToolStripMenuItem";
+            this.rFDBatchRequestToolStripMenuItem.Size = new System.Drawing.Size(289, 22);
+            this.rFDBatchRequestToolStripMenuItem.Text = "RFD Batch Request";
+            this.rFDBatchRequestToolStripMenuItem.Click += new System.EventHandler(this.rFDBatchRequestToolStripMenuItem_Click);
+            // 
+            // rFDBatchRequesstCompletionToolStripMenuItem
+            // 
+            this.rFDBatchRequesstCompletionToolStripMenuItem.Name = "rFDBatchRequesstCompletionToolStripMenuItem";
+            this.rFDBatchRequesstCompletionToolStripMenuItem.Size = new System.Drawing.Size(289, 22);
+            this.rFDBatchRequesstCompletionToolStripMenuItem.Text = "RFD Batch Requesst Completion";
+            this.rFDBatchRequesstCompletionToolStripMenuItem.Click += new System.EventHandler(this.rFDBatchRequesstCompletionToolStripMenuItem_Click);
             // 
             // dataCaptureToolStripMenuItem
             // 
@@ -1695,7 +1735,8 @@
             this.dyeingProcessLossToolStripMenuItem,
             this.dyeStockTakeSheetToolStripMenuItem,
             this.discontinuedDyesAndChemicalsToolStripMenuItem,
-            this.dyeReceipesDifinitionByConsumableToolStripMenuItem});
+            this.dyeReceipesDifinitionByConsumableToolStripMenuItem,
+            this.dyesAndChemicalsConssumedByMonthToolStripMenuItem});
             this.currentReceipesToolStripMenuItem.Name = "currentReceipesToolStripMenuItem";
             this.currentReceipesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.currentReceipesToolStripMenuItem.Text = "Dyes and Chemicals";
@@ -1704,65 +1745,72 @@
             // dyeReceipesDefinitionToolStripMenuItem
             // 
             this.dyeReceipesDefinitionToolStripMenuItem.Name = "dyeReceipesDefinitionToolStripMenuItem";
-            this.dyeReceipesDefinitionToolStripMenuItem.Size = new System.Drawing.Size(284, 22);
+            this.dyeReceipesDefinitionToolStripMenuItem.Size = new System.Drawing.Size(330, 22);
             this.dyeReceipesDefinitionToolStripMenuItem.Text = "Dye Receipes Definition";
             this.dyeReceipesDefinitionToolStripMenuItem.Click += new System.EventHandler(this.dyeReceipesDefinitionToolStripMenuItem_Click);
             // 
             // dyeConsummablesStockOnHandToolStripMenuItem
             // 
             this.dyeConsummablesStockOnHandToolStripMenuItem.Name = "dyeConsummablesStockOnHandToolStripMenuItem";
-            this.dyeConsummablesStockOnHandToolStripMenuItem.Size = new System.Drawing.Size(284, 22);
+            this.dyeConsummablesStockOnHandToolStripMenuItem.Size = new System.Drawing.Size(330, 22);
             this.dyeConsummablesStockOnHandToolStripMenuItem.Text = "Dye Consummables Stock On Hand";
             this.dyeConsummablesStockOnHandToolStripMenuItem.Click += new System.EventHandler(this.dyeConsummablesStockOnHandToolStripMenuItem_Click);
             // 
             // dyesAndChemicalConsumptionToolStripMenuItem
             // 
             this.dyesAndChemicalConsumptionToolStripMenuItem.Name = "dyesAndChemicalConsumptionToolStripMenuItem";
-            this.dyesAndChemicalConsumptionToolStripMenuItem.Size = new System.Drawing.Size(284, 22);
-            this.dyesAndChemicalConsumptionToolStripMenuItem.Text = "Dyes and Chemical Consumption";
+            this.dyesAndChemicalConsumptionToolStripMenuItem.Size = new System.Drawing.Size(330, 22);
+            this.dyesAndChemicalConsumptionToolStripMenuItem.Text = "Dyes and Chemical Consumption (By Receipe)";
             this.dyesAndChemicalConsumptionToolStripMenuItem.Click += new System.EventHandler(this.dyesAndChemicalConsumptionToolStripMenuItem_Click);
             // 
             // dyeMachinePerformanceToolStripMenuItem
             // 
             this.dyeMachinePerformanceToolStripMenuItem.Name = "dyeMachinePerformanceToolStripMenuItem";
-            this.dyeMachinePerformanceToolStripMenuItem.Size = new System.Drawing.Size(284, 22);
+            this.dyeMachinePerformanceToolStripMenuItem.Size = new System.Drawing.Size(330, 22);
             this.dyeMachinePerformanceToolStripMenuItem.Text = "Dye Machine Performance";
             this.dyeMachinePerformanceToolStripMenuItem.Click += new System.EventHandler(this.dyeMachinePerformanceToolStripMenuItem_Click);
             // 
             // dyeProductionReportToolStripMenuItem
             // 
             this.dyeProductionReportToolStripMenuItem.Name = "dyeProductionReportToolStripMenuItem";
-            this.dyeProductionReportToolStripMenuItem.Size = new System.Drawing.Size(284, 22);
+            this.dyeProductionReportToolStripMenuItem.Size = new System.Drawing.Size(330, 22);
             this.dyeProductionReportToolStripMenuItem.Text = "Dye Resource Efficiency";
             this.dyeProductionReportToolStripMenuItem.Click += new System.EventHandler(this.dyeProductionReportToolStripMenuItem_Click);
             // 
             // dyeingProcessLossToolStripMenuItem
             // 
             this.dyeingProcessLossToolStripMenuItem.Name = "dyeingProcessLossToolStripMenuItem";
-            this.dyeingProcessLossToolStripMenuItem.Size = new System.Drawing.Size(284, 22);
+            this.dyeingProcessLossToolStripMenuItem.Size = new System.Drawing.Size(330, 22);
             this.dyeingProcessLossToolStripMenuItem.Text = "Dyeing Process Loss";
             this.dyeingProcessLossToolStripMenuItem.Click += new System.EventHandler(this.dyeingProcessLossToolStripMenuItem_Click);
             // 
             // dyeStockTakeSheetToolStripMenuItem
             // 
             this.dyeStockTakeSheetToolStripMenuItem.Name = "dyeStockTakeSheetToolStripMenuItem";
-            this.dyeStockTakeSheetToolStripMenuItem.Size = new System.Drawing.Size(284, 22);
+            this.dyeStockTakeSheetToolStripMenuItem.Size = new System.Drawing.Size(330, 22);
             this.dyeStockTakeSheetToolStripMenuItem.Text = "Dye Stock Take Sheet";
             this.dyeStockTakeSheetToolStripMenuItem.Click += new System.EventHandler(this.dyeStockTakeSheetToolStripMenuItem_Click);
             // 
             // discontinuedDyesAndChemicalsToolStripMenuItem
             // 
             this.discontinuedDyesAndChemicalsToolStripMenuItem.Name = "discontinuedDyesAndChemicalsToolStripMenuItem";
-            this.discontinuedDyesAndChemicalsToolStripMenuItem.Size = new System.Drawing.Size(284, 22);
+            this.discontinuedDyesAndChemicalsToolStripMenuItem.Size = new System.Drawing.Size(330, 22);
             this.discontinuedDyesAndChemicalsToolStripMenuItem.Text = "Discontinued Dyes and Chemicals";
             this.discontinuedDyesAndChemicalsToolStripMenuItem.Click += new System.EventHandler(this.discontinuedDyesAndChemicalsToolStripMenuItem_Click);
             // 
             // dyeReceipesDifinitionByConsumableToolStripMenuItem
             // 
             this.dyeReceipesDifinitionByConsumableToolStripMenuItem.Name = "dyeReceipesDifinitionByConsumableToolStripMenuItem";
-            this.dyeReceipesDifinitionByConsumableToolStripMenuItem.Size = new System.Drawing.Size(284, 22);
+            this.dyeReceipesDifinitionByConsumableToolStripMenuItem.Size = new System.Drawing.Size(330, 22);
             this.dyeReceipesDifinitionByConsumableToolStripMenuItem.Text = "Dye Receipes Definition By Consumable";
             this.dyeReceipesDifinitionByConsumableToolStripMenuItem.Click += new System.EventHandler(this.dyeReceipesDifinitionByConsumableToolStripMenuItem_Click);
+            // 
+            // dyesAndChemicalsConssumedByMonthToolStripMenuItem
+            // 
+            this.dyesAndChemicalsConssumedByMonthToolStripMenuItem.Name = "dyesAndChemicalsConssumedByMonthToolStripMenuItem";
+            this.dyesAndChemicalsConssumedByMonthToolStripMenuItem.Size = new System.Drawing.Size(330, 22);
+            this.dyesAndChemicalsConssumedByMonthToolStripMenuItem.Text = "Dyes and Chemicals consummed ( By Chemical)";
+            this.dyesAndChemicalsConssumedByMonthToolStripMenuItem.Click += new System.EventHandler(this.dyesAndChemicalsConssumedByMonthToolStripMenuItem_Click);
             // 
             // fabricQualityTypesToolStripMenuItem
             // 
@@ -1819,7 +1867,7 @@
             // 
             this.fabricProductionNotFinishedToolStripMenuItem.Name = "fabricProductionNotFinishedToolStripMenuItem";
             this.fabricProductionNotFinishedToolStripMenuItem.Size = new System.Drawing.Size(290, 22);
-            this.fabricProductionNotFinishedToolStripMenuItem.Text = "Fabric Production Not Finished";
+            this.fabricProductionNotFinishedToolStripMenuItem.Text = "Fabric Production (Production Stage 1)";
             this.fabricProductionNotFinishedToolStripMenuItem.Click += new System.EventHandler(this.fabricProductionNotFinishedToolStripMenuItem_Click);
             // 
             // fabricQualityToolStripMenuItem
@@ -2187,7 +2235,8 @@
             this.cutSheetProductionPlanningResultsToolStripMenuItem,
             this.cutSheetOnHoldReportToolStripMenuItem,
             this.cuttingWasteToolStripMenuItem,
-            this.fabricPieceQAHistoryToolStripMenuItem});
+            this.fabricPieceQAHistoryToolStripMenuItem,
+            this.incompleteCuttingWasteDetailsToolStripMenuItem});
             this.reportingToolStripMenuItem1.Name = "reportingToolStripMenuItem1";
             this.reportingToolStripMenuItem1.Size = new System.Drawing.Size(204, 22);
             this.reportingToolStripMenuItem1.Text = "Cutting Reporting";
@@ -2289,6 +2338,13 @@
             this.fabricPieceQAHistoryToolStripMenuItem.Size = new System.Drawing.Size(277, 22);
             this.fabricPieceQAHistoryToolStripMenuItem.Text = "Fabric Piece QA History";
             this.fabricPieceQAHistoryToolStripMenuItem.Click += new System.EventHandler(this.fabricPieceQAHistoryToolStripMenuItem_Click);
+            // 
+            // incompleteCuttingWasteDetailsToolStripMenuItem
+            // 
+            this.incompleteCuttingWasteDetailsToolStripMenuItem.Name = "incompleteCuttingWasteDetailsToolStripMenuItem";
+            this.incompleteCuttingWasteDetailsToolStripMenuItem.Size = new System.Drawing.Size(277, 22);
+            this.incompleteCuttingWasteDetailsToolStripMenuItem.Text = "Incomplete Cutting Waste Details";
+            this.incompleteCuttingWasteDetailsToolStripMenuItem.Click += new System.EventHandler(this.incompleteCuttingWasteDetailsToolStripMenuItem_Click);
             // 
             // viewsToolStripMenuItem2
             // 
@@ -4042,6 +4098,13 @@
             this.PBar1.Size = new System.Drawing.Size(402, 23);
             this.PBar1.TabIndex = 5;
             // 
+            // cottonContractToolStripMenuItem
+            // 
+            this.cottonContractToolStripMenuItem.Name = "cottonContractToolStripMenuItem";
+            this.cottonContractToolStripMenuItem.Size = new System.Drawing.Size(254, 22);
+            this.cottonContractToolStripMenuItem.Text = "Cotton Contract";
+            this.cottonContractToolStripMenuItem.Click += new System.EventHandler(this.cottonContractToolStripMenuItem_Click);
+            // 
             // frmTLMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -4509,5 +4572,12 @@
         private System.Windows.Forms.ToolStripMenuItem dyeChemicalsStockAdjustmentToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem dyeChemicalsStockClosingToOpeningToolStripMenuItem;
         private System.Windows.Forms.ProgressBar PBar1;
+        private System.Windows.Forms.ToolStripMenuItem incompleteCuttingWasteDetailsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem greigeWareHouseToWarehouseToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem rFDBatchRequestToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem rFDBatchRequesstCompletionToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem dyesAndChemicalsConssumedByMonthToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem yarnPalletsSoldToCustomeToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem cottonContractToolStripMenuItem;
     }
 }

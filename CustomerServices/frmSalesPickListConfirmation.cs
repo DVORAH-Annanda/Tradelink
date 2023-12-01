@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Utilities;
+using EntityFramework.Extensions;
 
 namespace CustomerServices
 {
@@ -24,12 +25,17 @@ namespace CustomerServices
         DataGridViewTextBoxColumn oTxtBoxE;   // Boxed Qty
         DataGridViewTextBoxColumn oTxtBoxF;   // Whse Picking List Number;
 
+        protected readonly TTI2Entities _context;
+        
+       
         Util core;
 
         public frmSalesPickListConfirmation()
         {
             InitializeComponent();
-            
+
+            _context = new TTI2Entities();
+        
             oTxtBoxA = new DataGridViewTextBoxColumn();  //0
             oTxtBoxA.ReadOnly = true;
             oTxtBoxA.Visible = false;
@@ -81,88 +87,152 @@ namespace CustomerServices
         {
            FormLoaded = false;
 
-            using (var context = new TTI2Entities())
+           try
+           {
+              cmboPendingPickLists.DataSource = _context.TLCSV_OrderAllocated.Where(x => x.TLORDA_PickListPrint && !x.TLORDA_Delivered).ToList(); 
+              cmboPendingPickLists.ValueMember = "TLORDA_Pk";
+              cmboPendingPickLists.DisplayMember = "TLORDA_TransNumber";
+              cmboPendingPickLists.SelectedIndex = -1;
+           }
+           catch (Exception ex)
+           {
+                MessageBox.Show(ex.Message);
+                
+           }
+
+          FormLoaded = true;
+        }
+
+        private void btnSave_Click(object sender, EventArgs e)
+        {
+            Button oBtn = sender as Button;
+            bool lSave = false;
+            DialogResult DResult;
+            TLCSV_OrderAllocated AllocSelected = null;
+            TLCSV_StockOnHand SOH = null;
+            if (oBtn != null && FormLoaded)
             {
-                var Existing = context.TLCSV_OrderAllocated.Where(x => x.TLORDA_PickListPrint && !x.TLORDA_Delivered).ToList();
+                AllocSelected = (TLCSV_OrderAllocated)cmboPendingPickLists.SelectedItem;
+
+                if (AllocSelected == null)
+                {
+                   
+                   MessageBox.Show("Please select a delivery Order");
+                   return;
+                   
+                }
+
+                foreach (DataGridViewRow Row in dataGridView1.Rows)
+                {
+                    if ((bool)Row.Cells[1].Value == true)
+                        continue;
+
+                    if (!lSave)
+                    {
+                        lSave = true;
+                    }
+                    //========================================
+                    // Item NOT confirmed so therefore have to reset all the variables
+                    // and return to stock!!!!!!!
+                    //======================================================================
+                    int Pk = (int)Row.Cells[0].Value;
+                    SOH = _context.TLCSV_StockOnHand.Find(Pk);
+                    if (SOH != null)
+                    {
+                        if (SOH.TLSOH_POOrderDetail_FK != null)
+                        {
+                            var POD = _context.TLCSV_PuchaseOrderDetail.Find(SOH.TLSOH_POOrderDetail_FK);
+                            if (POD != null)
+                            {
+                                POD.TLCUSTO_Picked = false;
+                                POD.TLCUSTO_PickedDate = null;
+                                POD.TLCUSTO_QtyPicked_ToDate -= SOH.TLSOH_BoxedQty;
+                                if(POD.TLCUSTO_QtyPicked_ToDate < 0)
+                                {
+                                    POD.TLCUSTO_QtyPicked_ToDate = 0;
+                                }
+                                POD.TLCUSTO_PickedNumber = 0;
+                                POD.TLCUSTO_StockOnHand_FK = 0;
+                                POD.TLCUSTO_Closed = false;
+                            }
+                        }
+
+                        SOH.TLSOH_Picked = false;
+                        SOH.TLSOH_PickListNo = 0;
+                        SOH.TLSOH_PickListDate = null;
+                        SOH.TLSOH_POOrder_FK = null;
+                        SOH.TLSOH_POOrderDetail_FK = null;
+                        SOH.TLSOH_WareHousePickList = 0;
+                        SOH.TLSOH_Customer_Fk = null;
+                    }
+                }
+
                 try
                 {
-                    cmboPendingPickLists.DataSource = Existing;
-                    cmboPendingPickLists.ValueMember = "TLORDA_Pk";
-                    cmboPendingPickLists.DisplayMember = "TLORDA_TransNumber";
-                    cmboPendingPickLists.SelectedIndex = -1;
+                    _context.SaveChanges();
                 }
                 catch (Exception ex)
                 {
                     MessageBox.Show(ex.Message);
                 }
 
-            }
-
-            FormLoaded = true;
-        }
-
-        private void btnSave_Click(object sender, EventArgs e)
-        {
-            Button oBtn = sender as Button;
-
-            if (oBtn != null && FormLoaded)
-            {
-                using (var context = new TTI2Entities())
+                DResult = MessageBox.Show("Would you like to confirm this picking List", "Picking List Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                
+                if (DResult == DialogResult.Yes)
                 {
-                    foreach (DataGridViewRow Row in dataGridView1.Rows)
+                    if(!lSave)
                     {
-                        if ((bool)Row.Cells[1].Value == true)
-                            continue;
-                        //========================================
-                        // Item Not confirmed so therefore have to reset all the variables
-                        //======================================================================
-                        int Pk = (int)Row.Cells[0].Value;
-                        var SOH = context.TLCSV_StockOnHand.Find(Pk);
-                        if (SOH != null)
+                       lSave = true;
+                    }
+
+                    AllocSelected.TLORDA_PLConfirmed = true;
+                   /* var SOHList = _context.TLCSV_StockOnHand.Where(x => x.TLSOH_Picked && x.TLSOH_PickListNo == AllocSelected.TLORDA_TransNumber).GroupBy(x=>x.TLSOH_POOrderDetail_FK).ToList();
+                    foreach (var Box in SOHList)
+                    {
+                        var QtyPicked = Box.Sum(x=>(int ?)x.TLSOH_BoxedQty) ?? 0;
+                        if (QtyPicked != 0)
                         {
-                            if (SOH.TLSOH_POOrderDetail_FK != null)
+                            var PoDetail = _context.TLCSV_PuchaseOrderDetail.Find(Box.FirstOrDefault().TLSOH_POOrderDetail_FK);
+                            if (PoDetail != null && QtyPicked != PoDetail.TLCUSTO_QtyPicked_ToDate)
                             {
-                                var POD = context.TLCSV_PuchaseOrderDetail.Find(SOH.TLSOH_POOrderDetail_FK);
-                                if (POD != null)
+                                if (!PoDetail.TLCUSTO_Picked)
                                 {
-                                    POD.TLCUSTO_Picked = false;
-                                    POD.TLCUSTO_PickedDate = null;
-                                    POD.TLCUSTO_PickedNumber = 0;
-                                    POD.TLCUSTO_StockOnHand_FK = 0;
-                                    POD.TLCUSTO_Closed = false;
+                                    PoDetail.TLCUSTO_Picked = true;
+                                    PoDetail.TLCUSTO_PickedDate = DateTime.Now;
                                 }
+                                PoDetail.TLCUSTO_QtyPicked_ToDate = QtyPicked;
                             }
-
-                            SOH.TLSOH_Picked = false;
-                            SOH.TLSOH_PickListNo = null;
-                            SOH.TLSOH_PickListDate = null;
-                            SOH.TLSOH_POOrder_FK = null;
-                            SOH.TLSOH_POOrderDetail_FK = null;
-                            SOH.TLSOH_WareHousePickList = 0;
-                            SOH.TLSOH_Customer_Fk = null;
-                                                   
                         }
+                    }*/
+
+                }
+                
+                //--------------------------------------------------
+                //
+                //-----------------------------------------------------------
+                try
+                {
+                    _context.SaveChanges();
+             
+                    if (lSave)
+                    {
+                            MessageBox.Show("Data saved successfully to database");
                     }
 
-                    try
-                    {
-                        context.SaveChanges();
-                        MessageBox.Show("Data saved successfully to database");
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.Message);
-                    }
-                    finally
-                    {
-                        FormLoaded = false;
-                        cmboPendingPickLists.SelectedIndex = -1;
-                        FormLoaded = true;
-                        dataGridView1.Rows.Clear();
-                    }
+                    frmSalesPickListConfirmation_Load(this, null);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+                finally
+                {
+                    FormLoaded = false;
+                    cmboPendingPickLists.SelectedIndex = -1;
+                    FormLoaded = true;
+                    dataGridView1.Rows.Clear();
                 }
             }
-
         }
 
         private void cmboPendingPickLists_SelectedIndexChanged(object sender, EventArgs e)
@@ -192,9 +262,19 @@ namespace CustomerServices
                                 dataGridView1.Rows[index].Cells[5].Value = Record.TLSOH_BoxNumber;
                                 dataGridView1.Rows[index].Cells[6].Value = Record.TLSOH_BoxedQty;
                             }
-
                         }
                     }
+                }
+            }
+        }
+
+        private void frmSalesPickListConfirmation_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if(!e.Cancel)
+            {
+                if(_context != null)
+                {
+                    _context.Dispose();
                 }
             }
         }

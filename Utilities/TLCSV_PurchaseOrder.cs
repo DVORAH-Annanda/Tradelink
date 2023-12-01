@@ -26,5 +26,6 @@ namespace Utilities
         public bool TLCSVPO_RepackTransaction { get; set; }
         public bool TLCSVPO_Provisional { get; set; }
         public bool TLCSVPO_FabricCustomer { get; set; }
+        public string TLCSVPO_ClosedBy { get; set; }
     }
 }

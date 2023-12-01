@@ -1960,9 +1960,15 @@ namespace Knitting
                         pr.YarnOP_PalletNo = Pallet.TLKNIOP_PalletNo;
                         pr.YarnOP_Store_FK = Pallet.TLKNIOP_Store_FK;
                         pr.YarnOP_YarnType_FK = Pallet.TLKNIOP_YarnType_FK;
-                        if (Pallet.TLKNIOP_YarnOrder_FK > 0)
+                        var YOrder = context.TLSPN_YarnOrder.Find(Pallet.TLKNIOP_YarnOrder_FK);
+                        if(YOrder != null)
                         {
-                           pr.YarnOP_YarnOrder_FK = context.TLSPN_YarnOrder.Find(Pallet.TLKNIOP_YarnOrder_FK).YarnO_OrderNumber.ToString();
+                            pr.YarnOP_YarnOrder_FK = YOrder.YarnO_OrderNumber.ToString();
+                            var CottonM = context.TLSPN_CottonMerge.Find(YOrder.YarnO_MergeContract_FK);
+                            if(CottonM != null)
+                            {
+                                pr.YarnOP_MergeDetails = CottonM.TLCTM_Description;
+                            }
                         }
 
                         try

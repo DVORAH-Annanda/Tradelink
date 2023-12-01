@@ -119,11 +119,15 @@ namespace CustomerServices
                             soh.TLSOH_BoxedQty = Convert.ToInt32(txtBoxedQty.Text);
 
                             if (chkWriteOff.Checked)
+                            {
                                 soh.TLSOH_Write_Off = true;
+                            }
 
                             var CompletedWork = context.TLCMT_CompletedWork.Find(soh.TLSOH_CMT_FK);
                             if (CompletedWork != null)
+                            {
                                 CompletedWork.TLCMTWC_Qty = Convert.ToInt32(txtBoxedQty.Text);
+                            }
                         }
 
                         context.SaveChanges();

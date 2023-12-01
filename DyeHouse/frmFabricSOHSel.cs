@@ -49,7 +49,8 @@ namespace DyeHouse
                 }
             }
             rbStandard.Checked = true;
-
+            rbPenNotSoldNotDeliv.Checked = false;
+            rbPenSoldNotDeliv.Checked = false;
             FormLoad = true;
         }
 
@@ -111,8 +112,14 @@ namespace DyeHouse
                 repOps.FabPendingSoldNotDelivered = rbPenSoldNotDeliv.Checked;
                 
                 frmDyeViewReport vRep = new frmDyeViewReport(22, repOps);
+                int h = Screen.PrimaryScreen.WorkingArea.Height;
+                int w = Screen.PrimaryScreen.WorkingArea.Width;
+                vRep.ClientSize = new Size(w, h);
                 vRep.ShowDialog(this);
 
+                rbPenNotSoldNotDeliv.Checked = false;
+                rbPenSoldNotDeliv.Checked = false;
+                
                 repOps = new DyeReportOptions();
                
 

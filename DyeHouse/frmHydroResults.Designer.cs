@@ -34,13 +34,15 @@ namespace DyeHouse
             this.btnSave = new System.Windows.Forms.Button();
             this.txtDyeBatch = new System.Windows.Forms.TextBox();
             this.btnSearch = new System.Windows.Forms.Button();
+            this.dtpTransactionDate = new System.Windows.Forms.DateTimePicker();
+            this.label2 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(155, 105);
+            this.label1.Location = new System.Drawing.Point(136, 105);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(67, 13);
             this.label1.TabIndex = 0;
@@ -81,11 +83,29 @@ namespace DyeHouse
             this.btnSearch.UseVisualStyleBackColor = true;
             this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
             // 
+            // dtpTransactionDate
+            // 
+            this.dtpTransactionDate.Location = new System.Drawing.Point(241, 55);
+            this.dtpTransactionDate.Name = "dtpTransactionDate";
+            this.dtpTransactionDate.Size = new System.Drawing.Size(125, 20);
+            this.dtpTransactionDate.TabIndex = 6;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(133, 62);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(89, 13);
+            this.label2.TabIndex = 7;
+            this.label2.Text = "Transaction Date";
+            // 
             // frmHydroResults
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(632, 450);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.dtpTransactionDate);
             this.Controls.Add(this.btnSearch);
             this.Controls.Add(this.txtDyeBatch);
             this.Controls.Add(this.btnSave);
@@ -108,5 +128,7 @@ namespace DyeHouse
         private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.TextBox txtDyeBatch;
         private System.Windows.Forms.Button btnSearch;
+        private System.Windows.Forms.DateTimePicker dtpTransactionDate;
+        private System.Windows.Forms.Label label2;
     }
 }

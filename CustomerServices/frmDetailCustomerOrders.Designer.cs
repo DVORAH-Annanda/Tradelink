@@ -32,21 +32,23 @@
             this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
             this.btnSubmit = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
-            this.comboCustomers = new CustomerServices.CheckComboBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label7 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
+            this.chkGroupByWeek = new System.Windows.Forms.CheckBox();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.rbBoth = new System.Windows.Forms.RadioButton();
+            this.rbStdOrdersOnly = new System.Windows.Forms.RadioButton();
+            this.rbProvisionalOrdersOnly = new System.Windows.Forms.RadioButton();
+            this.comboCustomers = new System.Windows.Forms.ComboBox();
+            this.comboCustomerOrders = new CustomerServices.CheckComboBox();
             this.comboSizes = new CustomerServices.CheckComboBox();
             this.comboColours = new CustomerServices.CheckComboBox();
             this.comboStyles = new CustomerServices.CheckComboBox();
             this.comboWhses = new CustomerServices.CheckComboBox();
-            this.chkGroupByWeek = new System.Windows.Forms.CheckBox();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.rbStdOrdersOnly = new System.Windows.Forms.RadioButton();
-            this.rbProvisionalOrdersOnly = new System.Windows.Forms.RadioButton();
-            this.rbBoth = new System.Windows.Forms.RadioButton();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -69,7 +71,7 @@
             // 
             // btnSubmit
             // 
-            this.btnSubmit.Location = new System.Drawing.Point(533, 508);
+            this.btnSubmit.Location = new System.Drawing.Point(533, 541);
             this.btnSubmit.Name = "btnSubmit";
             this.btnSubmit.Size = new System.Drawing.Size(75, 23);
             this.btnSubmit.TabIndex = 4;
@@ -86,18 +88,10 @@
             this.label3.TabIndex = 7;
             this.label3.Text = "Customers";
             // 
-            // comboCustomers
-            // 
-            this.comboCustomers.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.comboCustomers.FormattingEnabled = true;
-            this.comboCustomers.Location = new System.Drawing.Point(249, 82);
-            this.comboCustomers.Name = "comboCustomers";
-            this.comboCustomers.Size = new System.Drawing.Size(210, 21);
-            this.comboCustomers.TabIndex = 8;
-            this.comboCustomers.Text = "Select Options";
-            // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.comboCustomerOrders);
+            this.groupBox1.Controls.Add(this.label7);
             this.groupBox1.Controls.Add(this.label5);
             this.groupBox1.Controls.Add(this.label4);
             this.groupBox1.Controls.Add(this.label2);
@@ -108,15 +102,24 @@
             this.groupBox1.Controls.Add(this.comboWhses);
             this.groupBox1.Location = new System.Drawing.Point(128, 129);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(426, 219);
+            this.groupBox1.Size = new System.Drawing.Size(426, 267);
             this.groupBox1.TabIndex = 10;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Filter By";
             // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(61, 34);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(85, 13);
+            this.label7.TabIndex = 20;
+            this.label7.Text = "Customer Orders";
+            // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(61, 167);
+            this.label5.Location = new System.Drawing.Point(61, 227);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(32, 13);
             this.label5.TabIndex = 19;
@@ -125,7 +128,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(61, 99);
+            this.label4.Location = new System.Drawing.Point(61, 158);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(42, 13);
             this.label4.TabIndex = 18;
@@ -134,7 +137,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(61, 31);
+            this.label2.Location = new System.Drawing.Point(61, 91);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(35, 13);
             this.label2.TabIndex = 17;
@@ -149,53 +152,10 @@
             this.label6.TabIndex = 16;
             this.label6.Text = "Warehouses";
             // 
-            // comboSizes
-            // 
-            this.comboSizes.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.comboSizes.FormattingEnabled = true;
-            this.comboSizes.Location = new System.Drawing.Point(132, 167);
-            this.comboSizes.Name = "comboSizes";
-            this.comboSizes.Size = new System.Drawing.Size(233, 21);
-            this.comboSizes.TabIndex = 15;
-            this.comboSizes.Text = "Select Options";
-            this.comboSizes.SelectedIndexChanged += new System.EventHandler(this.cmboSelectedIndex_Changed);
-            // 
-            // comboColours
-            // 
-            this.comboColours.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.comboColours.FormattingEnabled = true;
-            this.comboColours.Location = new System.Drawing.Point(132, 99);
-            this.comboColours.Name = "comboColours";
-            this.comboColours.Size = new System.Drawing.Size(233, 21);
-            this.comboColours.TabIndex = 14;
-            this.comboColours.Text = "Select Options";
-            this.comboColours.SelectedIndexChanged += new System.EventHandler(this.cmboSelectedIndex_Changed);
-            // 
-            // comboStyles
-            // 
-            this.comboStyles.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.comboStyles.FormattingEnabled = true;
-            this.comboStyles.Location = new System.Drawing.Point(132, 31);
-            this.comboStyles.Name = "comboStyles";
-            this.comboStyles.Size = new System.Drawing.Size(233, 21);
-            this.comboStyles.TabIndex = 13;
-            this.comboStyles.Text = "Select Options";
-            this.comboStyles.SelectedIndexChanged += new System.EventHandler(this.cmboSelectedIndex_Changed);
-            // 
-            // comboWhses
-            // 
-            this.comboWhses.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.comboWhses.FormattingEnabled = true;
-            this.comboWhses.Location = new System.Drawing.Point(132, -37);
-            this.comboWhses.Name = "comboWhses";
-            this.comboWhses.Size = new System.Drawing.Size(233, 21);
-            this.comboWhses.TabIndex = 12;
-            this.comboWhses.Text = "Select Options";
-            // 
             // chkGroupByWeek
             // 
             this.chkGroupByWeek.AutoSize = true;
-            this.chkGroupByWeek.Location = new System.Drawing.Point(240, 371);
+            this.chkGroupByWeek.Location = new System.Drawing.Point(232, 416);
             this.chkGroupByWeek.Name = "chkGroupByWeek";
             this.chkGroupByWeek.Size = new System.Drawing.Size(102, 17);
             this.chkGroupByWeek.TabIndex = 11;
@@ -207,12 +167,23 @@
             this.groupBox2.Controls.Add(this.rbBoth);
             this.groupBox2.Controls.Add(this.rbStdOrdersOnly);
             this.groupBox2.Controls.Add(this.rbProvisionalOrdersOnly);
-            this.groupBox2.Location = new System.Drawing.Point(193, 403);
+            this.groupBox2.Location = new System.Drawing.Point(192, 451);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(200, 113);
             this.groupBox2.TabIndex = 12;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Order Class";
+            // 
+            // rbBoth
+            // 
+            this.rbBoth.AutoSize = true;
+            this.rbBoth.Location = new System.Drawing.Point(40, 79);
+            this.rbBoth.Name = "rbBoth";
+            this.rbBoth.Size = new System.Drawing.Size(47, 17);
+            this.rbBoth.TabIndex = 13;
+            this.rbBoth.TabStop = true;
+            this.rbBoth.Text = "Both";
+            this.rbBoth.UseVisualStyleBackColor = true;
             // 
             // rbStdOrdersOnly
             // 
@@ -236,26 +207,77 @@
             this.rbProvisionalOrdersOnly.Text = "Provisional Order Only\r\n";
             this.rbProvisionalOrdersOnly.UseVisualStyleBackColor = true;
             // 
-            // rbBoth
+            // comboCustomers
             // 
-            this.rbBoth.AutoSize = true;
-            this.rbBoth.Location = new System.Drawing.Point(40, 79);
-            this.rbBoth.Name = "rbBoth";
-            this.rbBoth.Size = new System.Drawing.Size(47, 17);
-            this.rbBoth.TabIndex = 13;
-            this.rbBoth.TabStop = true;
-            this.rbBoth.Text = "Both";
-            this.rbBoth.UseVisualStyleBackColor = true;
+            this.comboCustomers.FormattingEnabled = true;
+            this.comboCustomers.Location = new System.Drawing.Point(249, 85);
+            this.comboCustomers.Name = "comboCustomers";
+            this.comboCustomers.Size = new System.Drawing.Size(276, 21);
+            this.comboCustomers.TabIndex = 13;
+            this.comboCustomers.SelectedIndexChanged += new System.EventHandler(this.comboCustomers_SelectedIndexChanged_1);
+            // 
+            // comboCustomerOrders
+            // 
+            this.comboCustomerOrders.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.comboCustomerOrders.FormattingEnabled = true;
+            this.comboCustomerOrders.Location = new System.Drawing.Point(173, 31);
+            this.comboCustomerOrders.Name = "comboCustomerOrders";
+            this.comboCustomerOrders.Size = new System.Drawing.Size(233, 21);
+            this.comboCustomerOrders.TabIndex = 21;
+            this.comboCustomerOrders.Text = "Select Options";
+            // 
+            // comboSizes
+            // 
+            this.comboSizes.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.comboSizes.FormattingEnabled = true;
+            this.comboSizes.Location = new System.Drawing.Point(173, 219);
+            this.comboSizes.Name = "comboSizes";
+            this.comboSizes.Size = new System.Drawing.Size(233, 21);
+            this.comboSizes.TabIndex = 15;
+            this.comboSizes.Text = "Select Options";
+            this.comboSizes.SelectedIndexChanged += new System.EventHandler(this.cmboSelectedIndex_Changed);
+            // 
+            // comboColours
+            // 
+            this.comboColours.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.comboColours.FormattingEnabled = true;
+            this.comboColours.Location = new System.Drawing.Point(173, 150);
+            this.comboColours.Name = "comboColours";
+            this.comboColours.Size = new System.Drawing.Size(233, 21);
+            this.comboColours.TabIndex = 14;
+            this.comboColours.Text = "Select Options";
+            this.comboColours.SelectedIndexChanged += new System.EventHandler(this.cmboSelectedIndex_Changed);
+            // 
+            // comboStyles
+            // 
+            this.comboStyles.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.comboStyles.FormattingEnabled = true;
+            this.comboStyles.Location = new System.Drawing.Point(173, 83);
+            this.comboStyles.Name = "comboStyles";
+            this.comboStyles.Size = new System.Drawing.Size(233, 21);
+            this.comboStyles.TabIndex = 13;
+            this.comboStyles.Text = "Select Options";
+            this.comboStyles.SelectedIndexChanged += new System.EventHandler(this.cmboSelectedIndex_Changed);
+            // 
+            // comboWhses
+            // 
+            this.comboWhses.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.comboWhses.FormattingEnabled = true;
+            this.comboWhses.Location = new System.Drawing.Point(132, -37);
+            this.comboWhses.Name = "comboWhses";
+            this.comboWhses.Size = new System.Drawing.Size(233, 21);
+            this.comboWhses.TabIndex = 12;
+            this.comboWhses.Text = "Select Options";
             // 
             // frmDetailCustomerOrders
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(620, 543);
+            this.ClientSize = new System.Drawing.Size(620, 576);
+            this.Controls.Add(this.comboCustomers);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.chkGroupByWeek);
             this.Controls.Add(this.groupBox1);
-            this.Controls.Add(this.comboCustomers);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.btnSubmit);
             this.Controls.Add(this.dateTimePicker1);
@@ -278,8 +300,6 @@
         private System.Windows.Forms.DateTimePicker dateTimePicker1;
         private System.Windows.Forms.Button btnSubmit;
         private System.Windows.Forms.Label label3;
-        // private System.Windows.Forms.ComboBox comboCustomers;
-        private CustomerServices.CheckComboBox comboCustomers;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label4;
@@ -294,6 +314,9 @@
         private System.Windows.Forms.RadioButton rbStdOrdersOnly;
         private System.Windows.Forms.RadioButton rbProvisionalOrdersOnly;
         private System.Windows.Forms.RadioButton rbBoth;
+        private CheckComboBox comboCustomerOrders;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.ComboBox comboCustomers;
         // private System.Windows.Forms.ComboBox comboStyles;
     }
 }

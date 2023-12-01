@@ -1,4 +1,5 @@
 ﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -159,9 +160,7 @@ namespace CustomerServices
                         vRep.Close();
                         vRep.Dispose();
                     }
-
-                }
-                 
+                }                
                 
             }
         }
@@ -179,8 +178,14 @@ namespace CustomerServices
                     int Txt = Convert.ToInt32(txtNo.Text);
                     if (_PickList)
                         soh = context.TLCSV_StockOnHand.Where(x => x.TLSOH_PickListNo == Txt).OrderBy(x => x.TLSOH_BoxNumber).ToList();
-                    else
+                    else                        
                         soh = context.TLCSV_StockOnHand.Where(x => x.TLSOH_DNListNo == Txt).OrderBy(x => x.TLSOH_BoxNumber).ToList();
+                        // AS-20231114 *****    
+                        // soh = context.TLCSV_StockOnHand
+                        //.Where(x => x.TLSOH_DNListNo == Txt)
+                        //.OrderBy(x => x.TLSOH_Size_FK)
+                        //.ThenBy(x => x.TLSOH_BoxNumber)
+                        //.ToList();
 
 
                     if (soh.Count > 0)

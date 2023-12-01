@@ -39,15 +39,17 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.btnSubmit = new System.Windows.Forms.Button();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.cmboSizes = new CustomerServices.CheckComboBox();
-            this.cmboColours = new CustomerServices.CheckComboBox();
-            this.cmboStyles = new CustomerServices.CheckComboBox();
             this.cmboCustomers = new CustomerServices.CheckComboBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.cmboStyles = new CustomerServices.CheckComboBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.cmboColours = new CustomerServices.CheckComboBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.cmboSizes = new CustomerServices.CheckComboBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.CmboWareHouses = new CustomerServices.CheckComboBox();
+            this.label7 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -158,7 +160,7 @@
             // 
             // btnSubmit
             // 
-            this.btnSubmit.Location = new System.Drawing.Point(667, 536);
+            this.btnSubmit.Location = new System.Drawing.Point(667, 617);
             this.btnSubmit.Name = "btnSubmit";
             this.btnSubmit.Size = new System.Drawing.Size(75, 23);
             this.btnSubmit.TabIndex = 5;
@@ -166,44 +168,90 @@
             this.btnSubmit.UseVisualStyleBackColor = true;
             this.btnSubmit.Click += new System.EventHandler(this.btnSubmit_Click);
             // 
-            // label3
+            // cmboCustomers
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(153, 37);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(51, 13);
-            this.label3.TabIndex = 6;
-            this.label3.Text = "Customer";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(153, 100);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(30, 13);
-            this.label4.TabIndex = 7;
-            this.label4.Text = "Style";
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(153, 163);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(37, 13);
-            this.label5.TabIndex = 8;
-            this.label5.Text = "Colour";
+            this.cmboCustomers.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cmboCustomers.FormattingEnabled = true;
+            this.cmboCustomers.Location = new System.Drawing.Point(219, 28);
+            this.cmboCustomers.Name = "cmboCustomers";
+            this.cmboCustomers.Size = new System.Drawing.Size(251, 21);
+            this.cmboCustomers.TabIndex = 10;
+            this.cmboCustomers.Text = "Select Options";
+            this.cmboCustomers.SelectedIndexChanged += new System.EventHandler(this.cmboCustomers_SelectedIndexChanged);
             // 
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(153, 226);
+            this.label6.Location = new System.Drawing.Point(181, 226);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(27, 13);
             this.label6.TabIndex = 9;
             this.label6.Text = "Size";
             // 
+            // cmboStyles
+            // 
+            this.cmboStyles.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cmboStyles.FormattingEnabled = true;
+            this.cmboStyles.Location = new System.Drawing.Point(219, 91);
+            this.cmboStyles.Name = "cmboStyles";
+            this.cmboStyles.Size = new System.Drawing.Size(251, 21);
+            this.cmboStyles.TabIndex = 11;
+            this.cmboStyles.Text = "Select Options";
+            this.cmboStyles.SelectedIndexChanged += new System.EventHandler(this.cmboStyles_SelectedIndexChanged);
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(171, 163);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(37, 13);
+            this.label5.TabIndex = 8;
+            this.label5.Text = "Colour";
+            // 
+            // cmboColours
+            // 
+            this.cmboColours.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cmboColours.FormattingEnabled = true;
+            this.cmboColours.Location = new System.Drawing.Point(219, 154);
+            this.cmboColours.Name = "cmboColours";
+            this.cmboColours.Size = new System.Drawing.Size(251, 21);
+            this.cmboColours.TabIndex = 12;
+            this.cmboColours.Text = "Select Options";
+            this.cmboColours.SelectedIndexChanged += new System.EventHandler(this.cmboColours_SelectedIndexChanged);
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(178, 100);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(30, 13);
+            this.label4.TabIndex = 7;
+            this.label4.Text = "Style";
+            // 
+            // cmboSizes
+            // 
+            this.cmboSizes.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cmboSizes.FormattingEnabled = true;
+            this.cmboSizes.Location = new System.Drawing.Point(219, 217);
+            this.cmboSizes.Name = "cmboSizes";
+            this.cmboSizes.Size = new System.Drawing.Size(251, 21);
+            this.cmboSizes.TabIndex = 13;
+            this.cmboSizes.Text = "Select Options";
+            this.cmboSizes.SelectedIndexChanged += new System.EventHandler(this.cmboSizes_SelectedIndexChanged);
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(157, 37);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(51, 13);
+            this.label3.TabIndex = 6;
+            this.label3.Text = "Customer";
+            // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.label7);
+            this.groupBox2.Controls.Add(this.CmboWareHouses);
             this.groupBox2.Controls.Add(this.label3);
             this.groupBox2.Controls.Add(this.cmboSizes);
             this.groupBox2.Controls.Add(this.label4);
@@ -214,60 +262,35 @@
             this.groupBox2.Controls.Add(this.cmboCustomers);
             this.groupBox2.Location = new System.Drawing.Point(114, 229);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(539, 282);
+            this.groupBox2.Size = new System.Drawing.Size(539, 327);
             this.groupBox2.TabIndex = 14;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Selection Criteria";
             // 
-            // cmboSizes
+            // CmboWareHouses
             // 
-            this.cmboSizes.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.cmboSizes.FormattingEnabled = true;
-            this.cmboSizes.Location = new System.Drawing.Point(223, 217);
-            this.cmboSizes.Name = "cmboSizes";
-            this.cmboSizes.Size = new System.Drawing.Size(251, 21);
-            this.cmboSizes.TabIndex = 13;
-            this.cmboSizes.Text = "Select Options";
-            this.cmboSizes.SelectedIndexChanged += new System.EventHandler(this.cmboSizes_SelectedIndexChanged);
+            this.CmboWareHouses.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.CmboWareHouses.FormattingEnabled = true;
+            this.CmboWareHouses.Location = new System.Drawing.Point(219, 284);
+            this.CmboWareHouses.Name = "CmboWareHouses";
+            this.CmboWareHouses.Size = new System.Drawing.Size(251, 21);
+            this.CmboWareHouses.TabIndex = 14;
+            this.CmboWareHouses.Text = "Select Options";
             // 
-            // cmboColours
+            // label7
             // 
-            this.cmboColours.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.cmboColours.FormattingEnabled = true;
-            this.cmboColours.Location = new System.Drawing.Point(223, 154);
-            this.cmboColours.Name = "cmboColours";
-            this.cmboColours.Size = new System.Drawing.Size(251, 21);
-            this.cmboColours.TabIndex = 12;
-            this.cmboColours.Text = "Select Options";
-            this.cmboColours.SelectedIndexChanged += new System.EventHandler(this.cmboColours_SelectedIndexChanged);
-            // 
-            // cmboStyles
-            // 
-            this.cmboStyles.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.cmboStyles.FormattingEnabled = true;
-            this.cmboStyles.Location = new System.Drawing.Point(223, 91);
-            this.cmboStyles.Name = "cmboStyles";
-            this.cmboStyles.Size = new System.Drawing.Size(251, 21);
-            this.cmboStyles.TabIndex = 11;
-            this.cmboStyles.Text = "Select Options";
-            this.cmboStyles.SelectedIndexChanged += new System.EventHandler(this.cmboStyles_SelectedIndexChanged);
-            // 
-            // cmboCustomers
-            // 
-            this.cmboCustomers.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.cmboCustomers.FormattingEnabled = true;
-            this.cmboCustomers.Location = new System.Drawing.Point(223, 28);
-            this.cmboCustomers.Name = "cmboCustomers";
-            this.cmboCustomers.Size = new System.Drawing.Size(251, 21);
-            this.cmboCustomers.TabIndex = 10;
-            this.cmboCustomers.Text = "Select Options";
-            this.cmboCustomers.SelectedIndexChanged += new System.EventHandler(this.cmboCustomers_SelectedIndexChanged);
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(139, 291);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(69, 13);
+            this.label7.TabIndex = 15;
+            this.label7.Text = "WareHouses";
             // 
             // frmCustomerSales
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(754, 582);
+            this.ClientSize = new System.Drawing.Size(754, 669);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.btnSubmit);
             this.Controls.Add(this.groupBox1);
@@ -290,23 +313,21 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button btnSubmit;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Label label6;
-      //  private System.Windows.Forms.ComboBox cmboCustomers;
-      //  private System.Windows.Forms.ComboBox cmboStyles;
-      //  private System.Windows.Forms.ComboBox cmboColours;
-      //  private System.Windows.Forms.ComboBox cmboSizes;
-        private CustomerServices.CheckComboBox cmboCustomers;
-        private CustomerServices.CheckComboBox cmboStyles;
-        private CustomerServices.CheckComboBox cmboColours;
-        private CustomerServices.CheckComboBox cmboSizes;
         private System.Windows.Forms.RadioButton rbSummarisedByCustomer;
         private System.Windows.Forms.RadioButton rbSummarisedForCompany;
         private System.Windows.Forms.RadioButton rbRankedByStyle;
-        private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.RadioButton rbRankedByStyleColor;
         private System.Windows.Forms.RadioButton rbRankedByStyleSize;
+        private CheckComboBox cmboCustomers;
+        private System.Windows.Forms.Label label6;
+        private CheckComboBox cmboStyles;
+        private System.Windows.Forms.Label label5;
+        private CheckComboBox cmboColours;
+        private System.Windows.Forms.Label label4;
+        private CheckComboBox cmboSizes;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.Label label7;
+        private CheckComboBox CmboWareHouses;
     }
 }

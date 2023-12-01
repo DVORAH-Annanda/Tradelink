@@ -231,8 +231,6 @@ namespace CustomerServices
 
             if (oBtn != null)
             {
-               
-
                 CSVServices csvService = new CSVServices();
                 if (RBStockOH.Checked)
                     csvService.SOHClassification = true;
@@ -258,15 +256,18 @@ namespace CustomerServices
                     }
                 }
                 csvService.DateIntoStock = dtpDateinStock.Value;
-                
+
+                QueryParms.GradeA = false;
+
                 if (rbGradeA.Checked)
+                {
                     QueryParms.GradeA = true;
-                else
-                    QueryParms.GradeA = false;
+                }
 
                 if (rbDiscontinued.Checked)
+                {
                     QueryParms.Discontinued = true;
- 
+                }
                 frmCSViewRep vRep = new frmCSViewRep(repNo, QueryParms, csvService);
                 int h = Screen.PrimaryScreen.WorkingArea.Height;
                 int w = Screen.PrimaryScreen.WorkingArea.Width;
@@ -373,6 +374,11 @@ namespace CustomerServices
                     }
                 }
             }
+        }
+
+        private void rbCostingPastel_CheckedChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

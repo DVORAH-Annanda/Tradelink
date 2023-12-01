@@ -103,6 +103,8 @@ namespace DyeHouse
 
                 var QueryGroup = Query.OrderBy(x => x.DYEB_BatchNo).GroupBy(x => x.DYEB_BatchNo);
 
+                cmboBatchNumber.Items.Clear();
+                
                 foreach (var BatchGroup in QueryGroup)
                 {
                     TLDYE_DyeBatch DB = new TLDYE_DyeBatch();

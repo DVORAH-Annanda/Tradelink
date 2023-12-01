@@ -149,9 +149,9 @@
             this.label13.AutoSize = true;
             this.label13.Location = new System.Drawing.Point(12, 109);
             this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(129, 13);
+            this.label13.Size = new System.Drawing.Size(112, 26);
             this.label13.TabIndex = 18;
-            this.label13.Text = "Customer Fabric Order No";
+            this.label13.Text = "Customer Fabric Order\r\n(Purchase Order)\r\n";
             // 
             // groupBox2
             // 

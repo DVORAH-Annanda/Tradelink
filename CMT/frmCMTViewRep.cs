@@ -678,6 +678,11 @@ namespace CMT
                     {
                         int Units_Per_Bag = 0;
 
+                        if (_QueryParms.ExcludeOnHold && LineIssue.TLCMTLI_OnHold)
+                        {
+                            continue;
+                        }
+
                         var CSReceipt = context.TLCUT_CutSheetReceipt.Where(x => x.TLCUTSHR_CutSheet_FK == LineIssue.TLCMTLI_CutSheet_FK).FirstOrDefault();
                         if (CSReceipt != null)
                         {
@@ -2877,13 +2882,30 @@ namespace CMT
                                             nr.Col11 += EUnits;
                                     }
                                 }
-                                nr.Total = nr.Col1 + nr.Col2 + nr.Col3 + nr.Col4 + nr.Col5 + nr.Col6 + nr.Col7 + nr.Col8 + nr.Col9 + nr.Col10 + nr.Col11;
+                                try
+                                {
+                                    nr.Total = nr.Col1 + nr.Col2 + nr.Col3 + nr.Col4 + nr.Col5 + nr.Col6 + nr.Col7 + nr.Col8 + nr.Col9 + nr.Col10 + nr.Col11;
+                                }
+                                catch (Exception ex)
+                                {
+                                    MessageBox.Show(ex.Message, nr.CustSheet);
+                                }
                             }
 
                             nr.Reason = LineIssue.TLCMTLI_Reason;
-                            nr.TransferDate = (DateTime)LineIssue.TLCMTLI_TransferDate;
+                            if (LineIssue.TLCMTLI_TransferDate != null)
+                            {
+                                nr.TransferDate = (DateTime)LineIssue.TLCMTLI_TransferDate;
+                            }
 
-                            dataTable1.AddDataTable1Row(nr);
+                            try
+                            {
+                                dataTable1.AddDataTable1Row(nr);
+                            }
+                            catch(Exception ex)
+                            {
+                                MessageBox.Show(ex.Message, nr.CustSheet);
+                            }
                         }
                     }
                 }

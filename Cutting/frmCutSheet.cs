@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Utilities;
 using System.Reflection;
+using System.Net;
+using System.Net.Sockets;
 
 namespace Cutting
 {
@@ -556,7 +558,7 @@ namespace Cutting
 
                         formloaded = false;
                         cmboStyles.DataSource = null;
-                        cmboStyles.DataSource = context.TLADM_Styles.Where(x => x.Sty_Label_FK == DO.TLDYO_Customer_FK).ToList();
+                        cmboStyles.DataSource = context.TLADM_Styles.Where(x => x.Sty_Customer_Fk == DO.TLDYO_Customer_FK).ToList();
                         cmboStyles.DisplayMember = "Sty_Description";
                         cmboStyles.ValueMember = "Sty_Id";
                         cmboStyles.SelectedValue = DO.TLDYO_Style_FK;
@@ -755,6 +757,11 @@ namespace Cutting
                                     MessageBox.Show("No Rating Details found for Style selected");
                                     return;
 
+                                }
+                                else if (RatingDetails.Pr_Discontinued)
+                                {
+                                    MessageBox.Show("Ratings Table closed for this style...Please contact IT support");
+                                    return;
                                 }
 
                                 Rating = RatingDetails.Pr_numeric_Rating;
@@ -1295,7 +1302,7 @@ namespace Cutting
                             cmboDownSize.DisplayMember =  "SI_Description";
                             cmboDownSize.ValueMember = "SI_Id";
                             formloaded = true;
-
+                         
                             groupBox5.Visible = true;
                             label22.Visible = true;
                             cmboDownSize.Visible = true;
@@ -1342,7 +1349,28 @@ namespace Cutting
                         CSheet.TLCutSH_Size_PN = Size.SI_PowerN;
 
                         CS.TLCutSH_Size_FK = Size.SI_id;
-                        CS.TLCutSH_Size_PN = Size.SI_PowerN; 
+                        CS.TLCutSH_Size_PN = Size.SI_PowerN;
+
+                        /*
+                        string Mach_IP = Dns.GetHostEntry(Dns.GetHostName())
+                                 .AddressList.First(f => f.AddressFamily == AddressFamily.InterNetwork)
+                                 .ToString();
+
+                        var Message = "CutSheet " + CS.TLCutSH_No.Trim() + " resized. Was :  " + context.TLADM_Sizes.Find(OriginalSize_Fk).SI_Display;
+                        Message += " Now : " + Size.SI_Display;
+                        
+                        
+                        TLADM_DailyLog DailyL = new TLADM_DailyLog();
+                        DailyL.TLDL_Date = DateTime.Now.Date;
+                        DailyL.TLDL_Dept_Fk = 13;
+                        DailyL.TLDL_IPAddress = Mach_IP;
+                        DailyL.TLDL_Comments = Message;
+                        DailyL.TLDL_TransDetail = UDet._UserName;
+                                      
+                        context.TLADM_DailyLog.Add(DailyL);
+                        */
+                        
+
                     }
 
                     foreach(DataGridViewRow Row in dataGridView1.Rows)
@@ -1359,15 +1387,21 @@ namespace Cutting
                         if(DyeBatchDetail != null)
                         {
                             DyeBatchDetail.DYEBO_ProductRating_FK = MarkerRating.Pr_Id;
-                            context.SaveChanges();
-
+                           
                             DataGridViewCellEventArgs ee = new DataGridViewCellEventArgs(9999, Pk);
                             dataGridView1_CellContentClick(dataGridView1, ee);
-
                         }
                     }
 
-                    context.SaveChanges();
+                    try
+                    {
+                        context.SaveChanges();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                     
+                    }
                 }
             }
         }

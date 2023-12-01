@@ -149,8 +149,49 @@ namespace CustomerServices
                         QueryParms.Styles.Remove(value);
 
                 }
+
+                //???2023/10/27
+                // Clear and reload the cmboColours based on the selected styles
+                LoadColoursBasedOnSelectedStyles();
+                //???2023/10/27
             }
         }
+
+
+        /// //???2023/11/03
+        private void LoadColoursBasedOnSelectedStyles()
+        {
+            using (var context = new TTI2Entities())
+            {
+                // Get the selected style IDs
+                var selectedStyleIds = QueryParms.Styles.Select(style => style.Sty_Id).ToList();
+
+                // Query the bridge table to get associated color IDs for the selected styles
+                var colorIds = context.TLADM_StyleColour
+                    .Where(sc => selectedStyleIds.Contains(sc.STYCOL_Style_FK))
+                    .Select(sc => sc.STYCOL_Colour_FK)
+                    .ToList();
+
+                // Get the colors based on the retrieved color IDs
+                var colors = context.TLADM_Colours
+                    .Where(c => !(bool)c.Col_Discontinued)
+                    .Where(c => colorIds.Contains(c.Col_Id))
+                    .OrderBy(c => c.Col_Display)
+                    .ToList();
+
+                // Clear the ComboBox
+                cmboColours.Items.Clear();
+
+                // Populate the ComboBox with the filtered colors
+                foreach (var color in colors)
+                {
+                    cmboColours.Items.Add(new CustomerServices.CheckComboBoxItem(color.Col_Id, color.Col_Display, false));
+                }
+            }
+        }
+        /// //???2023/11/03 
+
+
         //-------------------------------------------------------------------------------------
         // this message handler gets called when the user checks/unchecks an item the combo box
         //----------------------------------------------------------------------------------------
@@ -207,19 +248,20 @@ namespace CustomerServices
                 var SelectedCustomer = (TLADM_CustomerFile)cmboCustomers.SelectedItem;
                 if (SelectedCustomer == null)
                 {
-                        MessageBox.Show("Please select a customer from the drop down box");
-                        return;
-                }
-
-                if(!Transactional)
-                {
-                    if(QueryParms.PurchaseOrders.Count() == 0)
+                    using (DialogCenteringService centeringService = new DialogCenteringService(this)) // center message box
                     {
-                        MessageBox.Show("Please select a customer purchase order from the drop down box");
+                        MessageBox.Show("Please select a customer from the drop down box");
                         return;
                     }
                 }
+
+                if (QueryParms.PurchaseOrders.Count() == 0)
+                {
+                        MessageBox.Show("Please select a customer purchase order from the drop down box");
+                        return;
+                }
                 
+                             
                 QueryParms.Customers.Add(repo.LoadCustomers(SelectedCustomer.Cust_Pk));
                 QueryParms.TransactHistory = Transactional;
 

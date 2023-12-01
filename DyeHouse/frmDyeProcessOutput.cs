@@ -14,13 +14,14 @@ namespace DyeHouse
     {
         bool formloaded;
         Util core;
-
-        public frmDyeProcessOutput()
+        UserDetails _UserD;
+        public frmDyeProcessOutput(UserDetails _UID)
         {
             InitializeComponent();
             dataGridView1.AllowUserToAddRows = false;
             dataGridView1.AutoGenerateColumns = false;
-            
+
+            _UserD = _UID;
             core = new Util();
             Setup();
 
@@ -231,11 +232,19 @@ namespace DyeHouse
                     Decimal NettValue = Convert.ToDecimal(oDgv.CurrentRow.Cells[e.ColumnIndex].EditedFormattedValue.ToString());
                     Decimal GrossValue = Convert.ToDecimal(oDgv.CurrentRow.Cells[-1 + e.ColumnIndex].Value.ToString());
                     Decimal Bm = 5.00M;
-                    decimal ans = core.CalculateVariance(GrossValue, NettValue);
+                    decimal ans = ((GrossValue - NettValue) / GrossValue) * 100; 
+
                     if( ans > Bm || ans < 0)
                     {
-                        MessageBox.Show("Incorrect amount entered");
-                        e.Cancel = true;
+                        if (!_UserD._IgnoreFivePercentRule)
+                        {
+                            using (DialogCenteringService centeringService = new DialogCenteringService(this)) // center message box
+                            {
+                                MessageBox.Show("Incorrect amount entered");
+                            }
+                            
+                            e.Cancel = true;
+                        }
                     }
                 }
             }

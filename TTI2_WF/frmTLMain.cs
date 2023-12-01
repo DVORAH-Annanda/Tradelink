@@ -252,6 +252,7 @@ namespace TTI2_WF
             ud._External = frmLogin.IsExternal;
             ud._QAFunction = frmLogin.QAFunction;
             ud._DownSizeAuthority = frmLogin.DownSizeAllowed;
+            ud._IgnoreFivePercentRule = frmLogin.IgnoreFivePercent;
             this.Text += " Welcome - " + ud._UserName;
 
             if (!ud._SuperUser)
@@ -262,19 +263,19 @@ namespace TTI2_WF
             AppDomain.CurrentDomain.SetPrincipalPolicy(PrincipalPolicy.WindowsPrincipal);
             currentPrincipal = (WindowsPrincipal)Thread.CurrentPrincipal;
             //--------------------------------------------------------------------------------
-            if (ud._SuperUser)
-            {
-                using (DialogCenteringService centeringService = new DialogCenteringService(this)) // center message box
-                {
-                    DialogResult res = MessageBox.Show("Would you like to view the KPI's", "KPI", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                    if (res == DialogResult.Yes)
-                    {
-                        this.Cursor = Cursors.WaitCursor;
-                        ShowKPIs();
-                        this.Cursor = Cursors.Default;
-                    }
-                }
-            }
+            //if (ud._SuperUser)
+            //{
+            //    using (DialogCenteringService centeringService = new DialogCenteringService(this)) // center message box
+            //    {
+            //        DialogResult res = MessageBox.Show("Would you like to view the KPI's", "KPI", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            //        if (res == DialogResult.Yes)
+            //        {
+            //            this.Cursor = Cursors.WaitCursor;
+            //            ShowKPIs();
+            //            this.Cursor = Cursors.Default;
+            //        }
+            //    }
+            //}
         }
 
         private void frmTLMain_MouseClick(object sender, MouseEventArgs e)
@@ -401,7 +402,8 @@ namespace TTI2_WF
                     //-----------------------------------------------------------------------
                     // Fabric Weight Definition 
                     //-----------------------------------------------------------------------------------------
-                    frmTLADMGardDef gd = new frmTLADMGardDef(13);
+                    // frmTLADMGardDef gd = new frmTLADMGardDef(13);
+                    frmNewForm gd = new frmNewForm(13);
                     gd.ShowDialog();
 
                 }
@@ -436,7 +438,8 @@ namespace TTI2_WF
                 //---------------------------------------------------------------------------------------------
                 try
                 {
-                    frmTLADMGardDef gd = new frmTLADMGardDef(5);
+                    frmNewForm gd = new frmNewForm(5);
+                   //  frmTLADMGardDef gd = new frmTLADMGardDef(5);
                     gd.ShowDialog();
                 }
                 catch (Exception ex)
@@ -462,7 +465,8 @@ namespace TTI2_WF
                 //---------------------------------------------------------------------------------------------
                 try
                 {
-                    frmTLADMGardDef gd = new frmTLADMGardDef(12);
+                    frmNewForm gd = new frmNewForm(12);
+                    // frmTLADMGardDef gd = new frmTLADMGardDef(12);
                     gd.ShowDialog();
                 }
                 catch (Exception ex)
@@ -489,7 +493,8 @@ namespace TTI2_WF
                 //---------------------------------------------------------------------------
                 try
                 {
-                    frmTLADMGardDef gd = new frmTLADMGardDef(4);
+                    Administration.frmNewForm gd = new Administration.frmNewForm(4);
+                    // frmTLADMGardDef gd = new frmTLADMGardDef(4);
                     gd.ShowDialog();
                 }
                 catch (Exception ex)
@@ -570,14 +575,23 @@ namespace TTI2_WF
                 //-----------------------------------------------------------------------------------------
                 try
                 {
-                    using (frmTLADMGardDef gd = new frmTLADMGardDef(1, CompayNoSelected))
+                    using (Administration.frmNewForm gd = new Administration.frmNewForm(1))
                     {
                         DialogResult dr = gd.ShowDialog(this);
                         if (dr == DialogResult.OK)
                         {
 
                         }
+
                     }
+                    /*using (frmTLADMGardDef gd = new frmTLADMGardDef(1, CompayNoSelected))
+                    {
+                        DialogResult dr = gd.ShowDialog(this);
+                        if (dr == DialogResult.OK)
+                        {
+
+                        }
+                    }*/
                 }
                 catch (Exception ex)
                 {
@@ -629,7 +643,8 @@ namespace TTI2_WF
                 try
                 {
                     DialogResult Res = MessageBox.Show("As we have reached the limit in sizes please dont add anymore new sizes", "Contact System developer for further information", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    frmTLADMGardDef gd = new frmTLADMGardDef(8);
+                    // frmTLADMGardDef gd = new frmTLADMGardDef(8);
+                    frmNewForm gd = new frmNewForm(8);
                     gd.ShowDialog();
                 }
                 catch (Exception ex)
@@ -713,7 +728,8 @@ namespace TTI2_WF
 
                 try
                 {
-                    frmTLADMGardDef gd = new frmTLADMGardDef(9);
+                    frmNewForm gd = new frmNewForm(9);
+                    // frmTLADMGardDef gd = new frmTLADMGardDef(9);
                     gd.ShowDialog();
                 }
                 catch (Exception ex)
@@ -1331,7 +1347,8 @@ namespace TTI2_WF
             {
                 try
                 {
-                    frmTLADMGardDef gd = new frmTLADMGardDef(14);
+                    Administration.frmNewForm gd = new Administration.frmNewForm(14);
+                    // frmTLADMGardDef gd = new frmTLADMGardDef(14);
                     gd.ShowDialog();
                 }
                 catch (Exception ex)
@@ -1355,7 +1372,8 @@ namespace TTI2_WF
             {
                 try
                 {
-                    frmTLADMCustomerTypes gd = new frmTLADMCustomerTypes(7);
+                    //frmTLADMCustomerTypes gd = new frmTLADMCustomerTypes(7);
+                    Administration.frmNewForm gd = new frmNewForm(7);
                     gd.ShowDialog();
                 }
                 catch (Exception ex)
@@ -1864,7 +1882,8 @@ namespace TTI2_WF
 
                 try
                 {
-                    frmTransactionType transType = new frmTransactionType();
+                    // frmTransactionType transType = new frmTransactionType();
+                    Administration.frmNewForm transType = new frmNewForm(49);
                     transType.ShowDialog(this);
                 }
                 catch (Exception ex)
@@ -2066,7 +2085,8 @@ namespace TTI2_WF
             {
                 try
                 {
-                    frmDepartmentAreas ysel = new frmDepartmentAreas();
+                    Administration.frmNewForm ysel = new frmNewForm(11);
+                    //frmDepartmentAreas ysel = new frmDepartmentAreas();
                     ysel.ShowDialog(this);
                 }
                 catch (Exception ex)
@@ -2189,7 +2209,7 @@ namespace TTI2_WF
             {
                 try
                 {
-                    frmYarnPurchased3rdParty thirdp = new frmYarnPurchased3rdParty();
+                    Knitting.frmYarnPurchased3rdParty thirdp = new Knitting.frmYarnPurchased3rdParty();
                     thirdp.ShowDialog(this);
                 }
                 catch (Exception ex)
@@ -2252,7 +2272,8 @@ namespace TTI2_WF
             {
                 try
                 {
-                    frmShiftDefinition shiftdef = new frmShiftDefinition();
+                   //  frmShiftDefinition shiftdef = new frmShiftDefinition();
+                    Administration.frmNewForm shiftdef = new Administration.frmNewForm(50);
                     shiftdef.ShowDialog(this);
                 }
                 catch (Exception ex)
@@ -3170,23 +3191,39 @@ namespace TTI2_WF
             ToolStripMenuItem oTi = sender as ToolStripMenuItem;
             if (core.GetUserAuthorisation(ud, oTi.Name))
             {
+                using (var context = new TTI2Entities())
+                {
+                    var Sections = context.TLSEC_Sections.Where(x => x.TLSECSect_Name == oTi.Name).FirstOrDefault();
+                    if (Sections != null)
+                    {
+                        if (Sections.TLSECSect_InUse)
+                        {
+                            MessageBox.Show("This transaction is already in use", "Error Message", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            return;
+                        }
+                        else
+                            Sections.TLSECSect_InUse = true;
+
+                        context.SaveChanges();
+                    }
+                }
                 try
                 {
-
                     frmDyeOrders gd = new frmDyeOrders();
                     gd.ShowDialog();
-
                 }
                 catch (Exception ex)
                 {
-                    var exceptionMessages = new StringBuilder();
-                    do
+                    MessageBox.Show(ex.Message);
+                }
+                using (var context = new TTI2Entities())
+                {
+                    var Sections = context.TLSEC_Sections.Where(x => x.TLSECSect_Name == oTi.Name).FirstOrDefault();
+                    if (Sections != null)
                     {
-                        exceptionMessages.Append(ex.Message);
-                        ex = ex.InnerException;
+                        Sections.TLSECSect_InUse = false;
+                        context.SaveChanges();
                     }
-                    while (ex != null);
-                    MessageBox.Show(exceptionMessages.ToString());
                 }
             }
             else
@@ -3276,6 +3313,22 @@ namespace TTI2_WF
             ToolStripMenuItem oTi = sender as ToolStripMenuItem;
             if (core.GetUserAuthorisation(ud, oTi.Name))
             {
+                using (var context = new TTI2Entities())
+                {
+                    var Sections = context.TLSEC_Sections.Where(x => x.TLSECSect_Name == oTi.Name).FirstOrDefault();
+                    if (Sections != null)
+                    {
+                        if (Sections.TLSECSect_InUse)
+                        {
+                            MessageBox.Show("This transaction is already in use", "Error Message", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            return;
+                        }
+                        else
+                            Sections.TLSECSect_InUse = true;
+
+                        context.SaveChanges();
+                    }
+                }
                 try
                 {
                     frmDyeOrder1 gd = new frmDyeOrder1();
@@ -3284,6 +3337,15 @@ namespace TTI2_WF
                 catch (Exception ex)
                 {
                     MessageBox.Show(ex.Message);
+                }
+                using (var context = new TTI2Entities())
+                {
+                    var Sections = context.TLSEC_Sections.Where(x => x.TLSECSect_Name == oTi.Name).FirstOrDefault();
+                    if (Sections != null)
+                    {
+                        Sections.TLSECSect_InUse = false;
+                        context.SaveChanges();
+                    }
                 }
             }
             else
@@ -3430,7 +3492,22 @@ namespace TTI2_WF
             ToolStripMenuItem oTi = sender as ToolStripMenuItem;
             if (core.GetUserAuthorisation(ud, oTi.Name))
             {
-                
+                using (var context = new TTI2Entities())
+                {
+                    var Sections = context.TLSEC_Sections.Where(x => x.TLSECSect_Name == oTi.Name).FirstOrDefault();
+                    if (Sections != null)
+                    {
+                        if (Sections.TLSECSect_InUse)
+                        {
+                            MessageBox.Show("This transaction is already in use", "Error Message", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            return;
+                        }
+                        else
+                            Sections.TLSECSect_InUse = true;
+
+                        context.SaveChanges();
+                    }
+                }
                 try
                 {
                     frmDyeBatch gd = new frmDyeBatch(true);
@@ -3440,8 +3517,15 @@ namespace TTI2_WF
                 {
                     MessageBox.Show(ex.Message);
                 }
-                
-
+                using (var context = new TTI2Entities())
+                {
+                    var Sections = context.TLSEC_Sections.Where(x => x.TLSECSect_Name == oTi.Name).FirstOrDefault();
+                    if (Sections != null)
+                    {
+                        Sections.TLSECSect_InUse = false;
+                        context.SaveChanges();
+                    }
+                }
             }
             else
             {
@@ -3733,7 +3817,7 @@ namespace TTI2_WF
             {
                 try
                 {
-                    frmDyeProcessOutput vRep = new frmDyeProcessOutput();
+                    frmDyeProcessOutput vRep = new frmDyeProcessOutput(ud);
                     vRep.ShowDialog(this);
                 }
                 catch (Exception ex)
@@ -3831,17 +3915,40 @@ namespace TTI2_WF
             ToolStripMenuItem oTi = sender as ToolStripMenuItem;
             if (core.GetUserAuthorisation(ud, oTi.Name))
             {
-                
+                using (var context = new TTI2Entities())
+                {
+                    var Sections = context.TLSEC_Sections.Where(x => x.TLSECSect_Name == oTi.Name).FirstOrDefault();
+                    if (Sections != null)
+                    {
+                        if (Sections.TLSECSect_InUse)
+                        {
+                            MessageBox.Show("This transaction is already in use", "Error Message", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            return;
+                        }
+                        else
+                            Sections.TLSECSect_InUse = true;
+
+                        context.SaveChanges();
+                    }
+                }
                 try
                 {
                     frmDyeBatch gd = new frmDyeBatch(false);
-                    gd.ShowDialog(this);
+                    gd.ShowDialog();
                 }
                 catch (Exception ex)
                 {
                     MessageBox.Show(ex.Message);
                 }
-                
+                using (var context = new TTI2Entities())
+                {
+                    var Sections = context.TLSEC_Sections.Where(x => x.TLSECSect_Name == oTi.Name).FirstOrDefault();
+                    if (Sections != null)
+                    {
+                        Sections.TLSECSect_InUse = false;
+                        context.SaveChanges();
+                    }
+                }
             }
             else
             {
@@ -6074,7 +6181,7 @@ namespace TTI2_WF
             {
                 try
                 {
-                    frmCustomerOrders CustOrders = new frmCustomerOrders();
+                    frmCustomerOrders CustOrders = new frmCustomerOrders(ud);
                     CustOrders.ShowDialog(this);
                 }
                 catch (Exception ex)
@@ -7297,7 +7404,7 @@ namespace TTI2_WF
             ToolStripMenuItem oTi = sender as ToolStripMenuItem;
             if (core.GetUserAuthorisation(ud, oTi.Name))
             {
-                using (frmTLADMCustomerTypes vCustomerTypes = new frmTLADMCustomerTypes(21))
+               /* using (frmTLADMCustomerTypes vCustomerTypes = new frmTLADMCustomerTypes(21))
                 {
                     DialogResult dr = vCustomerTypes.ShowDialog(this);
                     if (dr == DialogResult.OK)
@@ -7305,7 +7412,17 @@ namespace TTI2_WF
 
                     }
                 }
+               */
 
+               
+                using (frmNewForm vTypes = new frmNewForm(21))
+                {
+                    DialogResult dr = vTypes.ShowDialog(this);
+                    if (dr == DialogResult.OK)
+                    {
+
+                    }
+                }
             }
             else
             {
@@ -7425,7 +7542,6 @@ namespace TTI2_WF
                     {
                     }
                 }
-
             }
             else
             {
@@ -7433,7 +7549,6 @@ namespace TTI2_WF
                 {
                     MessageBox.Show(ud._NotAuthorisedMessage, ud._UserName);
                 }
-
             }
         }
 
@@ -8050,37 +8165,12 @@ namespace TTI2_WF
             ToolStripMenuItem oTi = sender as ToolStripMenuItem;
             if (core.GetUserAuthorisation(ud, oTi.Name))
             {
-                DialogResult res = MessageBox.Show("Please confirm this transaction", "Confirmation Required", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                if (res == DialogResult.Yes)
+                using (CustomerServices.frmAutoClose AutoCl = new CustomerServices.frmAutoClose())
                 {
-                    using (var context = new TTI2Entities())
+                    DialogResult dr = AutoCl.ShowDialog(this);
+                    if (dr == DialogResult.OK)
                     {
-                        var Orders = context.TLCSV_PurchaseOrder.Where(x => !x.TLCSVPO_Closeed).ToList();
-                        foreach (var Order in Orders)
-                        {
-                            var OrderDetails = context.TLCSV_PuchaseOrderDetail.Where(x => x.TLCUSTO_PurchaseOrder_FK == Order.TLCSVPO_Pk && !x.TLCUSTO_Closed).ToList();
-                            if (OrderDetails.Count > 0)
-                            {
-                                foreach (var OrderDetail in OrderDetails)
-                                {
-                                    var TotalSales = context.TLCSV_StockOnHand.Where(x => x.TLSOH_Sold && x.TLSOH_POOrder_FK == Order.TLCSVPO_Pk && x.TLSOH_POOrderDetail_FK == OrderDetail.TLCUSTO_Pk).Sum(x => (int?)x.TLSOH_BoxedQty) ?? 0;
-                                    if (TotalSales >= OrderDetail.TLCUSTO_Qty)
-                                    {
-                                        OrderDetail.TLCUSTO_Closed = true;
-                                    }
-                                }
-                            }
-                        }
 
-                        try
-                        {
-                            context.SaveChanges();
-                            MessageBox.Show("Transaction successfully completed");
-                        }
-                        catch (Exception ex)
-                        {
-                            MessageBox.Show(ex.Message);
-                        }
                     }
                 }
             }
@@ -8943,7 +9033,7 @@ namespace TTI2_WF
             {
                 try
                 {
-                    frmDataClearDown ClearDown = new frmDataClearDown();
+                    Administration.frmDataClearDown ClearDown = new Administration.frmDataClearDown();
                     ClearDown.ShowDialog(this);
                 }
                 catch (Exception ex)
@@ -10539,6 +10629,136 @@ namespace TTI2_WF
                 {
                     MessageBox.Show(ud._NotAuthorisedMessage, ud._UserName);
                 }
+            }
+        }
+
+        private void incompleteCuttingWasteDetailsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ToolStripMenuItem oTi = sender as ToolStripMenuItem;
+            if (core.GetUserAuthorisation(ud, oTi.Name))
+            {
+                Cutting.frmIncompleteWasteCS ProcessL = new Cutting.frmIncompleteWasteCS(); ;
+                ProcessL.ShowDialog(this);
+            }
+            else
+            {
+                using (DialogCenteringService centeringService = new DialogCenteringService(this)) // center message box
+                {
+                    MessageBox.Show(ud._NotAuthorisedMessage, ud._UserName);
+                }
+            }
+        }
+
+        private void greigeWareHouseToWarehouseToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ToolStripMenuItem oTi = sender as ToolStripMenuItem;
+            if (core.GetUserAuthorisation(ud, oTi.Name))
+            {
+                Knitting.frmWareHouseTransfer ProcessL = new Knitting.frmWareHouseTransfer(); ;
+                ProcessL.ShowDialog(this);
+            }
+            else
+            {
+                using (DialogCenteringService centeringService = new DialogCenteringService(this)) // center message box
+                {
+                    MessageBox.Show(ud._NotAuthorisedMessage, ud._UserName);
+                }
+            }
+        }
+
+        private void rFDBatchRequestToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ToolStripMenuItem oTi = sender as ToolStripMenuItem;
+            if (core.GetUserAuthorisation(ud, oTi.Name))
+            {
+                DyeHouse.frmDyeRFD DyeRFD = new DyeHouse.frmDyeRFD(); ;
+                DyeRFD.ShowDialog(this);
+            }
+            else
+            {
+                using (DialogCenteringService centeringService = new DialogCenteringService(this)) // center message box
+                {
+                    MessageBox.Show(ud._NotAuthorisedMessage, ud._UserName);
+                }
+            }
+        }
+
+        private void rFDBatchRequesstCompletionToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ToolStripMenuItem oTi = sender as ToolStripMenuItem;
+            if (core.GetUserAuthorisation(ud, oTi.Name))
+            {
+                DyeHouse.frmRFDCompleted DyeRFD = new DyeHouse.frmRFDCompleted(); ;
+                DyeRFD.ShowDialog(this);
+            }
+            else
+            {
+                using (DialogCenteringService centeringService = new DialogCenteringService(this)) // center message box
+                {
+                    MessageBox.Show(ud._NotAuthorisedMessage, ud._UserName);
+                }
+            }
+        }
+
+        private void dyesAndChemicalsConssumedByMonthToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ToolStripMenuItem oTi = sender as ToolStripMenuItem;
+            if (core.GetUserAuthorisation(ud, oTi.Name))
+            {
+                DyeHouse.frmSelDyesAndChem DyeChem = new DyeHouse.frmSelDyesAndChem(); ;
+                DyeChem.ShowDialog(this);
+            }
+            else
+            {
+                using (DialogCenteringService centeringService = new DialogCenteringService(this)) // center message box
+                {
+                    MessageBox.Show(ud._NotAuthorisedMessage, ud._UserName);
+                }
+            }
+        }
+
+        private void yarnPalletsSoldToCustomeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ToolStripMenuItem oTi = sender as ToolStripMenuItem;
+            if (core.GetUserAuthorisation(ud, oTi.Name))
+            {
+               Knitting.frmPalletSold Pallets = new Knitting.frmPalletSold(); ;
+                Pallets.ShowDialog(this);
+            }
+            else
+            {
+                using (DialogCenteringService centeringService = new DialogCenteringService(this)) // center message box
+                {
+                    MessageBox.Show(ud._NotAuthorisedMessage, ud._UserName);
+                }
+            }
+        }
+
+        private void cottonContractToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ToolStripMenuItem oTi = sender as ToolStripMenuItem;
+            if (core.GetUserAuthorisation(ud, oTi.Name))
+            {
+                //--------------------------------------------------------------------
+                // Cotton 
+                //-------------------------------------------------------------------
+                try
+                {
+                    frmTLADM_Cotton cotton = new frmTLADM_Cotton();
+                    cotton.ShowDialog(this);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+            else
+            {
+                using (DialogCenteringService centeringService = new DialogCenteringService(this)) // center message box
+                {
+                    MessageBox.Show(ud._NotAuthorisedMessage, ud._UserName);
+                }
+
             }
         }
     }

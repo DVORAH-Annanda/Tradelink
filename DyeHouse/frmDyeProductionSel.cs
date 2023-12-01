@@ -55,9 +55,15 @@ namespace DyeHouse
                     }
                 }
 
-                if (chkQASummary.Checked)
-                   repOps.QASummary = true;
+                if(chkMonthlyProd.Checked)
+                {
+                    repOps.MonthlyProduction = true;
+                }
                 
+                if (chkQASummary.Checked)
+                {
+                    repOps.QASummary = true;
+                }
 
                 repOps.fromDate = Convert.ToDateTime(dtFromDate.Value.ToShortDateString());
                 repOps.toDate = Convert.ToDateTime(dtToDate.Value.ToShortDateString());
@@ -84,10 +90,14 @@ namespace DyeHouse
         {
             core = new Util();
             repOps = new DyeReportOptions();
+       
 
             using (var context = new TTI2Entities())
             {
                 formloaded = false;
+                
+                chkMonthlyProd.Checked = false;
+
                 if (_RepNumber == 1)
                     this.Text = "Fabric Production to Quarantine Store";
                 else if (_RepNumber == 2)

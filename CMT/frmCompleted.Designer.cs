@@ -306,7 +306,7 @@
             // 
             // txtDifference
             // 
-            this.txtDifference.Location = new System.Drawing.Point(174, 116);
+            this.txtDifference.Location = new System.Drawing.Point(174, 117);
             this.txtDifference.Name = "txtDifference";
             this.txtDifference.ReadOnly = true;
             this.txtDifference.Size = new System.Drawing.Size(100, 20);
@@ -315,7 +315,7 @@
             // 
             // txtTPPanels
             // 
-            this.txtTPPanels.Location = new System.Drawing.Point(174, 98);
+            this.txtTPPanels.Location = new System.Drawing.Point(174, 91);
             this.txtTPPanels.Name = "txtTPPanels";
             this.txtTPPanels.ReadOnly = true;
             this.txtTPPanels.RightToLeft = System.Windows.Forms.RightToLeft.No;
@@ -326,7 +326,7 @@
             // 
             // txtTotBGrade
             // 
-            this.txtTotBGrade.Location = new System.Drawing.Point(174, 68);
+            this.txtTotBGrade.Location = new System.Drawing.Point(174, 65);
             this.txtTotBGrade.Name = "txtTotBGrade";
             this.txtTotBGrade.ReadOnly = true;
             this.txtTotBGrade.Size = new System.Drawing.Size(100, 20);
@@ -335,7 +335,7 @@
             // 
             // txtTotAGrade
             // 
-            this.txtTotAGrade.Location = new System.Drawing.Point(174, 44);
+            this.txtTotAGrade.Location = new System.Drawing.Point(174, 39);
             this.txtTotAGrade.Name = "txtTotAGrade";
             this.txtTotAGrade.ReadOnly = true;
             this.txtTotAGrade.Size = new System.Drawing.Size(100, 20);
@@ -344,7 +344,7 @@
             // 
             // txtTPIssued
             // 
-            this.txtTPIssued.Location = new System.Drawing.Point(174, 20);
+            this.txtTPIssued.Location = new System.Drawing.Point(174, 13);
             this.txtTPIssued.Name = "txtTPIssued";
             this.txtTPIssued.ReadOnly = true;
             this.txtTPIssued.Size = new System.Drawing.Size(100, 20);

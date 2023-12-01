@@ -120,8 +120,9 @@ namespace ProductionPlanning
             GreigeItems = _context.TLADM_Griege.OrderBy(x => x.TLGreige_Description).AsQueryable();
 
             if (parameters.ExcludeDiscontinued)
-               GreigeItems = GreigeItems.Where(x=>!(bool)x.TLGriege_Discontinued).AsQueryable();
-            
+            {
+                GreigeItems = GreigeItems.Where(x => !(bool)x.TLGriege_Discontinued).AsQueryable();
+            }
             if (parameters.Greiges.Count > 0)
              {
                  var GreigePredicate = PredicateBuilder.New<TLADM_Griege>();

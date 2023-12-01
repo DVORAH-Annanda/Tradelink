@@ -15,8 +15,10 @@ namespace Utilities
     public partial class TLADM_Shifts
     {
         public int Shft_Pk { get; set; }
-        public int Shft_Dept_FK { get; set; }
         public string Shft_Description { get; set; }
+        public bool Shft_Discontinued { get; set; }
+        public Nullable<System.DateTime> Shft_DiscontinuedDate { get; set; }
+        public int Shft_Dept_FK { get; set; }
         public Nullable<System.TimeSpan> Shft_Start { get; set; }
         public Nullable<System.TimeSpan> Shft_End { get; set; }
     }

@@ -325,70 +325,84 @@ namespace DyeHouse
             Button oBtn = (Button)sender;
             if (oBtn != null && formloaded)
             {
-                if(DyeBatchSelected == null)
+                if (DyeBatchSelected == null)
                 {
                     MessageBox.Show("Please enter a Dye Batch Number");
                     return;
                 }
-               
+
+                if (_InspectType)
+                {
+                    var Fields = (TLADM_QADyeProcessFields)cmboQEMeasurements.SelectedItem;
+                    if (Fields == null || Fields.TLQADPF_Pk != 28)
+                    {
+                        MessageBox.Show("Please select a measurement from the drop down box provided");
+                        return;
+                    }
+
+
+                    foreach (DataRow Row in dt.Rows)
+                    {
+                        TLDye_QualityException QualExp = new TLDye_QualityException();
+                        if (Row.Field<int>(0) > 0)
+                        {
+                            QualExp = _context.TLDye_QualityException.Find(Row.Field<int>(0));
+                            if (QualExp != null)
+                                QualExp.TLDyeIns_Quantity = Row.Field<int>(3);
+                        }
+                        else
+                        {
+                            QualExp.TLDyeIns_QADyeProcessField_Fk = Fields.TLQADPF_Pk;
+                            QualExp.TLDyeIns_DyeBatch_Fk = DyeBatchSelected.DYEB_Pk;
+                            QualExp.TLDyeIns_Quantity = Row.Field<int>(3);
+                            QualExp.TLDyeIns_TransactionDate = dtpStability.Value;
+                            QualExp.TLDyeIns_GriegeProduct_Fk = Row.Field<int>(1);
+
+                            _context.TLDye_QualityException.Add(QualExp);
+                        }
+                    }
+                }
+                else
+                {
+                    foreach (DataRow Row in dt.Rows)
+                    {
+                        if (Row.Field<decimal>(2) == 0.00M)
+                        {
+                            continue;
+                        }
+                        var DBDetails = _context.TLDYE_DyeBatchDetails.Find(Row.Field<int>(0));
+                        if (DBDetails != null)
+                        {
+                            DBDetails.DYEBO_FWAtCutting = Row.Field<decimal>(2);
+                        }
+                    }
+                }
+
+                var DBatch = _context.TLDYE_DyeBatch.Find(DyeBatchSelected.DYEB_Pk);
+                if (DBatch != null)
+                {
                     if (_InspectType)
                     {
-                        var Fields = (TLADM_QADyeProcessFields)cmboQEMeasurements.SelectedItem;
-                        if (Fields == null || Fields.TLQADPF_Pk != 28)
-                        {
-                            MessageBox.Show("Please select a measurement from the drop down box provided");
-                            return;
-                        }
-
-
-                        foreach (DataRow Row in dt.Rows)
-                        {
-                            TLDye_QualityException QualExp = new TLDye_QualityException();
-                            if (Row.Field<int>(0) > 0)
-                            {
-                                QualExp = _context.TLDye_QualityException.Find(Row.Field<int>(0));
-                                if (QualExp != null)
-                                    QualExp.TLDyeIns_Quantity = Row.Field<int>(3);
-                            }
-                            else
-                            {
-                                QualExp.TLDyeIns_QADyeProcessField_Fk = Fields.TLQADPF_Pk;
-                                QualExp.TLDyeIns_DyeBatch_Fk = DyeBatchSelected.DYEB_Pk;
-                                QualExp.TLDyeIns_Quantity = Row.Field<int>(3);
-                                QualExp.TLDyeIns_TransactionDate = dtpStability.Value;
-                                QualExp.TLDyeIns_GriegeProduct_Fk = Row.Field<int>(1);
-
-                                _context.TLDye_QualityException.Add(QualExp);
-                            }
-                        }
+                        DBatch.DYEB_Stage5 = true;
+                        DBatch.DYEB_DateStage5 = dtpStability.Value;
                     }
                     else
                     {
-                        foreach (DataRow Row in dt.Rows)
-                        {
-                            if(Row.Field<decimal>(2) == 0.00M)
-                            {
-                                continue;
-                            }
-                            var DBDetails = _context.TLDYE_DyeBatchDetails.Find(Row.Field<int>(0));
-                            if(DBDetails != null)
-                            {
-                                DBDetails.DYEBO_FWAtCutting = Row.Field<decimal>(2);
-                            }
-                        }
+                        DBatch.DYEB_Stage6 = true;
+                        DBatch.DYEB_DateStage6 = dtpStability.Value;
                     }
-                    try
-                    {
-                        _context.SaveChanges();
-                        MessageBox.Show("Data successfully saved to the database");
-                        dt.Rows.Clear();
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.Message.ToString());
-                        return;
-                    }
-                
+                }
+            }
+            try
+            {
+                _context.SaveChanges();
+                MessageBox.Show("Data successfully saved to the database");
+                dt.Rows.Clear();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message.ToString());
+                return;
             }
         }
 
@@ -557,6 +571,27 @@ namespace DyeHouse
                 {
                     MessageBox.Show("Please enter a valid Dye Batch number");
                     return;
+                }
+
+                
+                if (!DyeBatchSelected.DYEB_Stage2 && _InspectType)
+                {
+                    using (DialogCenteringService centering = new DialogCenteringService(this))
+                    {
+                        MessageBox.Show("Please complete the stability check after drying");
+                        return;
+                    }
+                }
+                else
+                {
+                    if (!DyeBatchSelected.DYEB_Stage3 && !_InspectType)
+                    {
+                        using (DialogCenteringService centering = new DialogCenteringService(this))
+                        {
+                            MessageBox.Show("Please complete the colour check stability after compacting");
+                            return;
+                        }
+                    }
                 }
 
                 dt.Rows.Clear();

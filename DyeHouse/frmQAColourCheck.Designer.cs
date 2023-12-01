@@ -52,9 +52,9 @@
             this.rbBtnNo = new System.Windows.Forms.RadioButton();
             this.rbBtnYes = new System.Windows.Forms.RadioButton();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.rbPortA = new System.Windows.Forms.RadioButton();
-            this.rbPortB = new System.Windows.Forms.RadioButton();
             this.rbBothPorts = new System.Windows.Forms.RadioButton();
+            this.rbPortB = new System.Windows.Forms.RadioButton();
+            this.rbPortA = new System.Windows.Forms.RadioButton();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -290,16 +290,16 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "DyeMaster Port Status";
             // 
-            // rbPortA
+            // rbBothPorts
             // 
-            this.rbPortA.AutoSize = true;
-            this.rbPortA.Location = new System.Drawing.Point(42, 22);
-            this.rbPortA.Name = "rbPortA";
-            this.rbPortA.Size = new System.Drawing.Size(54, 17);
-            this.rbPortA.TabIndex = 0;
-            this.rbPortA.TabStop = true;
-            this.rbPortA.Text = "Port A";
-            this.rbPortA.UseVisualStyleBackColor = true;
+            this.rbBothPorts.AutoSize = true;
+            this.rbBothPorts.Location = new System.Drawing.Point(42, 106);
+            this.rbBothPorts.Name = "rbBothPorts";
+            this.rbBothPorts.Size = new System.Drawing.Size(88, 17);
+            this.rbBothPorts.TabIndex = 2;
+            this.rbBothPorts.TabStop = true;
+            this.rbBothPorts.Text = "Both A and B";
+            this.rbBothPorts.UseVisualStyleBackColor = true;
             // 
             // rbPortB
             // 
@@ -312,16 +312,16 @@
             this.rbPortB.Text = "Port B";
             this.rbPortB.UseVisualStyleBackColor = true;
             // 
-            // rbBothPorts
+            // rbPortA
             // 
-            this.rbBothPorts.AutoSize = true;
-            this.rbBothPorts.Location = new System.Drawing.Point(42, 106);
-            this.rbBothPorts.Name = "rbBothPorts";
-            this.rbBothPorts.Size = new System.Drawing.Size(88, 17);
-            this.rbBothPorts.TabIndex = 2;
-            this.rbBothPorts.TabStop = true;
-            this.rbBothPorts.Text = "Both A and B";
-            this.rbBothPorts.UseVisualStyleBackColor = true;
+            this.rbPortA.AutoSize = true;
+            this.rbPortA.Location = new System.Drawing.Point(42, 22);
+            this.rbPortA.Name = "rbPortA";
+            this.rbPortA.Size = new System.Drawing.Size(54, 17);
+            this.rbPortA.TabIndex = 0;
+            this.rbPortA.TabStop = true;
+            this.rbPortA.Text = "Port A";
+            this.rbPortA.UseVisualStyleBackColor = true;
             // 
             // frmQAColourCheck
             // 
@@ -340,6 +340,7 @@
             this.Controls.Add(this.dateTimePicker1);
             this.Name = "frmQAColourCheck";
             this.Text = "Colour Check directly After Dyeing";
+            this.Load += new System.EventHandler(this.frmQAColourCheck_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);

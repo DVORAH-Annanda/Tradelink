@@ -536,6 +536,7 @@
             this.Controls.Add(this.label1);
             this.Name = "frmDyeOrder1";
             this.Text = "Dye Order (Garments)";
+            this.Load += new System.EventHandler(this.frmDyeOrder1_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);

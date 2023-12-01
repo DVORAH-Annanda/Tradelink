@@ -53,7 +53,7 @@ namespace CMT
                 var CutSht = (from LineIssue in context.TLCMT_LineIssue
                            join CutSheet in context.TLCUT_CutSheet on LineIssue.TLCMTLI_CutSheet_FK equals CutSheet.TLCutSH_Pk
                            where LineIssue.TLCMTLI_IssuedToLine && !LineIssue.TLCMTLI_WorkCompleted
-                           select CutSheet).ToList();
+                           select CutSheet).OrderBy(x=>x.TLCutSH_No).ToList();
 
                 cmboCutSheet.DataSource = CutSht;
                 cmboCutSheet.ValueMember = "TLCutSH_Pk";

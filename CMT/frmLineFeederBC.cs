@@ -49,7 +49,7 @@ namespace CMT
             IList<TLADM_MachineOperators> Supervisors = new List<TLADM_MachineOperators>();
 
             formloaded = false;
-            
+
             oTxtA.Visible = false;
             oTxtA.ValueType = typeof(int);
             dataGridView1.Columns.Add(oTxtA);
@@ -726,7 +726,6 @@ namespace CMT
 
                     }
                 }
-                
             }
         }
     }

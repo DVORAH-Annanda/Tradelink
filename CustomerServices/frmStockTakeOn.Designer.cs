@@ -104,6 +104,7 @@
             this.Controls.Add(this.label1);
             this.Name = "frmStockTakeOn";
             this.Text = "Stock Take On";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmStockTakeOn_FormClosing);
             this.Load += new System.EventHandler(this.frmStockTakeOn_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);

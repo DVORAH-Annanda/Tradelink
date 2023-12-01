@@ -82,11 +82,11 @@ namespace Administration
 
             SupFK = SupplierFK;
 
-            setup();
+          //   setup();
 
         }
 
-        void setup()
+        private void frmCottonContracts_Load(object sender, EventArgs e)
         {
             formloaded = false;
             CottonSelected = false;
@@ -95,7 +95,7 @@ namespace Administration
             txtContractNo.Text = string.Empty;
             txtContractNo.Focus();
 
-            txtKiloPM.Text    = "0.00";
+            txtKiloPM.Text = "0.00";
             txtRandPerKg.Text = "0.00";
             txtSupplierRef.Text = string.Empty;
             txtUSDPerKg.Text = "0.00";
@@ -114,18 +114,20 @@ namespace Administration
             rbShowKgReceivedNo.Checked = true;
 
             dtpContractComplete.Value = DateTime.Now;
-            dtpContractDate.Value     = DateTime.Now;
-            dtpContractStart.Value    = DateTime.Now;
+            dtpContractDate.Value = DateTime.Now;
+            dtpContractStart.Value = DateTime.Now;
 
             using (var context = new TTI2Entities())
             {
                 cmbCottonContracts.DataSource = context.TLADM_CottonContracts.Where(x => x.CottonCon_ConSupplier_FK == SupFK).ToList();
                 cmbCottonContracts.ValueMember = "CottonCon_Pk";
                 cmbCottonContracts.DisplayMember = "CottonCon_No";
+                cmbCottonContracts.SelectedValue = -1;
 
                 cmb_unitsOfMeasure.DataSource = context.TLADM_UOM.OrderBy(x => x.UOM_ShortCode).ToList();
                 cmb_unitsOfMeasure.ValueMember = "UOM_Pk";
                 cmb_unitsOfMeasure.DisplayMember = "UOM_Description";
+                cmb_unitsOfMeasure.SelectedValue = -1;
             }
 
             MandSelected = core.PopulateArray(MandatoryFields.Length, false);
@@ -139,7 +141,7 @@ namespace Administration
             Button oBtn = sender as Button;
             if (oBtn != null & formloaded)
             {
-                setup();
+                frmCottonContracts_Load(this, null);
             }
         }
 
@@ -267,7 +269,8 @@ namespace Administration
                         formloaded = false;
                         cmbCottonContracts.DataSource = context.TLADM_CottonContracts.Where(x => x.CottonCon_ConSupplier_FK == SupFK).OrderBy(x => x.CottonCon_No).ToList();
                         formloaded = true;
-                        setup();
+                        //  setup();
+                        frmCottonContracts_Load(this, null);
                         MessageBox.Show("Records save to database successfully");
                     }
                     catch (Exception ex)
@@ -360,5 +363,7 @@ namespace Administration
                 }
             }
         }
+
+       
     }
 }

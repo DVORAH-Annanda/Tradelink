@@ -83,55 +83,26 @@ namespace DyeHouse
 
             rbPassYes.Checked = true;
 
-            //using (var context = new TTI2Entities())
-            //{
-                if (IsSetUp)
-                {
-                    /*
-                    if (_StabAfterDrying)
-                    {
-                        cmboBatchNumber.DataSource = context.TLDYE_DyeBatch.Where(x => x.DYEB_BatchDate >= TwelveMonths).OrderBy(x => x.DYEB_BatchNo).ToList();
-                        //cmboBatchNumber.DataSource = context.TLDYE_DyeBatch.Where(x => x.DYEB_Transfered && x.DYEB_Allocated && x.DYEB_Stage1 && !x.DYEB_Stage2 && !x.DYEB_Stage3).OrderBy(x => x.DYEB_BatchNo).ToList();
-                    }
-                    else
-                    {
-                        cmboBatchNumber.DataSource = context.TLDYE_DyeBatch.Where(x => x.DYEB_BatchDate >= TwelveMonths).OrderBy(x => x.DYEB_BatchNo).ToList();
-                        // cmboBatchNumber.DataSource = context.TLDYE_DyeBatch.Where(x => x.DYEB_Transfered && x.DYEB_Allocated && x.DYEB_Stage1 && x.DYEB_Stage2 && !x.DYEB_Stage3).OrderBy(x => x.DYEB_BatchNo).ToList();
-                    }
-                    
-                    cmboBatchNumber.ValueMember = "DYEB_Pk";
-                    cmboBatchNumber.DisplayMember = "DYEB_BatchNo";
-                    cmboBatchNumber.SelectedValue = 0;
-                    */
-
-                   /* cmboOperator.DataSource = context.TLADM_MachineOperators.Where(x => !x.MachOp_Inspector && !x.MachOp_Discontinued).OrderBy(x => x.MachOp_Description).ToList();
-                    cmboOperator.DisplayMember = "MachOp_Description";
-                    cmboOperator.ValueMember = "MachOp_Pk";
-                    cmboOperator.SelectedValue = 0;
-                    oCmboPieceNumber.DataSource = null;*/
-
-                }
-
-                //var QAProcessItems = context.TLADM_QADyeProcessFields.Where(x => x.TLQADPF_Process_FK == 2).ToList();
-                if (_StabAfterDrying)
-                {
+            //var QAProcessItems = context.TLADM_QADyeProcessFields.Where(x => x.TLQADPF_Process_FK == 2).ToList();
+           if (_StabAfterDrying)
+           {
                     QAProcessItems = _context.TLADM_QADyeProcessFields.Where(x=>x.TLQADPF_Drier).ToList();
-                }
-                else
-                {
+           }
+           else
+           {
                     QAProcessItems = _context.TLADM_QADyeProcessFields.Where(x=>x.TLQAPF_Compactor || x.TLQADPF_Process_FK == 3).ToList();
-                }
+           }
 
-                foreach (var Record in QAProcessItems)
-                {
+           foreach (var Record in QAProcessItems)
+           {
                     var index = dataGridView1.Rows.Add();
                     dataGridView1.Rows[index].Cells[0].Value = Record.TLQADPF_Pk;
                     dataGridView1.Rows[index].Cells[1].Value = Record.TLQADPF_Description;
                     dataGridView1.Rows[index].Cells[2].Value = 0.00M;
-                }
-                dataGridView1.Enabled = true;
-            //}
-            formloaded = true;
+           }
+           
+            dataGridView1.Enabled = true;
+           formloaded = true;
         }
 
         private void dataGridView1_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
@@ -318,16 +289,6 @@ namespace DyeHouse
                     return;
                 }
 
-                /*
-                var OP = (TLADM_MachineOperators)cmboOperator.SelectedItem;
-                if (OP == null)
-                {
-                    MessageBox.Show("Please select an operator from the drop down list");
-                    return;
-                }
-                */
-
-
                 var GP = (TLKNI_GreigeProduction)oCmboPieceNumber.SelectedItem;
                 if (GP == null)
                 {
@@ -343,7 +304,7 @@ namespace DyeHouse
                     }
                     else
                     {
-                        trns = context.TLDYE_DyeTransactions.Where(x => x.TLDYET_Batch_FK == DyeBatchSelected.DYEB_Pk && x.TLDYET_Stage == 3).FirstOrDefault(); 
+                        trns = context.TLDYE_DyeTransactions.Where(x => x.TLDYET_Batch_FK == DyeBatchSelected.DYEB_Pk && x.TLDYET_Stage == 4).FirstOrDefault(); 
                     }
 
                     if (trns == null)
@@ -357,7 +318,7 @@ namespace DyeHouse
                         if (_StabAfterDrying)
                                trns.TLDYET_Stage = 2;
                         else
-                               trns.TLDYET_Stage = 3; 
+                               trns.TLDYET_Stage = 4; 
                     
                          if (rbPassYes.Checked)
                          { 
@@ -412,6 +373,7 @@ namespace DyeHouse
                         }
                         else
                         {
+                            nca.TLDYEDC_Quality_FK = DyeBatchSelected.DYEB_Greige_FK;
                             nca.TLDYEDC_NCStage = 5;
                         }
                             
@@ -432,11 +394,13 @@ namespace DyeHouse
                         {
                             if (_StabAfterDrying)
                             {
-                                DBatch.DYEB_Stage2 = true;
+                                DBatch.DYEB_Stage3 = true;
+                                DBatch.DYEB_DateStage3 = dtpStability.Value;
                             }
                             else
                             {
-                                DBatch.DYEB_Stage3 = true;
+                                DBatch.DYEB_Stage4 = true;
+                                DBatch.DYEB_DateStage4 = dtpStability.Value;
                             }
                         }
 
@@ -523,29 +487,74 @@ namespace DyeHouse
                     return;
                 }
 
+                
+                if (_StabAfterDrying)
+                {
+                    if (!DyeBatchSelected.DYEB_Stage2)
+                    {
+                        using (DialogCenteringService centering = new DialogCenteringService(this))
+                        {
+                            MessageBox.Show("Please complete the Hydro Results prior to entering this infomation");
+                            return;
+                        }
+                    }
+                }
+                else
+                {
+                    if (!DyeBatchSelected.DYEB_Stage3)
+                    {
+                        using (DialogCenteringService centering = new DialogCenteringService(this))
+                        {
+                            MessageBox.Show("Please complete the stability checks after drying");
+                            return;
+                        }
+                    }
+                }
+
                 oCmboPieceNumber.DataSource = null;
                 oCmboPieceNumber.Items.Clear();
                 dataGridView1.Rows.Clear();
 
                 if(!DyeBatchSelected.DYEB_CommissinCust)
                 {
-                    var DO = _context.TLDYE_DyeOrder.Find(DyeBatchSelected.DYEB_DyeOrder_FK);
-                    if (DO != null)
+                    if (!DyeBatchSelected.DYEB_FabicSales)
                     {
-                        var color = _context.TLADM_Colours.Find(DO.TLDYO_Colour_FK);
-                        if (color != null)
+                        var DO = _context.TLDYE_DyeOrder.Find(DyeBatchSelected.DYEB_DyeOrder_FK);
+                        if (DO != null)
                         {
-                            txtColour.Text = color.Col_Display;
-                        }
+                            var color = _context.TLADM_Colours.Find(DO.TLDYO_Colour_FK);
+                            if (color != null)
+                            {
+                                txtColour.Text = color.Col_Display;
+                            }
 
-                        var Qual = _context.TLADM_Griege.Find(DO.TLDYO_Greige_FK);
-                        if (Qual != null)
+                            var Qual = _context.TLADM_Griege.Find(DO.TLDYO_Greige_FK);
+                            if (Qual != null)
+                            {
+                                txtQuality.Text = Qual.TLGreige_Description;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        var DO = _context.TLDYE_DyeOrderFabric.FirstOrDefault(x=>x.TLDYEF_Pk ==  DyeBatchSelected.DYEB_DyeOrder_FK);
+                        if (DO != null)
                         {
-                            txtQuality.Text = Qual.TLGreige_Description;
+                            var color = _context.TLADM_Colours.Find(DO.TLDYEF_Colours_FK);
+                            if (color != null)
+                            {
+                                txtColour.Text = color.Col_Display;
+                            }
+
+                            var Qual = _context.TLADM_Griege.Find(DO.TLDYEF_Greige_FK);
+                            if (Qual != null)
+                            {
+                                txtQuality.Text = Qual.TLGreige_Description;
+                            }
                         }
                     }
                 }
-                else
+                else 
                 {
                     txtColour.Text = _context.TLADM_Colours.Find(DyeBatchSelected.DYEB_Colour_FK).Col_Display;
                 }

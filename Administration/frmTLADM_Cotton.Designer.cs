@@ -468,6 +468,7 @@
             this.Controls.Add(this.cmbCotton);
             this.Name = "frmTLADM_Cotton";
             this.Text = "Cotton Contracts Update / Edit";
+            this.Load += new System.EventHandler(this.frmTLADM_Cotton_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);

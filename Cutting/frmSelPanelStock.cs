@@ -20,9 +20,14 @@ namespace Cutting
         CuttingQueryParameters parms;
         CuttingRepository repo;
 
+        protected readonly TTI2Entities _context;
+
         public frmSelPanelStock()
         {
            InitializeComponent();
+            
+            _context = new TTI2Entities();
+
            repo = new CuttingRepository();
            this.cmboWareHouseStore.CheckStateChanged += new System.EventHandler(this.cmboWareHouse_CheckStateChanged);
 
@@ -33,14 +38,12 @@ namespace Cutting
             formloaded = false;
             parms = new CuttingQueryParameters();
 
-            using (var context = new TTI2Entities())
+            var Existing = _context.TLADM_WhseStore.Where(x => x.WhStore_PanelStore).ToList();
+            foreach (var Entry in Existing)
             {
-                var Existing = context.TLADM_WhseStore.Where(x => x.WhStore_PanelStore).ToList();
-                foreach (var Entry in Existing)
-                {
-                    cmboWareHouseStore.Items.Add(new Cutting.CheckComboBoxItem(Entry.WhStore_Id, Entry.WhStore_Description, false));
-                }
+               cmboWareHouseStore.Items.Add(new Cutting.CheckComboBoxItem(Entry.WhStore_Id, Entry.WhStore_Description, false));
             }
+            
 
             sortOptions = 1;
 
@@ -52,8 +55,6 @@ namespace Cutting
             cmboReportSelection.ValueMember = "Key";
             cmboReportSelection.DisplayMember = "Value";
             cmboReportSelection.SelectedIndex = -1;
-            formloaded = true;
-        
             formloaded = true;
         }
         //-------------------------------------------------------------------------------------
@@ -101,27 +102,20 @@ namespace Cutting
                     {
                         parms.Colours.Clear();
                         cutOpts.CostingColour = true;
-       
-                        using (var context = new TTI2Entities())
+                        var Clrs = _context.TLADM_Colours.Where(x => x.Col_ColCosting).ToList();
+                        foreach(var Clr in Clrs)
                         {
-                            var Clrs = context.TLADM_Colours.Where(x => x.Col_ColCosting).ToList();
-                            foreach(var Clr in Clrs)
-                            {
-                                parms.Colours.Add(repo.LoadColour(Clr.Col_Id));
-                            }
+                              parms.Colours.Add(repo.LoadColour(Clr.Col_Id));
                         }
                     }
                     else if(rbCostingWhiteOnly.Checked)
                     {
                         parms.Colours.Clear();
                         cutOpts.CostingColourWhite = true;
-                        using (var context = new TTI2Entities())
+                        var Clrs = _context.TLADM_Colours.Where(x => !x.Col_ColCosting).ToList();
+                        foreach (var Clr in Clrs)
                         {
-                            var Clrs = context.TLADM_Colours.Where(x => !x.Col_ColCosting).ToList();
-                            foreach (var Clr in Clrs)
-                            {
-                                parms.Colours.Add(repo.LoadColour(Clr.Col_Id));
-                            }
+                              parms.Colours.Add(repo.LoadColour(Clr.Col_Id));
                         }
                     }
 
@@ -146,6 +140,17 @@ namespace Cutting
                 sortOptions = 1;
                 cmboWareHouseStore.Items.Clear();
                 frmSelPanelStock_Load(this, null);
+            }
+        }
+
+        private void frmSelPanelStock_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if(!e.Cancel)
+            {
+                if(_context != null)
+                {
+                    _context.Dispose();
+                }
             }
         }
     }

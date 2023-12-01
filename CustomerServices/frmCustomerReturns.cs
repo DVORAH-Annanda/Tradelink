@@ -76,7 +76,7 @@ namespace CustomerServices
                 cmboCustomers.ValueMember = "Cust_PK";
                 cmboCustomers.SelectedValue = -1;
 
-                cmboWareHouse.DataSource = context.TLADM_WhseStore.Where(x => x.WhStore_WhseOrStore).ToList();
+                cmboWareHouse.DataSource = context.TLADM_WhseStore.Where(x => x.WhStore_WhseOrStore && x.WhStore_GradeA).ToList();
                 cmboWareHouse.ValueMember = "WhStore_Id";
                 cmboWareHouse.DisplayMember = "WhStore_Description";
                 cmboWareHouse.SelectedValue = -1;
@@ -271,6 +271,11 @@ namespace CustomerServices
                             {
                                 soh.TLSOH_Returned = true;
                                 soh.TLSOH_Grade = "B";
+                                soh.TLSOH_WareHouse_FK = (int)(from T1 in context.TLADM_WhseStore
+                                                          join T2 in context.TLADM_WareHouseAssociation
+                                                          on T1.WhStore_Id equals T2.TLWA_PrimaryWareHouse
+                                                          where WareHouse.WhStore_Id == T2.TLWA_PrimaryWareHouse
+                                                          select T2).FirstOrDefault().TLWA_SecondaryWareHouse;
                             }
                             else
                             {

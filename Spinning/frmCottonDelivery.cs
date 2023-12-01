@@ -80,9 +80,11 @@ namespace Spinning
 
             using (var context = new TTI2Entities())
             {
+                //last used number for GRN and lot number
                 var LastNo = context.TLADM_LastNumberUsed.Find(1);
                 if (LastNo != null)
                 {
+                    //populate lot and grn fields
                     txtLotNo.Text = LastNo.col1.ToString();
                     txtGrnNumber.Text = LastNo.col12.ToString();
                 }

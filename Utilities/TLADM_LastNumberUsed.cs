@@ -29,5 +29,6 @@ namespace Utilities
         public int col11 { get; set; }
         public int col12 { get; set; }
         public int col13 { get; set; }
+        public int col14 { get; set; }
     }
 }

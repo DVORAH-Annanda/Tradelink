@@ -16,6 +16,8 @@ namespace Utilities
     {
         public int DeptA_Pk { get; set; }
         public string DeptA_Description { get; set; }
-        public int DeptA_Dept_FK { get; set; }
+        public bool DeptA_Discontinued { get; set; }
+        public Nullable<System.DateTime> DeptA_DiscontinuedDate { get; set; }
+        public int DeptA_Dep_Fk { get; set; }
     }
 }

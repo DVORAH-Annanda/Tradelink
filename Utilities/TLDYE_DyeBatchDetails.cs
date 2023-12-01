@@ -50,5 +50,6 @@ namespace Utilities
         public bool DYEBO_PendingDelivery { get; set; }
         public bool DYEBO_SaleConfirmed { get; set; }
         public bool DYEBO_FabricDespatched { get; set; }
+        public bool DYEBO_MarkedForDeletion { get; set; }
     }
 }

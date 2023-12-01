@@ -5,3 +5,7 @@
 namespace Knitting
 {
 }
+
+namespace Knitting
+{
+}

@@ -15,7 +15,7 @@ namespace Utilities
     public partial class TLADM_Styles
     {
         public int Sty_Id { get; set; }
-        public int Sty_Label_FK { get; set; }
+        public int Sty_Customer_Fk { get; set; }
         public string Sty_Description { get; set; }
         public Nullable<bool> Sty_Discontinued { get; set; }
         public Nullable<System.DateTime> Sty_Discontinued_Date { get; set; }
@@ -34,5 +34,6 @@ namespace Utilities
         public int Sty_DisplayOrder { get; set; }
         public int Sty_Units_Per_Hour { get; set; }
         public bool Sty_WorkWear { get; set; }
+        public bool Sty_PFD { get; set; }
     }
 }

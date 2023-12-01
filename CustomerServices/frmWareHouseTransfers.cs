@@ -268,7 +268,7 @@ namespace CustomerServices
                         var Styles = context.TLADM_Styles.Find(Box.TLCMTWC_Style_FK);
                         if (Styles != null)
                         {
-                            DGVResults.Rows[index].Cells[5].Value = context.TLADM_CustomerFile.Find(Styles.Sty_Label_FK).Cust_Description;
+                            DGVResults.Rows[index].Cells[5].Value = context.TLADM_CustomerFile.Find(Styles.Sty_Customer_Fk).Cust_Description;
                             DGVResults.Rows[index].Cells[6].Value = Styles.Sty_Description;
                         }
                         DGVResults.Rows[index].Cells[7].Value = context.TLADM_Colours.Find(Box.TLCMTWC_Colour_FK).Col_Display;
@@ -501,6 +501,29 @@ namespace CustomerServices
                 cmboSizes.Items.Clear();
 
                 frmWareHouseTransfers_Load(this, null);
+            }
+        }
+
+        private void cmboStyles_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ComboBox oCmbo = sender as ComboBox;
+            if(oCmbo != null && formloaded)
+            {
+                TLADM_Styles StyleSelected = (TLADM_Styles)oCmbo.SelectedItem;
+                if (StyleSelected != null)
+                {
+                    using (var context = new TTI2Entities())
+                    {
+                        if (StyleSelected.Sty_PFD)
+                        {
+                            cmboTo.DataSource = null;
+                            cmboTo.DataSource = context.TLADM_WhseStore.Where(x => x.WhStore_RFD).ToList();
+                            cmboTo.ValueMember = "WhStore_Id";
+                            cmboTo.DisplayMember = "WhStore_Description";
+                            cmboTo.SelectedValue = -1;
+                        }
+                    }
+                }
             }
         }
     }

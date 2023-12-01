@@ -60,6 +60,7 @@ namespace Utilities
         public bool GreigeP_WarningMessage { get; set; }
         public decimal GreigeP_DskWeight { get; set; }
         public decimal GreigeP_VarianceDiskWeight { get; set; }
-        public decimal GreigeP_PieceWidth { get; set; }
+        public decimal GreigeP_DiskWidth { get; set; }
+        public bool GreigeP_MarkedForDeletion { get; set; }
     }
 }

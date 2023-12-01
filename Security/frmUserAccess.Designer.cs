@@ -43,11 +43,12 @@
             this.chkDiscontinue = new System.Windows.Forms.CheckBox();
             this.txtDiscontinuedReason = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.chkDownSizeAuthority = new System.Windows.Forms.CheckBox();
             this.chkQAFunction = new System.Windows.Forms.CheckBox();
             this.txtEMail_Address = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.chkExternalUser = new System.Windows.Forms.CheckBox();
-            this.chkDownSizeAuthority = new System.Windows.Forms.CheckBox();
+            this.chkIgnoreFivePercent = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -181,6 +182,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.chkIgnoreFivePercent);
             this.groupBox1.Controls.Add(this.chkDownSizeAuthority);
             this.groupBox1.Controls.Add(this.chkQAFunction);
             this.groupBox1.Controls.Add(this.txtEMail_Address);
@@ -194,6 +196,16 @@
             this.groupBox1.Size = new System.Drawing.Size(590, 111);
             this.groupBox1.TabIndex = 12;
             this.groupBox1.TabStop = false;
+            // 
+            // chkDownSizeAuthority
+            // 
+            this.chkDownSizeAuthority.AutoSize = true;
+            this.chkDownSizeAuthority.Location = new System.Drawing.Point(6, 46);
+            this.chkDownSizeAuthority.Name = "chkDownSizeAuthority";
+            this.chkDownSizeAuthority.Size = new System.Drawing.Size(129, 17);
+            this.chkDownSizeAuthority.TabIndex = 15;
+            this.chkDownSizeAuthority.Text = "Down Sizing Authority";
+            this.chkDownSizeAuthority.UseVisualStyleBackColor = true;
             // 
             // chkQAFunction
             // 
@@ -231,15 +243,15 @@
             this.chkExternalUser.Text = "External User";
             this.chkExternalUser.UseVisualStyleBackColor = true;
             // 
-            // chkDownSizeAuthority
+            // chkIgnoreFivePercent
             // 
-            this.chkDownSizeAuthority.AutoSize = true;
-            this.chkDownSizeAuthority.Location = new System.Drawing.Point(6, 46);
-            this.chkDownSizeAuthority.Name = "chkDownSizeAuthority";
-            this.chkDownSizeAuthority.Size = new System.Drawing.Size(129, 17);
-            this.chkDownSizeAuthority.TabIndex = 15;
-            this.chkDownSizeAuthority.Text = "Down Sizing Authority";
-            this.chkDownSizeAuthority.UseVisualStyleBackColor = true;
+            this.chkIgnoreFivePercent.AutoSize = true;
+            this.chkIgnoreFivePercent.Location = new System.Drawing.Point(150, 46);
+            this.chkIgnoreFivePercent.Name = "chkIgnoreFivePercent";
+            this.chkIgnoreFivePercent.Size = new System.Drawing.Size(144, 17);
+            this.chkIgnoreFivePercent.TabIndex = 16;
+            this.chkIgnoreFivePercent.Text = "Ignore Five Percent Rule";
+            this.chkIgnoreFivePercent.UseVisualStyleBackColor = true;
             // 
             // frmUserAccess
             // 
@@ -291,5 +303,6 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.CheckBox chkQAFunction;
         private System.Windows.Forms.CheckBox chkDownSizeAuthority;
+        private System.Windows.Forms.CheckBox chkIgnoreFivePercent;
     }
 }

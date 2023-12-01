@@ -40,6 +40,7 @@
             this.cmboDepartment = new CMT.CheckComboBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.cmboReportOptions = new System.Windows.Forms.ComboBox();
+            this.chkExcludeOnHold = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -149,7 +150,7 @@
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.cmboReportOptions);
-            this.groupBox2.Location = new System.Drawing.Point(181, 285);
+            this.groupBox2.Location = new System.Drawing.Point(181, 320);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(301, 100);
             this.groupBox2.TabIndex = 12;
@@ -164,11 +165,22 @@
             this.cmboReportOptions.Size = new System.Drawing.Size(168, 21);
             this.cmboReportOptions.TabIndex = 0;
             // 
+            // chkExcludeOnHold
+            // 
+            this.chkExcludeOnHold.AutoSize = true;
+            this.chkExcludeOnHold.Location = new System.Drawing.Point(290, 279);
+            this.chkExcludeOnHold.Name = "chkExcludeOnHold";
+            this.chkExcludeOnHold.Size = new System.Drawing.Size(140, 17);
+            this.chkExcludeOnHold.TabIndex = 13;
+            this.chkExcludeOnHold.Text = "Exclude On Hold Items?";
+            this.chkExcludeOnHold.UseVisualStyleBackColor = true;
+            // 
             // frmCMTPanelStock
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(693, 459);
+            this.Controls.Add(this.chkExcludeOnHold);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.btnSubmit);
@@ -179,6 +191,7 @@
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -200,5 +213,6 @@
         private CMT.CheckComboBox comboStyles;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.ComboBox cmboReportOptions;
+        private System.Windows.Forms.CheckBox chkExcludeOnHold;
     }
 }

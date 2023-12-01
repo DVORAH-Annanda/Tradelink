@@ -60,13 +60,11 @@ namespace Utilities
         public virtual DbSet<TLSPN_CottonReceivedBales> TLSPN_CottonReceivedBales { get; set; }
         public virtual DbSet<TLSPN_OpenBalance> TLSPN_OpenBalance { get; set; }
         public virtual DbSet<TLSPN_QAMeasurements> TLSPN_QAMeasurements { get; set; }
-        public virtual DbSet<TLADM_Shifts> TLADM_Shifts { get; set; }
         public virtual DbSet<TLKNI_YarnTransaction> TLKNI_YarnTransaction { get; set; }
         public virtual DbSet<TLKNI_GreigeTransactions> TLKNI_GreigeTransactions { get; set; }
         public virtual DbSet<TLADM_Labels> TLADM_Labels { get; set; }
         public virtual DbSet<TLADM_Yarn> TLADM_Yarn { get; set; }
         public virtual DbSet<TLADM_ProductionLoss> TLADM_ProductionLoss { get; set; }
-        public virtual DbSet<TLADM_GreigeQuality> TLADM_GreigeQuality { get; set; }
         public virtual DbSet<TLADM_FabricAttributes> TLADM_FabricAttributes { get; set; }
         public virtual DbSet<TLADM_MachineOperators> TLADM_MachineOperators { get; set; }
         public virtual DbSet<TLADM_ProductRating_Detail> TLADM_ProductRating_Detail { get; set; }
@@ -86,7 +84,6 @@ namespace Utilities
         public virtual DbSet<TLDYE_ComDyeBatchDetails> TLDYE_ComDyeBatchDetails { get; set; }
         public virtual DbSet<TLDYE_AllocatedOperator> TLDYE_AllocatedOperator { get; set; }
         public virtual DbSet<TLSPN_YarnTransactions> TLSPN_YarnTransactions { get; set; }
-        public virtual DbSet<TLADM_DepartmentsArea> TLADM_DepartmentsArea { get; set; }
         public virtual DbSet<TLADM_DepartmentsAreaTransaction> TLADM_DepartmentsAreaTransaction { get; set; }
         public virtual DbSet<TLKNI_GreigeCommisionAdjustment> TLKNI_GreigeCommisionAdjustment { get; set; }
         public virtual DbSet<TLCUT_CutSheetReceiptBoxes> TLCUT_CutSheetReceiptBoxes { get; set; }
@@ -162,7 +159,6 @@ namespace Utilities
         public virtual DbSet<TLCMT_FactConfig> TLCMT_FactConfig { get; set; }
         public virtual DbSet<TLPPS_Replenishment> TLPPS_Replenishment { get; set; }
         public virtual DbSet<TLCSV_PickingListMaster> TLCSV_PickingListMaster { get; set; }
-        public virtual DbSet<TLADM_CustomerFile> TLADM_CustomerFile { get; set; }
         public virtual DbSet<TLDye_QualityException> TLDye_QualityException { get; set; }
         public virtual DbSet<TLSEC_UserAccess> TLSEC_UserAccess { get; set; }
         public virtual DbSet<TLCSV_OrderAllocated> TLCSV_OrderAllocated { get; set; }
@@ -189,13 +185,11 @@ namespace Utilities
         public virtual DbSet<TLDYE_NonCompliance> TLDYE_NonCompliance { get; set; }
         public virtual DbSet<TLDYE_DyeingStandards> TLDYE_DyeingStandards { get; set; }
         public virtual DbSet<TLADM_QADyeProcessFields> TLADM_QADyeProcessFields { get; set; }
-        public virtual DbSet<TLDYE_DyeBatchDetails> TLDYE_DyeBatchDetails { get; set; }
         public virtual DbSet<TLDYE_ConSummableReceived> TLDYE_ConSummableReceived { get; set; }
         public virtual DbSet<TLADM_MachineMaintenanceTasks> TLADM_MachineMaintenanceTasks { get; set; }
         public virtual DbSet<TLADM_MachineMaintenance> TLADM_MachineMaintenance { get; set; }
         public virtual DbSet<TLADM_Departments> TLADM_Departments { get; set; }
         public virtual DbSet<TLADM_WhseStore> TLADM_WhseStore { get; set; }
-        public virtual DbSet<TLADM_Styles> TLADM_Styles { get; set; }
         public virtual DbSet<TLCSV_BoughtInGoods> TLCSV_BoughtInGoods { get; set; }
         public virtual DbSet<TLCSV_StockOnHand> TLCSV_StockOnHand { get; set; }
         public virtual DbSet<TLADM_Sizes> TLADM_Sizes { get; set; }
@@ -203,7 +197,6 @@ namespace Utilities
         public virtual DbSet<TLADM_Months> TLADM_Months { get; set; }
         public virtual DbSet<TLCSV_PurchaseOrder> TLCSV_PurchaseOrder { get; set; }
         public virtual DbSet<TLADM_Griege> TLADM_Griege { get; set; }
-        public virtual DbSet<TLKNI_GreigeProduction> TLKNI_GreigeProduction { get; set; }
         public virtual DbSet<TLDYE_DyeOrder> TLDYE_DyeOrder { get; set; }
         public virtual DbSet<TLDYE_DyeOrderFabric> TLDYE_DyeOrderFabric { get; set; }
         public virtual DbSet<TLDYE_DyeTransactions> TLDYE_DyeTransactions { get; set; }
@@ -212,6 +205,18 @@ namespace Utilities
         public virtual DbSet<TLADM_PanelAttributes> TLADM_PanelAttributes { get; set; }
         public virtual DbSet<TLDYE_ConsumableSOH> TLDYE_ConsumableSOH { get; set; }
         public virtual DbSet<TLADM_Colours> TLADM_Colours { get; set; }
+        public virtual DbSet<TLKNI_GreigeProduction> TLKNI_GreigeProduction { get; set; }
+        public virtual DbSet<TLADM_GreigeQuality> TLADM_GreigeQuality { get; set; }
+        public virtual DbSet<TLADM_StyAssoc> TLADM_StyAssoc { get; set; }
+        public virtual DbSet<TLDYE_RFDHistory> TLDYE_RFDHistory { get; set; }
+        public virtual DbSet<TLADM_CustomerFile> TLADM_CustomerFile { get; set; }
+        public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
+        public virtual DbSet<TLADM_Greige_Yarn> TLADM_Greige_Yarn { get; set; }
+        public virtual DbSet<TLADM_Style_Quality> TLADM_Style_Quality { get; set; }
+        public virtual DbSet<TLADM_Styles> TLADM_Styles { get; set; }
+        public virtual DbSet<TLADM_Shifts> TLADM_Shifts { get; set; }
+        public virtual DbSet<TLADM_DepartmentsArea> TLADM_DepartmentsArea { get; set; }
+        public virtual DbSet<TLDYE_DyeBatchDetails> TLDYE_DyeBatchDetails { get; set; }
     
         public virtual int SelectCottonRecords(Nullable<int> contractNo, Nullable<int> supplierNo)
         {
@@ -375,6 +380,184 @@ namespace Utilities
                 new ObjectParameter("DeptNo", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SelectWhsePickList_Result>("SelectWhsePickList", deptNoParameter);
+        }
+    
+        public virtual int Cutsheet_Cleanup(Nullable<System.DateTime> date)
+        {
+            var dateParameter = date.HasValue ?
+                new ObjectParameter("Date", date) :
+                new ObjectParameter("Date", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("Cutsheet_Cleanup", dateParameter);
+        }
+    
+        public virtual ObjectResult<CottonGoodsReturned_Result> CottonGoodsReturned(Nullable<int> returnNo)
+        {
+            var returnNoParameter = returnNo.HasValue ?
+                new ObjectParameter("ReturnNo", returnNo) :
+                new ObjectParameter("ReturnNo", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<CottonGoodsReturned_Result>("CottonGoodsReturned", returnNoParameter);
+        }
+    
+        public virtual ObjectResult<CottonGoodsSold_Result> CottonGoodsSold(Nullable<int> returnNo)
+        {
+            var returnNoParameter = returnNo.HasValue ?
+                new ObjectParameter("ReturnNo", returnNo) :
+                new ObjectParameter("ReturnNo", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<CottonGoodsSold_Result>("CottonGoodsSold", returnNoParameter);
+        }
+    
+        public virtual ObjectResult<Nullable<decimal>> ReturnIdentity()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<decimal>>("ReturnIdentity");
+        }
+    
+        public virtual int sp_alterdiagram(string diagramname, Nullable<int> owner_id, Nullable<int> version, byte[] definition)
+        {
+            var diagramnameParameter = diagramname != null ?
+                new ObjectParameter("diagramname", diagramname) :
+                new ObjectParameter("diagramname", typeof(string));
+    
+            var owner_idParameter = owner_id.HasValue ?
+                new ObjectParameter("owner_id", owner_id) :
+                new ObjectParameter("owner_id", typeof(int));
+    
+            var versionParameter = version.HasValue ?
+                new ObjectParameter("version", version) :
+                new ObjectParameter("version", typeof(int));
+    
+            var definitionParameter = definition != null ?
+                new ObjectParameter("definition", definition) :
+                new ObjectParameter("definition", typeof(byte[]));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_alterdiagram", diagramnameParameter, owner_idParameter, versionParameter, definitionParameter);
+        }
+    
+        public virtual int sp_creatediagram(string diagramname, Nullable<int> owner_id, Nullable<int> version, byte[] definition)
+        {
+            var diagramnameParameter = diagramname != null ?
+                new ObjectParameter("diagramname", diagramname) :
+                new ObjectParameter("diagramname", typeof(string));
+    
+            var owner_idParameter = owner_id.HasValue ?
+                new ObjectParameter("owner_id", owner_id) :
+                new ObjectParameter("owner_id", typeof(int));
+    
+            var versionParameter = version.HasValue ?
+                new ObjectParameter("version", version) :
+                new ObjectParameter("version", typeof(int));
+    
+            var definitionParameter = definition != null ?
+                new ObjectParameter("definition", definition) :
+                new ObjectParameter("definition", typeof(byte[]));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_creatediagram", diagramnameParameter, owner_idParameter, versionParameter, definitionParameter);
+        }
+    
+        public virtual int sp_dropdiagram(string diagramname, Nullable<int> owner_id)
+        {
+            var diagramnameParameter = diagramname != null ?
+                new ObjectParameter("diagramname", diagramname) :
+                new ObjectParameter("diagramname", typeof(string));
+    
+            var owner_idParameter = owner_id.HasValue ?
+                new ObjectParameter("owner_id", owner_id) :
+                new ObjectParameter("owner_id", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_dropdiagram", diagramnameParameter, owner_idParameter);
+        }
+    
+        public virtual int sp_helpdiagramdefinition(string diagramname, Nullable<int> owner_id)
+        {
+            var diagramnameParameter = diagramname != null ?
+                new ObjectParameter("diagramname", diagramname) :
+                new ObjectParameter("diagramname", typeof(string));
+    
+            var owner_idParameter = owner_id.HasValue ?
+                new ObjectParameter("owner_id", owner_id) :
+                new ObjectParameter("owner_id", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_helpdiagramdefinition", diagramnameParameter, owner_idParameter);
+        }
+    
+        public virtual int sp_helpdiagrams(string diagramname, Nullable<int> owner_id)
+        {
+            var diagramnameParameter = diagramname != null ?
+                new ObjectParameter("diagramname", diagramname) :
+                new ObjectParameter("diagramname", typeof(string));
+    
+            var owner_idParameter = owner_id.HasValue ?
+                new ObjectParameter("owner_id", owner_id) :
+                new ObjectParameter("owner_id", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_helpdiagrams", diagramnameParameter, owner_idParameter);
+        }
+    
+        public virtual int sp_renamediagram(string diagramname, Nullable<int> owner_id, string new_diagramname)
+        {
+            var diagramnameParameter = diagramname != null ?
+                new ObjectParameter("diagramname", diagramname) :
+                new ObjectParameter("diagramname", typeof(string));
+    
+            var owner_idParameter = owner_id.HasValue ?
+                new ObjectParameter("owner_id", owner_id) :
+                new ObjectParameter("owner_id", typeof(int));
+    
+            var new_diagramnameParameter = new_diagramname != null ?
+                new ObjectParameter("new_diagramname", new_diagramname) :
+                new ObjectParameter("new_diagramname", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_renamediagram", diagramnameParameter, owner_idParameter, new_diagramnameParameter);
+        }
+    
+        public virtual int sp_upgraddiagrams()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_upgraddiagrams");
+        }
+    
+        public virtual ObjectResult<string> Test(Nullable<int> index)
+        {
+            var indexParameter = index.HasValue ?
+                new ObjectParameter("index", index) :
+                new ObjectParameter("index", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("Test", indexParameter);
+        }
+    
+        public virtual ObjectResult<Run_CustomerOrders_Result> Run_CustomerOrders(Nullable<int> style, Nullable<int> colour, Nullable<int> size)
+        {
+            var styleParameter = style.HasValue ?
+                new ObjectParameter("Style", style) :
+                new ObjectParameter("Style", typeof(int));
+    
+            var colourParameter = colour.HasValue ?
+                new ObjectParameter("Colour", colour) :
+                new ObjectParameter("Colour", typeof(int));
+    
+            var sizeParameter = size.HasValue ?
+                new ObjectParameter("Size", size) :
+                new ObjectParameter("Size", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Run_CustomerOrders_Result>("Run_CustomerOrders", styleParameter, colourParameter, sizeParameter);
+        }
+    
+        public virtual ObjectResult<PPS_CustomerOrders_Result> PPS_CustomerOrders(Nullable<int> style, Nullable<int> colour, Nullable<int> size)
+        {
+            var styleParameter = style.HasValue ?
+                new ObjectParameter("Style", style) :
+                new ObjectParameter("Style", typeof(int));
+    
+            var colourParameter = colour.HasValue ?
+                new ObjectParameter("Colour", colour) :
+                new ObjectParameter("Colour", typeof(int));
+    
+            var sizeParameter = size.HasValue ?
+                new ObjectParameter("Size", size) :
+                new ObjectParameter("Size", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<PPS_CustomerOrders_Result>("PPS_CustomerOrders", styleParameter, colourParameter, sizeParameter);
         }
     }
 }

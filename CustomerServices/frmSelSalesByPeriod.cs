@@ -25,12 +25,14 @@ namespace CustomerServices
             SalesByPeriod = SBP;
 
             this.cmboStyles.CheckStateChanged += new System.EventHandler(this.cmboStyles_CheckStateChanged);
+            this.cmboColours.CheckStateChanged += new System.EventHandler(this.cmboColours_CheckStateChanged);
+            this.cmboSizes.CheckStateChanged += new System.EventHandler(this.cmboSizes_CheckStateChanged);
+            
             this.cmboCustomers.CheckStateChanged += new System.EventHandler(this.cmboCustomers_CheckStateChanged);
             
             if (SalesByPeriod)
             {
                 this.Text = "Sales By Style By Period";
-               
             }
             else
             {
@@ -54,11 +56,19 @@ namespace CustomerServices
                     cmboStyles.Items.Add(new CustomerServices.CheckComboBoxItem(Style.Sty_Id, Style.Sty_Description, false));
                 }
 
-                // cmboStyles.ValueMember = "Sty_Id";
-                // cmboStyles.DisplayMember = "Sty_Description";
+                var Colours = context.TLADM_Colours.Where(x => !(bool)x.Col_Discontinued).OrderBy(x => x.Col_Display).ToList();
+                foreach(var Colour in Colours)
+                {
+                    cmboColours.Items.Add(new CustomerServices.CheckComboBoxItem(Colour.Col_Id, Colour.Col_Display, false));
+                }
 
+                var Sizes = context.TLADM_Sizes.Where(x => !(bool)x.SI_Discontinued).OrderBy(x => x.SI_Description).ToList();
+                foreach (var Size in Sizes)
+                {
+                    cmboSizes.Items.Add(new CustomerServices.CheckComboBoxItem(Size.SI_id,Size.SI_Display, false));
+                }
 
-                 var Customers = context.TLADM_CustomerFile.OrderBy(x=>x.Cust_Description).ToList();
+                var Customers = context.TLADM_CustomerFile.OrderBy(x=>x.Cust_Description).ToList();
                  foreach (var Customer in Customers)
                  {
                      this.cmboCustomers.Items.Add(new CustomerServices.CheckComboBoxItem(Customer.Cust_Pk, Customer.Cust_Description, false));
@@ -92,9 +102,84 @@ namespace CustomerServices
                     if (value != null)
                         QueryParms.Styles.Remove(value);
                 }
+
+                // AS-20231103 ***** 
+                LoadColoursBasedOnSelectedStyles();
+                // AS-20231103 ***** 
             }
         }
 
+        // AS-20231103 ***** 
+        private void LoadColoursBasedOnSelectedStyles()
+        {
+            using (var context = new TTI2Entities())
+            {
+                // Get the selected style IDs
+                var selectedStyleIds = QueryParms.Styles.Select(style => style.Sty_Id).ToList();
+
+                // Query the bridge table to get associated color IDs for the selected styles
+                var colorIds = context.TLADM_StyleColour
+                    .Where(sc => selectedStyleIds.Contains(sc.STYCOL_Style_FK))
+                    .Select(sc => sc.STYCOL_Colour_FK)
+                    .ToList();
+
+                // Get the colors based on the retrieved color IDs
+                var colors = context.TLADM_Colours
+                    .Where(c => !(bool)c.Col_Discontinued)
+                    .Where(c => colorIds.Contains(c.Col_Id))
+                    .OrderBy(c => c.Col_Display)
+                    .ToList();
+
+                // Clear the ComboBox
+                cmboColours.Items.Clear();
+
+                // Populate the ComboBox with the filtered colors
+                foreach (var color in colors)
+                {
+                    cmboColours.Items.Add(new CustomerServices.CheckComboBoxItem(color.Col_Id, color.Col_Display, false));
+                }
+            }
+        }
+        // AS-20231103 *****
+
+        //-------------------------------------------------------------------------------------
+        // this message handler gets called when the user checks/unchecks an item the combo box
+        //----------------------------------------------------------------------------------------
+        private void cmboColours_CheckStateChanged(object sender, EventArgs e)
+        {
+            if (sender is CustomerServices.CheckComboBoxItem && FormLoaded)
+            {
+                CustomerServices.CheckComboBoxItem item = (CustomerServices.CheckComboBoxItem)sender;
+                if (item.CheckState)
+                {
+                    QueryParms.Colours.Add(repo.LoadColour(item._Pk));
+                }
+                else
+                {
+                    var value = QueryParms.Colours.Find(it => it.Col_Id == item._Pk);
+                    if (value != null)
+                        QueryParms.Colours.Remove(value);
+                }
+            }
+        }
+
+        private void cmboSizes_CheckStateChanged(object sender, EventArgs e)
+        {
+            if (sender is CustomerServices.CheckComboBoxItem && FormLoaded)
+            {
+                CustomerServices.CheckComboBoxItem item = (CustomerServices.CheckComboBoxItem)sender;
+                if (item.CheckState)
+                {
+                    QueryParms.Sizes.Add(repo.LoadSize(item._Pk));
+                }
+                else
+                {
+                    var value = QueryParms.Sizes.Find(it => it.SI_id == item._Pk);
+                    if (value != null)
+                        QueryParms.Sizes.Remove(value);
+                }
+            }
+        }
         //-------------------------------------------------------------------------------------
         // this message handler gets called when the user checks/unchecks an item the combo box
         //----------------------------------------------------------------------------------------

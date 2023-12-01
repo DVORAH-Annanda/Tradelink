@@ -50,6 +50,7 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.chkClosedCutSheet = new System.Windows.Forms.CheckBox();
             this.chkDBClosed = new System.Windows.Forms.CheckBox();
             this.chkDOClosed = new System.Windows.Forms.CheckBox();
             this.txtCutSheet = new System.Windows.Forms.TextBox();
@@ -65,6 +66,8 @@
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.btnSearch = new System.Windows.Forms.Button();
+            this.label15 = new System.Windows.Forms.Label();
+            this.txtOperator = new System.Windows.Forms.TextBox();
             this.groupBox1.SuspendLayout();
             this.groupBox4.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -272,6 +275,9 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.txtOperator);
+            this.groupBox2.Controls.Add(this.label15);
+            this.groupBox2.Controls.Add(this.chkClosedCutSheet);
             this.groupBox2.Controls.Add(this.chkDBClosed);
             this.groupBox2.Controls.Add(this.chkDOClosed);
             this.groupBox2.Controls.Add(this.txtCutSheet);
@@ -286,10 +292,20 @@
             this.groupBox2.Controls.Add(this.label10);
             this.groupBox2.Location = new System.Drawing.Point(403, 83);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(326, 219);
+            this.groupBox2.Size = new System.Drawing.Size(326, 248);
             this.groupBox2.TabIndex = 3;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Tracking";
+            // 
+            // chkClosedCutSheet
+            // 
+            this.chkClosedCutSheet.AutoSize = true;
+            this.chkClosedCutSheet.Location = new System.Drawing.Point(216, 215);
+            this.chkClosedCutSheet.Name = "chkClosedCutSheet";
+            this.chkClosedCutSheet.Size = new System.Drawing.Size(105, 17);
+            this.chkClosedCutSheet.TabIndex = 12;
+            this.chkClosedCutSheet.Text = "CutSheet Closed";
+            this.chkClosedCutSheet.UseVisualStyleBackColor = true;
             // 
             // chkDBClosed
             // 
@@ -315,7 +331,7 @@
             // 
             // txtCutSheet
             // 
-            this.txtCutSheet.Location = new System.Drawing.Point(105, 179);
+            this.txtCutSheet.Location = new System.Drawing.Point(105, 215);
             this.txtCutSheet.Name = "txtCutSheet";
             this.txtCutSheet.ReadOnly = true;
             this.txtCutSheet.Size = new System.Drawing.Size(88, 20);
@@ -356,7 +372,7 @@
             // label14
             // 
             this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(27, 183);
+            this.label14.Location = new System.Drawing.Point(27, 219);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(54, 13);
             this.label14.TabIndex = 4;
@@ -401,7 +417,7 @@
             // groupBox3
             // 
             this.groupBox3.Controls.Add(this.dataGridView1);
-            this.groupBox3.Location = new System.Drawing.Point(54, 359);
+            this.groupBox3.Location = new System.Drawing.Point(48, 424);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(481, 214);
             this.groupBox3.TabIndex = 4;
@@ -426,11 +442,28 @@
             this.btnSearch.UseVisualStyleBackColor = true;
             this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
             // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(28, 179);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(48, 13);
+            this.label15.TabIndex = 13;
+            this.label15.Text = "Operator";
+            // 
+            // txtOperator
+            // 
+            this.txtOperator.Location = new System.Drawing.Point(105, 176);
+            this.txtOperator.Name = "txtOperator";
+            this.txtOperator.ReadOnly = true;
+            this.txtOperator.Size = new System.Drawing.Size(174, 20);
+            this.txtOperator.TabIndex = 14;
+            // 
             // frmPieceEnquiry
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(761, 585);
+            this.ClientSize = new System.Drawing.Size(761, 731);
             this.Controls.Add(this.btnSearch);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
@@ -492,5 +525,8 @@
         private System.Windows.Forms.Button btnRecalc;
         private System.Windows.Forms.CheckBox chkDBClosed;
         private System.Windows.Forms.CheckBox chkDOClosed;
+        private System.Windows.Forms.CheckBox chkClosedCutSheet;
+        private System.Windows.Forms.TextBox txtOperator;
+        private System.Windows.Forms.Label label15;
     }
 }

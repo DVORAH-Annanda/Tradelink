@@ -19,6 +19,7 @@ namespace CustomerServices
         string[][] MandatoryFields;
         bool[] MandSelected;
         Util core;
+        protected readonly TTI2Entities _context;
 
         DataGridViewTextBoxColumn oTxtBoxA;
         DataGridViewTextBoxColumn oTxtBoxB;
@@ -33,29 +34,31 @@ namespace CustomerServices
         public frmStockTakeOn()
         {
             InitializeComponent();
-           
 
+            _context = new TTI2Entities();
+
+            //0
             oTxtBoxA = new DataGridViewTextBoxColumn();
             oTxtBoxA.HeaderText = "Box Number";
             oTxtBoxA.ValueType = typeof(string);
             dataGridView1.Columns.Add(oTxtBoxA);
-
+            //1
             oCmbBoxA = new DataGridViewComboBoxColumn();
             oCmbBoxA.HeaderText = "Style";
             dataGridView1.Columns.Add(oCmbBoxA);
-
+            //2
             oCmbBoxB = new DataGridViewComboBoxColumn();
             oCmbBoxB.HeaderText = "Colour";
             dataGridView1.Columns.Add(oCmbBoxB);
-
+            //3
             oCmbBoxC = new DataGridViewComboBoxColumn();
             oCmbBoxC.HeaderText = "Size";
             dataGridView1.Columns.Add(oCmbBoxC);
-            
+            //4
             oCmbBoxD = new DataGridViewComboBoxColumn();
             oCmbBoxD.HeaderText = "CMT";
             dataGridView1.Columns.Add(oCmbBoxD);
-            
+            //5
             oTxtBoxB = new DataGridViewTextBoxColumn();
             oTxtBoxB.HeaderText = "Weight" ;
             oTxtBoxB.ValueType = typeof(decimal);
@@ -247,33 +250,75 @@ namespace CustomerServices
         private void dataGridView1_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
         {
             DataGridView oDgv = sender as DataGridView;
-            if (oDgv != null && oDgv.Focused)
+            ComboBox oCombo = e.Control as ComboBox;
+
+            if (oDgv.Focused && oDgv.CurrentCell is DataGridViewTextBoxCell)
             {
-                var Cell = oDgv.CurrentCell;
-                if (Cell.ColumnIndex == 5)
+                if (oDgv != null && oDgv.Focused)
                 {
-                    e.Control.KeyDown -= core.txtWin_KeyDownOEM;
-                    e.Control.KeyPress -= core.txtWin_KeyPress;
-                    e.Control.KeyDown += core.txtWin_KeyDownOEM;
-                    e.Control.KeyPress += core.txtWin_KeyPress;
+                    var Cell = oDgv.CurrentCell;
+                    if (Cell.ColumnIndex == 5)
+                    {
+                        e.Control.KeyDown -= core.txtWin_KeyDownOEM;
+                        e.Control.KeyPress -= core.txtWin_KeyPress;
+                        e.Control.KeyDown += core.txtWin_KeyDownOEM;
+                        e.Control.KeyPress += core.txtWin_KeyPress;
+                    }
+                    else if (Cell.ColumnIndex == 6)
+                    {
+                        e.Control.KeyDown -= core.txtWin_KeyDownJI;
+                        e.Control.KeyPress -= core.txtWin_KeyPress;
+                        e.Control.KeyDown += core.txtWin_KeyDownJI;
+                        e.Control.KeyPress += core.txtWin_KeyPress;
+                    }
+                    else
+                    {
+                        e.Control.KeyDown -= core.txtWin_KeyDownOEM;
+                        e.Control.KeyPress -= core.txtWin_KeyPress;
+                        e.Control.KeyDown -= core.txtWin_KeyDownJI;
+                        // e.Control.KeyPress += core.txtWin_KeyPress;
+                    }
                 }
-                else if (Cell.ColumnIndex == 6)
+            }
+            else
+            {
+                if (oDgv.CurrentCell is DataGridViewComboBoxCell)
                 {
-                    e.Control.KeyDown -= core.txtWin_KeyDownJI;
-                    e.Control.KeyPress -= core.txtWin_KeyPress;
-                    e.Control.KeyDown += core.txtWin_KeyDownJI;
-                    e.Control.KeyPress += core.txtWin_KeyPress;
-                }
-                else
-                {
-                    e.Control.KeyDown -= core.txtWin_KeyDownOEM;
-                    e.Control.KeyPress -= core.txtWin_KeyPress;
-                    e.Control.KeyDown -= core.txtWin_KeyDownJI;
-                    // e.Control.KeyPress += core.txtWin_KeyPress;
+                    oCombo.SelectedIndexChanged += new EventHandler(ComboBox_SelectedIndexChanged);
                 }
             }
         }
 
+        private void ComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ComboBox cb = (ComboBox)sender;
+            var Cell = dataGridView1.CurrentCell;
+            var CurrentRow = dataGridView1.CurrentRow;
+            if (cb != null)
+            {
+                if (Cell.ColumnIndex == 1)
+                {
+                    var SelItem = (TLADM_Styles)cb.SelectedItem;
+
+                    if (SelItem != null)
+                    {
+                         var tst = (from T1 in _context.TLADM_StyleColour
+                                       join T2 in _context.TLADM_Colours
+                                       on T1.STYCOL_Colour_FK equals T2.Col_Id
+                                       where T1.STYCOL_Style_FK == SelItem.Sty_Id
+                                       orderby T2.Col_Display
+                                       select T2).ToList();
+
+                        oCmbBoxB.DataSource = tst;
+                        oCmbBoxB.HeaderText = "Colours";
+                        oCmbBoxB.ValueMember = "Col_Id";
+                        oCmbBoxB.DisplayMember = "Col_Display";
+                      
+
+                    }
+                }
+            }
+        }
         private void dataGridView1_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
         {
             DataGridView oDgv = sender as DataGridView;
@@ -300,6 +345,17 @@ namespace CustomerServices
                         MessageBox.Show(Message, "Error Message");
                         e.Cancel = true;
                     }
+                }
+            }
+        }
+
+        private void frmStockTakeOn_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if(!e.Cancel)
+            {
+                if(_context != null)
+                {
+                    _context.Dispose();
                 }
             }
         }

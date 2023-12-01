@@ -21,5 +21,7 @@ namespace Utilities
         public Nullable<int> TrxT_FromWhse_FK { get; set; }
         public Nullable<int> TrxT_ToWhse_FK { get; set; }
         public int TrxT_FinishedGoods_FK { get; set; }
+        public bool TrxT_Discontinued { get; set; }
+        public Nullable<System.DateTime> TrxT_DiscontinuedDate { get; set; }
     }
 }

@@ -464,6 +464,11 @@ namespace DyeHouse
                 chkLabReport.Checked = false;
                 chkWrap.Checked = false;
 
+                if(!DOGarments)
+                {
+                    radBAll.Enabled = false;
+                }
+
                 var LNU = context.TLADM_LastNumberUsed.Find(3);
                 if (LNU != null)
                 {
@@ -622,8 +627,14 @@ namespace DyeHouse
                         {
                             var customer = context.TLADM_CustomerFile.Find(selected.TLDYO_Customer_FK);
                             if (customer != null)
+                            {
                                 txtCustomer.Text = customer.Cust_Description;
 
+                                if(customer.Cust_AllowAll && !radBAll.Enabled)
+                                {
+                                    radBAll.Enabled = true;
+                                }
+                            }
                             if (rbStandardMode.Checked)
                             {
                                 var colour = context.TLADM_Colours.Find(selected.TLDYO_Colour_FK);
@@ -678,8 +689,14 @@ namespace DyeHouse
 
                             var customer = context.TLADM_CustomerFile.Find(selected.TLDYEF_Customer_FK);
                             if (customer != null)
+                            {
                                 txtCustomer.Text = customer.Cust_Description;
 
+                                if (customer.Cust_AllowAll && !radBAll.Enabled)
+                                {
+                                    radBAll.Enabled = true;
+                                }
+                            }
                             if (rbStandardMode.Checked)
                             {
                                 var colour = context.TLADM_Colours.Find(selected.TLDYEF_Colours_FK);
@@ -1270,10 +1287,7 @@ namespace DyeHouse
                             var NoOfPieces = Int16.Parse(txtNoOfPieces.Text.ToString());
                             txtNoOfPieces.Text = (1 + NoOfPieces).ToString(); 
                          }
-
-                         
-                        
-                    }
+                     }
                  }
                  else
                  {
@@ -1311,10 +1325,16 @@ namespace DyeHouse
                                             Log.TLDL_Dept_Fk = 12;
                                             Log.TLDL_TransDetail = "Piece Number " + GP.GreigeP_PieceNo;
 
-                                            context.TLADM_DailyLog.Add(Log);
+                                            try
+                                            {
+                                                context.TLADM_DailyLog.Add(Log);
 
-                                            context.SaveChanges();
+                                                context.SaveChanges();
+                                            }
+                                            catch (Exception ex)
+                                            {
 
+                                            }
 
                                         }
                                     }

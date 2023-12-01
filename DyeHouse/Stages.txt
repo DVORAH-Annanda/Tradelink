@@ -1,0 +1,15 @@
+Dye Stages table relationships 
+Description	Table  							TLDYE_DyeBatch	Dye  
+															Transactions	NCA		
++---------------------------------------------------------------
+Colour Check After Dyeing	 				|	Stage 1	|	3 |	n/a		
++---------------------------------------------------------------
+Hydro Measures Width		 				|	Stage 2 |     | 				
++----------------------------------------------------------------
+Stability Check after drying 				|	Stage 3 | 	  |				
++----------------------------------------------------------------
+Colour  Stability check after Compacting	|   Stage 4 |	  |					
++-------------------------------------------------------------------------
+Inspection after Drying						|	Stage 5 |  	  |     |  
++------------------------------------------------------------------------
+

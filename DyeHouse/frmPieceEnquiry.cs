@@ -127,6 +127,15 @@ namespace DyeHouse
                         return;
                     }
 
+                    if (Production.GreigeP_Operator_FK != null)
+                    {
+                        var Operator = context.TLADM_MachineOperators.Find(Production.GreigeP_Operator_FK);
+                        if (Operator != null)
+                        {
+                            txtOperator.Text = Operator.MachOp_Description;
+                        }
+                    }
+
                     if (Production.GreigeP_KnitO_Fk != null)
                     {
                         if (Production.GreigeP_Greige_Fk != null)
@@ -142,7 +151,7 @@ namespace DyeHouse
                         if(KO != null)
                         {
                             txtKnitOrder.Text = KO.KnitO_OrderNumber.ToString();
-                            
+                          
                             var YarnOrderPallet = context.TLKNI_YarnOrderPallets.Where(x => x.TLKNIOP_ReservedBy == KO.KnitO_Pk).FirstOrDefault();
                             if (YarnOrderPallet != null)
                             {
@@ -181,10 +190,10 @@ namespace DyeHouse
                         if (DyeBatchDetail != null)
                         {
                             txtMeters.Text = Math.Round(DyeBatchDetail.DYEBO_Meters, 2).ToString();
-                            txtGross.Text  = Math.Round(Production.GreigeP_weight, 2).ToString();
-                            
+                            txtGross.Text = Math.Round(Production.GreigeP_weight, 2).ToString();
+
                             txtWidth.Text = Math.Round(DyeBatchDetail.DYEBO_Width, 2).ToString();
-                            txtDisk.Text   = Math.Round(DyeBatchDetail.DYEBO_DiskWeight, 2).ToString();
+                            txtDisk.Text = Math.Round(DyeBatchDetail.DYEBO_DiskWeight, 2).ToString();
                             txtNett.Text = Math.Round(DyeBatchDetail.DYEBO_Nett, 2).ToString();
 
                             btnRecalc.Enabled = true;
@@ -204,10 +213,20 @@ namespace DyeHouse
 
                                 chkDBClosed.Checked = DyeBatch.DYEB_Closed;
                             }
-                        }
-                        if (DyeBatchDetail != null &&  DyeBatchDetail.DYEBO_CutSheet)
-                        {
-                          
+
+                            if (DyeBatchDetail.DYEBO_CutSheet)
+                            {
+                                var CutSheetDet = context.TLCUT_CutSheetDetail.FirstOrDefault(x => x.TLCutSHD_DyeBatchDet_FK == DyeBatchDetail.DYEBD_Pk);
+                                if (CutSheetDet != null)
+                                {
+                                    var CutSheet = context.TLCUT_CutSheet.Find(CutSheetDet.TLCutSHD_CutSheet_FK);
+                                    if (CutSheet != null)
+                                    {
+                                        chkClosedCutSheet.Checked = CutSheet.TLCutSH_Closed;
+                                        txtCutSheet.Text = CutSheet.TLCutSH_No;
+                                    }
+                                }
+                            }
                         }
                     }
 

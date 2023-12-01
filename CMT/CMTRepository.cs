@@ -693,7 +693,7 @@ namespace CMT
                  foreach (var Customer in parameters.Customers)
                  {
                      var temp = Customer;
-                     CustomerPredicate = CustomerPredicate.Or(s => s.Sty_Label_FK == Customer.Cust_Pk);
+                     CustomerPredicate = CustomerPredicate.Or(s => s.Sty_Customer_Fk == Customer.Cust_Pk);
                  }
                  QueryStyles = QueryStyles.AsExpandable().Where(CustomerPredicate);
 
@@ -820,7 +820,7 @@ namespace CMT
         public int FromStore_FK;
         public bool ProductionResults;
         public bool UseDatePicker;
-
+        public bool ExcludeOnHold;
 
         public CMTQueryParameters()
         {
@@ -845,6 +845,8 @@ namespace CMT
             Year = DateTime.Now.Year;
             ProductionResults = false;
             UseDatePicker = false;
+            ExcludeOnHold = false;
+
 
         }
 

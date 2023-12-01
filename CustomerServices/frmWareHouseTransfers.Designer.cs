@@ -143,6 +143,7 @@
             this.cmboStyles.Size = new System.Drawing.Size(356, 21);
             this.cmboStyles.TabIndex = 8;
             this.cmboStyles.Text = "Select Options";
+            this.cmboStyles.SelectedIndexChanged += new System.EventHandler(this.cmboStyles_SelectedIndexChanged);
             // 
             // btnSubmit
             // 

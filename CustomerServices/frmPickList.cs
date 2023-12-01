@@ -49,6 +49,7 @@ namespace CustomerServices
         int TransNumber;
         string Mach_IP;
 
+      
         public frmPickList()
         {
             InitializeComponent();
@@ -220,6 +221,7 @@ namespace CustomerServices
                 catch (Exception ex)
                 {
                     MessageBox.Show(ex.Message);
+                    
                     this.Close();
                 }
             }
@@ -251,8 +253,9 @@ namespace CustomerServices
                         DialogResult Res = MessageBox.Show("This order is only required on the " + dt.ToString("dd/MM/yyy") + " Continue", "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
                         if (Res == DialogResult.No)
                         {
-                            return;
+                                return;
                         }
+                        
                     }
 
                     if (POSelected.TLCSVPO_Closeed)
@@ -282,10 +285,8 @@ namespace CustomerServices
                                     String Message = "There appears not to be enough stock in " + WhseDescription + Environment.NewLine + "Style " + Style + " Colour " + Colour;
                                     String UpperMessage = "Quantity ordered " + PODetail.TLCUSTO_Qty.ToString() + " Quantity on Hand " + STOH.ToString();
                                     
-                                    using (DialogCenteringService centeringService = new DialogCenteringService(this)) // center message box
-                                    {
-                                        MessageBox.Show(Message, UpperMessage, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                                    }
+                                    MessageBox.Show(Message, UpperMessage, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                    
                                     
                                     return; 
 
@@ -388,6 +389,7 @@ namespace CustomerServices
                             if (Total > (int)SingleRow.Cells[5].Value)
                             {
                                 DialogResult oDlgRes = MessageBox.Show("Quantity selected exceeds quantity ordered", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                              
                             }
 
                         }
@@ -407,18 +409,19 @@ namespace CustomerServices
                            }
                            if (Total > (int)SingleRow.Cells[5].Value && (bool)SingleRow.Cells[1].Value == true)
                            {
-                                    MessageBox.Show("Quantity selected exceeds quantity ordered", "Mandatory", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                                    return;
+                                MessageBox.Show("Quantity selected exceeds quantity ordered", "Mandatory", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                
+                                return;
                            }
                         
                         }
                         else
                         {
                             MessageBox.Show("Not supported for Repack Customers", "Mandatory", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                           
                             return;
                         }
-                        
-                    }
+                }
 
                     SingleRow.Cells[6].Value = Total;
                     
@@ -608,8 +611,7 @@ namespace CustomerServices
                                 MessageBox.Show(ex.Message);
                             }
                        }
-                       
-                    }
+                   }
                 }
             }
         }
@@ -775,6 +777,7 @@ namespace CustomerServices
                 if (Customer == null)
                 {
                     MessageBox.Show("Please select a Customer from the drop down box");
+                    
                     return;
                 }
 
@@ -795,7 +798,6 @@ namespace CustomerServices
                             LNU.col3 += 1;
                         }
 
-
                         var MasterRecords = context.TLCSV_PickingListMaster.Where(x => x.TLPL_IPAddress == Mach_IP).ToList();
                         if (MasterRecords.Count != 0)
                         {
@@ -810,7 +812,9 @@ namespace CustomerServices
                             OrderAllocated.TLORDA_PLPrintDate = DateTime.Now;
                             OrderAllocated.TLORDA_BoxSelected = true;
                             if (chkStock.Checked)
+                            {
                                 OrderAllocated.TLORDA_PLStockOrder = true;
+                            }
 
                             context.TLCSV_OrderAllocated.Add(OrderAllocated);
 
@@ -867,6 +871,7 @@ namespace CustomerServices
                             {
                                 context.SaveChanges();
                                 MessageBox.Show("Data successfully saved to the database");
+                                
 
                                 if (!PO.TLCSVPO_RepackTransaction)
                                 {
@@ -912,6 +917,7 @@ namespace CustomerServices
                             catch (Exception ex)
                             {
                                 MessageBox.Show(ex.Message);
+                                
                             }
                             finally
                             {
@@ -953,10 +959,15 @@ namespace CustomerServices
                     {
                         formloaded = false;
                         cmboCurrentOrders.DataSource = null;
-                        if(Selected.Cust_RePack)
-                            cmboCurrentOrders.DataSource = context.TLCSV_PurchaseOrder.Where(x => !x.TLCSVPO_Closeed && x.TLCSVPO_Customer_FK == Selected.Cust_Pk && x.TLCSVPO_RepackTransaction && !x.TLCSVPO_Provisional).OrderBy(x=>x.TLCSVPO_PurchaseOrder).ToList();
+                        if (Selected.Cust_RePack)
+                        {
+                            cmboCurrentOrders.DataSource = context.TLCSV_PurchaseOrder.Where(x => !x.TLCSVPO_Closeed && x.TLCSVPO_Customer_FK == Selected.Cust_Pk && x.TLCSVPO_RepackTransaction && !x.TLCSVPO_Provisional).OrderBy(x => x.TLCSVPO_PurchaseOrder).ToList();
+                        }
                         else
+                        {
                             cmboCurrentOrders.DataSource = context.TLCSV_PurchaseOrder.Where(x => !x.TLCSVPO_Provisional && !x.TLCSVPO_Closeed && x.TLCSVPO_Customer_FK == Selected.Cust_Pk).OrderBy(x => x.TLCSVPO_PurchaseOrder).ToList();
+                        }
+                        
                         cmboCurrentOrders.ValueMember = "TLCSVPO_Pk";
                         cmboCurrentOrders.DisplayMember = "TLCSVPO_PurchaseOrder";
                         cmboCurrentOrders.SelectedValue = -1;
@@ -1002,7 +1013,10 @@ namespace CustomerServices
                 var PriorRecords = context.TLCSV_PickingListMaster.Where(x => x.TLPL_IPAddress == Mach_IP).Count();
                 if (PriorRecords != 0)
                 {
-                    MessageBox.Show("There appears to be existing records available. Please save current session first");
+                    using (DialogCenteringService svce = new DialogCenteringService(this))
+                    {
+                        MessageBox.Show("There appears to be existing records available. Please save current session first");
+                    }
                     e.Cancel = true;
                 }
             }

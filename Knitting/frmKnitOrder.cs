@@ -266,8 +266,6 @@ namespace Knitting
                 cmbFabricType.DisplayMember = "TLGreige_Description";
                 cmbFabricType.SelectedValue = 0;
 
-                            
-
                 var Dept = context.TLADM_Departments.Where(x=>x.Dep_ShortCode == "KNIT").FirstOrDefault();
                 if(Dept != null)
                 {
@@ -404,99 +402,107 @@ namespace Knitting
                         if (fabwidth != null)
                             txtFabricWidth.Text = fabwidth.FW_Description;
 
-                        var cnt = 0;
+                        //NB WAIT CURSOR
+                        //*AS 20230914 -- if PN filter list, else give whole list: var YarnDet = context.TLADM_Yarn.ToList();
                         var GreigePN = Core.ExtrapNumber(Greige.TLGreige_YarnPowerN, context.TLADM_Yarn.Count()).ToList();
-                        foreach (var Number in GreigePN)
-                        {
-                           var YarnDet = context.TLADM_Yarn.Where(x => x.YA_PowerN == Number).FirstOrDefault();
-                           if (YarnDet != null)
+                        
+                        //if (GreigePN.Count > 0)
+                        //{
+                        var YarnDet = GreigePN.Any() ? GreigePN.SelectMany(Number => context.TLADM_Yarn.Where(x => x.YA_PowerN == Number)).ToList() : context.TLADM_Yarn.ToList();
+                        //foreach (var Number in GreigePN)
+                        //{
+                        //    YarnDet = context.TLADM_Yarn.Where(x => x.YA_PowerN == Number).ToList();
+                        //}                    
+
+                        if (YarnDet != null)
                            {
-                               if (!rbComCustYes.Checked)
-                               {
-                                   if (!EditKO)
-                                   {
-                                       if (rbOwnYarn.Checked)
-                                           PalletStack = context.TLKNI_YarnOrderPallets.Where(x => x.TLKNIOP_YarnType_FK == YarnDet.YA_Id && x.TLKNIOP_OwnYarn && !x.TLKNIOP_PalletAllocated).ToList();
-                                       else
-                                           PalletStack = context.TLKNI_YarnOrderPallets.Where(x => x.TLKNIOP_YarnType_FK == YarnDet.YA_Id && !x.TLKNIOP_OwnYarn && !x.TLKNIOP_PalletAllocated).ToList();
-                                   }
-                                   else
-                                   {
-                                       if (rbOwnYarn.Checked)
-                                           PalletStack = context.TLKNI_YarnOrderPallets.Where(x => x.TLKNIOP_YarnType_FK == YarnDet.YA_Id && x.TLKNIOP_OwnYarn && !x.TLKNIOP_PalletAllocated).ToList();
-                                       else
-                                           PalletStack = context.TLKNI_YarnOrderPallets.Where(x => x.TLKNIOP_YarnType_FK == YarnDet.YA_Id && !x.TLKNIOP_OwnYarn && !x.TLKNIOP_PalletAllocated).ToList();
-                                   }
-                               }
-                               else
-                               {
-                                   PalletStack = context.TLKNI_YarnOrderPallets.Where(x => x.TLKNIOP_YarnType_FK == YarnDet.YA_Id && !x.TLKNIOP_OwnYarn && x.TLKNIOP_CommisionCust &&  !x.TLKNIOP_PalletAllocated).ToList();
-                               }
+                                foreach (var YDet in YarnDet)
+                                {
+                                    if (!rbComCustYes.Checked)
+                                    {
+                                        if (!EditKO)
+                                        {
+                                            if (rbOwnYarn.Checked)
+                                                PalletStack = context.TLKNI_YarnOrderPallets.Where(x => x.TLKNIOP_YarnType_FK == YDet.YA_Id && x.TLKNIOP_OwnYarn && !x.TLKNIOP_PalletAllocated).ToList();
+                                            else
+                                                PalletStack = context.TLKNI_YarnOrderPallets.Where(x => x.TLKNIOP_YarnType_FK == YDet.YA_Id && !x.TLKNIOP_OwnYarn && !x.TLKNIOP_PalletAllocated).ToList();
+                                        }
+                                        else
+                                        {
+                                            if (rbOwnYarn.Checked)
+                                                PalletStack = context.TLKNI_YarnOrderPallets.Where(x => x.TLKNIOP_YarnType_FK == YDet.YA_Id && x.TLKNIOP_OwnYarn && !x.TLKNIOP_PalletAllocated).ToList();
+                                            else
+                                                PalletStack = context.TLKNI_YarnOrderPallets.Where(x => x.TLKNIOP_YarnType_FK == YDet.YA_Id && !x.TLKNIOP_OwnYarn && !x.TLKNIOP_PalletAllocated).ToList();
+                                        }
+                                    }
+                                    else
+                                    {
+                                        PalletStack = context.TLKNI_YarnOrderPallets.Where(x => x.TLKNIOP_YarnType_FK == YDet.YA_Id && !x.TLKNIOP_OwnYarn && x.TLKNIOP_CommisionCust && !x.TLKNIOP_PalletAllocated).ToList();
+                                    }
 
-                               if (PalletStack.Count == 0)
-                               {
-                                    if (++cnt < GreigePN.Count())
+                                    if (PalletStack.Count == 0)
+                                    {
+                                        //*AS 20230914
+                                        //using (DialogCenteringService centeringService = new DialogCenteringService(this)) // center message box
+                                        //{
+                                        //    MessageBox.Show("There are no pallets conforming to the " + YDet.YA_Description + Environment.NewLine + " specifications as selected");
+                                        //}
+
                                         continue;
+                                    }
 
-                                   using (DialogCenteringService centeringService = new DialogCenteringService(this)) // center message box
-                                   {
-                                      MessageBox.Show("There are no pallets conforming to the specifications as selected");
-                                   }
-                             
-                                   return;
-                               }
+                                    foreach (var Pallet in PalletStack)
+                                    {
+                                        DataRow YarnPallet = YarnAvailable.NewRow();
 
-                               foreach (var Pallet in PalletStack)
-                               {
-                                    DataRow YarnPallet = YarnAvailable.NewRow();
+                                        if (rbComCustNo.Checked)
+                                        {
+                                            var YOrder = context.TLSPN_YarnOrder.Find(Pallet.TLKNIOP_YarnOrder_FK);
+                                            if (YOrder != null)
+                                            {
+                                                YarnPallet[0] = Pallet.TLKNIOP_Pk;
+                                                YarnPallet[1] = false;
 
-                                   if (rbComCustNo.Checked)
-                                   {
-                                       var YOrder = context.TLSPN_YarnOrder.Find(Pallet.TLKNIOP_YarnOrder_FK);
-                                       if (YOrder != null)
-                                       {
+                                                if (EditKO)
+                                                {
+                                                    var YarnAlloc = context.TLKNI_YarnAllocTransctions.Where(x => x.TLKYT_KnitOrder_FK == _CurrentOrder.KnitO_Pk && x.TLKYT_YOP_FK == Pallet.TLKNIOP_Pk).FirstOrDefault();
+                                                    if (YarnAlloc != null)
+                                                    {
+                                                        YarnPallet[1] = true;
+
+                                                    }
+                                                }
+
+                                                YarnPallet[2] = YOrder.YarnO_OrderNumber + "-" + Pallet.TLKNIOP_PalletNo.ToString().PadLeft(2, '0');
+                                                YarnPallet[3] = Math.Round(core.CalculatePalletNett(Pallet), 2);
+                                                YarnPallet[4] = Pallet.TLKNIOP_Cones + Pallet.TLKNIOP_ConesReturned - Pallet.TLKNIOP_ConesReserved;
+                                                YarnPallet[5] = 0.00M;
+                                                YarnPallet[6] = 0;
+
+                                            }
+                                        }
+                                        else
+                                        {
                                             YarnPallet[0] = Pallet.TLKNIOP_Pk;
                                             YarnPallet[1] = false;
 
-                                           if (EditKO)
-                                           {
-                                               var YarnAlloc = context.TLKNI_YarnAllocTransctions.Where(x => x.TLKYT_KnitOrder_FK == _CurrentOrder.KnitO_Pk && x.TLKYT_YOP_FK == Pallet.TLKNIOP_Pk).FirstOrDefault();
-                                                if (YarnAlloc != null)
-                                                {
-                                                    YarnPallet[1] = true;
-                                                    
-                                                }
-                                           }
+                                            if (EditMode && Pallet.TLKNIOP_ReservedBy == _CurrentOrder.KnitO_Pk)
+                                            {
+                                                YarnPallet[1] = true;
+                                            }
 
-                                           YarnPallet[2] = YOrder.YarnO_OrderNumber + "-" + Pallet.TLKNIOP_PalletNo.ToString().PadLeft(2, '0');
-                                           YarnPallet[3] = Math.Round(core.CalculatePalletNett(Pallet), 2);
-                                           YarnPallet[4] = Pallet.TLKNIOP_Cones + Pallet.TLKNIOP_ConesReturned - Pallet.TLKNIOP_ConesReserved;
-                                           YarnPallet[5] = 0.00M;
-                                           YarnPallet[6] = 0;
+                                            YarnPallet[2] = Pallet.TLKNIOP_PalletNo.ToString().PadLeft(2, '0');
+                                            YarnPallet[3] = Math.Round(core.CalculatePalletNett(Pallet), 2);
+                                            YarnPallet[4] = Pallet.TLKNIOP_Cones - Pallet.TLKNIOP_ConesReserved;
+                                            YarnPallet[5] = 0.00M;
+                                            YarnPallet[6] = 0;
+                                        }
 
-                                       }
-                                   }
-                                   else
-                                   {
-                                       YarnPallet[0] = Pallet.TLKNIOP_Pk;
-                                       YarnPallet[1] = false;
-
-                                       if (EditMode && Pallet.TLKNIOP_ReservedBy == _CurrentOrder.KnitO_Pk)
-                                       {
-                                           YarnPallet[1] = true;
-                                       }
-
-                                       YarnPallet[2] = Pallet.TLKNIOP_PalletNo.ToString().PadLeft(2, '0');
-                                       YarnPallet[3] = Math.Round(core.CalculatePalletNett(Pallet), 2);
-                                       YarnPallet[4] = Pallet.TLKNIOP_Cones - Pallet.TLKNIOP_ConesReserved;
-                                       YarnPallet[5] = 0.00M;
-                                       YarnPallet[6] = 0;
-                                   }
-
-                                    YarnAvailable.Rows.Add(YarnPallet);
-                               }
+                                        YarnAvailable.Rows.Add(YarnPallet);
+                                    }
+                                }
                            }
-                        }
+                        //}
 
                         var Machines = context.TLADM_MachineDefinitions.Where(x => x.MD_GreigeType_FK == Greige.TLGreige_Id).ToList();
                         if (Machines != null)
@@ -515,14 +521,11 @@ namespace Knitting
 
                             formloaded = true;
                         }
-
+                                            
                         dataGridView1.Focus();
                     }
                 }
-
-               
             }
-
         }
         
         private void OrderQty_Changed(object sender, EventArgs e)

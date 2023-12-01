@@ -25,6 +25,8 @@ namespace Utilities
         public int UOM_Pk { get; set; }
         public string UOM_ShortCode { get; set; }
         public string UOM_Description { get; set; }
+        public bool UOM_Discontinued { get; set; }
+        public Nullable<System.DateTime> UOM_DiscontinuedDate { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TLADM_ConsumablesOther> TLADM_ConsumablesOther { get; set; }

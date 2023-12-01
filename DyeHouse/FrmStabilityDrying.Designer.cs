@@ -132,7 +132,7 @@
             this.txtQuality.Location = new System.Drawing.Point(157, 130);
             this.txtQuality.Name = "txtQuality";
             this.txtQuality.ReadOnly = true;
-            this.txtQuality.Size = new System.Drawing.Size(100, 20);
+            this.txtQuality.Size = new System.Drawing.Size(271, 20);
             this.txtQuality.TabIndex = 7;
             // 
             // label4

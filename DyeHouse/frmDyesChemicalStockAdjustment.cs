@@ -71,7 +71,7 @@ namespace DyeHouse
             column = new DataColumn();
             column.DataType = typeof(decimal);
             column.ColumnName = "Adjustment_Amt";
-            column.Caption = "Closed";
+            column.Caption = "Adjustment Amt";
             column.DefaultValue = 0.00M;
             dt.Columns.Add(column);
 
@@ -152,8 +152,8 @@ namespace DyeHouse
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-            var Dlg = sender as DataGridView; 
-            if(Dlg != null && FormLoaded)
+            var oBtn = sender as Button; 
+            if(oBtn != null && FormLoaded)
             {
                 foreach(DataRow Row in dt.Rows)
                 {

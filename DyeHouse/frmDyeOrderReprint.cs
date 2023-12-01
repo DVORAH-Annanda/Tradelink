@@ -21,12 +21,14 @@ namespace DyeHouse
 
             if (DOReprint)
             {
+                this.label1.Text = "Please enter a dye order no";
                 this.Text = "Dye Order Reprint";
                 groupBox1.Visible = true;
                 rbGarments.Checked = true;
             }
             else
             {
+                this.label1.Text = "Please enter a dye batch no";
                 this.Text = "Dye Batch Reprint";
                 groupBox1.Visible = false;
             }
@@ -52,7 +54,6 @@ namespace DyeHouse
 
                                 return;
                             }
-
 
                             frmDyeViewReport vRep = new frmDyeViewReport(3, DyeOrder.TLDYO_Pk);
                             int h = Screen.PrimaryScreen.WorkingArea.Height;
@@ -90,6 +91,18 @@ namespace DyeHouse
                             txtInput.Text = string.Empty;
 
                             return;
+                        }
+
+                        if(DyeBatch.DYEB_Closed)
+                        {
+                            using (DialogCenteringService centering = new DialogCenteringService(this))
+                            {
+                                DialogResult res = MessageBox.Show("This Dye Batch has been closed", "Do you still want to reprint ?", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                                if(res == DialogResult.No)
+                                {
+                                    return;
+                                }
+                            }
                         }
 
                         frmDyeViewReport vRep = new frmDyeViewReport(4, DyeBatch.DYEB_Pk );

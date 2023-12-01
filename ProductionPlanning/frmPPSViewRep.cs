@@ -183,6 +183,7 @@ namespace ProductionPlanning
                     {
                         DataRow Row = dt.NewRow();
                         Row[0] = GreigeItem.TLGreige_Description;
+                        Row[3] = 0;
 
                         var GreigeP = core.CalculateAvailableToBatch(_ProdQParms.GradeType, GreigeItem.TLGreige_Id, _ProdQParms.IncludeGradeAWithwarnings);
 
@@ -215,10 +216,28 @@ namespace ProductionPlanning
                             Title = "Grade A, B and C Selected";
                         }
 
+                        if(_ProdQParms.ExcludeDiscontinued)
+                        {
+                            Title += " Discontinued Items excluded";
+                        }
+                        else
+                        {
+                            Title += " Discontinued Items Included";
+                        }
+
+                        var GreigeProduced = (from T1 in context.TLKNI_Order
+                                          join T2 in context.TLKNI_GreigeProduction
+                                          on T1.KnitO_Pk equals T2.GreigeP_KnitO_Fk
+                                          where T1.KnitO_Product_FK == GreigeItem.TLGreige_Id && !T1.KnitO_Closed && T2.GreigeP_Captured && T2.GreigeP_Inspected
+                                          select T2).Sum(x =>(decimal ?) x.GreigeP_weightAvail) ?? 0.00M; 
+
                         Row[1] = GreigeP.Where(x => x.GreigeP_Captured && x.GreigeP_Inspected).Sum(x => (int?)x.GreigeP_weight) ?? 0;
                         Row[2] = GreigeP.Where(x => !x.GreigeP_Inspected).Sum(x => (int?)x.GreigeP_weight) ?? 0;
                         Row[3] = context.TLKNI_Order.Where(x => x.KnitO_Product_FK == GreigeItem.TLGreige_Id && !x.KnitO_Closed).Sum(x => (int?)x.KnitO_Weight) ?? 0;
-
+                        if(Convert.ToDecimal(Row[3]) - GreigeProduced > 0)
+                        {
+                            Row[3] = Convert.ToDecimal(Row[3]) - GreigeProduced;
+                        }
                         Row[4] = core.DyeOrdersLT8Weeks(GreigeItem.TLGreige_Id);
                         Row[5] = core.DyeOrdersGT8Weeks(GreigeItem.TLGreige_Id);
                         Row[6] = Convert.ToInt32(Row[1].ToString()) + Convert.ToInt32(Row[2].ToString()) - Convert.ToInt32(Row[4].ToString()) - Convert.ToInt32(Row[5].ToString());

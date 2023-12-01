@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using Utilities;
 using Microsoft.Office.Interop.Outlook;
 using EntityFramework.Extensions;
+using CrystalDecisions.Shared.Json;
 
 namespace CustomerServices
 {
@@ -19,7 +20,7 @@ namespace CustomerServices
         DataGridViewTextBoxColumn  oTxtA;   //  0 datagridView1 Current Pk
         DataGridViewTextBoxColumn  oTxtB;   //  1 Line Numbers
         DataGridViewComboBoxColumn oCmbA;  //   2 datagridView1 Styles
-        DataGridViewComboBoxColumn oCmbD;  //   3 datagridView1 Styles
+        DataGridViewComboBoxColumn oCmbD;  //   3 datagridView1 Qualities
         DataGridViewComboBoxColumn oCmbB;  //   4 datagridView1 Colours
         DataGridViewComboBoxColumn oCmbC;  //   5 datagridView1 Sizes
         DataGridViewTextBoxColumn  oTxtC;   //  6 datagridView1 Order Qty
@@ -33,14 +34,16 @@ namespace CustomerServices
         DataGridViewTextBoxColumn oTxtAB;   // 1 datagridview2 Total SOH for selection 
         DataGridViewTextBoxColumn oTxtAC;   // 2 datagridview2 Total Picked for selection
         DataGridViewTextBoxColumn oTxtAD;   // 3 datagridview2 Total Balance for selection
-
-        DateTimePicker dtp;
+        DataGridViewTextBoxColumn oTxtAE;   // 4 datagridview2 Total Delivered
+        DataGridViewTextBoxColumn oTxtAF;   // 5 datagridview2 Total Balance for still to be delivered
+        
+        DateTimePicker dtp = null;
 
         bool Mode;
         string[][] MandatoryFields;
         bool[] MandSelected;
         Util core;
-
+    
         bool EditMode;
         bool AddnAdd;
         bool FabricMode; 
@@ -50,6 +53,8 @@ namespace CustomerServices
 
         StringBuilder sb = null;
         DataTable dt;
+
+        UserDetails _UserId;
 
         protected readonly TTI2Entities _context;
         //==========================================
@@ -64,12 +69,12 @@ namespace CustomerServices
         //==============================================================
         Boolean RepackTransaction;
 
-        public frmCustomerOrders()
+        public frmCustomerOrders(UserDetails UserId)
         {
             InitializeComponent();
             _context = new TTI2Entities();
             FabricMode = false;
-
+            _UserId = UserId;
         }
 
         private void frmCustomerOrders_Load(object sender, EventArgs e)
@@ -226,6 +231,18 @@ namespace CustomerServices
                 oTxtAD.HeaderText = "Balance";
                 dataGridView2.Columns.Add(oTxtAD);
 
+                oTxtAE = new DataGridViewTextBoxColumn();
+                oTxtAE.ReadOnly = true;
+                oTxtAE.ValueType = typeof(int);
+                oTxtAE.HeaderText = "Current Delivered";
+                dataGridView2.Columns.Add(oTxtAE);
+
+                oTxtAF = new DataGridViewTextBoxColumn();
+                oTxtAF.ReadOnly = true;
+                oTxtAF.ValueType = typeof(int);
+                oTxtAF.HeaderText = "Balance";
+                dataGridView2.Columns.Add(oTxtAF);
+
                 dataGridView2.Visible = false;
                 dataGridView2.AutoGenerateColumns = false;
                 dataGridView2.AllowUserToAddRows = false;
@@ -305,6 +322,14 @@ namespace CustomerServices
 
                         FabricMode = false;
                         oTxtC.HeaderText = "Qty";
+
+                        if (selected.Cust_PFD)
+                        {
+                           oCmbA.DataSource = _context.TLADM_Styles.Where(x => (bool)!x.Sty_Discontinued && x.Sty_PFD).OrderBy(x => x.Sty_Description).ToList();
+                           oCmbA.HeaderText = "Styles";
+                           oCmbA.ValueMember = "Sty_Id";
+                           oCmbA.DisplayMember = "Sty_Description";
+                        }
                     }
                     else
                     {
@@ -326,19 +351,8 @@ namespace CustomerServices
                         
                     }
                     formloaded = false;
-
-                    var ttb = (from T1 in _context.TLCSV_PurchaseOrder
-                               join T2 in _context.TLCSV_PuchaseOrderDetail
-                               on T1.TLCSVPO_Pk equals T2.TLCUSTO_PurchaseOrder_FK
-                               where !T2.TLCUSTO_Closed && T1.TLCSVPO_Customer_FK == selected.Cust_Pk
-                               select T1).GroupBy(x => x.TLCSVPO_PurchaseOrder).ToList();
-                    foreach(var Item in ttb)
-                    {
-                        var Record = Item.FirstOrDefault();
-                        PurOrder.Add(Record);
-
-                    }
-                    cmboCurrentOrders.DataSource = PurOrder.ToList(); ;
+                    
+                    cmboCurrentOrders.DataSource = _context.TLCSV_PurchaseOrder.Where(x=>x.TLCSVPO_Customer_FK == selected.Cust_Pk && !x.TLCSVPO_Closeed).OrderBy(x=>x.TLCSVPO_PurchaseOrder).ToList();
                     cmboCurrentOrders.ValueMember = "TLCSVPO_Pk";
                     cmboCurrentOrders.DisplayMember = "TLCSVPO_PurchaseOrder";
                     cmboCurrentOrders.SelectedValue = -1;
@@ -346,7 +360,6 @@ namespace CustomerServices
                        
                     formloaded = true;
                 }
-                
             }
         }
 
@@ -477,8 +490,10 @@ namespace CustomerServices
                             return;
                         }
 
-                        var pod = repo.POQuery(parms);
-                        if (pod.Count() == 0)
+                        var POD_Pk = (int)CurrentRow.Cells[0].Value;
+
+                        var pod = _context.TLCSV_PuchaseOrderDetail.Where(x => x.TLCUSTO_Customer_FK == CustSelected.Cust_Pk && x.TLCUSTO_Pk == POD_Pk).FirstOrDefault();                
+                        if (pod == null)
                         {
                             MessageBox.Show("There are no records pertaining to selection made");
                             dataGridView1.Rows[dataGridView1.CurrentRow.Index].Cells[10].Value = false;
@@ -486,33 +501,30 @@ namespace CustomerServices
                         }
 
                         dataGridView1.Rows[dataGridView1.CurrentRow.Index].Cells[10].Value = false;
-
                         oTxtAA.HeaderText = "PONumber";
                         oTxtAB.HeaderText = "Qty On Order";
                         oTxtAC.HeaderText = "Picked";
                         oTxtAD.HeaderText = "Balance to be picked";
 
-
                         dataGridView1.Visible = false;
                         Mode = !Mode;
                         btnSave.Text = "Close";
                         cmboCustomers.Enabled = false;
-                        using ( var context = new TTI2Entities())
-                        {
-                            var Groups = pod.GroupBy(x => x.TLCUSTO_PurchaseOrder_FK).ToList();
-                            foreach (var Group in Groups)
-                            {
-                                var index = dataGridView2.Rows.Add();
-                                var pk = Group.FirstOrDefault().TLCUSTO_PurchaseOrder_FK;
+                        
+                        var index = dataGridView2.Rows.Add();
+                        int TotalSOH = pod.TLCUSTO_Qty;
+                        int TotalPicked = pod.TLCUSTO_QtyPicked_ToDate;
 
-                                dataGridView2.Rows[index].Cells[0].Value = context.TLCSV_PurchaseOrder.Find(pk).TLCSVPO_PurchaseOrder;
-                                int TotalSOH = Group.Sum(x=>x.TLCUSTO_Qty);
-                                int TotalPicked = Group.Where(x => x.TLCUSTO_Picked).Sum(x =>x.TLCUSTO_Qty);
-                                dataGridView2.Rows[index].Cells[1].Value = TotalSOH;
-                                dataGridView2.Rows[index].Cells[2].Value = TotalPicked;
-                                dataGridView2.Rows[index].Cells[3].Value = TotalSOH - TotalPicked;
-                            }
+                        var PurchaseOrder = (TLCSV_PurchaseOrder)cmboCurrentOrders.SelectedItem;
+                        if (PurchaseOrder != null)
+                        {
+                            dataGridView2.Rows[index].Cells[0].Value = PurchaseOrder.TLCSVPO_PurchaseOrder;
                         }
+                        
+                        dataGridView2.Rows[index].Cells[1].Value = TotalSOH;
+                        dataGridView2.Rows[index].Cells[2].Value = TotalPicked;
+                        dataGridView2.Rows[index].Cells[3].Value = TotalSOH - TotalPicked;
+                                               
                         dataGridView2.Visible = true;
                      }
                 }
@@ -523,20 +535,20 @@ namespace CustomerServices
             DataGridView oDgv = (DataGridView)sender;
             if (oDgv.Focused && e.ColumnIndex == 8)
             {
-                 oDgv.Columns[e.ColumnIndex].DefaultCellStyle.Format = "dd/MM/yyyy";
-                 dtp = new DateTimePicker();
-                 dtp.Value = dtpRequiredDate.Value;
+                dtp = new DateTimePicker();
+                dtp.Format = DateTimePickerFormat.Custom;
+                dtp.CustomFormat = "dd/MM/yyyy";
+                dtp.Value = dtpRequiredDate.Value;
                  
-                 dataGridView1.Controls.Add(dtp);
-                 dtp.Format = DateTimePickerFormat.Short;
-                 Rectangle Rectangle = dataGridView1.GetCellDisplayRectangle(e.ColumnIndex, e.RowIndex, true);
-                 dtp.Size = new Size(Rectangle.Width, Rectangle.Height);
-                 dtp.Location = new Point(Rectangle.X, Rectangle.Y);
+                dataGridView1.Controls.Add(dtp);
+                Rectangle Rectangle = dataGridView1.GetCellDisplayRectangle(e.ColumnIndex, e.RowIndex, true);
+                dtp.Size = new Size(Rectangle.Width, Rectangle.Height);
+                dtp.Location = new Point(Rectangle.X, Rectangle.Y);
 
-                 dtp.CloseUp += new EventHandler(dtp_CloseUp);
-                 dtp.TextChanged += new EventHandler(dtp_OnTextChange);
+                dtp.CloseUp += new EventHandler(dtp_CloseUp);
+                dtp.TextChanged += new EventHandler(dtp_OnTextChange);
                  
-                 dtp.Visible = true;
+                dtp.Visible = true;
              }
         }
 
@@ -656,6 +668,7 @@ namespace CustomerServices
                             {
                                 PO.TLCSVPO_Closeed = true;
                                 PO.TLCSVPO_ClosedDate = DateTime.Now;
+                                PO.TLCSVPO_ClosedBy = _UserId._UserName; 
                             }
                         }
 
@@ -1151,11 +1164,49 @@ namespace CustomerServices
         private void dtpRequiredDate_ValueChanged(object sender, EventArgs e)
         {
             DateTimePicker oDtp = sender as DateTimePicker;
-            if (oDtp != null)
+            if (oDtp != null && EditMode)
             {
                 if (dtpRequiredDate.Value < dtpCustOrderDate.Value)
                 {
                     MessageBox.Show("Required date must be at least one day more than order date");
+                    return;
+                }
+
+                DialogResult Res = MessageBox.Show("Do you want to Change all subsiduary Records", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                if (Res == DialogResult.Yes)
+                {
+                    var SelectedOrder = (TLCSV_PurchaseOrder)cmboCurrentOrders.SelectedItem;
+
+                    if (SelectedOrder != null)
+                    {
+                        using (var context = new TTI2Entities())
+                        {
+                            var Details = context.TLCSV_PuchaseOrderDetail.Where(x => x.TLCUSTO_PurchaseOrder_FK == SelectedOrder.TLCSVPO_Pk).ToList();
+                            foreach (var Detail in Details)
+                            {
+                                if (!Detail.TLCUSTO_Closed)
+                                {
+                                    Detail.TLCUSTO_DateRequired = dtpRequiredDate.Value;
+                                }
+                            }
+
+                            try
+                            {
+                                context.SaveChanges();
+                                MessageBox.Show("Sucessfuly saved to database");
+                            }
+                            catch (System.Exception ex)
+                            {
+                                MessageBox.Show(ex.Message);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("Please select a customer order");
+                        return;
+                    }
                 }
             }
         }
@@ -1330,7 +1381,6 @@ namespace CustomerServices
                     dataGridView1.Rows[dataGridView1.NewRowIndex].Cells[1].Value = "L" + (dataGridView1.NewRowIndex + 1).ToString().PadLeft(5, '0');
                     dataGridView1.Rows[dataGridView1.NewRowIndex].Cells[7].Value = "A";
                 }
-                    
             }
         }
 
@@ -1402,14 +1452,50 @@ namespace CustomerServices
         private void rbOrderClosed_CheckedChanged(object sender, EventArgs e)
         {
             RadioButton oRb = sender as RadioButton;
-            if (oRb != null && formloaded)
+            if (oRb != null && formloaded && oRb.Checked)
             {
-                if (oRb.Checked)
+                dataGridView1.Enabled = false;
+                dataGridView1.AllowUserToAddRows = false;
+                EditMode = true;
+                btnAdd.Enabled = false;
+
+                DialogResult Res = MessageBox.Show("Do you want to close all subsiduary Records", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                
+                if(Res == DialogResult.Yes)
                 {
-                    dataGridView1.Enabled = false;
-                    dataGridView1.AllowUserToAddRows = false;
-                    EditMode = true;
-                    btnAdd.Enabled = false;
+                    var SelectedOrder = (TLCSV_PurchaseOrder)cmboCurrentOrders.SelectedItem;
+
+                    if (SelectedOrder != null)
+                    {
+                        SelectedOrder.TLCSVPO_ClosedBy = _UserId._UserName;
+
+                        using (var context = new TTI2Entities())
+                        {
+                            var Details = context.TLCSV_PuchaseOrderDetail.Where(x => x.TLCUSTO_PurchaseOrder_FK == SelectedOrder.TLCSVPO_Pk).ToList();
+                            foreach (var Detail in Details)
+                            {
+                                if (!Detail.TLCUSTO_Closed)
+                                {
+                                    Detail.TLCUSTO_Closed = true;
+                                }
+                            }
+
+                            try
+                            {
+                                context.SaveChanges();
+                                MessageBox.Show("Sucessfuly saved to database");
+                            }
+                            catch (System.Exception ex)
+                            {
+                                MessageBox.Show(ex.Message);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("Please select a customer order");
+                        return;
+                    }
                 }
             }
         }

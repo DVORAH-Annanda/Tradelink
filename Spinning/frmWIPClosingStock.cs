@@ -75,7 +75,7 @@ namespace Spinning
             {
                 var dept = context.TLADM_Departments.Where(x => x.Dep_ShortCode == "SPIN").FirstOrDefault();
               
-                var Existing = context.TLADM_DepartmentsArea.Where(x=>x.DeptA_Dept_FK == dept.Dep_Id).ToList();
+                var Existing = context.TLADM_DepartmentsArea.Where(x=>x.DeptA_Dep_Fk == dept.Dep_Id).ToList();
                 foreach (var row in Existing)
                 {
                       var index = dataGridView1.Rows.Add();

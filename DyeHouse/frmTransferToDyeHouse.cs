@@ -300,12 +300,21 @@ namespace DyeHouse
                 {
                     foreach (var DyeBatch in DyeBatches)
                     {
-                        var DyeOrder = context.TLDYE_DyeOrder.Find(DyeBatch.DYEB_DyeOrder_FK);
-                        //--------------------------------------------
-                        // Fabric Weight, Fabric Width and Quality Group
-                        //-----------------------------------------------------
-                        if (DyeOrder != null)
+                        if (DyeBatch.DYEB_CommissinCust)
                         {
+                            var index = dataGridView1.Rows.Add();
+                            dataGridView1.Rows[index].Cells[0].Value = DyeBatch.DYEB_Pk;
+                            dataGridView1.Rows[index].Cells[1].Value = false;
+                            dataGridView1.Rows[index].Cells[2].Value = DyeBatch.DYEB_BatchNo;
+                        }
+                        else if (!DyeBatch.DYEB_FabicSales)
+                        {
+                            var DyeOrder = context.TLDYE_DyeOrder.Find(DyeBatch.DYEB_DyeOrder_FK);
+                            //--------------------------------------------
+                            // Fabric Weight, Fabric Width and Quality Group
+                            //-----------------------------------------------------
+
+
                             var Quality = context.TLADM_Griege.Find(DyeOrder.TLDYO_Greige_FK);
 
                             if (QueryParms.FabricWeights.Count > 0 && Quality != null)
@@ -361,7 +370,7 @@ namespace DyeHouse
                         else
                         {
                             var dof = context.TLDYE_DyeOrderFabric.Find(DyeBatch.DYEB_DyeOrder_FK);
-                            if(dof != null)
+                            if (dof != null)
                             {
                                 var Quality = context.TLADM_Griege.Find(dof.TLDYEF_Greige_FK);
                                 var index = dataGridView1.Rows.Add();

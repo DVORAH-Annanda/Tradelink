@@ -298,6 +298,7 @@ namespace Utilities
         public bool _External { get; set; }
         public bool _QAFunction { get; set; } 
         public bool _DownSizeAuthority { get; set; }
+        public bool _IgnoreFivePercentRule { get; set; } 
     }
 
 
@@ -523,6 +524,8 @@ namespace Utilities
 
         public DateTime fromDate { get; set; }
         public DateTime toDate { get; set; }
+
+        public bool MonthlyProduction { get; set; }
 
         //Dye Order Reports 
         public bool SelGarments { get; set; }
@@ -823,14 +826,25 @@ namespace Utilities
 
     public class Util
     {
-
         bool nonNumeric;
+        public double standardVariance(double mean, IEnumerable<double> sequence)
+        {
+            double temp = 0;
 
+            if (sequence.Any())
+            {
+                foreach (var element in sequence)
+                {
+                    temp += Math.Pow((element - mean), 2);
+                }
+            }
+            return temp / (sequence.Count() - 0);
+     
+        }
         public double standardDeviation(IEnumerable<double> sequence)
         {
-
             double result = 0;
-
+                     
             if (sequence.Any())
             {
                 double average = sequence.Average();
@@ -2199,7 +2213,7 @@ namespace Utilities
             {
                 foreach (var Customer in context.TLADM_CustomerFile)
                 {
-                    if (FinshedGood && !Customer.Cust_FabricCustomer)
+                    if (FinshedGood && (!Customer.Cust_FabricCustomer || Customer.Cust_PFD))
                     {
                         var Orders = context.TLCSV_PurchaseOrder.Where(x => x.TLCSVPO_Customer_FK == Customer.Cust_Pk && !x.TLCSVPO_Closeed).FirstOrDefault();
                         if (Orders != null)
@@ -2731,7 +2745,7 @@ namespace Utilities
             using (var Context = new TTI2Entities())
             {
                 var ExistingData = Context.TLADM_Styles
-                                   .Where(x=>x.Sty_Label_FK == LabelId)
+                                   .Where(x=>x.Sty_Customer_Fk == LabelId)
                                    .OrderBy(x => x.Sty_Id).ToList();
 
                 foreach (var ExistingRow in ExistingData)
@@ -2761,6 +2775,7 @@ namespace Utilities
                     oDgv.Rows[index].Cells[15].Value = ExistingRow.Sty_BoughtIn;
                     oDgv.Rows[index].Cells[16].Value = ExistingRow.Sty_DisplayOrder;
                     oDgv.Rows[index].Cells[17].Value = ExistingRow.Sty_WorkWear;
+                    oDgv.Rows[index].Cells[18].Value = ExistingRow.Sty_PFD;
                 }
             }
             return oDgv;
@@ -2902,9 +2917,12 @@ namespace Utilities
                         clrs.Sty_WorkWear = false;
                         if(row.Cells[17].Value != null)
                            clrs.Sty_WorkWear = Convert.ToBoolean(row.Cells[17].Value.ToString());
-                        
 
-                        clrs.Sty_Label_FK = SelectedLabel;
+                        clrs.Sty_PFD = false;
+                        if (row.Cells[18].Value != null)
+                            clrs.Sty_PFD = Convert.ToBoolean(row.Cells[18].Value.ToString());
+                        
+                        clrs.Sty_Customer_Fk = SelectedLabel;
 
                         if (lAdd)
                             Context.TLADM_Styles.Add(clrs);

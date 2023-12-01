@@ -37,6 +37,8 @@ namespace Utilities
         public Nullable<int> Cust_WareHouse_FK { get; set; }
         public bool Cust_FabricCustomer { get; set; }
         public string Cust_PostalCode { get; set; }
+        public bool Cust_PFD { get; set; }
+        public bool Cust_AllowAll { get; set; }
     
         public virtual TLADM_CustomerTypes TLADM_CustomerTypes { get; set; }
     }

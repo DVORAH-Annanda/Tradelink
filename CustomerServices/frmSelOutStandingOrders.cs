@@ -187,16 +187,21 @@ namespace CustomerServices
         private void btnSubmit_Click(object sender, EventArgs e)
         {
             Button oBtn = (Button)sender;
+            frmCSViewRep vRep = null; 
             if (oBtn != null && FormLoaded)
             {
-                if(QueryParms.Customers.Count == 0)
-                {
-                    MessageBox.Show("Please select at least one customer");
-                    return;
-                }
-
                 CSVServices svcs = new CSVServices();
-                frmCSViewRep vRep = new frmCSViewRep(17, QueryParms, svcs);
+                if (QueryParms.Customers.Count == 0)
+                {
+                    QueryParms.IncludeAllCustomers = true;
+                    vRep = new frmCSViewRep(30, QueryParms, svcs);
+                }
+                else
+                {
+                    vRep = new frmCSViewRep(17, QueryParms, svcs);
+                }
+                            
+                
                 int h = Screen.PrimaryScreen.WorkingArea.Height;
                 int w = Screen.PrimaryScreen.WorkingArea.Width;
                 vRep.ClientSize = new Size(w, h);

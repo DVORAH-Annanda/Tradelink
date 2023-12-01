@@ -15,6 +15,8 @@ namespace ProductionPlanning
     {
         bool formloaded;
 
+        protected readonly TTI2Entities _context;
+
         Util core;
 
         DataGridViewTextBoxColumn  oTxtA;   // 0 File Primary index 
@@ -30,7 +32,8 @@ namespace ProductionPlanning
 
         IList<TLPPS_Replenishment> Replenishment;
 
-        System.Data.DataTable dt = null;
+        System.Data.DataTable DataTab = null;
+        BindingSource BindSrc = null;
 
         string[][] MandatoryFields;
         bool[] MandSelected;
@@ -38,13 +41,105 @@ namespace ProductionPlanning
         public frmReplenishment()
         {
             InitializeComponent();
-        }
-
-        private void frmReplenishment_Load(object sender, EventArgs e)
-        {
-            formloaded = false;
+            _context = new TTI2Entities();
 
             core = new Util();
+
+            DataTab = new DataTable();
+            BindSrc = new BindingSource();
+          
+            //==========================================================================================
+            // 1st task is to create the data table
+            // Col 0
+            //=====================================================================
+            var column = new DataColumn();
+            column.DataType = typeof(int);
+            column.ColumnName = "ProdRating_Pk";
+            column.Caption = "Product Rating Key";
+            column.DefaultValue = 0;
+            DataTab.Columns.Add(column);
+
+            //1
+            //=================================
+            column = new DataColumn();
+            column.DataType = typeof(bool);
+            column.ColumnName = "Discontinued";
+            column.Caption = "Discontinued";
+            column.DefaultValue = false;
+            DataTab.Columns.Add(column);
+
+            //2
+            //====================================
+            column = new DataColumn();
+            column.DataType = typeof(int);
+            column.ColumnName = "Styles";
+            column.Caption = "Styles";
+            column.DefaultValue = 0;
+            DataTab.Columns.Add(column);
+
+            //3
+            //==================================
+            column = new DataColumn();
+            column.DataType = typeof(int);
+            column.ColumnName = "Colours";
+            column.Caption = "Colours";
+            column.DefaultValue = 0;
+            DataTab.Columns.Add(column);
+
+            //4
+            //====================================
+            column = new DataColumn();
+            column.DataType = typeof(int);
+            column.ColumnName = "Sizes";
+            column.Caption = "Sizes";
+            column.DefaultValue = 0;
+            DataTab.Columns.Add(column);
+
+            //5
+            //=========================================
+            column = new DataColumn();
+            column.DataType = typeof(int);
+            column.ColumnName = "Expected_Sales";
+            column.Caption = "Expected Sales";
+            column.DefaultValue = 0;
+            DataTab.Columns.Add(column);
+
+            //6
+            //===============================================
+            column = new DataColumn();
+            column.DataType = typeof(int);
+            column.ColumnName = "ReOrder_Level_Weeks";
+            column.Caption = "Reorder Level Weeks";
+            column.DefaultValue = 0;
+            DataTab.Columns.Add(column);
+            //==========================================================
+
+            //7
+            //======================================================
+            column = new DataColumn();
+            column.DataType = typeof(int);
+            column.ColumnName = "Reorder_Level_Qty";
+            column.Caption = "Reorder Level Qty";
+            column.DefaultValue = 0;
+            DataTab.Columns.Add(column);
+
+            //8
+            //===========================================================
+            column = new DataColumn();
+            column.DataType = typeof(int);
+            column.ColumnName = "Reorder_Level";
+            column.Caption = "Reorder Level";
+            column.DefaultValue = 0;
+            DataTab.Columns.Add(column);
+
+            //9
+            //=================================================================
+            column = new DataColumn();
+            column.DataType = typeof(int);
+            column.ColumnName = "Reorder_Qty";
+            column.Caption = "Reorder Qtys";
+            column.DefaultValue = 0;
+            DataTab.Columns.Add(column);
 
             oTxtA = new DataGridViewTextBoxColumn();   // 0 Primary Key of Record otherwise null
             oTxtA.ValueType = typeof(int);
@@ -100,10 +195,14 @@ namespace ProductionPlanning
             oTxtF.HeaderText = "ReOrder Quantity";
             oTxtF.ReadOnly = true;
             dataGridView1.Columns.Add(oTxtF);
-            
+
 
             dataGridView1.AutoGenerateColumns = false;
- 
+        }
+
+        private void frmReplenishment_Load(object sender, EventArgs e)
+        {
+            formloaded = false;
 
             using (var context = new TTI2Entities())
             {
@@ -234,7 +333,7 @@ namespace ProductionPlanning
                                 if (replen != null)
                                 {
                                     if (core.PPSCompareValues(replen, CurrentRow))
-                                        continue;
+                                       continue; 
                                 }
                             }
 
@@ -363,6 +462,17 @@ namespace ProductionPlanning
             var CurrentRow = oDgv.CurrentRow;
             if(CurrentRow != null)
                oDgv.Rows[CurrentRow.Index].Cells[1].Value = false;
+        }
+
+        private void frmReplenishment_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if(!e.Cancel)
+            {
+                if(_context != null)
+                {
+                    _context.Dispose();
+                }
+            }
         }
     }
 }

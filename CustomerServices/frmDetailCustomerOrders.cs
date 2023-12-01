@@ -22,6 +22,10 @@ namespace CustomerServices
             InitializeComponent();
             UserDet = UDetails;
 
+            comboCustomers.DisplayMember = "Cust_Description";
+            comboCustomers.ValueMember = "Cust_Pk";
+            comboCustomers.SelectedValue = -1;
+
         }
 
         private void frmDetailCustomerOrders_Load(object sender, EventArgs e)
@@ -32,7 +36,6 @@ namespace CustomerServices
             repo = new Repository();
             parms = new  CustomerServicesParameters();
        
-
             var reportOptions = new BindingList<KeyValuePair<int, string>>();
 
             using (var context = new TTI2Entities())
@@ -43,7 +46,7 @@ namespace CustomerServices
 
                     foreach (var Customer in CustFile)
                     {
-                        comboCustomers.Items.Add(new CustomerServices.CheckComboBoxItem(Customer.Cust_Pk, Customer.Cust_Description, false));
+                        comboCustomers.Items.Add(Customer);
                     }
                 }
                 else
@@ -52,7 +55,7 @@ namespace CustomerServices
                     foreach (var Access in AccessPermitted)
                     {
                         var CustDesc = context.TLADM_CustomerFile.Find(Access.CustAcc_Customer_Fk).Cust_Description; 
-                        comboCustomers.Items.Add(new CustomerServices.CheckComboBoxItem(Access.CustAcc_Customer_Fk, CustDesc, false));
+                        comboCustomers.Items.Add(CustDesc);
                         
                     }
                 }
@@ -85,11 +88,10 @@ namespace CustomerServices
             // wire up the check state changed event
             //--------------------------------------------------------------------------------------------------------
 
-            this.comboCustomers.CheckStateChanged += new System.EventHandler(this.comboCust_CheckStateChanged);
             this.comboStyles.CheckStateChanged += new System.EventHandler(this.cmboStyles_CheckStateChanged);
             this.comboColours.CheckStateChanged += new System.EventHandler(this.cmboColours_CheckStateChanged);
-            this.comboSizes.CheckStateChanged += new System.EventHandler(this.cmboSizes_CheckStateChanged); 
-
+            this.comboSizes.CheckStateChanged += new System.EventHandler(this.cmboSizes_CheckStateChanged);
+            this.comboCustomerOrders.CheckStateChanged += new System.EventHandler(this.cmboCustomerOrders_CheckStateChanged);
             formloaded = true;
   
         }
@@ -97,7 +99,11 @@ namespace CustomerServices
         //-------------------------------------------------------------------------------------
         // this message handler gets called when the user checks/unchecks an item the combo box
         //----------------------------------------------------------------------------------------
-        private void comboCust_CheckStateChanged(object sender, EventArgs e)
+        
+        //-------------------------------------------------------------------------------------
+        // this message handler gets called when the user checks/unchecks an item the combo box
+        //----------------------------------------------------------------------------------------
+        private void cmboCustomerOrders_CheckStateChanged(object sender, EventArgs e)
         {
 
             if (sender is CustomerServices.CheckComboBoxItem && formloaded)
@@ -105,19 +111,18 @@ namespace CustomerServices
                 CustomerServices.CheckComboBoxItem item = (CustomerServices.CheckComboBoxItem)sender;
                 if (item.CheckState)
                 {
-                    parms.Customers.Add(repo.LoadCustomers(item._Pk));
+                    parms.PurchaseOrders.Add(repo.LoadPurchaseOrder(item._Pk));
 
                 }
                 else
                 {
-                    var value = parms.Customers.Find(it => it.Cust_Pk == item._Pk);
+                    var value = parms.PurchaseOrders.Find(it => it.TLCSVPO_Pk == item._Pk);
                     if (value != null)
-                        parms.Customers.Remove(value);
+                        parms.PurchaseOrders.Remove(value);
 
                 }
             }
         }
-
         //-------------------------------------------------------------------------------------
         // this message handler gets called when the user checks/unchecks an item the combo box
         //----------------------------------------------------------------------------------------
@@ -194,18 +199,19 @@ namespace CustomerServices
             Button oBtn = sender as Button;
             if(oBtn != null)
             {
-                if (UserDet._External)
+                var CustDetail = (TLADM_CustomerFile)comboCustomers.SelectedItem;
+                if(CustDetail == null)
                 {
-                    if (parms.Customers.Count() == 0)
-                    {
-                        MessageBox.Show("Please select a Customer from the drop down list");
-                        return;
-                    }
+                    MessageBox.Show("Please select a customer");
+                    return;
                 }
-
+                else
+                {
+                    parms.Customers.Add(repo.LoadCustomers(CustDetail.Cust_Pk));
+                }
+                
                 if (rbProvisionalOrdersOnly.Checked)
                     parms.IncludeProvisional = true;
-
 
                 parms.ClosedOrders = false;
                 parms.AllPurchaseOrders = false;
@@ -226,11 +232,12 @@ namespace CustomerServices
                     VRep.Close();
                     VRep.Dispose();
                 }
-                comboCustomers.Items.Clear();
+
+                comboCustomers.SelectedValue = -1;
                 comboColours.Items.Clear();
                 comboSizes.Items.Clear();
                 comboStyles.Items.Clear();
-
+                comboCustomerOrders.Items.Clear();
               
                 frmDetailCustomerOrders_Load(this, null);
             }
@@ -241,6 +248,28 @@ namespace CustomerServices
             ComboBox oCmbo = (ComboBox)sender;
             if (oCmbo != null && !oCmbo.DroppedDown)
                 oCmbo.DroppedDown = true;  
+        }
+
+        private void comboCustomers_SelectedIndexChanged_1(object sender, EventArgs e)
+        {
+            ComboBox oCmbo = (ComboBox)sender;
+            if (oCmbo != null & formloaded)
+            {
+                var CustDetail = (TLADM_CustomerFile)oCmbo.SelectedItem;
+                if (CustDetail != null)
+                {
+                    using (var context = new TTI2Entities())
+                    {
+                        comboCustomerOrders.Items.Clear();
+
+                        var CurrentOrders = context.TLCSV_PurchaseOrder.Where(x => x.TLCSVPO_Customer_FK == CustDetail.Cust_Pk && !x.TLCSVPO_Closeed).ToList();
+                        foreach (var CurrentOrder in CurrentOrders)
+                        {
+                            comboCustomerOrders.Items.Add(new CustomerServices.CheckComboBoxItem(CurrentOrder.TLCSVPO_Pk, CurrentOrder.TLCSVPO_PurchaseOrder, false));
+                        }
+                    }
+                }
+            }
         }
     }
 }

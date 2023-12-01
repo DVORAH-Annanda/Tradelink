@@ -14,7 +14,7 @@ namespace DyeHouse
     public partial class frmHydroResults : Form
     {
         bool FormLoaded;
-
+        bool ReProcess; 
         protected readonly TTI2Entities _context;
 
         DataTable dataTable;
@@ -22,7 +22,9 @@ namespace DyeHouse
         BindingSource BindingSrc;
         Util core;
 
-        TLDYE_DyeBatch SelectedDyeBatch;
+        TLDYE_NonComplianceAnalysis NonComplianceA = null;
+
+        TLDYE_DyeBatch SelectedDyeBatch = null;
 
         DataGridViewTextBoxColumn oTxtA = new DataGridViewTextBoxColumn();     // Primary Key (CutSheetDetail) 0
         DataGridViewTextBoxColumn oTxtB = new DataGridViewTextBoxColumn();     //  Bundle No                   1 
@@ -118,8 +120,9 @@ namespace DyeHouse
         private void frmHydroResults_Load(object sender, EventArgs e)
         {
             FormLoaded = false;
-           
 
+            ReProcess = false;
+            txtDyeBatch.Text = string.Empty;
             FormLoaded = true;
         }
 
@@ -165,40 +168,64 @@ namespace DyeHouse
                     MessageBox.Show("Dye Batch Not found");
                     return;
                 }
-
-                var nca = _context.TLDYE_NonComplianceAnalysis.FirstOrDefault(x=>x.TLDYEDC_NCStage == 6 && x.TLDYEDC_BatchNo == SelectedDyeBatch.DYEB_Pk);
-                if(nca != null)
+            }
+            NonComplianceA = _context.TLDYE_NonComplianceAnalysis.FirstOrDefault(x => x.TLDYEDC_NCStage == 6 && x.TLDYEDC_BatchNo == SelectedDyeBatch.DYEB_Pk);
+            if (NonComplianceA != null)
+            {
+                DialogResult res = MessageBox.Show("This Dye Batch has already been captured", "Do you wish to correct any info", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (res == DialogResult.No)
                 {
-                    MessageBox.Show("This Dye Batch has already been captured");
                     SelectedDyeBatch = null;
+                    txtDyeBatch.Text = string.Empty;
                     return;
                 }
-               
-                dataTable.Rows.Clear();
-                
-                var MeasurementFields = _context.TLADM_QADyeProcessFields.Where(x => x.TLQADPF_Hydro && !x.TLQAPF_Operator_Ins && x.TLQADPF_Process_FK == 5).ToList();
-                foreach (var MeasurementField in MeasurementFields)
-                {
-                    DataRow NewRow = dataTable.NewRow();
-                    NewRow[0] = MeasurementField.TLQADPF_Pk;
-                    NewRow[1] = MeasurementField.TLQADPF_Description;
-                    var DStand = _context.TLDYE_DyeingStandards.Where(x => x.DyeStan_QAProccessField_FK == MeasurementField.TLQADPF_Pk && x.DyeStan_Quality_FK == SelectedDyeBatch.DYEB_Greige_FK).FirstOrDefault();
-                    if (DStand != null)
-                    {
-                        NewRow[2] = DStand.DyeStan_Value;
-                    }
-                    else
-                    {
-                        NewRow[2] = 0;
-                    }
-                    NewRow[3] = 0;
 
-                    dataTable.Rows.Add(NewRow);
+                ReProcess = true;
+            }
+
+            if (!SelectedDyeBatch.DYEB_Stage1)
+            {
+                using (DialogCenteringService centering = new DialogCenteringService(this))
+                {
+                    MessageBox.Show("Please complete QA Colour Check before entering any further data");
+                    return;
+                }
+            }
+
+
+            dataTable.Rows.Clear();
+
+            var MeasurementFields = _context.TLADM_QADyeProcessFields.Where(x => x.TLQADPF_Hydro && !x.TLQAPF_Operator_Ins && x.TLQADPF_Process_FK == 5).ToList();
+            foreach (var MeasurementField in MeasurementFields)
+            {
+                DataRow NewRow = dataTable.NewRow();
+                NewRow[0] = MeasurementField.TLQADPF_Pk;
+                NewRow[1] = MeasurementField.TLQADPF_Description;
+                var DStand = _context.TLDYE_DyeingStandards.Where(x => x.DyeStan_QAProccessField_FK == MeasurementField.TLQADPF_Pk && x.DyeStan_Quality_FK == SelectedDyeBatch.DYEB_Greige_FK).FirstOrDefault();
+                if (DStand != null)
+                {
+                    NewRow[2] = DStand.DyeStan_Value;
+                }
+                else
+                {
+                    NewRow[2] = 0;
                 }
 
+                if (!ReProcess)
+                {
+                    NewRow[3] = 0;
+                }
+                else
+                {
+                    NonComplianceA = _context.TLDYE_NonComplianceAnalysis.FirstOrDefault(x => x.TLDYEDC_Code_FK == DStand.DyeStan_QAProccessField_FK && x.TLDYEDC_BatchNo == SelectedDyeBatch.DYEB_Pk);
+                    if (NonComplianceA != null)
+                    {
+                        NewRow[3] = NonComplianceA.TLDYEDC_Value;
+                    }
+                }
+                dataTable.Rows.Add(NewRow);
 
             }
-        
         }
 
         private void cmboDyeBatches_SelectedIndexChanged(object sender, EventArgs e)
@@ -246,39 +273,54 @@ namespace DyeHouse
             {
                 if (SelectedDyeBatch != null)
                 {
-                    trns = new TLDYE_DyeTransactions();
-                    trns.TLDYET_BatchNo = SelectedDyeBatch.DYEB_BatchNo;
-                    trns.TLDYET_BatchWeight = SelectedDyeBatch.DYEB_BatchKG;
-                    trns.TLDYET_Date = DateTime.Now;
-                    trns.TLDYET_SequenceNo = SelectedDyeBatch.DYEB_SequenceNo;
-                    trns.TLDYET_Batch_FK = SelectedDyeBatch.DYEB_Pk;
-                    trns.TLDYET_Stage = 5;
-                    trns.TLDYET_MeasurementField_FK = 0;
-                    trns.TLDYET_TransactionWeight = 0;
+                    if (!ReProcess)
+                    {
+                        trns = new TLDYE_DyeTransactions();
+                        trns.TLDYET_BatchNo = SelectedDyeBatch.DYEB_BatchNo;
+                        trns.TLDYET_BatchWeight = SelectedDyeBatch.DYEB_BatchKG;
+                        trns.TLDYET_Date = dtpTransactionDate.Value;
+                        trns.TLDYET_SequenceNo = SelectedDyeBatch.DYEB_SequenceNo;
+                        trns.TLDYET_Batch_FK = SelectedDyeBatch.DYEB_Pk;
+                        trns.TLDYET_Stage = 5;
+                        trns.TLDYET_MeasurementField_FK = 0;
+                        trns.TLDYET_TransactionWeight = 0;
 
-                    _context.TLDYE_DyeTransactions.Add(trns);
+                        _context.TLDYE_DyeTransactions.Add(trns);
+                    }
                     foreach (DataRow DRow in dataTable.Rows)
                     {
-                        TLDYE_NonComplianceAnalysis nca = new TLDYE_NonComplianceAnalysis();
+                        if (!ReProcess)
+                        {
+                            TLDYE_NonComplianceAnalysis nca = new TLDYE_NonComplianceAnalysis();
 
-                        var Add = true;
+                            nca.TLDYEDC_Code_FK = DRow.Field<int>(0);
+                            nca.TLDYEDC_BatchNo = SelectedDyeBatch.DYEB_Pk;
+                            nca.TLDYEDC_Pass = true;
+                            nca.TLDYEDC_NCStage = 6;
+                            nca.TLDYEDC_Value = DRow.Field<int>(2);
+                            nca.TLDYEDC_Date = dtpTransactionDate.Value;
 
-                        nca.TLDYEDC_Code_FK = DRow.Field<int>(0);
-                        nca.TLDYEDC_BatchNo = SelectedDyeBatch.DYEB_Pk;
-                        // nca.TLDYEDC_Operator_FK = (int)cmboOperator.SelectedValue;
-                        // nca.TLDYEDC_PieceNo_FK = GP.GreigeP_Pk;
-                        nca.TLDYEDC_Pass = true;
-                        nca.TLDYEDC_NCStage = 6;
-                        nca.TLDYEDC_Value = DRow.Field<int>(2);
-                        nca.TLDYEDC_Date = DateTime.Now;
-
-                        if (Add)
                             _context.TLDYE_NonComplianceAnalysis.Add(nca);
-
+                            
+                        }
+                        else
+                        {
+                            int varpk = DRow.Field<int>(0);
+                            var nca = _context.TLDYE_NonComplianceAnalysis.FirstOrDefault(x =>x.TLDYEDC_BatchNo == SelectedDyeBatch.DYEB_Pk && x.TLDYEDC_Code_FK == varpk);
+                            if(nca != null)
+                            {
+                                nca.TLDYEDC_Value = DRow.Field<int>(3);
+                                nca.TLDYEDC_Date = dtpTransactionDate.Value;
+                            }
+                        }
 
                     }
                     //*************************************************
-                    SelectedDyeBatch.DYEB_Stage4 = true;
+                    // changed by D Ledgett SelectedDyeBatch.DYEB_Stage4 = true;
+                    //*****************************************************
+                    SelectedDyeBatch.DYEB_Stage2 = true;
+                    SelectedDyeBatch.DYEB_DateStage2 = dtpTransactionDate.Value;
+
                     try
                     {
                         _context.SaveChanges();

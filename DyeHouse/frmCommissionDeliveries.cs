@@ -304,7 +304,7 @@ namespace DyeHouse
                            
                         using (var context = new TTI2Entities())
                         {
-                           var Existing = context.TLDYE_DyeBatchDetails.Where(x => x.DYEBO_TransactionNo == item.Text ).ToList();
+                           var Existing = context.TLDYE_DyeBatchDetails.Where(x => x.DYEBO_TransactionNo == item.Text && !x.DYEBO_FabricDespatched ).ToList();
                            if (Existing.Count > 0)
                            {
                                     dt.Rows.Clear();
@@ -434,6 +434,15 @@ namespace DyeHouse
                                                       && DyeBatchDetails.DYEBO_QAApproved && !DyeBatchDetails.DYEBO_Sold
                                                       select DyeBatch).GroupBy(x => x.DYEB_BatchNo);
 
+                                    if(DyeBatches.Count() == 0)
+                                    {
+                                        using (DialogCenteringService svc = new DialogCenteringService(this))
+                                        {
+                                            MessageBox.Show("No records found to select");
+                                            return;
+                                        }
+                                        
+                                    }
                                     foreach (var Group in DyeBatches)
                                     {
                                         var Key = Group.FirstOrDefault().DYEB_Pk;
@@ -447,6 +456,16 @@ namespace DyeHouse
                                                       join DyeBatchDetails in context.TLDYE_DyeBatchDetails on DyeBatch.DYEB_Pk equals DyeBatchDetails.DYEBD_DyeBatch_FK
                                                       where DyeBatch.DYEB_Customer_FK == Selected.Cust_Pk && DyeBatchDetails.DYEBO_Sold
                                                       select DyeBatchDetails).GroupBy(x => x.DYEBO_TransactionNo);
+
+                                    if (DyeBatches.Count() == 0)
+                                    {
+                                        using (DialogCenteringService svc = new DialogCenteringService(this))
+                                        {
+                                            MessageBox.Show("No records found to select");
+                                            return;
+                                        }
+
+                                    }
 
                                     foreach (var Group in DyeBatches)
                                     {

@@ -96,7 +96,6 @@ namespace CustomerServices
                 if (item.CheckState)
                 {
                     QueryParms.Customers.Add(repo.LoadCustomers(item._Pk));
-
                 }
                 else
                 {
@@ -112,20 +111,20 @@ namespace CustomerServices
         //----------------------------------------------------------------------------------------
         private void cmboAssigned_CheckStateChanged(object sender, EventArgs e)
         {
-
             if (sender is CustomerServices.CheckComboBoxItem && FormLoaded)
             {
                 CustomerServices.CheckComboBoxItem item = (CustomerServices.CheckComboBoxItem)sender;
                 if (item.CheckState)
                 {
                     QueryParms.PendingPickingSlips.Add(repo.LoadPickingList(item._Pk));
-
                 }
                 else
                 {
                     var value = QueryParms.PendingPickingSlips.Find(it => it.TLSOH_PickListNo == item._Pk);
                     if (value != null)
+                    {
                         QueryParms.PendingPickingSlips.Remove(value);
+                    }
                 }
             }
         }
@@ -149,6 +148,10 @@ namespace CustomerServices
                               if (PODetail != null)
                               {
                                   PODetail.TLCUSTO_QtyPicked_ToDate -= SI.TLSOH_BoxedQty;
+                                  if(PODetail.TLCUSTO_QtyPicked_ToDate < 0)
+                                  {
+                                      PODetail.TLCUSTO_QtyPicked_ToDate = 0; 
+                                  }
                               }
 
                               var MergeDetail = context.TLCSV_MergePODetail.Where(x => x.TLMerge_StockOnHand_Fk == SI.TLSOH_Pk).FirstOrDefault();
@@ -156,15 +159,31 @@ namespace CustomerServices
                               {
                                   context.TLCSV_MergePODetail.Remove(MergeDetail);
                               }
+
+                             
                           }
                       }
 
-                      try
-                      {
-                          context.SaveChanges();
-                          MessageBox.Show("Transactions sucessfully updated");
+                    /*
+                    var SelectedO = (TLCSV_OrderAllocated)cmboOrderAssigned.SelectedItem; 
+                    if(SelectedO != null)
+                    {
+                        var OrderAssigned = context.TLCSV_OrderAllocated.Find(SelectedO.TLORDA_Pk);
+                        if(OrderAssigned != null)
+                        {
+                            context.TLCSV_OrderAllocated.Remove(OrderAssigned);
+                        }
+                    }
+                    */
 
-                          frmResetPickingList_Load(this, null);
+                    try
+                    {
+                        context.SaveChanges();
+                        using (DialogCenteringService srves = new DialogCenteringService(this))
+                        { 
+                            MessageBox.Show("Transactions sucessfully updated");
+                        }
+                        frmResetPickingList_Load(this, null);
 
                       }
                       catch (Exception ex)
@@ -187,7 +206,10 @@ namespace CustomerServices
                 
                 if (SOHDetails.Count() == 0)
                 {
-                    MessageBox.Show("There were No records found matching selection criteria made");
+                    using (DialogCenteringService svces = new DialogCenteringService(this))
+                    {
+                        MessageBox.Show("There were No records found matching selection criteria made");
+                    }
                     return;
                 }
                 

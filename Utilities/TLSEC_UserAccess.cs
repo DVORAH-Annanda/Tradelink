@@ -26,5 +26,6 @@ namespace Utilities
         public string TLSUCUA_EmailAddress { get; set; }
         public bool TLSECUA_QAFunction { get; set; }
         public bool TLSECUA_DownSizeAuthority { get; set; }
+        public bool TLSECUA_IgnoreFivePercent { get; set; }
     }
 }

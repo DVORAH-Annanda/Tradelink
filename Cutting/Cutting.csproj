@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Cutting</RootNamespace>
     <AssemblyName>Cutting</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
     <NuGetPackageImportStamp>
@@ -75,9 +75,11 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
-    <Reference Include="LinqKit, Version=1.1.15.0, Culture=neutral, PublicKeyToken=bc217f8844052a91, processorArchitecture=MSIL">
-      <HintPath>..\packages\LinqKit.1.1.15\lib\net45\LinqKit.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="LinqKit, Version=1.2.2.0, Culture=neutral, PublicKeyToken=bc217f8844052a91, processorArchitecture=MSIL">
+      <HintPath>..\packages\LinqKit.1.2.2\lib\net45\LinqKit.dll</HintPath>
+    </Reference>
+    <Reference Include="LinqKit.Core, Version=1.2.2.0, Culture=neutral, PublicKeyToken=bc217f8844052a91, processorArchitecture=MSIL">
+      <HintPath>..\packages\LinqKit.Core.1.2.2\lib\net45\LinqKit.Core.dll</HintPath>
     </Reference>
     <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
       <HintPath>..\packages\log4net.1.2.10\lib\2.0\log4net.dll</HintPath>
@@ -274,6 +276,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DataSet24.xsd</DependentUpon>
     </Compile>
+    <Compile Include="DataSet25.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSet25.xsd</DependentUpon>
+    </Compile>
     <Compile Include="DataSet3.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -441,6 +448,12 @@
     <Compile Include="frmFleeceData.Designer.cs">
       <DependentUpon>frmFleeceData.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmIncompleteWasteCS.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmIncompleteWasteCS.Designer.cs">
+      <DependentUpon>frmIncompleteWasteCS.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmPanelReject.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -560,6 +573,12 @@
     </Compile>
     <Compile Include="frmTrimsOnCuff.Designer.cs">
       <DependentUpon>frmTrimsOnCuff.cs</DependentUpon>
+    </Compile>
+    <Compile Include="IncompleteWaste.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>IncompleteWaste.rpt</DependentUpon>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="PanelReject.cs">
       <AutoGen>True</AutoGen>
@@ -752,6 +771,9 @@
     <EmbeddedResource Include="frmFleeceData.resx">
       <DependentUpon>frmFleeceData.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="frmIncompleteWasteCS.resx">
+      <DependentUpon>frmIncompleteWasteCS.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frmPanelReject.resx">
       <DependentUpon>frmPanelReject.cs</DependentUpon>
     </EmbeddedResource>
@@ -811,6 +833,10 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmTrimsOnCuff.resx">
       <DependentUpon>frmTrimsOnCuff.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="IncompleteWaste.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>IncompleteWaste.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="PanelReject.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
@@ -1042,6 +1068,17 @@
     </None>
     <None Include="DataSet24.xss">
       <DependentUpon>DataSet24.xsd</DependentUpon>
+    </None>
+    <None Include="DataSet25.xsc">
+      <DependentUpon>DataSet25.xsd</DependentUpon>
+    </None>
+    <None Include="DataSet25.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSet25.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="DataSet25.xss">
+      <DependentUpon>DataSet25.xsd</DependentUpon>
     </None>
     <None Include="DataSet3.xsc">
       <DependentUpon>DataSet3.xsd</DependentUpon>

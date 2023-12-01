@@ -38,7 +38,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(161, 69);
+            this.label1.Location = new System.Drawing.Point(171, 57);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(94, 13);
             this.label1.TabIndex = 0;
@@ -47,7 +47,7 @@
             // cmboPendingPickLists
             // 
             this.cmboPendingPickLists.FormattingEnabled = true;
-            this.cmboPendingPickLists.Location = new System.Drawing.Point(274, 66);
+            this.cmboPendingPickLists.Location = new System.Drawing.Point(284, 54);
             this.cmboPendingPickLists.Name = "cmboPendingPickLists";
             this.cmboPendingPickLists.Size = new System.Drawing.Size(223, 21);
             this.cmboPendingPickLists.TabIndex = 1;
@@ -56,14 +56,14 @@
             // dataGridView1
             // 
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(91, 135);
+            this.dataGridView1.Location = new System.Drawing.Point(33, 125);
             this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(490, 193);
+            this.dataGridView1.Size = new System.Drawing.Size(590, 193);
             this.dataGridView1.TabIndex = 2;
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(542, 381);
+            this.btnSave.Location = new System.Drawing.Point(548, 370);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(75, 23);
             this.btnSave.TabIndex = 3;
@@ -82,6 +82,7 @@
             this.Controls.Add(this.label1);
             this.Name = "frmSalesPickListConfirmation";
             this.Text = "Picking List Confirmation ";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmSalesPickListConfirmation_FormClosing);
             this.Load += new System.EventHandler(this.frmSalesPickListConfirmation_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);

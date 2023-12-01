@@ -137,6 +137,7 @@
             this.Controls.Add(this.label1);
             this.Name = "frmCustDeliveries";
             this.Text = "Deliveries To Customers";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmCustDeliveries_FormClosing);
             this.Load += new System.EventHandler(this.frmCustDeliveries_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);

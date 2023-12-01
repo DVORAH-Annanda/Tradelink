@@ -66,7 +66,6 @@ namespace DyeHouse
             oTxtD.Width = 150;
             dataGridView1.Columns.Add(oTxtD);
 
-
             oTxtE = new DataGridViewTextBoxColumn();
             oTxtE.Visible = true;
             oTxtE.HeaderText = "Colours";
@@ -91,12 +90,20 @@ namespace DyeHouse
         private void frmCloseDyeOrders_Load(object sender, EventArgs e)
         {
             FormLoaded = false;
-            
+
+            rbGarments.Checked = true;
+
             using (var context = new TTI2Entities())
             {
                 dataGridView1.Rows.Clear();
 
-                var DyeOrders = context.TLDYE_DyeOrder.Where(x => !x.TLDYO_Closed).ToList();
+                var DyeOrders = (from T1 in context.TLDYE_DyeOrder
+                                 join T2 in context.TLADM_CustomerFile
+                                 on T1.TLDYO_Customer_FK equals T2.Cust_Pk
+                                 where !T1.TLDYO_Closed && !T2.Cust_FabricCustomer
+                                 select T1).ToList();
+
+                    // context.TLDYE_DyeOrder.Where(x => !x.TLDYO_Closed).ToList();
 
                 foreach (var DyeOrder in DyeOrders)
                 {
@@ -124,17 +131,36 @@ namespace DyeHouse
                 using (var context = new TTI2Entities())
                 {
 
-                    foreach (DataGridViewRow Row in dataGridView1.Rows)
+                    if (rbGarments.Checked)
                     {
-                        if (!(bool)Row.Cells[1].Value)
-                            continue;
-
-                        var DyeOrder_Pk = (int)Row.Cells[0].Value;
-
-                        var DOrder = context.TLDYE_DyeOrder.Find(DyeOrder_Pk);
-                        if (DOrder != null)
+                        foreach (DataGridViewRow Row in dataGridView1.Rows)
                         {
-                            DOrder.TLDYO_Closed = true;
+                            if (!(bool)Row.Cells[1].Value)
+                                continue;
+
+                            var DyeOrder_Pk = (int)Row.Cells[0].Value;
+
+                            var DOrder = context.TLDYE_DyeOrder.Find(DyeOrder_Pk);
+                            if (DOrder != null)
+                            {
+                                DOrder.TLDYO_Closed = true;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        foreach (DataGridViewRow Row in dataGridView1.Rows)
+                        {
+                            if (!(bool)Row.Cells[1].Value)
+                                continue;
+
+                            var DyeOrderF_Pk = (int)Row.Cells[0].Value;
+
+                            var DOrderF = context.TLDYE_DyeOrderFabric.Find(DyeOrderF_Pk);
+                            if (DOrderF != null)
+                            {
+                                DOrderF.TLDYEF_Closed = true;
+                            }
                         }
                     }
 
@@ -151,6 +177,53 @@ namespace DyeHouse
                     catch (Exception ex)
                     {
                         MessageBox.Show(ex.Message);
+                    }
+                }
+            }
+        }
+
+        private void rbGarments_CheckedChanged(object sender, EventArgs e)
+        {
+            var RadioB = sender as RadioButton;
+            if(RadioB != null && FormLoaded)
+            {
+                if(RadioB.Checked)
+                {
+                    frmCloseDyeOrders_Load(this, null); 
+                }
+            }
+        }
+
+        private void rbFabricSales_CheckedChanged(object sender, EventArgs e)
+        {
+            var RadioB = sender as RadioButton;
+            if (RadioB != null && FormLoaded)
+            {
+                if (RadioB.Checked)
+                {
+                    using (var context = new TTI2Entities())
+                    {
+                        dataGridView1.Rows.Clear();
+
+                        var DyeOrders = (from T1 in context.TLDYE_DyeOrderFabric
+                                         join T2 in context.TLADM_CustomerFile
+                                         on T1.TLDYEF_Customer_FK equals T2.Cust_Pk
+                                         where !T1.TLDYEF_Closed && T2.Cust_FabricCustomer
+                                         select T1).ToList();
+
+                        // context.TLDYE_DyeOrder.Where(x => !x.TLDYO_Closed).ToList();
+
+                        foreach (var DyeOrder in DyeOrders)
+                        {
+                            var index = dataGridView1.Rows.Add();
+                            dataGridView1.Rows[index].Cells[0].Value = DyeOrder.TLDYEF_Pk;
+                            dataGridView1.Rows[index].Cells[1].Value = false;
+                            dataGridView1.Rows[index].Cells[2].Value = DyeOrder.TLDYEF_DyeOrderNo;
+                            dataGridView1.Rows[index].Cells[3].Value = context.TLADM_Griege.Find(DyeOrder.TLDYEF_Greige_FK).TLGreige_Description;
+                            dataGridView1.Rows[index].Cells[4].Value = ""; //  context.TLADM_Styles.Find(DyeOrder.TLDYO_Style_FK).Sty_Description;
+                            dataGridView1.Rows[index].Cells[5].Value = context.TLADM_Colours.Find(DyeOrder.TLDYEF_Colours_FK).Col_Display;
+                            dataGridView1.Rows[index].Cells[6].Value = DyeOrder.TLDYEF_DyeWeek;
+                        }
                     }
                 }
             }

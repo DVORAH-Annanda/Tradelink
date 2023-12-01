@@ -64,7 +64,7 @@ namespace Administration
                     using (var context = new TTI2Entities())
                     {
                         
-                        var Existing = context.TLADM_DepartmentsArea.Where(x => x.DeptA_Dept_FK == selectedDept.Dep_Id).OrderBy(x => x.DeptA_Description).ToList();
+                        var Existing = context.TLADM_DepartmentsArea.Where(x => x.DeptA_Dep_Fk == selectedDept.Dep_Id).OrderBy(x => x.DeptA_Description).ToList();
                         foreach (var Row in Existing)
                         {
                             var index = dataGridView1.Rows.Add();
@@ -111,7 +111,7 @@ namespace Administration
                         }
 
                         tranType.DeptA_Description = (string)row.Cells[1].Value;
-                        tranType.DeptA_Dept_FK = SelectedDept.Dep_Id;
+                        tranType.DeptA_Dep_Fk = SelectedDept.Dep_Id;
 
                         if (AddRec)
                             context.TLADM_DepartmentsArea.Add(tranType);

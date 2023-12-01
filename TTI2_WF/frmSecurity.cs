@@ -23,6 +23,8 @@ namespace TTI2_WF
         public bool QAFunction;
         public int UserPk;
         public bool DownSizeAllowed;
+        public bool IgnoreFivePercent;
+
 
         public frmSecurity()
         {
@@ -92,6 +94,8 @@ namespace TTI2_WF
                                     IsExternal = User.TLSECUA_External;
                                     QAFunction = User.TLSECUA_QAFunction;
                                     DownSizeAllowed = User.TLSECUA_DownSizeAuthority;
+                                    IgnoreFivePercent = User.TLSECUA_IgnoreFivePercent;
+
                                     try
                                     {
                                         context.SaveChanges();
@@ -135,8 +139,10 @@ namespace TTI2_WF
                                     IsSuperUser = User.TLSECUA_SuperUser;
                                     UserPk = User.TLSECUA_Pk;
                                     IsExternal = User.TLSECUA_External;
-                                    DownSizeAllowed = User.TLSECUA_DownSizeAuthority; 
-                                     this.Close();
+                                    DownSizeAllowed = User.TLSECUA_DownSizeAuthority;
+                                    IgnoreFivePercent = User.TLSECUA_IgnoreFivePercent;
+
+                                    this.Close();
                                  }
                                  else
                                  {

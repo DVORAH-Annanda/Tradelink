@@ -111,7 +111,6 @@ namespace Cutting
                 {
                     CutSheets = (from CS in context.TLCUT_CutSheet
                                  where !CS.TLCutSH_Closed && !CS.TLCUTSH_OnHold && !CS.TLCutSH_WIPComplete
-                                 orderby CS.TLCutSH_No
                                  select CS).ToList();
                 }
                 else

@@ -667,30 +667,41 @@ namespace DyeHouse
                                                  on T1.TLGreige_Id equals T2.TLCUSTO_Quality_FK
                                                  where T2.TLCUSTO_Customer_FK == SelCust.Cust_Pk && !T2.TLCUSTO_Closed
                                                  select T1).ToList();
-                        foreach(var Quality in Qualities)
+                        if (Qualities.Count != 0)
                         {
-                            cmboGreige.Items.Add(new DyeHouse.CheckComboBoxItem(Quality.TLGreige_Id, Quality.TLGreige_Description, false));
-                        }
-                                                
-                        cmboGreige.SelectedValue = -1;
-                        var PODetails = context.TLCSV_PuchaseOrderDetail.Where(x => x.TLCUSTO_Customer_FK == SelCust.Cust_Pk).GroupBy(x => x.TLCUSTO_PurchaseOrder_FK);
-                        IList<TLCSV_PurchaseOrder> POrder = new List<TLCSV_PurchaseOrder>();
-                        if (PODetails.Count() != 0)
-                        {
-                            foreach (var Grp in PODetails)
+                            foreach (var Quality in Qualities)
                             {
-                                var FK = Grp.FirstOrDefault().TLCUSTO_PurchaseOrder_FK;
-                                var PO = context.TLCSV_PurchaseOrder.Where(x => x.TLCSVPO_Pk == FK).FirstOrDefault();
-                                if (PO != null)
+                                cmboGreige.Items.Add(new DyeHouse.CheckComboBoxItem(Quality.TLGreige_Id, Quality.TLGreige_Description, false));
+                            }
+
+                            cmboGreige.SelectedValue = -1;
+                            var PODetails = context.TLCSV_PuchaseOrderDetail.Where(x => x.TLCUSTO_Customer_FK == SelCust.Cust_Pk).GroupBy(x => x.TLCUSTO_PurchaseOrder_FK);
+                            IList<TLCSV_PurchaseOrder> POrder = new List<TLCSV_PurchaseOrder>();
+                            if (PODetails.Count() != 0)
+                            {
+                                foreach (var Grp in PODetails)
                                 {
-                                    POrder.Add(PO);
+                                    var FK = Grp.FirstOrDefault().TLCUSTO_PurchaseOrder_FK;
+                                    var PO = context.TLCSV_PurchaseOrder.Where(x => x.TLCSVPO_Pk == FK).FirstOrDefault();
+                                    if (PO != null)
+                                    {
+                                        POrder.Add(PO);
+                                    }
                                 }
                             }
+                            cmboContracts.DataSource = POrder;
+                            cmboContracts.ValueMember = "TLCSVPO_Pk";
+                            cmboContracts.DisplayMember = "TLCSVPO_PurchaseOrder";
+                            cmboContracts.SelectedValue = -1;
                         }
-                        cmboContracts.DataSource = POrder;
-                        cmboContracts.ValueMember = "TLCSVPO_Pk";
-                        cmboContracts.DisplayMember = "TLCSVPO_PurchaseOrder";
-                        cmboContracts.SelectedValue = -1;
+                        else
+                        {
+                            using (DialogCenteringService svcs = new DialogCenteringService(this))
+                            {
+                                MessageBox.Show("There are no Fabric contracts on file for this customer !","Please check the ecustomer order file", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+                            }
+                            return;
+                        }
                       
                     }
                 }       

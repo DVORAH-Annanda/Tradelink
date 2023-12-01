@@ -195,6 +195,8 @@ namespace CMT
                     }
                 }
 
+                QueryParms.ExcludeOnHold = chkExcludeOnHold.Checked;
+               
                 frmCMTViewRep vRep = new frmCMTViewRep(7, QueryParms, CMTRepOpts);
 
                 int h = Screen.PrimaryScreen.WorkingArea.Height;

@@ -148,6 +148,7 @@ namespace Cutting
                 }
             }
         }
+
         private void frmCuttingWasteSelection_FormClosing(object sender, FormClosingEventArgs e)
         {
             if(!e.Cancel)
