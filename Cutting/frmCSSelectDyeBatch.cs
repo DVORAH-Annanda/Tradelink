@@ -106,20 +106,39 @@ namespace Cutting
         {
             using (var context = new TTI2Entities())
             {
-                var DBatches = (from T1 in context.TLDYE_DyeBatch
-                                  join T2 in context.TLDYE_DyeBatchDetails on T1.DYEB_Pk equals T2.DYEBD_DyeBatch_FK
-                                  where !T1.DYEB_FabicSales && T2.DYEBO_QAApproved && !T2.DYEBO_Sold && !T2.DYEBO_WriteOff && !T2.DYEBO_CutSheet && !T1.DYEB_CommissinCust
-                                  select T1).GroupBy(x=>x.DYEB_Pk);
+                //var DBatches = (from T1 in context.TLDYE_DyeBatch
+                //                join T2 in context.TLDYE_DyeBatchDetails on T1.DYEB_Pk equals T2.DYEBD_DyeBatch_FK
+                //                where !T1.DYEB_FabicSales && T2.DYEBO_QAApproved && !T2.DYEBO_Sold && !T2.DYEBO_WriteOff && !T2.DYEBO_CutSheet && !T1.DYEB_CommissinCust
+                //                select T1).GroupBy(x => x.DYEB_Pk);
+
+                //AS20240126 - Optimize query
+                var DBatches = (
+                    from T1 in context.TLDYE_DyeBatch
+                    join T2 in context.TLDYE_DyeBatchDetails on T1.DYEB_Pk equals T2.DYEBD_DyeBatch_FK
+                    where !T1.DYEB_FabicSales &&
+                          T2.DYEBO_QAApproved &&
+                          !T2.DYEBO_Sold &&
+                          !T2.DYEBO_WriteOff &&
+                          !T2.DYEBO_CutSheet &&
+                          !T1.DYEB_CommissinCust
+                    select T1
+                ).Distinct();
 
                 foreach (var DBatch in DBatches)
                 {
                     var index = dataGridView1.Rows.Add();
-                                    
-                    dataGridView1.Rows[index].Cells[0].Value = DBatch.FirstOrDefault().DYEB_Pk;
-                    dataGridView1.Rows[index].Cells[2].Value = DBatch.FirstOrDefault().DYEB_BatchNo;
-                    dataGridView1.Rows[index].Cells[3].Value = context.TLADM_Colours.Find(DBatch.FirstOrDefault().DYEB_Colour_FK).Col_Display;
 
-                        var DO = context.TLDYE_DyeOrder.Find(DBatch.FirstOrDefault().DYEB_DyeOrder_FK);
+                    //AS20240126
+                    dataGridView1.Rows[index].Cells[0].Value = DBatch.DYEB_Pk;
+                    dataGridView1.Rows[index].Cells[2].Value = DBatch.DYEB_BatchNo;
+                    dataGridView1.Rows[index].Cells[3].Value = context.TLADM_Colours.Find(DBatch.DYEB_Colour_FK).Col_Display;
+                    //dataGridView1.Rows[index].Cells[0].Value = DBatch.FirstOrDefault().DYEB_Pk;
+                    //dataGridView1.Rows[index].Cells[2].Value = DBatch.FirstOrDefault().DYEB_BatchNo;
+                    //dataGridView1.Rows[index].Cells[3].Value = context.TLADM_Colours.Find(DBatch.FirstOrDefault().DYEB_Colour_FK).Col_Display;
+
+                    //AS20240126
+                    //var DO = context.TLDYE_DyeOrder.Find(DBatch.FirstOrDefault().DYEB_DyeOrder_FK);
+                    var DO = context.TLDYE_DyeOrder.Find(DBatch.DYEB_DyeOrder_FK);
                         if (DO != null)
                         {
                             dataGridView1.Rows[index].Cells[4].Value = DO.TLDYO_OrderNum;

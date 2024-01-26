@@ -408,7 +408,8 @@ namespace Knitting
                         
                         //if (GreigePN.Count > 0)
                         //{
-                        var YarnDet = GreigePN.Any() ? GreigePN.SelectMany(Number => context.TLADM_Yarn.Where(x => x.YA_PowerN == Number)).ToList() : context.TLADM_Yarn.ToList();
+                        //var YarnDet = GreigePN.Any() ? GreigePN.SelectMany(Number => context.TLADM_Yarn.Where(x => x.YA_PowerN == Number)).ToList() : context.TLADM_Yarn.ToList();
+                        var YarnDet = context.TLADM_Yarn.ToList();
                         //foreach (var Number in GreigePN)
                         //{
                         //    YarnDet = context.TLADM_Yarn.Where(x => x.YA_PowerN == Number).ToList();
