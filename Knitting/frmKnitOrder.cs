@@ -404,16 +404,33 @@ namespace Knitting
 
                         //NB WAIT CURSOR
                         //*AS 20230914 -- if PN filter list, else give whole list: var YarnDet = context.TLADM_Yarn.ToList();
+                        //*AS 20240208 -- var GreigePN now obsolete!
                         var GreigePN = Core.ExtrapNumber(Greige.TLGreige_YarnPowerN, context.TLADM_Yarn.Count()).ToList();
-                        
+
                         //if (GreigePN.Count > 0)
                         //{
-                        //var YarnDet = GreigePN.Any() ? GreigePN.SelectMany(Number => context.TLADM_Yarn.Where(x => x.YA_PowerN == Number)).ToList() : context.TLADM_Yarn.ToList();
-                        var YarnDet = context.TLADM_Yarn.ToList();
+                        //      var YarnDet = GreigePN.Any() ? GreigePN.SelectMany(Number => context.TLADM_Yarn.Where(x => x.YA_PowerN == Number)).ToList() : context.TLADM_Yarn.ToList();
+                        //} 
                         //foreach (var Number in GreigePN)
                         //{
                         //    YarnDet = context.TLADM_Yarn.Where(x => x.YA_PowerN == Number).ToList();
                         //}                    
+
+                        //*AS 20240208 v5.0.0.118 - PalletStack revisited
+                        var YarnDet = context.TLADM_Yarn.ToList();
+                        int yarnDetTotalCount = YarnDet.Count;
+                        //YarnDet = context.TLADM_Greige_Yarn.Where(x => x.TLQual_Greige_Fk == Greige.TLGreige_Id).ToList();
+                        var Greige_Yarn = context.TLADM_Greige_Yarn.Where(x => x.TLQual_Greige_Fk == Greige.TLGreige_Id).ToList();
+                        YarnDet = Greige_Yarn.SelectMany(item => context.TLADM_Yarn.Where(y => y.YA_Id == item.TLQual_Yarn_Fk)).ToList();
+                        
+                        if (YarnDet.Count == yarnDetTotalCount)
+                        {
+                            using (DialogCenteringService centeringService = new DialogCenteringService(this)) // center message box
+                            {
+                                MessageBox.Show("No yarn is allocated to " + Greige.TLGreige_Description + "!" + Environment.NewLine + "Please take special care when selecting pallets from the available list.");
+                            }
+                        }
+                        //**AS 20240208
 
                         if (YarnDet != null)
                            {
@@ -443,13 +460,11 @@ namespace Knitting
 
                                     if (PalletStack.Count == 0)
                                     {
-                                        //*AS 20230914
-                                        //using (DialogCenteringService centeringService = new DialogCenteringService(this)) // center message box
-                                        //{
-                                        //    MessageBox.Show("There are no pallets conforming to the " + YDet.YA_Description + Environment.NewLine + " specifications as selected");
-                                        //}
-
-                                        continue;
+                                        using (DialogCenteringService centeringService = new DialogCenteringService(this)) // center message box
+                                        {
+                                            MessageBox.Show("There are no pallets conforming to the " + YDet.YA_Description + Environment.NewLine + "specifications as selected!");
+                                        }
+                                        //continue;
                                     }
 
                                     foreach (var Pallet in PalletStack)
@@ -552,8 +567,7 @@ namespace Knitting
                     if(oTxt.TextLength != 0)
                          MandSelected[nbr] = true;
                     else
-                        MandSelected[nbr] = false;
-                    
+                        MandSelected[nbr] = false;                    
                 }
             }
            
