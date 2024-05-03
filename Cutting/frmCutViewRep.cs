@@ -673,7 +673,7 @@ namespace Cutting
                 dtr.Pk = 1;
                 if (_parms.AllWIP)
                 {
-                    dtr.ReportTitale = "WIP Cutting currently in progress";
+                    dtr.ReportTitale = "Cutting - Current WIP";
                     dtr.FromDate = _parms.FromDate;
                     dtr.ToDate = _parms.ToDate;
                 }
@@ -865,6 +865,7 @@ namespace Cutting
 
                 if (_parms.RepSortOption == 1)
                 {
+                    // AS20240315 v5.0.0.124 - Added totals for all locations
                     crystalReportViewer1.ReportSource = wipCut_CS;
 
                 }

@@ -464,9 +464,7 @@ namespace Administration
                                     }
                                 }
                             }
-                        }
-
-                       
+                        }                       
                     }
                     else if (TNumber == 4 && CNumber == 17)
                     {

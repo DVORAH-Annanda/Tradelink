@@ -3037,7 +3037,9 @@ namespace Administration
                                         return;
                                     }
                                 }
-                                frmTest test = new frmTest(TransNumber, e.ColumnIndex, number);
+                                // AS20240308 - v5.0.0.123: use correct key for yarn allocations 
+                                int key = (int)oDgv.CurrentRow.Cells[0].Value;
+                                frmTest test = new frmTest(TransNumber, e.ColumnIndex, key);
                                 test.ShowDialog();
                             }
                             catch (Exception ex)
