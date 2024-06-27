@@ -7308,7 +7308,7 @@ namespace DyeHouse
                         DataSet56.DataTable1Row trx = dataTable1.NewDataTable1Row();
                         trx.Pk = _Pk.ToString();
                         trx.BatchNo = "GD" + BatchDetail.DyeRFD_Transaction_No.ToString().PadLeft(5, '0');
-                        trx.ExpectedDate = BatchDetail.DyeRFD_FinishDyeDate?.ToString("yyyy-MM-dd");
+
                         dataTable1.AddDataTable1Row(trx);
                     }
 
@@ -7326,7 +7326,7 @@ namespace DyeHouse
                         row.Style = _Styles.FirstOrDefault(s => s.Sty_Id == selectedBox.DyeRFD_CurrentStyle).Sty_Description;
                         row.Colour = _Colours.FirstOrDefault(s => s.Col_Id == selectedBox.DyeRFD_DyeToColour).Col_Display;
                         row.Size = _Sizes.FirstOrDefault(s => s.SI_id == Box.TLSOH_Size_FK).SI_Description;
-
+                                   
                         dataTable2.AddDataTable2Row(row);
                     }
                 }

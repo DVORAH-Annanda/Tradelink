@@ -233,6 +233,15 @@ namespace TTI2_WF
 
         private void frmTLMain_Shown(object sender, EventArgs e)
         {
+            //***** Development Mode *****//
+            //ud = new UserDetails();
+            //ud._IsAuthorised = true;
+            //ud._SuperUser = true;
+            //ud._UserName = "ANNANDA";
+            //this.Text += " Welcome - " + ud._UserName;
+            //***** Dev Mode *****//
+
+            //***** Production *****//
             frmSecurity frmLogin = new frmSecurity();
             frmLogin.StartPosition = FormStartPosition.CenterParent;
             frmLogin.ShowDialog(this);
@@ -10666,13 +10675,85 @@ namespace TTI2_WF
             }
         }
 
+        //private void rFDBatchRequestToolStripMenuItem_Click(object sender, EventArgs e)
+        //{
+        //    ToolStripMenuItem oTi = sender as ToolStripMenuItem;
+        //    if (core.GetUserAuthorisation(ud, oTi.Name))
+        //    {
+        //        DyeHouse.frmDyeRFD DyeRFD = new DyeHouse.frmDyeRFD(); ;
+        //        DyeRFD.ShowDialog(this);
+        //    }
+        //    else
+        //    {
+        //        using (DialogCenteringService centeringService = new DialogCenteringService(this)) // center message box
+        //        {
+        //            MessageBox.Show(ud._NotAuthorisedMessage, ud._UserName);
+        //        }
+        //    }
+        //}
+
+        /// <summary>
+        /// ///cody code
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        //private DyeHouse.frmDyeRFD dyeRFDInstance;
+
+        //private void rFDBatchRequestToolStripMenuItem_Click(object sender, EventArgs e)
+        //{
+        //    ToolStripMenuItem oTi = sender as ToolStripMenuItem;
+        //    if (core.GetUserAuthorisation(ud, oTi.Name))
+        //    {
+        //        // Check if the form instance is null or already disposed
+        //        if (dyeRFDInstance == null || dyeRFDInstance.IsDisposed)
+        //        {
+        //            dyeRFDInstance = new DyeHouse.frmDyeRFD();
+        //        }
+
+        //        // Show the form as a dialog if it's not already visible
+        //        if (!dyeRFDInstance.Visible)
+        //        {
+        //            dyeRFDInstance.ShowDialog(this);
+        //        }
+        //        else
+        //        {
+        //            // Optionally, bring the already open form to the front
+        //            dyeRFDInstance.BringToFront();
+        //        }
+        //    }
+        //    else
+        //    {
+        //        using (DialogCenteringService centeringService = new DialogCenteringService(this)) // center message box
+        //        {
+        //            MessageBox.Show(ud._NotAuthorisedMessage, ud._UserName);
+        //        }
+        //    }
+        //}
+
+        private DyeHouse.frmDyeRFD dyeRFDInstance;
+
         private void rFDBatchRequestToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ToolStripMenuItem oTi = sender as ToolStripMenuItem;
             if (core.GetUserAuthorisation(ud, oTi.Name))
             {
-                DyeHouse.frmDyeRFD DyeRFD = new DyeHouse.frmDyeRFD(); ;
-                DyeRFD.ShowDialog(this);
+                // Check if the form instance is null or already disposed
+                if (dyeRFDInstance == null || dyeRFDInstance.IsDisposed)
+                {
+                    dyeRFDInstance = new DyeHouse.frmDyeRFD();
+                    dyeRFDInstance.FormClosed += DyeRFDInstance_FormClosed;
+                }
+
+                // Show the form as a dialog if it's not already visible
+                if (!dyeRFDInstance.Visible)
+                {
+                    dyeRFDInstance.ShowDialog(this);
+                }
+                else
+                {
+                    // Optionally, bring the already open form to the front
+                    dyeRFDInstance.BringToFront();
+                }
             }
             else
             {
@@ -10682,6 +10763,21 @@ namespace TTI2_WF
                 }
             }
         }
+
+        private void DyeRFDInstance_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            if (dyeRFDInstance != null)
+            {
+                dyeRFDInstance.Dispose();
+                dyeRFDInstance = null;
+            }
+        }
+
+        /// <summary>
+        /// cody code
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
 
         private void rFDBatchRequesstCompletionToolStripMenuItem_Click(object sender, EventArgs e)
         {

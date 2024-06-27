@@ -128,6 +128,26 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="CheckComboBoxItem.cs" />
+    <Compile Include="CrystalReport1.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CrystalReport1.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="DataSet1.cs">
+      <DependentUpon>DataSet1.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="DataSet56.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSet56.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="GarmentDyeingBatchPaper.cs">
+      <DependentUpon>GarmentDyeingBatchPaper.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="ComDelivery.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -1095,6 +1115,12 @@
       <DependentUpon>NCRReport.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="newTest.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>newTest.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="OutStandingDyeBatch.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -1218,6 +1244,14 @@
     <EmbeddedResource Include="CCDeliveryNoteSummary.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>CCDeliveryNoteSummary.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CrystalReport1.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>CrystalReport1.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GarmentDyeingBatchPaper.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>GarmentDyeingBatchPaper.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="ComDelivery.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
@@ -1590,6 +1624,10 @@
     <EmbeddedResource Include="NCRReport.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>NCRReport.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="newTest.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>newTest.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="OutStandingDyeBatch.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
@@ -2226,6 +2264,17 @@
     </None>
     <None Include="DataSet55.xss">
       <DependentUpon>DataSet55.xsd</DependentUpon>
+    </None>
+    <None Include="DataSet56.xsc">
+      <DependentUpon>DataSet56.xsd</DependentUpon>
+    </None>
+    <None Include="DataSet56.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSet56.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="DataSet56.xss">
+      <DependentUpon>DataSet56.xsd</DependentUpon>
     </None>
     <None Include="DataSet6.xsc">
       <DependentUpon>DataSet6.xsd</DependentUpon>

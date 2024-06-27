@@ -1426,14 +1426,14 @@
             // 
             this.rFDBatchRequestToolStripMenuItem.Name = "rFDBatchRequestToolStripMenuItem";
             this.rFDBatchRequestToolStripMenuItem.Size = new System.Drawing.Size(289, 22);
-            this.rFDBatchRequestToolStripMenuItem.Text = "RFD Batch Request";
+            this.rFDBatchRequestToolStripMenuItem.Text = "Create Garment Dyeing Batch";
             this.rFDBatchRequestToolStripMenuItem.Click += new System.EventHandler(this.rFDBatchRequestToolStripMenuItem_Click);
             // 
             // rFDBatchRequesstCompletionToolStripMenuItem
             // 
             this.rFDBatchRequesstCompletionToolStripMenuItem.Name = "rFDBatchRequesstCompletionToolStripMenuItem";
             this.rFDBatchRequesstCompletionToolStripMenuItem.Size = new System.Drawing.Size(289, 22);
-            this.rFDBatchRequesstCompletionToolStripMenuItem.Text = "RFD Batch Requesst Completion";
+            this.rFDBatchRequesstCompletionToolStripMenuItem.Text = "RFD Batch Request Completion";
             this.rFDBatchRequesstCompletionToolStripMenuItem.Click += new System.EventHandler(this.rFDBatchRequesstCompletionToolStripMenuItem_Click);
             // 
             // dataCaptureToolStripMenuItem
