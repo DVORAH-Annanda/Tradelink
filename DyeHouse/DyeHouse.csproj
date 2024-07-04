@@ -142,6 +142,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DataSet56.xsd</DependentUpon>
     </Compile>
+    <Compile Include="frmGarmentDyeingBatchApproval.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmGarmentDyeingBatchApproval.Designer.cs">
+      <DependentUpon>frmGarmentDyeingBatchApproval.cs</DependentUpon>
+    </Compile>
     <Compile Include="GarmentDyeingBatchPaper.cs">
       <DependentUpon>GarmentDyeingBatchPaper.rpt</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -1248,6 +1254,9 @@
     <EmbeddedResource Include="CrystalReport1.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>CrystalReport1.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmGarmentDyeingBatchApproval.resx">
+      <DependentUpon>frmGarmentDyeingBatchApproval.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GarmentDyeingBatchPaper.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>

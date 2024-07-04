@@ -10779,12 +10779,12 @@ namespace TTI2_WF
         /// <param name="sender"></param>
         /// <param name="e"></param>
 
-        private void rFDBatchRequesstCompletionToolStripMenuItem_Click(object sender, EventArgs e)
+        private void garmentDyeingBatchApprovalToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ToolStripMenuItem oTi = sender as ToolStripMenuItem;
             if (core.GetUserAuthorisation(ud, oTi.Name))
             {
-                DyeHouse.frmRFDCompleted DyeRFD = new DyeHouse.frmRFDCompleted(); ;
+                DyeHouse.frmGarmentDyeingBatchApproval DyeRFD = new DyeHouse.frmGarmentDyeingBatchApproval(); ;
                 DyeRFD.ShowDialog(this);
             }
             else
