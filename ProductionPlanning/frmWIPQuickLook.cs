@@ -52,7 +52,8 @@ namespace ProductionPlanning
                 {
                     chkcboStylesSelection.Items.Add(new ProductionPlanning.CheckComboBoxItem(Record.Sty_Id, Record.Sty_Description, false));
                 }
-
+                chkcboStylesSelection.CheckStateChanged += chkcboStylesSelection_CheckStateChanged;
+                
                 var Colours = context.TLADM_Colours.OrderBy(x => x.Col_Display).ToList();
                 foreach (var record in Colours)
                 {
@@ -95,6 +96,7 @@ namespace ProductionPlanning
         }
         private void chkcboStylesSelection_CheckStateChanged(object sender, EventArgs e)
         {
+            if (!formloaded) return;
             if (sender is ProductionPlanning.CheckComboBoxItem && formloaded)
             {
                 ProductionPlanning.CheckComboBoxItem item = (ProductionPlanning.CheckComboBoxItem)sender;
@@ -108,6 +110,38 @@ namespace ProductionPlanning
                     var value = QueryParms.Styles.Find(it => it.Sty_Id == item._Pk);
                     if (value != null)
                         QueryParms.Styles.Remove(value);
+                }
+            }
+                
+            var selectedStyles = new List<int>();
+            foreach (var item in chkcboStylesSelection.Items)
+            {
+                var checkItem = item as ProductionPlanning.CheckComboBoxItem;
+                if (checkItem != null && checkItem.CheckState)
+                {
+                    selectedStyles.Add(checkItem._Pk);
+                }
+            }
+
+            // Filter colours based on selected styles
+            using (var context = new TTI2Entities())
+            {
+                var colours = context.TLCUT_CutSheet
+                    .Where(x => selectedStyles.Contains(x.TLCutSH_Styles_FK))
+                    .Select(x => x.TLCutSH_Colour_FK)
+                    .Distinct()
+                    .ToList();
+
+                var filteredColours = context.TLADM_Colours
+                    .Where(x => colours.Contains(x.Col_Id))
+                    .OrderBy(x => x.Col_Display)
+                    .ToList();
+
+                // Update chkcboColoursSelection
+                chkcboColoursSelection.Items.Clear();
+                foreach (var record in filteredColours)
+                {
+                    chkcboColoursSelection.Items.Add(new ProductionPlanning.CheckComboBoxItem(record.Col_Id, record.Col_Display, false));
                 }
             }
         }
