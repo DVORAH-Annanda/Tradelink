@@ -208,6 +208,7 @@
         <EntityTypeShape EntityType="TTI2Model.TLADM_Shifts" Width="1.5" PointX="47.375" PointY="0.75" />
         <EntityTypeShape EntityType="TTI2Model.TLADM_DepartmentsArea" Width="1.5" PointX="11.375" PointY="45.75" />
         <EntityTypeShape EntityType="TTI2Model.TLDYE_DyeBatchDetails" Width="1.5" PointX="30.375" PointY="47.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLDYE_GarmentDyeingProduction" Width="1.5" PointX="9.375" PointY="48.75" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

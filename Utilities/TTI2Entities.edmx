@@ -2193,6 +2193,18 @@
           <Property Name="TLDYET_CustomerOrderNo" Type="varchar" MaxLength="50" />
           <Property Name="TLDYET_MeasurementField_FK" Type="int" Nullable="false" />
         </EntityType>
+        <EntityType Name="TLDYE_GarmentDyeingProduction">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="GarmentDyeingTransactionNo" Type="int" Nullable="false" />
+          <Property Name="Size" Type="int" Nullable="false" />
+          <Property Name="BoxNo" Type="char" MaxLength="10" Nullable="false" />
+          <Property Name="BoxQuantity" Type="int" Nullable="false" />
+          <Property Name="Grade" Type="char" MaxLength="1" Nullable="false" />
+          <Property Name="Closed" Type="bit" Nullable="false" />
+        </EntityType>
         <EntityType Name="TLDYE_NonCompliance">
           <Key>
             <PropertyRef Name="TLDYE_NcrPk" />
@@ -3275,6 +3287,7 @@
           <EntitySet Name="TLDYE_DyeOrderDetails" EntityType="Self.TLDYE_DyeOrderDetails" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TLDYE_DyeOrderFabric" EntityType="Self.TLDYE_DyeOrderFabric" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TLDYE_DyeTransactions" EntityType="Self.TLDYE_DyeTransactions" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TLDYE_GarmentDyeingProduction" EntityType="Self.TLDYE_GarmentDyeingProduction" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TLDYE_NonCompliance" EntityType="Self.TLDYE_NonCompliance" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TLDYE_NonComplianceAnalysis" EntityType="Self.TLDYE_NonComplianceAnalysis" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TLDYE_NonComplianceConsDetail" EntityType="Self.TLDYE_NonComplianceConsDetail" Schema="dbo" store:Type="Tables" />
@@ -4061,6 +4074,7 @@
             <Parameter Name="Colour" Mode="In" Type="Int32" />
             <Parameter Name="Size" Mode="In" Type="Int32" />
           </FunctionImport>
+          <EntitySet Name="TLDYE_GarmentDyeingProduction" EntityType="TTI2Model.TLDYE_GarmentDyeingProduction" />
           </EntityContainer>
         <EntityType Name="TLADM_FabricProduct">
           <Key>
@@ -7145,6 +7159,18 @@
           <Property Type="Decimal" Name="TLCUSTO_QtyMeters" Nullable="false" Precision="18" Scale="4" />
           <Property Type="Decimal" Name="TLCUSTO_QtyMeters_Delivered" Nullable="false" Precision="18" Scale="4" />
         </ComplexType>
+        <EntityType Name="TLDYE_GarmentDyeingProduction">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="GarmentDyeingTransactionNo" Type="Int32" Nullable="false" />
+          <Property Name="Size" Type="Int32" Nullable="false" />
+          <Property Name="BoxNo" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="false" />
+          <Property Name="BoxQuantity" Type="Int32" Nullable="false" />
+          <Property Name="Grade" Type="String" Nullable="false" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="Closed" Type="Boolean" Nullable="false" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -10463,6 +10489,19 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <EntitySetMapping Name="TLDYE_GarmentDyeingProduction">
+            <EntityTypeMapping TypeName="TTI2Model.TLDYE_GarmentDyeingProduction">
+              <MappingFragment StoreEntitySet="TLDYE_GarmentDyeingProduction">
+                <ScalarProperty Name="Closed" ColumnName="Closed" />
+                <ScalarProperty Name="Grade" ColumnName="Grade" />
+                <ScalarProperty Name="BoxQuantity" ColumnName="BoxQuantity" />
+                <ScalarProperty Name="BoxNo" ColumnName="BoxNo" />
+                <ScalarProperty Name="Size" ColumnName="Size" />
+                <ScalarProperty Name="GarmentDyeingTransactionNo" ColumnName="GarmentDyeingTransactionNo" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

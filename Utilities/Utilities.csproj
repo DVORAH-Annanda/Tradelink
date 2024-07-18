@@ -576,6 +576,7 @@
     <Compile Include="TLDYE_DyeTransactions.cs">
       <DependentUpon>TTI2Entities.tt</DependentUpon>
     </Compile>
+    <Compile Include="TLDYE_GarmentDyeingProduction.cs" />
     <Compile Include="TLDYE_NonCompliance.cs">
       <DependentUpon>TTI2Entities.tt</DependentUpon>
     </Compile>

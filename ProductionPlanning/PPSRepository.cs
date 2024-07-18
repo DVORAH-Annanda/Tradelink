@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Utilities;
 using LinqKit;
 using System.Data;
-using Utilities;
+using System.Security.Cryptography;
 
 namespace ProductionPlanning
 {
@@ -19,7 +19,12 @@ namespace ProductionPlanning
                 _context = new TTI2Entities();
         }
 
-         public TLADM_Colours LoadColour(int Pk)
+        public TLADM_Departments LoadDepartment(int Pk)
+        {
+            return _context.TLADM_Departments.FirstOrDefault(s => s.Dep_Id == Pk);
+        }
+
+        public TLADM_Colours LoadColour(int Pk)
          {
                 return _context.TLADM_Colours.FirstOrDefault(s => s.Col_Id == Pk);
          }
@@ -350,10 +355,11 @@ namespace ProductionPlanning
    
     public class ProdQueryParameters
     {
+        public List<TLADM_CustomerFile> Customers;
+        public List<TLADM_Departments> Departments;
         public List<TLADM_Sizes> Sizes;
         public List<TLADM_Colours> Colours;
-        public List<TLADM_Styles> Styles;
-        public List<TLADM_CustomerFile> Customers;
+        public List<TLADM_Styles> Styles;        
         public List<TLADM_Griege> Greiges;
         public List<TLADM_GreigeQuality> GreigeQualities;
         public List<TLADM_MachineDefinitions> KnitMachines;
@@ -370,10 +376,11 @@ namespace ProductionPlanning
 
         public ProdQueryParameters()
         {
+            Customers = new List<TLADM_CustomerFile>();
+            Departments = new List<TLADM_Departments>();
             Sizes = new List<TLADM_Sizes>();
             Colours = new List<TLADM_Colours>();
-            Styles = new List<TLADM_Styles>();
-            Customers = new List<TLADM_CustomerFile>();
+            Styles = new List<TLADM_Styles>();            
             Greiges = new List<TLADM_Griege>();
             GreigeQualities = new List<TLADM_GreigeQuality>();
             KnitMachines = new List<TLADM_MachineDefinitions>();

@@ -481,6 +481,7 @@
             this.inUseResetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
             this.PBar1 = new System.Windows.Forms.ProgressBar();
+            this.wIPQuickLookForExpiditingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             this.SuspendLayout();
@@ -3224,7 +3225,7 @@
             this.replenishmentMachineCapacityToolStripMenuItem,
             this.interDepartmentalAnalysisDefinitionToolStripMenuItem});
             this.replenishmentDefinitionToolStripMenuItem.Name = "replenishmentDefinitionToolStripMenuItem";
-            this.replenishmentDefinitionToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
+            this.replenishmentDefinitionToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.replenishmentDefinitionToolStripMenuItem.Text = "PPS Replenishment";
             // 
             // replenishmentDefinitionToolStripMenuItem1
@@ -3270,9 +3271,10 @@
             this.daysOfSalesToolStripMenuItem,
             this.interDepartmentalFaultsComparisonToolStripMenuItem,
             this.interDepartmentalDskAnalysisToolStripMenuItem,
-            this.processLossPerCutSheetAcrossProductionToolStripMenuItem});
+            this.processLossPerCutSheetAcrossProductionToolStripMenuItem,
+            this.wIPQuickLookForExpiditingToolStripMenuItem});
             this.reportingToolStripMenuItem4.Name = "reportingToolStripMenuItem4";
-            this.reportingToolStripMenuItem4.Size = new System.Drawing.Size(176, 22);
+            this.reportingToolStripMenuItem4.Size = new System.Drawing.Size(180, 22);
             this.reportingToolStripMenuItem4.Text = "PPS Reporting";
             // 
             // replenishmentDetailsToolStripMenuItem
@@ -4105,6 +4107,13 @@
             this.PBar1.Size = new System.Drawing.Size(402, 23);
             this.PBar1.TabIndex = 5;
             // 
+            // wIPQuickLookForExpiditingToolStripMenuItem
+            // 
+            this.wIPQuickLookForExpiditingToolStripMenuItem.Name = "wIPQuickLookForExpiditingToolStripMenuItem";
+            this.wIPQuickLookForExpiditingToolStripMenuItem.Size = new System.Drawing.Size(312, 22);
+            this.wIPQuickLookForExpiditingToolStripMenuItem.Text = "WIP Quick Look for Expiditing";
+            this.wIPQuickLookForExpiditingToolStripMenuItem.Click += new System.EventHandler(this.wIPQuickLookForExpiditingToolStripMenuItem_Click);
+            // 
             // frmTLMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -4579,5 +4588,6 @@
         private System.Windows.Forms.ToolStripMenuItem dyesAndChemicalsConssumedByMonthToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem yarnPalletsSoldToCustomeToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem cottonContractToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem wIPQuickLookForExpiditingToolStripMenuItem;
     }
 }

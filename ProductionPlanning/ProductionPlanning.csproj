@@ -238,6 +238,12 @@
     <Compile Include="frmPlanningKnitStock.Designer.cs">
       <DependentUpon>frmPlanningKnitStock.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmWIPQuickLook.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmWIPQuickLook.Designer.cs">
+      <DependentUpon>frmWIPQuickLook.cs</DependentUpon>
+    </Compile>
     <Compile Include="InterDeptComByDyeBatches.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -344,6 +350,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmPlanningKnitStock.resx">
       <DependentUpon>frmPlanningKnitStock.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmWIPQuickLook.resx">
+      <DependentUpon>frmWIPQuickLook.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="InterDeptComByDyeBatches.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
