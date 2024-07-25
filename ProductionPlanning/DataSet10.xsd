@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="DataSet10" targetNamespace="http://tempuri.org/DataSet10.xsd" xmlns:mstns="http://tempuri.org/DataSet10.xsd" xmlns="http://tempuri.org/DataSet10.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections />
+        <Tables />
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="DataSet10" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:Generator_UserDSName="DataSet10" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="DataSet10">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="DataTable1" msprop:Generator_RowClassName="DataTable1Row" msprop:Generator_RowEvHandlerName="DataTable1RowChangeEventHandler" msprop:Generator_RowDeletedName="DataTable1RowDeleted" msprop:Generator_RowDeletingName="DataTable1RowDeleting" msprop:Generator_RowEvArgName="DataTable1RowChangeEvent" msprop:Generator_TablePropName="DataTable1" msprop:Generator_RowChangedName="DataTable1RowChanged" msprop:Generator_UserTableName="DataTable1" msprop:Generator_RowChangingName="DataTable1RowChanging" msprop:Generator_TableClassName="DataTable1DataTable" msprop:Generator_TableVarName="tableDataTable1">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Style" msprop:Generator_UserColumnName="Style" msprop:Generator_ColumnPropNameInTable="StyleColumn" msprop:Generator_ColumnPropNameInRow="Style" msprop:Generator_ColumnVarNameInTable="columnStyle" type="xs:string" minOccurs="0" />
+              <xs:element name="Colour" msprop:Generator_UserColumnName="Colour" msprop:Generator_ColumnPropNameInTable="ColourColumn" msprop:Generator_ColumnPropNameInRow="Colour" msprop:Generator_ColumnVarNameInTable="columnColour" type="xs:string" minOccurs="0" />
+              <xs:element name="Size" msprop:Generator_UserColumnName="Size" msprop:Generator_ColumnPropNameInTable="SizeColumn" msprop:Generator_ColumnPropNameInRow="Size" msprop:Generator_ColumnVarNameInTable="columnSize" type="xs:string" minOccurs="0" />
+              <xs:element name="GPV001" msprop:Generator_UserColumnName="GPV001" msprop:Generator_ColumnPropNameInTable="GPV001Column" msprop:Generator_ColumnPropNameInRow="GPV001" msprop:Generator_ColumnVarNameInTable="columnGPV001" type="xs:string" minOccurs="0" />
+              <xs:element name="KZNVIC" msprop:Generator_UserColumnName="KZNVIC" msprop:Generator_ColumnPropNameInTable="KZNVICColumn" msprop:Generator_ColumnPropNameInRow="KZNVIC" msprop:Generator_ColumnVarNameInTable="columnKZNVIC" type="xs:string" minOccurs="0" />
+              <xs:element name="TCT001" msprop:Generator_UserColumnName="TCT001" msprop:Generator_ColumnPropNameInTable="TCT001Column" msprop:Generator_ColumnPropNameInRow="TCT001" msprop:Generator_ColumnVarNameInTable="columnTCT001" type="xs:string" minOccurs="0" />
+              <xs:element name="TLWEC" msprop:Generator_UserColumnName="TLWEC" msprop:Generator_ColumnPropNameInTable="TLWECColumn" msprop:Generator_ColumnPropNameInRow="TLWEC" msprop:Generator_ColumnVarNameInTable="columnTLWEC" type="xs:string" minOccurs="0" />
+              <xs:element name="TotalOrders" msprop:Generator_UserColumnName="TotalOrders" msprop:Generator_ColumnPropNameInTable="TotalOrdersColumn" msprop:Generator_ColumnPropNameInRow="TotalOrders" msprop:Generator_ColumnVarNameInTable="columnTotalOrders" type="xs:string" minOccurs="0" />
+              <xs:element name="AvailableStock" msprop:Generator_UserColumnName="AvailableStock" msprop:Generator_ColumnPropNameInTable="AvailableStockColumn" msprop:Generator_ColumnPropNameInRow="AvailableStock" msprop:Generator_ColumnVarNameInTable="columnAvailableStock" type="xs:string" minOccurs="0" />
+              <xs:element name="DifferenceStock" msprop:Generator_UserColumnName="DifferenceStock" msprop:Generator_ColumnPropNameInTable="DifferenceStockColumn" msprop:Generator_ColumnPropNameInRow="DifferenceStock" msprop:Generator_ColumnVarNameInTable="columnDifferenceStock" type="xs:string" minOccurs="0" />
+              <xs:element name="CMTPanels" msprop:Generator_UserColumnName="CMTPanels" msprop:Generator_ColumnPropNameInTable="CMTPanelsColumn" msprop:Generator_ColumnPropNameInRow="CMTPanels" msprop:Generator_ColumnVarNameInTable="columnCMTPanels" type="xs:string" minOccurs="0" />
+              <xs:element name="CMTWIP" msprop:Generator_ColumnPropNameInRow="CMTWIP" msprop:Generator_ColumnPropNameInTable="CMTWIPColumn" msprop:Generator_ColumnVarNameInTable="columnCMTWIP" msprop:Generator_UserColumnName="CMTWIP" type="xs:string" minOccurs="0" />
+              <xs:element name="CMTDespatch" msprop:Generator_ColumnPropNameInRow="CMTDespatch" msprop:Generator_ColumnPropNameInTable="CMTDespatchColumn" msprop:Generator_ColumnVarNameInTable="columnCMTDespatch" msprop:Generator_UserColumnName="CMTDespatch" type="xs:string" minOccurs="0" />
+              <xs:element name="ROL" msprop:Generator_ColumnPropNameInRow="ROL" msprop:Generator_ColumnPropNameInTable="ROLColumn" msprop:Generator_ColumnVarNameInTable="columnROL" msprop:Generator_UserColumnName="ROL" type="xs:string" minOccurs="0" />
+              <xs:element name="Expedite" msprop:Generator_ColumnPropNameInRow="Expedite" msprop:Generator_ColumnPropNameInTable="ExpediteColumn" msprop:Generator_ColumnVarNameInTable="columnExpedite" msprop:Generator_UserColumnName="Expedite" type="xs:string" minOccurs="0" />
+              <xs:element name="CMT" msprop:Generator_ColumnPropNameInRow="CMT" msprop:Generator_ColumnPropNameInTable="CMTColumn" msprop:Generator_ColumnVarNameInTable="columnCMT" msprop:Generator_UserColumnName="CMT" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

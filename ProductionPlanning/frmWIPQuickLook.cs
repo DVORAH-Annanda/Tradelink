@@ -22,8 +22,6 @@ namespace ProductionPlanning
         public frmWIPQuickLook()
         {
             InitializeComponent();
-            repo = new PPSRepository();
-            core = new Util();
 
             //--------------------------------------------------------
             // wire up the check state changed event
@@ -37,8 +35,11 @@ namespace ProductionPlanning
         private void frmWIPQuickLook_Load(object sender, EventArgs e)
         {
             formloaded = false;
-
+            core = new Util();
+            repo = new PPSRepository();
             QueryParms = new ProdQueryParameters();
+            
+
             using (var context = new TTI2Entities())
             {
                 var Departments = context.TLADM_Departments.Where(x => x.Dep_IsCMT).ToList();
@@ -195,15 +196,14 @@ namespace ProductionPlanning
         private void btnSubmit_Click(object sender, EventArgs e)
         {
             Button oBtn = sender as Button;
-            if (oBtn != null)
+            if (oBtn != null && formloaded)
             {
+                frmPPSViewRep vRep = new frmPPSViewRep(11, QueryParms);
 
-                //frmCMTViewRep vRep = new frmCMTViewRep(7, QueryParms);
-
-                //int h = Screen.PrimaryScreen.WorkingArea.Height;
-                //int w = Screen.PrimaryScreen.WorkingArea.Width;
-                //vRep.ClientSize = new Size(w, h);
-                //vRep.ShowDialog(this);
+                int h = Screen.PrimaryScreen.WorkingArea.Height;
+                int w = Screen.PrimaryScreen.WorkingArea.Width;
+                vRep.ClientSize = new Size(w, h);
+                vRep.ShowDialog(this);
 
                 chkcboCMTSelection.Items.Clear();
                 chkcboStylesSelection.Items.Clear();

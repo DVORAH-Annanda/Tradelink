@@ -7313,6 +7313,8 @@ namespace DyeHouse
                     }
 
                     var Boxes = context.TLDYE_RFDHistory.Where(x => x.DyeRFD_Transaction_No == _Pk).ToList();
+                    int totalUnits = 0;
+                    double boxWeight = 0;
 
                     foreach (var selectedBox in Boxes)
                     {
@@ -7326,7 +7328,10 @@ namespace DyeHouse
                         row.Style = _Styles.FirstOrDefault(s => s.Sty_Id == selectedBox.DyeRFD_CurrentStyle).Sty_Description;
                         row.Colour = _Colours.FirstOrDefault(s => s.Col_Id == selectedBox.DyeRFD_DyeToColour).Col_Display;
                         row.Size = _Sizes.FirstOrDefault(s => s.SI_id == Box.TLSOH_Size_FK).SI_Description;
-
+                        totalUnits = totalUnits + Box.TLSOH_BoxedQty;
+                        row.TotalUnits = totalUnits.ToString();
+                        boxWeight = boxWeight + Convert.ToDouble(Box.TLSOH_Weight);
+                        row.TotalBoxWeight = boxWeight.ToString();
                         dataTable2.AddDataTable2Row(row);
                     }
                 }

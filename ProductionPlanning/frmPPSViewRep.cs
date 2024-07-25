@@ -16,6 +16,12 @@ using CrystalDecisions.CrystalReports.Engine;
 
 namespace ProductionPlanning
 {
+    public class CustomerMapping
+    {
+        public int Customer_FK { get; set; }
+        public string CustomerCode { get; set; }
+    }
+
     public partial class frmPPSViewRep : Form
     {
         int _RepNo;
@@ -25,6 +31,8 @@ namespace ProductionPlanning
         System.Data.DataTable _dt; 
 
         bool[] _Selected;
+
+
 
         public frmPPSViewRep()
         {
@@ -100,7 +108,7 @@ namespace ProductionPlanning
                 if (dataTable1.Rows.Count == 0)
                 {
                     DataSet1.DataTable1Row nr = dataTable1.NewDataTable1Row();
-                    nr.ErrorLog = "No record found peratining to selection made";
+                    nr.ErrorLog = "No record found pertaining to selection made";
                     dataTable1.AddDataTable1Row(nr);
 
                 }
@@ -2505,7 +2513,109 @@ namespace ProductionPlanning
                 PLossOverProd.SetDataSource(ds);
                 crystalReportViewer1.ReportSource = PLossOverProd;
             }
-            
+
+            if (_RepNo == 11) // Printing of Replenishment Levels 
+            {
+                PPSRepository repo = new PPSRepository();
+
+                DataSet ds = new DataSet();
+                DataSet10.DataTable1DataTable dataTable1 = new DataSet10.DataTable1DataTable();
+
+                var Existing = repo.PPSQuery(_ProdQParms);
+
+                using (var context = new TTI2Entities())
+                {
+                    var customerMapping = new List<CustomerMapping>
+                    {
+                        new CustomerMapping { Customer_FK = 15, CustomerCode = "GPV001" },
+                        new CustomerMapping { Customer_FK = 16, CustomerCode = "KZNVIC" },
+                        new CustomerMapping { Customer_FK = 20, CustomerCode = "TCT001" },
+                        new CustomerMapping { Customer_FK = 23, CustomerCode = "TLWEC" }
+                    };
+
+                    // Fetch data from the database first
+                    var rawData = (from oa in context.TLCSV_OrderAllocated
+                                   join po in context.TLCSV_PurchaseOrder on oa.TLORDA_POOrder_FK equals po.TLCSVPO_Pk
+                                   join pod in context.TLCSV_PuchaseOrderDetail on po.TLCSVPO_Pk equals pod.TLCUSTO_Pk
+                                   join s in context.TLADM_Styles on pod.TLCUSTO_Style_FK equals s.Sty_Id
+                                   join c in context.TLADM_Colours on pod.TLCUSTO_Colour_FK equals c.Col_Id
+                                   join si in context.TLADM_Sizes on pod.TLCUSTO_Size_FK equals si.SI_id
+                                   join soh in context.TLCSV_StockOnHand on pod.TLCUSTO_Pk equals soh.TLSOH_POOrderDetail_FK
+                                   join ws in context.TLADM_WhseStore on soh.TLSOH_WareHouse_FK equals ws.WhStore_Id
+                                   where oa.TLORDA_Delivered == false
+                                   select new
+                                   {
+                                       oa.TLORDA_Customer_FK,
+                                       s.Sty_Description,
+                                       c.Col_Description,
+                                       si.SI_Description,
+                                       soh.TLSOH_BoxedQty
+                                   }).ToList();
+
+                    // Perform the join and grouping in memory
+                    var result = from data in rawData
+                                 join cm in customerMapping on data.TLORDA_Customer_FK equals cm.Customer_FK
+                                 group new { data, cm } by new { data.Sty_Description, data.Col_Description, data.SI_Description } into g
+                                 select new
+                                 {
+                                     Style = g.Key.Sty_Description,
+                                     Colour = g.Key.Col_Description,
+                                     Size = g.Key.SI_Description,
+                                     GPV001 = g.Count(x => x.cm.CustomerCode == "GPV001"),
+                                     KZNVIC = g.Count(x => x.cm.CustomerCode == "KZNVIC"),
+                                     TCT001 = g.Count(x => x.cm.CustomerCode == "TCT001"),
+                                     TLWEC = g.Count(x => x.cm.CustomerCode == "TLWEC"),
+                                     Total_Orders = g.Count(),
+                                     Available_Stock = g.Sum(x => x.data.TLSOH_BoxedQty),
+                                     Minus_Orders = g.Sum(x => x.data.TLSOH_BoxedQty) - g.Count()
+                                 };
+
+                    var sortedResult = result.OrderBy(r => r.Style)
+                                             .ThenBy(r => r.Colour)
+                                             .ThenBy(r => r.Size)
+                                             .ToList();
+
+
+                    foreach (var r in sortedResult)
+                    {
+                        DataSet10.DataTable1Row nr = dataTable1.NewDataTable1Row();
+                        nr.Colour = r.Colour; //ontext.TLADM_Colours.Find(Record.TLREP_Colour_FK).Col_Display;
+                        // nr.Customer = context.TLADM_CustomerFile.Find(Record.TLREP_Customer_FK).Cust_Description;
+                        nr.Style = r.Style;
+                        nr.Size = r.Size;
+                        nr.AvailableStock = r.Available_Stock.ToString();
+                        nr.TotalOrders = r.Available_Stock.ToString();
+                        //nr.ROL = r.TLREP_ExpectedSales;
+                        nr.KZNVIC = r.KZNVIC.ToString();
+                        nr.GPV001 = r.GPV001.ToString();
+                        nr.TCT001 = r.TCT001.ToString();
+                        nr.TLWEC = r.TLWEC.ToString();
+                        //nr.Expedite = r.e
+                        nr.DifferenceStock = r.Minus_Orders.ToString();
+                        //nr.CMTWIP = r.c
+                        //nr.CMTPanels
+                        //nr.CMTDespatch
+
+
+                        dataTable1.AddDataTable1Row(nr);
+                    }
+                }
+
+                if (dataTable1.Rows.Count == 0)
+                {
+                    DataSet10.DataTable1Row nr = dataTable1.NewDataTable1Row();
+                    //nr.ErrorLog = "No record found pertaining to selection made";
+                    dataTable1.AddDataTable1Row(nr);
+
+                }
+                ds.Tables.Add(dataTable1);
+                WIPQuickLook wipQuickLook = new WIPQuickLook();
+                wipQuickLook.SetDataSource(ds);
+                crystalReportViewer1.ReportSource = wipQuickLook;
+
+
+            }
+
             crystalReportViewer1.Refresh();
         }
 
