@@ -13,6 +13,10 @@ using System.IO;
 using System.Collections;
 using System.Net.Mime;
 using CrystalDecisions.CrystalReports.Engine;
+using static log4net.Appender.ColoredConsoleAppender;
+using System.Runtime.Remoting.Contexts;
+using System.Web.UI.WebControls;
+using System.Data.Entity.Core.Common.CommandTrees.ExpressionBuilder;
 
 namespace ProductionPlanning
 {
@@ -2514,91 +2518,472 @@ namespace ProductionPlanning
                 crystalReportViewer1.ReportSource = PLossOverProd;
             }
 
-            if (_RepNo == 11) // Printing of Replenishment Levels 
+            if (_RepNo == 11) // WIP Quick Look for Expedite
             {
                 PPSRepository repo = new PPSRepository();
 
                 DataSet ds = new DataSet();
                 DataSet10.DataTable1DataTable dataTable1 = new DataSet10.DataTable1DataTable();
 
-                var Existing = repo.PPSQuery(_ProdQParms);
+                
+                IList<TLCSV_PuchaseOrderDetail> PODetail = new List<TLCSV_PuchaseOrderDetail>();
+                IList<TLADM_Griege> _Qualities = new List<TLADM_Griege>();
+                List<PPOrdersDATA> OutOrders = new List<PPOrdersDATA>();
+                List<PPStockDATA> SOHStock = new List<PPStockDATA>();
 
+                List<TLPPS_Replenishment> PPS = repo.PPSQuery(_ProdQParms).ToList();
                 using (var context = new TTI2Entities())
                 {
-                    var customerMapping = new List<CustomerMapping>
+
+                    IList<TLADM_Styles> Styles = context.TLADM_Styles.ToList();
+                    IList<TLADM_Colours> Colours = context.TLADM_Colours.ToList();
+                    IList<TLADM_Sizes> Sizes = context.TLADM_Sizes.ToList();
+
+                    if (_ProdQParms.Styles.Count != 0)
                     {
-                        new CustomerMapping { Customer_FK = 15, CustomerCode = "GPV001" },
-                        new CustomerMapping { Customer_FK = 16, CustomerCode = "KZNVIC" },
-                        new CustomerMapping { Customer_FK = 20, CustomerCode = "TCT001" },
-                        new CustomerMapping { Customer_FK = 23, CustomerCode = "TLWEC" }
-                    };
-
-                    // Fetch data from the database first
-                    var rawData = (from oa in context.TLCSV_OrderAllocated
-                                   join po in context.TLCSV_PurchaseOrder on oa.TLORDA_POOrder_FK equals po.TLCSVPO_Pk
-                                   join pod in context.TLCSV_PuchaseOrderDetail on po.TLCSVPO_Pk equals pod.TLCUSTO_Pk
-                                   join s in context.TLADM_Styles on pod.TLCUSTO_Style_FK equals s.Sty_Id
-                                   join c in context.TLADM_Colours on pod.TLCUSTO_Colour_FK equals c.Col_Id
-                                   join si in context.TLADM_Sizes on pod.TLCUSTO_Size_FK equals si.SI_id
-                                   join soh in context.TLCSV_StockOnHand on pod.TLCUSTO_Pk equals soh.TLSOH_POOrderDetail_FK
-                                   join ws in context.TLADM_WhseStore on soh.TLSOH_WareHouse_FK equals ws.WhStore_Id
-                                   where oa.TLORDA_Delivered == false
-                                   select new
-                                   {
-                                       oa.TLORDA_Customer_FK,
-                                       s.Sty_Description,
-                                       c.Col_Description,
-                                       si.SI_Description,
-                                       soh.TLSOH_BoxedQty
-                                   }).ToList();
-
-                    // Perform the join and grouping in memory
-                    var result = from data in rawData
-                                 join cm in customerMapping on data.TLORDA_Customer_FK equals cm.Customer_FK
-                                 group new { data, cm } by new { data.Sty_Description, data.Col_Description, data.SI_Description } into g
-                                 select new
-                                 {
-                                     Style = g.Key.Sty_Description,
-                                     Colour = g.Key.Col_Description,
-                                     Size = g.Key.SI_Description,
-                                     GPV001 = g.Count(x => x.cm.CustomerCode == "GPV001"),
-                                     KZNVIC = g.Count(x => x.cm.CustomerCode == "KZNVIC"),
-                                     TCT001 = g.Count(x => x.cm.CustomerCode == "TCT001"),
-                                     TLWEC = g.Count(x => x.cm.CustomerCode == "TLWEC"),
-                                     Total_Orders = g.Count(),
-                                     Available_Stock = g.Sum(x => x.data.TLSOH_BoxedQty),
-                                     Minus_Orders = g.Sum(x => x.data.TLSOH_BoxedQty) - g.Count()
-                                 };
-
-                    var sortedResult = result.OrderBy(r => r.Style)
-                                             .ThenBy(r => r.Colour)
-                                             .ThenBy(r => r.Size)
-                                             .ToList();
-
-
-                    foreach (var r in sortedResult)
-                    {
-                        DataSet10.DataTable1Row nr = dataTable1.NewDataTable1Row();
-                        nr.Colour = r.Colour; //ontext.TLADM_Colours.Find(Record.TLREP_Colour_FK).Col_Display;
-                        // nr.Customer = context.TLADM_CustomerFile.Find(Record.TLREP_Customer_FK).Cust_Description;
-                        nr.Style = r.Style;
-                        nr.Size = r.Size;
-                        nr.AvailableStock = r.Available_Stock.ToString();
-                        nr.TotalOrders = r.Available_Stock.ToString();
-                        //nr.ROL = r.TLREP_ExpectedSales;
-                        nr.KZNVIC = r.KZNVIC.ToString();
-                        nr.GPV001 = r.GPV001.ToString();
-                        nr.TCT001 = r.TCT001.ToString();
-                        nr.TLWEC = r.TLWEC.ToString();
-                        //nr.Expedite = r.e
-                        nr.DifferenceStock = r.Minus_Orders.ToString();
-                        //nr.CMTWIP = r.c
-                        //nr.CMTPanels
-                        //nr.CMTDespatch
-
-
-                        dataTable1.AddDataTable1Row(nr);
+                        Styles = _ProdQParms.Styles.ToList();
                     }
+
+                    if (_ProdQParms.Colours.Count != 0)
+                    {
+                        Colours = _ProdQParms.Colours.ToList();
+                    }
+
+                    if (_ProdQParms.Sizes.Count != 0)
+                    {
+                        Sizes = _ProdQParms.Sizes.ToList();
+                    }
+
+                    //***
+                    PODetail = (from T1 in context.TLCSV_PurchaseOrder
+                                join T2 in context.TLCSV_PuchaseOrderDetail on T1.TLCSVPO_Pk equals T2.TLCUSTO_PurchaseOrder_FK
+                                where !T1.TLCSVPO_Closeed && !T2.TLCUSTO_Closed
+                                select T2).ToList();
+
+                    var SOH = context.TLCSV_StockOnHand.Where(x => !x.TLSOH_Picked
+                                            && x.TLSOH_Is_A
+                                            && !x.TLSOH_Write_Off
+                                            && !x.TLSOH_Returned
+                                            && !x.TLSOH_Split).ToList();
+
+                    foreach (var Item in PPS)
+                    {
+
+                        DataSet10.DataTable1Row row = dataTable1.NewDataTable1Row();
+
+                        row.Style = Item.TLREP_Style_FK.ToString();
+                        row.Colour = Item.TLREP_Colour_FK.ToString();
+                        row.Size = Item.TLREP_Size_FK.ToString();
+
+                        var CMTPanelStore = from LI in context.TLCMT_LineIssue
+                                            join CS in context.TLCUT_CutSheet on LI.TLCMTLI_CutSheet_FK equals CS.TLCutSH_Pk
+                                            join CR in context.TLCUT_CutSheetReceipt on LI.TLCMTLI_CutSheet_FK equals CR.TLCUTSHR_CutSheet_FK
+                                            join CRD in context.TLCUT_CutSheetReceiptDetail on CR.TLCUTSHR_Pk equals CRD.TLCUTSHRD_CutSheet_FK
+                                            where LI.TLCMTLI_IssuedToLine == false && LI.TLCMTLI_WorkCompleted == false
+                                            && CR.TLCUTSHR_Style_FK == Item.TLREP_Style_FK && CR.TLCUTSHR_Colour_FK == Item.TLREP_Colour_FK && CRD.TLCUTSHRD_Size_FK == Item.TLREP_Size_FK
+                                            select new { CR.TLCUTSHR_Style_FK, CR.TLCUTSHR_Colour_FK, CRD.TLCUTSHRD_Size_FK, CRD.TLCUTSHRD_BundleQty, CRD.TLCUTSHRD_RejectQty };
+
+                        var CMTWIP = from LI in context.TLCMT_LineIssue
+                                     join CS in context.TLCUT_CutSheet on LI.TLCMTLI_CutSheet_FK equals CS.TLCutSH_Pk
+                                     join CR in context.TLCUT_CutSheetReceipt on LI.TLCMTLI_CutSheet_FK equals CR.TLCUTSHR_CutSheet_FK
+                                     join CRD in context.TLCUT_CutSheetReceiptDetail on CR.TLCUTSHR_Pk equals CRD.TLCUTSHRD_CutSheet_FK
+                                     where LI.TLCMTLI_IssuedToLine == true && LI.TLCMTLI_WorkCompleted == false
+                                     && CR.TLCUTSHR_Style_FK == Item.TLREP_Style_FK && CR.TLCUTSHR_Colour_FK == Item.TLREP_Colour_FK && CRD.TLCUTSHRD_Size_FK == Item.TLREP_Size_FK
+                                     select new { CR.TLCUTSHR_Style_FK, CR.TLCUTSHR_Colour_FK, CRD.TLCUTSHRD_Size_FK, CRD.TLCUTSHRD_BundleQty, CRD.TLCUTSHRD_RejectQty };
+
+                        //===============================================================
+                        //Get all the outstandings orders at this point in time
+                        //    for this style, colour, size combination and the order line must not be closed as well as the order itself
+                        //============================================================================
+                        //var Orders = PODetail.Where(x => x.TLCUSTO_Style_FK == Item.TLREP_Style_FK && x.TLCUSTO_Colour_FK == Item.TLREP_Colour_FK && x.TLCUSTO_Size_FK == Item.TLREP_Size_FK);
+                        //if (Orders != null)
+                        //{
+                        //    var GrpByCustomer = Orders.GroupBy(x => x.TLCUSTO_Customer_FK);
+                        //    foreach (var Grouped in GrpByCustomer)
+                        //    {
+
+                        //        TLCSV_PuchaseOrderDetail Order = Grouped.FirstOrDefault(); // Grouped.FirstOrDefault();
+                        //        var CustDetail = context.TLADM_CustomerFile.Find(Order.TLCUSTO_Customer_FK);
+                        //        ColIndex = dt.Columns.IndexOf(CustDetail.Cust_Code);
+
+                        //        var QtyOrdered = Grouped.Sum(x => (int?)x.TLCUSTO_Qty) ?? 0; //  LineOrder.TLCUSTO_Qty;
+                        //        var AllReadySold = Grouped.Sum(x => (int?)x.TLCUSTO_QtyDelivered_ToDate) ?? 0; // LineOrder.TLCUSTO_QtyDelivered_ToDate;  //  context.TLCSV_StockOnHand.Where(x => x.TLSOH_POOrderDetail_FK == LineOrder.TLCUSTO_Pk && x.TLSOH_Sold).Sum(x => (int?)x.TLSOH_BoxedQty) ?? 0;
+                        //        var AllReadyPicked = Grouped.Sum(x => (int?)x.TLCUSTO_QtyPicked_ToDate) ?? 0; //  LineOrder.TLCUSTO_QtyPicked_ToDate;     //  context.TLCSV_StockOnHand.Where(x => x.TLSOH_POOrderDetail_FK == LineOrder.TLCUSTO_Pk && !x.TLSOH_Sold && x.TLSOH_Picked).Sum(x => (int?)x.TLSOH_BoxedQty) ?? 0;
+                        //        var Nett = QtyOrdered - AllReadyPicked;
+                        //        if (Nett > 0 && ColIndex >= 0)
+                        //        {
+                        //            Row[ColIndex] = Row.Field<int>(ColIndex) + Nett;
+                        //            Row[OTIndex] = Row.Field<int>(OTIndex) + Nett;  //Row.Field<int>(ColIndex);
+                        //        }
+
+                        //    }
+                        //}
+
+                        // Filter orders based on style, color, and size
+                        var Orders = PODetail.Where(x => x.TLCUSTO_Style_FK == Item.TLREP_Style_FK &&
+                                                          x.TLCUSTO_Colour_FK == Item.TLREP_Colour_FK &&
+                                                          x.TLCUSTO_Size_FK == Item.TLREP_Size_FK);
+
+                        // Check if there are any matching orders
+                        if (Orders != null && Orders.Any())
+                        {
+                            // Sum up quantities directly
+                            var QtyOrdered = Orders.Sum(x => (int?)x.TLCUSTO_Qty) ?? 0;
+                            var AllReadySold = Orders.Sum(x => (int?)x.TLCUSTO_QtyDelivered_ToDate) ?? 0;
+                            var AllReadyPicked = Orders.Sum(x => (int?)x.TLCUSTO_QtyPicked_ToDate) ?? 0;
+                            var Nett = QtyOrdered - AllReadyPicked;
+
+                            row.TotalOrders = Nett.ToString();
+                        }
+
+
+
+
+                        //-------------------------------------------------------------------------------------------------------------
+                        // 2nd Task is to calculate the Total Stock On Hand for a particular style, colour, size combination
+                        //----------------------------------------------------------------------------------------------------
+                        //var ItemSOH = SOH.Where(x => x.TLSOH_Style_FK == Item.TLREP_Style_FK && x.TLSOH_Colour_FK == Item.TLREP_Colour_FK && x.TLSOH_Size_FK == Item.TLREP_Size_FK).GroupBy(x => x.TLSOH_WareHouse_FK);
+                        //foreach (var Grouped in ItemSOH)
+                        //{
+                        //    TLCSV_StockOnHand Stock = new TLCSV_StockOnHand();
+                        //    Stock = Grouped.FirstOrDefault();
+
+                        //    //============================================================
+                        //    //Now check whether the WareHouse "exists" on the datatable
+                        //    //==========================================================================
+                        //    var WhseDetail = context.TLADM_WhseStore.Find(Stock.TLSOH_WareHouse_FK);
+
+                        //    ColIndex = dt.Columns.IndexOf(WhseDetail.WhStore_Code);
+                        //    if (ColIndex != -1)
+                        //    {
+                        //        Row[ColIndex] = Row.Field<int>(ColIndex) + Grouped.Sum(x => (int?)x.TLSOH_BoxedQty) ?? 0;
+                        //        Row[STIndex] = Row.Field<int>(STIndex) + Row.Field<int>(ColIndex);
+                        //    }
+                        //}
+
+                        // Filter stock based on style, color, and size
+                        var ItemSOH = SOH.Where(x => x.TLSOH_Style_FK == Item.TLREP_Style_FK &&
+                                                     x.TLSOH_Colour_FK == Item.TLREP_Colour_FK &&
+                                                     x.TLSOH_Size_FK == Item.TLREP_Size_FK);
+
+                        // Check if there are any matching stock items
+                        if (ItemSOH != null && ItemSOH.Any())
+                        {
+                            // Sum up boxed quantities directly
+                            var TotalBoxedQty = ItemSOH.Sum(x => (int?)x.TLSOH_BoxedQty) ?? 0;
+
+                            // Iterate through unique warehouses in the filtered stock
+                            foreach (var warehouseId in ItemSOH.Select(x => x.TLSOH_WareHouse_FK).Distinct())
+                            {
+                                // Find the warehouse details
+                                var WhseDetail = context.TLADM_WhseStore.Find(warehouseId);
+
+                                row.AvailableStock = TotalBoxedQty.ToString();
+
+
+                            }
+                        }
+
+
+                        //--------------------------------------------------------------------
+                        // We need to find the difference Stock - Orders
+                        //------------------------------------------------------------------------
+                        //Row[DiffIndex] = Row.Field<int>(STIndex) - Row.Field<int>(OTIndex);
+
+                        //-------------------------------------------------------------------------------------------------------------
+                        // 9th Task (a) Expected Units at CMT Store in Panel Receipt Cage
+                        //----------------------------------------------------------------------------------------------------
+                        //("Expected Units - CMT Store (Receipt Cage)");
+                        var CMTPS = CMTPanelStore.Where(x => x.TLCUTSHR_Style_FK == Item.TLREP_Style_FK && x.TLCUTSHR_Colour_FK == Item.TLREP_Colour_FK && x.TLCUTSHRD_Size_FK == Item.TLREP_Size_FK).ToList();
+                        if (CMTPS.Count != 0)
+                        {
+                            var Answer = CMTPS.Sum(x => (int?)x.TLCUTSHRD_BundleQty - x.TLCUTSHRD_RejectQty) ?? 0;
+                            Answer = Convert.ToInt32(Answer * 0.95);
+                            row.CMTPanels = Answer.ToString();
+                        }
+                        //---------------------------------
+                        // Bring the WIP Total Up to date
+                        //-------------------------------------------------------
+                        //Row[WIPIndex] = Row.Field<int>(WIPIndex) + Row.Field<int>(ColIndex);
+
+                        //-------------------------------------------------------------------------------------------------------------
+                        // 10th Task (b) Expected Units at CMT Store (WIP)
+                        //----------------------------------------------------------------------------------------------------
+                        //("Expected Units - CMT WIP");
+                        if (CMTWIP.Count() != 0)
+                        {
+                            var WIP = CMTWIP.Where(x => x.TLCUTSHR_Style_FK == Item.TLREP_Style_FK && x.TLCUTSHR_Colour_FK == Item.TLREP_Colour_FK && x.TLCUTSHRD_Size_FK == Item.TLREP_Size_FK).ToList();
+                            if (WIP.Count != 0)
+                            {
+                                var Answer = WIP.Sum(x => (int?)x.TLCUTSHRD_BundleQty - x.TLCUTSHRD_RejectQty) ?? 0;
+                                row.CMTWIP = Answer.ToString();
+                            }
+                        }
+                        //---------------------------------
+                        // Bring the WIP Total Up to date
+                        //-------------------------------------------------------
+                        //Row[WIPIndex] = Row.Field<int>(WIPIndex) + Row.Field<int>(ColIndex);
+
+                        //-------------------------------------------------------------------------------------------------------------
+                        // 11th Task (c) Expected Units at CMT Store in Finished Goods Despatch Cage
+                        //----------------------------------------------------------------------------------------------------
+                        //("Expected Units - CMT Store (Despatch Cage)");
+                        var QueryC = from T1 in context.TLCMT_CompletedWork
+                                     where (!T1.TLCMTWC_Despatched || T1.TLCMTWC_Despatched && !T1.TLCMTWC_BoxReceiptedWhse) && T1.TLCMTWC_Style_FK == Item.TLREP_Style_FK && T1.TLCMTWC_Colour_FK == Item.TLREP_Colour_FK && T1.TLCMTWC_Size_FK == Item.TLREP_Size_FK
+                                     select new { T1.TLCMTWC_Style_FK, T1.TLCMTWC_Colour_FK, T1.TLCMTWC_Size_FK, T1.TLCMTWC_Qty };
+                        if (QueryC.Count() != 0)
+                        {
+                            row.CMTDespatch = QueryC.Sum(x => (int?)x.TLCMTWC_Qty).ToString() ?? "0";
+                        }
+
+                        //---------------------------------
+                        // Bring the WIP Total Up to date
+                        //-------------------------------------------------------
+                        //Row[WIPIndex] = Row.Field<int>(WIPIndex) + Row.Field<int>(ColIndex);
+
+
+                        //ReOrder Level
+                        row.ROL = Item.TLREP_ReOrderLevel.ToString();
+
+
+                    }
+
+                    //***
+
+                    //Get CMT Values
+                    //var cmtPanels = repo.CMTPanels(_ProdQParms);
+                    //var cmtWIP = repo.CMTWIPLineIssues(_ProdQParms);
+                    //var cmtDespatchLineIssues = repo.CMTDespatchLineIssues(_ProdQParms);
+                    
+                    //foreach (var lineIssue in cmtDespatchLineIssues)
+                    //{
+                    //    int Units_Per_Bag = 0;
+
+                    //    var CSReceipt = context.TLCUT_CutSheetReceipt.Where(x => x.TLCUTSHR_CutSheet_FK == lineIssue.TLCMTLI_CutSheet_FK).FirstOrDefault();
+                    //    if (CSReceipt != null)
+                    //    {
+
+                    //        var CS = context.TLCUT_CutSheet.Find(CSReceipt.TLCUTSHR_CutSheet_FK);
+                    //        if (CS != null)
+                    //        {
+                    //            var cutSheet = CS.TLCutSH_No;
+                    //            var cmt = context.TLADM_Departments.Find(lineIssue.TLCMTLI_CmtFacility_FK).Dep_Description;
+                    //            var colour = Colours.FirstOrDefault(s => s.Col_Id == CSReceipt.TLCUTSHR_Colour_FK).Col_Display;
+
+                    //            var style = Styles.FirstOrDefault(s => s.Sty_Id == CS.TLCutSH_Styles_FK);
+                    //            if (style != null)
+                    //            {
+                    //                var quality = style.Sty_Description;
+                    //                Units_Per_Bag = style.Sty_Bags;
+                    //            }
+                    //        }
+
+                    //        //var CutSheetDet = context.TLCUT_CutSheetReceiptDetail.Where(x => x.TLCUTSHRD_CutSheet_FK == CSReceipt.TLCUTSHR_Pk);
+                    //        //if (CutSheetDet.Count() != 0)
+                    //        //{
+
+
+                    //        //    var ExpectedUnitsGrouped = CutSheetDet.GroupBy(x => x.TLCUTSHRD_Size_FK);
+                    //        //    foreach (var Group in ExpectedUnitsGrouped)
+                    //        //    {
+                    //        //        var SizePk = Group.FirstOrDefault().TLCUTSHRD_Size_FK;
+                    //        //        var Size = _Sizes.FirstOrDefault(s => s.SI_id == SizePk);
+                    //        //        if (Size != null)
+                    //        //        {
+                    //        //            var EUnits = Group.Sum(x => (int?)x.TLCUTSHRD_BundleQty - x.TLCUTSHRD_RejectQty) ?? 0;
+                    //        //            if (Size.SI_ColNumber == 1)
+                    //        //                nr.Col1 += EUnits;
+                    //        //            else if (Size.SI_ColNumber == 2)
+                    //        //                nr.Col2 += EUnits;
+                    //        //            else if (Size.SI_ColNumber == 3)
+                    //        //                nr.Col3 += EUnits;
+                    //        //            else if (Size.SI_ColNumber == 4)
+                    //        //                nr.Col4 += EUnits;
+                    //        //            else if (Size.SI_ColNumber == 5)
+                    //        //                nr.Col5 += EUnits;
+                    //        //            else if (Size.SI_ColNumber == 6)
+                    //        //                nr.Col6 += EUnits;
+                    //        //            else if (Size.SI_ColNumber == 7)
+                    //        //                nr.Col7 += EUnits;
+                    //        //            else if (Size.SI_ColNumber == 8)
+                    //        //                nr.Col8 += EUnits;
+                    //        //            else if (Size.SI_ColNumber == 9)
+                    //        //                nr.Col9 += EUnits;
+                    //        //            else if (Size.SI_ColNumber == 10)
+                    //        //                nr.Col10 += EUnits;
+                    //        //            else
+                    //        //                nr.Col11 += EUnits;
+                    //        //        }
+                    //        //    }
+                    //        //    nr.Total = nr.Col1 + nr.Col2 + nr.Col3 + nr.Col4 + nr.Col5 + nr.Col6 + nr.Col7 + nr.Col8 + nr.Col9 + nr.Col10 + nr.Col11;
+                    //        //}
+
+                    //        //nr.Date = LineIssue.TLCMTLI_Date;
+                    //        //nr.Hold = LineIssue.TLCMTLI_OnHold;
+                    //        //nr.Priority = LineIssue.TLCMTLI_Priority;
+
+                    //        //nr.Wip = 0;
+                    //        //nr.DespatchCage = 0;
+                    //        //nr.ReceiptCage = 0;
+
+                    //        //if (!LineIssue.TLCMTLI_OnHold)
+                    //        //{
+                    //        //    if (!LineIssue.TLCMTLI_WorkCompleted)
+                    //        //    {
+                    //        //        if (!LineIssue.TLCMTLI_IssuedToLine)
+                    //        //            nr.ReceiptCage = nr.Total;
+                    //        //        else
+                    //        //            nr.Wip = nr.Total;
+                    //        //    }
+                    //        //    else
+                    //        //    {
+                    //        //        var CompletedW = context.TLCMT_CompletedWork.Where(x => x.TLCMTWC_LineIssue_FK == LineIssue.TLCMTLI_Pk).ToList();
+                    //        //        if (CompletedW.Count != 0)
+                    //        //        {
+                    //        //            if (!CompletedW.FirstOrDefault().TLCMTWC_Despatched)
+                    //        //                nr.DespatchCage = CompletedW.Sum(x => (int?)x.TLCMTWC_Qty) ?? 0;
+                    //        //        }
+                    //        //    }
+                    //        //}
+                    //        ///####
+                    //        //else
+                    //        //{
+                    //        //    nr.UnitsOnHold = nr.Total;
+                    //        //}
+
+                    //        //if (nr.Wip + nr.DespatchCage + nr.ReceiptCage == 0 && !LineIssue.TLCMTLI_OnHold)
+                    //        //    continue;
+
+                    //        //if (Units_Per_Bag != 0)
+                    //        //{
+                    //        //    var Res = (Decimal)nr.ReceiptCage / Units_Per_Bag;
+                    //        //    nr.Bags = (int)Math.Round(Res, 0);
+                    //        //}
+                    //        //dataTable1.AddDataTable1Row(nr);
+                    //    }
+                    //}
+
+
+
+
+
+////*****
+                    // Mapping customer IDs to customer codes
+                    //var customerMapping = new List<CustomerMapping>
+                    //{
+                    //    new CustomerMapping { Customer_FK = 15, CustomerCode = "GPV001" },
+                    //    new CustomerMapping { Customer_FK = 16, CustomerCode = "KZNVIC" },
+                    //    new CustomerMapping { Customer_FK = 20, CustomerCode = "TCT001" },
+                    //    new CustomerMapping { Customer_FK = 23, CustomerCode = "TLWEC" }
+                    //};
+
+                    //// Fetch raw data including total garments per order
+                    //var rawData = (from oa in context.TLCSV_OrderAllocated
+                    //               join po in context.TLCSV_PurchaseOrder on oa.TLORDA_POOrder_FK equals po.TLCSVPO_Pk
+                    //               join pod in context.TLCSV_PuchaseOrderDetail on po.TLCSVPO_Pk equals pod.TLCUSTO_Pk
+                    //               join s in context.TLADM_Styles on pod.TLCUSTO_Style_FK equals s.Sty_Id
+                    //               join c in context.TLADM_Colours on pod.TLCUSTO_Colour_FK equals c.Col_Id
+                    //               join si in context.TLADM_Sizes on pod.TLCUSTO_Size_FK equals si.SI_id
+                    //               join soh in context.TLCSV_StockOnHand on pod.TLCUSTO_Pk equals soh.TLSOH_POOrderDetail_FK
+                    //               join ws in context.TLADM_WhseStore on soh.TLSOH_WareHouse_FK equals ws.WhStore_Id
+                    //               join repl in context.TLPPS_Replenishment on new { s.Sty_Id, c.Col_Id, si.SI_id } equals new { Sty_Id = repl.TLREP_Style_FK, Col_Id = repl.TLREP_Colour_FK, SI_id = repl.TLREP_Size_FK }
+                                   
+                    //               //join d in context.TLADM_Departments on po.DepartmentId equals d.Dep_Id // Adjust the field name accordingly
+                    //               where oa.TLORDA_Delivered == false
+                    //                     // Commenting out the department condition
+                    //                     //&& _ProdQParms.Departments.Any(dep => dep.Dep_Id == d.Dep_Id) // Join on department
+                    //                     && _ProdQParms.Styles.Any(st => st.Sty_Id == s.Sty_Id)
+                    //                     && _ProdQParms.Colours.Any(cl => cl.Col_Id == c.Col_Id)
+                    //                     && _ProdQParms.Sizes.Any(sz => sz.SI_id == si.SI_id)
+                    //               select new
+                    //               {
+                    //                   oa.TLORDA_Customer_FK,
+                    //                   s.Sty_Description,
+                    //                   c.Col_Description,
+                    //                   si.SI_Description,
+                    //                   soh.TLSOH_BoxedQty,
+                    //                   ROL = repl.TLREP_ReOrderLevel, // Correct ROL value
+                    //                                                  // Calculation for CMT_Panels
+                    //                   CMT_Panels = context.TLCMT_LineIssue
+                    //                                  .Where(li => li.TLCMTLI_IssuedToLine == false && li.TLCMTLI_WorkCompleted == false)
+                    //                                  .Join(context.TLCUT_CutSheetReceiptDetail,
+                    //                                        li => li.TLCMTLI_CutSheet_FK,
+                    //                                        csrd => csrd.TLCUTSHRD_CutSheet_FK,
+                    //                                        (li, csrd) => csrd.TLCUTSHRD_BundleQty - csrd.TLCUTSHRD_RejectQty).Sum(),
+                    //                   // Calculation for CMT_WIP
+                    //                   CMT_WIP = context.TLCMT_LineIssue
+                    //                                .Where(li => li.TLCMTLI_IssuedToLine == true && li.TLCMTLI_WorkCompleted == false)
+                    //                                .Join(context.TLCUT_CutSheetReceiptDetail,
+                    //                                      li => li.TLCMTLI_CutSheet_FK,
+                    //                                      csrd => csrd.TLCUTSHRD_CutSheet_FK,
+                    //                                      (li, csrd) => csrd.TLCUTSHRD_BundleQty - csrd.TLCUTSHRD_RejectQty).Sum(),
+                    //                   // Calculation for CMT_Despatch
+                    //                   CMT_Despatch = context.TLCMT_LineIssue
+                    //                                        .Where(li => li.TLCMTLI_WorkCompleted == true)
+                    //                                        .Join(context.TLCMT_CompletedWork,
+                    //                                              li => li.TLCMTLI_Pk,
+                    //                                              cw => cw.TLCMTWC_LineIssue_FK,
+                    //                                              (li, cw) => new { li, cw })
+                    //                                        .Where(x => x.cw.TLCMTWC_Despatched == false)
+                    //                                        .Sum(x => (int?)x.cw.TLCMTWC_Qty) ?? 0,
+                    //                   // Total garments for each order
+                    //                   TotalGarments = soh.TLSOH_BoxedQty
+                    //               }).ToList();
+
+                    //// Group data by style, color, and size, and aggregate the required values
+                    //var result = from data in rawData
+                    //             join cm in customerMapping on data.TLORDA_Customer_FK equals cm.Customer_FK
+                    //             group new { data, cm } by new { data.Sty_Description, data.Col_Description, data.SI_Description } into g
+                    //             select new
+                    //             {
+                    //                 Style = g.Key.Sty_Description,
+                    //                 Colour = g.Key.Col_Description,
+                    //                 Size = g.Key.SI_Description,
+                    //                 // Summing total garments for each customer code
+                    //                 GPV001 = g.Where(x => x.cm.CustomerCode == "GPV001").Sum(x => x.data.TotalGarments),
+                    //                 KZNVIC = g.Where(x => x.cm.CustomerCode == "KZNVIC").Sum(x => x.data.TotalGarments),
+                    //                 TCT001 = g.Where(x => x.cm.CustomerCode == "TCT001").Sum(x => x.data.TotalGarments),
+                    //                 TLWEC = g.Where(x => x.cm.CustomerCode == "TLWEC").Sum(x => x.data.TotalGarments),
+                    //                 // Total garments for all orders
+                    //                 Total_Orders = g.Sum(x => x.data.TotalGarments),
+                    //                 Available_Stock = g.Sum(x => x.data.TLSOH_BoxedQty),
+                    //                 // Calculating the difference between available stock and total orders
+                    //                 Minus_Orders = g.Sum(x => x.data.TLSOH_BoxedQty) - g.Sum(x => x.data.TotalGarments),
+                    //                 CMT_Panels = g.Sum(x => x.data.CMT_Panels),
+                    //                 CMT_WIP = g.Sum(x => x.data.CMT_WIP),
+                    //                 CMT_Despatch = g.Sum(x => x.data.CMT_Despatch),
+                    //                 ROL = g.Max(x => x.data.ROL), // Including the ROL column
+                    //                 Expedite = g.Max(x => x.data.ROL) - (g.Sum(x => x.data.TLSOH_BoxedQty) - g.Sum(x => x.data.TotalGarments) + g.Sum(x => x.data.CMT_Panels) + g.Sum(x => x.data.CMT_WIP) + g.Sum(x => x.data.CMT_Despatch)) // Calculating Expedite
+                    //             };
+
+                    //// Sorting the result
+                    //var sortedResult = result.OrderBy(r => r.Style)
+                    //                         .ThenBy(r => r.Colour)
+                    //                         .ThenBy(r => r.Size)
+                    //                         .ToList();
+
+                    //// Adding sorted result to the DataTable
+                    //foreach (var r in sortedResult)
+                    //{
+                    //    DataSet10.DataTable1Row nr = dataTable1.NewDataTable1Row();
+                    //    nr.Colour = r.Colour;
+                    //    nr.Style = r.Style;
+                    //    nr.Size = r.Size;
+                    //    nr.AvailableStock = r.Available_Stock.ToString();
+                    //    nr.TotalOrders = r.Total_Orders.ToString();
+                    //    nr.KZNVIC = r.KZNVIC.ToString();
+                    //    nr.GPV001 = r.GPV001.ToString();
+                    //    nr.TCT001 = r.TCT001.ToString();
+                    //    nr.TLWEC = r.TLWEC.ToString();
+                    //    nr.DifferenceStock = r.Minus_Orders.ToString();
+                    //    nr.CMTWIP = r.CMT_WIP.ToString();
+                    //    nr.CMTPanels = r.CMT_Panels.ToString();
+                    //    nr.CMTDespatch = r.CMT_Despatch.ToString();
+                    //    nr.ROL = r.ROL.ToString(); // Adding ROL value to the DataTable row
+                    //    nr.Expedite = r.Expedite.ToString(); // Adding Expedite value to the DataTable row
+
+                    //    dataTable1.AddDataTable1Row(nr);
+                    //}
                 }
 
                 if (dataTable1.Rows.Count == 0)
@@ -2617,6 +3002,44 @@ namespace ProductionPlanning
             }
 
             crystalReportViewer1.Refresh();
+        }
+
+        private struct PPOrdersDATA
+        {
+            public int StylePK;
+            public int ColourPk;
+            public int SizePk;
+            public int CustomerPk;
+            public int BoxedQty;
+
+
+            public PPOrdersDATA(int _StylePk, int _ColourPk, int _SizePk, int _CustomerPk, int _BoxedQty)
+            {
+                this.StylePK = _StylePk;
+                this.ColourPk = _ColourPk;
+                this.SizePk = _SizePk;
+                this.CustomerPk = _CustomerPk;
+                this.BoxedQty = _BoxedQty;
+            }
+        }
+
+        private struct PPStockDATA
+        {
+            public int StylePK;
+            public int ColourPk;
+            public int SizePk;
+            public int WareHouse;
+            public int BoxedQty;
+
+
+            public PPStockDATA(int _StylePk, int _ColourPk, int _SizePk, int _WareHousePk, int _BoxedQty)
+            {
+                this.StylePK = _StylePk;
+                this.ColourPk = _ColourPk;
+                this.SizePk = _SizePk;
+                this.WareHouse = _WareHousePk;
+                this.BoxedQty = _BoxedQty;
+            }
         }
 
         public struct DATA

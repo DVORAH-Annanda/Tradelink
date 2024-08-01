@@ -301,8 +301,80 @@ namespace ProductionPlanning
              return IS;
          }
 
-       
-         public IQueryable<TLPPS_Replenishment> PPSQuery(ProdQueryParameters parameters)
+        public IQueryable<TLCMT_LineIssue> CMTPanels(ProdQueryParameters parameters)
+        {
+            _context.Configuration.AutoDetectChangesEnabled = false;
+
+            // This particular function has been changed To call for Panels in the CMT Panel Receipt Store  
+            var LineIssues = _context.TLCMT_LineIssue.Where(x => !x.TLCMTLI_WorkCompleted && !x.TLCMTLI_IssuedToLine).AsQueryable();
+
+            // Filter out any particular CMT if neccessary
+            //------------------------------------------------------------
+            if (parameters.Departments.Count > 0)
+            {
+                var DepartmentPredicate = PredicateBuilder.New<TLCMT_LineIssue>();
+                foreach (var Dept in parameters.Departments)
+                {
+                    var temp = Dept;
+                    DepartmentPredicate = DepartmentPredicate.Or(s => s.TLCMTLI_CmtFacility_FK == temp.Dep_Id);
+                }
+
+                LineIssues = LineIssues.AsExpandable().Where(DepartmentPredicate);
+            }
+
+            return LineIssues;
+        }
+
+        public IQueryable<TLCMT_LineIssue> CMTWIPLineIssues(ProdQueryParameters parameters)
+        {
+            _context.Configuration.AutoDetectChangesEnabled = false;
+
+            // This particular function has been changed To call for Panels in the CMT Panel Receipt Store  
+            var LineIssues = _context.TLCMT_LineIssue.Where(x => !x.TLCMTLI_WorkCompleted && x.TLCMTLI_IssuedToLine).AsQueryable();
+
+            // Filter out any particular CMT if neccessary
+            //------------------------------------------------------------
+            if (parameters.Departments.Count > 0)
+            {
+                var DepartmentPredicate = PredicateBuilder.New<TLCMT_LineIssue>();
+                foreach (var Dept in parameters.Departments)
+                {
+                    var temp = Dept;
+                    DepartmentPredicate = DepartmentPredicate.Or(s => s.TLCMTLI_CmtFacility_FK == temp.Dep_Id);
+                }
+
+                LineIssues = LineIssues.AsExpandable().Where(DepartmentPredicate);
+            }
+
+            return LineIssues;
+        }
+
+        public IQueryable<TLCMT_LineIssue> CMTDespatchLineIssues(ProdQueryParameters parameters)
+        {
+            var LineIssuesCMTDespatch = (from T1 in _context.TLCMT_LineIssue
+                                join T2 in _context.TLCMT_CompletedWork on T1.TLCMTLI_Pk equals T2.TLCMTWC_LineIssue_FK
+                                where T1.TLCMTLI_WorkCompleted && !T2.TLCMTWC_Despatched
+                                select T1).Distinct().AsQueryable();
+
+            // Filter out any particular CMT if neccessary
+            //------------------------------------------------------------
+            if (parameters.Departments.Count > 0)
+            {
+                var DepartmentPredicate = PredicateBuilder.New<TLCMT_LineIssue>();
+                foreach (var Dept in parameters.Departments)
+                {
+                    var temp = Dept;
+                    DepartmentPredicate = DepartmentPredicate.Or(s => s.TLCMTLI_CmtFacility_FK == temp.Dep_Id);
+                }
+
+                LineIssuesCMTDespatch = LineIssuesCMTDespatch.AsExpandable().Where(DepartmentPredicate);
+            }
+
+            return LineIssuesCMTDespatch;
+        }
+
+
+        public IQueryable<TLPPS_Replenishment> PPSQuery(ProdQueryParameters parameters)
          {
              var PPSSortOrder = from T1 in _context.TLPPS_Replenishment
                             join T2 in _context.TLADM_Styles on T1.TLREP_Style_FK equals T2.Sty_Id
