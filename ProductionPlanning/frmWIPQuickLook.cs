@@ -198,7 +198,15 @@ namespace ProductionPlanning
             Button oBtn = sender as Button;
             if (oBtn != null && formloaded)
             {
-                frmPPSViewRep vRep = new frmPPSViewRep(11, QueryParms);
+                // Display the ProgressBar control.
+                pbarExpedite.Visible = true;
+                // Set Minimum to 1 
+                pbarExpedite.Minimum = 1;
+                // Set the initial value of ProgessBar
+                pbarExpedite.Value = 1;
+                // Set the Step property to a value of 1 to represent PPS Record processed
+                pbarExpedite.Step = 1;
+                frmPPSViewRep vRep = new frmPPSViewRep(11, QueryParms, pbarExpedite);
 
                 int h = Screen.PrimaryScreen.WorkingArea.Height;
                 int w = Screen.PrimaryScreen.WorkingArea.Width;

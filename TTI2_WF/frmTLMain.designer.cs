@@ -382,6 +382,7 @@
             this.interDepartmentalFaultsComparisonToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.interDepartmentalDskAnalysisToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.processLossPerCutSheetAcrossProductionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.wIPQuickLookForExpiditingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.qAReportingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.qAReportingManagerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.daysDelayReportingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -481,7 +482,6 @@
             this.inUseResetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
             this.PBar1 = new System.Windows.Forms.ProgressBar();
-            this.wIPQuickLookForExpiditingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             this.SuspendLayout();
@@ -3319,6 +3319,13 @@
             this.processLossPerCutSheetAcrossProductionToolStripMenuItem.Text = "Process Loss Per CutSheet across Production ";
             this.processLossPerCutSheetAcrossProductionToolStripMenuItem.Click += new System.EventHandler(this.processLossPerCutSheetAcrossProductionToolStripMenuItem_Click);
             // 
+            // wIPQuickLookForExpiditingToolStripMenuItem
+            // 
+            this.wIPQuickLookForExpiditingToolStripMenuItem.Name = "wIPQuickLookForExpiditingToolStripMenuItem";
+            this.wIPQuickLookForExpiditingToolStripMenuItem.Size = new System.Drawing.Size(312, 22);
+            this.wIPQuickLookForExpiditingToolStripMenuItem.Text = "WIP Quick Look for Expediting";
+            this.wIPQuickLookForExpiditingToolStripMenuItem.Click += new System.EventHandler(this.wIPQuickLookForExpiditingToolStripMenuItem_Click);
+            // 
             // qAReportingToolStripMenuItem
             // 
             this.qAReportingToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -4106,13 +4113,6 @@
             this.PBar1.Name = "PBar1";
             this.PBar1.Size = new System.Drawing.Size(402, 23);
             this.PBar1.TabIndex = 5;
-            // 
-            // wIPQuickLookForExpiditingToolStripMenuItem
-            // 
-            this.wIPQuickLookForExpiditingToolStripMenuItem.Name = "wIPQuickLookForExpiditingToolStripMenuItem";
-            this.wIPQuickLookForExpiditingToolStripMenuItem.Size = new System.Drawing.Size(312, 22);
-            this.wIPQuickLookForExpiditingToolStripMenuItem.Text = "WIP Quick Look for Expiditing";
-            this.wIPQuickLookForExpiditingToolStripMenuItem.Click += new System.EventHandler(this.wIPQuickLookForExpiditingToolStripMenuItem_Click);
             // 
             // frmTLMain
             // 

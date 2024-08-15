@@ -652,14 +652,6 @@ namespace DyeHouse {
             
             private global::System.Data.DataColumn columnCustomer;
             
-            private global::System.Data.DataColumn columnLengthShrinkage;
-            
-            private global::System.Data.DataColumn columnQAPassFail;
-            
-            private global::System.Data.DataColumn columnRFT;
-            
-            private global::System.Data.DataColumn columnComments;
-            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public DataTable1DataTable() {
@@ -863,38 +855,6 @@ namespace DyeHouse {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public global::System.Data.DataColumn LengthShrinkageColumn {
-                get {
-                    return this.columnLengthShrinkage;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public global::System.Data.DataColumn QAPassFailColumn {
-                get {
-                    return this.columnQAPassFail;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public global::System.Data.DataColumn RFTColumn {
-                get {
-                    return this.columnRFT;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public global::System.Data.DataColumn CommentsColumn {
-                get {
-                    return this.columnComments;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -951,11 +911,7 @@ namespace DyeHouse {
                         decimal VariancePercent, 
                         string DyeMachine, 
                         string DyeOperator, 
-                        string Customer, 
-                        string LengthShrinkage, 
-                        string QAPassFail, 
-                        string RFT, 
-                        string Comments) {
+                        string Customer) {
                 DataTable1Row rowDataTable1Row = ((DataTable1Row)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         null,
@@ -978,11 +934,7 @@ namespace DyeHouse {
                         VariancePercent,
                         DyeMachine,
                         DyeOperator,
-                        Customer,
-                        LengthShrinkage,
-                        QAPassFail,
-                        RFT,
-                        Comments};
+                        Customer};
                 if ((parentDataTable2RowByDataTable2_DataTable1 != null)) {
                     columnValuesArray[0] = parentDataTable2RowByDataTable2_DataTable1[0];
                 }
@@ -1029,10 +981,6 @@ namespace DyeHouse {
                 this.columnDyeMachine = base.Columns["DyeMachine"];
                 this.columnDyeOperator = base.Columns["DyeOperator"];
                 this.columnCustomer = base.Columns["Customer"];
-                this.columnLengthShrinkage = base.Columns["LengthShrinkage"];
-                this.columnQAPassFail = base.Columns["QAPassFail"];
-                this.columnRFT = base.Columns["RFT"];
-                this.columnComments = base.Columns["Comments"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1080,14 +1028,6 @@ namespace DyeHouse {
                 base.Columns.Add(this.columnDyeOperator);
                 this.columnCustomer = new global::System.Data.DataColumn("Customer", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnCustomer);
-                this.columnLengthShrinkage = new global::System.Data.DataColumn("LengthShrinkage", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnLengthShrinkage);
-                this.columnQAPassFail = new global::System.Data.DataColumn("QAPassFail", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnQAPassFail);
-                this.columnRFT = new global::System.Data.DataColumn("RFT", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnRFT);
-                this.columnComments = new global::System.Data.DataColumn("Comments", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnComments);
                 this.columnStandardDskWeight.Caption = "GreigeWidth";
                 this.columnDiskWeight.Caption = "GreigeWidth_AfterHydro";
                 this.columnWeightVariance.Caption = "GreigeWidth_AfterDrying";
@@ -1714,70 +1654,6 @@ namespace DyeHouse {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public string LengthShrinkage {
-                get {
-                    try {
-                        return ((string)(this[this.tableDataTable1.LengthShrinkageColumn]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'LengthShrinkage\' in table \'DataTable1\' is DBNull.", e);
-                    }
-                }
-                set {
-                    this[this.tableDataTable1.LengthShrinkageColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public string QAPassFail {
-                get {
-                    try {
-                        return ((string)(this[this.tableDataTable1.QAPassFailColumn]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'QAPassFail\' in table \'DataTable1\' is DBNull.", e);
-                    }
-                }
-                set {
-                    this[this.tableDataTable1.QAPassFailColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public string RFT {
-                get {
-                    try {
-                        return ((string)(this[this.tableDataTable1.RFTColumn]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'RFT\' in table \'DataTable1\' is DBNull.", e);
-                    }
-                }
-                set {
-                    this[this.tableDataTable1.RFTColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public string Comments {
-                get {
-                    try {
-                        return ((string)(this[this.tableDataTable1.CommentsColumn]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'Comments\' in table \'DataTable1\' is DBNull.", e);
-                    }
-                }
-                set {
-                    this[this.tableDataTable1.CommentsColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public DataTable2Row DataTable2Row {
                 get {
                     return ((DataTable2Row)(this.GetParentRow(this.Table.ParentRelations["DataTable2_DataTable1"])));
@@ -2037,54 +1913,6 @@ namespace DyeHouse {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public void SetCustomerNull() {
                 this[this.tableDataTable1.CustomerColumn] = global::System.Convert.DBNull;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public bool IsLengthShrinkageNull() {
-                return this.IsNull(this.tableDataTable1.LengthShrinkageColumn);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public void SetLengthShrinkageNull() {
-                this[this.tableDataTable1.LengthShrinkageColumn] = global::System.Convert.DBNull;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public bool IsQAPassFailNull() {
-                return this.IsNull(this.tableDataTable1.QAPassFailColumn);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public void SetQAPassFailNull() {
-                this[this.tableDataTable1.QAPassFailColumn] = global::System.Convert.DBNull;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public bool IsRFTNull() {
-                return this.IsNull(this.tableDataTable1.RFTColumn);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public void SetRFTNull() {
-                this[this.tableDataTable1.RFTColumn] = global::System.Convert.DBNull;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public bool IsCommentsNull() {
-                return this.IsNull(this.tableDataTable1.CommentsColumn);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public void SetCommentsNull() {
-                this[this.tableDataTable1.CommentsColumn] = global::System.Convert.DBNull;
             }
         }
         

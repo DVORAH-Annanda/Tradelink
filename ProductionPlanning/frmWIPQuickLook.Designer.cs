@@ -38,7 +38,7 @@ namespace ProductionPlanning
             this.chkcboColoursSelection = new ProductionPlanning.CheckComboBox();
             this.chkcboSizesSelection = new ProductionPlanning.CheckComboBox();
             this.btnSubmit = new System.Windows.Forms.Button();
-
+            this.pbarExpedite = new System.Windows.Forms.ProgressBar();
             this.SuspendLayout();
             // 
             // label1
@@ -127,11 +127,19 @@ namespace ProductionPlanning
             this.btnSubmit.UseVisualStyleBackColor = true;
             this.btnSubmit.Click += new System.EventHandler(this.btnSubmit_Click);
             // 
+            // pbarExpedite
+            // 
+            this.pbarExpedite.Location = new System.Drawing.Point(39, 163);
+            this.pbarExpedite.Name = "pbarExpedite";
+            this.pbarExpedite.Size = new System.Drawing.Size(242, 23);
+            this.pbarExpedite.TabIndex = 12;
+            // 
             // frmWIPQuickLook
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(397, 216);
+            this.Controls.Add(this.pbarExpedite);
             this.Controls.Add(this.chkcboCMTSelection);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.btnSubmit);
@@ -160,5 +168,6 @@ namespace ProductionPlanning
         private ProductionPlanning.CheckComboBox chkcboColoursSelection;
         private ProductionPlanning.CheckComboBox chkcboSizesSelection;
         private System.Windows.Forms.Button btnSubmit;
+        private System.Windows.Forms.ProgressBar pbarExpedite;
     }
 }
