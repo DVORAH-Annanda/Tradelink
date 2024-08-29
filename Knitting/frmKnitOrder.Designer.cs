@@ -35,6 +35,7 @@
             this.label3 = new System.Windows.Forms.Label();
             this.dtpDateRequired = new System.Windows.Forms.DateTimePicker();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.cmboSizes = new System.Windows.Forms.ComboBox();
             this.cmboColours = new System.Windows.Forms.ComboBox();
             this.label13 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
@@ -70,7 +71,6 @@
             this.btnEdit = new System.Windows.Forms.Button();
             this.btnPrint = new System.Windows.Forms.Button();
             this.btnConfirm = new System.Windows.Forms.Button();
-            this.cmboSizes = new System.Windows.Forms.ComboBox();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.groupBox2.SuspendLayout();
@@ -152,6 +152,14 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Greige Requirements";
             // 
+            // cmboSizes
+            // 
+            this.cmboSizes.FormattingEnabled = true;
+            this.cmboSizes.Location = new System.Drawing.Point(474, 56);
+            this.cmboSizes.Name = "cmboSizes";
+            this.cmboSizes.Size = new System.Drawing.Size(137, 21);
+            this.cmboSizes.TabIndex = 12;
+            // 
             // cmboColours
             // 
             this.cmboColours.FormattingEnabled = true;
@@ -188,6 +196,7 @@
             this.rbThirdParty.TabStop = true;
             this.rbThirdParty.Text = "Third Party";
             this.rbThirdParty.UseVisualStyleBackColor = true;
+            this.rbThirdParty.Visible = false;
             this.rbThirdParty.CheckedChanged += new System.EventHandler(this.rbThirdParty_CheckedChanged);
             // 
             // rbOwnYarn
@@ -201,6 +210,7 @@
             this.rbOwnYarn.TabStop = true;
             this.rbOwnYarn.Text = "Own Yarn";
             this.rbOwnYarn.UseVisualStyleBackColor = true;
+            this.rbOwnYarn.Visible = false;
             this.rbOwnYarn.CheckedChanged += new System.EventHandler(this.rbOwnYarn_CheckedChanged);
             // 
             // dataGridView1
@@ -500,14 +510,6 @@
             this.btnConfirm.Text = "Confirm";
             this.btnConfirm.UseVisualStyleBackColor = true;
             this.btnConfirm.Click += new System.EventHandler(this.btnConfirm_Click);
-            // 
-            // cmboSizes
-            // 
-            this.cmboSizes.FormattingEnabled = true;
-            this.cmboSizes.Location = new System.Drawing.Point(474, 56);
-            this.cmboSizes.Name = "cmboSizes";
-            this.cmboSizes.Size = new System.Drawing.Size(137, 21);
-            this.cmboSizes.TabIndex = 12;
             // 
             // frmKnitOrder
             // 
