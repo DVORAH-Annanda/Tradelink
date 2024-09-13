@@ -113,6 +113,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DataSet10.xsd</DependentUpon>
     </Compile>
+    <Compile Include="DataSet11.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSet11.xsd</DependentUpon>
+    </Compile>
     <Compile Include="DataSet2.cs">
       <DependentUpon>DataSet2.xsd</DependentUpon>
     </Compile>
@@ -171,11 +176,23 @@
       <DependentUpon>DskDeviation.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="DyeOrderPlanning.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DyeOrderPlanning.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="frmDailyLog.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="frmDailyLog.Designer.cs">
       <DependentUpon>frmDailyLog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmDyeOrderPlanning.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmDyeOrderPlanning.Designer.cs">
+      <DependentUpon>frmDyeOrderPlanning.cs</DependentUpon>
     </Compile>
     <Compile Include="frmInterDept.cs">
       <SubType>Form</SubType>
@@ -324,6 +341,10 @@
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>DskDeviation.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="DyeOrderPlanning.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>DyeOrderPlanning.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="frmDailyLog.resx">
       <DependentUpon>frmDailyLog.cs</DependentUpon>
     </EmbeddedResource>
@@ -438,6 +459,17 @@
     </None>
     <None Include="DataSet10.xss">
       <DependentUpon>DataSet10.xsd</DependentUpon>
+    </None>
+    <None Include="DataSet11.xsc">
+      <DependentUpon>DataSet11.xsd</DependentUpon>
+    </None>
+    <None Include="DataSet11.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSet11.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="DataSet11.xss">
+      <DependentUpon>DataSet11.xsd</DependentUpon>
     </None>
     <None Include="DataSet2.xsc">
       <DependentUpon>DataSet2.xsd</DependentUpon>

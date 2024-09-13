@@ -1955,7 +1955,7 @@ namespace Knitting
                         DataSet21.TLSPN_YarnOrderPalletsRow pr = palletsTable.NewTLSPN_YarnOrderPalletsRow();
                         pr.YarnOP_Grade = Pallet.TLKNIOP_Grade;
                         pr.YarnOP_Pk = Pallet.TLKNIOP_Pk;
-                        pr.YarnOP_NoOfConesSpun = 0; //row.TLKNIOP_Cones + row.TLKNIOP_ConesReturned - row.TLKNIOP_ConesReserved;
+                        pr.YarnOP_NoOfConesSpun = Pallet.TLKNIOP_Cones + Pallet.TLKNIOP_ConesReturned - Pallet.TLKNIOP_ConesReserved;
                         pr.YarnOP_NettWeight = core.CalculatePalletNett(Pallet);
                         pr.YarnOP_PalletNo = Pallet.TLKNIOP_PalletNo;
                         pr.YarnOP_Store_FK = Pallet.TLKNIOP_Store_FK;

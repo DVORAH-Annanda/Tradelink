@@ -2890,6 +2890,143 @@ namespace ProductionPlanning
                 }
             }
 
+            if (_RepNo == 12) // Dye Order Planning Report
+            {
+                try
+                {
+                    // Initialize the repository and dataset
+                    PPSRepository repo = new PPSRepository();
+                    DataSet ds = new DataSet();
+                    DataSet11.DataTable1DataTable dataTable1 = new DataSet11.DataTable1DataTable();
+                    IList<TLCSV_PuchaseOrderDetail> PODetail = new List<TLCSV_PuchaseOrderDetail>();
+                    IList<TLADM_Griege> _Qualities = new List<TLADM_Griege>();
+                    List<PPOrdersDATA> OutOrders = new List<PPOrdersDATA>();
+                    DateTime fromDate = _ProdQParms.FromDate;
+
+                    using (var context = new TTI2Entities())
+                    {
+                        // Load related tables for styles, colours, and sizes
+                        IList<TLADM_Styles> _Styles = context.TLADM_Styles.ToList();
+                        IList<TLADM_Colours> _Colours = context.TLADM_Colours.ToList();
+                        IList<TLADM_Sizes> _Sizes = context.TLADM_Sizes.ToList();
+
+                        // Initialize Stock On Hand (SOH) data
+                        var SOH = context.TLCSV_StockOnHand
+                                        .Where(x => !x.TLSOH_Picked && x.TLSOH_Is_A && !x.TLSOH_Write_Off && !x.TLSOH_Returned && !x.TLSOH_Split)
+                                        .ToList();
+
+                        // Fetch Current Dye Orders (similar to CurrentMeasurementValues calculation)
+                        var dyeOrders = context.TLDYE_DyeBatch.ToList();
+
+                        // Loop through PPSQuery results
+                        foreach (var Item in repo.PPSQuery(_ProdQParms).ToList())
+                        {
+                            // Create a new row for DataTable1
+                            DataSet11.DataTable1Row row = dataTable1.NewDataTable1Row();
+                            row.SelDate = fromDate.ToString("yyyy-MM-dd");
+
+                            // Set Style, Colour, and Size fields
+                            row.Style = _Styles.FirstOrDefault(s => s.Sty_Id == Item.TLREP_Style_FK)?.Sty_Description;
+                            row.Colour = _Colours.FirstOrDefault(c => c.Col_Id == Item.TLREP_Colour_FK)?.Col_Display;
+                            row.Size = _Sizes.FirstOrDefault(sz => sz.SI_id == Item.TLREP_Size_FK)?.SI_Description;
+
+                            // Calculate OrderTotal (Customer Orders)
+                            var Orders = PODetail.Where(x => x.TLCUSTO_Style_FK == Item.TLREP_Style_FK &&
+                                                              x.TLCUSTO_Colour_FK == Item.TLREP_Colour_FK &&
+                                                              x.TLCUSTO_Size_FK == Item.TLREP_Size_FK);
+                            int OrderTotal = Orders.Sum(x => (int?)x.TLCUSTO_Qty) ?? 0;
+                            row.OrderTotal = OrderTotal;
+
+                            // Calculate Available Stock from the SOH data
+                            var ItemSOH = SOH.Where(x => x.TLSOH_Style_FK == Item.TLREP_Style_FK &&
+                                                         x.TLSOH_Colour_FK == Item.TLREP_Colour_FK &&
+                                                         x.TLSOH_Size_FK == Item.TLREP_Size_FK);
+                            int AvailableStock = ItemSOH.Sum(x => (int?)x.TLSOH_BoxedQty) ?? 0;
+                            row.AvailableStock = AvailableStock.ToString();
+
+                            // Calculate WIP total based on the results of the query
+                            var CMTWIP = from LI in context.TLCMT_LineIssue
+                                         join CS in context.TLCUT_CutSheet on LI.TLCMTLI_CutSheet_FK equals CS.TLCutSH_Pk
+                                         join CR in context.TLCUT_CutSheetReceipt on LI.TLCMTLI_CutSheet_FK equals CR.TLCUTSHR_CutSheet_FK
+                                         join CRD in context.TLCUT_CutSheetReceiptDetail on CR.TLCUTSHR_Pk equals CRD.TLCUTSHRD_CutSheet_FK
+                                         where LI.TLCMTLI_IssuedToLine == true && LI.TLCMTLI_WorkCompleted == false
+                                               && CR.TLCUTSHR_Style_FK == Item.TLREP_Style_FK
+                                               && CR.TLCUTSHR_Colour_FK == Item.TLREP_Colour_FK
+                                               && CRD.TLCUTSHRD_Size_FK == Item.TLREP_Size_FK
+                                         select new
+                                         {
+                                             CRD.TLCUTSHRD_BundleQty,
+                                             CRD.TLCUTSHRD_RejectQty
+                                         };
+
+                            int cmtWIP = CMTWIP.Sum(x => (int?)x.TLCUTSHRD_BundleQty - x.TLCUTSHRD_RejectQty) ?? 0;
+                            row.WipTotal = cmtWIP;
+
+                            // Get Reorder Level (ROL)
+                            int ROL = Item.TLREP_ReOrderLevel;
+                            row.ROL = ROL.ToString();
+
+                            // Calculate Difference: OrderTotal + AvailableStock - ROL
+                            int Difference = OrderTotal + AvailableStock - ROL;
+                            row.Difference = Difference;
+
+                            // Calculate GrossDyeOrders
+                            row.GrossDyeOrders = (Difference + cmtWIP > 0) ? "0" : (Difference + cmtWIP).ToString();
+
+                            // Calculate CurrentDyeOrders similarly to CurrentMeasurementValues
+                            //var currentDyeOrders = dyeOrders
+                            // .Where(d => d.TLDYE_Style_FK == Item.TLREP_Style_FK &&
+                            //           d.TLDYE_Colour_FK == Item.TLREP_Colour_FK )  //&&
+                            //   d.TLDYE_Size_FK == Item.TLREP_Size_FK)
+                            //  .Sum(d => (decimal?)d.DYEB_Quantity) ?? 0m;
+                            int currentDyeOrders = 1;
+                            // Calculate NewDyeOrders as GrossDyeOrders - CurrentDyeOrders
+                            int grossDyeOrders = int.TryParse(row.GrossDyeOrders, out int result) ? result : 0;
+                            int newDyeOrders = grossDyeOrders - (int)currentDyeOrders;
+
+                            // Assign values to the report row
+                            row.CurrentDyeOrders = currentDyeOrders.ToString("F2");
+                            row.NewDyeOrders = newDyeOrders.ToString("F2");
+
+                            // Add row to the DataTable
+                            dataTable1.AddDataTable1Row(row);
+                        }
+
+                        // If no rows are found, add an empty row
+                        if (dataTable1.Rows.Count == 0)
+                        {
+                            DataSet11.DataTable1Row nr = dataTable1.NewDataTable1Row();
+                            dataTable1.AddDataTable1Row(nr);
+                        }
+
+                        // Add DataTable1 to the dataset and generate the report
+                        ds.Tables.Add(dataTable1);
+                        DyeOrderPlanning report = new DyeOrderPlanning();  // Generated report class
+                        report.SetDataSource(ds);
+                        crystalReportViewer1.ReportSource = report;
+                    }
+                }
+                catch (SqlException ex)
+                {
+                    // Handle SQL exceptions
+                    MessageBox.Show($"SQL Error: {ex.Message}\nError Number: {ex.Number}\nStack Trace: {ex.StackTrace}",
+                                    "SQL Exception",
+                                    MessageBoxButtons.OK,
+                                    MessageBoxIcon.Error);
+                }
+                catch (Exception ex)
+                {
+                    // Handle generic exceptions
+                    MessageBox.Show($"Error: {ex.Message}\nStack Trace: {ex.StackTrace}",
+                                    "Exception",
+                                    MessageBoxButtons.OK,
+                                    MessageBoxIcon.Error);
+                }
+
+                // Refresh the report viewer
+                //crystalReportViewer1.Refresh();
+            }
+
             crystalReportViewer1.Refresh();
         }
 

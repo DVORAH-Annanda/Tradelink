@@ -482,6 +482,7 @@
             this.inUseResetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
             this.PBar1 = new System.Windows.Forms.ProgressBar();
+            this.dyeOrderPlanningToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             this.SuspendLayout();
@@ -3210,6 +3211,7 @@
             // productionPlanningToolStripMenuItem1
             // 
             this.productionPlanningToolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.dyeOrderPlanningToolStripMenuItem,
             this.replenishmentDefinitionToolStripMenuItem,
             this.reportingToolStripMenuItem4});
             this.productionPlanningToolStripMenuItem1.Name = "productionPlanningToolStripMenuItem1";
@@ -4114,6 +4116,13 @@
             this.PBar1.Size = new System.Drawing.Size(402, 23);
             this.PBar1.TabIndex = 5;
             // 
+            // dyeOrderPlanningToolStripMenuItem
+            // 
+            this.dyeOrderPlanningToolStripMenuItem.Name = "dyeOrderPlanningToolStripMenuItem";
+            this.dyeOrderPlanningToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.dyeOrderPlanningToolStripMenuItem.Text = "Dye Order Planning";
+            this.dyeOrderPlanningToolStripMenuItem.Click += new System.EventHandler(this.dyeOrderPlanningToolStripMenuItem_Click);
+            // 
             // frmTLMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -4589,5 +4598,6 @@
         private System.Windows.Forms.ToolStripMenuItem yarnPalletsSoldToCustomeToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem cottonContractToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem wIPQuickLookForExpiditingToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem dyeOrderPlanningToolStripMenuItem;
     }
 }

@@ -10881,6 +10881,30 @@ namespace TTI2_WF
                 }
             }
         }
+
+        private void dyeOrderPlanningToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ToolStripMenuItem oTi = sender as ToolStripMenuItem;
+            if (core.GetUserAuthorisation(ud, oTi.Name))
+            {
+                try
+                {
+                    frmDyeOrderPlanning dyeOrderPlanning = new frmDyeOrderPlanning();
+                    dyeOrderPlanning.ShowDialog(this);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+            else
+            {
+                using (DialogCenteringService centeringService = new DialogCenteringService(this)) // center message box
+                {
+                    MessageBox.Show(ud._NotAuthorisedMessage, ud._UserName);
+                }
+            }
+        }
     }
        
 }
