@@ -100,6 +100,7 @@ namespace ProductionPlanning
                 _progressBar.Value = value;
             }
         }
+
         private void frmPPSViewRep_Load(object sender, EventArgs e)
         {
             if (_RepNo == 1) // Printing of Replenishment Levels 
@@ -2901,7 +2902,9 @@ namespace ProductionPlanning
                     IList<TLCSV_PuchaseOrderDetail> PODetail = new List<TLCSV_PuchaseOrderDetail>();
                     IList<TLADM_Griege> _Qualities = new List<TLADM_Griege>();
                     List<PPOrdersDATA> OutOrders = new List<PPOrdersDATA>();
-                    DateTime fromDate = _ProdQParms.FromDate;
+                    core = new Util();
+                    //var fromDate = DateTime.Now.ToString("yyyy-MM-dd"); 
+                    //var fromDate = DateTime.Now;
 
                     using (var context = new TTI2Entities())
                     {
@@ -2915,28 +2918,44 @@ namespace ProductionPlanning
                                         .Where(x => !x.TLSOH_Picked && x.TLSOH_Is_A && !x.TLSOH_Write_Off && !x.TLSOH_Returned && !x.TLSOH_Split)
                                         .ToList();
 
-                        // Fetch Current Dye Orders (similar to CurrentMeasurementValues calculation)
-                        var dyeOrders = context.TLDYE_DyeBatch.ToList();
-
                         // Loop through PPSQuery results
                         foreach (var Item in repo.PPSQuery(_ProdQParms).ToList())
                         {
                             // Create a new row for DataTable1
                             DataSet11.DataTable1Row row = dataTable1.NewDataTable1Row();
-                            row.SelDate = fromDate.ToString("yyyy-MM-dd");
+                            row.SelDate = DateTime.Now.ToString("yyyy-MM-dd");
 
                             // Set Style, Colour, and Size fields
                             row.Style = _Styles.FirstOrDefault(s => s.Sty_Id == Item.TLREP_Style_FK)?.Sty_Description;
                             row.Colour = _Colours.FirstOrDefault(c => c.Col_Id == Item.TLREP_Colour_FK)?.Col_Display;
                             row.Size = _Sizes.FirstOrDefault(sz => sz.SI_id == Item.TLREP_Size_FK)?.SI_Description;
 
+                            PODetail = (from T1 in context.TLCSV_PurchaseOrder
+                                        join T2 in context.TLCSV_PuchaseOrderDetail on T1.TLCSVPO_Pk equals T2.TLCUSTO_PurchaseOrder_FK
+                                        where !T1.TLCSVPO_Closeed && !T2.TLCUSTO_Closed
+                                        select T2).ToList();
+
                             // Calculate OrderTotal (Customer Orders)
+                            // Filter orders based on style, color, and size
                             var Orders = PODetail.Where(x => x.TLCUSTO_Style_FK == Item.TLREP_Style_FK &&
                                                               x.TLCUSTO_Colour_FK == Item.TLREP_Colour_FK &&
                                                               x.TLCUSTO_Size_FK == Item.TLREP_Size_FK);
-                            int OrderTotal = Orders.Sum(x => (int?)x.TLCUSTO_Qty) ?? 0;
-                            row.OrderTotal = OrderTotal;
 
+
+                            // Check if there are any matching orders
+                            var OrderTotal = 0;
+                            if (Orders != null && Orders.Any())
+                            {
+                                // Sum up quantities directly
+                                var QtyOrdered = Orders.Sum(x => (int?)x.TLCUSTO_Qty) ?? 0;
+                                var AllReadySold = Orders.Sum(x => (int?)x.TLCUSTO_QtyDelivered_ToDate) ?? 0;
+                                var AllReadyPicked = Orders.Sum(x => (int?)x.TLCUSTO_QtyPicked_ToDate) ?? 0;
+                                OrderTotal = QtyOrdered - AllReadyPicked;
+
+
+                                row.OrderTotal = OrderTotal;
+                            }
+                                
                             // Calculate Available Stock from the SOH data
                             var ItemSOH = SOH.Where(x => x.TLSOH_Style_FK == Item.TLREP_Style_FK &&
                                                          x.TLSOH_Colour_FK == Item.TLREP_Colour_FK &&
@@ -2944,49 +2963,327 @@ namespace ProductionPlanning
                             int AvailableStock = ItemSOH.Sum(x => (int?)x.TLSOH_BoxedQty) ?? 0;
                             row.AvailableStock = AvailableStock.ToString();
 
-                            // Calculate WIP total based on the results of the query
+
+                            // Calculate WIP total
+                            // Initialize WIP total
+                            int WIPTotal = 0;
+
+                            // Retrieve orders for "Expected Units - Dyeing Prep"
+                            var DOrders = from T1 in context.TLDYE_DyeOrder
+                                          join T2 in context.TLDYE_DyeBatch on T1.TLDYO_Pk equals T2.DYEB_DyeOrder_FK
+                                          join T3 in context.TLDYE_DyeBatchDetails on T2.DYEB_Pk equals T3.DYEBD_DyeBatch_FK
+                                          where !T2.DYEB_CommissinCust && T1.TLDYO_Style_FK == Item.TLREP_Style_FK && T1.TLDYO_Colour_FK == Item.TLREP_Colour_FK
+                                          && !T2.DYEB_Closed && !T2.DYEB_Allocated && T3.DYEBD_BodyTrim
+                                          select new { T1.TLDYO_Pk, T3.DYEBD_GreigeProduction_Weight };
+
+                            var DOrdersGrouped = DOrders.GroupBy(x => x.TLDYO_Pk);
+
+                            foreach (var DOOrder in DOrdersGrouped)
+                            {
+                                var Order = DOOrder.FirstOrDefault();
+                                var DyeOrderDetail = context.TLDYE_DyeOrderDetails.FirstOrDefault(x => x.TLDYOD_DyeOrder_Fk == Order.TLDYO_Pk && x.TLDYOD_BodyOrTrim);
+
+                                if (DyeOrderDetail != null)
+                                {
+                                    var Ratios = core.ReturnRatios(DyeOrderDetail.TLDYOD_MarkerRating_FK);
+                                    var Entry = Ratios.FirstOrDefault(x => x.Key == Item.TLREP_Size_FK);
+                                    if (Entry.Key == 0) continue;
+
+                                    var FabricYield = DyeOrderDetail.TLDYOD_Yield;
+                                    var FabricRating = DyeOrderDetail.TLDYOD_Rating;
+                                    var TotalWeight = DOOrder.Sum(x => (decimal?)x.DYEBD_GreigeProduction_Weight) ?? 0.00M;
+                                    var ExpectedUnits = Convert.ToInt32(FabricYield / FabricRating * TotalWeight);
+                                    var Total = Ratios.Sum(x => x.Value);
+                                    var Answer = Convert.ToInt32((Entry.Value / Total) * ExpectedUnits);
+
+                                    // Update WIP total
+                                    WIPTotal += Answer;
+                                }
+                            }
+
+                            // Retrieve orders for "Expected Units - WIP Dyeing"
+                            var DOrdersWIP = from T1 in context.TLDYE_DyeOrder
+                                             join T2 in context.TLDYE_DyeBatch on T1.TLDYO_Pk equals T2.DYEB_DyeOrder_FK
+                                             join T3 in context.TLDYE_DyeBatchDetails on T2.DYEB_Pk equals T3.DYEBD_DyeBatch_FK
+                                             where !T2.DYEB_CommissinCust && T1.TLDYO_Style_FK == Item.TLREP_Style_FK && T1.TLDYO_Colour_FK == Item.TLREP_Colour_FK
+                                             && !T2.DYEB_Closed && T2.DYEB_Allocated && !T2.DYEB_OutProcess && T3.DYEBD_BodyTrim
+                                             select new { T1.TLDYO_Pk, T3.DYEBD_GreigeProduction_Weight };
+
+                            var DOrdersWIPGrouped = DOrdersWIP.GroupBy(x => x.TLDYO_Pk);
+
+                            foreach (var DOOrder in DOrdersWIPGrouped)
+                            {
+                                var Order = DOOrder.FirstOrDefault();
+                                var DyeOrderDetail = context.TLDYE_DyeOrderDetails.FirstOrDefault(x => x.TLDYOD_DyeOrder_Fk == Order.TLDYO_Pk && x.TLDYOD_BodyOrTrim);
+
+                                if (DyeOrderDetail != null)
+                                {
+                                    var Ratios = core.ReturnRatios(DyeOrderDetail.TLDYOD_MarkerRating_FK);
+                                    var Entry = Ratios.FirstOrDefault(x => x.Key == Item.TLREP_Size_FK);
+                                    if (Entry.Key == 0) continue;
+
+                                    var FabricYield = DyeOrderDetail.TLDYOD_Yield;
+                                    var FabricRating = DyeOrderDetail.TLDYOD_Rating;
+                                    var TotalWeight = DOOrder.Sum(x => (decimal?)x.DYEBD_GreigeProduction_Weight) ?? 0.00M;
+                                    var ExpectedUnits = Convert.ToInt32(FabricYield / FabricRating * TotalWeight);
+                                    var Total = Ratios.Sum(x => x.Value);
+                                    var Answer = Convert.ToInt32((Entry.Value / Total) * ExpectedUnits * 0.95M); // Loss factor 5%
+
+                                    // Update WIP total
+                                    WIPTotal += Answer;
+                                }
+                            }
+
+                            // Retrieve orders for "Expected Units - Fabric Quarantine Store"
+                            var DBOrders = from T1 in context.TLDYE_DyeOrder
+                                           join T2 in context.TLDYE_DyeBatch on T1.TLDYO_Pk equals T2.DYEB_DyeOrder_FK
+                                           join T3 in context.TLDYE_DyeBatchDetails on T2.DYEB_Pk equals T3.DYEBD_DyeBatch_FK
+                                           join T4 in context.TLADM_WhseStore on T3.DYEBO_CurrentStore_FK equals T4.WhStore_Id
+                                           where !T2.DYEB_CommissinCust && T2.DYEB_OutProcess && !T2.DYEB_FabicSales && T3.DYEBD_BodyTrim && T4.WhStore_Quarantine
+                                           && !T3.DYEBO_CutSheet && !T3.DYEBO_Rejected && !T3.DYEBO_Sold && !T3.DYEBO_WriteOff
+                                           && T1.TLDYO_Style_FK == Item.TLREP_Style_FK && T1.TLDYO_Colour_FK == Item.TLREP_Colour_FK
+                                           select new { T1.TLDYO_Pk, T2.DYEB_Pk, T3.DYEBO_Nett };
+
+                            var DBOrdersGrouped = DBOrders.GroupBy(x => x.TLDYO_Pk);
+
+                            foreach (var DOOrder in DBOrdersGrouped)
+                            {
+                                var Order = DOOrder.FirstOrDefault();
+                                var DyeOrderDetail = context.TLDYE_DyeOrderDetails.FirstOrDefault(x => x.TLDYOD_DyeOrder_Fk == Order.TLDYO_Pk && x.TLDYOD_BodyOrTrim);
+
+                                if (DyeOrderDetail != null)
+                                {
+                                    var Ratios = core.ReturnRatios(DyeOrderDetail.TLDYOD_MarkerRating_FK);
+                                    var Entry = Ratios.FirstOrDefault(x => x.Key == Item.TLREP_Size_FK);
+                                    if (Entry.Key == 0) continue;
+
+                                    var FabricYield = DyeOrderDetail.TLDYOD_Yield;
+                                    var FabricRating = DyeOrderDetail.TLDYOD_Rating;
+                                    var TotalWeight = 0.00M;
+                                    TotalWeight = DOOrder.Sum(x => (decimal?)x.DYEBO_Nett) ?? 0.00M;
+                                    var ExpectedUnits = Convert.ToInt32(FabricYield / FabricRating * TotalWeight);
+                                    var Total = Ratios.Sum(x => x.Value);
+                                    var Answer = Convert.ToInt32((Entry.Value / Total) * ExpectedUnits * 0.95M); // Loss factor 5%
+
+                                    // Update WIP total
+                                    WIPTotal += Answer;
+                                }
+                            }
+
+                            // Retrieve orders for ""Expected Units - Fabric Store""
+                            var FSOrders = from T1 in context.TLDYE_DyeOrder
+                                           join T2 in context.TLDYE_DyeBatch
+                                           on T1.TLDYO_Pk equals T2.DYEB_DyeOrder_FK
+                                           join T3 in context.TLDYE_DyeBatchDetails
+                                           on T2.DYEB_Pk equals T3.DYEBD_DyeBatch_FK
+                                           where !T2.DYEB_CommissinCust && T2.DYEB_OutProcess && !T2.DYEB_FabicSales
+                                           && !T3.DYEBO_Sold && T3.DYEBD_BodyTrim && T3.DYEBO_QAApproved && !T3.DYEBO_Rejected && !T3.DYEBO_WriteOff
+                                           && !T3.DYEBO_CutSheet
+                                           && T1.TLDYO_Style_FK == Item.TLREP_Style_FK && T1.TLDYO_Colour_FK == Item.TLREP_Colour_FK
+                                           select new { T1.TLDYO_Pk, T2.DYEB_Pk, T3.DYEBO_Nett };
+
+                            var FSOrdersGrouped = FSOrders.GroupBy(x => x.TLDYO_Pk);
+
+                            foreach (var FSOrder in FSOrdersGrouped)
+                            {
+                                var Order = FSOrder.FirstOrDefault();
+                                var DyeOrderDetail = context.TLDYE_DyeOrderDetails.FirstOrDefault(x => x.TLDYOD_DyeOrder_Fk == Order.TLDYO_Pk && x.TLDYOD_BodyOrTrim);
+
+                                if (DyeOrderDetail != null)
+                                {
+                                    var Ratios = core.ReturnRatios(DyeOrderDetail.TLDYOD_MarkerRating_FK);
+                                    var Entry = Ratios.FirstOrDefault(x => x.Key == Item.TLREP_Size_FK);
+                                    if (Entry.Key == 0) continue;
+
+                                    var FabricYield = DyeOrderDetail.TLDYOD_Yield;
+                                    var FabricRating = DyeOrderDetail.TLDYOD_Rating;
+                                    var TotalWeight = 0.00M;
+                                    TotalWeight = FSOrder.Sum(x => (decimal?)x.DYEBO_Nett) ?? 0.00M;
+                                    var ExpectedUnits = Convert.ToInt32(FabricYield / FabricRating * TotalWeight);
+                                    var Total = Ratios.Sum(x => x.Value);
+                                    var Answer = Convert.ToInt32((Entry.Value / Total) * ExpectedUnits * 0.95M); // Loss factor 5%
+
+                                    // Update WIP total
+                                    WIPTotal += Answer;
+                                }
+                            }
+
+                            // Retrieve orders for "Expected Units - WIP Cutting"
+                            var CutSheets = context.TLCUT_CutSheet.Where(x => !x.TLCutSH_WIPComplete && x.TLCutSH_Accepted && x.TLCutSH_Styles_FK == Item.TLREP_Style_FK && x.TLCutSH_Colour_FK == Item.TLREP_Colour_FK && !x.TLCutSH_Closed).ToList();
+                            foreach (var CutSheet in CutSheets)
+                            {
+                                var CutSheetDetails = context.TLCUT_CutSheetDetail.Where(x => x.TLCutSHD_CutSheet_FK == CutSheet.TLCutSH_Pk).ToList();
+                                if (CutSheetDetails.Count() != 0)
+                                {
+                                    var ExpectedUnits = context.TLCUT_ExpectedUnits.Where(x => x.TLCUTE_CutSheet_FK == CutSheet.TLCutSH_Pk && x.TLCUTE_Size_FK == Item.TLREP_Size_FK).ToList();
+                                    if (ExpectedUnits.Count != 0)
+                                    {
+                                        int BoxedUnits = ExpectedUnits.Sum(x => (int?)x.TLCUTE_NoofGarments) ?? 0;
+                                        var Answer = BoxedUnits;
+
+                                        // Update WIP total
+                                        WIPTotal += Answer;
+                                    }
+                                }
+                            }
+
+                            // Retrieve orders for "Expected Units - CUT Panel Store"
+                            var CutSheetR = from T1 in context.TLCUT_CutSheetReceipt
+                                            join T2 in context.TLCUT_CutSheetReceiptDetail on T1.TLCUTSHR_Pk equals T2.TLCUTSHRD_CutSheet_FK
+                                            where ((!T1.TLCUTSHR_Issued && T1.TLCUTSHR_InPanelStore) || (T1.TLCUTSHR_Issued && !T1.TLCUTSHR_InReceiptCage))
+                                            && T1.TLCUTSHR_Style_FK == Item.TLREP_Style_FK && T1.TLCUTSHR_Colour_FK == Item.TLREP_Colour_FK && T2.TLCUTSHRD_Size_FK == Item.TLREP_Size_FK
+                                            select new { T1.TLCUTSHR_Style_FK, T1.TLCUTSHR_Colour_FK, T2.TLCUTSHRD_Size_FK, T2.TLCUTSHRD_BoxUnits };
+
+
+                            if (CutSheetR.Count() != 0)
+                            {
+                                var Answer = CutSheetR.Sum(x => (int?)x.TLCUTSHRD_BoxUnits) ?? 0;
+                                // Update WIP total
+                                WIPTotal += Answer;
+                            }
+
+                            // Retrieve orders for  "Expected Units - CMT Store (Receipt Cage)"
+                            var CMTPanelStore = from LI in context.TLCMT_LineIssue
+                                                join CS in context.TLCUT_CutSheet on LI.TLCMTLI_CutSheet_FK equals CS.TLCutSH_Pk
+                                                join CR in context.TLCUT_CutSheetReceipt on LI.TLCMTLI_CutSheet_FK equals CR.TLCUTSHR_CutSheet_FK
+                                                join CRD in context.TLCUT_CutSheetReceiptDetail on CR.TLCUTSHR_Pk equals CRD.TLCUTSHRD_CutSheet_FK
+                                                where LI.TLCMTLI_IssuedToLine == false && LI.TLCMTLI_WorkCompleted == false
+                                                && CR.TLCUTSHR_Style_FK == Item.TLREP_Style_FK && CR.TLCUTSHR_Colour_FK == Item.TLREP_Colour_FK && CRD.TLCUTSHRD_Size_FK == Item.TLREP_Size_FK
+                                                select new { CR.TLCUTSHR_Style_FK, CR.TLCUTSHR_Colour_FK, CRD.TLCUTSHRD_Size_FK, CRD.TLCUTSHRD_BundleQty, CRD.TLCUTSHRD_RejectQty };
+
+                            var CMTPS = CMTPanelStore.Where(x => x.TLCUTSHR_Style_FK == Item.TLREP_Style_FK && x.TLCUTSHR_Colour_FK == Item.TLREP_Colour_FK && x.TLCUTSHRD_Size_FK == Item.TLREP_Size_FK).ToList();
+                            if (CMTPS.Count != 0)
+                            {
+                                var Answer = CMTPS.Sum(x => (int?)x.TLCUTSHRD_BundleQty - x.TLCUTSHRD_RejectQty) ?? 0;
+                                Answer = Convert.ToInt32(Answer * 0.95);
+                                // Update WIP total
+                                WIPTotal += Answer;
+                            }
+
+
+                            // Retrieve orders for "Expected Units - CMT WIP"
                             var CMTWIP = from LI in context.TLCMT_LineIssue
                                          join CS in context.TLCUT_CutSheet on LI.TLCMTLI_CutSheet_FK equals CS.TLCutSH_Pk
                                          join CR in context.TLCUT_CutSheetReceipt on LI.TLCMTLI_CutSheet_FK equals CR.TLCUTSHR_CutSheet_FK
                                          join CRD in context.TLCUT_CutSheetReceiptDetail on CR.TLCUTSHR_Pk equals CRD.TLCUTSHRD_CutSheet_FK
                                          where LI.TLCMTLI_IssuedToLine == true && LI.TLCMTLI_WorkCompleted == false
-                                               && CR.TLCUTSHR_Style_FK == Item.TLREP_Style_FK
-                                               && CR.TLCUTSHR_Colour_FK == Item.TLREP_Colour_FK
-                                               && CRD.TLCUTSHRD_Size_FK == Item.TLREP_Size_FK
-                                         select new
-                                         {
-                                             CRD.TLCUTSHRD_BundleQty,
-                                             CRD.TLCUTSHRD_RejectQty
-                                         };
+                                         && CR.TLCUTSHR_Style_FK == Item.TLREP_Style_FK && CR.TLCUTSHR_Colour_FK == Item.TLREP_Colour_FK && CRD.TLCUTSHRD_Size_FK == Item.TLREP_Size_FK
+                                         select new { CR.TLCUTSHR_Style_FK, CR.TLCUTSHR_Colour_FK, CRD.TLCUTSHRD_Size_FK, CRD.TLCUTSHRD_BundleQty, CRD.TLCUTSHRD_RejectQty };
 
-                            int cmtWIP = CMTWIP.Sum(x => (int?)x.TLCUTSHRD_BundleQty - x.TLCUTSHRD_RejectQty) ?? 0;
-                            row.WipTotal = cmtWIP;
+                            if (CMTWIP.Count() != 0)
+                            {
+                                var WIP = CMTWIP.Where(x => x.TLCUTSHR_Style_FK == Item.TLREP_Style_FK && x.TLCUTSHR_Colour_FK == Item.TLREP_Colour_FK && x.TLCUTSHRD_Size_FK == Item.TLREP_Size_FK).ToList();
+                                if (WIP.Count != 0)
+                                {
+                                    var Answer = WIP.Sum(x => (int?)x.TLCUTSHRD_BundleQty - x.TLCUTSHRD_RejectQty) ?? 0;
+                                    // Update WIP total
+                                    WIPTotal += Answer;
+                                }
+                            }
+
+                            // Retrieve orders for "Expected Units - CMT Store (Despatch Cage)"
+                            var QueryC = from T1 in context.TLCMT_CompletedWork
+                                         where (!T1.TLCMTWC_Despatched || T1.TLCMTWC_Despatched && !T1.TLCMTWC_BoxReceiptedWhse) && T1.TLCMTWC_Style_FK == Item.TLREP_Style_FK && T1.TLCMTWC_Colour_FK == Item.TLREP_Colour_FK && T1.TLCMTWC_Size_FK == Item.TLREP_Size_FK
+                                         select new { T1.TLCMTWC_Style_FK, T1.TLCMTWC_Colour_FK, T1.TLCMTWC_Size_FK, T1.TLCMTWC_Qty };
+                            if (QueryC.Count() != 0)
+                            {
+                                var Answer = QueryC.Sum(x => (int?)x.TLCMTWC_Qty) ?? 0;
+                                WIPTotal += Answer;
+                            }
+
+
+                            // WIP Total Result     
+                            row.WipTotal = WIPTotal;
 
                             // Get Reorder Level (ROL)
                             int ROL = Item.TLREP_ReOrderLevel;
                             row.ROL = ROL.ToString();
 
                             // Calculate Difference: OrderTotal + AvailableStock - ROL
-                            int Difference = OrderTotal + AvailableStock - ROL;
+                            int Difference = AvailableStock - ROL - OrderTotal;
                             row.Difference = Difference;
 
                             // Calculate GrossDyeOrders
-                            row.GrossDyeOrders = (Difference + cmtWIP > 0) ? "0" : (Difference + cmtWIP).ToString();
+                            row.GrossDyeOrders = (Difference + WIPTotal > 0) ? "0" : (Difference + WIPTotal).ToString();
 
-                            // Calculate CurrentDyeOrders similarly to CurrentMeasurementValues
-                            //var currentDyeOrders = dyeOrders
-                            // .Where(d => d.TLDYE_Style_FK == Item.TLREP_Style_FK &&
-                            //           d.TLDYE_Colour_FK == Item.TLREP_Colour_FK )  //&&
-                            //   d.TLDYE_Size_FK == Item.TLREP_Size_FK)
-                            //  .Sum(d => (decimal?)d.DYEB_Quantity) ?? 0m;
-                            int currentDyeOrders = 1;
-                            // Calculate NewDyeOrders as GrossDyeOrders - CurrentDyeOrders
+
+                            int currentDyeOrders = 0;
+                            ////////////////////////////
+                            var DyeOrders = context.TLDYE_DyeOrder.Where(x => x.TLDYO_Style_FK == Item.TLREP_Style_FK && x.TLDYO_Colour_FK == Item.TLREP_Colour_FK && !x.TLDYO_Closed).ToList();
+                            foreach (var DyeOrder in DyeOrders)
+                            {
+                                //------------------------------------------------------
+                                // Because of the concept of multi markers we have to calculate a ratio based on the the number of sizes
+                                // originally entered 
+                                //------------------------------------------------------------------
+                                BindingList<KeyValuePair<int, decimal>> Ratios = null;
+
+                                var DyeOrderDetail = context.TLDYE_DyeOrderDetails.Where(x => x.TLDYOD_DyeOrder_Fk == DyeOrder.TLDYO_Pk && x.TLDYOD_BodyOrTrim).FirstOrDefault();
+                                if (DyeOrderDetail != null)
+                                {
+                                    Ratios = core.ReturnRatios(DyeOrderDetail.TLDYOD_MarkerRating_FK);
+
+                                    var Entry = Ratios.FirstOrDefault(x => x.Key == Item.TLREP_Size_FK);
+                                    if (Entry.Key == 0)
+                                    {
+                                        //this item Size is not relevant to this dye order
+                                        //====================================================
+                                        continue;
+                                    }
+
+                                    decimal FabricYield = DyeOrderDetail.TLDYOD_Yield;
+                                    decimal FabricRating = DyeOrderDetail.TLDYOD_Rating;
+                                    decimal TotalWeight = (decimal)DyeOrderDetail.TLDYOD_Kgs;
+
+
+                                    var DyeBatches = from T1 in context.TLDYE_DyeBatch
+                                                     join T2 in context.TLDYE_DyeBatchDetails on T1.DYEB_Pk equals T2.DYEBD_DyeBatch_FK
+                                                     where !T1.DYEB_CommissinCust && T1.DYEB_DyeOrder_FK == DyeOrder.TLDYO_Pk && T2.DYEBD_BodyTrim
+                                                     select T2;
+
+                                    int ExpectedUnits = 0;
+                                    if (DyeBatches.Count() != 0)
+                                    {
+                                        try
+                                        {
+                                            TotalWeight -= DyeBatches.Sum(x => (decimal?)x.DYEBD_GreigeProduction_Weight) ?? 0.00M;
+                                            if (TotalWeight > 0)
+                                            {
+                                                ExpectedUnits = Convert.ToInt32(FabricYield / FabricRating * TotalWeight);
+                                                var TotalR = Ratios.Sum(x => x.Value);
+                                                ExpectedUnits = Convert.ToInt32((Entry.Value / TotalR) * ExpectedUnits);
+                                            }
+                                            else
+                                                ExpectedUnits = 0;
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            ExpectedUnits = 0;
+                                            //MessageBox.Show(ex.ToString());
+
+                                        }
+                                    }
+                                    else
+                                    {
+                                        ExpectedUnits = DyeOrderDetail.TLDYOD_Units;
+                                        var TotalR = Ratios.Sum(x => x.Value);
+                                        ExpectedUnits = Convert.ToInt32((Entry.Value / TotalR) * ExpectedUnits);
+                                    }
+
+                                    //----------------------------------------------
+                                    //We have to allow for a loss factor of 5%
+                                    //---------------------------------------------
+                                    currentDyeOrders = Convert.ToInt32(ExpectedUnits * 0.95);
+
+                                }
+                            }
+
                             int grossDyeOrders = int.TryParse(row.GrossDyeOrders, out int result) ? result : 0;
-                            int newDyeOrders = grossDyeOrders - (int)currentDyeOrders;
-
+                            int newDyeOrders = grossDyeOrders + (int)currentDyeOrders;
+                            
                             // Assign values to the report row
-                            row.CurrentDyeOrders = currentDyeOrders.ToString("F2");
-                            row.NewDyeOrders = newDyeOrders.ToString("F2");
+                            row.CurrentDyeOrders = currentDyeOrders.ToString();
+                            row.NewDyeOrders = newDyeOrders > 0 ? "0" : newDyeOrders.ToString();
 
                             // Add row to the DataTable
                             dataTable1.AddDataTable1Row(row);
