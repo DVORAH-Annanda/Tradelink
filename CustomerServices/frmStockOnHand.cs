@@ -58,7 +58,7 @@ namespace CustomerServices
             using (var context = new TTI2Entities())
             {
                 rbCostingPastel.Checked = false;
-
+                
                 if (_Ud == null || !_Ud._External)
                 {
                     Whses = context.TLADM_WhseStore.Where(x => x.WhStore_WhseOrStore && x.WhStore_GradeA).ToList();
@@ -127,52 +127,135 @@ namespace CustomerServices
         //-------------------------------------------------------------------------------------
         // this message handler gets called when the user checks/unchecks an item the combo box
         //----------------------------------------------------------------------------------------
+        //private void cmboStyles_CheckStateChanged(object sender, EventArgs e)
+        //{
+
+        //    if (sender is CustomerServices.CheckComboBoxItem && formloaded)
+        //    {
+        //        CustomerServices.CheckComboBoxItem item = (CustomerServices.CheckComboBoxItem)sender;
+        //        if (item.CheckState)
+        //        {
+        //            QueryParms.Styles.Add(repo.LoadStyle(item._Pk));
+        //            using (var context = new TTI2Entities())
+        //            {
+
+        //                var Colours = context.TLPPS_Replenishment.Where(x=>x.TLREP_Style_FK == item._Pk && !x.TLREP_Discontinued).GroupBy(x=>x.TLREP_Colour_FK).ToList();
+        //                foreach (var Col in Colours)
+        //                {
+        //                    var Clr_Pk = Col.FirstOrDefault().TLREP_Colour_FK;
+        //                    var Clr = context.TLADM_Colours.Find(Clr_Pk);
+        //                    if (Clr != null)
+        //                    {
+        //                        comboColours.Items.Add(new CustomerServices.CheckComboBoxItem(Clr.Col_Id, Clr.Col_Display, false));
+        //                    }
+        //                }
+        //            }
+        //        }
+        //        else
+        //        {
+        //            var value = QueryParms.Styles.Find(it => it.Sty_Id == item._Pk);
+        //            if (value != null)
+        //                QueryParms.Styles.Remove(value);
+
+        //            if (QueryParms.Styles.Count == 0)
+        //            {
+        //                comboColours.Items.Clear();
+        //                using (var context = new TTI2Entities())
+        //                {
+        //                    var Colours = context.TLADM_Colours.Where(x=>!(bool)x.Col_Discontinued).OrderBy(x => x.Col_Display).ToList();
+        //                    foreach (var Colour in Colours)
+        //                    {
+        //                        comboColours.Items.Add(new CustomerServices.CheckComboBoxItem(Colour.Col_Id, Colour.Col_Display, false));
+        //                    }
+        //                }
+        //            }
+
+        //        }
+        //    }
+        //}
         private void cmboStyles_CheckStateChanged(object sender, EventArgs e)
         {
-
-            if (sender is CustomerServices.CheckComboBoxItem && formloaded)
+            if (sender is CustomerServices.CheckComboBoxItem item && formloaded)
             {
-                CustomerServices.CheckComboBoxItem item = (CustomerServices.CheckComboBoxItem)sender;
-                if (item.CheckState)
+                using (var context = new TTI2Entities())
                 {
-                    QueryParms.Styles.Add(repo.LoadStyle(item._Pk));
-                    using (var context = new TTI2Entities())
+                    if (item.CheckState)
                     {
-                        comboColours.Items.Clear();
-                        var Colours = context.TLPPS_Replenishment.Where(x=>x.TLREP_Style_FK == item._Pk && !x.TLREP_Discontinued).GroupBy(x=>x.TLREP_Colour_FK).ToList();
-                        foreach (var Col in Colours)
+                        if (QueryParms.Styles.Count == 0)
                         {
-                            var Clr_Pk = Col.FirstOrDefault().TLREP_Colour_FK;
-                            var Clr = context.TLADM_Colours.Find(Clr_Pk);
-                            if (Clr != null)
+                            // Clear the color combo if this is the first style selected
+                            comboColours.Items.Clear();
+                        }
+
+                        // Add selected style to QueryParms
+                        QueryParms.Styles.Add(repo.LoadStyle(item._Pk));
+
+                        // Get colors associated with the selected style
+                        var coloursForSelectedStyle = context.TLPPS_Replenishment
+                            .Where(x => x.TLREP_Style_FK == item._Pk && !x.TLREP_Discontinued)
+                            .GroupBy(x => x.TLREP_Colour_FK)
+                            .Select(g => g.FirstOrDefault().TLREP_Colour_FK)
+                            .ToList();
+
+                        // Loop through the colours for the selected style
+                        foreach (var colourPk in coloursForSelectedStyle)
+                        {
+                            var clr = context.TLADM_Colours.Find(colourPk);
+                            if (clr != null && !comboColours.Items.Cast<CustomerServices.CheckComboBoxItem>()
+                                .Any(c => c._Pk == clr.Col_Id)) // Avoid duplicates
                             {
-                                comboColours.Items.Add(new CustomerServices.CheckComboBoxItem(Clr.Col_Id, Clr.Col_Display, false));
+                                comboColours.Items.Add(new CustomerServices.CheckComboBoxItem(clr.Col_Id, clr.Col_Display, false));
                             }
                         }
                     }
-                }
-                else
-                {
-                    var value = QueryParms.Styles.Find(it => it.Sty_Id == item._Pk);
-                    if (value != null)
-                        QueryParms.Styles.Remove(value);
-
-                    if (QueryParms.Styles.Count == 0)
+                    else
                     {
-                        comboColours.Items.Clear();
-                        using (var context = new TTI2Entities())
+                        // Remove the deselected style from QueryParms
+                        var value = QueryParms.Styles.Find(it => it.Sty_Id == item._Pk);
+                        if (value != null)
+                            QueryParms.Styles.Remove(value);
+
+                        // If no styles are selected, reset the combo box to show all available colors
+                        if (QueryParms.Styles.Count == 0)
                         {
-                            var Colours = context.TLADM_Colours.Where(x=>!(bool)x.Col_Discontinued).OrderBy(x => x.Col_Display).ToList();
-                            foreach (var Colour in Colours)
+                            comboColours.Items.Clear();
+                            var allColours = context.TLADM_Colours
+                                .Where(x => !x.Col_Discontinued ?? false)
+                                .OrderBy(x => x.Col_Display)
+                                .ToList();
+
+                            foreach (var colour in allColours)
                             {
-                                comboColours.Items.Add(new CustomerServices.CheckComboBoxItem(Colour.Col_Id, Colour.Col_Display, false));
+                                comboColours.Items.Add(new CustomerServices.CheckComboBoxItem(colour.Col_Id, colour.Col_Display, false));
+                            }
+                        }
+                        else
+                        {
+                            // If there are still styles selected, re-filter the colours to reflect the remaining selected styles
+                            comboColours.Items.Clear();
+
+                            var selectedStyleIds = QueryParms.Styles.Select(s => s.Sty_Id).ToList();
+                            var allSelectedColours = context.TLPPS_Replenishment
+                                .Where(x => selectedStyleIds.Contains(x.TLREP_Style_FK) && !x.TLREP_Discontinued)
+                                .GroupBy(x => x.TLREP_Colour_FK)
+                                .Select(g => g.FirstOrDefault().TLREP_Colour_FK)
+                                .Distinct()
+                                .ToList();
+
+                            foreach (var colourPk in allSelectedColours)
+                            {
+                                var clr = context.TLADM_Colours.Find(colourPk);
+                                if (clr != null)
+                                {
+                                    comboColours.Items.Add(new CustomerServices.CheckComboBoxItem(clr.Col_Id, clr.Col_Display, false));
+                                }
                             }
                         }
                     }
-
                 }
             }
         }
+
         //-------------------------------------------------------------------------------------
         // this message handler gets called when the user checks/unchecks an item the combo box
         //----------------------------------------------------------------------------------------

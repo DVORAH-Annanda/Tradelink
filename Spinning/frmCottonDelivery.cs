@@ -60,16 +60,16 @@ namespace Spinning
             formloaded = false;
             button1.Visible = false;
 
-            txtCottonNettWeight.Text = "0.0";
-            txtGrossAvgBaleWeight.Text = "0.0";
-            txtLotNo.Text = "0";
-            txtNetAvgBaleWeight.Text = "0.0";
-            txtNoOfBales.Text = "0";
-            txtSupplierNettWeight.Text = "0.0";
-            txtWeighBridgeGross.Text = "0.0";
-            txtWeighBridgeNett.Text = "0.0";
-            txtSuppplierGrossWeight.Text = "0.0";
-            txtVehReg.Text = string.Empty;
+            //txtCottonNettWeight.Text = "0.0";
+            //txtGrossAvgBaleWeight.Text = "0.0";
+            //txtLotNo.Text = "0";
+            //txtNetAvgBaleWeight.Text = "0.0";
+            //txtNoOfBales.Text = "0";
+            //txtSupplierNettWeight.Text = "0.0";
+            //txtWeighBridgeGross.Text = "0.0";
+            //txtWeighBridgeNett.Text = "0.0";
+            //txtSuppplierGrossWeight.Text = "0.0";
+            //txtVehReg.Text = string.Empty;
 
             cmbCottonContracts.SelectedValue = 0;
             cmbCottonContracts.Enabled = false;

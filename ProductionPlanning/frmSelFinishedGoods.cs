@@ -127,27 +127,108 @@ namespace ProductionPlanning
         //-------------------------------------------------------------------------------------
         // this message handler gets called when the user checks/unchecks an item the combo box
         //----------------------------------------------------------------------------------------
+        //private void cmboStyles_CheckStateChanged(object sender, EventArgs e)
+        //{
+
+        //    if (sender is ProductionPlanning.CheckComboBoxItem && formloaded)
+        //    {
+        //        ProductionPlanning.CheckComboBoxItem item = (ProductionPlanning.CheckComboBoxItem)sender;
+        //        if (item.CheckState)
+        //        {
+        //             QueryParms.Styles.Add(repo.LoadStyle(item._Pk));
+
+        //        }
+        //        else
+        //        {
+        //            var value = QueryParms.Styles.Find(it => it.Sty_Id == item._Pk);
+        //            if (value != null)
+        //                QueryParms.Styles.Remove(value);
+
+        //        }
+        //    }
+        //}
         private void cmboStyles_CheckStateChanged(object sender, EventArgs e)
         {
-
-            if (sender is ProductionPlanning.CheckComboBoxItem && formloaded)
+            if (sender is ProductionPlanning.CheckComboBoxItem item && formloaded)
             {
-                ProductionPlanning.CheckComboBoxItem item = (ProductionPlanning.CheckComboBoxItem)sender;
-                if (item.CheckState)
+                using (var context = new TTI2Entities())
                 {
-                     QueryParms.Styles.Add(repo.LoadStyle(item._Pk));
-                  
-                }
-                else
-                {
-                    var value = QueryParms.Styles.Find(it => it.Sty_Id == item._Pk);
-                    if (value != null)
-                        QueryParms.Styles.Remove(value);
+                    if (item.CheckState)
+                    {
+                        if (QueryParms.Styles.Count == 0)
+                        {
+                            // Clear the color combo if this is the first style selected
+                            cmboColours.Items.Clear();
+                        }
 
+                        // Add selected style to QueryParms
+                        QueryParms.Styles.Add(repo.LoadStyle(item._Pk));
+
+                        // Get colors associated with the selected style
+                        var coloursForSelectedStyle = context.TLPPS_Replenishment
+                            .Where(x => x.TLREP_Style_FK == item._Pk && !x.TLREP_Discontinued)
+                            .GroupBy(x => x.TLREP_Colour_FK)
+                            .Select(g => g.FirstOrDefault().TLREP_Colour_FK)
+                            .ToList();
+
+                        // Loop through the colours for the selected style
+                        foreach (var colourPk in coloursForSelectedStyle)
+                        {
+                            var clr = context.TLADM_Colours.Find(colourPk);
+                            if (clr != null && !cmboColours.Items.Cast<ProductionPlanning.CheckComboBoxItem>()
+                                .Any(c => c._Pk == clr.Col_Id)) // Avoid duplicates
+                            {
+                                cmboColours.Items.Add(new ProductionPlanning.CheckComboBoxItem(clr.Col_Id, clr.Col_Display, false));
+                            }
+                        }
+                    }
+                    else
+                    {
+                        // Remove the deselected style from QueryParms
+                        var value = QueryParms.Styles.Find(it => it.Sty_Id == item._Pk);
+                        if (value != null)
+                            QueryParms.Styles.Remove(value);
+
+                        // If no styles are selected, reset the combo box to show all available colors
+                        if (QueryParms.Styles.Count == 0)
+                        {
+                            cmboColours.Items.Clear();
+                            var allColours = context.TLADM_Colours
+                                .Where(x => !x.Col_Discontinued ?? false)
+                                .OrderBy(x => x.Col_Display)
+                                .ToList();
+
+                            foreach (var colour in allColours)
+                            {
+                                cmboColours.Items.Add(new ProductionPlanning.CheckComboBoxItem(colour.Col_Id, colour.Col_Display, false));
+                            }
+                        }
+                        else
+                        {
+                            // If there are still styles selected, re-filter the colours to reflect the remaining selected styles
+                            cmboColours.Items.Clear();
+
+                            var selectedStyleIds = QueryParms.Styles.Select(s => s.Sty_Id).ToList();
+                            var allSelectedColours = context.TLPPS_Replenishment
+                                .Where(x => selectedStyleIds.Contains(x.TLREP_Style_FK) && !x.TLREP_Discontinued)
+                                .GroupBy(x => x.TLREP_Colour_FK)
+                                .Select(g => g.FirstOrDefault().TLREP_Colour_FK)
+                                .Distinct()
+                                .ToList();
+
+                            foreach (var colourPk in allSelectedColours)
+                            {
+                                var clr = context.TLADM_Colours.Find(colourPk);
+                                if (clr != null)
+                                {
+                                    cmboColours.Items.Add(new ProductionPlanning.CheckComboBoxItem(clr.Col_Id, clr.Col_Display, false));
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
-
         //-------------------------------------------------------------------------------------------
         // this message handler gets called when the user checks/unchecks an item the combo box
         //--------------------------------------------------------------------------------------
@@ -334,10 +415,14 @@ namespace ProductionPlanning
                     }
                 }
                 //------------------------------------------
-                // Have to add a Total column 
+                // Have to add a Total column
                 //-------------------------------------------------------
                 dt.Columns.Add("Stock Total", typeof(int));
                 dt.Columns["Stock Total"].DefaultValue = 0;
+                //------------------------------------------
+
+                //------------------------------------------
+                // Difference
                 //-------------------------------------------------------
                 dt.Columns.Add("Difference", typeof(int));
                 dt.Columns["Difference"].DefaultValue = 0;

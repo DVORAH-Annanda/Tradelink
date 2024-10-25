@@ -12,6 +12,8 @@ namespace ProductionPlanning
     public partial class frmDyeOrderPlanning : Form
     {
         bool formloaded;
+        bool[] Selected;
+
         PPSRepository repo;
         ProdQueryParameters QueryParms;
         Util core;
@@ -20,11 +22,12 @@ namespace ProductionPlanning
         {
             InitializeComponent();
 
-            // Wire up the check state changed events
-            this.chkcboCMTSelection.CheckStateChanged += new System.EventHandler(this.chkcboCMTSelection_CheckStateChanged);
             this.chkcboStylesSelection.CheckStateChanged += new System.EventHandler(this.chkcboStylesSelection_CheckStateChanged);
             this.chkcboColoursSelection.CheckStateChanged += new System.EventHandler(this.chkcboColoursSelection_CheckStateChanged);
-            this.chkcboSizesSelection.CheckStateChanged += new System.EventHandler(this.chkcboSizesSelection_CheckStateChanged);
+
+            this.chkcboStylesSelection.SelectedIndexChanged += new System.EventHandler(this.chkcboStylesSelection_SelectedIndexChanged);
+            this.chkcboColoursSelection.SelectedIndexChanged += new System.EventHandler(this.chkcboColoursSelection_SelectedIndexChanged);
+
         }
 
         private void frmDyeOrderPlanning_Load(object sender, EventArgs e)
@@ -45,19 +48,19 @@ namespace ProductionPlanning
 
             using (var context = new TTI2Entities())
             {
-                var Departments = context.TLADM_Departments.Where(x => x.Dep_IsCMT).ToList();
-                foreach (var Record in
-                    Departments)
-                {
-                    chkcboCMTSelection.Items.Add(new ProductionPlanning.CheckComboBoxItem(Record.Dep_Id, Record.Dep_Description, false));
-                }
+                //var Departments = context.TLADM_Departments.Where(x => x.Dep_IsCMT).ToList();
+                //foreach (var Record in
+                //    Departments)
+                //{
+                //    chkcboCMTSelection.Items.Add(new ProductionPlanning.CheckComboBoxItem(Record.Dep_Id, Record.Dep_Description, false));
+                //}
 
-                var Styles = context.TLADM_Styles.ToList();
+                var Styles = context.TLADM_Styles.OrderBy(x => x.Sty_Description).ToList();
                 foreach (var Record in Styles)
                 {
                     chkcboStylesSelection.Items.Add(new ProductionPlanning.CheckComboBoxItem(Record.Sty_Id, Record.Sty_Description, false));
                 }
-                chkcboStylesSelection.CheckStateChanged += chkcboStylesSelection_CheckStateChanged;
+                //chkcboStylesSelection.CheckStateChanged += chkcboStylesSelection_CheckStateChanged;
 
                 var Colours = context.TLADM_Colours.OrderBy(x => x.Col_Display).ToList();
                 foreach (var record in Colours)
@@ -65,11 +68,15 @@ namespace ProductionPlanning
                     chkcboColoursSelection.Items.Add(new ProductionPlanning.CheckComboBoxItem(record.Col_Id, record.Col_Display, false));
                 }
 
-                var Sizes = context.TLADM_Sizes.Where(x => (bool)!x.SI_Discontinued).OrderBy(x => x.SI_DisplayOrder).ToList();
-                foreach (var record in Sizes)
-                {
-                    chkcboSizesSelection.Items.Add(new ProductionPlanning.CheckComboBoxItem(record.SI_id, record.SI_Description, false));
-                }
+                //var Sizes = context.TLADM_Sizes.Where(x => (bool)!x.SI_Discontinued).OrderBy(x => x.SI_DisplayOrder).ToList();
+                //foreach (var record in Sizes)
+                //{
+                //    chkcboSizesSelection.Items.Add(new ProductionPlanning.CheckComboBoxItem(record.SI_id, record.SI_Description, false));
+                //}
+                // Wire up the check state changed events
+                //this.chkcboCMTSelection.CheckStateChanged += new System.EventHandler(this.chkcboCMTSelection_CheckStateChanged);
+
+                //this.chkcboSizesSelection.CheckStateChanged += new System.EventHandler(this.chkcboSizesSelection_CheckStateChanged);
             }
 
             formloaded = true;
@@ -85,88 +92,118 @@ namespace ProductionPlanning
                 Console.WriteLine("FromDate updated to: " + QueryParms.FromDate.ToShortDateString());
             }
         }
-        private void chkcboCMTSelection_CheckStateChanged(object sender, EventArgs e)
+        //private void chkcboCMTSelection_CheckStateChanged(object sender, EventArgs e)
+        //{
+        //    if (sender is ProductionPlanning.CheckComboBoxItem item && formloaded)
+        //    {
+        //        if (item.CheckState)
+        //        {
+        //            if (!QueryParms.Departments.Any(d => d.Dep_Id == item._Pk))
+        //            {
+        //                QueryParms.Departments.Add(repo.LoadDepartment(item._Pk));
+        //            }
+        //        }
+        //        else
+        //        {
+        //            var value = QueryParms.Departments.Find(it => it.Dep_Id == item._Pk);
+        //            if (value != null)
+        //                QueryParms.Departments.Remove(value);
+        //        }
+        //    }
+        //}
+        private void chkcboStylesSelection_CheckStateChanged(object sender, EventArgs e)
         {
             if (sender is ProductionPlanning.CheckComboBoxItem item && formloaded)
             {
-                if (item.CheckState)
+                using (var context = new TTI2Entities())
                 {
-                    if (!QueryParms.Departments.Any(d => d.Dep_Id == item._Pk))
+                    if (item.CheckState)
                     {
-                        QueryParms.Departments.Add(repo.LoadDepartment(item._Pk));
-                    }
-                }
-                else
-                {
-                    var value = QueryParms.Departments.Find(it => it.Dep_Id == item._Pk);
-                    if (value != null)
-                        QueryParms.Departments.Remove(value);
-                }
-            }
-        }
-        private void chkcboStylesSelection_CheckStateChanged(object sender, EventArgs e)
-        {
-            if (!formloaded) return;
-            if (sender is ProductionPlanning.CheckComboBoxItem item)
-            {
-                if (item.CheckState)
-                {
-                    if (!QueryParms.Styles.Any(s => s.Sty_Id == item._Pk))
-                    {
+                        if (QueryParms.Styles.Count == 0)
+                        {
+                            // Clear the color combo if this is the first style selected
+                            chkcboColoursSelection.Items.Clear();
+                        }
+
+                        // Add selected style to QueryParms
                         QueryParms.Styles.Add(repo.LoadStyle(item._Pk));
+
+                        // Get colors associated with the selected style
+                        var coloursForSelectedStyle = context.TLPPS_Replenishment
+                            .Where(x => x.TLREP_Style_FK == item._Pk && !x.TLREP_Discontinued)
+                            .GroupBy(x => x.TLREP_Colour_FK)
+                            .Select(g => g.FirstOrDefault().TLREP_Colour_FK)
+                            .ToList();
+
+                        // Loop through the colours for the selected style
+                        foreach (var colourPk in coloursForSelectedStyle)
+                        {
+                            var clr = context.TLADM_Colours.Find(colourPk);
+                            if (clr != null && !chkcboColoursSelection.Items.Cast<ProductionPlanning.CheckComboBoxItem>()
+                                .Any(c => c._Pk == clr.Col_Id)) // Avoid duplicates
+                            {
+                                chkcboColoursSelection.Items.Add(new ProductionPlanning.CheckComboBoxItem(clr.Col_Id, clr.Col_Display, false));
+                            }
+                        }
                     }
-                }
-                else
-                {
-                    var value = QueryParms.Styles.Find(it => it.Sty_Id == item._Pk);
-                    if (value != null)
-                        QueryParms.Styles.Remove(value);
-                }
-            }
+                    else
+                    {
+                        // Remove the deselected style from QueryParms
+                        var value = QueryParms.Styles.Find(it => it.Sty_Id == item._Pk);
+                        if (value != null)
+                            QueryParms.Styles.Remove(value);
 
-            var selectedStyles = new List<int>();
-            foreach (var i in chkcboStylesSelection.Items)
-            {
-                if (i is ProductionPlanning.CheckComboBoxItem checkItem && checkItem.CheckState)
-                {
-                    selectedStyles.Add(checkItem._Pk);
-                }
-            }
+                        // If no styles are selected, reset the combo box to show all available colors
+                        if (QueryParms.Styles.Count == 0)
+                        {
+                            chkcboColoursSelection.Items.Clear();
+                            var allColours = context.TLADM_Colours
+                                .Where(x => !x.Col_Discontinued ?? false)
+                                .OrderBy(x => x.Col_Display)
+                                .ToList();
 
+                            foreach (var colour in allColours)
+                            {
+                                chkcboColoursSelection.Items.Add(new ProductionPlanning.CheckComboBoxItem(colour.Col_Id, colour.Col_Display, false));
+                            }
+                        }
+                        else
+                        {
+                            // If there are still styles selected, re-filter the colours to reflect the remaining selected styles
+                            chkcboColoursSelection.Items.Clear();
 
-            // Filter colours based on selected styles
-            using (var context = new TTI2Entities())
-            {
-                var colours = context.TLCUT_CutSheet
-                    .Where(x => selectedStyles.Contains(x.TLCutSH_Styles_FK))
-                    .Select(x => x.TLCutSH_Colour_FK)
-                    .Distinct()
-                    .ToList();
+                            var selectedStyleIds = QueryParms.Styles.Select(s => s.Sty_Id).ToList();
+                            var allSelectedColours = context.TLPPS_Replenishment
+                                .Where(x => selectedStyleIds.Contains(x.TLREP_Style_FK) && !x.TLREP_Discontinued)
+                                .GroupBy(x => x.TLREP_Colour_FK)
+                                .Select(g => g.FirstOrDefault().TLREP_Colour_FK)
+                                .Distinct()
+                                .ToList();
 
-                var filteredColours = context.TLADM_Colours
-                    .Where(x => colours.Contains(x.Col_Id))
-                    .OrderBy(x => x.Col_Display)
-                    .ToList();
-
-                // Update chkcboColoursSelection
-                chkcboColoursSelection.Items.Clear();
-                foreach (var record in filteredColours)
-                {
-                    chkcboColoursSelection.Items.Add(new ProductionPlanning.CheckComboBoxItem(record.Col_Id, record.Col_Display, false));
+                            foreach (var colourPk in allSelectedColours)
+                            {
+                                var clr = context.TLADM_Colours.Find(colourPk);
+                                if (clr != null)
+                                {
+                                    chkcboColoursSelection.Items.Add(new ProductionPlanning.CheckComboBoxItem(clr.Col_Id, clr.Col_Display, false));
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
 
         private void chkcboColoursSelection_CheckStateChanged(object sender, EventArgs e)
         {
-            if (sender is ProductionPlanning.CheckComboBoxItem item && formloaded)
+            if (sender is ProductionPlanning.CheckComboBoxItem && formloaded)
             {
+                ProductionPlanning.CheckComboBoxItem item = (ProductionPlanning.CheckComboBoxItem)sender;
                 if (item.CheckState)
                 {
-                    if (!QueryParms.Colours.Any(c => c.Col_Id == item._Pk))
-                    {
+
                         QueryParms.Colours.Add(repo.LoadColour(item._Pk));
-                    }
+                  
                 }
                 else
                 {
@@ -177,23 +214,20 @@ namespace ProductionPlanning
             }
         }
 
-        private void chkcboSizesSelection_CheckStateChanged(object sender, EventArgs e)
+        private void chkcboStylesSelection_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (sender is ProductionPlanning.CheckComboBoxItem && formloaded)
-            {
-                ProductionPlanning.CheckComboBoxItem item = (ProductionPlanning.CheckComboBoxItem)sender;
-                if (item.CheckState)
-                {
-                    QueryParms.Sizes.Add(repo.LoadSize(item._Pk));
-                }
-                else
-                {
-                    var value = QueryParms.Sizes.Find(it => it.SI_id == item._Pk);
-                    if (value != null)
-                        QueryParms.Sizes.Remove(value);
-                }
-            }
+            ComboBox oCmbo = (ComboBox)sender;
+            if (oCmbo != null && !oCmbo.DroppedDown)
+                oCmbo.DroppedDown = true;
         }
+
+        private void chkcboColoursSelection_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ComboBox oCmbo = (ComboBox)sender;
+            if (oCmbo != null && !oCmbo.DroppedDown)
+                oCmbo.DroppedDown = true;
+        }
+
 
         private void btnSubmit_Click(object sender, EventArgs e)
         {

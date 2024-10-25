@@ -103,19 +103,85 @@ namespace Cutting
         private void cmboStyles_CheckedChange(object sender, EventArgs e)
         {
             if (sender is Cutting.CheckComboBoxItem && formloaded)
-            {
-                Cutting.CheckComboBoxItem item = (Cutting.CheckComboBoxItem)sender;
-                if (item.CheckState)
                 {
-                    parms.Styles.Add(repo.LoadStyle(item._Pk));
+                    using (var context = new TTI2Entities())
+                    {
+                    Cutting.CheckComboBoxItem item = (Cutting.CheckComboBoxItem)sender;
+                    if (item.CheckState)
+                        {
+                            if (parms.Styles.Count == 0)
+                            {
+                            // Clear the color combo if this is the first style selected
+                            cmboColour.Items.Clear();
+                            }
+
+                        // Add selected style to QueryParms
+                        parms.Styles.Add(repo.LoadStyle(item._Pk));
+
+                            // Get colors associated with the selected style
+                            var coloursForSelectedStyle = context.TLPPS_Replenishment
+                                .Where(x => x.TLREP_Style_FK == item._Pk && !x.TLREP_Discontinued)
+                                .GroupBy(x => x.TLREP_Colour_FK)
+                                .Select(g => g.FirstOrDefault().TLREP_Colour_FK)
+                                .ToList();
+
+                            // Loop through the colours for the selected style
+                            foreach (var colourPk in coloursForSelectedStyle)
+                            {
+                                var clr = context.TLADM_Colours.Find(colourPk);
+                                if (clr != null && !cmboColour.Items.Cast<Cutting.CheckComboBoxItem>()
+                                    .Any(c => c._Pk == clr.Col_Id)) // Avoid duplicates
+                                {
+                                cmboColour.Items.Add(new Cutting.CheckComboBoxItem(clr.Col_Id, clr.Col_Display, false));
+                                }
+                            }
+                        }
+                        else
+                        {
+                            // Remove the deselected style from QueryParms
+                            var value = parms.Styles.Find(it => it.Sty_Id == item._Pk);
+                            if (value != null)
+                            parms.Styles.Remove(value);
+
+                            // If no styles are selected, reset the combo box to show all available colors
+                            if (parms.Styles.Count == 0)
+                            {
+                            cmboColour.Items.Clear();
+                                var allColours = context.TLADM_Colours
+                                    .Where(x => !x.Col_Discontinued ?? false)
+                                    .OrderBy(x => x.Col_Display)
+                                    .ToList();
+
+                                foreach (var colour in allColours)
+                                {
+                                cmboColour.Items.Add(new Cutting.CheckComboBoxItem(colour.Col_Id, colour.Col_Display, false));
+                                }
+                            }
+                            else
+                            {
+                            // If there are still styles selected, re-filter the colours to reflect the remaining selected styles
+                            cmboColour.Items.Clear();
+
+                                var selectedStyleIds = parms.Styles.Select(s => s.Sty_Id).ToList();
+                                var allSelectedColours = context.TLPPS_Replenishment
+                                    .Where(x => selectedStyleIds.Contains(x.TLREP_Style_FK) && !x.TLREP_Discontinued)
+                                    .GroupBy(x => x.TLREP_Colour_FK)
+                                    .Select(g => g.FirstOrDefault().TLREP_Colour_FK)
+                                    .Distinct()
+                                    .ToList();
+
+                                foreach (var colourPk in allSelectedColours)
+                                {
+                                    var clr = context.TLADM_Colours.Find(colourPk);
+                                    if (clr != null)
+                                    {
+                                    cmboColour.Items.Add(new Cutting.CheckComboBoxItem(clr.Col_Id, clr.Col_Display, false));
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
-                else
-                {
-                    var value = parms.Styles.Find(it => it.Sty_Id == item._Pk);
-                    if (value != null)
-                        parms.Styles.Remove(value);
-                }
-            }
         }
         //-------------------------------------------------------------------------------------
         // this message handler gets called when the user checks/unchecks an item the combo box

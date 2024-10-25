@@ -168,7 +168,7 @@
             this.Controls.Add(this.cmboStyles);
             this.Controls.Add(this.cmboWareHouses);
             this.Name = "frmOutStandingPL";
-            this.Text = "OutStanding Picking Slips";
+            this.Text = "Outstanding Picking Slips";
             this.Load += new System.EventHandler(this.frmOutStandingPL_Load);
             this.ResumeLayout(false);
             this.PerformLayout();

@@ -263,9 +263,10 @@ namespace TTI2_WF
             ud._DownSizeAuthority = frmLogin.DownSizeAllowed;
             ud._IgnoreFivePercentRule = frmLogin.IgnoreFivePercent;
             this.Text += " Welcome - " + ud._UserName;
+            //***** Prod Mode *****//
 
-            if (!ud._SuperUser)
-                ManageViews(ud);
+            //if (!ud._SuperUser)
+            //    ManageViews(ud);
 
             //----------------------------------------------------------------------------
             currentIdentity = WindowsIdentity.GetCurrent();
