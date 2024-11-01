@@ -912,6 +912,7 @@ namespace CustomerServices
 
                         n2r.BoxNumber = SItem.TLSOH_BoxNumber;
                         n2r.SizeDisplayOrder = _Sizes.FirstOrDefault(s => s.SI_id == SItem.TLSOH_Size_FK).SI_DisplayOrder;
+                        
                         n2r.Status = string.Empty;
 
                         if (!_Svces.SOHBoxReturned)
@@ -920,6 +921,7 @@ namespace CustomerServices
                             if (SItem.TLSOH_Picked)
                             {
                                 n2r.Status = "Picked";
+                                n2r.Date = SItem.TLSOH_PickListDate.ToString();
                             }
                             else
                             {
@@ -938,6 +940,7 @@ namespace CustomerServices
                                 else
                                 {
                                     n2r.Status = "Available";
+                                    n2r.Date = SItem.TLSOH_DateIntoStock.ToString();
                                 }
 
                             }
