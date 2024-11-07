@@ -51,6 +51,7 @@
             this.cmboWarehouses.Size = new System.Drawing.Size(209, 21);
             this.cmboWarehouses.TabIndex = 1;
             this.cmboWarehouses.Text = "Select Options";
+            this.cmboWarehouses.SelectedIndexChanged += new System.EventHandler(this.cmboWarehouses_SelectedIndexChanged);
             // 
             // btnSubmit
             // 

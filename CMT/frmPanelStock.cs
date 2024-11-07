@@ -85,5 +85,12 @@ namespace CMT
                 }
             }
         }
+
+        private void cmboWarehouses_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ComboBox oCmbo = (ComboBox)sender;
+            if (oCmbo != null && !oCmbo.DroppedDown)
+                oCmbo.DroppedDown = true;
+        }
     }
 }
