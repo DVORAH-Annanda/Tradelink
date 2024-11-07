@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.Remoting.Contexts;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -106,11 +107,8 @@ namespace CMT
             this.cmboSize.CheckStateChanged += new System.EventHandler(this.cmboSizes_CheckStateChanged);
             this.cmboColour.CheckStateChanged += new System.EventHandler(this.cmboColours_CheckStateChanged);
       
-
             formloaded = true;
-
         }
-
 
         //-------------------------------------------------------------------------------------
         // this message handler gets called when the user checks/unchecks an item the combo box
@@ -144,18 +142,79 @@ namespace CMT
 
             if (sender is CMT.CheckComboBoxItem && formloaded)
             {
-                CMT.CheckComboBoxItem item = (CMT.CheckComboBoxItem)sender;
-                if (item.CheckState)
+                using (var context = new TTI2Entities())
                 {
-                    QueryParms.Styles.Add(repo.LoadStyle(item._Pk));
+                    CMT.CheckComboBoxItem item = (CMT.CheckComboBoxItem)sender;
+                    if (item.CheckState)
+                    {
+                        if (QueryParms.Styles.Count == 0)
+                        {
+                            // Clear the color combo if this is the first style selected
+                            cmboColour.Items.Clear();
+                        }
+                        QueryParms.Styles.Add(repo.LoadStyle(item._Pk));
 
-                }
-                else
-                {
-                    var value = QueryParms.Styles.Find(it => it.Sty_Id == item._Pk);
-                    if (value != null)
-                        QueryParms.Styles.Remove(value);
+                        var coloursForSelectedStyle = context.TLPPS_Replenishment
+                        .Where(x => x.TLREP_Style_FK == item._Pk && !x.TLREP_Discontinued)
+                        .GroupBy(x => x.TLREP_Colour_FK)
+                        .Select(g => g.FirstOrDefault().TLREP_Colour_FK)
+                        .ToList();
 
+                        foreach (var colourPk in coloursForSelectedStyle)
+                        {
+                            var clr = context.TLADM_Colours.Find(colourPk);
+                            if (clr != null && !cmboColour.Items.Cast<CMT.CheckComboBoxItem>()
+                                .Any(c => c._Pk == clr.Col_Id)) // Avoid duplicates
+                            {
+                                cmboColour.Items.Add(new CMT.CheckComboBoxItem(clr.Col_Id, clr.Col_Display, false));
+                            }
+                        }
+
+                    }
+                    else
+                    {
+                        var value = QueryParms.Styles.Find(it => it.Sty_Id == item._Pk);
+                        if (value != null)
+                            QueryParms.Styles.Remove(value);
+
+                        // If no styles are selected, reset the combo box to show all available colors
+                        if (QueryParms.Styles.Count == 0)
+                        {
+                            cmboColour.Items.Clear();
+                            var allColours = context.TLADM_Colours
+                                .Where(x => !x.Col_Discontinued ?? false)
+                                .OrderBy(x => x.Col_Display)
+                                .ToList();
+
+                            foreach (var colour in allColours)
+                            {
+                                cmboColour.Items.Add(new CMT.CheckComboBoxItem(colour.Col_Id, colour.Col_Display, false));
+                            }
+                        }
+                        else
+                        {
+                            // If there are still styles selected, re-filter the colours to reflect the remaining selected styles
+                            cmboColour.Items.Clear();
+
+                            var selectedStyleIds = QueryParms.Styles.Select(s => s.Sty_Id).ToList();
+                            var allSelectedColours = context.TLPPS_Replenishment
+                                .Where(x => selectedStyleIds.Contains(x.TLREP_Style_FK) && !x.TLREP_Discontinued)
+                                .GroupBy(x => x.TLREP_Colour_FK)
+                                .Select(g => g.FirstOrDefault().TLREP_Colour_FK)
+                                .Distinct()
+                                .ToList();
+
+                            foreach (var colourPk in allSelectedColours)
+                            {
+                                var clr = context.TLADM_Colours.Find(colourPk);
+                                if (clr != null)
+                                {
+                                    cmboColour.Items.Add(new CMT.CheckComboBoxItem(clr.Col_Id, clr.Col_Display, false));
+                                }
+                            }
+                        }
+
+                    }
                 }
             }
         }
@@ -203,7 +262,6 @@ namespace CMT
                     var value = QueryParms.Colours.Find(it => it.Col_Id == item._Pk);
                     if (value != null)
                         QueryParms.Colours.Remove(value);
-
                 }
             }
         }
