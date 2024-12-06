@@ -234,35 +234,35 @@ namespace TTI2_WF
         private void frmTLMain_Shown(object sender, EventArgs e)
         {
             //***** Development Mode *****//
-            ud = new UserDetails();
-            ud._IsAuthorised = true;
-            ud._SuperUser = true;
-            ud._UserName = "ANNANDA";
-            this.Text += " Welcome - " + ud._UserName;
+            //ud = new UserDetails();
+            //ud._IsAuthorised = true;
+            //ud._SuperUser = true;
+            //ud._UserName = "ANNANDA";
+            //this.Text += " Welcome - " + ud._UserName;
             //***** Dev Mode *****//
 
             //***** Production *****//
-            //frmSecurity frmLogin = new frmSecurity();
-            //frmLogin.StartPosition = FormStartPosition.CenterParent;
-            //frmLogin.ShowDialog(this);
+            frmSecurity frmLogin = new frmSecurity();
+            frmLogin.StartPosition = FormStartPosition.CenterParent;
+            frmLogin.ShowDialog(this);
 
-            //if (!frmLogin.IsAuthorised)
-            //{
-            //    this.Close();
-            //    return;
-            //}
+            if (!frmLogin.IsAuthorised)
+            {
+                this.Close();
+                return;
+            }
 
-            //ud = new UserDetails();
-            //ud._IsAuthorised = frmLogin.IsAuthorised;
-            //ud._SuperUser = frmLogin.IsSuperUser;
-            //ud._UserName = frmLogin.UserName;
-            //ud._UserPk = frmLogin.UserPk;
-            //ud._NotAuthorisedMessage = "You are not authorised to use this function";
-            //ud._External = frmLogin.IsExternal;
-            //ud._QAFunction = frmLogin.QAFunction;
-            //ud._DownSizeAuthority = frmLogin.DownSizeAllowed;
-            //ud._IgnoreFivePercentRule = frmLogin.IgnoreFivePercent;
-            //this.Text += " Welcome - " + ud._UserName;
+            ud = new UserDetails();
+            ud._IsAuthorised = frmLogin.IsAuthorised;
+            ud._SuperUser = frmLogin.IsSuperUser;
+            ud._UserName = frmLogin.UserName;
+            ud._UserPk = frmLogin.UserPk;
+            ud._NotAuthorisedMessage = "You are not authorised to use this function";
+            ud._External = frmLogin.IsExternal;
+            ud._QAFunction = frmLogin.QAFunction;
+            ud._DownSizeAuthority = frmLogin.DownSizeAllowed;
+            ud._IgnoreFivePercentRule = frmLogin.IgnoreFivePercent;
+            this.Text += " Welcome - " + ud._UserName;
             //***** Prod Mode *****//
 
             //if (!ud._SuperUser)
@@ -6313,12 +6313,12 @@ namespace TTI2_WF
                     var Sections = context.TLSEC_Sections.Where(x => x.TLSECSect_Name == oTi.Name).FirstOrDefault();
                     if (Sections != null)
                     {
-                        //if (Sections.TLSECSect_InUse)
-                        //{
-                        //    MessageBox.Show("This transaction is already in use", "Error Message", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        //    return;
-                        //}
-                        //else  //onthou om weer terug te sit!!!
+                        if (Sections.TLSECSect_InUse)
+                        {
+                            MessageBox.Show("This transaction is already in use", "Error Message", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            return;
+                        }
+                        else
                             Sections.TLSECSect_InUse = true;
 
                         context.SaveChanges();

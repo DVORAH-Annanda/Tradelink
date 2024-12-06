@@ -38,6 +38,7 @@ namespace Administration
             this.label2 = new System.Windows.Forms.Label();
             this.chkImport = new System.Windows.Forms.CheckBox();
             this.chkExport = new System.Windows.Forms.CheckBox();
+            this.chkIncludeDiscontinued = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -45,9 +46,9 @@ namespace Administration
             // dataGridView1
             // 
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(27, 155);
+            this.dataGridView1.Location = new System.Drawing.Point(27, 105);
             this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(742, 382);
+            this.dataGridView1.Size = new System.Drawing.Size(742, 432);
             this.dataGridView1.TabIndex = 0;
             this.dataGridView1.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellClick);
             this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
@@ -57,7 +58,7 @@ namespace Administration
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(694, 557);
+            this.btnSave.Location = new System.Drawing.Point(694, 554);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(75, 23);
             this.btnSave.TabIndex = 1;
@@ -68,18 +69,18 @@ namespace Administration
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(212, 25);
+            this.label1.Location = new System.Drawing.Point(35, 25);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(126, 13);
+            this.label1.Size = new System.Drawing.Size(93, 13);
             this.label1.TabIndex = 2;
-            this.label1.Text = "Please select a Customer";
+            this.label1.Text = "Select a Customer";
             // 
             // cmboCustomers
             // 
             this.cmboCustomers.FormattingEnabled = true;
-            this.cmboCustomers.Location = new System.Drawing.Point(372, 22);
+            this.cmboCustomers.Location = new System.Drawing.Point(145, 22);
             this.cmboCustomers.Name = "cmboCustomers";
-            this.cmboCustomers.Size = new System.Drawing.Size(279, 21);
+            this.cmboCustomers.Size = new System.Drawing.Size(261, 21);
             this.cmboCustomers.TabIndex = 3;
             this.cmboCustomers.SelectedIndexChanged += new System.EventHandler(this.cmboCustomers_SelectedIndexChanged);
             // 
@@ -89,25 +90,25 @@ namespace Administration
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.chkImport);
             this.groupBox1.Controls.Add(this.chkExport);
-            this.groupBox1.Location = new System.Drawing.Point(242, 49);
+            this.groupBox1.Location = new System.Drawing.Point(27, 49);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(460, 100);
+            this.groupBox1.Size = new System.Drawing.Size(742, 50);
             this.groupBox1.TabIndex = 4;
             this.groupBox1.TabStop = false;
             // 
             // cmboCMT
             // 
             this.cmboCMT.FormattingEnabled = true;
-            this.cmboCMT.Location = new System.Drawing.Point(130, 21);
+            this.cmboCMT.Location = new System.Drawing.Point(118, 17);
             this.cmboCMT.Name = "cmboCMT";
-            this.cmboCMT.Size = new System.Drawing.Size(179, 21);
+            this.cmboCMT.Size = new System.Drawing.Size(260, 21);
             this.cmboCMT.TabIndex = 4;
             this.cmboCMT.SelectedIndexChanged += new System.EventHandler(this.cmboCMT_SelectedIndexChanged);
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(8, 24);
+            this.label2.Location = new System.Drawing.Point(7, 21);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(105, 13);
             this.label2.TabIndex = 2;
@@ -117,7 +118,7 @@ namespace Administration
             // 
             this.chkImport.AutoSize = true;
             this.chkImport.Enabled = false;
-            this.chkImport.Location = new System.Drawing.Point(319, 61);
+            this.chkImport.Location = new System.Drawing.Point(586, 19);
             this.chkImport.Name = "chkImport";
             this.chkImport.Size = new System.Drawing.Size(136, 17);
             this.chkImport.TabIndex = 1;
@@ -129,7 +130,7 @@ namespace Administration
             // 
             this.chkExport.AutoSize = true;
             this.chkExport.Enabled = false;
-            this.chkExport.Location = new System.Drawing.Point(319, 23);
+            this.chkExport.Location = new System.Drawing.Point(426, 19);
             this.chkExport.Name = "chkExport";
             this.chkExport.Size = new System.Drawing.Size(123, 17);
             this.chkExport.TabIndex = 0;
@@ -137,11 +138,24 @@ namespace Administration
             this.chkExport.UseVisualStyleBackColor = true;
             this.chkExport.CheckedChanged += new System.EventHandler(this.chkExport_CheckedChanged);
             // 
+            // chkIncludeDiscontinued
+            // 
+            this.chkIncludeDiscontinued.AutoSize = true;
+            this.chkIncludeDiscontinued.Location = new System.Drawing.Point(454, 24);
+            this.chkIncludeDiscontinued.Name = "chkIncludeDiscontinued";
+            this.chkIncludeDiscontinued.Size = new System.Drawing.Size(157, 17);
+            this.chkIncludeDiscontinued.TabIndex = 5;
+            this.chkIncludeDiscontinued.Text = "Include Discontinued Styles";
+            this.chkIncludeDiscontinued.UseVisualStyleBackColor = true;
+            this.chkIncludeDiscontinued.Visible = false;
+            this.chkIncludeDiscontinued.CheckedChanged += new System.EventHandler(this.chkIncludeDiscontinued_CheckedChanged);
+            // 
             // frmNewForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 589);
+            this.Controls.Add(this.chkIncludeDiscontinued);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.cmboCustomers);
             this.Controls.Add(this.label1);
@@ -170,5 +184,6 @@ namespace Administration
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.CheckBox chkImport;
         private System.Windows.Forms.CheckBox chkExport;
+        private System.Windows.Forms.CheckBox chkIncludeDiscontinued;
     }
 }

@@ -39,20 +39,20 @@
             this.label6 = new System.Windows.Forms.Label();
             this.btnSubmit = new System.Windows.Forms.Button();
             this.label7 = new System.Windows.Forms.Label();
-            this.cmboColour = new CMT.CheckComboBox();
-            this.cmboSize = new CMT.CheckComboBox();
-            this.cmboQuality = new CMT.CheckComboBox();
-            this.cmboFactory = new CMT.CheckComboBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.rbNoOfBoxes = new System.Windows.Forms.RadioButton();
             this.rbNoOfGarments = new System.Windows.Forms.RadioButton();
+            this.cmboColour = new CMT.CheckComboBox();
+            this.cmboQuality = new CMT.CheckComboBox();
+            this.cmboSize = new CMT.CheckComboBox();
+            this.cmboFactory = new CMT.CheckComboBox();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(110, 37);
+            this.label1.Location = new System.Drawing.Point(81, 36);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(56, 13);
             this.label1.TabIndex = 0;
@@ -60,15 +60,15 @@
             // 
             // dtpFromDate
             // 
-            this.dtpFromDate.Location = new System.Drawing.Point(217, 31);
+            this.dtpFromDate.Location = new System.Drawing.Point(147, 32);
             this.dtpFromDate.Name = "dtpFromDate";
-            this.dtpFromDate.Size = new System.Drawing.Size(137, 20);
+            this.dtpFromDate.Size = new System.Drawing.Size(183, 20);
             this.dtpFromDate.TabIndex = 1;
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(110, 82);
+            this.label2.Location = new System.Drawing.Point(91, 74);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(46, 13);
             this.label2.TabIndex = 2;
@@ -76,15 +76,15 @@
             // 
             // dtpToDate
             // 
-            this.dtpToDate.Location = new System.Drawing.Point(217, 75);
+            this.dtpToDate.Location = new System.Drawing.Point(147, 70);
             this.dtpToDate.Name = "dtpToDate";
-            this.dtpToDate.Size = new System.Drawing.Size(137, 20);
+            this.dtpToDate.Size = new System.Drawing.Size(183, 20);
             this.dtpToDate.TabIndex = 3;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(110, 127);
+            this.label3.Location = new System.Drawing.Point(95, 112);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(42, 13);
             this.label3.TabIndex = 4;
@@ -93,7 +93,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(110, 217);
+            this.label4.Location = new System.Drawing.Point(110, 229);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(27, 13);
             this.label4.TabIndex = 6;
@@ -102,7 +102,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(110, 429);
+            this.label5.Location = new System.Drawing.Point(59, 380);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(78, 13);
             this.label5.TabIndex = 8;
@@ -111,16 +111,16 @@
             // cmboReportOptions
             // 
             this.cmboReportOptions.FormattingEnabled = true;
-            this.cmboReportOptions.Location = new System.Drawing.Point(217, 426);
+            this.cmboReportOptions.Location = new System.Drawing.Point(147, 378);
             this.cmboReportOptions.Name = "cmboReportOptions";
-            this.cmboReportOptions.Size = new System.Drawing.Size(193, 21);
+            this.cmboReportOptions.Size = new System.Drawing.Size(183, 21);
             this.cmboReportOptions.TabIndex = 9;
             this.cmboReportOptions.SelectedIndexChanged += new System.EventHandler(this.cmboReportOptions_SelectedIndexChanged);
             // 
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(110, 172);
+            this.label6.Location = new System.Drawing.Point(107, 151);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(30, 13);
             this.label6.TabIndex = 10;
@@ -128,7 +128,7 @@
             // 
             // btnSubmit
             // 
-            this.btnSubmit.Location = new System.Drawing.Point(444, 496);
+            this.btnSubmit.Location = new System.Drawing.Point(255, 426);
             this.btnSubmit.Name = "btnSubmit";
             this.btnSubmit.Size = new System.Drawing.Size(75, 23);
             this.btnSubmit.TabIndex = 12;
@@ -139,63 +139,19 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(110, 262);
+            this.label7.Location = new System.Drawing.Point(100, 190);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(37, 13);
             this.label7.TabIndex = 13;
             this.label7.Text = "Colour";
             // 
-            // cmboColour
-            // 
-            this.cmboColour.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.cmboColour.FormattingEnabled = true;
-            this.cmboColour.Location = new System.Drawing.Point(217, 259);
-            this.cmboColour.Name = "cmboColour";
-            this.cmboColour.Size = new System.Drawing.Size(193, 21);
-            this.cmboColour.TabIndex = 14;
-            this.cmboColour.Text = "Select Options";
-            this.cmboColour.SelectedIndexChanged += new System.EventHandler(this.cmboColour_SelectedIndexChanged);
-            // 
-            // cmboSize
-            // 
-            this.cmboSize.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.cmboSize.FormattingEnabled = true;
-            this.cmboSize.Location = new System.Drawing.Point(217, 209);
-            this.cmboSize.Name = "cmboSize";
-            this.cmboSize.Size = new System.Drawing.Size(193, 21);
-            this.cmboSize.TabIndex = 7;
-            this.cmboSize.Text = "Select Options";
-            this.cmboSize.SelectedIndexChanged += new System.EventHandler(this.cmboSize_SelectedIndexChanged);
-            // 
-            // cmboQuality
-            // 
-            this.cmboQuality.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.cmboQuality.FormattingEnabled = true;
-            this.cmboQuality.Location = new System.Drawing.Point(217, 164);
-            this.cmboQuality.Name = "cmboQuality";
-            this.cmboQuality.Size = new System.Drawing.Size(193, 21);
-            this.cmboQuality.TabIndex = 11;
-            this.cmboQuality.Text = "Select Options";
-            this.cmboQuality.SelectedIndexChanged += new System.EventHandler(this.cmboQuality_SelectedIndexChanged);
-            // 
-            // cmboFactory
-            // 
-            this.cmboFactory.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.cmboFactory.FormattingEnabled = true;
-            this.cmboFactory.Location = new System.Drawing.Point(217, 119);
-            this.cmboFactory.Name = "cmboFactory";
-            this.cmboFactory.Size = new System.Drawing.Size(193, 21);
-            this.cmboFactory.TabIndex = 5;
-            this.cmboFactory.Text = "Select Options";
-            this.cmboFactory.SelectedIndexChanged += new System.EventHandler(this.cmboFactory_SelectedIndexChanged);
-            // 
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.rbNoOfBoxes);
             this.groupBox1.Controls.Add(this.rbNoOfGarments);
-            this.groupBox1.Location = new System.Drawing.Point(113, 301);
+            this.groupBox1.Location = new System.Drawing.Point(59, 270);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(297, 81);
+            this.groupBox1.Size = new System.Drawing.Size(271, 81);
             this.groupBox1.TabIndex = 15;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Garment Detail";
@@ -222,11 +178,55 @@
             this.rbNoOfGarments.Text = "No of Garments";
             this.rbNoOfGarments.UseVisualStyleBackColor = true;
             // 
+            // cmboColour
+            // 
+            this.cmboColour.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cmboColour.FormattingEnabled = true;
+            this.cmboColour.Location = new System.Drawing.Point(147, 186);
+            this.cmboColour.Name = "cmboColour";
+            this.cmboColour.Size = new System.Drawing.Size(183, 21);
+            this.cmboColour.TabIndex = 14;
+            this.cmboColour.Text = "Select Options";
+            this.cmboColour.SelectedIndexChanged += new System.EventHandler(this.cmboColour_SelectedIndexChanged);
+            // 
+            // cmboQuality
+            // 
+            this.cmboQuality.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cmboQuality.FormattingEnabled = true;
+            this.cmboQuality.Location = new System.Drawing.Point(147, 147);
+            this.cmboQuality.Name = "cmboQuality";
+            this.cmboQuality.Size = new System.Drawing.Size(183, 21);
+            this.cmboQuality.TabIndex = 11;
+            this.cmboQuality.Text = "Select Options";
+            this.cmboQuality.SelectedIndexChanged += new System.EventHandler(this.cmboQuality_SelectedIndexChanged);
+            // 
+            // cmboSize
+            // 
+            this.cmboSize.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cmboSize.FormattingEnabled = true;
+            this.cmboSize.Location = new System.Drawing.Point(147, 225);
+            this.cmboSize.Name = "cmboSize";
+            this.cmboSize.Size = new System.Drawing.Size(183, 21);
+            this.cmboSize.TabIndex = 7;
+            this.cmboSize.Text = "Select Options";
+            this.cmboSize.SelectedIndexChanged += new System.EventHandler(this.cmboSize_SelectedIndexChanged);
+            // 
+            // cmboFactory
+            // 
+            this.cmboFactory.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cmboFactory.FormattingEnabled = true;
+            this.cmboFactory.Location = new System.Drawing.Point(147, 108);
+            this.cmboFactory.Name = "cmboFactory";
+            this.cmboFactory.Size = new System.Drawing.Size(183, 21);
+            this.cmboFactory.TabIndex = 5;
+            this.cmboFactory.Text = "Select Options";
+            this.cmboFactory.SelectedIndexChanged += new System.EventHandler(this.cmboFactory_SelectedIndexChanged);
+            // 
             // frmProdByPeriodSel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(531, 531);
+            this.ClientSize = new System.Drawing.Size(402, 475);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.cmboColour);
             this.Controls.Add(this.label7);

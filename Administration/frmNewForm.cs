@@ -110,7 +110,9 @@ namespace Administration
             TransNumber = TransNo;
             if (TransNo == 1)
             {
-                this.Text = "Styles Update / Edit Facility";
+                this.Text = "Styles Update/Edit Facility";
+                chkIncludeDiscontinued.Visible = true;
+                chkIncludeDiscontinued.BringToFront();
 
                 //00
                 column = new DataColumn();
@@ -4081,7 +4083,16 @@ namespace Administration
 
                 if (Cust != null)
                 {
-                    var Styles = _context.TLADM_Styles.Where(x => x.Sty_Customer_Fk == Cust.Cust_Pk).OrderBy(x => x.Sty_Description).ToList();
+                    // Get the checkbox state
+                    bool includeDiscontinued = chkIncludeDiscontinued.Checked;
+
+                    // Filter styles based on checkbox state
+                    var Styles = _context.TLADM_Styles
+                        .Where(x => x.Sty_Customer_Fk == Cust.Cust_Pk &&
+                                    (includeDiscontinued || !(x.Sty_Discontinued ?? false)))
+                        .OrderBy(x => x.Sty_Description)
+                        .ToList();
+
                     foreach (var Style in Styles)
                     {
                         DataRow NewRow = DataT.NewRow();
@@ -4112,9 +4123,69 @@ namespace Administration
                         DataT.Rows.Add(NewRow);
                     }
                 }
-
             }
         }
+
+
+        //private void cmboCustomers_SelectedIndexChanged(object sender, EventArgs e)
+        //{
+        //    ComboBox oCmbo = sender as ComboBox;
+        //    if (oCmbo != null && FormLoaded)
+        //    {
+        //        DataT.Rows.Clear();
+
+        //        var Cust = (TLADM_CustomerFile)oCmbo.SelectedItem;
+
+        //        if (Cust != null)
+        //        {
+        //            // Prompt user for discontinued styles
+        //            var includeDiscontinued = MessageBox.Show(
+        //                "Do you want to include discontinued styles?",
+        //                "Include Discontinued Styles",
+        //                MessageBoxButtons.YesNo,
+        //                MessageBoxIcon.Question
+        //            ) == DialogResult.Yes;
+
+        //            // Filter styles based on user's choice
+        //            var Styles = _context.TLADM_Styles
+        //                .Where(x => x.Sty_Customer_Fk == Cust.Cust_Pk &&
+        //                             (includeDiscontinued || !(x.Sty_Discontinued ?? false)))
+        //                .OrderBy(x => x.Sty_Description)
+        //                .ToList();
+
+        //            foreach (var Style in Styles)
+        //            {
+        //                DataRow NewRow = DataT.NewRow();
+        //                NewRow[0] = Style.Sty_Id;
+        //                NewRow[1] = Style.Sty_Description;
+        //                NewRow[2] = Style.Sty_Discontinued;
+        //                if (Style.Sty_Discontinued_Date != null)
+        //                {
+        //                    NewRow[3] = Style.Sty_Discontinued_Date;
+        //                }
+        //                else
+        //                {
+        //                    NewRow[3] = DBNull.Value;
+        //                }
+        //                NewRow[4] = Style.Sty_ChkMandatory;
+        //                NewRow[5] = Style.Sty_PastelNo;
+        //                NewRow[6] = Style.Sty_PastelCode;
+        //                NewRow[7] = Style.Sty_CottonFactor;
+        //                NewRow[8] = Style.Sty_Bags;
+        //                NewRow[9] = Style.Sty_Buttons;
+        //                NewRow[10] = Style.Sty_BoughtIn;
+        //                NewRow[11] = Style.Sty_Equiv;
+        //                NewRow[12] = Style.Sty_DisplayOrder;
+        //                NewRow[13] = Style.Sty_Units_Per_Hour;
+        //                NewRow[14] = Style.Sty_WorkWear;
+        //                NewRow[15] = Style.Sty_PFD;
+
+        //                DataT.Rows.Add(NewRow);
+        //            }
+        //        }
+        //    }
+        //}
+
 
         private void cmboFactConfig_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -4466,6 +4537,9 @@ namespace Administration
             var oDlg = sender as DataGridView; 
         }
 
-      
+        private void chkIncludeDiscontinued_CheckedChanged(object sender, EventArgs e)
+        {
+            cmboCustomers_SelectedIndexChanged(cmboCustomers, EventArgs.Empty);
+        }
     }
 }
