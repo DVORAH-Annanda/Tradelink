@@ -41,7 +41,7 @@
             // 
             // btnAccess
             // 
-            this.btnAccess.Location = new System.Drawing.Point(296, 167);
+            this.btnAccess.Location = new System.Drawing.Point(271, 166);
             this.btnAccess.Name = "btnAccess";
             this.btnAccess.Size = new System.Drawing.Size(75, 23);
             this.btnAccess.TabIndex = 4;
@@ -59,7 +59,7 @@
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Location = new System.Drawing.Point(24, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(322, 149);
+            this.groupBox1.Size = new System.Drawing.Size(322, 139);
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             // 
@@ -76,7 +76,7 @@
             // 
             this.txtConfirmPassword.Location = new System.Drawing.Point(122, 103);
             this.txtConfirmPassword.Name = "txtConfirmPassword";
-            this.txtConfirmPassword.Size = new System.Drawing.Size(130, 20);
+            this.txtConfirmPassword.Size = new System.Drawing.Size(171, 20);
             this.txtConfirmPassword.TabIndex = 3;
             // 
             // label3
@@ -92,7 +92,7 @@
             // 
             this.txtUserPassword.Location = new System.Drawing.Point(122, 63);
             this.txtUserPassword.Name = "txtUserPassword";
-            this.txtUserPassword.Size = new System.Drawing.Size(130, 20);
+            this.txtUserPassword.Size = new System.Drawing.Size(171, 20);
             this.txtUserPassword.TabIndex = 2;
             this.txtUserPassword.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtUserPassword_KeyDown);
             // 
@@ -118,7 +118,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(421, 210);
+            this.ClientSize = new System.Drawing.Size(378, 204);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.btnAccess);
             this.Name = "frmSecurity";

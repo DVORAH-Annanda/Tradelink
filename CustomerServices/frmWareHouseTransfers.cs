@@ -507,24 +507,53 @@ namespace CustomerServices
         private void cmboStyles_SelectedIndexChanged(object sender, EventArgs e)
         {
             ComboBox oCmbo = sender as ComboBox;
-            if(oCmbo != null && formloaded)
+            if (oCmbo != null && formloaded)
             {
-                TLADM_Styles StyleSelected = (TLADM_Styles)oCmbo.SelectedItem;
-                if (StyleSelected != null)
+                var selectedItem = oCmbo.SelectedItem as CustomerServices.CheckComboBoxItem;
+                if (selectedItem != null)
                 {
                     using (var context = new TTI2Entities())
                     {
-                        if (StyleSelected.Sty_PFD)
+                        // Retrieve the TLADM_Styles object based on the primary key stored in the CheckComboBoxItem
+                        var StyleSelected = context.TLADM_Styles.FirstOrDefault(x => x.Sty_Id == selectedItem._Pk);
+                        if (StyleSelected != null)
                         {
-                            cmboTo.DataSource = null;
-                            cmboTo.DataSource = context.TLADM_WhseStore.Where(x => x.WhStore_RFD).ToList();
-                            cmboTo.ValueMember = "WhStore_Id";
-                            cmboTo.DisplayMember = "WhStore_Description";
-                            cmboTo.SelectedValue = -1;
+                            if (StyleSelected.Sty_PFD)
+                            {
+                                cmboTo.DataSource = null;
+                                cmboTo.DataSource = context.TLADM_WhseStore.Where(x => x.WhStore_RFD).ToList();
+                                cmboTo.ValueMember = "WhStore_Id";
+                                cmboTo.DisplayMember = "WhStore_Description";
+                                cmboTo.SelectedValue = -1;
+                            }
                         }
                     }
                 }
             }
         }
+
+
+        //private void cmboStyles_SelectedIndexChanged(object sender, EventArgs e)
+        //{
+        //    ComboBox oCmbo = sender as ComboBox;
+        //    if(oCmbo != null && formloaded)
+        //    {
+        //        TLADM_Styles StyleSelected = (TLADM_Styles)oCmbo.SelectedItem;
+        //        if (StyleSelected != null)
+        //        {
+        //            using (var context = new TTI2Entities())
+        //            {
+        //                if (StyleSelected.Sty_PFD)
+        //                {
+        //                    cmboTo.DataSource = null;
+        //                    cmboTo.DataSource = context.TLADM_WhseStore.Where(x => x.WhStore_RFD).ToList();
+        //                    cmboTo.ValueMember = "WhStore_Id";
+        //                    cmboTo.DisplayMember = "WhStore_Description";
+        //                    cmboTo.SelectedValue = -1;
+        //                }
+        //            }
+        //        }
+        //    }
+        //}
     }
 }

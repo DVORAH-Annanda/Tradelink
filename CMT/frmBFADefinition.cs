@@ -13,6 +13,8 @@ namespace CMT
 {
     public partial class frmBFADefinition : Form
     {
+
+
         bool formloaded;
 
         Util core;
@@ -22,7 +24,7 @@ namespace CMT
         System.Data.DataTable DataT;
         System.Data.DataTable dtConnectorSource;
 
-
+      
         public frmBFADefinition()
         {
             InitializeComponent();
@@ -67,6 +69,9 @@ namespace CMT
  
             formloaded = true;
         }
+
+        //write a procdure to add 2 variables
+
 
         private void dataGridView1_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
         {
