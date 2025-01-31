@@ -142,6 +142,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DataSet56.xsd</DependentUpon>
     </Compile>
+    <Compile Include="frmGarmentDyeBatchesWIP.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmGarmentDyeBatchesWIP.Designer.cs">
+      <DependentUpon>frmGarmentDyeBatchesWIP.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmGarmentDyeingBatchApproval.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -1254,6 +1260,9 @@
     <EmbeddedResource Include="CrystalReport1.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>CrystalReport1.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmGarmentDyeBatchesWIP.resx">
+      <DependentUpon>frmGarmentDyeBatchesWIP.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmGarmentDyeingBatchApproval.resx">
       <DependentUpon>frmGarmentDyeingBatchApproval.cs</DependentUpon>
