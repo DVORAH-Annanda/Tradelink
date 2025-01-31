@@ -1589,7 +1589,6 @@ namespace CMT
                         nr.Prod9 = row.TLDFAR_Prod9;
                         nr.Prod10 = row.TLDFAR_Prod10;
 
-
                         dataTable1.AddDataTable1Row(nr);
                     }
 
