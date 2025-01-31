@@ -15,6 +15,9 @@ namespace DyeHouse
         public frmGarmentDyeBatchesWIP()
         {
             InitializeComponent();
+
+            this.cmboStyle.CheckStateChanged += new System.EventHandler(this.cmboStyles_CheckStateChanged);
+            this.cmboColour.CheckStateChanged += new System.EventHandler(this.cmboColours_CheckStateChanged);
         }
     }
 }

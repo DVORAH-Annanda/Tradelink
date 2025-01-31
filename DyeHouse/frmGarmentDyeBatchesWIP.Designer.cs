@@ -31,9 +31,9 @@
             this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.cmboStyle = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
-            this.comboBox2 = new System.Windows.Forms.ComboBox();
+            this.cmboColour = new System.Windows.Forms.ComboBox();
             this.label4 = new System.Windows.Forms.Label();
             this.comboBox3 = new System.Windows.Forms.ComboBox();
             this.label5 = new System.Windows.Forms.Label();
@@ -66,13 +66,13 @@
             this.label2.TabIndex = 2;
             this.label2.Text = "Style";
             // 
-            // comboBox1
+            // cmboStyle
             // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(248, 123);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(121, 21);
-            this.comboBox1.TabIndex = 3;
+            this.cmboStyle.FormattingEnabled = true;
+            this.cmboStyle.Location = new System.Drawing.Point(248, 123);
+            this.cmboStyle.Name = "cmboStyle";
+            this.cmboStyle.Size = new System.Drawing.Size(121, 21);
+            this.cmboStyle.TabIndex = 3;
             // 
             // label3
             // 
@@ -83,13 +83,13 @@
             this.label3.TabIndex = 4;
             this.label3.Text = "Colour";
             // 
-            // comboBox2
+            // cmboColour
             // 
-            this.comboBox2.FormattingEnabled = true;
-            this.comboBox2.Location = new System.Drawing.Point(248, 166);
-            this.comboBox2.Name = "comboBox2";
-            this.comboBox2.Size = new System.Drawing.Size(121, 21);
-            this.comboBox2.TabIndex = 5;
+            this.cmboColour.FormattingEnabled = true;
+            this.cmboColour.Location = new System.Drawing.Point(248, 166);
+            this.cmboColour.Name = "cmboColour";
+            this.cmboColour.Size = new System.Drawing.Size(121, 21);
+            this.cmboColour.TabIndex = 5;
             // 
             // label4
             // 
@@ -144,9 +144,9 @@
             this.Controls.Add(this.label5);
             this.Controls.Add(this.comboBox3);
             this.Controls.Add(this.label4);
-            this.Controls.Add(this.comboBox2);
+            this.Controls.Add(this.cmboColour);
             this.Controls.Add(this.label3);
-            this.Controls.Add(this.comboBox1);
+            this.Controls.Add(this.cmboStyle);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.dateTimePicker1);
@@ -162,9 +162,9 @@
         private System.Windows.Forms.DateTimePicker dateTimePicker1;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.ComboBox cmboStyle;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.ComboBox comboBox2;
+        private System.Windows.Forms.ComboBox cmboColour;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.ComboBox comboBox3;
         private System.Windows.Forms.Label label5;
