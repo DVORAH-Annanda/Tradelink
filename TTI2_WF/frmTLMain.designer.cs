@@ -1353,7 +1353,7 @@
             this.dyeOrdersToolStripMenuItem.Text = "Dye Orders (Fabric)";
             this.dyeOrdersToolStripMenuItem.Click += new System.EventHandler(this.dyeOrdersToolStripMenuItem_Click);
             // 
-            // dyOrdersGarmentsToolStripMenuItem
+            // dyOrdersGarmentsToolStripMenuItem git
             // 
             this.dyOrdersGarmentsToolStripMenuItem.Name = "dyOrdersGarmentsToolStripMenuItem";
             this.dyOrdersGarmentsToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
