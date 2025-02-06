@@ -369,6 +369,7 @@
             this.deliveryNoteInquiryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.purchaseOrderNumberToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.productionPlanningToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.dyeOrderPlanningToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.replenishmentDefinitionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.replenishmentDefinitionToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.replenishmentFinishedGoodsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -482,7 +483,7 @@
             this.inUseResetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
             this.PBar1 = new System.Windows.Forms.ProgressBar();
-            this.dyeOrderPlanningToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.garmentDyeBatchWIPToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             this.SuspendLayout();
@@ -1665,7 +1666,8 @@
             this.dyeBatchStatusReportToolStripMenuItem,
             this.reprintADyeBatchToolStripMenuItem,
             this.dyeBatchProductionDaysAnalysisToolStripMenuItem,
-            this.dyeBatchOnHoldReportsToolStripMenuItem});
+            this.dyeBatchOnHoldReportsToolStripMenuItem,
+            this.garmentDyeBatchWIPToolStripMenuItem});
             this.dyeBatchReportsToolStripMenuItem.Name = "dyeBatchReportsToolStripMenuItem";
             this.dyeBatchReportsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.dyeBatchReportsToolStripMenuItem.Text = "Dye Batch Reports";
@@ -3218,6 +3220,13 @@
             this.productionPlanningToolStripMenuItem1.Size = new System.Drawing.Size(128, 20);
             this.productionPlanningToolStripMenuItem1.Text = "Production Planning";
             // 
+            // dyeOrderPlanningToolStripMenuItem
+            // 
+            this.dyeOrderPlanningToolStripMenuItem.Name = "dyeOrderPlanningToolStripMenuItem";
+            this.dyeOrderPlanningToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
+            this.dyeOrderPlanningToolStripMenuItem.Text = "Dye Order Planning";
+            this.dyeOrderPlanningToolStripMenuItem.Click += new System.EventHandler(this.dyeOrderPlanningToolStripMenuItem_Click);
+            // 
             // replenishmentDefinitionToolStripMenuItem
             // 
             this.replenishmentDefinitionToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -3227,7 +3236,7 @@
             this.replenishmentMachineCapacityToolStripMenuItem,
             this.interDepartmentalAnalysisDefinitionToolStripMenuItem});
             this.replenishmentDefinitionToolStripMenuItem.Name = "replenishmentDefinitionToolStripMenuItem";
-            this.replenishmentDefinitionToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.replenishmentDefinitionToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
             this.replenishmentDefinitionToolStripMenuItem.Text = "PPS Replenishment";
             // 
             // replenishmentDefinitionToolStripMenuItem1
@@ -3276,7 +3285,7 @@
             this.processLossPerCutSheetAcrossProductionToolStripMenuItem,
             this.wIPQuickLookForExpiditingToolStripMenuItem});
             this.reportingToolStripMenuItem4.Name = "reportingToolStripMenuItem4";
-            this.reportingToolStripMenuItem4.Size = new System.Drawing.Size(180, 22);
+            this.reportingToolStripMenuItem4.Size = new System.Drawing.Size(177, 22);
             this.reportingToolStripMenuItem4.Text = "PPS Reporting";
             // 
             // replenishmentDetailsToolStripMenuItem
@@ -4116,12 +4125,12 @@
             this.PBar1.Size = new System.Drawing.Size(402, 23);
             this.PBar1.TabIndex = 5;
             // 
-            // dyeOrderPlanningToolStripMenuItem
+            // garmentDyeBatchWIPToolStripMenuItem
             // 
-            this.dyeOrderPlanningToolStripMenuItem.Name = "dyeOrderPlanningToolStripMenuItem";
-            this.dyeOrderPlanningToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.dyeOrderPlanningToolStripMenuItem.Text = "Dye Order Planning";
-            this.dyeOrderPlanningToolStripMenuItem.Click += new System.EventHandler(this.dyeOrderPlanningToolStripMenuItem_Click);
+            this.garmentDyeBatchWIPToolStripMenuItem.Name = "garmentDyeBatchWIPToolStripMenuItem";
+            this.garmentDyeBatchWIPToolStripMenuItem.Size = new System.Drawing.Size(284, 22);
+            this.garmentDyeBatchWIPToolStripMenuItem.Text = "Garment Dye Batch - WIP";
+            this.garmentDyeBatchWIPToolStripMenuItem.Click += new System.EventHandler(this.garmentDyeBatchWIPToolStripMenuItem_Click);
             // 
             // frmTLMain
             // 
@@ -4599,5 +4608,6 @@
         private System.Windows.Forms.ToolStripMenuItem cottonContractToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem wIPQuickLookForExpiditingToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem dyeOrderPlanningToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem garmentDyeBatchWIPToolStripMenuItem;
     }
 }
