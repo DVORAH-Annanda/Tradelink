@@ -542,6 +542,26 @@ namespace DyeHouse
             return SOH;
         }
 
+        public IQueryable<TLADM_Sizes> DYESizes(DyeQueryParameters parameters)
+        {
+            var QuerySizes = _context.TLADM_Sizes.AsQueryable();
+            // Filter out any particular Customers if neccessary
+            //------------------------------------------------------------
+            if (parameters.Sizes.Count > 0)
+            {
+                var SizePredicate = PredicateBuilder.New<TLADM_Sizes>();
+                foreach (var Size in parameters.Sizes)
+                {
+                    var temp = Size;
+                    SizePredicate = SizePredicate.Or(s => s.SI_id == temp.SI_id);
+                }
+
+                QuerySizes = QuerySizes.AsExpandable().Where(SizePredicate);
+            }
+
+            return QuerySizes;
+        }
+
         public IQueryable<TLKNI_GreigeCommissionTransctions> CommissionTransactions(DyeQueryParameters parameters)
         {
             var Transactions = _context.TLKNI_GreigeCommissionTransctions.Where(x=>x.GreigeCom_Transdate >= parameters.FromDate && x.GreigeCom_Transdate <= parameters.ToDate).OrderBy(x => x.GreigeCom_GrnNo).AsQueryable();

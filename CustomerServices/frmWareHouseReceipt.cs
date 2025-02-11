@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Utilities;
+using ClosedXML.Excel;
 
 namespace CustomerServices
 {
@@ -140,6 +142,7 @@ namespace CustomerServices
                     move.TLMV_BoxedQty = 0;
                     move.TLMV_OriginalNumber = selected.TLCSV_DNDeails;
                     var moveDetails = context.TLCMT_CompletedWork.Where(x => x.TLCMTWC_DepatchedList_FK == selected.TLCSV_Pk).ToList();
+
                     if (moveDetails != null)
                     {
                         move.TLMV_NoOfBoxes = moveDetails.Count;
@@ -231,7 +234,7 @@ namespace CustomerServices
                     try
                     {
                         context.SaveChanges();
-                        MessageBox.Show("Data saved successfully to database");
+                        MessageBox.Show("Data saved successfully to database.");
                         dataGridView1.Rows.Clear();
 
                         cmboWareHouse.DataSource = null;
@@ -262,5 +265,51 @@ namespace CustomerServices
 
             }
         }
+
+        //private void ExportToExcel(var stockOnHandDetail)
+        //{
+        //        string fileName = $"FINISHED GOODS PRODUCTION {DateTime.Now:ddMMyy}.xlsx";
+        //        string filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), fileName);
+
+        //        using (var workbook = new XLWorkbook())
+        //        {
+        //            var worksheet = workbook.Worksheets.Add("Finished Goods");
+
+        //            // Headers
+        //            worksheet.Cell(1, 1).Value = "Warehouse ID";
+        //            worksheet.Cell(1, 2).Value = "Product Code";
+        //            worksheet.Cell(1, 3).Value = "Style ID";
+        //            worksheet.Cell(1, 4).Value = "Colour ID";
+        //            worksheet.Cell(1, 5).Value = "Size ID";
+        //            worksheet.Cell(1, 6).Value = "Grade";
+        //            worksheet.Cell(1, 7).Value = "Box Number";
+        //            worksheet.Cell(1, 8).Value = "Quantity";
+        //        worksheet.Cell(1, 9).Value = "Weight";
+        //        worksheet.Cell(1, 10).Value = "Box Type";
+        //            worksheet.Cell(1, 11).Value = "Transaction Date";
+
+        //            int row = 2;
+        //        foreach (var item in stockOnHandDetail)
+        //        {
+        //            worksheet.Cell(row, 1).Value = item.TLSOH_WareHouse_FK;
+        //            worksheet.Cell(row, 2).Value = item.TLSOH_PastelNumber;
+        //            worksheet.Cell(row, 3).Value = item.TLSOH_Style_FK;
+        //            worksheet.Cell(row, 4).Value = item.TLSOH_Colour_FK;
+        //            worksheet.Cell(row, 5).Value = item.TLSOH_Size_FK;
+        //            worksheet.Cell(row, 6).Value = item.TLSOH_Grade;
+        //            worksheet.Cell(row, 7).Value = item.TLSOH_BoxNumber;
+        //            worksheet.Cell(row, 8).Value = item.TLSOH_BoxedQty;
+        //            worksheet.Cell(row, 9).Value = item.TLSOH_Weight;
+        //            worksheet.Cell(row, 10).Value = item.TLSOH_BoxType;
+        //            worksheet.Cell(row, 11).Value = dtpTransDate.Value.ToString("yyyy-MM-dd");
+        //            row++;
+        //        }
+
+        //        workbook.SaveAs(filePath);
+        //        }
+
+        //        MessageBox.Show($"Excel file saved successfully at {filePath}");
+        //}
+
     }
 }

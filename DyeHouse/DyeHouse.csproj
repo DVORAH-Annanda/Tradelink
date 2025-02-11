@@ -142,6 +142,14 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DataSet56.xsd</DependentUpon>
     </Compile>
+    <Compile Include="dsGarmentDyeingWIP.cs">
+      <DependentUpon>dsGarmentDyeingWIP.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="dsGarmentDyeingWIP.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dsGarmentDyeingWIP.xsd</DependentUpon>
+    </Compile>
     <Compile Include="frmGarmentDyeBatchesWIP.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -1097,6 +1105,12 @@
       <DependentUpon>FStockAdjustment.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="GarmentDyeingWIP.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GarmentDyeingWIP.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="GDyeBatch.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -1622,6 +1636,10 @@
     <EmbeddedResource Include="FStockAdjustment.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>FStockAdjustment.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GarmentDyeingWIP.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>GarmentDyeingWIP.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="GDyeBatch.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
@@ -2337,6 +2355,17 @@
     </None>
     <None Include="DataSet9.xss">
       <DependentUpon>DataSet9.xsd</DependentUpon>
+    </None>
+    <None Include="dsGarmentDyeingWIP.xsc">
+      <DependentUpon>dsGarmentDyeingWIP.xsd</DependentUpon>
+    </None>
+    <None Include="dsGarmentDyeingWIP.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>dsGarmentDyeingWIP.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="dsGarmentDyeingWIP.xss">
+      <DependentUpon>dsGarmentDyeingWIP.xsd</DependentUpon>
     </None>
     <None Include="DyeHouse.pfx" />
     <None Include="packages.config" />

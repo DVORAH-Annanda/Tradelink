@@ -7,9 +7,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO;
 using Utilities;
 using System.Collections;
 using CrystalDecisions.CrystalReports.Engine;
+using ClosedXML.Excel;
+using DocumentFormat.OpenXml.Office.MetaAttributes;
 
 namespace CustomerServices
 {
@@ -72,6 +75,51 @@ namespace CustomerServices
             InitializeComponent();
             _RepNo = RepNo;
             _QueryParms = QParms;
+        }
+
+        private void ExportToExcel(List<TLCSV_StockOnHand> stockOnHandDetail)
+        {
+            string fileName = $"FINISHED GOODS PRODUCTION {DateTime.Now:ddMMyy}.xlsx";
+            string filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), fileName);
+
+            using (var workbook = new XLWorkbook())
+            {
+                var worksheet = workbook.Worksheets.Add("Finished Goods");
+
+                // Headers
+                worksheet.Cell(1, 1).Value = "Warehouse ID";
+                worksheet.Cell(1, 2).Value = "Product Code";
+                worksheet.Cell(1, 3).Value = "Style ID";
+                worksheet.Cell(1, 4).Value = "Colour ID";
+                worksheet.Cell(1, 5).Value = "Size ID";
+                worksheet.Cell(1, 6).Value = "Grade";
+                worksheet.Cell(1, 7).Value = "Box Number";
+                worksheet.Cell(1, 8).Value = "Quantity";
+                worksheet.Cell(1, 9).Value = "Weight";
+                worksheet.Cell(1, 10).Value = "Box Type";
+                worksheet.Cell(1, 11).Value = "Transaction Date";
+
+                int row = 2;
+                foreach (var item in stockOnHandDetail)
+                {
+                    worksheet.Cell(row, 1).Value = item.TLSOH_WareHouse_FK;
+                    worksheet.Cell(row, 2).Value = item.TLSOH_PastelNumber;
+                    worksheet.Cell(row, 3).Value = item.TLSOH_Style_FK;
+                    worksheet.Cell(row, 4).Value = item.TLSOH_Colour_FK;
+                    worksheet.Cell(row, 5).Value = item.TLSOH_Size_FK;
+                    worksheet.Cell(row, 6).Value = item.TLSOH_Grade;
+                    worksheet.Cell(row, 7).Value = item.TLSOH_BoxNumber;
+                    worksheet.Cell(row, 8).Value = item.TLSOH_BoxedQty;
+                    worksheet.Cell(row, 9).Value = item.TLSOH_Weight;
+                    worksheet.Cell(row, 10).Value = item.TLSOH_BoxType;
+                    worksheet.Cell(row, 11).Value = $"{DateTime.Now:yyMMdd}";
+                    row++;
+                }
+
+                workbook.SaveAs(filePath);
+            }
+
+            MessageBox.Show($"Excel file saved successfully at {filePath}");
         }
 
         private void frmCSViewRep_Load(object sender, EventArgs e)
@@ -234,7 +282,8 @@ namespace CustomerServices
 
                         dataTable1.AddDataTable1Row(nr);
 
-                        var Existing = context.TLCSV_StockOnHand.Where(x => x.TLSOH_BoxSelected_FK == _Pk).ToList();
+                        List<TLCSV_StockOnHand> Existing = context.TLCSV_StockOnHand.Where(x => x.TLSOH_BoxSelected_FK == _Pk).ToList();
+                        ExportToExcel(Existing);
                         foreach (var row in Existing)
                         {
                             var Cmt = context.TLCMT_CompletedWork.Find(row.TLSOH_CMT_FK);

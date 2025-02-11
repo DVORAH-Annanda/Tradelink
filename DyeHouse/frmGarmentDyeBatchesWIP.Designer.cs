@@ -34,7 +34,7 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
-            this.comboBox4 = new System.Windows.Forms.ComboBox();
+            this.cmboReportOptions = new System.Windows.Forms.ComboBox();
             this.btnSubmit = new System.Windows.Forms.Button();
             this.cmboStyle = new DyeHouse.CheckComboBox();
             this.cmboColour = new DyeHouse.CheckComboBox();
@@ -93,13 +93,14 @@
             this.label5.TabIndex = 8;
             this.label5.Text = "Report Sort Options";
             // 
-            // comboBox4
+            // cmboReportOptions
             // 
-            this.comboBox4.FormattingEnabled = true;
-            this.comboBox4.Location = new System.Drawing.Point(123, 181);
-            this.comboBox4.Name = "comboBox4";
-            this.comboBox4.Size = new System.Drawing.Size(196, 21);
-            this.comboBox4.TabIndex = 9;
+            this.cmboReportOptions.FormattingEnabled = true;
+            this.cmboReportOptions.Location = new System.Drawing.Point(123, 181);
+            this.cmboReportOptions.Name = "cmboReportOptions";
+            this.cmboReportOptions.Size = new System.Drawing.Size(196, 21);
+            this.cmboReportOptions.TabIndex = 9;
+            this.cmboReportOptions.SelectedIndexChanged += new System.EventHandler(this.cmboReportOptions_SelectedIndexChanged);
             // 
             // btnSubmit
             // 
@@ -149,7 +150,7 @@
             this.Controls.Add(this.cmboColour);
             this.Controls.Add(this.cmboStyle);
             this.Controls.Add(this.btnSubmit);
-            this.Controls.Add(this.comboBox4);
+            this.Controls.Add(this.cmboReportOptions);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
@@ -172,7 +173,7 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.ComboBox comboBox4;
+        private System.Windows.Forms.ComboBox cmboReportOptions;
         private System.Windows.Forms.Button btnSubmit;
         private CheckComboBox cmboStyle;
         private CheckComboBox cmboColour;

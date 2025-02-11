@@ -13,8 +13,8 @@ namespace DyeHouse
 {
     public partial class frmGarmentDyeBatchesWIP : Form
     {
-
         bool formLoaded;
+        int options;
 
         DyeHouse.DyeQueryParameters queryParms;
         DyeHouse.DyeRepository repo;
@@ -28,14 +28,12 @@ namespace DyeHouse
             this.cmboStyle.CheckStateChanged += new System.EventHandler(this.cmboStyle_CheckStateChanged);
             this.cmboColour.CheckStateChanged += new System.EventHandler(this.cmboColour_CheckStateChanged);
             this.cmboSize.CheckStateChanged += new System.EventHandler(this.cmboSize_CheckStateChanged);
-
         }
 
         private void frmGarmentDyeBatchesWIP_Load(object sender, EventArgs e)
         {
             using (var context = new TTI2Entities())
             {
-                queryParms = new DyeQueryParameters();
                 formLoaded = true;
 
                 var Styles = context.TLADM_Styles.OrderBy(x => x.Sty_Description).ToList();
@@ -50,7 +48,35 @@ namespace DyeHouse
                     cmboColour.Items.Add(new DyeHouse.CheckComboBoxItem(Colour.Col_Id, Colour.Col_Display, false));
                 }
 
+                var Sizes = context.TLADM_Sizes.ToList();
+                foreach (var Size in Sizes)
+                {
+                    cmboSize.Items.Add(new DyeHouse.CheckComboBoxItem(Size.SI_id, Size.SI_Description, false));
+                }
 
+                options = 1;
+
+                var reportOptions = new BindingList<KeyValuePair<int, string>>();
+                reportOptions.Add(new KeyValuePair<int, string>(1, "Batch No"));
+                reportOptions.Add(new KeyValuePair<int, string>(2, "Style"));
+                reportOptions.Add(new KeyValuePair<int, string>(3, "Colour"));
+                reportOptions.Add(new KeyValuePair<int, string>(4, "Size"));
+                cmboReportOptions.DataSource = reportOptions;
+                cmboReportOptions.ValueMember = "Key";
+                cmboReportOptions.DisplayMember = "Value";
+                cmboReportOptions.SelectedIndex = -1;
+            }
+        }
+
+        private void cmboReportOptions_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ComboBox oCmbo = sender as ComboBox;
+            if (oCmbo != null && formLoaded)
+            {
+                if (oCmbo.SelectedValue is int selectedOption)
+                {
+                    options = selectedOption;
+                }
             }
         }
 
@@ -62,18 +88,14 @@ namespace DyeHouse
                 if (item.CheckState)
                 {
                     queryParms.Sizes.Add(repo.LoadSize(item._Pk));
-
                 }
                 else
                 {
                     var value = queryParms.Sizes.Find(it => it.SI_id == item._Pk);
                     if (value != null)
                         queryParms.Sizes.Remove(value);
-
                 }
             }
-
-
         }
 
         private void cmboStyle_CheckStateChanged(object sender, EventArgs e)
@@ -94,23 +116,7 @@ namespace DyeHouse
                         // Add selected style to queryParms
                         queryParms.Styles.Add(repo.LoadStyle(item._Pk));
 
-                        // Get colors associated with the selected style
-                        var coloursForSelectedStyle = context.TLPPS_Replenishment
-                            .Where(x => x.TLREP_Style_FK == item._Pk && !x.TLREP_Discontinued)
-                            .GroupBy(x => x.TLREP_Colour_FK)
-                            .Select(g => g.FirstOrDefault().TLREP_Colour_FK)
-                            .ToList();
-
-                        // Loop through the colours for the selected style
-                        foreach (var colourPk in coloursForSelectedStyle)
-                        {
-                            var clr = context.TLADM_Colours.Find(colourPk);
-                            if (clr != null && !cmboColour.Items.Cast<Cutting.CheckComboBoxItem>()
-                                .Any(c => c._Pk == clr.Col_Id)) // Avoid duplicates
-                            {
-                                cmboColour.Items.Add(new Cutting.CheckComboBoxItem(clr.Col_Id, clr.Col_Display, false));
-                            }
-                        }
+                        LoadColoursBasedOnSelectedStyles();
                     }
                     else
                     {
@@ -138,24 +144,40 @@ namespace DyeHouse
                             // If there are still styles selected, re-filter the colours to reflect the remaining selected styles
                             cmboColour.Items.Clear();
 
-                            var selectedStyleIds = queryParms.Styles.Select(s => s.Sty_Id).ToList();
-                            var allSelectedColours = context.TLPPS_Replenishment
-                                .Where(x => selectedStyleIds.Contains(x.TLREP_Style_FK) && !x.TLREP_Discontinued)
-                                .GroupBy(x => x.TLREP_Colour_FK)
-                                .Select(g => g.FirstOrDefault().TLREP_Colour_FK)
-                                .Distinct()
-                                .ToList();
-
-                            foreach (var colourPk in allSelectedColours)
-                            {
-                                var clr = context.TLADM_Colours.Find(colourPk);
-                                if (clr != null)
-                                {
-                                    cmboColour.Items.Add(new DyeHouse.CheckComboBoxItem(clr.Col_Id, clr.Col_Display, false));
-                                }
-                            }
+                            LoadColoursBasedOnSelectedStyles();
                         }
                     }
+                }
+            }
+        }
+
+        private void LoadColoursBasedOnSelectedStyles()
+        {
+            using (var context = new TTI2Entities())
+            {
+                // Get the selected style IDs
+                var selectedStyleIds = queryParms.Styles.Select(style => style.Sty_Id).ToList();
+
+                // Query the bridge table to get associated color IDs for the selected styles
+                var colorIds = context.TLADM_StyleColour
+                    .Where(sc => selectedStyleIds.Contains(sc.STYCOL_Style_FK))
+                    .Select(sc => sc.STYCOL_Colour_FK)
+                    .ToList();
+
+                // Get the colors based on the retrieved color IDs
+                var colors = context.TLADM_Colours
+                    .Where(c => !(bool)c.Col_Discontinued)
+                    .Where(c => colorIds.Contains(c.Col_Id))
+                    .OrderBy(c => c.Col_Display)
+                    .ToList();
+
+                // Clear the ComboBox
+                cmboColour.Items.Clear();
+
+                // Populate the ComboBox with the filtered colors
+                foreach (var color in colors)
+                {
+                    cmboColour.Items.Add(new DyeHouse.CheckComboBoxItem(color.Col_Id, color.Col_Display, false));
                 }
             }
         }
@@ -168,19 +190,14 @@ namespace DyeHouse
                 if (item.CheckState)
                 {
                     queryParms.Colours.Add(repo.LoadColour(item._Pk));
-
                 }
                 else
                 {
                     var value = queryParms.Colours.Find(it => it.Col_Id == item._Pk);
                     if (value != null)
                         queryParms.Colours.Remove(value);
-
                 }
             }
-
         }
-
-
     }
 }
