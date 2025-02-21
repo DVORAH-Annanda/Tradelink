@@ -278,6 +278,12 @@
     <Compile Include="frmNewForm.Designer.cs">
       <DependentUpon>frmNewForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmProductCodeMapping.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmProductCodeMapping.Designer.cs">
+      <DependentUpon>frmProductCodeMapping.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmSelectProductRating.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -536,6 +542,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmNewForm.resx">
       <DependentUpon>frmNewForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmProductCodeMapping.resx">
+      <DependentUpon>frmProductCodeMapping.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmSelectProductRating.resx">
       <DependentUpon>frmSelectProductRating.cs</DependentUpon>
