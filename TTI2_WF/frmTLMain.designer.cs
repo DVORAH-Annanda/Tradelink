@@ -183,6 +183,7 @@
             this.reprintADyeBatchToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dyeBatchProductionDaysAnalysisToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dyeBatchOnHoldReportsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.garmentDyeBatchWIPToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.currentReceipesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dyeReceipesDefinitionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dyeConsummablesStockOnHandToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -483,7 +484,7 @@
             this.inUseResetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
             this.PBar1 = new System.Windows.Forms.ProgressBar();
-            this.garmentDyeBatchWIPToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.productCodesODOOToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             this.SuspendLayout();
@@ -1353,7 +1354,7 @@
             this.dyeOrdersToolStripMenuItem.Text = "Dye Orders (Fabric)";
             this.dyeOrdersToolStripMenuItem.Click += new System.EventHandler(this.dyeOrdersToolStripMenuItem_Click);
             // 
-            // dyOrdersGarmentsToolStripMenuItem git
+            // dyOrdersGarmentsToolStripMenuItem
             // 
             this.dyOrdersGarmentsToolStripMenuItem.Name = "dyOrdersGarmentsToolStripMenuItem";
             this.dyOrdersGarmentsToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
@@ -1734,6 +1735,13 @@
             this.dyeBatchOnHoldReportsToolStripMenuItem.Size = new System.Drawing.Size(284, 22);
             this.dyeBatchOnHoldReportsToolStripMenuItem.Text = "Dye Batch On Hold Reports";
             this.dyeBatchOnHoldReportsToolStripMenuItem.Click += new System.EventHandler(this.dyeBatchOnHoldReportsToolStripMenuItem_Click);
+            // 
+            // garmentDyeBatchWIPToolStripMenuItem
+            // 
+            this.garmentDyeBatchWIPToolStripMenuItem.Name = "garmentDyeBatchWIPToolStripMenuItem";
+            this.garmentDyeBatchWIPToolStripMenuItem.Size = new System.Drawing.Size(284, 22);
+            this.garmentDyeBatchWIPToolStripMenuItem.Text = "Garment Dye Batch - WIP";
+            this.garmentDyeBatchWIPToolStripMenuItem.Click += new System.EventHandler(this.garmentDyeBatchWIPToolStripMenuItem_Click);
             // 
             // currentReceipesToolStripMenuItem
             // 
@@ -3531,7 +3539,8 @@
             this.nonStockItemsToolStripMenuItem,
             this.stockTakeFrequencyCodesToolStripMenuItem,
             this.productTypeGoodsToolStripMenuItem,
-            this.greigeQualityToolStripMenuItem});
+            this.greigeQualityToolStripMenuItem,
+            this.productCodesODOOToolStripMenuItem});
             this.stockToolStripMenuItem.Name = "stockToolStripMenuItem";
             this.stockToolStripMenuItem.Size = new System.Drawing.Size(196, 22);
             this.stockToolStripMenuItem.Text = "Stock";
@@ -4125,12 +4134,12 @@
             this.PBar1.Size = new System.Drawing.Size(402, 23);
             this.PBar1.TabIndex = 5;
             // 
-            // garmentDyeBatchWIPToolStripMenuItem
+            // productCodesODOOToolStripMenuItem
             // 
-            this.garmentDyeBatchWIPToolStripMenuItem.Name = "garmentDyeBatchWIPToolStripMenuItem";
-            this.garmentDyeBatchWIPToolStripMenuItem.Size = new System.Drawing.Size(284, 22);
-            this.garmentDyeBatchWIPToolStripMenuItem.Text = "Garment Dye Batch - WIP";
-            this.garmentDyeBatchWIPToolStripMenuItem.Click += new System.EventHandler(this.garmentDyeBatchWIPToolStripMenuItem_Click);
+            this.productCodesODOOToolStripMenuItem.Name = "productCodesODOOToolStripMenuItem";
+            this.productCodesODOOToolStripMenuItem.Size = new System.Drawing.Size(255, 22);
+            this.productCodesODOOToolStripMenuItem.Text = "Product Codes (ODOO)";
+            this.productCodesODOOToolStripMenuItem.Click += new System.EventHandler(this.productCodesODOOToolStripMenuItem_Click);
             // 
             // frmTLMain
             // 
@@ -4609,5 +4618,6 @@
         private System.Windows.Forms.ToolStripMenuItem wIPQuickLookForExpiditingToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem dyeOrderPlanningToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem garmentDyeBatchWIPToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem productCodesODOOToolStripMenuItem;
     }
 }

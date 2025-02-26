@@ -124,10 +124,6 @@
       <Project>{63a02526-ea45-47d8-ab30-35bdc70be2d1}</Project>
       <Name>CMT</Name>
     </ProjectReference>
-    <ProjectReference Include="..\DyeHouse\DyeHouse.csproj">
-      <Project>{0d996896-10f0-44f7-bc41-82085f696571}</Project>
-      <Name>DyeHouse</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Knitting\Knitting.csproj">
       <Project>{312d5072-83ac-4fd4-8eef-c50d519857fb}</Project>
       <Name>Knitting</Name>

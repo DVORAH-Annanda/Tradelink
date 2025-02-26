@@ -79,7 +79,7 @@ namespace CustomerServices
 
         private void ExportToExcel(List<TLCSV_StockOnHand> stockOnHandDetail)
         {
-            string fileName = $"FINISHED GOODS PRODUCTION {DateTime.Now:ddMMyy}.xlsx";
+            string fileName = $"FINISHED GOODS PRODUCTION {DateTime.Now:yyyyMMdd}.xlsx";
             string filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), fileName);
 
             using (var workbook = new XLWorkbook())
@@ -88,39 +88,75 @@ namespace CustomerServices
 
                 // Headers
                 worksheet.Cell(1, 1).Value = "Warehouse ID";
-                worksheet.Cell(1, 2).Value = "Product Code";
-                worksheet.Cell(1, 3).Value = "Style ID";
-                worksheet.Cell(1, 4).Value = "Colour ID";
-                worksheet.Cell(1, 5).Value = "Size ID";
-                worksheet.Cell(1, 6).Value = "Grade";
-                worksheet.Cell(1, 7).Value = "Box Number";
-                worksheet.Cell(1, 8).Value = "Quantity";
-                worksheet.Cell(1, 9).Value = "Weight";
-                worksheet.Cell(1, 10).Value = "Box Type";
-                worksheet.Cell(1, 11).Value = "Transaction Date";
+                worksheet.Cell(1, 2).Value = "Warehouse Description";
+                worksheet.Cell(1, 3).Value = "Product Code";
+                worksheet.Cell(1, 4).Value = "Style ID";
 
-                int row = 2;
-                foreach (var item in stockOnHandDetail)
+                worksheet.Cell(1, 5).Value = "Style Description";
+                worksheet.Cell(1, 6).Value = "Colour ID";
+                worksheet.Cell(1, 7).Value = "Colour Description";
+                worksheet.Cell(1, 8).Value = "Size ID";
+                worksheet.Cell(1, 9).Value = "Size Description";
+                worksheet.Cell(1, 10).Value = "Grade";
+                worksheet.Cell(1, 11).Value = "Box Number";
+                worksheet.Cell(1, 12).Value = "Quantity";
+                worksheet.Cell(1, 13).Value = "Weight";
+                worksheet.Cell(1, 14).Value = "Box Type";
+                worksheet.Cell(1, 15).Value = "Box Description";
+                worksheet.Cell(1, 16).Value = "Transaction Date";
+
+                using (var context = new TTI2Entities())
                 {
-                    worksheet.Cell(row, 1).Value = item.TLSOH_WareHouse_FK;
-                    worksheet.Cell(row, 2).Value = item.TLSOH_PastelNumber;
-                    worksheet.Cell(row, 3).Value = item.TLSOH_Style_FK;
-                    worksheet.Cell(row, 4).Value = item.TLSOH_Colour_FK;
-                    worksheet.Cell(row, 5).Value = item.TLSOH_Size_FK;
-                    worksheet.Cell(row, 6).Value = item.TLSOH_Grade;
-                    worksheet.Cell(row, 7).Value = item.TLSOH_BoxNumber;
-                    worksheet.Cell(row, 8).Value = item.TLSOH_BoxedQty;
-                    worksheet.Cell(row, 9).Value = item.TLSOH_Weight;
-                    worksheet.Cell(row, 10).Value = item.TLSOH_BoxType;
-                    worksheet.Cell(row, 11).Value = $"{DateTime.Now:yyMMdd}";
-                    row++;
+                    int row = 2;
+                    foreach (var item in stockOnHandDetail)
+                    {
+                        // Retrieve additional details from the database
+                        var warehouse = context.TLADM_WhseStore.Find(item.TLSOH_WareHouse_FK);
+                        var style = context.TLADM_Styles.Find(item.TLSOH_Style_FK);
+                        var colour = context.TLADM_Colours.Find(item.TLSOH_Colour_FK);
+                        var size = context.TLADM_Sizes.Find(item.TLSOH_Size_FK);
+                        var boxType = context.TLADM_BoxTypes.Find(item.TLSOH_BoxType);
+
+                        // Lookup Product Code from TLADM_ProductCodes
+                        var productMapping = context.TLADM_ProductCodes
+                            .FirstOrDefault(p => p.StyleId == item.TLSOH_Style_FK
+                                              && p.ColourId == item.TLSOH_Colour_FK
+                                              && p.SizeId == item.TLSOH_Size_FK);
+
+                        string productCode = productMapping != null ? productMapping.ProductCode : "UNKNOWN";
+
+                        // Ensure Product Code is always uppercase
+                        productCode = productCode.ToUpper();
+
+                        // Fill cells with data
+                        worksheet.Cell(row, 1).Value = item.TLSOH_WareHouse_FK;
+                        worksheet.Cell(row, 2).Value = warehouse != null ? warehouse.WhStore_Description : "N/A";
+                        worksheet.Cell(row, 3).Value = productCode; // Product Code from TLADM_ProductCodes
+                        worksheet.Cell(row, 4).Value = item.TLSOH_Style_FK;
+                        worksheet.Cell(row, 5).Value = style != null ? style.Sty_Description : "N/A";
+                        worksheet.Cell(row, 6).Value = item.TLSOH_Colour_FK;
+                        worksheet.Cell(row, 7).Value = colour != null ? colour.Col_Display : "N/A";
+                        worksheet.Cell(row, 8).Value = item.TLSOH_Size_FK;
+                        worksheet.Cell(row, 9).Value = size != null ? size.SI_Description : "N/A";
+                        worksheet.Cell(row, 10).Value = item.TLSOH_Grade;
+                        worksheet.Cell(row, 11).Value = item.TLSOH_BoxNumber;
+                        worksheet.Cell(row, 12).Value = item.TLSOH_BoxedQty;
+                        worksheet.Cell(row, 13).Value = item.TLSOH_Weight;
+                        worksheet.Cell(row, 14).Value = item.TLSOH_BoxType;
+                        worksheet.Cell(row, 15).Value = boxType != null ? boxType.TLADMBT_Description : "N/A";
+                        worksheet.Cell(row, 16).Value = DateTime.Now.ToString("yyyyMMdd"); // Using full date format for clarity
+
+                        row++;
+                    }
                 }
 
                 workbook.SaveAs(filePath);
             }
 
-            MessageBox.Show($"Excel file saved successfully at {filePath}");
+            MessageBox.Show($"Excel file saved successfully at {filePath}", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
+
+
 
         private void frmCSViewRep_Load(object sender, EventArgs e)
         {

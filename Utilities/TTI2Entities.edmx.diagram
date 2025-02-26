@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="79df6c64e66c4e248f8a84ff4f8081a7" Name="Diagram1" ZoomLevel="42">
+      <Diagram DiagramId="79df6c64e66c4e248f8a84ff4f8081a7" Name="Diagram1" ZoomLevel="67">
         <EntityTypeShape EntityType="TTI2Model.TLADM_ConsumableGroups" Width="1.5" PointX="0.75" PointY="4.25" IsExpanded="true" />
         <EntityTypeShape EntityType="TTI2Model.TLADM_ConsumablesOther" Width="1.5" PointX="3" PointY="5.25" IsExpanded="true" />
         <EntityTypeShape EntityType="TTI2Model.TLADM_CustomerTypes" Width="1.5" PointX="18.75" PointY="13.375" IsExpanded="true" />
@@ -209,6 +209,7 @@
         <EntityTypeShape EntityType="TTI2Model.TLADM_DepartmentsArea" Width="1.5" PointX="11.375" PointY="45.75" />
         <EntityTypeShape EntityType="TTI2Model.TLDYE_DyeBatchDetails" Width="1.5" PointX="30.375" PointY="47.75" />
         <EntityTypeShape EntityType="TTI2Model.TLDYE_GarmentDyeingProduction" Width="1.5" PointX="9.375" PointY="48.75" />
+        <EntityTypeShape EntityType="TTI2Model.TLADM_ProductCodes" Width="1.5" PointX="13.25" PointY="3.25" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

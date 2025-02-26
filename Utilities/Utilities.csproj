@@ -302,6 +302,7 @@
     <Compile Include="TLADM_PanelAttributes.cs">
       <DependentUpon>TTI2Entities.tt</DependentUpon>
     </Compile>
+    <Compile Include="TLADM_ProductCodes.cs" />
     <Compile Include="TLADM_ProductionLoss.cs">
       <DependentUpon>TTI2Entities.tt</DependentUpon>
     </Compile>
@@ -755,6 +756,9 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="TTI2Entities.edmx.sql" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

@@ -218,6 +218,7 @@ namespace Utilities
         public virtual DbSet<TLADM_DepartmentsArea> TLADM_DepartmentsArea { get; set; }
         public virtual DbSet<TLDYE_DyeBatchDetails> TLDYE_DyeBatchDetails { get; set; }
         public virtual DbSet<TLDYE_GarmentDyeingProduction> TLDYE_GarmentDyeingProduction { get; set; }
+        public virtual DbSet<TLADM_ProductCodes> TLADM_ProductCodes { get; set; }
     
         public virtual int SelectCottonRecords(Nullable<int> contractNo, Nullable<int> supplierNo)
         {
