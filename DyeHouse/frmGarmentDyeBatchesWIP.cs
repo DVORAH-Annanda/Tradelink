@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Cutting;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -197,6 +198,40 @@ namespace DyeHouse
                     if (value != null)
                         queryParms.Colours.Remove(value);
                 }
+            }
+        }
+
+        private void btnSubmit_Click(object sender, EventArgs e)
+        {
+            Button oBtn = sender as Button;
+            if (oBtn != null)
+            {
+
+                //queryParms.RepSortOption = _RepSortOption;
+ 
+                queryParms.ToDate = DateTime.Now;
+
+                frmDyeViewReport vRep = new frmDyeViewReport(52, queryParms);
+                int h = Screen.PrimaryScreen.WorkingArea.Height;
+                int w = Screen.PrimaryScreen.WorkingArea.Width;
+                vRep.ClientSize = new Size(w, h);
+                vRep.ShowDialog(this);
+
+                if (queryParms.Styles.Count != 0)
+                {
+                    cmboStyle.Items.Clear();                }
+
+                if (queryParms.Colours.Count != 0)
+                {
+                    cmboColour.Items.Clear();
+                }
+
+                if (queryParms.Sizes.Count != 0)
+                {
+                    cmboSize.Items.Clear();
+                }
+
+                frmGarmentDyeBatchesWIP_Load(this, null);
             }
         }
     }

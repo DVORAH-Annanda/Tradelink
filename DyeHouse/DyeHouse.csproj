@@ -1105,6 +1105,12 @@
       <DependentUpon>FStockAdjustment.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="GarmentDyeingWIP.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GarmentDyeingWIP.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="GDyeBatch.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
