@@ -98,7 +98,7 @@ namespace Administration
                     if (row.IsNewRow) continue; // Skip the empty new row
 
                     // Get values from DataGridView
-                    string productCode = row.Cells["cProductCode"].Value?.ToString();
+                    string productCode = row.Cells["cProductCode"].Value?.ToString().ToUpper();
                     int styleId = Convert.ToInt32(row.Cells["cStyle"].Value);
                     int colourId = Convert.ToInt32(row.Cells["cColour"].Value);
                     int sizeId = Convert.ToInt32(row.Cells["cSize"].Value);
