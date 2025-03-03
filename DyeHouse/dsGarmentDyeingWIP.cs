@@ -1,8 +1,8 @@
-﻿
-namespace DyeHouse
+﻿namespace DyeHouse
 {
+
+
     partial class dsGarmentDyeingWIP
     {
     }
 }
-

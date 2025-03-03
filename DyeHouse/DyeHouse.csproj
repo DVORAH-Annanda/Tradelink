@@ -1105,6 +1105,12 @@
       <DependentUpon>FStockAdjustment.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="GarmentDyeingWIP.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GarmentDyeingWIP.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="GDyeBatch.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -2362,17 +2368,6 @@
       <DependentUpon>dsGarmentDyeingWIP.xsd</DependentUpon>
     </None>
     <None Include="DyeHouse.pfx" />
-    <None Include="dsGarmentDyeingWIP.xsc">
-      <DependentUpon>dsGarmentDyeingWIP.xsd</DependentUpon>
-    </None>
-    <None Include="dsGarmentDyeingWIP.xsd">
-      <SubType>Designer</SubType>
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>dsGarmentDyeingWIP.Designer.cs</LastGenOutput>
-    </None>
-    <None Include="dsGarmentDyeingWIP.xss">
-      <DependentUpon>dsGarmentDyeingWIP.xsd</DependentUpon>
-    </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
