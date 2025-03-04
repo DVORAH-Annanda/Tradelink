@@ -147,7 +147,7 @@ namespace CustomerServices
             FormLoaded = false;
             IList<TLCSV_WhseTransfer> Entries = null;
 
-            oChkConfirmation.Checked = false;
+            oChkConfirmation.Checked = true;
 
             using (var context = new TTI2Entities())
             {
