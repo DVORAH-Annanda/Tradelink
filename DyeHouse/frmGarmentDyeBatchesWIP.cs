@@ -207,9 +207,9 @@ namespace DyeHouse
             if (oBtn != null)
             {
 
-                //queryParms.RepSortOption = _RepSortOption;
+                queryParms.ReportSortOption = options;
  
-                queryParms.ToDate = DateTime.Now;
+                queryParms.DateWIP = DateTime.Now;
 
                 frmDyeViewReport vRep = new frmDyeViewReport(52, queryParms);
                 int h = Screen.PrimaryScreen.WorkingArea.Height;

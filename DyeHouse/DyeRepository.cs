@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Utilities;
 using LinqKit;
 using System.Collections;
+using Cutting;
 
 namespace DyeHouse
 {
@@ -296,6 +297,63 @@ namespace DyeHouse
             }
             return DO;
         }
+
+        //public IQueryable<TLDYE_DyeBatch> SelectWIPDyeBatches(DyeQueryParameters parameters)
+        //{
+        //    IQueryable<TLDYE_DyeBatch> DB;
+
+        //    //DB = _context.TLCUT_CutSheet.Where(x => x.TLCutSH_Date >= parameters.FromDate && x.TLCutSH_Date <= parameters.ToDate && !x.TLCutSH_WIPComplete && x.TLCutSH_Accepted && !x.TLCutSH_Closed).AsQueryable();
+
+        //    //if (parameters.Departments.Count != 0)
+        //    //{
+        //    //    var DeptPredicate = PredicateBuilder.New<TLCUT_CutSheet>();
+        //    //    foreach (var Dept in parameters.Departments)
+        //    //    {
+        //    //        var temp = Dept;
+        //    //        DeptPredicate = DeptPredicate.Or(s => s.TLCutSH_Department_FK == Dept.Dep_Id);
+        //    //    }
+
+        //    //    DB = DB.AsExpandable().Where(DeptPredicate);
+        //    //}
+
+        //    if (parameters.Qualities.Count != 0)
+        //    {
+        //        var CSPredicate = PredicateBuilder.New<TLCUT_CutSheet>();
+        //        foreach (var CSR in parameters.Qualities)
+        //        {
+        //            var temp = CSR;
+        //            CSPredicate = CSPredicate.Or(s => s.TLCutSH_Quality_FK == temp.TLGreige_Id);
+        //        }
+
+        //        DB = DB.AsExpandable().Where(CSPredicate);
+        //    }
+
+        //    if (parameters.Styles.Count != 0)
+        //    {
+        //        var CSPredicate = PredicateBuilder.New<TLCUT_CutSheet>();
+        //        foreach (var CSR in parameters.Styles)
+        //        {
+        //            var temp = CSR;
+        //            CSPredicate = CSPredicate.Or(s => s.TLCutSH_Styles_FK == temp.Sty_Id);
+        //        }
+
+        //        DB = DB.AsExpandable().Where(CSPredicate);
+        //    }
+
+        //    if (parameters.Colours.Count != 0)
+        //    {
+
+        //        var ColourPredicate = PredicateBuilder.New<TLDYE_DyeBatch>();
+        //        foreach (var Colour in parameters.Colours)
+        //        {
+        //            var temp = Colour;
+        //            ColourPredicate = ColourPredicate.Or(s => s.TLCutSH_Colour_FK == temp.Col_Id);
+        //        }
+
+        //        DB = DB.AsExpandable().Where(CSColourPredicate);
+        //    }
+        //    return DB;
+        //}
 
         public IQueryable<TLDYE_DyeBatch> SelectCommissionDyeBatches(DyeQueryParameters parameters)
         {
@@ -675,6 +733,7 @@ namespace DyeHouse
         public int DO_OptionSelected; 
         public DateTime FromDate;
         public DateTime ToDate;
+        public DateTime DateWIP;
         public bool CommissionCustomers;
         public bool RejectedBatches;
         public int ops3_ComboSelected;
@@ -692,6 +751,7 @@ namespace DyeHouse
         public bool DConsumablesFullDetail;
         public int Consumable_Whse_FK;
         public int DyeStage;
+        public int ReportSortOption;
         public DyeQueryParameters()
         {
             Sizes = new List<TLADM_Sizes>();
@@ -739,13 +799,12 @@ namespace DyeHouse
             FabricSalesPickingList = false;
             DyeStage = 0;
 
+            ReportSortOption = 0;
+
             Notes = new StringBuilder();
 
         }
-
-
     }
-
 
     public class DyeProductionDetails 
     {
@@ -754,6 +813,5 @@ namespace DyeHouse
         public Decimal PlannedProd { get; set; }
         public int DyeBatchPk { get; set; } 
 
-    }
-        
+    }        
 }

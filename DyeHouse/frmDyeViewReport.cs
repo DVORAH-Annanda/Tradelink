@@ -7520,226 +7520,227 @@ namespace DyeHouse
                 DataSet ds = new DataSet();
                 dsGarmentDyeingWIP.DataTable1DataTable dataTable1 = new dsGarmentDyeingWIP.DataTable1DataTable();
                 dsGarmentDyeingWIP.DataTable2DataTable dataTable2 = new dsGarmentDyeingWIP.DataTable2DataTable();
-                //_repo = new CuttingRepository();
-                string[][] ColumnNames = null;
+                _repo = new DyeRepository();
+                core = new Util();
+                //string[][] ColumnNames = null;
 
-                ColumnNames = new string[][]
-                {   new string[] {"Text6", string.Empty},
-                        new string[] {"Text7", string.Empty},
-                        new string[] {"Text8", string.Empty},
-                        new string[] {"Text9", string.Empty},
-                        new string[] {"Text10", string.Empty},
-                        new string[] {"Text11", string.Empty},
-                        new string[] {"Text12", string.Empty},
-                        new string[] {"Text14", string.Empty},
-                        new string[] {"Text15", string.Empty},
-                        new string[] {"Text16", string.Empty},
-                        new string[] {"Text17", string.Empty}
-                };
+                //ColumnNames = new string[][]
+                //{   new string[] {"Text6", string.Empty},
+                //        new string[] {"Text7", string.Empty},
+                //        new string[] {"Text8", string.Empty},
+                //        new string[] {"Text9", string.Empty},
+                //        new string[] {"Text10", string.Empty},
+                //        new string[] {"Text11", string.Empty},
+                //        new string[] {"Text12", string.Empty},
+                //        new string[] {"Text14", string.Empty},
+                //        new string[] {"Text15", string.Empty},
+                //        new string[] {"Text16", string.Empty},
+                //        new string[] {"Text17", string.Empty}
+                //};
 
-                Util core = new Util();
-
+   
                 dsGarmentDyeingWIP.DataTable1Row dtr = dataTable1.NewDataTable1Row();
                 dtr.gdPK = "";
-                dtr.gdReportTitle = "Garment Dye Batch WIP";
-                //dtr.gdToDate = _parms.ToDate;
+                dtr.reportTitle = "Garment Dye Batch WIP";
+                dtr.date = _parms.DateWIP.ToString("yyyy-MM-dd"); ;
                 dataTable1.AddDataTable1Row(dtr);
 
-                int i = 0;
-                var CNames = core.CreateColumnNames();
+                //int i = 0;
+                //var CNames = core.CreateColumnNames();
 
-                foreach (var CName in CNames)
+                //foreach (var CName in CNames)
+                //{
+                //    ColumnNames[i++][1] = CName[1];
+                //}
+
+                using (var context = new TTI2Entities())
                 {
-                    ColumnNames[i++][1] = CName[1];
-                }
+                    ////    var Existing = _repo.SelectWIPDyeBatches(_parms).OrderBy(x => x.TLCutSH_No);
+                    ////    foreach (var row in Existing)
+                    ////    {
+                    ////        DataSet4.DataTable1Row nr = dataTable1.NewDataTable1Row();
+                    ////        nr.Pk = 1;
+                    ////        nr.Col1 = 0;
+                    ////        nr.Col2 = 0;
+                    ////        nr.Col3 = 0;
+                    ////        nr.Col4 = 0;
+                    ////        nr.Col5 = 0;
+                    ////        nr.Col6 = 0;
+                    ////        nr.Col7 = 0;
+                    ////        nr.Col8 = 0;
+                    ////        nr.Col9 = 0;
+                    ////        nr.Col10 = 0;
+                    ////        nr.Col11 = 0;
+                    ////        nr.Date = row.TLCutSH_Date;
+                    ////        nr.Department = context.TLADM_Departments.Find(row.TLCutSH_Department_FK).Dep_Description;
+                    ////        nr.CutSheetNo = row.TLCutSH_No;
+                    ////        nr.Style = _Styles.FirstOrDefault(s => s.Sty_Id == row.TLCutSH_Styles_FK).Sty_Description;
+                    ////        nr.Colour = _Colours.FirstOrDefault(s => s.Col_Id == row.TLCutSH_Colour_FK).Col_Display;
+                    ////        nr.Priority = row.TLCUTSH_Priority;
+                    ////        nr.OnHold = row.TLCUTSH_OnHold;
+                    ////        nr.DyeBatch = context.TLDYE_DyeBatch.Find(row.TLCutSH_DyeBatch_FK).DYEB_BatchNo;
 
-                //using (var context = new TTI2Entities())
-                //{
-                //    var Existing = _repo.SelectWIPCutSheets(_parms).OrderBy(x => x.TLCutSH_No);
-                //    foreach (var row in Existing)
-                //    {
-                //        DataSet4.DataTable1Row nr = dataTable1.NewDataTable1Row();
-                //        nr.Pk = 1;
-                //        nr.Col1 = 0;
-                //        nr.Col2 = 0;
-                //        nr.Col3 = 0;
-                //        nr.Col4 = 0;
-                //        nr.Col5 = 0;
-                //        nr.Col6 = 0;
-                //        nr.Col7 = 0;
-                //        nr.Col8 = 0;
-                //        nr.Col9 = 0;
-                //        nr.Col10 = 0;
-                //        nr.Col11 = 0;
-                //        nr.Date = row.TLCutSH_Date;
-                //        nr.Department = context.TLADM_Departments.Find(row.TLCutSH_Department_FK).Dep_Description;
-                //        nr.CutSheetNo = row.TLCutSH_No;
-                //        nr.Style = _Styles.FirstOrDefault(s => s.Sty_Id == row.TLCutSH_Styles_FK).Sty_Description;
-                //        nr.Colour = _Colours.FirstOrDefault(s => s.Col_Id == row.TLCutSH_Colour_FK).Col_Display;
-                //        nr.Priority = row.TLCUTSH_Priority;
-                //        nr.OnHold = row.TLCUTSH_OnHold;
-                //        nr.DyeBatch = context.TLDYE_DyeBatch.Find(row.TLCutSH_DyeBatch_FK).DYEB_BatchNo;
-
-                //        var xSizes = context.TLCUT_ExpectedUnits.Where(x => x.TLCUTE_CutSheet_FK == row.TLCutSH_Pk).ToList();
-                //        foreach (var xSize in xSizes)
-                //        {
-                //            var Size = _Sizes.FirstOrDefault(s => s.SI_id == xSize.TLCUTE_Size_FK);
-                //            if (Size != null)
-                //            {
-                //                if (Size.SI_ColNumber == 1)
-                //                    nr.Col1 += xSize.TLCUTE_NoofGarments;
-                //                else if (Size.SI_ColNumber == 2)
-                //                    nr.Col2 += xSize.TLCUTE_NoofGarments;
-                //                else if (Size.SI_ColNumber == 3)
-                //                    nr.Col3 += xSize.TLCUTE_NoofGarments;
-                //                else if (Size.SI_ColNumber == 4)
-                //                    nr.Col4 += xSize.TLCUTE_NoofGarments;
-                //                else if (Size.SI_ColNumber == 5)
-                //                    nr.Col5 += xSize.TLCUTE_NoofGarments;
-                //                else if (Size.SI_ColNumber == 6)
-                //                    nr.Col6 += xSize.TLCUTE_NoofGarments;
-                //                else if (Size.SI_ColNumber == 7)
-                //                    nr.Col7 += xSize.TLCUTE_NoofGarments;
-                //                else if (Size.SI_ColNumber == 8)
-                //                    nr.Col8 += xSize.TLCUTE_NoofGarments;
-                //                else if (Size.SI_ColNumber == 9)
-                //                    nr.Col9 += xSize.TLCUTE_NoofGarments;
-                //                else if (Size.SI_ColNumber == 10)
-                //                    nr.Col10 += xSize.TLCUTE_NoofGarments;
-                //                else
-                //                    nr.Col11 += xSize.TLCUTE_NoofGarments;
-                //            }
-                //        }
-                //        dataTable1.AddDataTable1Row(nr);
-                //    }
+                    ////        var xSizes = context.TLCUT_ExpectedUnits.Where(x => x.TLCUTE_CutSheet_FK == row.TLCutSH_Pk).ToList();
+                    ////        foreach (var xSize in xSizes)
+                    ////        {
+                    ////            var Size = _Sizes.FirstOrDefault(s => s.SI_id == xSize.TLCUTE_Size_FK);
+                    ////            if (Size != null)
+                    ////            {
+                    ////                if (Size.SI_ColNumber == 1)
+                    ////                    nr.Col1 += xSize.TLCUTE_NoofGarments;
+                    ////                else if (Size.SI_ColNumber == 2)
+                    ////                    nr.Col2 += xSize.TLCUTE_NoofGarments;
+                    ////                else if (Size.SI_ColNumber == 3)
+                    ////                    nr.Col3 += xSize.TLCUTE_NoofGarments;
+                    ////                else if (Size.SI_ColNumber == 4)
+                    ////                    nr.Col4 += xSize.TLCUTE_NoofGarments;
+                    ////                else if (Size.SI_ColNumber == 5)
+                    ////                    nr.Col5 += xSize.TLCUTE_NoofGarments;
+                    ////                else if (Size.SI_ColNumber == 6)
+                    ////                    nr.Col6 += xSize.TLCUTE_NoofGarments;
+                    ////                else if (Size.SI_ColNumber == 7)
+                    ////                    nr.Col7 += xSize.TLCUTE_NoofGarments;
+                    ////                else if (Size.SI_ColNumber == 8)
+                    ////                    nr.Col8 += xSize.TLCUTE_NoofGarments;
+                    ////                else if (Size.SI_ColNumber == 9)
+                    ////                    nr.Col9 += xSize.TLCUTE_NoofGarments;
+                    ////                else if (Size.SI_ColNumber == 10)
+                    ////                    nr.Col10 += xSize.TLCUTE_NoofGarments;
+                    ////                else
+                    ////                    nr.Col11 += xSize.TLCUTE_NoofGarments;
+                    ////            }
+                    ////        }
+                    ////        dataTable1.AddDataTable1Row(nr);
+                    ////    }
 
 
-                //    if (dataTable1.Rows.Count != 0)
-                //    {
-                //        System.Data.DataTable dt = new System.Data.DataTable();
-                //        try
-                //        {
-                //            if (_parms.RepSortOption == 1)
-                //            {
-                //                dt = (DataTable)dataTable1.Select(null, dataTable1.Columns[1].ColumnName, DataViewRowState.Added).CopyToDataTable();
-                //            }
-                //            else if (_parms.RepSortOption == 2)
-                //            {
-                //                dt = (DataTable)dataTable1.Select(null, dataTable1.Columns[3].ColumnName, DataViewRowState.Added).CopyToDataTable();
-                //            }
-                //            else if (_parms.RepSortOption == 3)
-                //            {
-                //                dt = (DataTable)dataTable1.Select(null, dataTable1.Columns[5].ColumnName, DataViewRowState.Added).CopyToDataTable();
-                //            }
-                //            dataTable1.Rows.Clear();
+                    ////    if (dataTable1.Rows.Count != 0)
+                    ////    {
+                    ////        System.Data.DataTable dt = new System.Data.DataTable();
+                    ////        try
+                    ////        {
+                    ////            if (_parms.RepSortOption == 1)
+                    ////            {
+                    ////                dt = (DataTable)dataTable1.Select(null, dataTable1.Columns[1].ColumnName, DataViewRowState.Added).CopyToDataTable();
+                    ////            }
+                    ////            else if (_parms.RepSortOption == 2)
+                    ////            {
+                    ////                dt = (DataTable)dataTable1.Select(null, dataTable1.Columns[3].ColumnName, DataViewRowState.Added).CopyToDataTable();
+                    ////            }
+                    ////            else if (_parms.RepSortOption == 3)
+                    ////            {
+                    ////                dt = (DataTable)dataTable1.Select(null, dataTable1.Columns[5].ColumnName, DataViewRowState.Added).CopyToDataTable();
+                    ////            }
+                    ////            dataTable1.Rows.Clear();
 
-                //            foreach (DataRow dr in dt.Rows)
-                //            {
-                //                DataSet4.DataTable1Row nr = dataTable1.NewDataTable1Row();
-                //                nr.Pk = dr.Field<int>(0);
-                //                nr.CutSheetNo = dr.Field<String>(1);
-                //                nr.Date = dr.Field<DateTime>(2);
-                //                nr.Colour = dr.Field<String>(3);
-                //                nr.ErrorLog = dr.Field<String>(4);
-                //                nr.Style = dr.Field<String>(5);
-                //                nr.Department = dr.Field<String>(6);
-                //                nr.OnHold = dr.Field<bool>(7);
-                //                nr.Priority = dr.Field<bool>(8);
-                //                nr.Col1 = dr.Field<int>(9);
-                //                nr.Col2 = dr.Field<int>(10);
-                //                nr.Col3 = dr.Field<int>(11);
-                //                nr.Col4 = dr.Field<int>(12);
-                //                nr.Col5 = dr.Field<int>(13);
-                //                nr.Col6 = dr.Field<int>(14);
-                //                nr.Col7 = dr.Field<int>(15);
-                //                nr.Col8 = dr.Field<int>(16);
-                //                nr.Col9 = dr.Field<int>(17);
-                //                nr.Col10 = dr.Field<int>(18);
-                //                nr.Col11 = dr.Field<int>(19);
-                //                nr.DyeBatch = dr.Field<String>(20);
+                    ////            foreach (DataRow dr in dt.Rows)
+                    ////            {
+                    ////                DataSet4.DataTable1Row nr = dataTable1.NewDataTable1Row();
+                    ////                nr.Pk = dr.Field<int>(0);
+                    ////                nr.CutSheetNo = dr.Field<String>(1);
+                    ////                nr.Date = dr.Field<DateTime>(2);
+                    ////                nr.Colour = dr.Field<String>(3);
+                    ////                nr.ErrorLog = dr.Field<String>(4);
+                    ////                nr.Style = dr.Field<String>(5);
+                    ////                nr.Department = dr.Field<String>(6);
+                    ////                nr.OnHold = dr.Field<bool>(7);
+                    ////                nr.Priority = dr.Field<bool>(8);
+                    ////                nr.Col1 = dr.Field<int>(9);
+                    ////                nr.Col2 = dr.Field<int>(10);
+                    ////                nr.Col3 = dr.Field<int>(11);
+                    ////                nr.Col4 = dr.Field<int>(12);
+                    ////                nr.Col5 = dr.Field<int>(13);
+                    ////                nr.Col6 = dr.Field<int>(14);
+                    ////                nr.Col7 = dr.Field<int>(15);
+                    ////                nr.Col8 = dr.Field<int>(16);
+                    ////                nr.Col9 = dr.Field<int>(17);
+                    ////                nr.Col10 = dr.Field<int>(18);
+                    ////                nr.Col11 = dr.Field<int>(19);
+                    ////                nr.DyeBatch = dr.Field<String>(20);
 
-                //                dataTable1.AddDataTable1Row(nr);
-                //            }
-                //        }
-                //        catch (Exception ex)
-                //        {
-                //            MessageBox.Show(ex.Message);
-                //            return;
-                //        }
-                //    }
+                    ////                dataTable1.AddDataTable1Row(nr);
+                    ////            }
+                    ////        }
+                    ////        catch (Exception ex)
+                    ////        {
+                    ////            MessageBox.Show(ex.Message);
+                    ////            return;
+                    ////        }
+                    ////    }
 
 
-                //}
+                    ////}
 
-                //if (dataTable1.Rows.Count == 0)
-                //{
-                //    DataSet4.DataTable1Row tr = dataTable1.NewDataTable1Row();
-                //    tr.Pk = 1;
-                //    tr.ErrorLog = "There are no records pertaining to selection made";
-                //    dataTable1.AddDataTable1Row(tr);
-                //}
+                    ////if (dataTable1.Rows.Count == 0)
+                    ////{
+                    ////    DataSet4.DataTable1Row tr = dataTable1.NewDataTable1Row();
+                    ////    tr.Pk = 1;
+                    ////    tr.ErrorLog = "There are no records pertaining to selection made";
+                    ////    dataTable1.AddDataTable1Row(tr);
+                    ////}
 
-                //ds.Tables.Add(dataTable1);
-                //ds.Tables.Add(dataTable2);
+                    ds.Tables.Add(dataTable1);
+                ds.Tables.Add(dataTable2);
 
-                //WIPCutting wipCut = null;
-                //WIPCuttingByCS wipCut_CS = null;
+                ////WIPCutting wipCut = null;
+                ////WIPCuttingByCS wipCut_CS = null;
 
-                //if (_parms.RepSortOption == 1)
-                //{
-                //    wipCut_CS = new WIPCuttingByCS();
-                //    wipCut_CS.SetDataSource(ds);
-                //}
-                //else if (_parms.RepSortOption == 2)
-                //{
-                //    wipCut = new WIPCutting();
-                //    wipCut.SetDataSource(ds);
-                //}
-                //else
-                //{
-                //    wipCut = new WIPCutting();
-                //    wipCut.SetDataSource(ds);
-                //}
+                ////if (_parms.RepSortOption == 1)
+                ////{
+                ////    wipCut_CS = new WIPCuttingByCS();
+                ////    wipCut_CS.SetDataSource(ds);
+                ////}
+                ////else if (_parms.RepSortOption == 2)
+                ////{
+                ////    wipCut = new WIPCutting();
+                ////    wipCut.SetDataSource(ds);
+                ////}
+                ////else
+                ////{
+                ////    wipCut = new WIPCutting();
+                ////    wipCut.SetDataSource(ds);
+                ////}
 
-                //System.Collections.IEnumerator ie = null;
+                ////System.Collections.IEnumerator ie = null;
 
-                //if (_parms.RepSortOption == 1)
-                //    ie = wipCut_CS.Section2.ReportObjects.GetEnumerator();
-                //else
-                //    ie = wipCut.Section2.ReportObjects.GetEnumerator();
+                ////if (_parms.RepSortOption == 1)
+                ////    ie = wipCut_CS.Section2.ReportObjects.GetEnumerator();
+                ////else
+                ////    ie = wipCut.Section2.ReportObjects.GetEnumerator();
 
-                //while (ie.MoveNext())
-                //{
-                //    if (ie.Current != null && ie.Current.GetType().ToString().Equals("CrystalDecisions.CrystalReports.Engine.TextObject"))
-                //    {
-                //        CrystalDecisions.CrystalReports.Engine.TextObject to = (CrystalDecisions.CrystalReports.Engine.TextObject)ie.Current;
+                ////while (ie.MoveNext())
+                ////{
+                ////    if (ie.Current != null && ie.Current.GetType().ToString().Equals("CrystalDecisions.CrystalReports.Engine.TextObject"))
+                ////    {
+                ////        CrystalDecisions.CrystalReports.Engine.TextObject to = (CrystalDecisions.CrystalReports.Engine.TextObject)ie.Current;
 
-                //        var result = (from u in ColumnNames
-                //                      where u[0] == to.Name
-                //                      select u).FirstOrDefault();
+                ////        var result = (from u in ColumnNames
+                ////                      where u[0] == to.Name
+                ////                      select u).FirstOrDefault();
 
-                //        if (result != null)
-                //            to.Text = result[1];
-                //    }
-                //}
+                ////        if (result != null)
+                ////            to.Text = result[1];
+                ////    }
+                ////}
 
-                //if (_parms.RepSortOption == 1)
-                //{
-                //    // AS20240315 v5.0.0.124 - Added totals for all locations
-                //    crystalReportViewer1.ReportSource = wipCut_CS;
+                ////if (_parms.RepSortOption == 1)
+                ////{
+                ////    // AS20240315 v5.0.0.124 - Added totals for all locations
+                ////    crystalReportViewer1.ReportSource = wipCut_CS;
 
-                //}
-                //else
-                //{
-                //    if (_parms.RepSortOption == 2)
-                //        wipCut.DataDefinition.Groups[1].ConditionField = wipCut.Database.Tables[0].Fields[3];
-                //    else
-                //        wipCut.DataDefinition.Groups[1].ConditionField = wipCut.Database.Tables[0].Fields[5];
+                ////}
+                ////else
+                ////{
+                ////    if (_parms.RepSortOption == 2)
+                ////        wipCut.DataDefinition.Groups[1].ConditionField = wipCut.Database.Tables[0].Fields[3];
+                ////    else
+                ////        wipCut.DataDefinition.Groups[1].ConditionField = wipCut.Database.Tables[0].Fields[5];
 
                 GarmentDyeingWIP garmentDyeingWIP = new GarmentDyeingWIP();
-                crystalReportViewer1.ReportSource = garmentDyeingWIP;
+                    garmentDyeingWIP.SetDataSource(ds);
+                    crystalReportViewer1.ReportSource = garmentDyeingWIP;
 
-                //}
+                }
 
             }
             else if (_RepNo == 65)
