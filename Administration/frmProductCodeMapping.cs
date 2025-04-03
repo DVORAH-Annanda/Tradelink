@@ -1,12 +1,9 @@
 ﻿using System;
+using System.Configuration;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Data.SqlClient;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using Utilities;
 
@@ -16,6 +13,8 @@ namespace Administration
     {
 
         private TTI2Entities _context = new TTI2Entities();
+        string connectionString = ConfigurationManager.ConnectionStrings["TTISqlConnection"].ConnectionString;
+
         public frmProductCodeMapping()
         {
             InitializeComponent();
@@ -25,24 +24,27 @@ namespace Administration
 
         private void LoadProductCodes()
         {
-            using (var context = new TTI2Entities())
+            dgvMapping.Rows.Clear(); // Clear previous data
+
+            string query = "SELECT ProductCode, StyleId, ColourId, SizeId FROM TLADM_ProductCodes";
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            using (SqlCommand cmd = new SqlCommand(query, conn))
             {
-                dgvMapping.Rows.Clear(); // Clear previous data
-
-                // Load product codes
-                var productCodes = context.TLADM_ProductCodes.ToList();
-
-                foreach (var product in productCodes)
+                conn.Open();
+                using (SqlDataReader reader = cmd.ExecuteReader())
                 {
-                    int rowIndex = dgvMapping.Rows.Add();
-                    DataGridViewRow row = dgvMapping.Rows[rowIndex];
+                    while (reader.Read())
+                    {
+                        int rowIndex = dgvMapping.Rows.Add();
+                        DataGridViewRow row = dgvMapping.Rows[rowIndex];
 
-                    row.Cells["cProductCode"].Value = product.ProductCode;
-                    row.Cells["cStyle"].Value = product.StyleId;   // Must match ValueMember of ComboBox
-                    row.Cells["cColour"].Value = product.ColourId; // Must match ValueMember of ComboBox
-                    row.Cells["cSize"].Value = product.SizeId;     // Must match ValueMember of ComboBox
+                        row.Cells["cProductCode"].Value = reader["ProductCode"].ToString();
+                        row.Cells["cStyle"].Value = reader["StyleId"];
+                        row.Cells["cColour"].Value = reader["ColourId"];
+                        row.Cells["cSize"].Value = reader["SizeId"];
+                    }
                 }
-
             }
         }
 
@@ -90,50 +92,57 @@ namespace Administration
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-            TLADM_ProductCodes productCodes = new TLADM_ProductCodes();
-            using (var context = new TTI2Entities())
+            using (SqlConnection conn = new SqlConnection(connectionString))
             {
+                conn.Open();
                 foreach (DataGridViewRow row in dgvMapping.Rows)
                 {
-                    if (row.IsNewRow) continue; // Skip the empty new row
+                    if (row.IsNewRow) continue; // Skip empty new row
 
-                    // Get values from DataGridView
                     string productCode = row.Cells["cProductCode"].Value?.ToString().ToUpper();
                     int styleId = Convert.ToInt32(row.Cells["cStyle"].Value);
                     int colourId = Convert.ToInt32(row.Cells["cColour"].Value);
                     int sizeId = Convert.ToInt32(row.Cells["cSize"].Value);
 
-                    // Check if the product code already exists
-                    var existingRecord = context.TLADM_ProductCodes.FirstOrDefault(p => p.ProductCode == productCode);
+                    // Check if the product code exists
+                    string checkQuery = "SELECT COUNT(*) FROM TLADM_ProductCodes WHERE ProductCode = @ProductCode";
+                    using (SqlCommand checkCmd = new SqlCommand(checkQuery, conn))
+                    {
+                        checkCmd.Parameters.AddWithValue("@ProductCode", productCode);
+                        int count = (int)checkCmd.ExecuteScalar();
 
-                    if (existingRecord != null)
-                    {
-                        // Update existing record
-                        existingRecord.StyleId = styleId;
-                        existingRecord.ColourId = colourId;
-                        existingRecord.SizeId = sizeId;
-                    }
-                    else
-                    {
-                        // Add new record
-                        var newRecord = new TLADM_ProductCodes
+                        if (count > 0)
                         {
-                            ProductCode = productCode,
-                            StyleId = styleId,
-                            ColourId = colourId,
-                            SizeId = sizeId
-                        };
-                        context.TLADM_ProductCodes.Add(newRecord);
+                            // Update existing record
+                            string updateQuery = "UPDATE TLADM_ProductCodes SET StyleId = @StyleId, ColourId = @ColourId, SizeId = @SizeId WHERE ProductCode = @ProductCode";
+                            using (SqlCommand updateCmd = new SqlCommand(updateQuery, conn))
+                            {
+                                updateCmd.Parameters.AddWithValue("@ProductCode", productCode);
+                                updateCmd.Parameters.AddWithValue("@StyleId", styleId);
+                                updateCmd.Parameters.AddWithValue("@ColourId", colourId);
+                                updateCmd.Parameters.AddWithValue("@SizeId", sizeId);
+                                updateCmd.ExecuteNonQuery();
+                            }
+                        }
+                        else
+                        {
+                            // Insert new record
+                            string insertQuery = "INSERT INTO TLADM_ProductCodes (ProductCode, StyleId, ColourId, SizeId) VALUES (@ProductCode, @StyleId, @ColourId, @SizeId)";
+                            using (SqlCommand insertCmd = new SqlCommand(insertQuery, conn))
+                            {
+                                insertCmd.Parameters.AddWithValue("@ProductCode", productCode);
+                                insertCmd.Parameters.AddWithValue("@StyleId", styleId);
+                                insertCmd.Parameters.AddWithValue("@ColourId", colourId);
+                                insertCmd.Parameters.AddWithValue("@SizeId", sizeId);
+                                insertCmd.ExecuteNonQuery();
+                            }
+                        }
                     }
                 }
-
-                // Save changes to the database
-                context.SaveChanges();
             }
 
             MessageBox.Show("Data saved successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
-
     }
 }
 
