@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
+using System.Configuration;
 using System.Data;
 using System.Drawing;
 using System.Linq;
@@ -13,11 +13,13 @@ using System.Collections;
 using CrystalDecisions.CrystalReports.Engine;
 using ClosedXML.Excel;
 using DocumentFormat.OpenXml.Office.MetaAttributes;
+using System.Data.SqlClient;
 
 namespace CustomerServices
 {
     public partial class frmCSViewRep : Form
     {
+        string connectionString = ConfigurationManager.ConnectionStrings["TTISqlConnection"].ConnectionString;
         int _RepNo;
         int _Pk;
         CustomerServicesParameters _QueryParms;
@@ -91,7 +93,6 @@ namespace CustomerServices
                 worksheet.Cell(1, 2).Value = "Warehouse Description";
                 worksheet.Cell(1, 3).Value = "Product Code";
                 worksheet.Cell(1, 4).Value = "Style ID";
-
                 worksheet.Cell(1, 5).Value = "Style Description";
                 worksheet.Cell(1, 6).Value = "Colour ID";
                 worksheet.Cell(1, 7).Value = "Colour Description";
@@ -118,12 +119,14 @@ namespace CustomerServices
                         var boxType = context.TLADM_BoxTypes.Find(item.TLSOH_BoxType);
 
                         // Lookup Product Code from TLADM_ProductCodes
-                        var productMapping = context.TLADM_ProductCodes
-                            .FirstOrDefault(p => p.StyleId == item.TLSOH_Style_FK
-                                              && p.ColourId == item.TLSOH_Colour_FK
-                                              && p.SizeId == item.TLSOH_Size_FK);
+                        //var productMapping = context.TLADM_ProductCodes
+                        //    .FirstOrDefault(p => p.StyleId == item.TLSOH_Style_FK
+                        //                      && p.ColourId == item.TLSOH_Colour_FK
+                        //                      && p.SizeId == item.TLSOH_Size_FK);
 
-                        string productCode = productMapping != null ? productMapping.ProductCode : "UNKNOWN";
+                        string productCode = GetProductCodes(item.TLSOH_Style_FK, item.TLSOH_Colour_FK, item.TLSOH_Size_FK);
+
+                        //string productCode = productMapping != null ? productMapping.ProductCode : "UNKNOWN";
 
                         // Ensure Product Code is always uppercase
                         productCode = productCode.ToUpper();
@@ -156,7 +159,37 @@ namespace CustomerServices
             MessageBox.Show($"Excel file saved successfully at {filePath}", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
+        private string GetProductCodes(int styleId, int colourId, int sizeId)
+        {
 
+            string productCode = "UNKNOWN";
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
+                string query = @"
+                                    SELECT ProductCode 
+                                    FROM TLADM_ProductCodes 
+                                    WHERE StyleId = @StyleId 
+                                      AND ColourId = @ColourId 
+                                      AND SizeId = @SizeId";
+
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
+                    cmd.Parameters.AddWithValue("@StyleId", styleId);
+                    cmd.Parameters.AddWithValue("@ColourId", colourId);
+                    cmd.Parameters.AddWithValue("@SizeId", sizeId);
+
+                    object result = cmd.ExecuteScalar();
+                    if (result != null)
+                    {
+                        productCode = result.ToString().ToUpper(); // Ensure uppercase
+                    }
+                }
+            }
+
+            return productCode;
+        }
 
         private void frmCSViewRep_Load(object sender, EventArgs e)
         {
