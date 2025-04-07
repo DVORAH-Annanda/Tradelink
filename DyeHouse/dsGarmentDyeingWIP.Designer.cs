@@ -604,6 +604,22 @@ namespace DyeHouse {
             
             private global::System.Data.DataColumn columnquantity1;
             
+            private global::System.Data.DataColumn columnquantity2;
+            
+            private global::System.Data.DataColumn columnquantity3;
+            
+            private global::System.Data.DataColumn columnquantity4;
+            
+            private global::System.Data.DataColumn columnquantity5;
+            
+            private global::System.Data.DataColumn columnquantity6;
+            
+            private global::System.Data.DataColumn columnquantity7;
+            
+            private global::System.Data.DataColumn columnquantity8;
+            
+            private global::System.Data.DataColumn columnquantity9;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public DataTable2DataTable() {
@@ -671,6 +687,70 @@ namespace DyeHouse {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn quantity2Column {
+                get {
+                    return this.columnquantity2;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn quantity3Column {
+                get {
+                    return this.columnquantity3;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn quantity4Column {
+                get {
+                    return this.columnquantity4;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn quantity5Column {
+                get {
+                    return this.columnquantity5;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn quantity6Column {
+                get {
+                    return this.columnquantity6;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn quantity7Column {
+                get {
+                    return this.columnquantity7;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn quantity8Column {
+                get {
+                    return this.columnquantity8;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn quantity9Column {
+                get {
+                    return this.columnquantity9;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -706,13 +786,21 @@ namespace DyeHouse {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public DataTable2Row AddDataTable2Row(DataTable1Row parentDataTable1RowByDataTable1_DataTable2, string style, string colour, string quantity1) {
+            public DataTable2Row AddDataTable2Row(DataTable1Row parentDataTable1RowByDataTable1_DataTable2, string style, string colour, string quantity1, string quantity2, string quantity3, string quantity4, string quantity5, string quantity6, string quantity7, string quantity8, string quantity9) {
                 DataTable2Row rowDataTable2Row = ((DataTable2Row)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         null,
                         style,
                         colour,
-                        quantity1};
+                        quantity1,
+                        quantity2,
+                        quantity3,
+                        quantity4,
+                        quantity5,
+                        quantity6,
+                        quantity7,
+                        quantity8,
+                        quantity9};
                 if ((parentDataTable1RowByDataTable1_DataTable2 != null)) {
                     columnValuesArray[0] = parentDataTable1RowByDataTable1_DataTable2[0];
                 }
@@ -742,6 +830,14 @@ namespace DyeHouse {
                 this.columnstyle = base.Columns["style"];
                 this.columncolour = base.Columns["colour"];
                 this.columnquantity1 = base.Columns["quantity1"];
+                this.columnquantity2 = base.Columns["quantity2"];
+                this.columnquantity3 = base.Columns["quantity3"];
+                this.columnquantity4 = base.Columns["quantity4"];
+                this.columnquantity5 = base.Columns["quantity5"];
+                this.columnquantity6 = base.Columns["quantity6"];
+                this.columnquantity7 = base.Columns["quantity7"];
+                this.columnquantity8 = base.Columns["quantity8"];
+                this.columnquantity9 = base.Columns["quantity9"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -755,6 +851,22 @@ namespace DyeHouse {
                 base.Columns.Add(this.columncolour);
                 this.columnquantity1 = new global::System.Data.DataColumn("quantity1", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnquantity1);
+                this.columnquantity2 = new global::System.Data.DataColumn("quantity2", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnquantity2);
+                this.columnquantity3 = new global::System.Data.DataColumn("quantity3", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnquantity3);
+                this.columnquantity4 = new global::System.Data.DataColumn("quantity4", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnquantity4);
+                this.columnquantity5 = new global::System.Data.DataColumn("quantity5", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnquantity5);
+                this.columnquantity6 = new global::System.Data.DataColumn("quantity6", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnquantity6);
+                this.columnquantity7 = new global::System.Data.DataColumn("quantity7", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnquantity7);
+                this.columnquantity8 = new global::System.Data.DataColumn("quantity8", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnquantity8);
+                this.columnquantity9 = new global::System.Data.DataColumn("quantity9", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnquantity9);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1071,6 +1183,134 @@ namespace DyeHouse {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string quantity2 {
+                get {
+                    try {
+                        return ((string)(this[this.tableDataTable2.quantity2Column]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'quantity2\' in table \'DataTable2\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDataTable2.quantity2Column] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string quantity3 {
+                get {
+                    try {
+                        return ((string)(this[this.tableDataTable2.quantity3Column]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'quantity3\' in table \'DataTable2\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDataTable2.quantity3Column] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string quantity4 {
+                get {
+                    try {
+                        return ((string)(this[this.tableDataTable2.quantity4Column]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'quantity4\' in table \'DataTable2\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDataTable2.quantity4Column] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string quantity5 {
+                get {
+                    try {
+                        return ((string)(this[this.tableDataTable2.quantity5Column]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'quantity5\' in table \'DataTable2\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDataTable2.quantity5Column] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string quantity6 {
+                get {
+                    try {
+                        return ((string)(this[this.tableDataTable2.quantity6Column]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'quantity6\' in table \'DataTable2\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDataTable2.quantity6Column] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string quantity7 {
+                get {
+                    try {
+                        return ((string)(this[this.tableDataTable2.quantity7Column]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'quantity7\' in table \'DataTable2\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDataTable2.quantity7Column] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string quantity8 {
+                get {
+                    try {
+                        return ((string)(this[this.tableDataTable2.quantity8Column]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'quantity8\' in table \'DataTable2\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDataTable2.quantity8Column] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string quantity9 {
+                get {
+                    try {
+                        return ((string)(this[this.tableDataTable2.quantity9Column]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'quantity9\' in table \'DataTable2\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDataTable2.quantity9Column] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public DataTable1Row DataTable1Row {
                 get {
                     return ((DataTable1Row)(this.GetParentRow(this.Table.ParentRelations["DataTable1_DataTable2"])));
@@ -1126,6 +1366,102 @@ namespace DyeHouse {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public void Setquantity1Null() {
                 this[this.tableDataTable2.quantity1Column] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool Isquantity2Null() {
+                return this.IsNull(this.tableDataTable2.quantity2Column);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void Setquantity2Null() {
+                this[this.tableDataTable2.quantity2Column] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool Isquantity3Null() {
+                return this.IsNull(this.tableDataTable2.quantity3Column);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void Setquantity3Null() {
+                this[this.tableDataTable2.quantity3Column] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool Isquantity4Null() {
+                return this.IsNull(this.tableDataTable2.quantity4Column);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void Setquantity4Null() {
+                this[this.tableDataTable2.quantity4Column] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool Isquantity5Null() {
+                return this.IsNull(this.tableDataTable2.quantity5Column);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void Setquantity5Null() {
+                this[this.tableDataTable2.quantity5Column] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool Isquantity6Null() {
+                return this.IsNull(this.tableDataTable2.quantity6Column);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void Setquantity6Null() {
+                this[this.tableDataTable2.quantity6Column] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool Isquantity7Null() {
+                return this.IsNull(this.tableDataTable2.quantity7Column);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void Setquantity7Null() {
+                this[this.tableDataTable2.quantity7Column] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool Isquantity8Null() {
+                return this.IsNull(this.tableDataTable2.quantity8Column);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void Setquantity8Null() {
+                this[this.tableDataTable2.quantity8Column] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool Isquantity9Null() {
+                return this.IsNull(this.tableDataTable2.quantity9Column);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void Setquantity9Null() {
+                this[this.tableDataTable2.quantity9Column] = global::System.Convert.DBNull;
             }
         }
         

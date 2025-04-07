@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using Utilities;
+using System.IO;
+using ClosedXML.Excel;
+using System.Data.SqlClient;
 
 
 namespace CustomerServices
@@ -459,9 +459,111 @@ namespace CustomerServices
             }
         }
 
-        private void rbCostingPastel_CheckedChanged(object sender, EventArgs e)
+        private void btnExcelExport_Click(object sender, EventArgs e)
         {
+            Cursor.Current = Cursors.WaitCursor; // Set waiting cursor
 
+            using (var context = new TTI2Entities())
+            {
+                // Apply user-selected filters
+                var stockDataQuery = context.TLCSV_StockOnHand.Where(s => !s.TLSOH_Sold);
+
+                if (QueryParms.Whses.Any())
+                {
+                    var selectedWhseIds = QueryParms.Whses.Select(w => w.WhStore_Id).ToList();
+                    stockDataQuery = stockDataQuery.Where(s => selectedWhseIds.Contains(s.TLSOH_WareHouse_FK));
+                }
+
+                if (QueryParms.Styles.Any())
+                {
+                    var selectedStyleIds = QueryParms.Styles.Select(st => st.Sty_Id).ToList();
+                    stockDataQuery = stockDataQuery.Where(s => selectedStyleIds.Contains(s.TLSOH_Style_FK));
+                }
+
+                if (QueryParms.Colours.Any())
+                {
+                    var selectedColourIds = QueryParms.Colours.Select(c => c.Col_Id).ToList();
+                    stockDataQuery = stockDataQuery.Where(s => selectedColourIds.Contains(s.TLSOH_Colour_FK));
+                }
+
+                if (QueryParms.Sizes.Any())
+                {
+                    var selectedSizeIds = QueryParms.Sizes.Select(sz => sz.SI_id).ToList();
+                    stockDataQuery = stockDataQuery.Where(s => selectedSizeIds.Contains(s.TLSOH_Size_FK));
+                }
+
+                var stockData = stockDataQuery
+                    .GroupBy(s => new { s.TLSOH_Style_FK, s.TLSOH_Colour_FK, s.TLSOH_Size_FK, s.TLSOH_Grade, s.TLSOH_WareHouse_FK, s.TLSOH_BoxNumber })
+                    .Select(g => new
+                    {
+                        StyleId = g.Key.TLSOH_Style_FK,
+                        ColourId = g.Key.TLSOH_Colour_FK,
+                        SizeId = g.Key.TLSOH_Size_FK,
+                        Grade = g.Key.TLSOH_Grade,
+                        WarehouseCode = g.Key.TLSOH_WareHouse_FK,
+                        BoxNumber = g.Key.TLSOH_BoxNumber,
+                        BoxedQty = g.Sum(x => x.TLSOH_BoxedQty),
+                        Weight = g.Sum(x => x.TLSOH_Weight)
+                    })
+                    .OrderBy(x => x.WarehouseCode)
+                    .ThenBy(x => x.StyleId)
+                    .ToList();
+
+                using (var workbook = new XLWorkbook())
+                {
+                    var worksheet = workbook.Worksheets.Add("StockOnHand");
+
+                    // Add headers
+                    worksheet.Cell(1, 1).Value = "Product Code";
+                    worksheet.Cell(1, 2).Value = "Grade";
+                    worksheet.Cell(1, 3).Value = "Box Number";
+                    worksheet.Cell(1, 4).Value = "Boxed Qty";
+                    worksheet.Cell(1, 5).Value = "Weight";
+                    worksheet.Cell(1, 6).Value = "Warehouse Code";
+
+                    int row = 2;
+                    string firstProductCode = "UNKNOWN";
+
+                    foreach (var item in stockData)
+                    {
+                        var productMapping = context.TLADM_ProductCodes
+                            .FirstOrDefault(p => p.StyleId == item.StyleId
+                                              && p.ColourId == item.ColourId
+                                              && p.SizeId == item.SizeId);
+
+                        if (productMapping == null || string.IsNullOrWhiteSpace(productMapping.ProductCode))
+                            continue; // Skip UNKNOWN Product Codes
+
+                        string productCode = productMapping.ProductCode.ToUpper();
+
+                        if (firstProductCode == "UNKNOWN")
+                            firstProductCode = productCode; // Store the first valid product code
+
+                        // Write to Excel
+                        worksheet.Cell(row, 1).Value = productCode;
+                        worksheet.Cell(row, 2).Value = item.Grade;
+                        worksheet.Cell(row, 3).Value = item.BoxNumber;
+                        worksheet.Cell(row, 4).Value = item.BoxedQty;
+                        worksheet.Cell(row, 5).Value = item.Weight;
+                        worksheet.Cell(row, 6).Value = item.WarehouseCode;
+                        row++;
+                    }
+
+                    // Auto-fit columns
+                    worksheet.Columns().AdjustToContents();
+
+                    // Save file with timestamp and first product code
+                    string timestamp = DateTime.Now.ToString("yyyyMMdd_HHmmss");
+                    string fileName = $"StockOnHand_{firstProductCode}_{timestamp}.xlsx";
+                    string filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), fileName);
+
+                    workbook.SaveAs(filePath);
+
+                    Cursor.Current = Cursors.Default; // Reset cursor
+                    MessageBox.Show($"Excel export completed!\nFile saved at:\n{filePath}", "Export Successful", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
         }
+
     }
 }
