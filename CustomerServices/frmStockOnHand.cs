@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Drawing;
 using System.Linq;
@@ -14,6 +15,7 @@ namespace CustomerServices
 {
     public partial class frmStockOnHand : Form
     {
+        string connectionString = ConfigurationManager.ConnectionStrings["TTISqlConnection"].ConnectionString;
         bool formloaded;
         int _OptionNo;
 
@@ -468,12 +470,6 @@ namespace CustomerServices
                 // Apply user-selected filters
                 var stockDataQuery = context.TLCSV_StockOnHand.Where(s => !s.TLSOH_Sold);
 
-                if (QueryParms.Whses.Any())
-                {
-                    var selectedWhseIds = QueryParms.Whses.Select(w => w.WhStore_Id).ToList();
-                    stockDataQuery = stockDataQuery.Where(s => selectedWhseIds.Contains(s.TLSOH_WareHouse_FK));
-                }
-
                 if (QueryParms.Styles.Any())
                 {
                     var selectedStyleIds = QueryParms.Styles.Select(st => st.Sty_Id).ToList();
@@ -492,6 +488,15 @@ namespace CustomerServices
                     stockDataQuery = stockDataQuery.Where(s => selectedSizeIds.Contains(s.TLSOH_Size_FK));
                 }
 
+                if (QueryParms.Whses.Any())
+                {
+                    var selectedWhseIds = QueryParms.Whses.Select(w => w.WhStore_Id).ToList();
+                    stockDataQuery = stockDataQuery.Where(s => selectedWhseIds.Contains(s.TLSOH_WareHouse_FK));
+                }
+
+                var warehouseLookup = context.TLADM_WhseStore
+                    .ToDictionary(w => w.WhStore_Id, w => w.WhStore_Description);
+
                 var stockData = stockDataQuery
                     .GroupBy(s => new { s.TLSOH_Style_FK, s.TLSOH_Colour_FK, s.TLSOH_Size_FK, s.TLSOH_Grade, s.TLSOH_WareHouse_FK, s.TLSOH_BoxNumber })
                     .Select(g => new
@@ -500,14 +505,27 @@ namespace CustomerServices
                         ColourId = g.Key.TLSOH_Colour_FK,
                         SizeId = g.Key.TLSOH_Size_FK,
                         Grade = g.Key.TLSOH_Grade,
-                        WarehouseCode = g.Key.TLSOH_WareHouse_FK,
+                        WarehouseId = g.Key.TLSOH_WareHouse_FK,
                         BoxNumber = g.Key.TLSOH_BoxNumber,
                         BoxedQty = g.Sum(x => x.TLSOH_BoxedQty),
                         Weight = g.Sum(x => x.TLSOH_Weight)
                     })
-                    .OrderBy(x => x.WarehouseCode)
+                    .ToList() // Switch to in-memory to apply description
+                    .Select(x => new
+                    {
+                        x.StyleId,
+                        x.ColourId,
+                        x.SizeId,
+                        x.Grade,
+                        x.BoxNumber,
+                        x.BoxedQty,
+                        x.Weight,
+                        WarehouseDesc = warehouseLookup.ContainsKey(x.WarehouseId) ? warehouseLookup[x.WarehouseId] : "UNKNOWN"
+                    })
+                    .OrderBy(x => x.WarehouseDesc)
                     .ThenBy(x => x.StyleId)
                     .ToList();
+
 
                 using (var workbook = new XLWorkbook())
                 {
@@ -519,25 +537,43 @@ namespace CustomerServices
                     worksheet.Cell(1, 3).Value = "Box Number";
                     worksheet.Cell(1, 4).Value = "Boxed Qty";
                     worksheet.Cell(1, 5).Value = "Weight";
-                    worksheet.Cell(1, 6).Value = "Warehouse Code";
+                    worksheet.Cell(1, 6).Value = "Warehouse Desc";
 
                     int row = 2;
                     string firstProductCode = "UNKNOWN";
 
                     foreach (var item in stockData)
                     {
-                        var productMapping = context.TLADM_ProductCodes
-                            .FirstOrDefault(p => p.StyleId == item.StyleId
-                                              && p.ColourId == item.ColourId
-                                              && p.SizeId == item.SizeId);
+                        string productCode = "UNKNOWN";
+                        
+                        using (var sqlConnection = new SqlConnection(connectionString))
+                        {
+                            sqlConnection.Open();
 
-                        if (productMapping == null || string.IsNullOrWhiteSpace(productMapping.ProductCode))
-                            continue; // Skip UNKNOWN Product Codes
+                            string sql = @"SELECT TOP 1 ProductCode 
+                                           FROM TLADM_ProductCodes 
+                                           WHERE StyleId = @StyleId AND ColourId = @ColourId AND SizeId = @SizeId";
 
-                        string productCode = productMapping.ProductCode.ToUpper();
+                            using (var command = new SqlCommand(sql, sqlConnection))
+                            {
+                                command.Parameters.AddWithValue("@StyleId", item.StyleId);
+                                command.Parameters.AddWithValue("@ColourId", item.ColourId);
+                                command.Parameters.AddWithValue("@SizeId", item.SizeId);
+
+                                var result = command.ExecuteScalar();
+                                if (result != null && !string.IsNullOrWhiteSpace(result.ToString()))
+                                {
+                                    productCode = result.ToString().ToUpper();
+                                }
+                                else
+                                {
+                                    continue; // Skip if Product Code is missing
+                                }
+                            }
+                        }
 
                         if (firstProductCode == "UNKNOWN")
-                            firstProductCode = productCode; // Store the first valid product code
+                            firstProductCode = productCode;
 
                         // Write to Excel
                         worksheet.Cell(row, 1).Value = productCode;
@@ -545,7 +581,7 @@ namespace CustomerServices
                         worksheet.Cell(row, 3).Value = item.BoxNumber;
                         worksheet.Cell(row, 4).Value = item.BoxedQty;
                         worksheet.Cell(row, 5).Value = item.Weight;
-                        worksheet.Cell(row, 6).Value = item.WarehouseCode;
+                        worksheet.Cell(row, 6).Value = item.WarehouseDesc;
                         row++;
                     }
 
