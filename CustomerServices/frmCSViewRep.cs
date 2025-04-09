@@ -93,6 +93,12 @@ namespace CustomerServices
                 {
                     var warehouse = context.TLADM_WhseStore.Find(item.TLSOH_WareHouse_FK);
                     var boxType = context.TLADM_BoxTypes.Find(item.TLSOH_BoxType);
+                    string originalDescription = warehouse?.WhStore_Description ?? "N/A";
+                    string warehouseDescription = originalDescription;
+                    if (originalDescription.Contains("George Distribution Warehouse (A  grade)"))
+                    {
+                        warehouseDescription = "George A Grade Warehouse";
+                    }
 
                     string productCode = GetProductCodes(item.TLSOH_Style_FK, item.TLSOH_Colour_FK, item.TLSOH_Size_FK).ToUpper();
 
@@ -100,7 +106,7 @@ namespace CustomerServices
                     {
                         ProductCode = productCode,
                         WarehouseID = item.TLSOH_WareHouse_FK,
-                        WarehouseDescription = warehouse?.WhStore_Description ?? "N/A",
+                        WarehouseDescription = warehouseDescription,
                         Grade = item.TLSOH_Grade,
                         BoxNumber = item.TLSOH_BoxNumber,
                         Quantity = item.TLSOH_BoxedQty,
@@ -135,8 +141,6 @@ namespace CustomerServices
             }
         }
 
-
-        //private void ExportToExcel(List<TLCSV_StockOnHand> stockOnHandDetail)
         //{
         //    string fileName = $"FINISHED GOODS PRODUCTION {DateTime.Now:yyyyMMdd}.xlsx";
         //    string filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), fileName);
