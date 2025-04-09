@@ -47,6 +47,7 @@
             this.rbFinishedGoods = new System.Windows.Forms.RadioButton();
             this.chkManagementSummary = new System.Windows.Forms.CheckBox();
             this.chkIgnoreReorderLevels = new System.Windows.Forms.CheckBox();
+            this.btnODOOImport = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -216,7 +217,7 @@
             // chkManagementSummary
             // 
             this.chkManagementSummary.AutoSize = true;
-            this.chkManagementSummary.Location = new System.Drawing.Point(318, 263);
+            this.chkManagementSummary.Location = new System.Drawing.Point(197, 263);
             this.chkManagementSummary.Name = "chkManagementSummary";
             this.chkManagementSummary.Size = new System.Drawing.Size(134, 17);
             this.chkManagementSummary.TabIndex = 6;
@@ -226,18 +227,28 @@
             // chkIgnoreReorderLevels
             // 
             this.chkIgnoreReorderLevels.AutoSize = true;
-            this.chkIgnoreReorderLevels.Location = new System.Drawing.Point(512, 322);
+            this.chkIgnoreReorderLevels.Location = new System.Drawing.Point(394, 263);
             this.chkIgnoreReorderLevels.Name = "chkIgnoreReorderLevels";
             this.chkIgnoreReorderLevels.Size = new System.Drawing.Size(131, 17);
             this.chkIgnoreReorderLevels.TabIndex = 7;
             this.chkIgnoreReorderLevels.Text = "Ignore Reorder Levels";
             this.chkIgnoreReorderLevels.UseVisualStyleBackColor = true;
             // 
+            // btnODOOImport
+            // 
+            this.btnODOOImport.Location = new System.Drawing.Point(628, 302);
+            this.btnODOOImport.Name = "btnODOOImport";
+            this.btnODOOImport.Size = new System.Drawing.Size(75, 100);
+            this.btnODOOImport.TabIndex = 0;
+            this.btnODOOImport.Text = "Import ODOO SOH and Oustanding Orders";
+            this.btnODOOImport.Click += new System.EventHandler(this.btnODOOImport_Click);
+            // 
             // frmSelFinishedGoods
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(725, 496);
+            this.Controls.Add(this.btnODOOImport);
             this.Controls.Add(this.chkIgnoreReorderLevels);
             this.Controls.Add(this.chkManagementSummary);
             this.Controls.Add(this.groupBox2);
@@ -254,7 +265,8 @@
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();            
+            this.PerformLayout();
+
         }
 
         #endregion
@@ -278,5 +290,6 @@
         private System.Windows.Forms.RadioButton rbFinishedGoods;
         private System.Windows.Forms.CheckBox chkManagementSummary;
         private System.Windows.Forms.CheckBox chkIgnoreReorderLevels;
+        private System.Windows.Forms.Button btnODOOImport;
     }
 }

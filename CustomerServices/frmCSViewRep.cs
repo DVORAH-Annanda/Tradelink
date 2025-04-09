@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Net.Http;
+using System.Text;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
@@ -14,6 +15,8 @@ using CrystalDecisions.CrystalReports.Engine;
 using ClosedXML.Excel;
 using DocumentFormat.OpenXml.Office.MetaAttributes;
 using System.Data.SqlClient;
+using Newtonsoft.Json;
+
 
 namespace CustomerServices
 {
@@ -79,85 +82,139 @@ namespace CustomerServices
             _QueryParms = QParms;
         }
 
-        private void ExportToExcel(List<TLCSV_StockOnHand> stockOnHandDetail)
+
+        private async Task ExportToOdoo(List<TLCSV_StockOnHand> stockOnHandDetail)
         {
-            string fileName = $"FINISHED GOODS PRODUCTION {DateTime.Now:yyyyMMdd}.xlsx";
-            string filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), fileName);
+            var dataList = new List<object>();
 
-            using (var workbook = new XLWorkbook())
+            using (var context = new TTI2Entities())
             {
-                var worksheet = workbook.Worksheets.Add("Finished Goods");
-
-                // Headers
-                worksheet.Cell(1, 1).Value = "Warehouse ID";
-                worksheet.Cell(1, 2).Value = "Warehouse Description";
-                worksheet.Cell(1, 3).Value = "Product Code";
-                worksheet.Cell(1, 4).Value = "Style ID";
-                worksheet.Cell(1, 5).Value = "Style Description";
-                worksheet.Cell(1, 6).Value = "Colour ID";
-                worksheet.Cell(1, 7).Value = "Colour Description";
-                worksheet.Cell(1, 8).Value = "Size ID";
-                worksheet.Cell(1, 9).Value = "Size Description";
-                worksheet.Cell(1, 10).Value = "Grade";
-                worksheet.Cell(1, 11).Value = "Box Number";
-                worksheet.Cell(1, 12).Value = "Quantity";
-                worksheet.Cell(1, 13).Value = "Weight";
-                worksheet.Cell(1, 14).Value = "Box Type";
-                worksheet.Cell(1, 15).Value = "Box Description";
-                worksheet.Cell(1, 16).Value = "Transaction Date";
-
-                using (var context = new TTI2Entities())
+                foreach (var item in stockOnHandDetail)
                 {
-                    int row = 2;
-                    foreach (var item in stockOnHandDetail)
+                    var warehouse = context.TLADM_WhseStore.Find(item.TLSOH_WareHouse_FK);
+                    var boxType = context.TLADM_BoxTypes.Find(item.TLSOH_BoxType);
+
+                    string productCode = GetProductCodes(item.TLSOH_Style_FK, item.TLSOH_Colour_FK, item.TLSOH_Size_FK).ToUpper();
+
+                    dataList.Add(new
                     {
-                        // Retrieve additional details from the database
-                        var warehouse = context.TLADM_WhseStore.Find(item.TLSOH_WareHouse_FK);
-                        var style = context.TLADM_Styles.Find(item.TLSOH_Style_FK);
-                        var colour = context.TLADM_Colours.Find(item.TLSOH_Colour_FK);
-                        var size = context.TLADM_Sizes.Find(item.TLSOH_Size_FK);
-                        var boxType = context.TLADM_BoxTypes.Find(item.TLSOH_BoxType);
-
-                        // Lookup Product Code from TLADM_ProductCodes
-                        //var productMapping = context.TLADM_ProductCodes
-                        //    .FirstOrDefault(p => p.StyleId == item.TLSOH_Style_FK
-                        //                      && p.ColourId == item.TLSOH_Colour_FK
-                        //                      && p.SizeId == item.TLSOH_Size_FK);
-
-                        string productCode = GetProductCodes(item.TLSOH_Style_FK, item.TLSOH_Colour_FK, item.TLSOH_Size_FK);
-
-                        //string productCode = productMapping != null ? productMapping.ProductCode : "UNKNOWN";
-
-                        // Ensure Product Code is always uppercase
-                        productCode = productCode.ToUpper();
-
-                        // Fill cells with data
-                        worksheet.Cell(row, 1).Value = item.TLSOH_WareHouse_FK;
-                        worksheet.Cell(row, 2).Value = warehouse != null ? warehouse.WhStore_Description : "N/A";
-                        worksheet.Cell(row, 3).Value = productCode; // Product Code from TLADM_ProductCodes
-                        worksheet.Cell(row, 4).Value = item.TLSOH_Style_FK;
-                        worksheet.Cell(row, 5).Value = style != null ? style.Sty_Description : "N/A";
-                        worksheet.Cell(row, 6).Value = item.TLSOH_Colour_FK;
-                        worksheet.Cell(row, 7).Value = colour != null ? colour.Col_Display : "N/A";
-                        worksheet.Cell(row, 8).Value = item.TLSOH_Size_FK;
-                        worksheet.Cell(row, 9).Value = size != null ? size.SI_Description : "N/A";
-                        worksheet.Cell(row, 10).Value = item.TLSOH_Grade;
-                        worksheet.Cell(row, 11).Value = item.TLSOH_BoxNumber;
-                        worksheet.Cell(row, 12).Value = item.TLSOH_BoxedQty;
-                        worksheet.Cell(row, 13).Value = item.TLSOH_Weight;
-                        worksheet.Cell(row, 14).Value = item.TLSOH_BoxType;
-                        worksheet.Cell(row, 15).Value = boxType != null ? boxType.TLADMBT_Description : "N/A";
-                        worksheet.Cell(row, 16).Value = DateTime.Now.ToString("yyyyMMdd"); // Using full date format for clarity
-
-                        row++;
-                    }
+                        ProductCode = productCode,
+                        WarehouseID = item.TLSOH_WareHouse_FK,
+                        WarehouseDescription = warehouse?.WhStore_Description ?? "N/A",
+                        Grade = item.TLSOH_Grade,
+                        BoxNumber = item.TLSOH_BoxNumber,
+                        Quantity = item.TLSOH_BoxedQty,
+                        Weight = item.TLSOH_Weight,
+                        BoxType = item.TLSOH_BoxType,
+                        BoxDescription = boxType?.TLADMBT_Description ?? "N/A",
+                        TransactionDate = DateTime.Now.ToString("yyyy-MM-dd")
+                    });
                 }
-
-                workbook.SaveAs(filePath);
             }
 
-            MessageBox.Show($"Excel file saved successfully at {filePath}", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            var payload = new
+            {
+                @params = new
+                {
+                    stock = dataList
+                }
+            };
+
+            var json = JsonConvert.SerializeObject(payload);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            string url = "https://vicbayapparel-master-13-2-24-19468381.dev.odoo.com/process_stock_data"; // staging URL
+            System.Net.ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+            using (var client = new HttpClient())
+            {
+                var response = await client.PostAsync(url, content);
+                var responseString = await response.Content.ReadAsStringAsync();
+
+                
+                MessageBox.Show($"Response from Odoo: {response.StatusCode}\n{responseString}", "Odoo Import", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
         }
+
+
+        //private void ExportToExcel(List<TLCSV_StockOnHand> stockOnHandDetail)
+        //{
+        //    string fileName = $"FINISHED GOODS PRODUCTION {DateTime.Now:yyyyMMdd}.xlsx";
+        //    string filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), fileName);
+
+        //    using (var workbook = new XLWorkbook())
+        //    {
+        //        var worksheet = workbook.Worksheets.Add("Finished Goods");
+
+        //        // Headers
+        //        worksheet.Cell(1, 1).Value = "Warehouse ID";
+        //        worksheet.Cell(1, 2).Value = "Warehouse Description";
+        //        worksheet.Cell(1, 3).Value = "Product Code";
+        //        worksheet.Cell(1, 4).Value = "Style ID";
+        //        worksheet.Cell(1, 5).Value = "Style Description";
+        //        worksheet.Cell(1, 6).Value = "Colour ID";
+        //        worksheet.Cell(1, 7).Value = "Colour Description";
+        //        worksheet.Cell(1, 8).Value = "Size ID";
+        //        worksheet.Cell(1, 9).Value = "Size Description";
+        //        worksheet.Cell(1, 10).Value = "Grade";
+        //        worksheet.Cell(1, 11).Value = "Box Number";
+        //        worksheet.Cell(1, 12).Value = "Quantity";
+        //        worksheet.Cell(1, 13).Value = "Weight";
+        //        worksheet.Cell(1, 14).Value = "Box Type";
+        //        worksheet.Cell(1, 15).Value = "Box Description";
+        //        worksheet.Cell(1, 16).Value = "Transaction Date";
+
+        //        using (var context = new TTI2Entities())
+        //        {
+        //            int row = 2;
+        //            foreach (var item in stockOnHandDetail)
+        //            {
+        //                // Retrieve additional details from the database
+        //                var warehouse = context.TLADM_WhseStore.Find(item.TLSOH_WareHouse_FK);
+        //                var style = context.TLADM_Styles.Find(item.TLSOH_Style_FK);
+        //                var colour = context.TLADM_Colours.Find(item.TLSOH_Colour_FK);
+        //                var size = context.TLADM_Sizes.Find(item.TLSOH_Size_FK);
+        //                var boxType = context.TLADM_BoxTypes.Find(item.TLSOH_BoxType);
+
+        //                // Lookup Product Code from TLADM_ProductCodes
+        //                //var productMapping = context.TLADM_ProductCodes
+        //                //    .FirstOrDefault(p => p.StyleId == item.TLSOH_Style_FK
+        //                //                      && p.ColourId == item.TLSOH_Colour_FK
+        //                //                      && p.SizeId == item.TLSOH_Size_FK);
+
+        //                string productCode = GetProductCodes(item.TLSOH_Style_FK, item.TLSOH_Colour_FK, item.TLSOH_Size_FK);
+
+        //                //string productCode = productMapping != null ? productMapping.ProductCode : "UNKNOWN";
+
+        //                // Ensure Product Code is always uppercase
+        //                productCode = productCode.ToUpper();
+
+        //                // Fill cells with data
+        //                worksheet.Cell(row, 1).Value = item.TLSOH_WareHouse_FK;
+        //                worksheet.Cell(row, 2).Value = warehouse != null ? warehouse.WhStore_Description : "N/A";
+        //                worksheet.Cell(row, 3).Value = productCode; // Product Code from TLADM_ProductCodes
+        //                worksheet.Cell(row, 4).Value = item.TLSOH_Style_FK;
+        //                worksheet.Cell(row, 5).Value = style != null ? style.Sty_Description : "N/A";
+        //                worksheet.Cell(row, 6).Value = item.TLSOH_Colour_FK;
+        //                worksheet.Cell(row, 7).Value = colour != null ? colour.Col_Display : "N/A";
+        //                worksheet.Cell(row, 8).Value = item.TLSOH_Size_FK;
+        //                worksheet.Cell(row, 9).Value = size != null ? size.SI_Description : "N/A";
+        //                worksheet.Cell(row, 10).Value = item.TLSOH_Grade;
+        //                worksheet.Cell(row, 11).Value = item.TLSOH_BoxNumber;
+        //                worksheet.Cell(row, 12).Value = item.TLSOH_BoxedQty;
+        //                worksheet.Cell(row, 13).Value = item.TLSOH_Weight;
+        //                worksheet.Cell(row, 14).Value = item.TLSOH_BoxType;
+        //                worksheet.Cell(row, 15).Value = boxType != null ? boxType.TLADMBT_Description : "N/A";
+        //                worksheet.Cell(row, 16).Value = DateTime.Now.ToString("yyyyMMdd"); // Using full date format for clarity
+
+        //                row++;
+        //            }
+        //        }
+
+        //        workbook.SaveAs(filePath);
+        //    }
+
+        //    MessageBox.Show($"Excel file saved successfully at {filePath}", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        //}
 
         private string GetProductCodes(int styleId, int colourId, int sizeId)
         {
@@ -167,12 +224,11 @@ namespace CustomerServices
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 conn.Open();
-                string query = @"
-                                    SELECT ProductCode 
-                                    FROM TLADM_ProductCodes 
-                                    WHERE StyleId = @StyleId 
-                                      AND ColourId = @ColourId 
-                                      AND SizeId = @SizeId";
+                string query = @"SELECT ProductCode 
+                                 FROM TLADM_ProductCodes 
+                                 WHERE StyleId = @StyleId 
+                                 AND ColourId = @ColourId 
+                                 AND SizeId = @SizeId";
 
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
@@ -191,7 +247,7 @@ namespace CustomerServices
             return productCode;
         }
 
-        private void frmCSViewRep_Load(object sender, EventArgs e)
+        private async void frmCSViewRep_Load(object sender, EventArgs e)
         {
             using (var context = new TTI2Entities())
             {
@@ -352,7 +408,7 @@ namespace CustomerServices
                         dataTable1.AddDataTable1Row(nr);
 
                         List<TLCSV_StockOnHand> Existing = context.TLCSV_StockOnHand.Where(x => x.TLSOH_BoxSelected_FK == _Pk).ToList();
-                        ExportToExcel(Existing);
+                        await ExportToOdoo(Existing);
                         foreach (var row in Existing)
                         {
                             var Cmt = context.TLCMT_CompletedWork.Find(row.TLSOH_CMT_FK);

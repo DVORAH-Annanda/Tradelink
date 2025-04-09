@@ -1,17 +1,16 @@
 ﻿using System;
+using System.Net.Http;
 using System.Collections.Generic;
+using System.IO;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using Utilities;
-using LinqKit;
-using EntityFramework.Extensions;
-using System.IO;
-using System.Threading;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace ProductionPlanning
 {
@@ -1703,13 +1702,51 @@ namespace ProductionPlanning
                 oCmbo.DroppedDown = true;
         }
 
-       
+        private async void btnODOOImport_Click(object sender, EventArgs e)
+        {
+            string stockOnHandUrl = "https://vicbayapparel-master.odoo.com/stock_on_hand";
+            string outstandingOrdersUrl = "https://vicbayapparel-master.odoo.com/customer_outstanding_order";
 
-        
+            try
+            {
+                using (HttpClient client = new HttpClient())
+                {
+                    var jsonPayload = JsonConvert.SerializeObject(new { @params = new { } });
+                    var content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
 
-        
+                    // --- 2.1: Stock On Hand ---
+                    HttpResponseMessage stockResponse = await client.PostAsync(stockOnHandUrl, content);
+                    string stockResult = await stockResponse.Content.ReadAsStringAsync();
 
-       
+                    // Create new content instance for second call (HttpClient reuses it otherwise)
+                    content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
+
+                    // --- 2.2: Outstanding Customer Orders ---
+                    HttpResponseMessage orderResponse = await client.PostAsync(outstandingOrdersUrl, content);
+                    string orderResult = await orderResponse.Content.ReadAsStringAsync();
+
+                    // Optional: Pretty print
+                    string stockFormatted = JToken.Parse(stockResult).ToString(Formatting.Indented);
+                    string orderFormatted = JToken.Parse(orderResult).ToString(Formatting.Indented);
+                    string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
+
+                    string stockFilePath = Path.Combine(desktopPath, "ODOO_Stock.json");
+                    string ordersFilePath = Path.Combine(desktopPath, "ODOO_Orders.json");
+
+                    File.WriteAllText(stockFilePath, stockFormatted);
+                    File.WriteAllText(ordersFilePath, orderFormatted);
+
+                    MessageBox.Show("ODOO responses saved to your Desktop.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error calling ODOO APIs: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+
     }
 }
 

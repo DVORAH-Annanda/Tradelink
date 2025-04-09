@@ -49,6 +49,7 @@
             this.comboColours = new CustomerServices.CheckComboBox();
             this.comboStyles = new CustomerServices.CheckComboBox();
             this.comboWhses = new CustomerServices.CheckComboBox();
+            this.btnExcelExport = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -135,11 +136,11 @@
             this.rbCostingPastel.TabIndex = 3;
             this.rbCostingPastel.Text = "Costing Colours";
             this.rbCostingPastel.UseVisualStyleBackColor = true;
-            this.rbCostingPastel.CheckedChanged += new System.EventHandler(this.rbCostingPastel_CheckedChanged);
+            
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(618, 636);
+            this.button1.Location = new System.Drawing.Point(594, 589);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 3;
@@ -274,11 +275,22 @@
             this.comboWhses.Text = "Select Options";
             this.comboWhses.SelectedIndexChanged += new System.EventHandler(this.comboWhses_SelectedIndexChanged);
             // 
+            // btnExcelExport
+            // 
+            this.btnExcelExport.Location = new System.Drawing.Point(594, 618);
+            this.btnExcelExport.Name = "btnExcelExport";
+            this.btnExcelExport.Size = new System.Drawing.Size(75, 23);
+            this.btnExcelExport.TabIndex = 13;
+            this.btnExcelExport.Text = "Excel";
+            this.btnExcelExport.UseVisualStyleBackColor = true;
+            this.btnExcelExport.Click += new System.EventHandler(this.btnExcelExport_Click);
+            // 
             // frmStockOnHand
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(705, 671);
+            this.Controls.Add(this.btnExcelExport);
             this.Controls.Add(this.rbCostingPastel);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.label5);
@@ -328,5 +340,6 @@
         private System.Windows.Forms.RadioButton RadSplitBoxes;
         private System.Windows.Forms.RadioButton rbDiscontinued;
         private System.Windows.Forms.RadioButton rbCostingPastel;
+        private System.Windows.Forms.Button btnExcelExport;
     }
 }
