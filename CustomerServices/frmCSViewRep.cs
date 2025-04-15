@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net.Http;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -16,6 +17,7 @@ using ClosedXML.Excel;
 using DocumentFormat.OpenXml.Office.MetaAttributes;
 using System.Data.SqlClient;
 using Newtonsoft.Json;
+using DocumentFormat.OpenXml.Presentation;
 
 
 namespace CustomerServices
@@ -32,7 +34,7 @@ namespace CustomerServices
         IList<TLADM_Colours> _Colours;
         IList<TLADM_Sizes> _Sizes;
         IList<TLADM_CustomerFile> _Customers;
-        IList<TLADM_Griege> _Qualities; 
+        IList<TLADM_Griege> _Qualities;
 
         public frmCSViewRep()
         {
@@ -97,7 +99,7 @@ namespace CustomerServices
                     string warehouseDescription = originalDescription;
                     if (originalDescription.Contains("George Distribution Warehouse (A  grade)"))
                     {
-                        warehouseDescription = "George A Grade Warehouse";
+                        warehouseDescription = "George A Grade Warehouse"; //George Distribution Warehouse (A Grade) //"George A Grade Warehouse"
                     }
 
                     string productCode = GetProductCodes(item.TLSOH_Style_FK, item.TLSOH_Colour_FK, item.TLSOH_Size_FK).ToUpper();
@@ -136,89 +138,10 @@ namespace CustomerServices
                 var response = await client.PostAsync(url, content);
                 var responseString = await response.Content.ReadAsStringAsync();
 
-                
+
                 MessageBox.Show($"Response from Odoo: {response.StatusCode}\n{responseString}", "Odoo Import", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
-
-        //{
-        //    string fileName = $"FINISHED GOODS PRODUCTION {DateTime.Now:yyyyMMdd}.xlsx";
-        //    string filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), fileName);
-
-        //    using (var workbook = new XLWorkbook())
-        //    {
-        //        var worksheet = workbook.Worksheets.Add("Finished Goods");
-
-        //        // Headers
-        //        worksheet.Cell(1, 1).Value = "Warehouse ID";
-        //        worksheet.Cell(1, 2).Value = "Warehouse Description";
-        //        worksheet.Cell(1, 3).Value = "Product Code";
-        //        worksheet.Cell(1, 4).Value = "Style ID";
-        //        worksheet.Cell(1, 5).Value = "Style Description";
-        //        worksheet.Cell(1, 6).Value = "Colour ID";
-        //        worksheet.Cell(1, 7).Value = "Colour Description";
-        //        worksheet.Cell(1, 8).Value = "Size ID";
-        //        worksheet.Cell(1, 9).Value = "Size Description";
-        //        worksheet.Cell(1, 10).Value = "Grade";
-        //        worksheet.Cell(1, 11).Value = "Box Number";
-        //        worksheet.Cell(1, 12).Value = "Quantity";
-        //        worksheet.Cell(1, 13).Value = "Weight";
-        //        worksheet.Cell(1, 14).Value = "Box Type";
-        //        worksheet.Cell(1, 15).Value = "Box Description";
-        //        worksheet.Cell(1, 16).Value = "Transaction Date";
-
-        //        using (var context = new TTI2Entities())
-        //        {
-        //            int row = 2;
-        //            foreach (var item in stockOnHandDetail)
-        //            {
-        //                // Retrieve additional details from the database
-        //                var warehouse = context.TLADM_WhseStore.Find(item.TLSOH_WareHouse_FK);
-        //                var style = context.TLADM_Styles.Find(item.TLSOH_Style_FK);
-        //                var colour = context.TLADM_Colours.Find(item.TLSOH_Colour_FK);
-        //                var size = context.TLADM_Sizes.Find(item.TLSOH_Size_FK);
-        //                var boxType = context.TLADM_BoxTypes.Find(item.TLSOH_BoxType);
-
-        //                // Lookup Product Code from TLADM_ProductCodes
-        //                //var productMapping = context.TLADM_ProductCodes
-        //                //    .FirstOrDefault(p => p.StyleId == item.TLSOH_Style_FK
-        //                //                      && p.ColourId == item.TLSOH_Colour_FK
-        //                //                      && p.SizeId == item.TLSOH_Size_FK);
-
-        //                string productCode = GetProductCodes(item.TLSOH_Style_FK, item.TLSOH_Colour_FK, item.TLSOH_Size_FK);
-
-        //                //string productCode = productMapping != null ? productMapping.ProductCode : "UNKNOWN";
-
-        //                // Ensure Product Code is always uppercase
-        //                productCode = productCode.ToUpper();
-
-        //                // Fill cells with data
-        //                worksheet.Cell(row, 1).Value = item.TLSOH_WareHouse_FK;
-        //                worksheet.Cell(row, 2).Value = warehouse != null ? warehouse.WhStore_Description : "N/A";
-        //                worksheet.Cell(row, 3).Value = productCode; // Product Code from TLADM_ProductCodes
-        //                worksheet.Cell(row, 4).Value = item.TLSOH_Style_FK;
-        //                worksheet.Cell(row, 5).Value = style != null ? style.Sty_Description : "N/A";
-        //                worksheet.Cell(row, 6).Value = item.TLSOH_Colour_FK;
-        //                worksheet.Cell(row, 7).Value = colour != null ? colour.Col_Display : "N/A";
-        //                worksheet.Cell(row, 8).Value = item.TLSOH_Size_FK;
-        //                worksheet.Cell(row, 9).Value = size != null ? size.SI_Description : "N/A";
-        //                worksheet.Cell(row, 10).Value = item.TLSOH_Grade;
-        //                worksheet.Cell(row, 11).Value = item.TLSOH_BoxNumber;
-        //                worksheet.Cell(row, 12).Value = item.TLSOH_BoxedQty;
-        //                worksheet.Cell(row, 13).Value = item.TLSOH_Weight;
-        //                worksheet.Cell(row, 14).Value = item.TLSOH_BoxType;
-        //                worksheet.Cell(row, 15).Value = boxType != null ? boxType.TLADMBT_Description : "N/A";
-        //                worksheet.Cell(row, 16).Value = DateTime.Now.ToString("yyyyMMdd"); // Using full date format for clarity
-
-        //                row++;
-        //            }
-        //        }
-
-        //        workbook.SaveAs(filePath);
-        //    }
-
-        //    MessageBox.Show($"Excel file saved successfully at {filePath}", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-        //}
 
         private string GetProductCodes(int styleId, int colourId, int sizeId)
         {
@@ -734,11 +657,11 @@ namespace CustomerServices
                             drow = dt.AsEnumerable().Where(p => p.Field<Int32>(0) == data.FirstOrDefault().Style
                                                                        && p.Field<Int32>(1) == data.FirstOrDefault().Colour
                                                                        && p.Field<Int32>(2) == data.FirstOrDefault().Size).FirstOrDefault();
-                            
+
                             if (drow == null)
                             {
                                 drow = dt.NewRow();
-                                
+
                                 drow[0] = data.FirstOrDefault().Style;
                                 drow[1] = data.FirstOrDefault().Colour;
                                 drow[2] = data.FirstOrDefault().Size;
@@ -752,21 +675,21 @@ namespace CustomerServices
                                 drow[10] = 0;  // 8th WareHouse
                                 drow[11] = 0;  // 9th WareHouse
                                 drow[12] = 0;  // Total
-                               
-                               
+
+
                                 var BoxedQty = data.Where(c => c.Whse == Whse.WhStore_Id).Sum(c => c.BoxedQty);
                                 var record = whseDetails.Find(x => x.WareHousePk == Whse.WhStore_Id);
-                                
+
                                 var index = record.WareHouseColNo;
                                 if (index >= 10)
                                 {
-                                   continue;
+                                    continue;
                                 }
 
                                 drow[index + 2] = BoxedQty;
                                 drow[12] = BoxedQty;
 
-                                
+
                                 dt.Rows.Add(drow);
                             }
                             else
@@ -1090,7 +1013,7 @@ namespace CustomerServices
 
                         n2r.BoxNumber = SItem.TLSOH_BoxNumber;
                         n2r.SizeDisplayOrder = _Sizes.FirstOrDefault(s => s.SI_id == SItem.TLSOH_Size_FK).SI_DisplayOrder;
-                        
+
                         n2r.Status = string.Empty;
 
                         if (!_Svces.SOHBoxReturned)
@@ -1174,7 +1097,7 @@ namespace CustomerServices
                     foreach (var POrder in POOrders)
                     {
                         PODetails = context.TLCSV_PuchaseOrderDetail.Where(x => x.TLCUSTO_PurchaseOrder_FK == POrder.TLCSVPO_Pk && !x.TLCUSTO_Closed).ToList();
-                
+
 
                         PODetails = (from PODet in PODetails
                                      join Sze in _Sizes on PODet.TLCUSTO_Size_FK equals Sze.SI_id
@@ -1212,6 +1135,11 @@ namespace CustomerServices
                             nr.Customer = Cust.Cust_Description;
                             nr.OrderDate = (DateTime)POrder.TLCSVPO_TransDate;
 
+                            //used for Excel Export
+                            nr.StyleId = PODetail.TLCUSTO_Style_FK.ToString();
+                            nr.ColourId = PODetail.TLCUSTO_Colour_FK.ToString();
+                            nr.SizeId = PODetail.TLCUSTO_Size_FK.ToString();
+
                             if (PODetail.TLCUSTO_DateRequired != null)
                             {
                                 nr.DueDate = (DateTime)PODetail.TLCUSTO_DateRequired;
@@ -1228,7 +1156,7 @@ namespace CustomerServices
                             }
 
                             nr.Ageing = core.GetWorkingDays(nr.DueDate, DateTime.Now);
-                            
+
                             StringBuilder sb = new StringBuilder();
                             if (!Cust.Cust_FabricCustomer)
                             {
@@ -1277,7 +1205,7 @@ namespace CustomerServices
                                     if (nr.Nett < 0)
                                         continue;
                                 }
-                              
+
                             }
                             datatable1.AddDataTable1Row(nr);
                         }
@@ -1292,6 +1220,10 @@ namespace CustomerServices
                 }
 
                 ds.Tables.Add(datatable1);
+                if (datatable1.Rows.Count > 0)
+                {
+                    exportOutstandingOrdersXL(datatable1);
+                }
                 if (!_QueryParms.GroupByWeek)
                 {
                     if (!_QueryParms.SummarisedPurchaseOrders)
@@ -1339,13 +1271,13 @@ namespace CustomerServices
                             nr.PickSlip += "****";
                         }
 
-                        if(OrderAllocated.TLORDA_PLConfirmed )
+                        if (OrderAllocated.TLORDA_PLConfirmed)
                         {
                             nr.PickSlip += " Confirmed";
                         }
                         else
                         {
-                            nr.PickSlip += " Unconfirmed"; 
+                            nr.PickSlip += " Unconfirmed";
                         }
                         StringBuilder sb = new StringBuilder();
                         sb.Append(_Styles.FirstOrDefault(s => s.Sty_Id == Item.TLSOH_Style_FK).Sty_Description + " ");
@@ -2542,7 +2474,7 @@ namespace CustomerServices
                     {
                         DataSet19.DataTable1Row nr = dataTable1.NewDataTable1Row();
                         nr.Style = _Styles.FirstOrDefault(s => s.Sty_Id == Row.Field<int>(0)).Sty_Description;
-                        nr.Colours = _Colours.FirstOrDefault(s=>s.Col_Id == Row.Field<int>(14)).Col_Display;
+                        nr.Colours = _Colours.FirstOrDefault(s => s.Col_Id == Row.Field<int>(14)).Col_Display;
                         nr.Sizes = _Sizes.FirstOrDefault(s => s.SI_id == Row.Field<int>(15)).SI_Description;
                         nr.Pk = 1;
                         nr.Jan = Row.Field<int>(2);
@@ -2998,7 +2930,7 @@ namespace CustomerServices
                 var repo = new Repository();
                 IList<TLCSV_PuchaseOrderDetail> Dets = null;
                 Util core = new Util();
-                
+
                 using (var context = new TTI2Entities())
                 {
                     if (_QueryParms.TransactHistory)
@@ -3018,13 +2950,13 @@ namespace CustomerServices
                                 nr.TOrderDate = POOrder.TLCSVPO_TransDate;
                                 nr.TStatus = POOrder.TLCSVPO_Closeed;
                                 nr.TOrderQty = (from T1 in context.TLCSV_PurchaseOrder
-                                                  join T2 in context.TLCSV_PuchaseOrderDetail
-                                                  on T1.TLCSVPO_Pk equals T2.TLCUSTO_PurchaseOrder_FK
-                                                  where T2.TLCUSTO_Style_FK == Box.TLSOH_Style_FK &&
-                                                        T2.TLCUSTO_Colour_FK == Box.TLSOH_Colour_FK &&
-                                                        T2.TLCUSTO_Size_FK == Box.TLSOH_Size_FK && 
-                                                        T2.TLCUSTO_Pk == Box.TLSOH_POOrderDetail_FK
-                                                        select T2).Sum(x => (int?) x.TLCUSTO_Qty) ?? 0; 
+                                                join T2 in context.TLCSV_PuchaseOrderDetail
+                                                on T1.TLCSVPO_Pk equals T2.TLCUSTO_PurchaseOrder_FK
+                                                where T2.TLCUSTO_Style_FK == Box.TLSOH_Style_FK &&
+                                                      T2.TLCUSTO_Colour_FK == Box.TLSOH_Colour_FK &&
+                                                      T2.TLCUSTO_Size_FK == Box.TLSOH_Size_FK &&
+                                                      T2.TLCUSTO_Pk == Box.TLSOH_POOrderDetail_FK
+                                                select T2).Sum(x => (int?)x.TLCUSTO_Qty) ?? 0;
 
 
                                 nr.TStyle = _Styles.FirstOrDefault(s => s.Sty_Id == Box.TLSOH_Style_FK).Sty_Description;
@@ -3047,16 +2979,16 @@ namespace CustomerServices
                                 nr.TBoxQty = Box.TLSOH_BoxedQty;
                                 nr.TBoxNumber = Box.TLSOH_BoxNumber;
 
-                               /*
-                                if (Box.TLSOH_Picked)
-                                {
-                                    if (Box.TLSOH_PickListDate != null)
-                                        nr.TPLDate = (DateTime)Box.TLSOH_PickListDate;
+                                /*
+                                 if (Box.TLSOH_Picked)
+                                 {
+                                     if (Box.TLSOH_PickListDate != null)
+                                         nr.TPLDate = (DateTime)Box.TLSOH_PickListDate;
 
-                                    nr.TPLNumber = "PL" + Box.TLSOH_PickListNo.ToString().PadLeft(5, '0');
+                                     nr.TPLNumber = "PL" + Box.TLSOH_PickListNo.ToString().PadLeft(5, '0');
 
-                                }
-                               */
+                                 }
+                                */
 
                                 if (Box.TLSOH_Sold)
                                 {
@@ -3478,7 +3410,7 @@ namespace CustomerServices
                         }
                     }
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     MessageBox.Show(ex.InnerException.Message);
                     return;
@@ -3599,7 +3531,7 @@ namespace CustomerServices
                         var StylePk = Group.FirstOrDefault().TLCUSTO_Style_FK;
                         var ColourPk = Group.FirstOrDefault().TLCUSTO_Colour_FK;
                         var SizePk = Group.FirstOrDefault().TLCUSTO_Size_FK;
-                        
+
                         //=====================================================
                         // Add a new Record to the data table;
                         //=================================================
@@ -3737,6 +3669,151 @@ namespace CustomerServices
 
             crystalReportViewer1.Refresh();
         }
+
+        private void exportOutstandingOrdersXL(DataTable dataTable)
+        {            
+            using (var workbook = new XLWorkbook())
+            {
+                var worksheet = workbook.Worksheets.Add("Orders");
+                string customer = "";
+                // Add headers
+                worksheet.Cell(1, 1).Value = "Order Number";
+                worksheet.Cell(1, 2).Value = "Customer Description";
+                worksheet.Cell(1, 3).Value = "Product Code";
+                worksheet.Cell(1, 4).Value = "Quantity";
+                worksheet.Cell(1, 5).Value = "Order Date";
+                worksheet.Cell(1, 6).Value = "Expected Delivery Date";
+
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+
+                    for (int i = 0; i < dataTable.Rows.Count; i++)
+                    {
+                        var row = dataTable.Rows[i];
+
+                        int styleId = Convert.ToInt32(row["StyleId"]);
+                        int colourId = Convert.ToInt32(row["ColourId"]);
+                        int sizeId = Convert.ToInt32(row["SizeId"]);
+
+                        string productCode = "";
+
+                        using (SqlCommand cmd = new SqlCommand(
+                            @"SELECT ProductCode FROM TLADM_ProductCodes 
+                              WHERE StyleId = @StyleId AND ColourId = @ColourId AND SizeId = @SizeId", conn))
+                        {
+                            cmd.Parameters.AddWithValue("@StyleId", styleId);
+                            cmd.Parameters.AddWithValue("@ColourId", colourId);
+                            cmd.Parameters.AddWithValue("@SizeId", sizeId);
+
+                            var result = cmd.ExecuteScalar();
+                            if (result != null && result != DBNull.Value)
+                            {
+                                productCode = result.ToString();
+                            }
+                        }
+                        worksheet.Cell(i + 2, 1).Value = row["OrderNo"]?.ToString() ?? "";
+                        worksheet.Cell(i + 2, 2).Value = row["Customer"]?.ToString() ?? "";
+                        worksheet.Cell(i + 2, 3).Value = productCode;
+                        worksheet.Cell(i + 2, 4).Value = Convert.ToDecimal(row["OrderQty"]);
+                        worksheet.Cell(i + 2, 5).Value = Convert.ToDateTime(row["OrderDate"]).ToString("yyyyMMdd");
+                        worksheet.Cell(i + 2, 6).Value = Convert.ToDateTime(row["DueDate"]).ToString("yyyyMMdd");
+
+                        customer = row["Customer"]?.ToString() ?? "";
+                        customer = Regex.Replace(customer, @"[^a-zA-Z0-9]", "");
+                    }
+                }
+                
+                // Optional: auto adjust columns
+                worksheet.Columns().AdjustToContents();
+
+                // Let the user save the file
+                SaveFileDialog saveDialog = new SaveFileDialog();
+                saveDialog.Filter = "Excel Workbook|*.xlsx";
+                saveDialog.Title = "Save Excel File";
+                string timestamp = DateTime.Now.ToString("yyyyMMdd_HHmmss");
+                saveDialog.FileName = $"OUTSTANDING_ORDERS_{customer}_{timestamp}.xlsx";
+
+                if (saveDialog.ShowDialog() == DialogResult.OK)
+                {
+                    workbook.SaveAs(saveDialog.FileName);
+                    MessageBox.Show("Excel export successful!", "Done", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+        }
+
+
+        //private void ExportOrdersToExcel(DataTable dataTable)
+        //{
+        //    string connectionString = ConfigurationManager.ConnectionStrings["YourConnectionStringName"].ConnectionString;
+
+        //    using (var workbook = new XLWorkbook())
+        //    {
+        //        var worksheet = workbook.Worksheets.Add("Orders");
+
+        //        // Headings
+        //        worksheet.Cell(1, 1).Value = "Product Code";
+        //        worksheet.Cell(1, 2).Value = "Order No";
+        //        worksheet.Cell(1, 3).Value = "Customer";
+        //        worksheet.Cell(1, 4).Value = "Style";
+        //        worksheet.Cell(1, 5).Value = "Quantity";
+        //        worksheet.Cell(1, 6).Value = "Order Date";
+        //        worksheet.Cell(1, 7).Value = "Due Date";
+
+        //        using (SqlConnection conn = new SqlConnection(connectionString))
+        //        {
+        //            conn.Open();
+
+        //            for (int i = 0; i < dataTable.Rows.Count; i++)
+        //            {
+        //                var row = dataTable.Rows[i];
+
+        //                int styleId = Convert.ToInt32(row["StyleId"]);
+        //                int colourId = Convert.ToInt32(row["ColourId"]);
+        //                int sizeId = Convert.ToInt32(row["SizeId"]);
+
+        //                string productCode = "";
+
+        //                using (SqlCommand cmd = new SqlCommand(
+        //                    @"SELECT ProductCode FROM TLADM_ProductCodes 
+        //              WHERE StyleId = @StyleId AND ColourId = @ColourId AND SizeId = @SizeId", conn))
+        //                {
+        //                    cmd.Parameters.AddWithValue("@StyleId", styleId);
+        //                    cmd.Parameters.AddWithValue("@ColourId", colourId);
+        //                    cmd.Parameters.AddWithValue("@SizeId", sizeId);
+
+        //                    var result = cmd.ExecuteScalar();
+        //                    if (result != null && result != DBNull.Value)
+        //                    {
+        //                        productCode = result.ToString();
+        //                    }
+        //                }
+
+        //                worksheet.Cell(i + 2, 1).Value = productCode;
+        //                worksheet.Cell(i + 2, 2).Value = row["OrderNo"]?.ToString() ?? "";
+        //                worksheet.Cell(i + 2, 3).Value = row["Customer"]?.ToString() ?? "";
+        //                worksheet.Cell(i + 2, 4).Value = row["StyleDescription"]?.ToString() ?? "";
+        //                worksheet.Cell(i + 2, 5).Value = Convert.ToDecimal(row["OrderQty"]);
+        //                worksheet.Cell(i + 2, 6).Value = Convert.ToDateTime(row["OrderDate"]).ToString("yyyyMMdd");
+        //                worksheet.Cell(i + 2, 7).Value = Convert.ToDateTime(row["DueDate"]).ToString("yyyyMMdd");
+        //            }
+        //        }
+
+        //        using (var saveFileDialog = new SaveFileDialog()
+        //        {
+        //            Filter = "Excel Files|*.xlsx",
+        //            Title = "Save Excel File"
+        //        })
+        //        {
+        //            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+        //            {
+        //                workbook.SaveAs(saveFileDialog.FileName);
+        //                MessageBox.Show("Export successful!");
+        //            }
+        //        }
+        //    }
+        //}
+
 
         public struct WhseDATA
         {

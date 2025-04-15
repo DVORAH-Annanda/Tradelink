@@ -317,6 +317,12 @@ namespace CustomerServices {
             
             private global::System.Data.DataColumn columnAgeing;
             
+            private global::System.Data.DataColumn columnStyleId;
+            
+            private global::System.Data.DataColumn columnSizeId;
+            
+            private global::System.Data.DataColumn columnColourId;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public DataTable1DataTable() {
@@ -504,6 +510,30 @@ namespace CustomerServices {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn StyleIdColumn {
+                get {
+                    return this.columnStyleId;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn SizeIdColumn {
+                get {
+                    return this.columnSizeId;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn ColourIdColumn {
+                get {
+                    return this.columnColourId;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -558,7 +588,10 @@ namespace CustomerServices {
                         int CenturyDayNo, 
                         int WeekNo, 
                         int Year, 
-                        int Ageing) {
+                        int Ageing, 
+                        string StyleId, 
+                        string SizeId, 
+                        string ColourId) {
                 DataTable1Row rowDataTable1Row = ((DataTable1Row)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         OrderNo,
@@ -579,7 +612,10 @@ namespace CustomerServices {
                         CenturyDayNo,
                         WeekNo,
                         Year,
-                        Ageing};
+                        Ageing,
+                        StyleId,
+                        SizeId,
+                        ColourId};
                 rowDataTable1Row.ItemArray = columnValuesArray;
                 this.Rows.Add(rowDataTable1Row);
                 return rowDataTable1Row;
@@ -621,6 +657,9 @@ namespace CustomerServices {
                 this.columnWeekNo = base.Columns["WeekNo"];
                 this.columnYear = base.Columns["Year"];
                 this.columnAgeing = base.Columns["Ageing"];
+                this.columnStyleId = base.Columns["StyleId"];
+                this.columnSizeId = base.Columns["SizeId"];
+                this.columnColourId = base.Columns["ColourId"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -664,6 +703,12 @@ namespace CustomerServices {
                 base.Columns.Add(this.columnYear);
                 this.columnAgeing = new global::System.Data.DataColumn("Ageing", typeof(int), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnAgeing);
+                this.columnStyleId = new global::System.Data.DataColumn("StyleId", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnStyleId);
+                this.columnSizeId = new global::System.Data.DataColumn("SizeId", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnSizeId);
+                this.columnColourId = new global::System.Data.DataColumn("ColourId", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnColourId);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1110,6 +1155,54 @@ namespace CustomerServices {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string StyleId {
+                get {
+                    try {
+                        return ((string)(this[this.tableDataTable1.StyleIdColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'StyleId\' in table \'DataTable1\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDataTable1.StyleIdColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string SizeId {
+                get {
+                    try {
+                        return ((string)(this[this.tableDataTable1.SizeIdColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'SizeId\' in table \'DataTable1\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDataTable1.SizeIdColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string ColourId {
+                get {
+                    try {
+                        return ((string)(this[this.tableDataTable1.ColourIdColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'ColourId\' in table \'DataTable1\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDataTable1.ColourIdColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public bool IsOrderNoNull() {
                 return this.IsNull(this.tableDataTable1.OrderNoColumn);
             }
@@ -1334,6 +1427,42 @@ namespace CustomerServices {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public void SetAgeingNull() {
                 this[this.tableDataTable1.AgeingColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsStyleIdNull() {
+                return this.IsNull(this.tableDataTable1.StyleIdColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetStyleIdNull() {
+                this[this.tableDataTable1.StyleIdColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsSizeIdNull() {
+                return this.IsNull(this.tableDataTable1.SizeIdColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetSizeIdNull() {
+                this[this.tableDataTable1.SizeIdColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsColourIdNull() {
+                return this.IsNull(this.tableDataTable1.ColourIdColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetColourIdNull() {
+                this[this.tableDataTable1.ColourIdColumn] = global::System.Convert.DBNull;
             }
         }
         

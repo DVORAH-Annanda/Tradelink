@@ -541,6 +541,7 @@ namespace CustomerServices
 
                     int row = 2;
                     string firstProductCode = "UNKNOWN";
+                    string warehouse = "";
 
                     foreach (var item in stockData)
                     {
@@ -572,6 +573,7 @@ namespace CustomerServices
                             }
                         }
 
+                        warehouse = item.WarehouseDesc;
                         if (firstProductCode == "UNKNOWN")
                             firstProductCode = productCode;
 
@@ -590,7 +592,7 @@ namespace CustomerServices
 
                     // Save file with timestamp and first product code
                     string timestamp = DateTime.Now.ToString("yyyyMMdd_HHmmss");
-                    string fileName = $"StockOnHand_{firstProductCode}_{timestamp}.xlsx";
+                    string fileName = $"SOH_{warehouse}_{timestamp}.xlsx";
                     string filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), fileName);
 
                     workbook.SaveAs(filePath);
