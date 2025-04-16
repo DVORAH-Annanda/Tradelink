@@ -3713,11 +3713,16 @@ namespace CustomerServices
                             }
                         }
                         worksheet.Cell(i + 2, 1).Value = row["OrderNo"]?.ToString() ?? "";
-                        worksheet.Cell(i + 2, 2).Value = row["Customer"]?.ToString() ?? "";
+                        string customerDescription = row["Customer"]?.ToString() ?? "";
+                        if (customerDescription.Contains("t/as"))
+                        {
+                            customerDescription = customerDescription.Replace("t/as", "t/a");
+                        }
+                        worksheet.Cell(i + 2, 2).Value = customerDescription;
                         worksheet.Cell(i + 2, 3).Value = productCode;
                         worksheet.Cell(i + 2, 4).Value = Convert.ToDecimal(row["OrderQty"]);
-                        worksheet.Cell(i + 2, 5).Value = Convert.ToDateTime(row["OrderDate"]).ToString("yyyyMMdd");
-                        worksheet.Cell(i + 2, 6).Value = Convert.ToDateTime(row["DueDate"]).ToString("yyyyMMdd");
+                        worksheet.Cell(i + 2, 5).Value = Convert.ToDateTime(row["OrderDate"]).ToString("MM dd yyyy");
+                        worksheet.Cell(i + 2, 6).Value = Convert.ToDateTime(row["DueDate"]).ToString("MM dd yyyy");
 
                         customer = row["Customer"]?.ToString() ?? "";
                         customer = Regex.Replace(customer, @"[^a-zA-Z0-9]", "");
