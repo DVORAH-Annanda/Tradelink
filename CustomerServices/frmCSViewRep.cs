@@ -1088,6 +1088,7 @@ namespace CustomerServices
                 // Get the data from the database based on the parameters entered by the user 
                 //----------------------------------------------------------------------------------
                 var POOrders = repo.PurchaseOrder(_QueryParms).OrderBy(x => x.TLCSVPO_PurchaseOrder);
+                var POOrderIds = POOrders.Select(p => p.TLCSVPO_Pk).ToList();
                 using (var context = new TTI2Entities())
                 {
                     _Styles = context.TLADM_Styles.OrderBy(x => x.Sty_Description).ToList();
@@ -1212,18 +1213,21 @@ namespace CustomerServices
                     }
                 }
 
+                if (datatable1.Rows.Count > 0)
+                {
+                    exportOutstandingOrdersXL(datatable1);
+                    MarkOrdersAsExported(POOrderIds);
+                }
+
                 if (datatable1.Rows.Count == 0)
                 {
                     DataSet8.DataTable1Row nr = datatable1.NewDataTable1Row();
-                    nr.ErrorLog = "No records pertaining to selection made";
+                    nr.ErrorLog = "No records pertaining to selection made - Exported to ODOO";
                     datatable1.AddDataTable1Row(nr);
                 }
 
                 ds.Tables.Add(datatable1);
-                if (datatable1.Rows.Count > 0)
-                {
-                    exportOutstandingOrdersXL(datatable1);
-                }
+
                 if (!_QueryParms.GroupByWeek)
                 {
                     if (!_QueryParms.SummarisedPurchaseOrders)
@@ -3742,78 +3746,38 @@ namespace CustomerServices
             }
         }
 
+        private void MarkOrdersAsExported(IEnumerable<int> purchaseOrderIds)
+        {
+            using (var context = new TTI2Entities())
+            {
+                DateTime exportDate = DateTime.Now;
+                string closedBy = "ExportedToODOO";
 
-        //private void ExportOrdersToExcel(DataTable dataTable)
-        //{
-        //    string connectionString = ConfigurationManager.ConnectionStrings["YourConnectionStringName"].ConnectionString;
+                // Haal al die PurchaseOrders wat ons wil sluit
+                var orders = context.TLCSV_PurchaseOrder
+                    .Where(po => purchaseOrderIds.Contains(po.TLCSVPO_Pk))
+                    .ToList();
 
-        //    using (var workbook = new XLWorkbook())
-        //    {
-        //        var worksheet = workbook.Worksheets.Add("Orders");
+                foreach (var order in orders)
+                {
 
-        //        // Headings
-        //        worksheet.Cell(1, 1).Value = "Product Code";
-        //        worksheet.Cell(1, 2).Value = "Order No";
-        //        worksheet.Cell(1, 3).Value = "Customer";
-        //        worksheet.Cell(1, 4).Value = "Style";
-        //        worksheet.Cell(1, 5).Value = "Quantity";
-        //        worksheet.Cell(1, 6).Value = "Order Date";
-        //        worksheet.Cell(1, 7).Value = "Due Date";
+                    order.TLCSVPO_Closeed = true;              
+                    order.TLCSVPO_ClosedDate = exportDate;       
+                    order.TLCSVPO_ClosedBy = closedBy;         
+                }
 
-        //        using (SqlConnection conn = new SqlConnection(connectionString))
-        //        {
-        //            conn.Open();
+                var details = context.TLCSV_PuchaseOrderDetail
+                    .Where(d => purchaseOrderIds.Contains(d.TLCUSTO_PurchaseOrder_FK))
+                    .ToList();
 
-        //            for (int i = 0; i < dataTable.Rows.Count; i++)
-        //            {
-        //                var row = dataTable.Rows[i];
+                foreach (var detail in details)
+                {
+                    detail.TLCUSTO_Closed = true;                
+                }
 
-        //                int styleId = Convert.ToInt32(row["StyleId"]);
-        //                int colourId = Convert.ToInt32(row["ColourId"]);
-        //                int sizeId = Convert.ToInt32(row["SizeId"]);
-
-        //                string productCode = "";
-
-        //                using (SqlCommand cmd = new SqlCommand(
-        //                    @"SELECT ProductCode FROM TLADM_ProductCodes 
-        //              WHERE StyleId = @StyleId AND ColourId = @ColourId AND SizeId = @SizeId", conn))
-        //                {
-        //                    cmd.Parameters.AddWithValue("@StyleId", styleId);
-        //                    cmd.Parameters.AddWithValue("@ColourId", colourId);
-        //                    cmd.Parameters.AddWithValue("@SizeId", sizeId);
-
-        //                    var result = cmd.ExecuteScalar();
-        //                    if (result != null && result != DBNull.Value)
-        //                    {
-        //                        productCode = result.ToString();
-        //                    }
-        //                }
-
-        //                worksheet.Cell(i + 2, 1).Value = productCode;
-        //                worksheet.Cell(i + 2, 2).Value = row["OrderNo"]?.ToString() ?? "";
-        //                worksheet.Cell(i + 2, 3).Value = row["Customer"]?.ToString() ?? "";
-        //                worksheet.Cell(i + 2, 4).Value = row["StyleDescription"]?.ToString() ?? "";
-        //                worksheet.Cell(i + 2, 5).Value = Convert.ToDecimal(row["OrderQty"]);
-        //                worksheet.Cell(i + 2, 6).Value = Convert.ToDateTime(row["OrderDate"]).ToString("yyyyMMdd");
-        //                worksheet.Cell(i + 2, 7).Value = Convert.ToDateTime(row["DueDate"]).ToString("yyyyMMdd");
-        //            }
-        //        }
-
-        //        using (var saveFileDialog = new SaveFileDialog()
-        //        {
-        //            Filter = "Excel Files|*.xlsx",
-        //            Title = "Save Excel File"
-        //        })
-        //        {
-        //            if (saveFileDialog.ShowDialog() == DialogResult.OK)
-        //            {
-        //                workbook.SaveAs(saveFileDialog.FileName);
-        //                MessageBox.Show("Export successful!");
-        //            }
-        //        }
-        //    }
-        //}
-
+                context.SaveChanges();
+            }
+        }
 
         public struct WhseDATA
         {
