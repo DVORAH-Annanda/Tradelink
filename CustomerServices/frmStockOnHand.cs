@@ -463,11 +463,11 @@ namespace CustomerServices
 
         private void btnExcelExport_Click(object sender, EventArgs e)
         {
-            Cursor.Current = Cursors.WaitCursor; // Set waiting cursor
+            Cursor.Current = Cursors.WaitCursor;
 
             using (var context = new TTI2Entities())
             {
-                // Apply user-selected filters
+                // 1. Base query
                 var stockDataQuery = context.TLCSV_StockOnHand.Where(s => !s.TLSOH_Sold);
 
                 if (QueryParms.Styles.Any())
@@ -494,114 +494,307 @@ namespace CustomerServices
                     stockDataQuery = stockDataQuery.Where(s => selectedWhseIds.Contains(s.TLSOH_WareHouse_FK));
                 }
 
+                // 2. Build lookup dictionaries
                 var warehouseLookup = context.TLADM_WhseStore
                     .ToDictionary(w => w.WhStore_Id, w => w.WhStore_Description);
 
-                var stockData = stockDataQuery
-                    .GroupBy(s => new { s.TLSOH_Style_FK, s.TLSOH_Colour_FK, s.TLSOH_Size_FK, s.TLSOH_Grade, s.TLSOH_WareHouse_FK, s.TLSOH_BoxNumber })
+                var styleLookup = context.TLADM_Styles
+                    .ToDictionary(s => s.Sty_Id, s => s.Sty_Description);
+
+                var colourLookup = context.TLADM_Colours
+                    .ToDictionary(c => c.Col_Id, c => c.Col_Description);
+
+                var sizeLookup = context.TLADM_Sizes
+                    .ToDictionary(sz => sz.SI_id, sz => sz.SI_Description);
+
+                var boxTypeLookup = context.TLADM_BoxTypes
+                    .ToDictionary(b => b.TLADMBT_Pk, b => b.TLADMBT_ShortCode);
+
+                // 3. Group & aggregate, pulling in all needed raw fields
+                var rawData = stockDataQuery
+                    .GroupBy(s => new
+                    {
+                        s.TLSOH_WareHouse_FK,
+                        s.TLSOH_Style_FK,
+                        s.TLSOH_Colour_FK,
+                        s.TLSOH_Size_FK,
+                        s.TLSOH_Grade,
+                        s.TLSOH_BoxNumber,
+                        s.TLSOH_BoxType,
+                        s.TLSOH_DateIntoStock
+                    })
                     .Select(g => new
                     {
+                        WarehouseId = g.Key.TLSOH_WareHouse_FK,
                         StyleId = g.Key.TLSOH_Style_FK,
                         ColourId = g.Key.TLSOH_Colour_FK,
                         SizeId = g.Key.TLSOH_Size_FK,
                         Grade = g.Key.TLSOH_Grade,
-                        WarehouseId = g.Key.TLSOH_WareHouse_FK,
                         BoxNumber = g.Key.TLSOH_BoxNumber,
-                        BoxedQty = g.Sum(x => x.TLSOH_BoxedQty),
+                        BoxType = g.Key.TLSOH_BoxType,
+                        TransactionDate = g.Key.TLSOH_DateIntoStock,
+                        Quantity = g.Sum(x => x.TLSOH_BoxedQty),
                         Weight = g.Sum(x => x.TLSOH_Weight)
                     })
-                    .ToList() // Switch to in-memory to apply description
+                    .ToList(); // switch to in-memory
+
+                // 4. Enrich with descriptions
+                var stockData = rawData
                     .Select(x => new
                     {
+                        x.WarehouseId,
+                        WarehouseDesc = warehouseLookup.TryGetValue(x.WarehouseId, out var w) ? w : "UNKNOWN",
                         x.StyleId,
+                        StyleDesc = styleLookup.TryGetValue(x.StyleId, out var sd) ? sd : "UNKNOWN",
                         x.ColourId,
+                        ColourDesc = colourLookup.TryGetValue(x.ColourId, out var cd) ? cd : "UNKNOWN",
                         x.SizeId,
+                        SizeDesc = sizeLookup.TryGetValue(x.SizeId, out var szd) ? szd : "UNKNOWN",
                         x.Grade,
                         x.BoxNumber,
-                        x.BoxedQty,
+                        x.Quantity,
                         x.Weight,
-                        WarehouseDesc = warehouseLookup.ContainsKey(x.WarehouseId) ? warehouseLookup[x.WarehouseId] : "UNKNOWN"
+                        x.BoxType,
+                        BoxDesc = boxTypeLookup.TryGetValue(x.BoxType, out var bd) ? bd : "UNKNOWN",
+                        x.TransactionDate
                     })
-                    .OrderBy(x => x.WarehouseDesc)
+                    .OrderBy(x => x.WarehouseId)
                     .ThenBy(x => x.StyleId)
                     .ToList();
 
+               
 
+                // 5. Write to Excel
                 using (var workbook = new XLWorkbook())
                 {
-                    var worksheet = workbook.Worksheets.Add("StockOnHand");
+                    var ws = workbook.Worksheets.Add("StockOnHand");
 
-                    // Add headers
-                    worksheet.Cell(1, 1).Value = "Product Code";
-                    worksheet.Cell(1, 2).Value = "Grade";
-                    worksheet.Cell(1, 3).Value = "Box Number";
-                    worksheet.Cell(1, 4).Value = "Boxed Qty";
-                    worksheet.Cell(1, 5).Value = "Weight";
-                    worksheet.Cell(1, 6).Value = "Warehouse Desc";
+                    // Headers
+                    var headers = new[]
+                    {
+                        "Warehouse ID",
+                        "Warehouse Desc",
+                        "Product Code",
+                        "Style ID",
+                        "Style Description",
+                        "Colour ID",
+                        "Colour Desc",
+                        "Size ID",
+                        "Size Desc",
+                        "Grade",
+                        "Box Number",
+                        "Quantity",
+                        "Weight",
+                        "Box Type",
+                        "Box Desc",
+                        "Transaction Date"
+                    };
+                    for (int i = 0; i < headers.Length; i++)
+                        ws.Cell(1, i + 1).Value = headers[i];
 
-                    int row = 2;
-                    string firstProductCode = "UNKNOWN";
                     string warehouse = "";
-
+                    int row = 2;
                     foreach (var item in stockData)
                     {
+                        // look up ProductCode
                         string productCode = "UNKNOWN";
-                        
-                        using (var sqlConnection = new SqlConnection(connectionString))
+                        using (var conn = new SqlConnection(connectionString))
+                        using (var cmd = new SqlCommand(
+                            "SELECT TOP 1 ProductCode FROM TLADM_ProductCodes WHERE StyleId=@st AND ColourId=@co AND SizeId=@sz",
+                            conn))
                         {
-                            sqlConnection.Open();
-
-                            string sql = @"SELECT TOP 1 ProductCode 
-                                           FROM TLADM_ProductCodes 
-                                           WHERE StyleId = @StyleId AND ColourId = @ColourId AND SizeId = @SizeId";
-
-                            using (var command = new SqlCommand(sql, sqlConnection))
-                            {
-                                command.Parameters.AddWithValue("@StyleId", item.StyleId);
-                                command.Parameters.AddWithValue("@ColourId", item.ColourId);
-                                command.Parameters.AddWithValue("@SizeId", item.SizeId);
-
-                                var result = command.ExecuteScalar();
-                                if (result != null && !string.IsNullOrWhiteSpace(result.ToString()))
-                                {
-                                    productCode = result.ToString().ToUpper();
-                                }
-                                else
-                                {
-                                    continue; // Skip if Product Code is missing
-                                }
-                            }
+                            conn.Open();
+                            cmd.Parameters.AddWithValue("@st", item.StyleId);
+                            cmd.Parameters.AddWithValue("@co", item.ColourId);
+                            cmd.Parameters.AddWithValue("@sz", item.SizeId);
+                            var res = cmd.ExecuteScalar();
+                            if (res != null && !string.IsNullOrWhiteSpace(res.ToString()))
+                                productCode = res.ToString().ToUpper();
                         }
+                        if (item.WarehouseDesc != "UNKNOWN") warehouse = item.WarehouseDesc;
+                        if (productCode == "UNKNOWN") continue;   // skip rows without a code
 
-                        warehouse = item.WarehouseDesc;
-                        if (firstProductCode == "UNKNOWN")
-                            firstProductCode = productCode;
+                        // Fill cells in the exact order
+                        ws.Cell(row, 1).Value = item.WarehouseId;
+                        ws.Cell(row, 2).Value = item.WarehouseDesc;
+                        ws.Cell(row, 3).Value = productCode;
+                        ws.Cell(row, 4).Value = item.StyleId;
+                        ws.Cell(row, 5).Value = item.StyleDesc;
+                        ws.Cell(row, 6).Value = item.ColourId;
+                        ws.Cell(row, 7).Value = item.ColourDesc;
+                        ws.Cell(row, 8).Value = item.SizeId;
+                        ws.Cell(row, 9).Value = item.SizeDesc;
+                        ws.Cell(row, 10).Value = item.Grade;
+                        ws.Cell(row, 11).Value = item.BoxNumber;
+                        ws.Cell(row, 12).Value = item.Quantity;
+                        ws.Cell(row, 13).Value = item.Weight;
+                        ws.Cell(row, 14).Value = item.BoxType;
+                        ws.Cell(row, 15).Value = item.BoxDesc;
+                        ws.Cell(row, 16).Value = item.TransactionDate.HasValue ? item.TransactionDate.Value.ToString("yyyyMMdd") : "";
 
-                        // Write to Excel
-                        worksheet.Cell(row, 1).Value = productCode;
-                        worksheet.Cell(row, 2).Value = item.Grade;
-                        worksheet.Cell(row, 3).Value = item.BoxNumber;
-                        worksheet.Cell(row, 4).Value = item.BoxedQty;
-                        worksheet.Cell(row, 5).Value = item.Weight;
-                        worksheet.Cell(row, 6).Value = item.WarehouseDesc;
                         row++;
                     }
 
-                    // Auto-fit columns
-                    worksheet.Columns().AdjustToContents();
+                    ws.Columns().AdjustToContents();
 
-                    // Save file with timestamp and first product code
-                    string timestamp = DateTime.Now.ToString("yyyyMMdd_HHmmss");
-                    string fileName = $"SOH_{warehouse}_{timestamp}.xlsx";
-                    string filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), fileName);
+                    var fileName = $"SOH_{warehouse}_{DateTime.Now:yyyyMMdd_HHmmss}.xlsx";
+                    var path = Path.Combine(
+                        Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
+                        fileName);
 
-                    workbook.SaveAs(filePath);
-
-                    Cursor.Current = Cursors.Default; // Reset cursor
-                    MessageBox.Show($"Excel export completed!\nFile saved at:\n{filePath}", "Export Successful", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    workbook.SaveAs(path);
+                    Cursor.Current = Cursors.Default;
+                    MessageBox.Show(
+                        $"Excel export completed!\nFile saved at:\n{path}",
+                        "Export Successful",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information);
                 }
             }
         }
+
+
+        //private void btnExcelExport_Click(object sender, EventArgs e)
+        //{
+        //    Cursor.Current = Cursors.WaitCursor; // Set waiting cursor
+
+        //    using (var context = new TTI2Entities())
+        //    {
+        //        // Apply user-selected filters
+        //        var stockDataQuery = context.TLCSV_StockOnHand.Where(s => !s.TLSOH_Sold);
+
+        //        if (QueryParms.Styles.Any())
+        //        {
+        //            var selectedStyleIds = QueryParms.Styles.Select(st => st.Sty_Id).ToList();
+        //            stockDataQuery = stockDataQuery.Where(s => selectedStyleIds.Contains(s.TLSOH_Style_FK));
+        //        }
+
+        //        if (QueryParms.Colours.Any())
+        //        {
+        //            var selectedColourIds = QueryParms.Colours.Select(c => c.Col_Id).ToList();
+        //            stockDataQuery = stockDataQuery.Where(s => selectedColourIds.Contains(s.TLSOH_Colour_FK));
+        //        }
+
+        //        if (QueryParms.Sizes.Any())
+        //        {
+        //            var selectedSizeIds = QueryParms.Sizes.Select(sz => sz.SI_id).ToList();
+        //            stockDataQuery = stockDataQuery.Where(s => selectedSizeIds.Contains(s.TLSOH_Size_FK));
+        //        }
+
+        //        if (QueryParms.Whses.Any())
+        //        {
+        //            var selectedWhseIds = QueryParms.Whses.Select(w => w.WhStore_Id).ToList();
+        //            stockDataQuery = stockDataQuery.Where(s => selectedWhseIds.Contains(s.TLSOH_WareHouse_FK));
+        //        }
+
+        //        var warehouseLookup = context.TLADM_WhseStore
+        //            .ToDictionary(w => w.WhStore_Id, w => w.WhStore_Description);
+
+        //        var stockData = stockDataQuery
+        //            .GroupBy(s => new { s.TLSOH_Style_FK, s.TLSOH_Colour_FK, s.TLSOH_Size_FK, s.TLSOH_Grade, s.TLSOH_WareHouse_FK, s.TLSOH_BoxNumber })
+        //            .Select(g => new
+        //            {
+        //                StyleId = g.Key.TLSOH_Style_FK,
+        //                ColourId = g.Key.TLSOH_Colour_FK,
+        //                SizeId = g.Key.TLSOH_Size_FK,
+        //                Grade = g.Key.TLSOH_Grade,
+        //                WarehouseId = g.Key.TLSOH_WareHouse_FK,
+        //                BoxNumber = g.Key.TLSOH_BoxNumber,
+        //                BoxedQty = g.Sum(x => x.TLSOH_BoxedQty),
+        //                Weight = g.Sum(x => x.TLSOH_Weight)
+        //            })
+        //            .ToList() // Switch to in-memory to apply description
+        //            .Select(x => new
+        //            {
+        //                x.StyleId,
+        //                x.ColourId,
+        //                x.SizeId,
+        //                x.Grade,
+        //                x.BoxNumber,
+        //                x.BoxedQty,
+        //                x.Weight,
+        //                WarehouseDesc = warehouseLookup.ContainsKey(x.WarehouseId) ? warehouseLookup[x.WarehouseId] : "UNKNOWN"
+        //            })
+        //            .OrderBy(x => x.WarehouseDesc)
+        //            .ThenBy(x => x.StyleId)
+        //            .ToList();
+
+
+        //        using (var workbook = new XLWorkbook())
+        //        {
+        //            var worksheet = workbook.Worksheets.Add("StockOnHand");
+
+        //            // Add headers
+        //            worksheet.Cell(1, 1).Value = "Product Code";
+        //            worksheet.Cell(1, 2).Value = "Grade";
+        //            worksheet.Cell(1, 3).Value = "Box Number";
+        //            worksheet.Cell(1, 4).Value = "Boxed Qty";
+        //            worksheet.Cell(1, 5).Value = "Weight";
+        //            worksheet.Cell(1, 6).Value = "Warehouse Desc";
+
+        //            int row = 2;
+        //            string firstProductCode = "UNKNOWN";
+        //            string warehouse = "";
+
+        //            foreach (var item in stockData)
+        //            {
+        //                string productCode = "UNKNOWN";
+
+        //                using (var sqlConnection = new SqlConnection(connectionString))
+        //                {
+        //                    sqlConnection.Open();
+
+        //                    string sql = @"SELECT TOP 1 ProductCode 
+        //                                   FROM TLADM_ProductCodes 
+        //                                   WHERE StyleId = @StyleId AND ColourId = @ColourId AND SizeId = @SizeId";
+
+        //                    using (var command = new SqlCommand(sql, sqlConnection))
+        //                    {
+        //                        command.Parameters.AddWithValue("@StyleId", item.StyleId);
+        //                        command.Parameters.AddWithValue("@ColourId", item.ColourId);
+        //                        command.Parameters.AddWithValue("@SizeId", item.SizeId);
+
+        //                        var result = command.ExecuteScalar();
+        //                        if (result != null && !string.IsNullOrWhiteSpace(result.ToString()))
+        //                        {
+        //                            productCode = result.ToString().ToUpper();
+        //                        }
+        //                        else
+        //                        {
+        //                            continue; // Skip if Product Code is missing
+        //                        }
+        //                    }
+        //                }
+
+        //                warehouse = item.WarehouseDesc;
+        //                if (firstProductCode == "UNKNOWN")
+        //                    firstProductCode = productCode;
+
+        //                // Write to Excel
+        //                worksheet.Cell(row, 1).Value = productCode;
+        //                worksheet.Cell(row, 2).Value = item.Grade;
+        //                worksheet.Cell(row, 3).Value = item.BoxNumber;
+        //                worksheet.Cell(row, 4).Value = item.BoxedQty;
+        //                worksheet.Cell(row, 5).Value = item.Weight;
+        //                worksheet.Cell(row, 6).Value = item.WarehouseDesc;
+        //                row++;
+        //            }
+
+        //            // Auto-fit columns
+        //            worksheet.Columns().AdjustToContents();
+
+        //            // Save file with timestamp and first product code
+        //            string timestamp = DateTime.Now.ToString("yyyyMMdd_HHmmss");
+        //            string fileName = $"SOH_{warehouse}_{timestamp}.xlsx";
+        //            string filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), fileName);
+
+        //            workbook.SaveAs(filePath);
+
+        //            Cursor.Current = Cursors.Default; // Reset cursor
+        //            MessageBox.Show($"Excel export completed!\nFile saved at:\n{filePath}", "Export Successful", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        //        }
+        //    }
+        //}
 
     }
 }
