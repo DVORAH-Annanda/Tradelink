@@ -642,11 +642,10 @@ namespace CustomerServices
 
                     workbook.SaveAs(path);
                     Cursor.Current = Cursors.Default;
-                    MessageBox.Show(
-                        $"Excel export completed!\nFile saved at:\n{path}",
-                        "Export Successful",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Information);
+                    MessageBox.Show($"Excel export completed!\nFile saved at:\n{path}",
+                                     "Export Successful",
+                                     MessageBoxButtons.OK,
+                                     MessageBoxIcon.Information);
 
                     //MarkExportedOdooStockAsSold(
                     //    QueryParms.Whses.Select(w => w.WhStore_Id).ToList()

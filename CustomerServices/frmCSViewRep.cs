@@ -152,7 +152,7 @@ namespace CustomerServices
                         .ToList();
 
                     var stockOnHandIds = stockOnHandDetail.Select(s => s.TLSOH_Pk).ToList();
-                    //MarkStockImportedToOdooAsSold(stockOnHandIds);
+                    //MarkExportedStockToOdooAsSold(stockOnHandIds);
                 }
                 else
                 {
@@ -162,7 +162,7 @@ namespace CustomerServices
             }
         }
 
-        private void MarkStockImportedToOdooAsSold(List<int> stockOnHandIds)
+        private void MarkExportedStockToOdooAsSold(List<int> stockOnHandIds)
         {
             using (var context = new TTI2Entities())
             {
