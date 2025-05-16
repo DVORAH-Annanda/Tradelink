@@ -560,9 +560,7 @@ namespace CustomerServices
                     })
                     .OrderBy(x => x.WarehouseId)
                     .ThenBy(x => x.StyleId)
-                    .ToList();
-
-               
+                    .ToList();               
 
                 // 5. Write to Excel
                 using (var workbook = new XLWorkbook())
@@ -649,10 +647,36 @@ namespace CustomerServices
                         "Export Successful",
                         MessageBoxButtons.OK,
                         MessageBoxIcon.Information);
+
+                    //MarkExportedOdooStockAsSold(
+                    //    QueryParms.Whses.Select(w => w.WhStore_Id).ToList()
+                    //);
+
                 }
             }
         }
 
+        private void MarkExportedOdooStockAsSold(List<int> warehouseIds)
+        {
+            using (var context = new TTI2Entities())
+            {
+                DateTime today = DateTime.Now;
+
+                var stockToUpdate = context.TLCSV_StockOnHand
+                    .Where(s => !s.TLSOH_Sold
+                                && warehouseIds.Contains(s.TLSOH_WareHouse_FK))
+                    .ToList();
+
+                foreach (var stock in stockToUpdate)
+                {
+                    stock.TLSOH_Sold = true;
+                    stock.TLSOH_SoldDate = today;
+                    stock.TLSOH_Notes = "ExportedToODOO";
+                }
+
+                context.SaveChanges();
+            }
+        }
 
         //private void btnExcelExport_Click(object sender, EventArgs e)
         //{
@@ -788,13 +812,13 @@ namespace CustomerServices
         //            string fileName = $"SOH_{warehouse}_{timestamp}.xlsx";
         //            string filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), fileName);
 
-        //            workbook.SaveAs(filePath);
 
-        //            Cursor.Current = Cursors.Default; // Reset cursor
-        //            MessageBox.Show($"Excel export completed!\nFile saved at:\n{filePath}", "Export Successful", MessageBoxButtons.OK, MessageBoxIcon.Information);
-        //        }
-        //    }
         //}
+        //}
+    }
+
+
+
 
     }
-}
+

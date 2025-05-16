@@ -97,10 +97,10 @@ namespace CustomerServices
                     var boxType = context.TLADM_BoxTypes.Find(item.TLSOH_BoxType);
                     string originalDescription = warehouse?.WhStore_Description ?? "N/A";
                     string warehouseDescription = originalDescription;
-                    if (originalDescription.Contains("George Distribution Warehouse (A  grade)"))
-                    {
-                        warehouseDescription = "George A Grade Warehouse"; //George Distribution Warehouse (A Grade) //"George A Grade Warehouse"
-                    }
+                    //if (originalDescription.Contains("George Distribution Warehouse (A  grade)"))
+                    //{
+                    //    warehouseDescription = "George A Grade Warehouse"; //George Distribution Warehouse (A Grade) //"George A Grade Warehouse"
+                    //}
 
                     string productCode = GetProductCodes(item.TLSOH_Style_FK, item.TLSOH_Colour_FK, item.TLSOH_Size_FK).ToUpper();
 
@@ -131,7 +131,7 @@ namespace CustomerServices
             var json = JsonConvert.SerializeObject(payload);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-            string url = "https://vicbayapparel-master-13-2-24-19468381.dev.odoo.com/process_stock_data"; // staging URL
+            string url = "https://vicbayapparel-master-13-2-24-20222726.dev.odoo.com/process_stock_data"; // staging URL
             System.Net.ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
             using (var client = new HttpClient())
             {
@@ -139,7 +139,47 @@ namespace CustomerServices
                 var responseString = await response.Content.ReadAsStringAsync();
 
 
-                MessageBox.Show($"Response from Odoo: {response.StatusCode}\n{responseString}", "Odoo Import", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                //MessageBox.Show($"Response from Odoo: {response.StatusCode}\n{responseString}", "Odoo Import", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    MessageBox.Show("Stock successfully exported to Odoo.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                    // Extract warehouse IDs from stockOnHandDetail
+                    var warehouseIds = stockOnHandDetail
+                        .Select(s => s.TLSOH_WareHouse_FK)
+                        .Distinct()
+                        .ToList();
+
+                    var stockOnHandIds = stockOnHandDetail.Select(s => s.TLSOH_Pk).ToList();
+                    //MarkStockImportedToOdooAsSold(stockOnHandIds);
+                }
+                else
+                {
+                    MessageBox.Show($"Failed to export stock to Odoo: {response.StatusCode}\n{responseString}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+
+            }
+        }
+
+        private void MarkStockImportedToOdooAsSold(List<int> stockOnHandIds)
+        {
+            using (var context = new TTI2Entities())
+            {
+                DateTime today = DateTime.Now;
+
+                var stockToUpdate = context.TLCSV_StockOnHand
+                    .Where(s => stockOnHandIds.Contains(s.TLSOH_Pk))
+                    .ToList();
+
+                foreach (var stock in stockToUpdate)
+                {
+                    stock.TLSOH_Sold = true;
+                    stock.TLSOH_SoldDate = today;
+                    stock.TLSOH_Notes = "ExportedToODOO";
+                }
+
+                context.SaveChanges();
             }
         }
 
@@ -1216,7 +1256,7 @@ namespace CustomerServices
                 if (datatable1.Rows.Count > 0)
                 {
                     exportOutstandingOrdersXL(datatable1);
-                    MarkOrdersAsExported(POOrderIds);
+                    // MarkOrdersAsExported(POOrderIds);
                 }
 
                 if (datatable1.Rows.Count == 0)
