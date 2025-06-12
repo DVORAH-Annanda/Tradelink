@@ -1704,7 +1704,8 @@ namespace ProductionPlanning
 
         private async void btnODOOImport_Click(object sender, EventArgs e)
         {
-            string stockOnHandUrl = "https://vicbayapparel-master.odoo.com/stock_on_hand"; 
+            //string stockOnHandUrl = "https://vicbayapparel-master.odoo.com/stock_on_hand";
+            string stockOnHandUrl = "https://vicbayapparel-master-13-2-24-20222726.dev.odoo.com/stock_on_hand";
             string outstandingOrdersUrl = "https://vicbayapparel-master.odoo.com/customer_outstanding_order";
 
             try

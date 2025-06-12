@@ -112,6 +112,7 @@
     <Compile Include="GreigeProduced_Result2.cs">
       <DependentUpon>TTI2Entities.tt</DependentUpon>
     </Compile>
+    <Compile Include="ODOOapipythoncode.cs" />
     <Compile Include="PPS_CustomerOrders_Result.cs">
       <DependentUpon>TTI2Entities.tt</DependentUpon>
     </Compile>

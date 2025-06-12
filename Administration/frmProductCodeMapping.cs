@@ -26,7 +26,7 @@ namespace Administration
         {
             dgvMapping.Rows.Clear(); // Clear previous data
 
-            string query = "SELECT ProductCode, StyleId, ColourId, SizeId FROM TLADM_ProductCodes";
+            string query = "SELECT ProductCode, StyleId, ColourId, SizeId FROM TLADM_ProductCodes ORDER BY StyleId, ColourId, SizeId, ProductCode";
 
             using (SqlConnection conn = new SqlConnection(connectionString))
             using (SqlCommand cmd = new SqlCommand(query, conn))

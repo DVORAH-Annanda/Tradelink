@@ -427,6 +427,7 @@
             this.stockTakeFrequencyCodesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.productTypeGoodsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.greigeQualityToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.productCodesODOOToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.machinesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.machineDefinitionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.machineOperatorsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -484,7 +485,7 @@
             this.inUseResetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
             this.PBar1 = new System.Windows.Forms.ProgressBar();
-            this.productCodesODOOToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            //this.garmentDyeProductionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             this.SuspendLayout();
@@ -3335,7 +3336,7 @@
             // 
             this.processLossPerCutSheetAcrossProductionToolStripMenuItem.Name = "processLossPerCutSheetAcrossProductionToolStripMenuItem";
             this.processLossPerCutSheetAcrossProductionToolStripMenuItem.Size = new System.Drawing.Size(312, 22);
-            this.processLossPerCutSheetAcrossProductionToolStripMenuItem.Text = "Process Loss Per CutSheet across Production ";
+            this.processLossPerCutSheetAcrossProductionToolStripMenuItem.Text = "Process Loss per Cut Sheet across Production";
             this.processLossPerCutSheetAcrossProductionToolStripMenuItem.Click += new System.EventHandler(this.processLossPerCutSheetAcrossProductionToolStripMenuItem_Click);
             // 
             // wIPQuickLookForExpiditingToolStripMenuItem
@@ -3687,6 +3688,13 @@
             this.greigeQualityToolStripMenuItem.Size = new System.Drawing.Size(255, 22);
             this.greigeQualityToolStripMenuItem.Text = "Greige Quality";
             this.greigeQualityToolStripMenuItem.Click += new System.EventHandler(this.greigeQualityToolStripMenuItem_Click);
+            // 
+            // productCodesODOOToolStripMenuItem
+            // 
+            this.productCodesODOOToolStripMenuItem.Name = "productCodesODOOToolStripMenuItem";
+            this.productCodesODOOToolStripMenuItem.Size = new System.Drawing.Size(255, 22);
+            this.productCodesODOOToolStripMenuItem.Text = "Product Codes (ODOO)";
+            this.productCodesODOOToolStripMenuItem.Click += new System.EventHandler(this.productCodesODOOToolStripMenuItem_Click);
             // 
             // machinesToolStripMenuItem
             // 
@@ -4133,13 +4141,6 @@
             this.PBar1.Name = "PBar1";
             this.PBar1.Size = new System.Drawing.Size(402, 23);
             this.PBar1.TabIndex = 5;
-            // 
-            // productCodesODOOToolStripMenuItem
-            // 
-            this.productCodesODOOToolStripMenuItem.Name = "productCodesODOOToolStripMenuItem";
-            this.productCodesODOOToolStripMenuItem.Size = new System.Drawing.Size(255, 22);
-            this.productCodesODOOToolStripMenuItem.Text = "Product Codes (ODOO)";
-            this.productCodesODOOToolStripMenuItem.Click += new System.EventHandler(this.productCodesODOOToolStripMenuItem_Click);
             // 
             // frmTLMain
             // 
@@ -4619,5 +4620,6 @@
         private System.Windows.Forms.ToolStripMenuItem dyeOrderPlanningToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem garmentDyeBatchWIPToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem productCodesODOOToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem garmentDyeProductionToolStripMenuItem;
     }
 }

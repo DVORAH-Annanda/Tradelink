@@ -10957,6 +10957,31 @@ namespace TTI2_WF
             }
 
         }
+
+        private void garmentDyeProductionToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ToolStripMenuItem oTi = sender as ToolStripMenuItem;
+            if (core.GetUserAuthorisation(ud, oTi.Name))
+            {
+                try
+                {
+                    frmGarmentDyeProduction garmentDyeProduction = new frmGarmentDyeProduction();
+                    garmentDyeProduction.ShowDialog(this);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+            else
+            {
+                using (DialogCenteringService centeringService = new DialogCenteringService(this)) // center message box
+                {
+                    MessageBox.Show(ud._NotAuthorisedMessage, ud._UserName);
+                }
+            }
+
+        }
     }
        
 }
