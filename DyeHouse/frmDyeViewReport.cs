@@ -7520,98 +7520,118 @@ namespace DyeHouse
                 DataSet ds = new DataSet();
                 dsGarmentDyeingWIP.DataTable1DataTable dataTable1 = new dsGarmentDyeingWIP.DataTable1DataTable();
                 dsGarmentDyeingWIP.DataTable2DataTable dataTable2 = new dsGarmentDyeingWIP.DataTable2DataTable();
+
                 _repo = new DyeRepository();
                 core = new Util();
-                //string[][] ColumnNames = null;
+                string[][] ColumnNames = null;
 
-                //ColumnNames = new string[][]
-                //{   new string[] {"Text6", string.Empty},
-                //        new string[] {"Text7", string.Empty},
-                //        new string[] {"Text8", string.Empty},
-                //        new string[] {"Text9", string.Empty},
-                //        new string[] {"Text10", string.Empty},
-                //        new string[] {"Text11", string.Empty},
-                //        new string[] {"Text12", string.Empty},
-                //        new string[] {"Text14", string.Empty},
-                //        new string[] {"Text15", string.Empty},
-                //        new string[] {"Text16", string.Empty},
-                //        new string[] {"Text17", string.Empty}
-                //};
+                ColumnNames = new string[][]
+                {   new string[] {"Text6", string.Empty},
+                        new string[] {"Text7", string.Empty},
+                        new string[] {"Text8", string.Empty},
+                        new string[] {"Text9", string.Empty},
+                        new string[] {"Text10", string.Empty},
+                        new string[] {"Text11", string.Empty},
+                        new string[] {"Text12", string.Empty},
+                        new string[] {"Text14", string.Empty},
+                        new string[] {"Text15", string.Empty},
+                        new string[] {"Text16", string.Empty},
+                        new string[] {"Text17", string.Empty}
+                };
 
-   
+
                 dsGarmentDyeingWIP.DataTable1Row dtr = dataTable1.NewDataTable1Row();
                 dtr.gdPK = "";
                 dtr.reportTitle = "Garment Dye Batch WIP";
                 dtr.date = _parms.DateWIP.ToString("yyyy-MM-dd"); ;
                 dataTable1.AddDataTable1Row(dtr);
 
-                //int i = 0;
-                //var CNames = core.CreateColumnNames();
+                int i = 0;
+                var CNames = core.CreateColumnNames();
 
-                //foreach (var CName in CNames)
-                //{
-                //    ColumnNames[i++][1] = CName[1];
-                //}
+                foreach (var CName in CNames)
+                {
+                    ColumnNames[i++][1] = CName[1];
+                }
 
                 using (var context = new TTI2Entities())
                 {
-                    ////    var Existing = _repo.SelectWIPDyeBatches(_parms).OrderBy(x => x.TLCutSH_No);
-                    ////    foreach (var row in Existing)
-                    ////    {
-                    ////        DataSet4.DataTable1Row nr = dataTable1.NewDataTable1Row();
-                    ////        nr.Pk = 1;
-                    ////        nr.Col1 = 0;
-                    ////        nr.Col2 = 0;
-                    ////        nr.Col3 = 0;
-                    ////        nr.Col4 = 0;
-                    ////        nr.Col5 = 0;
-                    ////        nr.Col6 = 0;
-                    ////        nr.Col7 = 0;
-                    ////        nr.Col8 = 0;
-                    ////        nr.Col9 = 0;
-                    ////        nr.Col10 = 0;
-                    ////        nr.Col11 = 0;
-                    ////        nr.Date = row.TLCutSH_Date;
-                    ////        nr.Department = context.TLADM_Departments.Find(row.TLCutSH_Department_FK).Dep_Description;
-                    ////        nr.CutSheetNo = row.TLCutSH_No;
-                    ////        nr.Style = _Styles.FirstOrDefault(s => s.Sty_Id == row.TLCutSH_Styles_FK).Sty_Description;
-                    ////        nr.Colour = _Colours.FirstOrDefault(s => s.Col_Id == row.TLCutSH_Colour_FK).Col_Display;
-                    ////        nr.Priority = row.TLCUTSH_Priority;
-                    ////        nr.OnHold = row.TLCUTSH_OnHold;
-                    ////        nr.DyeBatch = context.TLDYE_DyeBatch.Find(row.TLCutSH_DyeBatch_FK).DYEB_BatchNo;
+                    IList<TLADM_Styles> _Styles = context.TLADM_Styles.ToList();
+                    IList<TLADM_Colours> _Colours = context.TLADM_Colours.ToList();
+                    IList<TLADM_Sizes> _Sizes = context.TLADM_Sizes.ToList();
 
-                    ////        var xSizes = context.TLCUT_ExpectedUnits.Where(x => x.TLCUTE_CutSheet_FK == row.TLCutSH_Pk).ToList();
-                    ////        foreach (var xSize in xSizes)
-                    ////        {
-                    ////            var Size = _Sizes.FirstOrDefault(s => s.SI_id == xSize.TLCUTE_Size_FK);
-                    ////            if (Size != null)
-                    ////            {
-                    ////                if (Size.SI_ColNumber == 1)
-                    ////                    nr.Col1 += xSize.TLCUTE_NoofGarments;
-                    ////                else if (Size.SI_ColNumber == 2)
-                    ////                    nr.Col2 += xSize.TLCUTE_NoofGarments;
-                    ////                else if (Size.SI_ColNumber == 3)
-                    ////                    nr.Col3 += xSize.TLCUTE_NoofGarments;
-                    ////                else if (Size.SI_ColNumber == 4)
-                    ////                    nr.Col4 += xSize.TLCUTE_NoofGarments;
-                    ////                else if (Size.SI_ColNumber == 5)
-                    ////                    nr.Col5 += xSize.TLCUTE_NoofGarments;
-                    ////                else if (Size.SI_ColNumber == 6)
-                    ////                    nr.Col6 += xSize.TLCUTE_NoofGarments;
-                    ////                else if (Size.SI_ColNumber == 7)
-                    ////                    nr.Col7 += xSize.TLCUTE_NoofGarments;
-                    ////                else if (Size.SI_ColNumber == 8)
-                    ////                    nr.Col8 += xSize.TLCUTE_NoofGarments;
-                    ////                else if (Size.SI_ColNumber == 9)
-                    ////                    nr.Col9 += xSize.TLCUTE_NoofGarments;
-                    ////                else if (Size.SI_ColNumber == 10)
-                    ////                    nr.Col10 += xSize.TLCUTE_NoofGarments;
-                    ////                else
-                    ////                    nr.Col11 += xSize.TLCUTE_NoofGarments;
-                    ////            }
-                    ////        }
-                    ////        dataTable1.AddDataTable1Row(nr);
-                    ////    }
+                    //select* from TLCSV_StockOnHand where TLSOH_Colour_FK = 337 and TLSOH_RFD_NotYetDyed = 1 (TLSOH_RFD_NotYetDyed === ALREADY DYED)
+                    var result = context.TLCUT_CutSheet
+                        .Join(context.TLDYE_DyeBatch,
+                              cs => cs.TLCutSH_DyeBatch_FK,
+                              db => db.DYEB_Pk,
+                              (cs, db) => new { CutSheet = cs, DyeBatch = db })
+                        .Where(x => x.CutSheet.TLCutSH_Colour_FK == 337
+                                 && !x.CutSheet.TLCutSH_WIPComplete
+                                 && x.CutSheet.TLCutSH_Accepted
+                                 && !x.CutSheet.TLCutSH_Closed)
+                        .OrderBy(x => x.CutSheet.TLCutSH_Styles_FK)
+                        .ThenBy(x => x.DyeBatch.DYEB_BatchNo)
+                        .ToList();
+
+                    foreach (var row in result)
+                    {
+                        dsGarmentDyeingWIP.DataTable2Row r = dataTable2.NewDataTable2Row();
+                        r.gdPK = "1";
+                        r.style = _Styles.FirstOrDefault(s => s.Sty_Id == row.CutSheet.TLCutSH_Styles_FK)?.Sty_Description;
+
+                        r.colour = _Colours.FirstOrDefault(s => s.Col_Id == row.CutSheet.TLCutSH_Colour_FK)?.Col_Display;
+                        r.quantity1 = "0";
+                        r.quantity2 = "0";
+                        r.quantity3 = "0";
+                        r.quantity4 = "0";
+                        r.quantity5 = "0";
+                        r.quantity6 = "0";
+                        r.quantity7 = "0";
+                        r.quantity8 = "0";
+                        r.quantity9 = "0";
+
+                        //r.Date = row.TLCutSH_Date;
+                        //r.Department = context.TLADM_Departments.Find(row.TLCutSH_Department_FK).Dep_Description;
+                        //r.CutSheetNo = row.TLCutSH_No;
+                        //r.Style = _Styles.FirstOrDefault(s => s.Sty_Id == row.TLCutSH_Styles_FK).Sty_Description;
+                        //r.Colour = _Colours.FirstOrDefault(s => s.Col_Id == row.TLCutSH_Colour_FK).Col_Display;
+                        //r.Priority = row.TLCUTSH_Priority;
+                        //r.OnHold = row.TLCUTSH_OnHold;
+                        //r.DyeBatch = context.TLDYE_DyeBatch.Find(row.TLCutSH_DyeBatch_FK).DYEB_BatchNo;
+
+                        ////        var xSizes = context.TLCUT_ExpectedUnits.Where(x => x.TLCUTE_CutSheet_FK == row.TLCutSH_Pk).ToList();
+                        ////        foreach (var xSize in xSizes)
+                        ////        {
+                        ////            var Size = _Sizes.FirstOrDefault(s => s.SI_id == xSize.TLCUTE_Size_FK);
+                        ////            if (Size != null)
+                        ////            {
+                        ////                if (Size.SI_ColNumber == 1)
+                        ////                    nr.Col1 += xSize.TLCUTE_NoofGarments;
+                        ////                else if (Size.SI_ColNumber == 2)
+                        ////                    nr.Col2 += xSize.TLCUTE_NoofGarments;
+                        ////                else if (Size.SI_ColNumber == 3)
+                        ////                    nr.Col3 += xSize.TLCUTE_NoofGarments;
+                        ////                else if (Size.SI_ColNumber == 4)
+                        ////                    nr.Col4 += xSize.TLCUTE_NoofGarments;
+                        ////                else if (Size.SI_ColNumber == 5)
+                        ////                    nr.Col5 += xSize.TLCUTE_NoofGarments;
+                        ////                else if (Size.SI_ColNumber == 6)
+                        ////                    nr.Col6 += xSize.TLCUTE_NoofGarments;
+                        ////                else if (Size.SI_ColNumber == 7)
+                        ////                    nr.Col7 += xSize.TLCUTE_NoofGarments;
+                        ////                else if (Size.SI_ColNumber == 8)
+                        ////                    nr.Col8 += xSize.TLCUTE_NoofGarments;
+                        ////                else if (Size.SI_ColNumber == 9)
+                        ////                    nr.Col9 += xSize.TLCUTE_NoofGarments;
+                        ////                else if (Size.SI_ColNumber == 10)
+                        ////                    nr.Col10 += xSize.TLCUTE_NoofGarments;
+                        ////                else
+                        ////                    nr.Col11 += xSize.TLCUTE_NoofGarments;
+                        ////            }
+                        ////        }
+                               dataTable2.AddDataTable2Row(r);
+                    }
 
 
                     ////    if (dataTable1.Rows.Count != 0)
@@ -7671,19 +7691,17 @@ namespace DyeHouse
 
                     ////}
 
-                    ////if (dataTable1.Rows.Count == 0)
-                    ////{
-                    ////    DataSet4.DataTable1Row tr = dataTable1.NewDataTable1Row();
-                    ////    tr.Pk = 1;
-                    ////    tr.ErrorLog = "There are no records pertaining to selection made";
-                    ////    dataTable1.AddDataTable1Row(tr);
-                    ////}
+                    if (dataTable1.Rows.Count == 0)
+                    {
+                        dsGarmentDyeingWIP.DataTable1Row noRecords = dataTable1.NewDataTable1Row();
+                        noRecords.gdPK = "There are no records pertaining to selection made";
+                        dataTable1.AddDataTable1Row(noRecords);
+                    }
 
                     ds.Tables.Add(dataTable1);
                 ds.Tables.Add(dataTable2);
 
-                ////WIPCutting wipCut = null;
-                ////WIPCuttingByCS wipCut_CS = null;
+
 
                 ////if (_parms.RepSortOption == 1)
                 ////{

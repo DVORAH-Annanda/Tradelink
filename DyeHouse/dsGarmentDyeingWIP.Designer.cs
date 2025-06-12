@@ -28,8 +28,6 @@ namespace DyeHouse {
         
         private DataTable2DataTable tableDataTable2;
         
-        private global::System.Data.DataRelation relationDataTable1_DataTable2;
-        
         private global::System.Data.SchemaSerializationMode _schemaSerializationMode = global::System.Data.SchemaSerializationMode.IncludeSchema;
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -220,7 +218,6 @@ namespace DyeHouse {
                     this.tableDataTable2.InitVars();
                 }
             }
-            this.relationDataTable1_DataTable2 = this.Relations["DataTable1_DataTable2"];
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -235,10 +232,6 @@ namespace DyeHouse {
             base.Tables.Add(this.tableDataTable1);
             this.tableDataTable2 = new DataTable2DataTable();
             base.Tables.Add(this.tableDataTable2);
-            this.relationDataTable1_DataTable2 = new global::System.Data.DataRelation("DataTable1_DataTable2", new global::System.Data.DataColumn[] {
-                        this.tableDataTable1.gdPKColumn}, new global::System.Data.DataColumn[] {
-                        this.tableDataTable2.gdPKColumn}, false);
-            this.Relations.Add(this.relationDataTable1_DataTable2);
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -786,10 +779,10 @@ namespace DyeHouse {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public DataTable2Row AddDataTable2Row(DataTable1Row parentDataTable1RowByDataTable1_DataTable2, string style, string colour, string quantity1, string quantity2, string quantity3, string quantity4, string quantity5, string quantity6, string quantity7, string quantity8, string quantity9) {
+            public DataTable2Row AddDataTable2Row(string gdPK, string style, string colour, string quantity1, string quantity2, string quantity3, string quantity4, string quantity5, string quantity6, string quantity7, string quantity8, string quantity9) {
                 DataTable2Row rowDataTable2Row = ((DataTable2Row)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
-                        null,
+                        gdPK,
                         style,
                         colour,
                         quantity1,
@@ -801,9 +794,6 @@ namespace DyeHouse {
                         quantity7,
                         quantity8,
                         quantity9};
-                if ((parentDataTable1RowByDataTable1_DataTable2 != null)) {
-                    columnValuesArray[0] = parentDataTable1RowByDataTable1_DataTable2[0];
-                }
                 rowDataTable2Row.ItemArray = columnValuesArray;
                 this.Rows.Add(rowDataTable2Row);
                 return rowDataTable2Row;
@@ -1090,17 +1080,6 @@ namespace DyeHouse {
             public void SetreportTitleNull() {
                 this[this.tableDataTable1.reportTitleColumn] = global::System.Convert.DBNull;
             }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public DataTable2Row[] GetDataTable2Rows() {
-                if ((this.Table.ChildRelations["DataTable1_DataTable2"] == null)) {
-                    return new DataTable2Row[0];
-                }
-                else {
-                    return ((DataTable2Row[])(base.GetChildRows(this.Table.ChildRelations["DataTable1_DataTable2"])));
-                }
-            }
         }
         
         /// <summary>
@@ -1306,17 +1285,6 @@ namespace DyeHouse {
                 }
                 set {
                     this[this.tableDataTable2.quantity9Column] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public DataTable1Row DataTable1Row {
-                get {
-                    return ((DataTable1Row)(this.GetParentRow(this.Table.ParentRelations["DataTable1_DataTable2"])));
-                }
-                set {
-                    this.SetParentRow(value, this.Table.ParentRelations["DataTable1_DataTable2"]);
                 }
             }
             
