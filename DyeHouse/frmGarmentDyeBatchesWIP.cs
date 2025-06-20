@@ -211,7 +211,14 @@ namespace DyeHouse
  
                 queryParms.DateWIP = DateTime.Now;
 
-                frmDyeViewReport vRep = new frmDyeViewReport(52, queryParms);
+                //frmDyeViewReport vRep = new frmDyeViewReport(52, queryParms);
+                //int h = Screen.PrimaryScreen.WorkingArea.Height;
+                //int w = Screen.PrimaryScreen.WorkingArea.Width;
+                //vRep.ClientSize = new Size(w, h);
+                //vRep.ShowDialog(this);
+
+                //frmDyeViewReport vRep = new frmDyeViewReport(52, queryParms);
+                frmGarmentDyeingWIPReportViewer vRep = new frmGarmentDyeingWIPReportViewer(queryParms);
                 int h = Screen.PrimaryScreen.WorkingArea.Height;
                 int w = Screen.PrimaryScreen.WorkingArea.Width;
                 vRep.ClientSize = new Size(w, h);

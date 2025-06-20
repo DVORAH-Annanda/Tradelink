@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -95,6 +96,182 @@ namespace DyeHouse
             InitializeComponent();
             _RepNo = RepNo;
             _ProdDetails = DyeProd;
+        }
+
+        private string GenerateGarmentDyeingHtmlReport(DataTable table)
+        {
+            var sizeLabels = new[] { "3-4", "5-6", "7-8", "9-10", "11-12", "13-14", "S", "M", "L", "XL", "2XL", "3XL" };
+            var html = new StringBuilder();
+
+            html.AppendLine(@"<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <style>
+        body { font-family: sans-serif; margin: 20px; }
+        h1, h2 { margin-bottom: 0; }
+        table { border-collapse: collapse; width: 100%; margin-bottom: 40px; }
+        th, td { border: 1px solid #ccc; padding: 6px 10px; text-align: right; }
+        th { background-color: #f0f0f0; }
+        td.left, th.left { text-align: left; }
+        tr.subtotal { background-color: #e8f4f8; font-weight: bold; }
+        tr.total { background-color: #d1f7d1; font-weight: bold; }
+        tr:nth-child(even):not(.subtotal):not(.total) { background-color: #f9f9f9; }
+    </style>
+</head>
+<body>
+    <h1>WIP GARMENT DYEING</h1>");
+
+            var styles = table.AsEnumerable()
+                              .GroupBy(r => r.Field<string>("style") ?? "UNKNOWN");
+
+            foreach (var styleGroup in styles)
+            {
+                html.AppendLine($"<h2>STYLE: {styleGroup.Key}</h2>");
+                html.AppendLine("<table><thead><tr><th class='left'>Batch No</th><th class='left'>Colour</th>");
+                foreach (var label in sizeLabels)
+                    html.Append($"<th>{label}</th>");
+                html.AppendLine("<th>DUE</th></tr></thead><tbody>");
+
+                var total = new int[sizeLabels.Length];
+
+                var colours = styleGroup.GroupBy(r => r.Field<string>("colour") ?? "UNKNOWN");
+
+                foreach (var colourGroup in colours)
+                {
+                    var subtotal = new int[sizeLabels.Length];
+
+                    foreach (var row in colourGroup)
+                    {
+                        string batch = row.Table.Columns.Contains("batch") ? row["batch"].ToString() : "";
+                        string due = row.Table.Columns.Contains("dueDate") ? row["dueDate"].ToString() : "";
+
+                        html.Append($"<tr><td class='left'>{batch}</td><td class='left'>{colourGroup.Key}</td>");
+
+                        for (int i = 1; i <= sizeLabels.Length; i++)
+                        {
+                            string q = row.Table.Columns.Contains($"quantity{i}") ? row[$"quantity{i}"].ToString() : "0";
+                            int val = int.TryParse(q, out int result) ? result : 0;
+                            subtotal[i - 1] += val;
+                            total[i - 1] += val;
+                            html.Append($"<td>{val}</td>");
+                        }
+
+                        html.AppendLine($"<td>{due}</td></tr>");
+                    }
+
+                    // subtotal row
+                    html.Append("<tr class='subtotal'><td colspan='2'>SUBTOTAL " + colourGroup.Key.ToUpper() + "</td>");
+                    foreach (var val in subtotal)
+                        html.Append($"<td>{val}</td>");
+                    html.AppendLine("<td></td></tr>");
+                }
+
+                // total row
+                html.Append("<tr class='total'><td colspan='2'>TOTAL " + styleGroup.Key.ToUpper() + "</td>");
+                foreach (var val in total)
+                    html.Append($"<td>{val}</td>");
+                html.AppendLine("<td></td></tr>");
+                html.AppendLine("</tbody></table>");
+            }
+
+            html.AppendLine("</body></html>");
+            return html.ToString();
+        }
+
+
+        private string GenerateHtmlReport(DataSet ds)
+        {
+            var headerRow = ds.Tables[0].Rows[0];
+            var dateText = headerRow["date"].ToString();
+            var titleText = headerRow["reportTitle"].ToString();
+
+            // all your rows
+            var rows = ds.Tables[1].AsEnumerable()
+                         .Select(r => new {
+                             Style = r.Field<string>("style"),
+                             Colour = r.Field<string>("colour"),
+                             Qty = Enumerable.Range(1, 12)
+                                                .Select(i => r.Field<string>($"quantity{i}"))
+                                                .ToArray(),
+                             //DueDate = r.Field<string>("dueDate")
+                         })
+                         .ToList();
+
+            var sb = new StringBuilder();
+            sb.AppendLine("<!DOCTYPE html><html><head><meta charset='utf-8'>");
+            sb.AppendLine(@"
+      <style>
+        body { font-family: sans-serif; padding: 20px; }
+        h1,h2 { margin: 0; }
+        table { border-collapse: collapse; width: 100%; margin-top: 10px; }
+        th, td { border: 1px solid #ccc; padding: 4px; text-align: right; }
+        th { background: #f0f0f0; text-align: center; }
+        .left { text-align: left; }
+        .subtotal { font-weight: bold; }
+        .total    { font-size: 1.1em; font-weight: bold; background: #efe; }
+      </style>");
+            sb.AppendLine("</head><body>");
+            sb.AppendLine($"<h1>{titleText}</h1>");
+            sb.AppendLine($"<h2>Date: {dateText}</h2>");
+
+            // Group by style
+            foreach (var styleGroup in rows.GroupBy(r => r.Style))
+            {
+                sb.AppendLine($"<h3>STYLE: {styleGroup.Key}</h3>");
+                // Column headers
+                sb.AppendLine("<table>");
+                sb.Append("<tr><th class='left'>Batch</th><th class='left'>Colour</th>");
+                var sizeLabels = new[] { "3/4", "5/6", "7/8", "9/10", "11/12", "13/14", "S", "M", "L", "XL", "2XL", "3XL" };
+                foreach (var lbl in sizeLabels) sb.Append($"<th>{lbl}</th>");
+                sb.AppendLine("<th>DUE</th></tr>");
+
+                // Group by colour within style
+                foreach (var colourGroup in styleGroup.GroupBy(r => r.Colour))
+                {
+                    // data rows
+                    foreach (var row in colourGroup)
+                    {
+                        sb.Append("<tr>");
+                        sb.Append($"<td class='left'>{/* you need a batch field */""}</td>");
+                        sb.Append($"<td class='left'>{row.Colour}</td>");
+                        foreach (var q in row.Qty) sb.Append($"<td>{q}</td>");
+                        //sb.Append($"<td>{row.DueDate}</td>");
+                        sb.AppendLine("</tr>");
+                    }
+
+                    // subtotal
+                    var subtotal = new int[sizeLabels.Length];
+                    foreach (var r in colourGroup)
+                    {
+                        for (int i = 0; i < sizeLabels.Length; i++)
+                        {
+                            subtotal[i] += int.TryParse(r.Qty[i], out var val) ? val : 0;
+                        }
+                    }
+
+                    sb.Append("<tr class='subtotal'>");
+                    sb.Append("<td colspan='2'>SUBTOTAL " + colourGroup.Key.ToUpper() + "</td>");
+                    foreach (var s in subtotal) sb.Append($"<td>{s}</td>");
+                    sb.AppendLine("<td></td></tr>");
+                }
+
+                // grand total for style
+                var grand = new int[sizeLabels.Length];
+                foreach (var r in styleGroup)
+                    for (int i = 0; i < grand.Length; i++)
+                        grand[i] += int.Parse(r.Qty[i] ?? "0");
+
+                sb.Append("<tr class='total'>");
+                sb.Append("<td colspan='2'>TOTAL " + styleGroup.Key.ToUpper() + "</td>");
+                foreach (var t in grand) sb.Append($"<td>{t}</td>");
+                sb.AppendLine("<td></td></tr>");
+
+                sb.AppendLine("</table><br/>");
+            }
+
+            sb.AppendLine("</body></html>");
+            return sb.ToString();
         }
 
 
@@ -7703,61 +7880,65 @@ namespace DyeHouse
 
 
 
-                ////if (_parms.RepSortOption == 1)
-                ////{
-                ////    wipCut_CS = new WIPCuttingByCS();
-                ////    wipCut_CS.SetDataSource(ds);
-                ////}
-                ////else if (_parms.RepSortOption == 2)
-                ////{
-                ////    wipCut = new WIPCutting();
-                ////    wipCut.SetDataSource(ds);
-                ////}
-                ////else
-                ////{
-                ////    wipCut = new WIPCutting();
-                ////    wipCut.SetDataSource(ds);
-                ////}
+                    ////if (_parms.RepSortOption == 1)
+                    ////{
+                    ////    wipCut_CS = new WIPCuttingByCS();
+                    ////    wipCut_CS.SetDataSource(ds);
+                    ////}
+                    ////else if (_parms.RepSortOption == 2)
+                    ////{
+                    ////    wipCut = new WIPCutting();
+                    ////    wipCut.SetDataSource(ds);
+                    ////}
+                    ////else
+                    ////{
+                    ////    wipCut = new WIPCutting();
+                    ////    wipCut.SetDataSource(ds);
+                    ////}
 
-                ////System.Collections.IEnumerator ie = null;
+                    ////System.Collections.IEnumerator ie = null;
 
-                ////if (_parms.RepSortOption == 1)
-                ////    ie = wipCut_CS.Section2.ReportObjects.GetEnumerator();
-                ////else
-                ////    ie = wipCut.Section2.ReportObjects.GetEnumerator();
+                    ////if (_parms.RepSortOption == 1)
+                    ////    ie = wipCut_CS.Section2.ReportObjects.GetEnumerator();
+                    ////else
+                    ////    ie = wipCut.Section2.ReportObjects.GetEnumerator();
 
-                ////while (ie.MoveNext())
-                ////{
-                ////    if (ie.Current != null && ie.Current.GetType().ToString().Equals("CrystalDecisions.CrystalReports.Engine.TextObject"))
-                ////    {
-                ////        CrystalDecisions.CrystalReports.Engine.TextObject to = (CrystalDecisions.CrystalReports.Engine.TextObject)ie.Current;
+                    ////while (ie.MoveNext())
+                    ////{
+                    ////    if (ie.Current != null && ie.Current.GetType().ToString().Equals("CrystalDecisions.CrystalReports.Engine.TextObject"))
+                    ////    {
+                    ////        CrystalDecisions.CrystalReports.Engine.TextObject to = (CrystalDecisions.CrystalReports.Engine.TextObject)ie.Current;
 
-                ////        var result = (from u in ColumnNames
-                ////                      where u[0] == to.Name
-                ////                      select u).FirstOrDefault();
+                    ////        var result = (from u in ColumnNames
+                    ////                      where u[0] == to.Name
+                    ////                      select u).FirstOrDefault();
 
-                ////        if (result != null)
-                ////            to.Text = result[1];
-                ////    }
-                ////}
+                    ////        if (result != null)
+                    ////            to.Text = result[1];
+                    ////    }
+                    ////}
 
-                ////if (_parms.RepSortOption == 1)
-                ////{
-                ////    // AS20240315 v5.0.0.124 - Added totals for all locations
-                ////    crystalReportViewer1.ReportSource = wipCut_CS;
+                    ////if (_parms.RepSortOption == 1)
+                    ////{
+                    ////    // AS20240315 v5.0.0.124 - Added totals for all locations
+                    ////    crystalReportViewer1.ReportSource = wipCut_CS;
 
-                ////}
-                ////else
-                ////{
-                ////    if (_parms.RepSortOption == 2)
-                ////        wipCut.DataDefinition.Groups[1].ConditionField = wipCut.Database.Tables[0].Fields[3];
-                ////    else
-                ////        wipCut.DataDefinition.Groups[1].ConditionField = wipCut.Database.Tables[0].Fields[5];
+                    ////}
+                    ////else
+                    ////{
+                    ////    if (_parms.RepSortOption == 2)
+                    ////        wipCut.DataDefinition.Groups[1].ConditionField = wipCut.Database.Tables[0].Fields[3];
+                    ////    else
+                    ////        wipCut.DataDefinition.Groups[1].ConditionField = wipCut.Database.Tables[0].Fields[5];
 
-                GarmentDyeingWIP garmentDyeingWIP = new GarmentDyeingWIP();
-                    garmentDyeingWIP.SetDataSource(ds);
-                    crystalReportViewer1.ReportSource = garmentDyeingWIP;
+                    //GarmentDyeingWIP garmentDyeingWIP = new GarmentDyeingWIP();
+                    //    garmentDyeingWIP.SetDataSource(ds);
+                    //    crystalReportViewer1.ReportSource = garmentDyeingWIP;
 
+                    // … your existing ds.Tables.Add(dataTable1/2) …
+                    string html = GenerateGarmentDyeingHtmlReport(ds.Tables[1]);
+                    File.WriteAllText(@"C:\temp\wip.html", html);
+                    Process.Start(new ProcessStartInfo(@"C:\temp\wip.html") { UseShellExecute = true });
                 }
 
             }

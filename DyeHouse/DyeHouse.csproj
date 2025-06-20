@@ -162,6 +162,12 @@
     <Compile Include="frmGarmentDyeingBatchApproval.Designer.cs">
       <DependentUpon>frmGarmentDyeingBatchApproval.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmGarmentDyeingWIPReportViewer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmGarmentDyeingWIPReportViewer.Designer.cs">
+      <DependentUpon>frmGarmentDyeingWIPReportViewer.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmGarmentDyeProduction.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -1286,6 +1292,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmGarmentDyeingBatchApproval.resx">
       <DependentUpon>frmGarmentDyeingBatchApproval.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmGarmentDyeingWIPReportViewer.resx">
+      <DependentUpon>frmGarmentDyeingWIPReportViewer.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmGarmentDyeProduction.resx">
       <DependentUpon>frmGarmentDyeProduction.cs</DependentUpon>
