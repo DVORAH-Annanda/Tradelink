@@ -2139,218 +2139,403 @@ namespace Administration
                     DataT.Rows.Add(NRow);
                 }
             }
-            else if (TransNo == 17)
+            else if (TransNumber == 17)
             {
                 this.Text = "Panel Stock";
 
-                //==========================================================================================
-                // 1st task is to create the data table
-                // Col 0
-                //=====================================================================
-                column = new DataColumn();
-                column.DataType = typeof(int);
-                column.ColumnName = "Panel_Pk";
-                column.Caption = "Panel Primary Key";
-                column.DefaultValue = 0;
-                DataT.Columns.Add(column);
-                DataT.PrimaryKey = new DataColumn[] { DataT.Columns[0] };
+                //===========================
+                // Define DataTable Columns
+                //===========================
+                DataT.Columns.Add(new DataColumn("Panel_Pk", typeof(int)) { DefaultValue = 0 });
+                DataT.Columns.Add(new DataColumn("Description_Pk", typeof(string)) { DefaultValue = string.Empty });
+                DataT.Columns.Add(new DataColumn("Discontinued_Pk", typeof(bool)) { DefaultValue = false });
+                DataT.Columns.Add(new DataColumn("DateDiscontinued", typeof(DateTime)));
+                DataT.Columns.Add(new DataColumn("Size_PN", typeof(int)) { DefaultValue = 0 });
+                DataT.Columns.Add(new DataColumn("Show_Qty", typeof(bool)) { DefaultValue = false });
+                DataT.Columns.Add(new DataColumn("SingleColour", typeof(bool)) { DefaultValue = false });
+                DataT.Columns.Add(new DataColumn("SingleColour_Pk", typeof(int)));
+                DataT.Columns.Add(new DataColumn("Style_Pk", typeof(int)) { DefaultValue = 0 });
 
-                //----------------------------------------------
-                // Col1 
-                //-----------------------------------------------
-                column = new DataColumn();
-                column.DataType = typeof(string);
-                column.ColumnName = "Description_Pk";
-                column.Caption = "Description";
-                column.DefaultValue = string.Empty;
-                DataT.Columns.Add(column);
+                DataT.PrimaryKey = new DataColumn[] { DataT.Columns["Panel_Pk"] };
 
-                //--------------------------------------------------------
-                // Col 2
-                //----------------------------------------------------------
-                column = new DataColumn();
-                column.DataType = typeof(bool);
-                column.ColumnName = "Discontinued_Pk";
-                column.Caption = "Discontinued";
-                column.DefaultValue = false;
-                DataT.Columns.Add(column);
+                //============================
+                // DataGridView Column Setup
+                //============================
 
-                //--------------------------------------------------------
-                // Col 3
-                //----------------------------------------------------------
-                column = new DataColumn();
-                column.DataType = typeof(DateTime);
-                column.ColumnName = "DateDiscontinued";
-                column.Caption = "Date";
-                DataT.Columns.Add(column);
-
-                //-----------------------
-                // Col 4
-                //-----------------------------------------------
-                column = new DataColumn();
-                column.DataType = typeof(Int32);
-                column.ColumnName = "Size_PN";
-                column.Caption = "Size Power No";
-                column.DefaultValue = 0;
-                DataT.Columns.Add(column);
-
-                //-----------------------
-                // Col 5
-                //-----------------------------------------------
-                column = new DataColumn();
-                column.DataType = typeof(bool);
-                column.ColumnName = "Show_Qty";
-                column.Caption = "Show Qty";
-                column.DefaultValue = false;
-                DataT.Columns.Add(column);
-
-                //------------------------------
-                // Col 6
-                //-----------------------------------------------
-                column = new DataColumn();
-                column.DataType = typeof(bool);
-                column.ColumnName = "SingleColour";
-                column.Caption = "Single Colour";
-                column.DefaultValue = false;
-                DataT.Columns.Add(column);
-
-                //-----------------------------------------------------
-                // col 7
-                //-------------------------------------------------
-                column = new DataColumn();
-                column.DataType = typeof(Int32);
-                column.ColumnName = "SingleColour_Pk";
-                column.Caption = "Single Colour";
-                column.DefaultValue = 0;
-                DataT.Columns.Add(column);
-                //-----------------------------------------------------
-                // col 8
-                //-------------------------------------------------
-                column = new DataColumn();
-                column.DataType = typeof(Int32);
-                column.ColumnName = "Style_Pk";
-                column.Caption = "Style";
-                column.DefaultValue = 0;
-                DataT.Columns.Add(column);
-
-                //1 -- 
-                //--------------------------------------------
-                oTxtBoxA.Name = "Panel_PK";
-                oTxtBoxA.ValueType = typeof(Int32);
-                oTxtBoxA.HeaderText = "Panel Key";
-                oTxtBoxA.DataPropertyName = DataT.Columns[0].ColumnName;
-                dataGridView1.Columns.Add(oTxtBoxA);
-                dataGridView1.Columns[0].DisplayIndex = 0;
-                dataGridView1.Columns["Panel_PK"].Visible = false;
-
-                //---- 1 
-                oTxtBoxB.Name = "Panel_PK";
-                oTxtBoxB.ValueType = typeof(String);
-                oTxtBoxB.HeaderText = "Description";
-                oTxtBoxB.Visible = true;
-                oTxtBoxB.DataPropertyName = DataT.Columns[1].ColumnName;
-                dataGridView1.Columns.Add(oTxtBoxB);
-                dataGridView1.Columns[1].DisplayIndex = 1;
-
-                //2 -- Open / Closed 
-                //------------------------------------------------
-
-                oChkBoxB.Name = "Discontinued";
-                oChkBoxB.HeaderText = "Discontinued";
-                oChkBoxB.DataPropertyName = DataT.Columns[2].ColumnName;
-                oChkBoxB.ValueType = typeof(bool);
-                dataGridView1.Columns.Add(oChkBoxB);
-                dataGridView1.Columns[2].DisplayIndex = 2;
-
-                //3 -- Column to Date Discontinued
-                //----------------------------------------------
-                oTxtBoxC = new DataGridViewTextBoxColumn();
-                oTxtBoxC.Visible = true;
-                oTxtBoxC.HeaderText = "Date Discontinued";
-                oTxtBoxC.DataPropertyName = DataT.Columns[3].ColumnName;
-                oTxtBoxC.Width = 100;
-                oTxtBoxC.ValueType = typeof(DateTime);
-                oTxtBoxC.DefaultCellStyle.Format = "dd/MM/yyyy";
-                dataGridView1.Columns.Add(oTxtBoxC);
-
-
-                oBtnA.Name = "PowerN";
-                oBtnA.ValueType = typeof(Int32);
-                oBtnA.DataPropertyName = DataT.Columns[4].ColumnName;
-                oBtnA.HeaderText = "Sizes";
-                dataGridView1.Columns.Add(oBtnA);
-                dataGridView1.Columns[3].DisplayIndex = 3;
-
-                //4 -- Show Quantity
-                //----------------------------------------------
-                oChkBoxC.Name = "Panel_ShowQty";
-                oChkBoxC.HeaderText = "Show Qty";
-                oChkBoxC.ValueType = typeof(Boolean);
-                oChkBoxC.DataPropertyName = DataT.Columns[5].ColumnName;
-                dataGridView1.Columns.Add(oChkBoxC);
-                dataGridView1.Columns[4].DisplayIndex = 4;
-
-                //5 -- is it a Single Colour
-                //----------------------------------------------
-                oChkBoxD.Name = "Single_Clr";
-                oChkBoxD.HeaderText = "Single Colour";
-                oChkBoxD.ValueType = typeof(Boolean);
-                oChkBoxD.DataPropertyName = DataT.Columns[6].ColumnName;
-                dataGridView1.Columns.Add(oChkBoxD);
-                dataGridView1.Columns[5].DisplayIndex = 5;
-
-                // 6 -- Colours
-                //--------------------------------------------------------
-                oCmbBoxA.Name = "SingColours";
-                oCmbBoxA.HeaderText = "Colours";
-                oCmbBoxA.ValueType = typeof(Int32);
-                oCmbBoxA.DataSource = _context.TLADM_Colours.Where(x => !(bool)x.Col_Discontinued).ToList();
-                oCmbBoxA.DisplayMember = "Col_Display";
-                oCmbBoxA.ValueMember = "Col_Id";
-                oCmbBoxA.DataPropertyName = DataT.Columns[7].ColumnName;
-                dataGridView1.Columns.Add(oCmbBoxA);
-                dataGridView1.Columns[6].DisplayIndex = 6;
-
-                //7 -- Styles
-                //--------------------------------------------------------
-                oCmbBoxB.Name = "Styles";
-                oCmbBoxB.HeaderText = "Styles";
-                oCmbBoxB.ValueType = typeof(Int32);
-                oCmbBoxB.DataSource = _context.TLADM_Styles.Where(x => !(bool)x.Sty_Discontinued).ToList();
-                oCmbBoxB.DisplayMember = "Sty_Description";
-                oCmbBoxB.ValueMember = "Sty_Id";
-                oCmbBoxB.DataPropertyName = DataT.Columns[8].ColumnName;
-                dataGridView1.Columns.Add(oCmbBoxB);
-                dataGridView1.Columns[7].DisplayIndex = 7;
-
-                var Entities = _context.TLADM_PanelAttributes.OrderBy(x => x.Pan_Description).ToList();
-                foreach (var Entity in Entities)
+                // Hidden primary key
+                var colPanelPk = new DataGridViewTextBoxColumn
                 {
-                    DataRow NRow = DataT.NewRow();
-                    NRow[0] = Entity.Pan_PK;
-                    NRow[1] = Entity.Pan_Description;
-                    NRow[2] = Entity.Pan_Discontinued;
-                    if (Entity.Pan_Discontinued_Date != null)
-                    {
-                        NRow[3] = Entity.Pan_Discontinued_Date;
-                    }
-                    else
-                    {
-                        NRow[3] = DBNull.Value;
-                    }
-                    NRow[4] = Entity.Pan_PowerN;
-                    NRow[5] = Entity.Pan_ShowQty;
-                    NRow[6] = Entity.Pan_Single_Colour;
-                    if (Entity.Pan_Single_Colour_FK != null)
-                        NRow[7] = Entity.Pan_Single_Colour_FK;
-                    else
-                        NRow[7] = DBNull.Value;
+                    Name = "Panel_PK",
+                    DataPropertyName = "Panel_Pk",
+                    HeaderText = "Panel Key",
+                    Visible = false
+                };
+                dataGridView1.Columns.Add(colPanelPk);
 
-                    NRow[8] = Entity.Pan_Style_FK;
+                // Description
+                var colDescription = new DataGridViewTextBoxColumn
+                {
+                    Name = "Description",
+                    DataPropertyName = "Description_Pk",
+                    HeaderText = "Description"
+                };
+                dataGridView1.Columns.Add(colDescription);
 
-                    DataT.Rows.Add(NRow);
+                // Discontinued checkbox
+                var colDiscontinued = new DataGridViewCheckBoxColumn
+                {
+                    Name = "Discontinued",
+                    DataPropertyName = "Discontinued_Pk",
+                    HeaderText = "Discontinued"
+                };
+                dataGridView1.Columns.Add(colDiscontinued);
+
+                // Date discontinued
+                var colDate = new DataGridViewTextBoxColumn
+                {
+                    Name = "DateDiscontinued",
+                    DataPropertyName = "DateDiscontinued",
+                    HeaderText = "Date Discontinued",
+                    ValueType = typeof(DateTime),
+                    DefaultCellStyle = { Format = "dd/MM/yyyy" }
+                };
+                dataGridView1.Columns.Add(colDate);
+
+           
+                var colSize = new DataGridViewComboBoxColumn
+                {
+                    Name = "Sizes",
+                    DataPropertyName = "Size_PN",
+                    HeaderText = "Sizes",
+                    ValueType = typeof(int),
+                    DisplayMember = "SI_Description",
+                    ValueMember = "SI_id",
+                    DataSource = ComboBoxHelper.GetSafeComboBoxSource(
+                        _context.TLADM_Sizes.Where(x => x.SI_Discontinued == false),
+                        () => new TLADM_Sizes { SI_id = 0, SI_Description = "<<Select>>" },
+                        x => x.SI_id)
+                };
+                dataGridView1.Columns.Add(colSize);
+
+                // Show Qty
+                var colShowQty = new DataGridViewCheckBoxColumn
+                {
+                    Name = "Show_Qty",
+                    DataPropertyName = "Show_Qty",
+                    HeaderText = "Show Qty"
+                };
+                dataGridView1.Columns.Add(colShowQty);
+
+                // Single Colour
+                var colSingleClr = new DataGridViewCheckBoxColumn
+                {
+                    Name = "Single_Clr",
+                    DataPropertyName = "SingleColour",
+                    HeaderText = "Single Colour"
+                };
+                dataGridView1.Columns.Add(colSingleClr);
+
+                var colourList = _context.TLADM_Colours
+    .Where(x => x.Col_Discontinued == false)
+    .OrderBy(x => x.Col_Display)
+    .ToList();
+
+                // Insert null-equivalent option
+                colourList.Insert(0, new TLADM_Colours { Col_Id = -1, Col_Display = "<<ALL>>" });
+
+                // Colours ComboBox
+                var colColours = new DataGridViewComboBoxColumn
+                {
+                    Name = "Colours",
+                    DataPropertyName = "SingleColour_Pk",
+                    HeaderText = "Colours",
+                    ValueType = typeof(int),
+                    DisplayMember = "Col_Display",
+                    ValueMember = "Col_Id",
+                    DataSource = colourList
+                };
+                dataGridView1.Columns.Add(colColours);
+
+                // Styles ComboBox
+                var colStyles = new DataGridViewComboBoxColumn
+                {
+                    Name = "Styles",
+                    DataPropertyName = "Style_Pk",
+                    HeaderText = "Styles",
+                    ValueType = typeof(int),
+                    DisplayMember = "Sty_Description",
+                    ValueMember = "Sty_Id",
+                    DataSource = ComboBoxHelper.GetSafeComboBoxSource(
+                        _context.TLADM_Styles.Where(x => x.Sty_Discontinued == false),
+                        () => new TLADM_Styles { Sty_Id = 0, Sty_Description = "<<Select>>" },
+                        x => x.Sty_Id)
+                };
+                dataGridView1.Columns.Add(colStyles);
+
+                //==========================
+                // Load existing data
+                //==========================
+                var existing = _context.TLADM_PanelAttributes.OrderBy(x => x.Pan_Description).ToList();
+
+                foreach (var entity in existing)
+                {
+                    DataRow row = DataT.NewRow();
+                    row["Panel_Pk"] = entity.Pan_PK;
+                    row["Description_Pk"] = entity.Pan_Description;
+                    row["Discontinued_Pk"] = entity.Pan_Discontinued;
+                    row["DateDiscontinued"] = entity.Pan_Discontinued_Date.HasValue
+    ? (object)entity.Pan_Discontinued_Date.Value
+    : DBNull.Value;
+
+                    row["Size_PN"] = entity.Pan_PowerN; //Size_PK
+                    row["Show_Qty"] = entity.Pan_ShowQty;
+                    row["SingleColour"] = entity.Pan_Single_Colour;
+                    //row["SingleColour_Pk"] = entity.Pan_Single_Colour_FK ?? 0;
+                    row["SingleColour_Pk"] = entity.Pan_Single_Colour_FK.HasValue
+    ? (object)entity.Pan_Single_Colour_FK.Value
+    : -1;
+
+                    row["Style_Pk"] = entity.Pan_Style_FK;
+                    DataT.Rows.Add(row);
                 }
             }
+
+            //            else if (TransNo == 17)
+            //            {
+            //                this.Text = "Panel Stock";
+
+            //                //==========================================================================================
+            //                // 1st task is to create the data table
+            //                // Col 0
+            //                //=====================================================================
+            //                column = new DataColumn();
+            //                column.DataType = typeof(int);
+            //                column.ColumnName = "Panel_Pk";
+            //                column.Caption = "Panel Primary Key";
+            //                column.DefaultValue = 0;
+            //                DataT.Columns.Add(column);
+            //                DataT.PrimaryKey = new DataColumn[] { DataT.Columns[0] };
+
+            //                //----------------------------------------------
+            //                // Col1 
+            //                //-----------------------------------------------
+            //                column = new DataColumn();
+            //                column.DataType = typeof(string);
+            //                column.ColumnName = "Description_Pk";
+            //                column.Caption = "Description";
+            //                column.DefaultValue = string.Empty;
+            //                DataT.Columns.Add(column);
+
+            //                //--------------------------------------------------------
+            //                // Col 2
+            //                //----------------------------------------------------------
+            //                column = new DataColumn();
+            //                column.DataType = typeof(bool);
+            //                column.ColumnName = "Discontinued_Pk";
+            //                column.Caption = "Discontinued";
+            //                column.DefaultValue = false;
+            //                DataT.Columns.Add(column);
+
+            //                //--------------------------------------------------------
+            //                // Col 3
+            //                //----------------------------------------------------------
+            //                column = new DataColumn();
+            //                column.DataType = typeof(DateTime);
+            //                column.ColumnName = "DateDiscontinued";
+            //                column.Caption = "Date";
+            //                DataT.Columns.Add(column);
+
+            //                //-----------------------
+            //                // Col 4
+            //                //-----------------------------------------------
+            //                //column = new DataColumn();
+            //                //column.DataType = typeof(Int32);
+            //                //column.ColumnName = "Size_PN";
+            //                //column.Caption = "Size Power No";
+            //                //column.DefaultValue = 0;
+            //                //DataT.Columns.Add(column);
+
+            //                column = new DataColumn();
+            //                column.DataType = typeof(Int32);
+            //                column.ColumnName = "Size_PN";
+            //                column.Caption = "Size Power No";
+            //                column.DefaultValue = _context.TLADM_Sizes.Where(x => !(bool)x.SI_Discontinued).FirstOrDefault().SI_id;
+            //                DataT.Columns.Add(column);
+
+            //                //-----------------------
+            //                // Col 5
+            //                //-----------------------------------------------
+            //                column = new DataColumn();
+            //                column.DataType = typeof(bool);
+            //                column.ColumnName = "Show_Qty";
+            //                column.Caption = "Show Qty";
+            //                column.DefaultValue = false;
+            //                DataT.Columns.Add(column);
+
+            //                //------------------------------
+            //                // Col 6
+            //                //-----------------------------------------------
+            //                column = new DataColumn();
+            //                column.DataType = typeof(bool);
+            //                column.ColumnName = "SingleColour";
+            //                column.Caption = "Single Colour";
+            //                column.DefaultValue = false;
+            //                DataT.Columns.Add(column);
+
+            //                //-----------------------------------------------------
+            //                // col 7
+            //                //-------------------------------------------------
+            //                column = new DataColumn();
+            //                column.DataType = typeof(Int32);
+            //                column.ColumnName = "SingleColour_Pk";
+            //                column.Caption = "Single Colour";
+            //                column.DefaultValue = 0;
+            //                DataT.Columns.Add(column);
+            //                //-----------------------------------------------------
+            //                // col 8
+            //                //-------------------------------------------------
+            //                column = new DataColumn();
+            //                column.DataType = typeof(Int32);
+            //                column.ColumnName = "Style_Pk";
+            //                column.Caption = "Style";
+            //                column.DefaultValue = 0;
+            //                DataT.Columns.Add(column);
+
+            //                //1 -- 
+            //                //--------------------------------------------
+            //                oTxtBoxA.Name = "Panel_PK";
+            //                oTxtBoxA.ValueType = typeof(Int32);
+            //                oTxtBoxA.HeaderText = "Panel Key";
+            //                oTxtBoxA.DataPropertyName = DataT.Columns[0].ColumnName;
+            //                dataGridView1.Columns.Add(oTxtBoxA);
+            //                dataGridView1.Columns[0].DisplayIndex = 0;
+            //                dataGridView1.Columns["Panel_PK"].Visible = false;
+
+            //                //---- 1 
+            //                oTxtBoxB.Name = "Panel_PK";
+            //                oTxtBoxB.ValueType = typeof(String);
+            //                oTxtBoxB.HeaderText = "Description";
+            //                oTxtBoxB.Visible = true;
+            //                oTxtBoxB.DataPropertyName = DataT.Columns[1].ColumnName;
+            //                dataGridView1.Columns.Add(oTxtBoxB);
+            //                dataGridView1.Columns[1].DisplayIndex = 1;
+
+            //                //2 -- Open / Closed 
+            //                //------------------------------------------------
+
+            //                oChkBoxB.Name = "Discontinued";
+            //                oChkBoxB.HeaderText = "Discontinued";
+            //                oChkBoxB.DataPropertyName = DataT.Columns[2].ColumnName;
+            //                oChkBoxB.ValueType = typeof(bool);
+            //                dataGridView1.Columns.Add(oChkBoxB);
+            //                dataGridView1.Columns[2].DisplayIndex = 2;
+
+            //                //3 -- Column to Date Discontinued
+            //                //----------------------------------------------
+            //                oTxtBoxC = new DataGridViewTextBoxColumn();
+            //                oTxtBoxC.Visible = true;
+            //                oTxtBoxC.HeaderText = "Date Discontinued";
+            //                oTxtBoxC.DataPropertyName = DataT.Columns[3].ColumnName;
+            //                oTxtBoxC.Width = 100;
+            //                oTxtBoxC.ValueType = typeof(DateTime);
+            //                oTxtBoxC.DefaultCellStyle.Format = "dd/MM/yyyy";
+            //                dataGridView1.Columns.Add(oTxtBoxC);
+
+
+            //                //oBtnA.Name = "PowerN";
+            //                //oBtnA.ValueType = typeof(Int32);
+            //                //oBtnA.DataPropertyName = DataT.Columns[4].ColumnName;
+            //                //oBtnA.HeaderText = "Sizes";
+            //                //dataGridView1.Columns.Add(oBtnA);
+            //                //dataGridView1.Columns[3].DisplayIndex = 3;
+
+            //                oBtnA = new DataGridViewButtonColumn();
+            //                oBtnA.HeaderText = "Sizes";
+            //                dataGridView1.Columns.Add(oBtnA);
+            //                dataGridView1.Columns[3].Visible = true;
+            //                dataGridView1.Columns[3].DisplayIndex = 3;
+
+
+
+
+            //                //4 -- Show Quantity
+            //                //----------------------------------------------
+            //                oChkBoxC.Name = "Panel_ShowQty";
+            //                oChkBoxC.HeaderText = "Show Qty";
+            //                oChkBoxC.ValueType = typeof(Boolean);
+            //                oChkBoxC.DataPropertyName = DataT.Columns[5].ColumnName;
+            //                dataGridView1.Columns.Add(oChkBoxC);
+            //                dataGridView1.Columns[4].DisplayIndex = 4;
+
+            //                //5 -- is it a Single Colour
+            //                //----------------------------------------------
+            //                oChkBoxD.Name = "Single_Clr";
+            //                oChkBoxD.HeaderText = "Single Colour";
+            //                oChkBoxD.ValueType = typeof(Boolean);
+            //                oChkBoxD.DataPropertyName = DataT.Columns[6].ColumnName;
+            //                dataGridView1.Columns.Add(oChkBoxD);
+            //                dataGridView1.Columns[5].DisplayIndex = 5;
+
+            //                // 6 -- Colours
+            //                //--------------------------------------------------------
+            //                oCmbBoxA.Name = "SingColours";
+            //                oCmbBoxA.HeaderText = "Colours";
+            //                oCmbBoxA.ValueType = typeof(Int32);
+            //                oCmbBoxA.DataSource = ComboBoxHelper.GetSafeComboBoxSource(
+            //    _context.TLADM_Colours.Where(x => !(bool)x.Col_Discontinued),
+            //    () => new TLADM_Colours { Col_Id = 0, Col_Display = "<<Select>>" },
+            //    x => x.Col_Id
+            //);
+            //                oCmbBoxA.DisplayMember = "Col_Display";
+            //                oCmbBoxA.ValueMember = "Col_Id";
+            //                oCmbBoxA.DataPropertyName = DataT.Columns[7].ColumnName;
+            //                dataGridView1.Columns.Add(oCmbBoxA);
+            //                dataGridView1.Columns[6].DisplayIndex = 6;
+
+            //                //7 -- Styles
+            //                //--------------------------------------------------------
+            //                oCmbBoxB.Name = "Styles";
+            //                oCmbBoxB.HeaderText = "Styles";
+            //                oCmbBoxB.ValueType = typeof(Int32);
+            //                oCmbBoxB.DataSource = ComboBoxHelper.GetSafeComboBoxSource(
+            //    _context.TLADM_Styles.Where(x => !(bool)x.Sty_Discontinued),
+            //    () => new TLADM_Styles { Sty_Id = 0, Sty_Description = "<<Select>>" },
+            //    x => x.Sty_Id
+            //);
+            //                oCmbBoxB.DisplayMember = "Sty_Description";
+            //                oCmbBoxB.ValueMember = "Sty_Id";
+            //                oCmbBoxB.DataPropertyName = DataT.Columns[8].ColumnName;
+            //                dataGridView1.Columns.Add(oCmbBoxB);
+            //                dataGridView1.Columns[7].DisplayIndex = 7;
+
+            //                var Entities = _context.TLADM_PanelAttributes.OrderBy(x => x.Pan_Description).ToList();
+            //                foreach (var Entity in Entities)
+            //                {
+            //                    DataRow NRow = DataT.NewRow();
+            //                    NRow[0] = Entity.Pan_PK;
+            //                    NRow[1] = Entity.Pan_Description;
+            //                    NRow[2] = Entity.Pan_Discontinued;
+            //                    if (Entity.Pan_Discontinued_Date != null)
+            //                    {
+            //                        NRow[3] = Entity.Pan_Discontinued_Date;
+            //                    }
+            //                    else
+            //                    {
+            //                        NRow[3] = DBNull.Value;
+            //                    }
+            //                    NRow[4] = Entity.Pan_PowerN;
+            //                    NRow[5] = Entity.Pan_ShowQty;
+            //                    NRow[6] = Entity.Pan_Single_Colour;
+            //                    if (Entity.Pan_Single_Colour_FK != null)
+            //                        NRow[7] = Entity.Pan_Single_Colour_FK;
+            //                    else
+            //                        NRow[7] = DBNull.Value;
+
+            //                    NRow[8] = Entity.Pan_Style_FK;
+
+            //                    DataT.Rows.Add(NRow);
+            //                }
+            //            }
             else if (TransNo == 18)
             {
                 this.Text = "Department Production Loss / Edit Facility";
@@ -3859,14 +4044,16 @@ namespace Administration
                         {
                             PanAttrib.Pan_Discontinued_Date = null;
                         }
-                        PanAttrib.Pan_PowerN = Row.Field<int>(4);
+                        PanAttrib.Pan_PowerN = Row.Field<int>(4); //Size_PK
                         PanAttrib.Pan_ShowQty = Row.Field<bool>(5);
                         PanAttrib.Pan_Single_Colour = Row.Field<bool>(6);
-                        PanAttrib.Pan_Single_Colour_FK = null;
-                        if (Row[7] != DBNull.Value)
-                        {
-                            PanAttrib.Pan_Single_Colour_FK = Row.Field<int>(7);
-                        }
+                        var colourId = Row.Field<int>("SingleColour_Pk");
+                        PanAttrib.Pan_Single_Colour_FK = (colourId == -1) ? (int?)null : (int?)colourId;
+                        //PanAttrib.Pan_Single_Colour_FK = null;
+                        //if (Row[7] != DBNull.Value)
+                        //{
+                        //    PanAttrib.Pan_Single_Colour_FK = Row.Field<int>(7);
+                        //}
 
                         PanAttrib.Pan_Style_FK = Row.Field<int>(8);
 
@@ -4541,5 +4728,29 @@ namespace Administration
         {
             cmboCustomers_SelectedIndexChanged(cmboCustomers, EventArgs.Empty);
         }
+
+        public static class ComboBoxHelper
+        {
+            public static List<T> GetSafeComboBoxSource<T>(
+                IEnumerable<T> source,
+                Func<T> getDefault,
+                Func<T, object> idSelector)
+            {
+                var list = source.ToList();
+
+                var defaultItem = getDefault();
+                var defaultId = idSelector(defaultItem);
+
+                // Check if a matching default already exists — if not, add it.
+                bool exists = list.Any(x => idSelector(x).Equals(defaultId));
+                if (!exists)
+                {
+                    list.Insert(0, defaultItem);
+                }
+
+                return list;
+            }
+        }
+
     }
 }
