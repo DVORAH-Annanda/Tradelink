@@ -7070,12 +7070,12 @@ namespace TTI2_WF
             ToolStripMenuItem oTi = sender as ToolStripMenuItem;
             if (core.GetUserAuthorisation(ud, oTi.Name))
             {
-                /*
+
                 frmYarnAllocation YarnAllocation = new frmYarnAllocation();
                 YarnAllocation.ShowDialog(this);
-                 */
 
-                MessageBox.Show("This facility is no longer available");
+
+                //MessageBox.Show("This facility is no longer available");
             }
             else
             {

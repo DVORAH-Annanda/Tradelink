@@ -37,8 +37,8 @@
             this.cmboYarnOrders = new System.Windows.Forms.ComboBox();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.rbOwnYarn = new System.Windows.Forms.RadioButton();
             this.RbThirdParty = new System.Windows.Forms.RadioButton();
+            this.rbOwnYarn = new System.Windows.Forms.RadioButton();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -92,11 +92,11 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(149, 182);
+            this.label3.Location = new System.Drawing.Point(103, 183);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(100, 13);
+            this.label3.Size = new System.Drawing.Size(135, 13);
             this.label3.TabIndex = 5;
-            this.label3.Text = "Current Yarn Orders";
+            this.label3.Text = "Available Yarn (Yarn Order)";
             this.label3.Click += new System.EventHandler(this.label3_Click);
             // 
             // cmboYarnOrders
@@ -128,17 +128,6 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Yarn Source";
             // 
-            // rbOwnYarn
-            // 
-            this.rbOwnYarn.AutoSize = true;
-            this.rbOwnYarn.Location = new System.Drawing.Point(45, 19);
-            this.rbOwnYarn.Name = "rbOwnYarn";
-            this.rbOwnYarn.Size = new System.Drawing.Size(72, 17);
-            this.rbOwnYarn.TabIndex = 0;
-            this.rbOwnYarn.TabStop = true;
-            this.rbOwnYarn.Text = "Own Yarn";
-            this.rbOwnYarn.UseVisualStyleBackColor = true;
-            // 
             // RbThirdParty
             // 
             this.RbThirdParty.AutoSize = true;
@@ -150,6 +139,17 @@
             this.RbThirdParty.Text = "Third Party";
             this.RbThirdParty.UseVisualStyleBackColor = true;
             this.RbThirdParty.CheckedChanged += new System.EventHandler(this.RbThirdParty_CheckedChanged);
+            // 
+            // rbOwnYarn
+            // 
+            this.rbOwnYarn.AutoSize = true;
+            this.rbOwnYarn.Location = new System.Drawing.Point(45, 19);
+            this.rbOwnYarn.Name = "rbOwnYarn";
+            this.rbOwnYarn.Size = new System.Drawing.Size(72, 17);
+            this.rbOwnYarn.TabIndex = 0;
+            this.rbOwnYarn.TabStop = true;
+            this.rbOwnYarn.Text = "Own Yarn";
+            this.rbOwnYarn.UseVisualStyleBackColor = true;
             // 
             // frmYarnAllocation
             // 
