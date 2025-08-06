@@ -303,6 +303,12 @@
     <Compile Include="frmCottonBalesInStock.Designer.cs">
       <DependentUpon>frmCottonBalesInStock.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmCottonDeliverySampleBales.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmCottonDeliverySampleBales.Designer.cs">
+      <DependentUpon>frmCottonDeliverySampleBales.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmCottonDespatchedInspection.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -707,6 +713,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmCottonBalesInStock.resx">
       <DependentUpon>frmCottonBalesInStock.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmCottonDeliverySampleBales.resx">
+      <DependentUpon>frmCottonDeliverySampleBales.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmCottonDespatchedInspection.resx">
       <DependentUpon>frmCottonDespatchedInspection.cs</DependentUpon>
