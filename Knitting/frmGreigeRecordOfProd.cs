@@ -172,6 +172,14 @@ namespace Knitting
 
             BindingSrc.DataSource = DataT;
             dataGridView1.DataSource = BindingSrc;
+
+
+            dataGridView1.DataError += (s, e) =>
+            {
+                // silently suppress error
+                e.ThrowException = false;
+            };
+
             dataGridView1.EditingControlShowing += new DataGridViewEditingControlShowingEventHandler(dataGridView1_EditingControlShowing);
         }
         private void frmGreigeRecordOfProd_Load(object sender, EventArgs e)
@@ -385,20 +393,37 @@ namespace Knitting
                             {
                                 griegP.GreigeP_Shift_FK = _context.TLADM_Shifts.FirstOrDefault().Shft_Pk; 
                             }
-                            if (row.Field<int>(5) != 0)
+                            //if (row.Field<int>(5) != 0)
+                            //{
+                            //    griegP.GreigeP_Operator_FK = row.Field<int>(5);
+                            //}
+                            //else
+                            //{
+                            //    griegP.GreigeP_Operator_FK = (from T1 in _context.TLADM_Departments
+                            //              join T2 in _context.TLADM_MachineOperators
+                            //              on T1.Dep_Id equals T2.MachOp_Department_FK
+                            //              where !T2.MachOp_Discontinued && T1.Dep_Id == 11
+                            //              select T2).FirstOrDefault().MachOp_Pk;
+
+                            //}
+                            int operatorId = row.Field<int>(5);
+                            if (operatorId != 0)
                             {
-                                griegP.GreigeP_Operator_FK = row.Field<int>(5);
+                                griegP.GreigeP_Operator_FK = operatorId;
                             }
                             else
                             {
-                                griegP.GreigeP_Operator_FK = (from T1 in _context.TLADM_Departments
-                                          join T2 in _context.TLADM_MachineOperators
-                                          on T1.Dep_Id equals T2.MachOp_Department_FK
-                                          where !T2.MachOp_Discontinued && T1.Dep_Id == 11
-                                          select T2).FirstOrDefault().MachOp_Pk;
-
+                                MessageBox.Show(
+                                    "No operator has been selected for one or more rows.\nPlease select an operator before saving.",
+                                    "Missing Operator",
+                                    MessageBoxButtons.OK,
+                                    MessageBoxIcon.Warning
+                                );
+                                return; // prevent saving until it's fixed
                             }
-                            if (griegP.GreigeP_PDate == null)
+
+                            if (operatorId != 0)
+                                if (griegP.GreigeP_PDate == null)
                             {
                                 griegP.GreigeP_PDate = dtpProduction.Value;
                             }
