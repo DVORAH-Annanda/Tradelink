@@ -58,7 +58,7 @@ namespace Spinning
         {
             
             formloaded = false;
-            button1.Visible = false;
+            //button1.Visible = false;
 
             //txtCottonNettWeight.Text = "0.0";
             //txtGrossAvgBaleWeight.Text = "0.0";
@@ -395,12 +395,13 @@ namespace Spinning
                 if (!string.IsNullOrEmpty(ErrorM))
                 {
                     MessageBox.Show(ErrorM);
-                    return;
+                    //return;
                 }
 
 
-                TLSPN_CottonTransactions cotTrans = new TLSPN_CottonTransactions();
-                frmCottonBales cb = new frmCottonBales(cotTrans);
+                
+                frmCottonDeliverySampleBales cb = new frmCottonDeliverySampleBales(Convert.ToInt32(txtNoOfBales.Text), dtpDateReceived.Value, txtLotNo.Text);
+
                 cb.ShowDialog(this);
 
             }
