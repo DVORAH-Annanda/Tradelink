@@ -54,9 +54,9 @@ namespace Spinning
         {
             var panelTop = new Panel 
             {
-                Height = 35,
+                Height = 18,
                 Width = this.ClientSize.Width - 45,  
-                Location = new Point(25, 25)
+                Location = new Point(12, 18)
             };
             var lblHeader = new Label
             {
@@ -102,7 +102,7 @@ namespace Spinning
 
             dgvSampleBales.Columns.Add(new DataGridViewTextBoxColumn
             {
-                HeaderText = "Weight Difference %",
+                HeaderText = "Weight Diff %",
                 Name = ColDiffPct,
                 ReadOnly = true,
                 Width = 125,
@@ -131,50 +131,51 @@ namespace Spinning
 
             Controls.Add(dgvSampleBales);
 
-            var panelBottom = new Panel { Dock = DockStyle.Bottom, Height = 185, Padding = new Padding(25) };
+            //var panelBottom = new Panel { Dock = DockStyle.Bottom, Height = 185, Padding = new Padding(25) };
 
-            lblMinRows = new Label { AutoSize = true, Top = 65, Padding = new Padding(25) };
-            lblMinRows.Text = $"Minimum sample size (10% of total): {MinSampleRowsRequired()} row(s).";
-            panelBottom.Controls.Add(lblMinRows);
+            //lblMinRows = new Label { AutoSize = true, Top = 65, Padding = new Padding(25) };
+            lblMinRows.Text = $"Minimum sample size (10% of total bales): {MinSampleRowsRequired()} row(s).";
+            //panelBottom.Controls.Add(lblMinRows);
 
-            lblTotals = new Label { AutoSize = true, Top = 85, Padding = new Padding(25) };
-            panelBottom.Controls.Add(lblTotals);
+            //lblTotals = new Label { AutoSize = true, Top = 85, Padding = new Padding(25) };
+            //panelBottom.Controls.Add(lblTotals);
 
-            lblStatus = new Label
-            {
-                AutoSize = true,
-                Top = 105,
-                Padding = new Padding(25),
-                ForeColor = Color.MidnightBlue
-            };
-            panelBottom.Controls.Add(lblStatus);
+            //lblStatus = new Label
+            //{
+            //    AutoSize = true,
+            //    Top = 105,
+            //    Padding = new Padding(25),
+            //    ForeColor = Color.MidnightBlue
+            //};
+            //panelBottom.Controls.Add(lblStatus);
 
-            var lblReason = new Label { Text = "Override reason (required if any row overridden):", AutoSize = true, Top = 125 };
-            panelBottom.Controls.Add(lblReason);
+            //var lblReason = new Label { Text = "Override reason (required if any row overridden):", AutoSize = true, Top = 125 };
+            //panelBottom.Controls.Add(lblReason);
+            lblReason.Text = "Override reason (required if any row overridden)";
 
-            txtOverrideReason = new TextBox { Left = lblReason.Right + 8, Top = 135, Width = 500, Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top };
-            panelBottom.Controls.Add(txtOverrideReason);
+            //txtOverrideReason = new TextBox { Left = lblReason.Right + 8, Top = 135, Width = 500, Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top };
+            //panelBottom.Controls.Add(txtOverrideReason);
 
-            btnUpdate = new Button { Text = "Update", Width = 100, Anchor = AnchorStyles.Right | AnchorStyles.Top };
-            btnUpdate.Left = panelBottom.Width - btnUpdate.Width - 110;
-            btnUpdate.Top = 135;
+            //btnUpdate = new Button { Text = "Update", Width = 100, Anchor = AnchorStyles.Right | AnchorStyles.Top };
+            //btnUpdate.Left = panelBottom.Width - btnUpdate.Width - 110;
+            //btnUpdate.Top = 135;
             btnUpdate.Click += BtnUpdate_Click;
-            panelBottom.Controls.Add(btnUpdate);
+            //panelBottom.Controls.Add(btnUpdate);
 
-            btnCancel = new Button { Text = "Cancel", Width = 100, Anchor = AnchorStyles.Right | AnchorStyles.Top };
-            btnCancel.Left = panelBottom.Width - btnCancel.Width - 5;
-            btnCancel.Top = 135;
+            //btnCancel = new Button { Text = "Cancel", Width = 100, Anchor = AnchorStyles.Right | AnchorStyles.Top };
+            //btnCancel.Left = panelBottom.Width - btnCancel.Width - 5;
+            //btnCancel.Top = 135;
             btnCancel.Click += (_, __) => DialogResult = DialogResult.Cancel;
-            panelBottom.Controls.Add(btnCancel);
+            //panelBottom.Controls.Add(btnCancel);
 
-            panelBottom.Resize += (_, __) =>
-            {
-                btnCancel.Left = panelBottom.Width - btnCancel.Width - 5;
-                btnUpdate.Left = btnCancel.Left - btnUpdate.Width - 10;
-                txtOverrideReason.Width = btnUpdate.Left - txtOverrideReason.Left - 10;
-            };
+            //panelBottom.Resize += (_, __) =>
+            //{
+            //    btnCancel.Left = panelBottom.Width - btnCancel.Width - 5;
+            //    btnUpdate.Left = btnCancel.Left - btnUpdate.Width - 10;
+            //    txtOverrideReason.Width = btnUpdate.Left - txtOverrideReason.Left - 10;
+            //};
 
-            Controls.Add(panelBottom);
+            //Controls.Add(panelBottom);
         }
 
         private int MinSampleRowsRequired()
@@ -235,38 +236,43 @@ namespace Spinning
         private void RecalcTotalsAndValidate()
         {
             decimal totalSupp = 0m, totalTts = 0m;
-            int rowCount = 0;
+            int validRowCount = 0;
             bool anyBreachWithoutOverride = false;
             bool anyOverride = false;
 
             foreach (DataGridViewRow r in dgvSampleBales.Rows)
             {
                 if (r.IsNewRow) continue;
-                rowCount++;
 
+                string baleNo = Convert.ToString(r.Cells[ColBaleNo].Value)?.Trim();
                 decimal supplier = ParseCellDecimal(r.Cells[ColSupp].Value);
                 decimal tts = ParseCellDecimal(r.Cells[ColTts].Value);
-                totalSupp += supplier;
-                totalTts += tts;
 
-                decimal diff = tts - supplier;
-                decimal pct = (supplier == 0m) ? 0m : (diff / supplier) * 100m;
+                // Only count if required fields are entered
+                if (!string.IsNullOrWhiteSpace(baleNo) && supplier > 0 && tts > 0)
+                {
+                    validRowCount++;
 
-                bool overridden = Convert.ToBoolean(r.Cells[ColOverride].Value ?? false);
-                bool breach = Math.Abs(pct) > DiffThresholdPct;
-                if (breach && !overridden) anyBreachWithoutOverride = true;
-                if (overridden) anyOverride = true;
+                    decimal diff = tts - supplier;
+                    decimal pct = (supplier == 0m) ? 0m : (diff / supplier) * 100m;
+
+                    bool overridden = Convert.ToBoolean(r.Cells[ColOverride].Value ?? false);
+                    bool breach = Math.Abs(pct) > DiffThresholdPct;
+                    if (breach && !overridden) anyBreachWithoutOverride = true;
+                    if (overridden) anyOverride = true;
+                }
             }
+
 
             decimal totalDiff = totalTts - totalSupp;
             decimal totalPct = (totalSupp == 0m) ? 0m : (totalDiff / totalSupp) * 100m;
 
-            lblTotals.Text = $"Totals: Supplier: {totalSupp:N1}     TTS: {totalTts:N1}     Weight Difference: {totalDiff:N1}     Weight Difference %: {totalPct:N2}%";
+            lblTotals.Text = $"Totals: Supplier: {totalSupp:N1}     TTS: {totalTts:N1}     Weight Difference: {totalDiff:N1}     Weight Difference Percentage: {totalPct:N1}%";
 
             var issues = new List<string>();
             int minRows = MinSampleRowsRequired();
-            if (rowCount < minRows)
-                issues.Add($"Sample size too small: {rowCount} rows. Need at least {minRows} (10% of total).");
+            if (validRowCount < minRows)
+                issues.Add($"Sample size too small: {validRowCount} valid rows. Need at least {minRows} sample bale(s) (10% of total).");
 
             if (anyBreachWithoutOverride)
                 issues.Add($"One or more rows exceed ±{DiffThresholdPct:N1}% and are not overridden.");

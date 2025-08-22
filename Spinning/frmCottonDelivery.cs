@@ -100,9 +100,7 @@ namespace Spinning
                 cmbHaulier.ValueMember = "Haul_Pk";
                 cmbHaulier.DisplayMember = "Haul_Description";
                 cmbHaulier.SelectedIndex = 0;
-                cmbHaulier.SelectedValue = 0;
-
-            
+                cmbHaulier.SelectedValue = 0;            
 
             }
 
