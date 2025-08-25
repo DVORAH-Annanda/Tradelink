@@ -77,7 +77,7 @@
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(588, 494);
+            this.btnSave.Location = new System.Drawing.Point(588, 478);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(127, 36);
             this.btnSave.TabIndex = 5;
@@ -264,9 +264,9 @@
             this.groupBox2.Controls.Add(this.label13);
             this.groupBox2.Controls.Add(this.label12);
             this.groupBox2.Controls.Add(this.label11);
-            this.groupBox2.Location = new System.Drawing.Point(12, 391);
+            this.groupBox2.Location = new System.Drawing.Point(12, 386);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(278, 131);
+            this.groupBox2.Size = new System.Drawing.Size(278, 128);
             this.groupBox2.TabIndex = 4;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Calculated Values";
@@ -480,7 +480,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(730, 551);
+            this.ClientSize = new System.Drawing.Size(730, 527);
             this.Controls.Add(this.groupBox5);
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.groupBox2);
