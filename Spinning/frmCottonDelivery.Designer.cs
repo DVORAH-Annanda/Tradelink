@@ -33,7 +33,7 @@
             this.chkWeighBridgeAvailable = new System.Windows.Forms.CheckBox();
             this.txtSuppplierGrossWeight = new System.Windows.Forms.TextBox();
             this.label15 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
+            this.btnCaptureSampleBales = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.microAvailYes = new System.Windows.Forms.RadioButton();
             this.microAvailNo = new System.Windows.Forms.RadioButton();
@@ -77,6 +77,7 @@
             // 
             // btnSave
             // 
+            this.btnSave.Enabled = false;
             this.btnSave.Location = new System.Drawing.Point(588, 478);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(127, 36);
@@ -90,7 +91,7 @@
             this.groupBox1.Controls.Add(this.chkWeighBridgeAvailable);
             this.groupBox1.Controls.Add(this.txtSuppplierGrossWeight);
             this.groupBox1.Controls.Add(this.label15);
-            this.groupBox1.Controls.Add(this.button1);
+            this.groupBox1.Controls.Add(this.btnCaptureSampleBales);
             this.groupBox1.Controls.Add(this.groupBox3);
             this.groupBox1.Controls.Add(this.txtWeighBridgeNett);
             this.groupBox1.Controls.Add(this.txtWeighBridgeGross);
@@ -111,8 +112,6 @@
             // 
             this.chkWeighBridgeAvailable.AutoSize = true;
             this.chkWeighBridgeAvailable.CheckAlign = System.Drawing.ContentAlignment.BottomRight;
-            this.chkWeighBridgeAvailable.Checked = true;
-            this.chkWeighBridgeAvailable.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkWeighBridgeAvailable.Location = new System.Drawing.Point(457, 29);
             this.chkWeighBridgeAvailable.Name = "chkWeighBridgeAvailable";
             this.chkWeighBridgeAvailable.Size = new System.Drawing.Size(229, 17);
@@ -121,6 +120,7 @@
             this.chkWeighBridgeAvailable.Text = "Weigh Bridge available (sufficient capacity)";
             this.chkWeighBridgeAvailable.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.chkWeighBridgeAvailable.UseVisualStyleBackColor = true;
+            this.chkWeighBridgeAvailable.CheckedChanged += new System.EventHandler(this.chkWeighBridgeAvailable_CheckedChanged);
             // 
             // txtSuppplierGrossWeight
             // 
@@ -140,15 +140,15 @@
             this.label15.TabIndex = 2;
             this.label15.Text = "Supplier Gross Weight";
             // 
-            // button1
+            // btnCaptureSampleBales
             // 
-            this.button1.Location = new System.Drawing.Point(487, 124);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(204, 23);
-            this.button1.TabIndex = 12;
-            this.button1.Text = "Capture Bale Samples";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.btnCaptureSampleBales.Location = new System.Drawing.Point(487, 124);
+            this.btnCaptureSampleBales.Name = "btnCaptureSampleBales";
+            this.btnCaptureSampleBales.Size = new System.Drawing.Size(204, 23);
+            this.btnCaptureSampleBales.TabIndex = 12;
+            this.btnCaptureSampleBales.Text = "Capture Bale Samples";
+            this.btnCaptureSampleBales.UseVisualStyleBackColor = true;
+            this.btnCaptureSampleBales.Click += new System.EventHandler(this.btnCaptureSampleBales_Click);
             // 
             // groupBox3
             // 
@@ -186,6 +186,7 @@
             // 
             // txtWeighBridgeNett
             // 
+            this.txtWeighBridgeNett.Enabled = false;
             this.txtWeighBridgeNett.Location = new System.Drawing.Point(591, 84);
             this.txtWeighBridgeNett.Name = "txtWeighBridgeNett";
             this.txtWeighBridgeNett.Size = new System.Drawing.Size(100, 20);
@@ -195,6 +196,7 @@
             // 
             // txtWeighBridgeGross
             // 
+            this.txtWeighBridgeGross.Enabled = false;
             this.txtWeighBridgeGross.Location = new System.Drawing.Point(591, 55);
             this.txtWeighBridgeGross.Name = "txtWeighBridgeGross";
             this.txtWeighBridgeGross.Size = new System.Drawing.Size(100, 20);
@@ -415,6 +417,7 @@
             this.txtVehReg.Name = "txtVehReg";
             this.txtVehReg.Size = new System.Drawing.Size(100, 20);
             this.txtVehReg.TabIndex = 7;
+            this.txtVehReg.TextChanged += new System.EventHandler(this.txt_ValueChanged);
             // 
             // label6
             // 
@@ -432,6 +435,7 @@
             this.cmbHaulier.Name = "cmbHaulier";
             this.cmbHaulier.Size = new System.Drawing.Size(201, 21);
             this.cmbHaulier.TabIndex = 5;
+            this.cmbHaulier.SelectedIndexChanged += new System.EventHandler(this.cmb_SelectIndexChanged);
             // 
             // label5
             // 
@@ -449,6 +453,7 @@
             this.cmbCottonContracts.Name = "cmbCottonContracts";
             this.cmbCottonContracts.Size = new System.Drawing.Size(201, 21);
             this.cmbCottonContracts.TabIndex = 3;
+            this.cmbCottonContracts.SelectedIndexChanged += new System.EventHandler(this.cmb_SelectIndexChanged);
             // 
             // label3
             // 
@@ -466,6 +471,7 @@
             this.cmbCottonSuppliers.Name = "cmbCottonSuppliers";
             this.cmbCottonSuppliers.Size = new System.Drawing.Size(201, 21);
             this.cmbCottonSuppliers.TabIndex = 1;
+            this.cmbCottonSuppliers.SelectedIndexChanged += new System.EventHandler(this.cmbCottonSuppliers_SelectedIndexChanged);
             // 
             // label2
             // 
@@ -521,7 +527,7 @@
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Label label11;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btnCaptureSampleBales;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.RadioButton microAvailYes;
         private System.Windows.Forms.RadioButton microAvailNo;
