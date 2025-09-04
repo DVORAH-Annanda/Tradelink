@@ -452,7 +452,7 @@ namespace Knitting
                                         PalletStack = context.TLKNI_YarnOrderPallets
                                         .Where(x =>
                                             (x.TLKNIOP_YarnOrder_FK > 450 || x.TLKNIOP_YarnOrder_FK == null) &&  // This line can be omitted if all values are valid
-                                            (x.TLKNIOP_Cones + x.TLKNIOP_ConesReturned - x.TLKNIOP_ConesReserved) > 0 &&
+                                            ((x.TLKNIOP_Cones + x.TLKNIOP_ConesReturned - x.TLKNIOP_ConesReserved) > 0 || x.TLKNIOP_NettWeightReturned > 0 || x.TLKNIOP_AdditionalYarn > 0) &&
                                             x.TLKNIOP_YarnType_FK == YDet.YA_Id &&
                                             !x.TLKNIOP_PalletAllocated)
                                         .ToList();
@@ -472,8 +472,7 @@ namespace Knitting
                                 {
                                     PalletStack = context.TLKNI_YarnOrderPallets.Where(x => x.TLKNIOP_YarnType_FK == YDet.YA_Id && !x.TLKNIOP_OwnYarn && x.TLKNIOP_CommisionCust && !x.TLKNIOP_PalletAllocated).ToList();
                                 }
-
-                                //*AS 20240301 v5.0.0.121 - PalletStack revisited
+                                
                                 if (PalletStack.Count == 0 && yarnDetCount == yarnDetTotalCount && !hasPalletStack)
                                 {
                                     using (DialogCenteringService centeringService = new DialogCenteringService(this)) // center message box
