@@ -39,20 +39,21 @@ namespace Knitting
             oTxtB.ValueType = typeof(decimal);
             oTxtB.Visible = true;
 
-            oChkA = new DataGridViewCheckBoxColumn();
-            oChkA.HeaderText = "Select";
-            oChkA.ValueType = typeof(bool);
-            oChkA.Visible = true;
+            // *202050919
+            //oChkA = new DataGridViewCheckBoxColumn();
+            //oChkA.HeaderText = "Select";
+            //oChkA.ValueType = typeof(bool);
+            //oChkA.Visible = true;
 
-            oCmbB = new DataGridViewComboBoxColumn();
-            oCmbB.HeaderText = "Alternate KO";
-            oCmbB.Visible = true;
+            //oCmbB = new DataGridViewComboBoxColumn();
+            //oCmbB.HeaderText = "Alternate KO";
+            //oCmbB.Visible = true;
 
             dataGridView1.Columns.Add(oCmbA); // 0
             dataGridView1.Columns.Add(oTxtA); // 1
             dataGridView1.Columns.Add(oTxtB); // 2
-            dataGridView1.Columns.Add(oChkA); // 3
-            dataGridView1.Columns.Add(oCmbB); // 4
+            //dataGridView1.Columns.Add(oChkA); // 3
+            //dataGridView1.Columns.Add(oCmbB); // 4
 
             dataGridView1.AllowUserToAddRows = true;
             dataGridView1.AllowUserToOrderColumns = false;
@@ -88,9 +89,9 @@ namespace Knitting
                 oCmbA.DisplayMember = "TLKNIOP_PalletNo";
                 oCmbA.ValueMember = "TLKNIOP_Pk";
 
-                oCmbB.DataSource = null;
-                oCmbB.DisplayMember = "KnitO_OrderNumber";
-                oCmbB.ValueMember = "KnitO_Pk";
+                //oCmbB.DataSource = null;
+                //oCmbB.DisplayMember = "KnitO_OrderNumber";
+                //oCmbB.ValueMember = "KnitO_Pk";
 
                 dataGridView1.Rows.Add();
             }
@@ -160,9 +161,9 @@ namespace Knitting
                         oCmbA.DisplayMember = "TLKNIOP_PalletNo";
                         oCmbA.ValueMember = "TLKNIOP_Pk";
 
-                        oCmbB.DataSource = context.TLKNI_Order.Where(x => !x.KnitO_Closed && x.KnitO_Pk != selected.KnitO_Pk).ToList();
-                        oCmbB.DisplayMember = "KnitO_OrderNumber";
-                        oCmbB.ValueMember = "KnitO_Pk";
+                        //oCmbB.DataSource = context.TLKNI_Order.Where(x => !x.KnitO_Closed && x.KnitO_Pk != selected.KnitO_Pk).ToList();
+                        //oCmbB.DisplayMember = "KnitO_OrderNumber";
+                        //oCmbB.ValueMember = "KnitO_Pk";
 
                      }
                 }
@@ -193,14 +194,14 @@ namespace Knitting
                             if (dr.Cells[0].Value == null)
                                 continue;
 
-                            if (dr.Cells[3].Value != null && (bool)dr.Cells[3].Value == true)
-                            {
-                                if (dr.Cells[4].Value == null) 
-                                {
-                                    MessageBox.Show("When using the select button please select an alternative Knit Order to allocate against", "Line " + (dr.Index + 1).ToString());
-                                    return;
-                                }
-                            }
+                            //if (dr.Cells[3].Value != null && (bool)dr.Cells[3].Value == true)
+                            //{
+                            //    if (dr.Cells[4].Value == null) 
+                            //    {
+                            //        MessageBox.Show("When using the select button please select an alternative Knit Order to allocate against", "Line " + (dr.Index + 1).ToString());
+                            //        return;
+                            //    }
+                            //}
 
                             TLKNI_YarnTransactionDetails trnsDet = new TLKNI_YarnTransactionDetails();
 
@@ -227,110 +228,113 @@ namespace Knitting
                             if (Pallet != null)
                             {
                                 trnsDet.KnitYD_YarnType_FK = Pallet.TLKNIOP_YarnType_FK;
-                                if (dr.Cells[3].Value != null && (bool)dr.Cells[3].Value == true)
-                                {
-                                    //======================================================================
-                                    // has to be a negative number to facilitate the calculations 
-                                    //=================================================================
-                                    TLKNI_YarnAllocTransctions TransAlloc = new TLKNI_YarnAllocTransctions();
-                                    TransAlloc.TLKYT_KnitOrder_FK = KO.KnitO_Pk;
-                                    TransAlloc.TLKYT_NettWeight = -1 * WeightRecorded;
-                                    TransAlloc.TLKYT_NoOfCones = -1 * (int)dr.Cells[1].Value; ;
-                                    TransAlloc.TLKYT_TransDate = dtpKnitOrderClosed.Value;
-                                    TransAlloc.TLKYT_TranType = 3;
-                                    TransAlloc.TLKYT_YOP_FK = Pallet.TLKNIOP_Pk;
+                                //if (dr.Cells[3].Value != null && (bool)dr.Cells[3].Value == true)
+                                //{
+                                //    //======================================================================
+                                //    // has to be a negative number to facilitate the calculations 
+                                //    //=================================================================
+                                //    TLKNI_YarnAllocTransctions TransAlloc = new TLKNI_YarnAllocTransctions();
+                                //    TransAlloc.TLKYT_KnitOrder_FK = KO.KnitO_Pk;
+                                //    TransAlloc.TLKYT_NettWeight = -1 * WeightRecorded;
+                                //    TransAlloc.TLKYT_NoOfCones = -1 * (int)dr.Cells[1].Value; ;
+                                //    TransAlloc.TLKYT_TransDate = dtpKnitOrderClosed.Value;
+                                //    TransAlloc.TLKYT_TranType = 3;
+                                //    TransAlloc.TLKYT_YOP_FK = Pallet.TLKNIOP_Pk;
 
-                                    context.TLKNI_YarnAllocTransctions.Add(TransAlloc);
+                                //    context.TLKNI_YarnAllocTransctions.Add(TransAlloc);
 
-                                    //=================================================================
-                                    // Now find the pallet to which the balance is going to be added
-                                    //========================================================
-                                    var ReservedBy = (int)dr.Cells[4].Value;
-                                    var Trans = context.TLKNI_YarnAllocTransctions.Where(x => x.TLKYT_KnitOrder_FK == ReservedBy && x.TLKYT_TranType == 1).FirstOrDefault();
-                                    if (Trans != null)
-                                    {
-                                        var PalletTo = context.TLKNI_YarnOrderPallets.Find(Trans.TLKYT_YOP_FK);
-                                        if (PalletTo != null)
-                                        {
-                                            PalletTo.TLKNIOP_AdditionalYarn += WeightRecorded;
+                                //    //=================================================================
+                                //    // Now find the pallet to which the balance is going to be added
+                                //    //========================================================
+                                //    var ReservedBy = (int)dr.Cells[4].Value;
+                                //    var Trans = context.TLKNI_YarnAllocTransctions.Where(x => x.TLKYT_KnitOrder_FK == ReservedBy && x.TLKYT_TranType == 1).FirstOrDefault();
+                                //    if (Trans != null)
+                                //    {
+                                //        var PalletTo = context.TLKNI_YarnOrderPallets.Find(Trans.TLKYT_YOP_FK);
+                                //        if (PalletTo != null)
+                                //        {
+                                //            PalletTo.TLKNIOP_AdditionalYarn += WeightRecorded;
 
-                                            //=============================================
-                                            // we need a record of this transaction
-                                            //========================================
-                                            TransAlloc = new TLKNI_YarnAllocTransctions();
-                                            TransAlloc.TLKYT_KnitOrder_FK = ReservedBy;
-                                            TransAlloc.TLKYT_NoOfCones += (int)dr.Cells[1].Value;
-                                            TransAlloc.TLKYT_NettWeight = WeightRecorded;
-                                            TransAlloc.TLKYT_TransDate = dtpKnitOrderClosed.Value;
-                                            TransAlloc.TLKYT_TranType = 3;
-                                            TransAlloc.TLKYT_YOP_FK = PalletTo.TLKNIOP_Pk;
-                                            context.TLKNI_YarnAllocTransctions.Add(TransAlloc);
+                                //            //=============================================
+                                //            // we need a record of this transaction
+                                //            //========================================
+                                //            TransAlloc = new TLKNI_YarnAllocTransctions();
+                                //            TransAlloc.TLKYT_KnitOrder_FK = ReservedBy;
+                                //            TransAlloc.TLKYT_NoOfCones += (int)dr.Cells[1].Value;
+                                //            TransAlloc.TLKYT_NettWeight = WeightRecorded;
+                                //            TransAlloc.TLKYT_TransDate = dtpKnitOrderClosed.Value;
+                                //            TransAlloc.TLKYT_TranType = 3;
+                                //            TransAlloc.TLKYT_YOP_FK = PalletTo.TLKNIOP_Pk;
+                                //            context.TLKNI_YarnAllocTransctions.Add(TransAlloc);
 
-                                            if (core.CalculatePalletNett(PalletTo) <= 0.00m)
-                                            {
-                                                PalletTo.TLKNIOP_PalletAllocated = true;
-                                            }
-                                            else
-                                            {
-                                                PalletTo.TLKNIOP_PalletAllocated = false;
-                                            }
+                                //            if (core.CalculatePalletNett(PalletTo) <= 0.00m)
+                                //            {
+                                //                PalletTo.TLKNIOP_PalletAllocated = true;
+                                //            }
+                                //            else
+                                //            {
+                                //                PalletTo.TLKNIOP_PalletAllocated = false;
+                                //            }
 
-                                        }
-                                    }
+                                //        }
+                                //    }
 
-                                    trnsDet.KnitYD_TransactionType = 2005;
-                                }
-                                else
-                                {
+                                //    trnsDet.KnitYD_TransactionType = 2005;
+                                //}
+                                //else
+                                //{
                                     var Cones = (int)dr.Cells[1].Value;
                                     WeightRecorded = (decimal)dr.Cells[2].Value;
 
                                     trnsDet.KnitYD_YarnReturned = true;
 
                                     Pallet.TLKNIOP_NettWeightReturned += WeightRecorded;
-                                          
-                                    //=============================================
-                                    //we need a record of this transaction
-                                    //========================================
-                                    var TransAlloc = new TLKNI_YarnAllocTransctions();
+
+                                //=============================================
+                                //Yarn allocation transaction
+                                //========================================
+                                var TransAlloc = new TLKNI_YarnAllocTransctions();
                                     TransAlloc.TLKYT_KnitOrder_FK = KO.KnitO_Pk;
                                     TransAlloc.TLKYT_NettWeight = WeightRecorded;
                                     TransAlloc.TLKYT_NoOfCones = -Cones;
                                     TransAlloc.TLKYT_TransDate = dtpKnitOrderClosed.Value;
-                                    TransAlloc.TLKYT_TranType = 2;
-                                    TransAlloc.TLKYT_YOP_FK = Pallet.TLKNIOP_Pk;
+                                    TransAlloc.TLKYT_TranType = 2; //should be 22 KO Yarn Return Yarn Store
+                                TransAlloc.TLKYT_YOP_FK = Pallet.TLKNIOP_Pk;
 
                                     context.TLKNI_YarnAllocTransctions.Add(TransAlloc);
 
-                                    //=========================================
-                                    // This should make the pallet available   
-                                    //======================================================
-                                    if (core.CalculatePalletNett(Pallet) <= 0.00M)
-                                    {
-                                        Pallet.TLKNIOP_PalletAllocated = true;
-                                    }
-                                    else
-                                    {
-                                        Pallet.TLKNIOP_PalletAllocated = false;
-                                    }
-                                   
-                                    //==============================
-                                    // Now do the the swop between stores
-                                    // dont have to do this for the above has it stays in WIP spinning
-                                    //===================================================
-                                    if (Pallet.TLKNIOP_OwnYarn)
-                                    {
-                                        frmSelectStore selectStore = new frmSelectStore();
-                                        selectStore.ShowDialog();
+                                //=========================================
+                                // This should make the pallet available   
+                                //======================================================
+                                // Update pallet allocation status
+                                //Pallet.TLKNIOP_PalletAllocated = core.CalculatePalletNett(Pallet) <= 0.00M;
+                                if (core.CalculatePalletNett(Pallet) <= 0.00M)
+                                {
+                                    Pallet.TLKNIOP_PalletAllocated = true;
+                                }
+                                else
+                                {
+                                    Pallet.TLKNIOP_PalletAllocated = false;
+                                }
 
-                                        Pallet.TLKNIOP_Store_FK = selectStore.WhseId;
+
+
+                                //==============================
+                                // Now do the the swop between stores
+                                // dont have to do this for the above has it stays in WIP spinning
+                                //===================================================
+                                if (Pallet.TLKNIOP_OwnYarn)
+                                    {
+
+
+                                        Pallet.TLKNIOP_Store_FK = 34;
                                         /*
                                         TranType = context.TLADM_TranactionType.Where(x => x.TrxT_Number == 1400).FirstOrDefault();
                                         if (TranType != null)
                                             Pallet.TLKNIOP_Store_FK = (int)TranType.TrxT_ToWhse_FK;
                                         */
 
-                                        trnsDet.KnitYD_TransactionType = 1400;
+                                        trnsDet.KnitYD_TransactionType = 1400; //??????
                                     }
                                     else
                                     {
@@ -351,7 +355,7 @@ namespace Knitting
                                                 trnsDet.KnitYD_TransactionType = 1200;
                                          }
                                     }
-                                }
+                                //}
             
                             }
                             context.TLKNI_YarnTransactionDetails.Add(trnsDet);

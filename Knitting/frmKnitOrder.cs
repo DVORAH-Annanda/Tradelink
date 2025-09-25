@@ -944,7 +944,9 @@ namespace Knitting
                     using (var context = new TTI2Entities())
                     {
                         formloaded = false;
-                        cmbEditKO.DataSource = context.TLKNI_Order.Where(x => !x.KnitO_OrderConfirmed && !x.KnitO_Closed).OrderBy(x => x.KnitO_OrderNumber).ToList();
+                        //*20250911
+                        //cmbEditKO.DataSource = context.TLKNI_Order.Where(x => !x.KnitO_OrderConfirmed && !x.KnitO_Closed).OrderBy(x => x.KnitO_OrderNumber).ToList();
+                        cmbEditKO.DataSource = context.TLKNI_Order.Where(x => !x.KnitO_Closed).OrderBy(x => x.KnitO_OrderNumber).ToList();
                         cmbEditKO.ValueMember = "KnitO_Pk";
                         cmbEditKO.DisplayMember = "KnitO_OrderNumber";
                         formloaded = true;

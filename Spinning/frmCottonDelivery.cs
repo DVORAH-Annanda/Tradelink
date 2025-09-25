@@ -441,7 +441,10 @@ namespace Spinning
                 frmCottonDeliverySampleBales cb = new frmCottonDeliverySampleBales(Convert.ToInt32(txtNoOfBales.Text), dtpDateReceived.Value, txtLotNo.Text);
 
                 cb.ShowDialog(this);
-
+                txtWeighBridgeGross.Text = txtSuppplierGrossWeight.Text;
+                txtWeighBridgeNett.Text = txtSupplierNettWeight.Text;
+                UpdateCalculatedValues();
+                btnSave.Enabled = true;
             }
         }
 
