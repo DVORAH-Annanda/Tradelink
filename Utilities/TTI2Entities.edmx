@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="TTI2Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="TTI2Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="sysdiagrams">
           <Key>
             <PropertyRef Name="diagram_id" />
@@ -2200,9 +2200,9 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="GarmentDyeingTransactionNo" Type="int" Nullable="false" />
           <Property Name="Size" Type="int" Nullable="false" />
+          <Property Name="Grade" Type="char" MaxLength="1" Nullable="false" />
           <Property Name="BoxNo" Type="char" MaxLength="10" Nullable="false" />
           <Property Name="BoxQuantity" Type="int" Nullable="false" />
-          <Property Name="Grade" Type="char" MaxLength="1" Nullable="false" />
           <Property Name="Closed" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="TLDYE_NonCompliance">
@@ -2703,38 +2703,20 @@
           <Property Name="TLCTMD_Contract_FK" Type="int" Nullable="false" />
           <Property Name="TLCTMD_Split" Type="decimal" Precision="18" Scale="4" Nullable="false" />
         </EntityType>
-        <EntityType Name="TLSPN_CottonReceived">
-          <Key>
-            <PropertyRef Name="CotRec_Pk" />
-          </Key>
-          <Property Name="CotRec_Pk" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="CotRec_Supplier_FK" Type="int" Nullable="false" />
-          <Property Name="CotRec_Contract_FK" Type="int" Nullable="false" />
-          <Property Name="CotRec_LotNo" Type="int" Nullable="false" />
-          <Property Name="CotRec_VehReg_FK" Type="int" Nullable="false" />
-          <Property Name="CotRec_DateReceived" Type="date" Nullable="false" />
-          <Property Name="CotRec_NoOfBales" Type="int" Nullable="false" />
-          <Property Name="CotRec_Supplier_GrossWeight" Type="decimal" Precision="18" Scale="4" Nullable="false" />
-          <Property Name="CotRec_Supplier_NetWeight" Type="decimal" Precision="18" Scale="4" Nullable="false" />
-          <Property Name="CotRec_WeighBridge_Gross" Type="decimal" Precision="18" Scale="4" Nullable="false" />
-          <Property Name="CotRec_WeighBridge_Nett" Type="decimal" Precision="18" Scale="4" Nullable="false" />
-          <Property Name="CotReC_TranType_FK" Type="int" Nullable="false" />
-          <Property Name="CotRec_NettCottonWeight" Type="decimal" Precision="18" Scale="4" Nullable="false" />
-          <Property Name="CotRec_GrossAvgBaleWeight" Type="decimal" Precision="18" Scale="4" Nullable="false" />
-          <Property Name="CotRec_NettAvgBaleWeight" Type="decimal" Precision="18" Scale="4" Nullable="false" />
-          <Property Name="CoRec_GRNNumber" Type="int" Nullable="false" />
-        </EntityType>
         <EntityType Name="TLSPN_CottonReceivedBales">
           <Key>
             <PropertyRef Name="CotBales_Pk" />
           </Key>
           <Property Name="CotBales_Pk" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="CotBales_CotReceived_FK" Type="int" Nullable="false" />
           <Property Name="CotBales_LotNo" Type="int" Nullable="false" />
           <Property Name="CotBales_BaleNo" Type="int" Nullable="false" />
+          <Property Name="CotBales_Sample_BaleNo" Type="varchar" MaxLength="12" />
           <Property Name="CotBales_Mic" Type="decimal" Precision="18" Scale="4" Nullable="false" />
           <Property Name="CotBales_Weight_Nett" Type="decimal" Precision="18" Scale="4" Nullable="false" />
           <Property Name="CotBales_Weight_Gross" Type="decimal" Precision="18" Scale="4" Nullable="false" />
+          <Property Name="CotBales_Sample_Weight_Gross" Type="decimal" Precision="18" Scale="4" />
+          <Property Name="SampleWeightOverride" Type="bit" />
+          <Property Name="OverrideReason" Type="varchar(max)" />
           <Property Name="CotBales_Staple" Type="decimal" Precision="18" Scale="4" Nullable="false" />
           <Property Name="CoBales_IssuedToProd" Type="bit" Nullable="false" />
           <Property Name="CoBales_CottonReturned" Type="bit" Nullable="false" />
@@ -3320,7 +3302,6 @@
           <EntitySet Name="TLSEC_UserSections" EntityType="Self.TLSEC_UserSections" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TLSPN_CottonMerge" EntityType="Self.TLSPN_CottonMerge" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TLSPN_CottonMergeDetails" EntityType="Self.TLSPN_CottonMergeDetails" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="TLSPN_CottonReceived" EntityType="Self.TLSPN_CottonReceived" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TLSPN_CottonReceivedBales" EntityType="Self.TLSPN_CottonReceivedBales" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TLSPN_CottonTransactions" EntityType="Self.TLSPN_CottonTransactions" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TLSPN_OpenBalance" EntityType="Self.TLSPN_OpenBalance" Schema="dbo" store:Type="Tables" />
@@ -3795,7 +3776,6 @@
           <EntitySet Name="TLADM_CottonHauliersVehicles" EntityType="TTI2Model.TLADM_CottonHauliersVehicles" />
           <EntitySet Name="TLADM_TranactionType" EntityType="TTI2Model.TLADM_TranactionType" />
           <EntitySet Name="TLADM_StoreBal" EntityType="TTI2Model.TLADM_StoreBal" />
-          <EntitySet Name="TLSPN_CottonReceived" EntityType="TTI2Model.TLSPN_CottonReceived" />
           <EntitySet Name="TLSPN_CottonReceivedBales" EntityType="TTI2Model.TLSPN_CottonReceivedBales" />
           <EntitySet Name="TLSPN_OpenBalance" EntityType="TTI2Model.TLSPN_OpenBalance" />
           <FunctionImport Name="SelectCottonRecords">
@@ -4205,33 +4185,11 @@
           <Property Name="StoreBal_NumberOf" Type="Int32" Nullable="false" />
           <Property Name="StoreBal_Weight" Type="Decimal" Precision="18" Scale="4" />
         </EntityType>
-        <EntityType Name="TLSPN_CottonReceived">
-          <Key>
-            <PropertyRef Name="CotRec_Pk" />
-          </Key>
-          <Property Name="CotRec_Pk" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="CotRec_Supplier_FK" Type="Int32" Nullable="false" />
-          <Property Name="CotRec_Contract_FK" Type="Int32" Nullable="false" />
-          <Property Name="CotRec_LotNo" Type="Int32" Nullable="false" />
-          <Property Name="CotRec_VehReg_FK" Type="Int32" Nullable="false" />
-          <Property Name="CotRec_DateReceived" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="CotRec_NoOfBales" Type="Int32" Nullable="false" />
-          <Property Name="CotRec_Supplier_GrossWeight" Type="Decimal" Nullable="false" Precision="18" Scale="4" />
-          <Property Name="CotRec_Supplier_NetWeight" Type="Decimal" Nullable="false" Precision="18" Scale="4" />
-          <Property Name="CotRec_WeighBridge_Gross" Type="Decimal" Nullable="false" Precision="18" Scale="4" />
-          <Property Name="CotRec_WeighBridge_Nett" Type="Decimal" Nullable="false" Precision="18" Scale="4" />
-          <Property Name="CotReC_TranType_FK" Type="Int32" Nullable="false" />
-          <Property Name="CotRec_NettCottonWeight" Type="Decimal" Nullable="false" Precision="18" Scale="4" />
-          <Property Name="CotRec_GrossAvgBaleWeight" Type="Decimal" Nullable="false" Precision="18" Scale="4" />
-          <Property Name="CotRec_NettAvgBaleWeight" Type="Decimal" Nullable="false" Precision="18" Scale="4" />
-          <Property Name="CoRec_GRNNumber" Type="Int32" Nullable="false" />
-        </EntityType>
         <EntityType Name="TLSPN_CottonReceivedBales">
           <Key>
             <PropertyRef Name="CotBales_Pk" />
           </Key>
           <Property Name="CotBales_Pk" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="CotBales_CotReceived_FK" Type="Int32" Nullable="false" />
           <Property Name="CotBales_LotNo" Type="Int32" Nullable="false" />
           <Property Name="CotBales_BaleNo" Type="Int32" Nullable="false" />
           <Property Name="CotBales_Mic" Type="Decimal" Nullable="false" Precision="18" Scale="4" />
@@ -4244,6 +4202,10 @@
           <Property Name="CoBales_CottonSequence" Type="Int32" Nullable="false" />
           <Property Name="CoBales_BlowRoomPosition" Type="Int32" Nullable="false" />
           <Property Name="CotBales_ConfirmedByQA" Type="Boolean" Nullable="false" />
+          <Property Name="CotBales_Sample_BaleNo" Type="String" MaxLength="12" FixedLength="false" Unicode="false" />
+          <Property Name="CotBales_Sample_Weight_Gross" Type="Decimal" Precision="18" Scale="4" />
+          <Property Name="SampleWeightOverride" Type="Boolean" />
+          <Property Name="OverrideReason" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="TLSPN_OpenBalance">
           <Key>
@@ -7534,31 +7496,13 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="TLSPN_CottonReceived">
-            <EntityTypeMapping TypeName="TTI2Model.TLSPN_CottonReceived">
-              <MappingFragment StoreEntitySet="TLSPN_CottonReceived">
-                <ScalarProperty Name="CoRec_GRNNumber" ColumnName="CoRec_GRNNumber" />
-                <ScalarProperty Name="CotRec_NettAvgBaleWeight" ColumnName="CotRec_NettAvgBaleWeight" />
-                <ScalarProperty Name="CotRec_GrossAvgBaleWeight" ColumnName="CotRec_GrossAvgBaleWeight" />
-                <ScalarProperty Name="CotRec_NettCottonWeight" ColumnName="CotRec_NettCottonWeight" />
-                <ScalarProperty Name="CotReC_TranType_FK" ColumnName="CotReC_TranType_FK" />
-                <ScalarProperty Name="CotRec_WeighBridge_Nett" ColumnName="CotRec_WeighBridge_Nett" />
-                <ScalarProperty Name="CotRec_WeighBridge_Gross" ColumnName="CotRec_WeighBridge_Gross" />
-                <ScalarProperty Name="CotRec_Supplier_NetWeight" ColumnName="CotRec_Supplier_NetWeight" />
-                <ScalarProperty Name="CotRec_Supplier_GrossWeight" ColumnName="CotRec_Supplier_GrossWeight" />
-                <ScalarProperty Name="CotRec_NoOfBales" ColumnName="CotRec_NoOfBales" />
-                <ScalarProperty Name="CotRec_DateReceived" ColumnName="CotRec_DateReceived" />
-                <ScalarProperty Name="CotRec_VehReg_FK" ColumnName="CotRec_VehReg_FK" />
-                <ScalarProperty Name="CotRec_LotNo" ColumnName="CotRec_LotNo" />
-                <ScalarProperty Name="CotRec_Contract_FK" ColumnName="CotRec_Contract_FK" />
-                <ScalarProperty Name="CotRec_Supplier_FK" ColumnName="CotRec_Supplier_FK" />
-                <ScalarProperty Name="CotRec_Pk" ColumnName="CotRec_Pk" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="TLSPN_CottonReceivedBales">
             <EntityTypeMapping TypeName="TTI2Model.TLSPN_CottonReceivedBales">
               <MappingFragment StoreEntitySet="TLSPN_CottonReceivedBales">
+                <ScalarProperty Name="OverrideReason" ColumnName="OverrideReason" />
+                <ScalarProperty Name="SampleWeightOverride" ColumnName="SampleWeightOverride" />
+                <ScalarProperty Name="CotBales_Sample_Weight_Gross" ColumnName="CotBales_Sample_Weight_Gross" />
+                <ScalarProperty Name="CotBales_Sample_BaleNo" ColumnName="CotBales_Sample_BaleNo" />
                 <ScalarProperty Name="CotBales_ConfirmedByQA" ColumnName="CotBales_ConfirmedByQA" />
                 <ScalarProperty Name="CoBales_BlowRoomPosition" ColumnName="CoBales_BlowRoomPosition" />
                 <ScalarProperty Name="CoBales_CottonSequence" ColumnName="CoBales_CottonSequence" />
@@ -7571,7 +7515,6 @@
                 <ScalarProperty Name="CotBales_Mic" ColumnName="CotBales_Mic" />
                 <ScalarProperty Name="CotBales_BaleNo" ColumnName="CotBales_BaleNo" />
                 <ScalarProperty Name="CotBales_LotNo" ColumnName="CotBales_LotNo" />
-                <ScalarProperty Name="CotBales_CotReceived_FK" ColumnName="CotBales_CotReceived_FK" />
                 <ScalarProperty Name="CotBales_Pk" ColumnName="CotBales_Pk" />
               </MappingFragment>
             </EntityTypeMapping>

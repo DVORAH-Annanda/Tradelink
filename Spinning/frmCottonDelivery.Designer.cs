@@ -112,7 +112,7 @@
             // 
             this.chkWeighBridgeAvailable.AutoSize = true;
             this.chkWeighBridgeAvailable.CheckAlign = System.Drawing.ContentAlignment.BottomRight;
-            this.chkWeighBridgeAvailable.Location = new System.Drawing.Point(457, 29);
+            this.chkWeighBridgeAvailable.Location = new System.Drawing.Point(462, 29);
             this.chkWeighBridgeAvailable.Name = "chkWeighBridgeAvailable";
             this.chkWeighBridgeAvailable.Size = new System.Drawing.Size(229, 17);
             this.chkWeighBridgeAvailable.TabIndex = 7;
@@ -142,9 +142,9 @@
             // 
             // btnCaptureSampleBales
             // 
-            this.btnCaptureSampleBales.Location = new System.Drawing.Point(487, 124);
+            this.btnCaptureSampleBales.Location = new System.Drawing.Point(487, 132);
             this.btnCaptureSampleBales.Name = "btnCaptureSampleBales";
-            this.btnCaptureSampleBales.Size = new System.Drawing.Size(204, 23);
+            this.btnCaptureSampleBales.Size = new System.Drawing.Size(204, 34);
             this.btnCaptureSampleBales.TabIndex = 12;
             this.btnCaptureSampleBales.Text = "Capture Bale Samples";
             this.btnCaptureSampleBales.UseVisualStyleBackColor = true;
@@ -154,7 +154,7 @@
             // 
             this.groupBox3.Controls.Add(this.microAvailYes);
             this.groupBox3.Controls.Add(this.microAvailNo);
-            this.groupBox3.Location = new System.Drawing.Point(17, 110);
+            this.groupBox3.Location = new System.Drawing.Point(17, 121);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(215, 49);
             this.groupBox3.TabIndex = 6;
@@ -225,16 +225,16 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(484, 88);
+            this.label10.Location = new System.Drawing.Point(433, 88);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(94, 13);
+            this.label10.Size = new System.Drawing.Size(153, 13);
             this.label10.TabIndex = 10;
-            this.label10.Text = "Weigh Bridge Nett";
+            this.label10.Text = "Weigh Bridge Nett (Truck only)";
             // 
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(484, 59);
+            this.label9.Location = new System.Drawing.Point(485, 58);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(101, 13);
             this.label9.TabIndex = 8;
@@ -268,14 +268,14 @@
             this.groupBox2.Controls.Add(this.label11);
             this.groupBox2.Location = new System.Drawing.Point(12, 386);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(278, 128);
+            this.groupBox2.Size = new System.Drawing.Size(314, 128);
             this.groupBox2.TabIndex = 4;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Calculated Values";
             // 
             // txtNetAvgBaleWeight
             // 
-            this.txtNetAvgBaleWeight.Location = new System.Drawing.Point(158, 91);
+            this.txtNetAvgBaleWeight.Location = new System.Drawing.Point(195, 92);
             this.txtNetAvgBaleWeight.Name = "txtNetAvgBaleWeight";
             this.txtNetAvgBaleWeight.ReadOnly = true;
             this.txtNetAvgBaleWeight.Size = new System.Drawing.Size(100, 20);
@@ -284,7 +284,7 @@
             // 
             // txtGrossAvgBaleWeight
             // 
-            this.txtGrossAvgBaleWeight.Location = new System.Drawing.Point(158, 60);
+            this.txtGrossAvgBaleWeight.Location = new System.Drawing.Point(195, 61);
             this.txtGrossAvgBaleWeight.Name = "txtGrossAvgBaleWeight";
             this.txtGrossAvgBaleWeight.ReadOnly = true;
             this.txtGrossAvgBaleWeight.Size = new System.Drawing.Size(100, 20);
@@ -293,7 +293,7 @@
             // 
             // txtCottonNettWeight
             // 
-            this.txtCottonNettWeight.Location = new System.Drawing.Point(158, 29);
+            this.txtCottonNettWeight.Location = new System.Drawing.Point(195, 30);
             this.txtCottonNettWeight.Name = "txtCottonNettWeight";
             this.txtCottonNettWeight.ReadOnly = true;
             this.txtCottonNettWeight.Size = new System.Drawing.Size(100, 20);
@@ -305,9 +305,9 @@
             this.label13.AutoSize = true;
             this.label13.Location = new System.Drawing.Point(14, 95);
             this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(128, 13);
+            this.label13.Size = new System.Drawing.Size(172, 13);
             this.label13.TabIndex = 4;
-            this.label13.Text = "Net Average Bale Weight";
+            this.label13.Text = "Supplier Nett Average Bale Weight";
             // 
             // label12
             // 

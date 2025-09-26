@@ -15,7 +15,6 @@ namespace Utilities
     public partial class TLSPN_CottonReceivedBales
     {
         public int CotBales_Pk { get; set; }
-        public int CotBales_CotReceived_FK { get; set; }
         public int CotBales_LotNo { get; set; }
         public int CotBales_BaleNo { get; set; }
         public decimal CotBales_Mic { get; set; }
@@ -28,5 +27,9 @@ namespace Utilities
         public int CoBales_CottonSequence { get; set; }
         public int CoBales_BlowRoomPosition { get; set; }
         public bool CotBales_ConfirmedByQA { get; set; }
+        public string CotBales_Sample_BaleNo { get; set; }
+        public Nullable<decimal> CotBales_Sample_Weight_Gross { get; set; }
+        public Nullable<bool> SampleWeightOverride { get; set; }
+        public string OverrideReason { get; set; }
     }
 }

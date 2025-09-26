@@ -227,7 +227,10 @@ namespace Spinning
                                     decimal Staple = Math.Round(Convert.ToDecimal(row[3]), 1);
                                     //-----------------------------------------------------------------------------
                                     BalesRec.CotBales_BaleNo = Bale;
-                                    BalesRec.CotBales_CotReceived_FK = _CTrns.cotrx_pk;
+                                    // *20250926
+                                    //--CotBales_CotReceived_FK = 0-- >> CotBales_Sample_BaleNo
+                                    //BalesRec.CotBales_CotReceived_FK = _CTrns.cotrx_pk;
+                                    BalesRec.CotBales_Sample_BaleNo = "Test";
                                     BalesRec.CotBales_LotNo = _CTrns.cotrx_LotNo;
                                     BalesRec.CoBales_CottonSequence = _CTrns.cotrx_Return_No;
                                     BalesRec.CotBales_Mic = Micro;
