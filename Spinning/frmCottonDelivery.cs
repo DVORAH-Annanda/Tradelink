@@ -11,9 +11,21 @@ using Utilities;
 
 namespace Spinning
 {
+
+    // *20250926
+    //new database fields to be added
+    //--CotBales_CotReceived_FK = 0-- >> CotBales_Sample_BaleNo
+    //--CotBales_Weight_Gross_Sample
+    //--SampleOverride
+    //--OverrideReason
+
     public partial class frmCottonDelivery : Form
     {
         Util core;
+
+        private List<SampleBaleRow> _sampleRows;
+        private string _overrideReason;
+
         string[][] MandatoryFields;
         string[][] MandatoryFieldsWeighBridgeAvailable;
         bool[] MandSelected;
@@ -102,8 +114,6 @@ namespace Spinning
                 cmbCottonSuppliers.ValueMember = "Cotton_Pk";
                 cmbCottonSuppliers.DisplayMember = "Cotton_Description";
                 cmbCottonSuppliers.SelectedValue = 0;
-
-                //cmbCottonContracts.Enabled = false;
 
                 cmbHaulier.DataSource = context.TLADM_CottonHauliers.OrderBy(x => x.Haul_Description).ToList();
                 cmbHaulier.ValueMember = "Haul_Pk";
@@ -228,20 +238,6 @@ namespace Spinning
             }
         }
 
-        private bool TestFor(bool[] Arr)
-        {
-            bool res = false;
-            foreach (var element in Arr)
-            {
-                if (element == false)
-                {
-                    res = true;
-                    break;
-                }
-            }
-            return res;
-        }
-
         private void btnSave_Click(object sender, EventArgs e)
         {
             bool success = true;
@@ -271,7 +267,7 @@ namespace Spinning
 
                 using (var context = new TTI2Entities())
                 {
-                    TLSPN_CottonReceived cotrec = new TLSPN_CottonReceived();
+                    //TLSPN_CottonReceived cotrec = new TLSPN_CottonReceived();
 
                     var Contract = (TLADM_CottonContracts)cmbCottonContracts.SelectedItem;
                     var Supplier = (TLADM_Cotton)cmbCottonSuppliers.SelectedItem;
@@ -287,7 +283,7 @@ namespace Spinning
                     if (TranType != null)
                     {
 
-                        cotrec.CotReC_TranType_FK = TranType.TrxT_Pk;
+                        //cotrec.CotReC_TranType_FK = TranType.TrxT_Pk;
 
                         var CountTrx = context.TLSPN_CottonTransactions.Count();
                         if (CountTrx == 0)
@@ -324,8 +320,15 @@ namespace Spinning
                     CTS.cotrx_TranType = TranType.TrxT_Pk;
                     CTS.cotrx_VehReg = txtVehReg.Text;
                     CTS.cotrx_Haulier_FK = Haulier.Haul_Pk;
-                    CTS.cotrx_WeighBridgeEmpty = Convert.ToDecimal(txtWeighBridgeNett.Text);
-                    CTS.cotrx_WeighBridgeFull = Convert.ToDecimal(txtWeighBridgeGross.Text);
+                    if (decimal.TryParse(txtWeighBridgeNett.Text, out var nett))
+                        CTS.cotrx_WeighBridgeEmpty = nett;
+                    else
+                        CTS.cotrx_WeighBridgeEmpty = 0;
+
+                    if (decimal.TryParse(txtWeighBridgeGross.Text, out var gross))
+                        CTS.cotrx_WeighBridgeFull = gross;
+                    else
+                        CTS.cotrx_WeighBridgeFull = 0;
                     CTS.cotrx_WriteOff = false;
                     CTS.cottrx_NettAveBaleWeight = Convert.ToDecimal(txtNetAvgBaleWeight.Text);
                     CTS.cotrx_GrossAveBaleWeight = Convert.ToDecimal(txtGrossAvgBaleWeight.Text);
@@ -368,29 +371,52 @@ namespace Spinning
                             staplefrom = CottonContract.CottonCon_StapleFrom;
                             stapleto = CottonContract.CottonCon_StapleTo;
 
-                            if (micraFrom > 0 && micraTo > 0)
-                                micraAvg = (micraFrom + micraTo) / 2;
-                            else
-                                micraAvg = 1;
-                            if (staplefrom != 0 && stapleto != 0)
-                                stapleAvg = (staplefrom + stapleto) / 2;
-                            else
-                                stapleAvg = 1;
+                            micraAvg = (micraFrom > 0 && micraTo > 0) ? (micraFrom + micraTo) / 2 : 1;
+                            stapleAvg = (staplefrom != 0 && stapleto != 0) ? (staplefrom + stapleto) / 2 : 1;
                         }
-                        var n = 0;
 
-                        while (++n <= CTS.cotrx_NoBales)
+                        int sampleCount = _sampleRows?.Count ?? 0;
+                        int sampleIdx = 0;
+                        for (int n = 1; n <= CTS.cotrx_NoBales; n++)
                         {
 
-                            TLSPN_CottonReceivedBales recBales = new TLSPN_CottonReceivedBales();
-                            recBales.CotBales_BaleNo = n;
-                            recBales.CotBales_CotReceived_FK = cotrec.CotRec_Pk;
-                            recBales.CotBales_LotNo = Convert.ToInt32(txtLotNo.Text);
-                            recBales.CotBales_Mic = micraAvg;
-                            recBales.CotBales_Staple = stapleAvg;
-                            recBales.CotBales_Weight_Gross = Convert.ToDecimal(txtGrossAvgBaleWeight.Text);
-                            recBales.CotBales_Weight_Nett = Convert.ToDecimal(txtNetAvgBaleWeight.Text);
-                            recBales.CoBales_CottonSequence = Convert.ToInt32(txtGrnNumber.Text);
+                            //TLSPN_CottonReceivedBales recBales = new TLSPN_CottonReceivedBales();
+                            //recBales.CotBales_BaleNo = n;
+                            ////recBales.CotBales_CotReceived_FK = cotrec.CotRec_Pk;
+                            //recBales.CotBales_LotNo = Convert.ToInt32(txtLotNo.Text);
+                            //recBales.CotBales_Mic = micraAvg;
+                            //recBales.CotBales_Staple = stapleAvg;
+                            //recBales.CotBales_Weight_Gross = Convert.ToDecimal(txtGrossAvgBaleWeight.Text);
+                            //recBales.CotBales_Weight_Nett = Convert.ToDecimal(txtNetAvgBaleWeight.Text);
+                            //recBales.CoBales_CottonSequence = Convert.ToInt32(txtGrnNumber.Text);
+
+                            var recBales = new TLSPN_CottonReceivedBales
+                            {
+                                CotBales_BaleNo = n,
+                                CotBales_LotNo = CTS.cotrx_LotNo,
+                                CotBales_Mic = micraAvg,
+                                CotBales_Staple = stapleAvg,
+                                CotBales_Weight_Gross = Convert.ToDecimal(txtGrossAvgBaleWeight.Text), // default gross avg
+                                CotBales_Weight_Nett = Convert.ToDecimal(txtNetAvgBaleWeight.Text),
+                                CoBales_CottonSequence = CTS.cotrx_Return_No,
+
+                                // initialize new fields empty
+                                CotBales_Sample_BaleNo = null,
+                                CotBales_Sample_Weight_Gross = null,
+                                SampleWeightOverride = null,
+                                OverrideReason = null
+                            };
+
+                            if (sampleIdx < sampleCount)
+                            {
+                                var s = _sampleRows[sampleIdx++];
+
+                                recBales.CotBales_Sample_BaleNo = s.SampleBaleNo;
+                                recBales.CotBales_Weight_Gross = s.SupplierWeight;   // overwrite gross with supplier sample gross
+                                recBales.CotBales_Sample_Weight_Gross = s.TTSWeight;   // store TTS sample gross
+                                recBales.SampleWeightOverride = s.Overridden;
+                                recBales.OverrideReason = _overrideReason;
+                            }
 
                             context.TLSPN_CottonReceivedBales.Add(recBales);
 
@@ -398,13 +424,76 @@ namespace Spinning
                             {
                                 context.SaveChanges();
                             }
-                            catch (Exception ex)
+                            catch (System.Data.Entity.Validation.DbEntityValidationException ex)
                             {
-                                MessageBox.Show(ex.Message);
+                                foreach (var eve in ex.EntityValidationErrors)
+                                {
+                                    Console.WriteLine(
+                                        $"Entity of type \"{eve.Entry.Entity.GetType().Name}\" in state \"{eve.Entry.State}\" has validation errors:");
+                                    foreach (var ve in eve.ValidationErrors)
+                                    {
+                                        Console.WriteLine($"- Property: {ve.PropertyName}, Error: {ve.ErrorMessage}");
+                                    }
+                                }
+
+                                throw; // or MessageBox.Show for WinForms
                             }
 
                         }
                     }
+                    else if (microAvailYes.Checked && _sampleRows != null && _sampleRows.Any())
+                    {
+                        // We expect the correct, actual bales for this LotNo to have been
+                        // captured & saved already (e.g., via frmCottonBales).
+                        // For each sample row, try to match an existing bale by LotNo + BaleNo (when numeric),
+                        // otherwise attach the sample to the next bale without a sample yet (or create a new row as a fallback).
+
+                        // Preload all bales for this LotNo
+                        var lotBales = context.TLSPN_CottonReceivedBales
+                                              .Where(b => b.CotBales_LotNo == CTS.cotrx_LotNo)
+                                              .OrderBy(b => b.CotBales_BaleNo)
+                                              .ToList();
+
+                        foreach (var s in _sampleRows)
+                        {
+                            TLSPN_CottonReceivedBales target = null;
+
+                            // Try numeric match first
+                            if (int.TryParse(s.SampleBaleNo, out var numericBaleNo))
+                            {
+                                target = lotBales.FirstOrDefault(b => b.CotBales_BaleNo == numericBaleNo);
+                            }
+
+                            // If not numeric or not found, attach to first bale without a sample yet
+                            if (target == null)
+                            {
+                                target = lotBales.FirstOrDefault(b => b.CotBales_Sample_BaleNo == null);
+                            }
+
+                            // As a last resort, create a new bale row to carry the sample info
+                            if (target == null)
+                            {
+                                target = new TLSPN_CottonReceivedBales
+                                {
+                                    CotBales_LotNo = CTS.cotrx_LotNo,
+                                    CotBales_BaleNo = numericBaleNo > 0 ? numericBaleNo : 0,
+                                    CoBales_CottonSequence = CTS.cotrx_Return_No
+                                };
+                                context.TLSPN_CottonReceivedBales.Add(target);
+                                lotBales.Add(target);
+                            }
+
+                            // Apply sample fields (do NOT alter Mic/Staple/Weight_Nett that micra import set)
+                            target.CotBales_Sample_BaleNo = s.SampleBaleNo;
+                            target.CotBales_Weight_Gross = s.SupplierWeight;   // supplier gross for that sample bale
+                            target.CotBales_Sample_Weight_Gross = s.TTSWeight;        // TTS gross for that sample bale
+                            target.SampleWeightOverride = s.Overridden;
+                            target.OverrideReason = _overrideReason;
+                        }
+
+                        try { context.SaveChanges(); } catch (Exception ex) { MessageBox.Show(ex.Message); }
+                    }
+
 
                 }
                 if (success)
@@ -436,15 +525,21 @@ namespace Spinning
                     return;
                 }
 
+                using (var cb = new frmCottonDeliverySampleBales(Convert.ToInt32(txtNoOfBales.Text),
+                                                                dtpDateReceived.Value,
+                                                                txtLotNo.Text))
+                {
+                    if (cb.ShowDialog(this) == DialogResult.OK)
+                    {
+                        // Save sample rows in a field so Save button can use them later
+                        _sampleRows = cb.SampleRows;
+                        _overrideReason = cb.OverrideReason;
 
+                        UpdateCalculatedValues();
+                        btnSave.Enabled = true;
+                    }
+                }
 
-                frmCottonDeliverySampleBales cb = new frmCottonDeliverySampleBales(Convert.ToInt32(txtNoOfBales.Text), dtpDateReceived.Value, txtLotNo.Text);
-
-                cb.ShowDialog(this);
-                txtWeighBridgeGross.Text = txtSuppplierGrossWeight.Text;
-                txtWeighBridgeNett.Text = txtSupplierNettWeight.Text;
-                UpdateCalculatedValues();
-                btnSave.Enabled = true;
             }
         }
 
@@ -538,22 +633,22 @@ namespace Spinning
             // Parse inputs
             int.TryParse(txtNoOfBales.Text, out int baleCount);
 
-            decimal suppGross = ParseDecimal(txtSuppplierGrossWeight.Text);
-            decimal suppNett = ParseDecimal(txtSupplierNettWeight.Text);
-            decimal wbGross = ParseDecimal(txtWeighBridgeGross.Text);
-            decimal wbNett = ParseDecimal(txtWeighBridgeNett.Text);
+            decimal suppGross = ParseDecimal(txtSuppplierGrossWeight.Text); //without truck, with packaging
+            decimal suppNett = ParseDecimal(txtSupplierNettWeight.Text); //without truck, without packaging 
+            decimal wbGross = ParseDecimal(txtWeighBridgeGross.Text); //with truck
+            decimal wbNett = ParseDecimal(txtWeighBridgeNett.Text); //without truck, with packaging
 
             // Pick which values to use depending on weigh bridge availability
-            decimal gross = chkWeighBridgeAvailable.Checked ? wbGross : suppGross;
-            decimal nett = chkWeighBridgeAvailable.Checked ? wbNett : suppNett;
+            decimal gross = chkWeighBridgeAvailable.Checked ? wbGross - wbNett : suppGross;
+            //decimal nett = chkWeighBridgeAvailable.Checked ? wbNett : suppNett; --not corect!
 
             // Set outputs
-            txtCottonNettWeight.Text = nett > 0 ? nett.ToString("N1") : "";
+            txtCottonNettWeight.Text = gross > 0 ? gross.ToString("N1") : ""; //without truck, with packaging
             txtGrossAvgBaleWeight.Text = (baleCount > 0 && gross > 0)
                 ? (gross / baleCount).ToString("N1")
                 : "";
-            txtNetAvgBaleWeight.Text = (baleCount > 0 && nett > 0)
-                ? (nett / baleCount).ToString("N1")
+            txtNetAvgBaleWeight.Text = (baleCount > 0 && suppNett > 0)
+                ? (suppNett / baleCount).ToString("N1")
                 : "";
         }
 

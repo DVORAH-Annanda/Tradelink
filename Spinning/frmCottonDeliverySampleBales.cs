@@ -9,19 +9,24 @@ using System.Windows.Forms;
 
 namespace Spinning
 {
+    public class SampleBaleRow
+    {
+        public string SampleBaleNo { get; set; }
+        public decimal SupplierWeight { get; set; }
+        public decimal TTSWeight { get; set; }
+        public bool Overridden { get; set; }
+    }
+
     public partial class frmCottonDeliverySampleBales : Form
     {
+        public List<SampleBaleRow> SampleRows { get; private set; } = new List<SampleBaleRow>();
+        public string OverrideReason => txtOverrideReason.Text;
+
         // --- Config ---
         private readonly int _totalBales;
         private readonly DateTime? _deliveryDate;
         private readonly string _lotNumber;
         private const decimal DiffThresholdPct = 7.5m; // 7.5%
-
-        // --- UI ---
-        //private DataGridView dgvSampleBales;
-        //private Label lblMinRows, lblTotals, lblStatus;
-        //private TextBox txtOverrideReason;
-        //private Button btnUpdate, btnCancel;
 
         // Column names (for code safety)
         private const string ColBaleNo = "SampleBaleNo";
@@ -41,14 +46,15 @@ namespace Spinning
             _lotNumber = lotNumber ?? string.Empty;
 
             Text = "Cotton Delivery – Sample Bales";
-            //Width = 900;
-            //Height = 600;
+
             StartPosition = FormStartPosition.CenterParent;
 
             BuildUi();
             SeedInitialRows();
             RecalcTotalsAndValidate();
         }
+
+
 
         private void BuildUi()
         {
@@ -131,51 +137,14 @@ namespace Spinning
 
             Controls.Add(dgvSampleBales);
 
-            //var panelBottom = new Panel { Dock = DockStyle.Bottom, Height = 185, Padding = new Padding(25) };
-
-            //lblMinRows = new Label { AutoSize = true, Top = 65, Padding = new Padding(25) };
             lblMinRows.Text = $"Minimum sample size (10% of total bales): {MinSampleRowsRequired()} row(s).";
-            //panelBottom.Controls.Add(lblMinRows);
 
-            //lblTotals = new Label { AutoSize = true, Top = 85, Padding = new Padding(25) };
-            //panelBottom.Controls.Add(lblTotals);
-
-            //lblStatus = new Label
-            //{
-            //    AutoSize = true,
-            //    Top = 105,
-            //    Padding = new Padding(25),
-            //    ForeColor = Color.MidnightBlue
-            //};
-            //panelBottom.Controls.Add(lblStatus);
-
-            //var lblReason = new Label { Text = "Override reason (required if any row overridden):", AutoSize = true, Top = 125 };
-            //panelBottom.Controls.Add(lblReason);
             lblReason.Text = "Override reason (required if any row overridden)";
 
-            //txtOverrideReason = new TextBox { Left = lblReason.Right + 8, Top = 135, Width = 500, Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top };
-            //panelBottom.Controls.Add(txtOverrideReason);
-
-            //btnUpdate = new Button { Text = "Update", Width = 100, Anchor = AnchorStyles.Right | AnchorStyles.Top };
-            //btnUpdate.Left = panelBottom.Width - btnUpdate.Width - 110;
-            //btnUpdate.Top = 135;
             btnUpdate.Click += BtnUpdate_Click;
-            //panelBottom.Controls.Add(btnUpdate);
 
-            //btnCancel = new Button { Text = "Cancel", Width = 100, Anchor = AnchorStyles.Right | AnchorStyles.Top };
-            //btnCancel.Left = panelBottom.Width - btnCancel.Width - 5;
-            //btnCancel.Top = 135;
             btnCancel.Click += (_, __) => DialogResult = DialogResult.Cancel;
-            //panelBottom.Controls.Add(btnCancel);
 
-            //panelBottom.Resize += (_, __) =>
-            //{
-            //    btnCancel.Left = panelBottom.Width - btnCancel.Width - 5;
-            //    btnUpdate.Left = btnCancel.Left - btnUpdate.Width - 10;
-            //    txtOverrideReason.Width = btnUpdate.Left - txtOverrideReason.Left - 10;
-            //};
-
-            //Controls.Add(panelBottom);
         }
 
         private int MinSampleRowsRequired()
@@ -248,10 +217,12 @@ namespace Spinning
                 decimal supplier = ParseCellDecimal(r.Cells[ColSupp].Value);
                 decimal tts = ParseCellDecimal(r.Cells[ColTts].Value);
 
-                // Only count if required fields are entered
                 if (!string.IsNullOrWhiteSpace(baleNo) && supplier > 0 && tts > 0)
                 {
                     validRowCount++;
+
+                    totalSupp += supplier;
+                    totalTts += tts;
 
                     decimal diff = tts - supplier;
                     decimal pct = (supplier == 0m) ? 0m : (diff / supplier) * 100m;
@@ -261,8 +232,8 @@ namespace Spinning
                     if (breach && !overridden) anyBreachWithoutOverride = true;
                     if (overridden) anyOverride = true;
                 }
-            }
 
+            }
 
             decimal totalDiff = totalTts - totalSupp;
             decimal totalPct = (totalSupp == 0m) ? 0m : (totalDiff / totalSupp) * 100m;
@@ -312,41 +283,65 @@ namespace Spinning
                 if (resp != DialogResult.Yes) return;
             }
 
-            // Gather data
-            var items = new List<SampleBaleRow>();
+            SampleRows.Clear();
+
             foreach (DataGridViewRow r in dgvSampleBales.Rows)
             {
                 if (r.IsNewRow) continue;
 
-                var item = new SampleBaleRow
+                string baleNo = Convert.ToString(r.Cells[ColBaleNo].Value)?.Trim();
+                decimal supp = ParseCellDecimal(r.Cells[ColSupp].Value);
+                decimal tts = ParseCellDecimal(r.Cells[ColTts].Value);
+                bool overridden = Convert.ToBoolean(r.Cells[ColOverride].Value ?? false);
+
+                if (string.IsNullOrEmpty(baleNo)) continue;
+
+                SampleRows.Add(new SampleBaleRow
                 {
-                    SampleBaleNo = Convert.ToString(r.Cells[ColBaleNo].Value)?.Trim(),
-                    SupplierWeight = ParseCellDecimal(r.Cells[ColSupp].Value),
-                    TTSWeight = ParseCellDecimal(r.Cells[ColTts].Value),
-                    WeightDifference = ParseCellDecimal(r.Cells[ColDiff].Value),
-                    DifferencePct = ParseCellDecimal(r.Cells[ColDiffPct].Value),
-                    Overridden = Convert.ToBoolean(r.Cells[ColOverride].Value ?? false)
-                };
-                // Skip empty lines
-                if (string.IsNullOrWhiteSpace(item.SampleBaleNo) && item.SupplierWeight == 0m && item.TTSWeight == 0m)
-                    continue;
-
-                items.Add(item);
+                    SampleBaleNo = baleNo,
+                    SupplierWeight = supp,
+                    TTSWeight = tts,
+                    Overridden = overridden
+                });
             }
 
-            // TODO: Persist to your DB via EF. Example stub:
-            try
-            {
-                SaveToDatabase(items, txtOverrideReason.Text?.Trim());
-                MessageBox.Show("Sample bales saved successfully.", "Success",
-                    MessageBoxButtons.OK, MessageBoxIcon.Information);
-                DialogResult = DialogResult.OK;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Failed to update: " + ex.Message, "Error",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+            DialogResult = DialogResult.OK;
+            Close();
+            // Gather data
+            //var items = new List<SampleBaleRow>();
+            //foreach (DataGridViewRow r in dgvSampleBales.Rows)
+            //{
+            //    if (r.IsNewRow) continue;
+
+            //    var item = new SampleBaleRow
+            //    {
+            //        SampleBaleNo = Convert.ToString(r.Cells[ColBaleNo].Value)?.Trim(),
+            //        SupplierWeight = ParseCellDecimal(r.Cells[ColSupp].Value),
+            //        TTSWeight = ParseCellDecimal(r.Cells[ColTts].Value),
+            //        WeightDifference = ParseCellDecimal(r.Cells[ColDiff].Value),
+            //        DifferencePct = ParseCellDecimal(r.Cells[ColDiffPct].Value),
+            //        Overridden = Convert.ToBoolean(r.Cells[ColOverride].Value ?? false)
+            //    };
+            //    // Skip empty lines
+            //    if (string.IsNullOrWhiteSpace(item.SampleBaleNo) && item.SupplierWeight == 0m && item.TTSWeight == 0m)
+            //        continue;
+
+            //    items.Add(item);
+            //}
+
+            //// TODO: Persist to your DB via EF. Example stub:
+            //try
+            //{
+            //    SaveToDatabase(items, txtOverrideReason.Text?.Trim());
+            //    MessageBox.Show("Sample bales saved successfully.", "Success",
+            //        MessageBoxButtons.OK, MessageBoxIcon.Information);
+            //    DialogResult = DialogResult.OK;
+            //}
+            //catch (Exception ex)
+            //{
+            //    MessageBox.Show("Failed to update: " + ex.Message, "Error",
+            //        MessageBoxButtons.OK, MessageBoxIcon.Error);
+            //}
         }
 
         private void SaveToDatabase(List<SampleBaleRow> items, string overrideReason)
@@ -401,14 +396,6 @@ namespace Spinning
             txtOverrideReason.TextChanged += (_, __) => RecalcTotalsAndValidate();
         }
 
-        private sealed class SampleBaleRow
-        {
-            public string SampleBaleNo { get; set; }
-            public decimal SupplierWeight { get; set; }
-            public decimal TTSWeight { get; set; }
-            public decimal WeightDifference { get; set; }
-            public decimal DifferencePct { get; set; }
-            public bool Overridden { get; set; }
-        }
+
     }
 }

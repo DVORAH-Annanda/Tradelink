@@ -56,7 +56,6 @@ namespace Utilities
         public virtual DbSet<TLADM_CottonHauliersVehicles> TLADM_CottonHauliersVehicles { get; set; }
         public virtual DbSet<TLADM_TranactionType> TLADM_TranactionType { get; set; }
         public virtual DbSet<TLADM_StoreBal> TLADM_StoreBal { get; set; }
-        public virtual DbSet<TLSPN_CottonReceived> TLSPN_CottonReceived { get; set; }
         public virtual DbSet<TLSPN_CottonReceivedBales> TLSPN_CottonReceivedBales { get; set; }
         public virtual DbSet<TLSPN_OpenBalance> TLSPN_OpenBalance { get; set; }
         public virtual DbSet<TLSPN_QAMeasurements> TLSPN_QAMeasurements { get; set; }
