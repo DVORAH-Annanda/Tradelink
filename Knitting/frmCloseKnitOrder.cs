@@ -96,9 +96,7 @@ namespace Knitting
                 dataGridView1.Rows.Add();
             }
             formloaded = true;
-        }
-
-       
+        }       
 
         private void cmbKnitOrder_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -392,14 +390,14 @@ namespace Knitting
             }
         }
 
-        private void dataGridView1_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
-        {
-            DataGridView oDgv = (DataGridView)sender;
-            if (oDgv != null && formloaded)
-            {
-                oDgv.Rows[oDgv.NewRowIndex].Cells[3].Value = false;
-            }
-        }
+        //private void dataGridView1_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
+        //{
+        //    DataGridView oDgv = (DataGridView)sender;
+        //    if (oDgv != null && formloaded)
+        //    {
+        //        oDgv.Rows[oDgv.NewRowIndex].Cells[3].Value = false;
+        //    }
+        //}
 
         private void dataGridView1_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
         {
