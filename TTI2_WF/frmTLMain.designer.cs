@@ -485,7 +485,7 @@
             this.inUseResetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
             this.PBar1 = new System.Windows.Forms.ProgressBar();
-            //this.garmentDyeProductionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.cottonDeliveryWeightVarianceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             this.SuspendLayout();
@@ -534,7 +534,7 @@
             this.cottonWasteSalesToolStripMenuItem,
             this.reportsToolStripMenuItem});
             this.cottonToolStripMenuItem1.Name = "cottonToolStripMenuItem1";
-            this.cottonToolStripMenuItem1.Size = new System.Drawing.Size(111, 22);
+            this.cottonToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
             this.cottonToolStripMenuItem1.Text = "Cotton";
             // 
             // cottonContractToolStripMenuItem
@@ -620,7 +620,8 @@
             this.rawCottonStockReportToolStripMenuItem,
             this.rawCottonMovementReportToolStripMenuItem,
             this.balesInStockByBaleNumberToolStripMenuItem,
-            this.cottonWasteStockOnHandToolStripMenuItem});
+            this.cottonWasteStockOnHandToolStripMenuItem,
+            this.cottonDeliveryWeightVarianceToolStripMenuItem});
             this.reportsToolStripMenuItem.Name = "reportsToolStripMenuItem";
             this.reportsToolStripMenuItem.Size = new System.Drawing.Size(254, 22);
             this.reportsToolStripMenuItem.Text = "Reports";
@@ -666,7 +667,7 @@
             this.captureSliverPoductionToolStripMenuItem,
             this.sliverProductionReportToolStripMenuItem});
             this.sliverToolStripMenuItem.Name = "sliverToolStripMenuItem";
-            this.sliverToolStripMenuItem.Size = new System.Drawing.Size(111, 22);
+            this.sliverToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.sliverToolStripMenuItem.Text = "Sliver";
             // 
             // captureSliverPoductionToolStripMenuItem
@@ -695,7 +696,7 @@
             this.reinstateOrderToolStripMenuItem,
             this.reportingToolStripMenuItem});
             this.yarnToolStripMenuItem1.Name = "yarnToolStripMenuItem1";
-            this.yarnToolStripMenuItem1.Size = new System.Drawing.Size(111, 22);
+            this.yarnToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
             this.yarnToolStripMenuItem1.Text = "Yarn";
             // 
             // yarnOrderToolStripMenuItem
@@ -4142,6 +4143,13 @@
             this.PBar1.Size = new System.Drawing.Size(402, 23);
             this.PBar1.TabIndex = 5;
             // 
+            // cottonDeliveryWeightVarianceToolStripMenuItem
+            // 
+            this.cottonDeliveryWeightVarianceToolStripMenuItem.Name = "cottonDeliveryWeightVarianceToolStripMenuItem";
+            this.cottonDeliveryWeightVarianceToolStripMenuItem.Size = new System.Drawing.Size(247, 22);
+            this.cottonDeliveryWeightVarianceToolStripMenuItem.Text = "Cotton Delivery Weight Variance";
+            this.cottonDeliveryWeightVarianceToolStripMenuItem.Click += new System.EventHandler(this.cottonDeliveryWeightVarianceToolStripMenuItem_Click);
+            // 
             // frmTLMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -4621,5 +4629,6 @@
         private System.Windows.Forms.ToolStripMenuItem garmentDyeBatchWIPToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem productCodesODOOToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem garmentDyeProductionToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem cottonDeliveryWeightVarianceToolStripMenuItem;
     }
 }

@@ -10982,6 +10982,30 @@ namespace TTI2_WF
             }
 
         }
+
+        private void cottonDeliveryWeightVarianceToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ToolStripMenuItem oTi = sender as ToolStripMenuItem;
+            if (core.GetUserAuthorisation(ud, oTi.Name))
+            {
+                try
+                {
+                    frmCottonDeliveryVarianceReport cottonDeliveryVarianceReport = new frmCottonDeliveryVarianceReport();
+                    cottonDeliveryVarianceReport.ShowDialog(this);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+            else
+            {
+                using (DialogCenteringService centeringService = new DialogCenteringService(this)) // center message box
+                {
+                    MessageBox.Show(ud._NotAuthorisedMessage, ud._UserName);
+                }
+            }
+        }
     }
        
 }
