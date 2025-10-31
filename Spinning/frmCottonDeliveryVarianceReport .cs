@@ -31,7 +31,7 @@ namespace Spinning
 
             var lblDeliveries = new Label { Left = 20, Top = 20, Width = 120, Text = "DELIVERIES:" };
             rbSingle = new RadioButton { Left = 140, Top = 18, Text = "Single GRN", Checked = true };
-            rbRange = new RadioButton { Left = 240, Top = 18, Text = "Date range" };
+            rbRange = new RadioButton { Left = 250, Top = 18, Text = "Date range" };
             rbSingle.CheckedChanged += ModeChanged;
             rbRange.CheckedChanged += ModeChanged;
 
