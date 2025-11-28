@@ -110,7 +110,7 @@
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.dtpDateReceived);
             this.Name = "frmDyeConsReceived";
-            this.Text = "Dye House Consummables Received";
+            this.Text = "Dye House Consumables Received";
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

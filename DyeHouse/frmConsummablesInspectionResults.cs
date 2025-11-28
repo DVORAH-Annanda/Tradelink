@@ -141,7 +141,7 @@ namespace DyeHouse
             selectb = new DataGridViewTextBoxColumn();
             selectb.ValueType = typeof(string);
             selectb.DataPropertyName = dt.Columns[2].ColumnName;
-            selectb.HeaderText = "Consummable";
+            selectb.HeaderText = "Consumable";
             selectb.Visible = true;
             dataGridView1.Columns.Add(selectb);
             dataGridView1.Columns[2].DisplayIndex = 2;

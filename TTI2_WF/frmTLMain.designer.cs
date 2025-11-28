@@ -1281,7 +1281,7 @@
             // 
             this.receipeDefinitiionToolStripMenuItem.Name = "receipeDefinitiionToolStripMenuItem";
             this.receipeDefinitiionToolStripMenuItem.Size = new System.Drawing.Size(274, 22);
-            this.receipeDefinitiionToolStripMenuItem.Text = "Dye Receipe Consummable Definition";
+            this.receipeDefinitiionToolStripMenuItem.Text = "Dye Receipe Consumable Definition";
             this.receipeDefinitiionToolStripMenuItem.Click += new System.EventHandler(this.receipeDefinitiionToolStripMenuItem_Click);
             // 
             // dyeConsummableReceiptsToolStripMenuItem
@@ -1301,21 +1301,21 @@
             // 
             this.dyeConsummableReceiptsToolStripMenuItem1.Name = "dyeConsummableReceiptsToolStripMenuItem1";
             this.dyeConsummableReceiptsToolStripMenuItem1.Size = new System.Drawing.Size(290, 22);
-            this.dyeConsummableReceiptsToolStripMenuItem1.Text = "Dye Consummable Receipts";
+            this.dyeConsummableReceiptsToolStripMenuItem1.Text = "Dye Consumable Receipts";
             this.dyeConsummableReceiptsToolStripMenuItem1.Click += new System.EventHandler(this.dyeConsummableReceiptsToolStripMenuItem1_Click);
             // 
             // dyeConsummablesInspectionToolStripMenuItem
             // 
             this.dyeConsummablesInspectionToolStripMenuItem.Name = "dyeConsummablesInspectionToolStripMenuItem";
             this.dyeConsummablesInspectionToolStripMenuItem.Size = new System.Drawing.Size(290, 22);
-            this.dyeConsummablesInspectionToolStripMenuItem.Text = "Dye Consummables Inspection";
+            this.dyeConsummablesInspectionToolStripMenuItem.Text = "Dye Consumables Inspection";
             this.dyeConsummablesInspectionToolStripMenuItem.Click += new System.EventHandler(this.dyeConsummablesInspectionToolStripMenuItem_Click);
             // 
             // dyeConsummablesIntoKitchenToolStripMenuItem
             // 
             this.dyeConsummablesIntoKitchenToolStripMenuItem.Name = "dyeConsummablesIntoKitchenToolStripMenuItem";
             this.dyeConsummablesIntoKitchenToolStripMenuItem.Size = new System.Drawing.Size(290, 22);
-            this.dyeConsummablesIntoKitchenToolStripMenuItem.Text = "Dye Consummables into kitchen";
+            this.dyeConsummablesIntoKitchenToolStripMenuItem.Text = "Dye Consumables into kitchen";
             this.dyeConsummablesIntoKitchenToolStripMenuItem.Click += new System.EventHandler(this.dyeConsummablesIntoKitchenToolStripMenuItem_Click);
             // 
             // dyeChemicalsProductionPlanningToolStripMenuItem
@@ -1774,7 +1774,7 @@
             // 
             this.dyeConsummablesStockOnHandToolStripMenuItem.Name = "dyeConsummablesStockOnHandToolStripMenuItem";
             this.dyeConsummablesStockOnHandToolStripMenuItem.Size = new System.Drawing.Size(330, 22);
-            this.dyeConsummablesStockOnHandToolStripMenuItem.Text = "Dye Consummables Stock On Hand";
+            this.dyeConsummablesStockOnHandToolStripMenuItem.Text = "Dye Consumables Stock On Hand";
             this.dyeConsummablesStockOnHandToolStripMenuItem.Click += new System.EventHandler(this.dyeConsummablesStockOnHandToolStripMenuItem_Click);
             // 
             // dyesAndChemicalConsumptionToolStripMenuItem

@@ -84,7 +84,7 @@ namespace DyeHouse
             this.Controls.Add(this.btnSubmit);
             this.Controls.Add(this.cmboDyeConsumables);
             this.Name = "frmDyeConsumablesSOH";
-            this.Text = "Dye Consummables Stock On Hand";
+            this.Text = "Dye Consumables Stock On Hand";
             this.Load += new System.EventHandler(this.frmDyeConsumablesSOH_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
