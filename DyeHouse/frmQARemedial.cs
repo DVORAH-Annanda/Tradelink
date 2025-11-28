@@ -85,7 +85,7 @@ namespace DyeHouse
             oChkB.ValueType = typeof(bool);
             dataGridView2.Columns.Add(oChkB);
 
-            oTxtB1.HeaderText = "Receipe Description";
+            oTxtB1.HeaderText = "Recipe Description";
             oTxtB1.ReadOnly = true;
             oTxtB1.ValueType = typeof(string);
             oTxtB1.Width = 200; 

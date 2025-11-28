@@ -120,7 +120,7 @@
             this.Controls.Add(this.cmboReceipeDefintions);
             this.Controls.Add(this.label1);
             this.Name = "frmSelReceipeDefinitions";
-            this.Text = "Select Receipe Definitions";
+            this.Text = "Select Recipe Definitions";
             this.Load += new System.EventHandler(this.frmSelReceipeDefinitions_Load);
             this.ResumeLayout(false);
             this.PerformLayout();

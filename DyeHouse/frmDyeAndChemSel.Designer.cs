@@ -100,7 +100,7 @@
             this.chkNonReceipeOnly.Name = "chkNonReceipeOnly";
             this.chkNonReceipeOnly.Size = new System.Drawing.Size(241, 17);
             this.chkNonReceipeOnly.TabIndex = 4;
-            this.chkNonReceipeOnly.Text = "List Dye Batches Processed with No Receipe";
+            this.chkNonReceipeOnly.Text = "List Dye Batches Processed with No Recipe";
             this.chkNonReceipeOnly.UseVisualStyleBackColor = true;
             // 
             // frmDyeAndChemSel

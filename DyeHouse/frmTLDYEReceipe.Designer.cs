@@ -193,7 +193,7 @@
             this.groupBox1.Size = new System.Drawing.Size(331, 73);
             this.groupBox1.TabIndex = 17;
             this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Receipe Types";
+            this.groupBox1.Text = "Recipe Types";
             // 
             // rbStandard
             // 
@@ -252,7 +252,7 @@
             this.Controls.Add(this.cmboProductCodes);
             this.Controls.Add(this.label1);
             this.Name = "frmTLDYEReceipe";
-            this.Text = "Receipe Definition";
+            this.Text = "Recipe Definition";
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.eventLog1)).EndInit();
             this.groupBox1.ResumeLayout(false);

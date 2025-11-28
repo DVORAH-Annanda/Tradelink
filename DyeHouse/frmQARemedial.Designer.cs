@@ -156,7 +156,7 @@
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(94, 13);
             this.label3.TabIndex = 7;
-            this.label3.Text = "Remedy Receipes";
+            this.label3.Text = "Remedy Recipes";
             // 
             // dataGridView3
             // 

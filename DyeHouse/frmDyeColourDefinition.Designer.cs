@@ -52,7 +52,7 @@
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(82, 13);
             this.label1.TabIndex = 1;
-            this.label1.Text = "Receipe Details";
+            this.label1.Text = "Recipe Details";
             // 
             // txtReceipeDefinition
             // 

@@ -143,7 +143,7 @@
             this.rbChemicalAnalysis.Size = new System.Drawing.Size(106, 17);
             this.rbChemicalAnalysis.TabIndex = 0;
             this.rbChemicalAnalysis.TabStop = true;
-            this.rbChemicalAnalysis.Text = "Receipe Analysis";
+            this.rbChemicalAnalysis.Text = "Recipe Analysis";
             this.rbChemicalAnalysis.UseVisualStyleBackColor = true;
             this.rbChemicalAnalysis.CheckedChanged += new System.EventHandler(this.rbChemicalAnalysis_CheckedChanged);
             // 
@@ -211,7 +211,7 @@
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.btnSubmit);
             this.Name = "frmSelectReceipeConsumable";
-            this.Text = "Select Receipe Consumable ";
+            this.Text = "Select Recipe Consumable ";
             this.Load += new System.EventHandler(this.frmSelectReceipeConsumable_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
