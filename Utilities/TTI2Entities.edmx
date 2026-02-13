@@ -1653,7 +1653,7 @@
           <Property Name="TLSOH_SupplierTransNumber" Type="int" Nullable="false" />
           <Property Name="TLSOH_BoughtInGoods" Type="bit" Nullable="false" />
           <Property Name="TLSOH_BoughtInGoods_Fk" Type="int" />
-          <Property Name="TLSOH_RFD_NotYetDyed" Type="bit" Nullable="false" />
+          <Property Name="TLSOH_PFD_BoxNumber" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="TLCSV_WhseTransfer">
           <Key>
@@ -6482,7 +6482,7 @@
           <Property Name="TLSOH_SupplierTransNumber" Type="Int32" Nullable="false" />
           <Property Name="TLSOH_BoughtInGoods" Type="Boolean" Nullable="false" />
           <Property Name="TLSOH_BoughtInGoods_Fk" Type="Int32" />
-          <Property Name="TLSOH_RFD_NotYetDyed" Type="Boolean" Nullable="false" />
+          <Property Name="TLSOH_PFD_BoxNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="TLADM_Sizes">
           <Key>
@@ -9774,7 +9774,7 @@
           <EntitySetMapping Name="TLCSV_StockOnHand">
             <EntityTypeMapping TypeName="TTI2Model.TLCSV_StockOnHand">
               <MappingFragment StoreEntitySet="TLCSV_StockOnHand">
-                <ScalarProperty Name="TLSOH_RFD_NotYetDyed" ColumnName="TLSOH_RFD_NotYetDyed" />
+                <ScalarProperty Name="TLSOH_PFD_BoxNumber" ColumnName="TLSOH_PFD_BoxNumber" />
                 <ScalarProperty Name="TLSOH_BoughtInGoods_Fk" ColumnName="TLSOH_BoughtInGoods_Fk" />
                 <ScalarProperty Name="TLSOH_BoughtInGoods" ColumnName="TLSOH_BoughtInGoods" />
                 <ScalarProperty Name="TLSOH_SupplierTransNumber" ColumnName="TLSOH_SupplierTransNumber" />

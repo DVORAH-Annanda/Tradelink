@@ -7737,7 +7737,7 @@ namespace DyeHouse
                     IList<TLADM_Colours> _Colours = context.TLADM_Colours.ToList();
                     IList<TLADM_Sizes> _Sizes = context.TLADM_Sizes.ToList();
 
-                    //select* from TLCSV_StockOnHand where TLSOH_Colour_FK = 337 and TLSOH_RFD_NotYetDyed = 1 (TLSOH_RFD_NotYetDyed === ALREADY DYED)
+                    //select* from TLCSV_StockOnHand where TLSOH_Colour_FK = 337 
                     var result = context.TLCUT_CutSheet
                         .Join(context.TLDYE_DyeBatch,
                               cs => cs.TLCutSH_DyeBatch_FK,
@@ -7767,106 +7767,8 @@ namespace DyeHouse
                         r.quantity7 = "0";
                         r.quantity8 = "0";
                         r.quantity9 = "0";
-
-                        //r.Date = row.TLCutSH_Date;
-                        //r.Department = context.TLADM_Departments.Find(row.TLCutSH_Department_FK).Dep_Description;
-                        //r.CutSheetNo = row.TLCutSH_No;
-                        //r.Style = _Styles.FirstOrDefault(s => s.Sty_Id == row.TLCutSH_Styles_FK).Sty_Description;
-                        //r.Colour = _Colours.FirstOrDefault(s => s.Col_Id == row.TLCutSH_Colour_FK).Col_Display;
-                        //r.Priority = row.TLCUTSH_Priority;
-                        //r.OnHold = row.TLCUTSH_OnHold;
-                        //r.DyeBatch = context.TLDYE_DyeBatch.Find(row.TLCutSH_DyeBatch_FK).DYEB_BatchNo;
-
-                        ////        var xSizes = context.TLCUT_ExpectedUnits.Where(x => x.TLCUTE_CutSheet_FK == row.TLCutSH_Pk).ToList();
-                        ////        foreach (var xSize in xSizes)
-                        ////        {
-                        ////            var Size = _Sizes.FirstOrDefault(s => s.SI_id == xSize.TLCUTE_Size_FK);
-                        ////            if (Size != null)
-                        ////            {
-                        ////                if (Size.SI_ColNumber == 1)
-                        ////                    nr.Col1 += xSize.TLCUTE_NoofGarments;
-                        ////                else if (Size.SI_ColNumber == 2)
-                        ////                    nr.Col2 += xSize.TLCUTE_NoofGarments;
-                        ////                else if (Size.SI_ColNumber == 3)
-                        ////                    nr.Col3 += xSize.TLCUTE_NoofGarments;
-                        ////                else if (Size.SI_ColNumber == 4)
-                        ////                    nr.Col4 += xSize.TLCUTE_NoofGarments;
-                        ////                else if (Size.SI_ColNumber == 5)
-                        ////                    nr.Col5 += xSize.TLCUTE_NoofGarments;
-                        ////                else if (Size.SI_ColNumber == 6)
-                        ////                    nr.Col6 += xSize.TLCUTE_NoofGarments;
-                        ////                else if (Size.SI_ColNumber == 7)
-                        ////                    nr.Col7 += xSize.TLCUTE_NoofGarments;
-                        ////                else if (Size.SI_ColNumber == 8)
-                        ////                    nr.Col8 += xSize.TLCUTE_NoofGarments;
-                        ////                else if (Size.SI_ColNumber == 9)
-                        ////                    nr.Col9 += xSize.TLCUTE_NoofGarments;
-                        ////                else if (Size.SI_ColNumber == 10)
-                        ////                    nr.Col10 += xSize.TLCUTE_NoofGarments;
-                        ////                else
-                        ////                    nr.Col11 += xSize.TLCUTE_NoofGarments;
-                        ////            }
-                        ////        }
-                               dataTable2.AddDataTable2Row(r);
+                        dataTable2.AddDataTable2Row(r);
                     }
-
-
-                    ////    if (dataTable1.Rows.Count != 0)
-                    ////    {
-                    ////        System.Data.DataTable dt = new System.Data.DataTable();
-                    ////        try
-                    ////        {
-                    ////            if (_parms.RepSortOption == 1)
-                    ////            {
-                    ////                dt = (DataTable)dataTable1.Select(null, dataTable1.Columns[1].ColumnName, DataViewRowState.Added).CopyToDataTable();
-                    ////            }
-                    ////            else if (_parms.RepSortOption == 2)
-                    ////            {
-                    ////                dt = (DataTable)dataTable1.Select(null, dataTable1.Columns[3].ColumnName, DataViewRowState.Added).CopyToDataTable();
-                    ////            }
-                    ////            else if (_parms.RepSortOption == 3)
-                    ////            {
-                    ////                dt = (DataTable)dataTable1.Select(null, dataTable1.Columns[5].ColumnName, DataViewRowState.Added).CopyToDataTable();
-                    ////            }
-                    ////            dataTable1.Rows.Clear();
-
-                    ////            foreach (DataRow dr in dt.Rows)
-                    ////            {
-                    ////                DataSet4.DataTable1Row nr = dataTable1.NewDataTable1Row();
-                    ////                nr.Pk = dr.Field<int>(0);
-                    ////                nr.CutSheetNo = dr.Field<String>(1);
-                    ////                nr.Date = dr.Field<DateTime>(2);
-                    ////                nr.Colour = dr.Field<String>(3);
-                    ////                nr.ErrorLog = dr.Field<String>(4);
-                    ////                nr.Style = dr.Field<String>(5);
-                    ////                nr.Department = dr.Field<String>(6);
-                    ////                nr.OnHold = dr.Field<bool>(7);
-                    ////                nr.Priority = dr.Field<bool>(8);
-                    ////                nr.Col1 = dr.Field<int>(9);
-                    ////                nr.Col2 = dr.Field<int>(10);
-                    ////                nr.Col3 = dr.Field<int>(11);
-                    ////                nr.Col4 = dr.Field<int>(12);
-                    ////                nr.Col5 = dr.Field<int>(13);
-                    ////                nr.Col6 = dr.Field<int>(14);
-                    ////                nr.Col7 = dr.Field<int>(15);
-                    ////                nr.Col8 = dr.Field<int>(16);
-                    ////                nr.Col9 = dr.Field<int>(17);
-                    ////                nr.Col10 = dr.Field<int>(18);
-                    ////                nr.Col11 = dr.Field<int>(19);
-                    ////                nr.DyeBatch = dr.Field<String>(20);
-
-                    ////                dataTable1.AddDataTable1Row(nr);
-                    ////            }
-                    ////        }
-                    ////        catch (Exception ex)
-                    ////        {
-                    ////            MessageBox.Show(ex.Message);
-                    ////            return;
-                    ////        }
-                    ////    }
-
-
-                    ////}
 
                     if (dataTable1.Rows.Count == 0)
                     {
@@ -7878,64 +7780,6 @@ namespace DyeHouse
                     ds.Tables.Add(dataTable1);
                 ds.Tables.Add(dataTable2);
 
-
-
-                    ////if (_parms.RepSortOption == 1)
-                    ////{
-                    ////    wipCut_CS = new WIPCuttingByCS();
-                    ////    wipCut_CS.SetDataSource(ds);
-                    ////}
-                    ////else if (_parms.RepSortOption == 2)
-                    ////{
-                    ////    wipCut = new WIPCutting();
-                    ////    wipCut.SetDataSource(ds);
-                    ////}
-                    ////else
-                    ////{
-                    ////    wipCut = new WIPCutting();
-                    ////    wipCut.SetDataSource(ds);
-                    ////}
-
-                    ////System.Collections.IEnumerator ie = null;
-
-                    ////if (_parms.RepSortOption == 1)
-                    ////    ie = wipCut_CS.Section2.ReportObjects.GetEnumerator();
-                    ////else
-                    ////    ie = wipCut.Section2.ReportObjects.GetEnumerator();
-
-                    ////while (ie.MoveNext())
-                    ////{
-                    ////    if (ie.Current != null && ie.Current.GetType().ToString().Equals("CrystalDecisions.CrystalReports.Engine.TextObject"))
-                    ////    {
-                    ////        CrystalDecisions.CrystalReports.Engine.TextObject to = (CrystalDecisions.CrystalReports.Engine.TextObject)ie.Current;
-
-                    ////        var result = (from u in ColumnNames
-                    ////                      where u[0] == to.Name
-                    ////                      select u).FirstOrDefault();
-
-                    ////        if (result != null)
-                    ////            to.Text = result[1];
-                    ////    }
-                    ////}
-
-                    ////if (_parms.RepSortOption == 1)
-                    ////{
-                    ////    // AS20240315 v5.0.0.124 - Added totals for all locations
-                    ////    crystalReportViewer1.ReportSource = wipCut_CS;
-
-                    ////}
-                    ////else
-                    ////{
-                    ////    if (_parms.RepSortOption == 2)
-                    ////        wipCut.DataDefinition.Groups[1].ConditionField = wipCut.Database.Tables[0].Fields[3];
-                    ////    else
-                    ////        wipCut.DataDefinition.Groups[1].ConditionField = wipCut.Database.Tables[0].Fields[5];
-
-                    //GarmentDyeingWIP garmentDyeingWIP = new GarmentDyeingWIP();
-                    //    garmentDyeingWIP.SetDataSource(ds);
-                    //    crystalReportViewer1.ReportSource = garmentDyeingWIP;
-
-                    // … your existing ds.Tables.Add(dataTable1/2) …
                     string html = GenerateGarmentDyeingHtmlReport(ds.Tables[1]);
                     File.WriteAllText(@"C:\temp\wip.html", html);
                     Process.Start(new ProcessStartInfo(@"C:\temp\wip.html") { UseShellExecute = true });

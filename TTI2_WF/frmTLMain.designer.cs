@@ -1281,7 +1281,7 @@
             // 
             this.receipeDefinitiionToolStripMenuItem.Name = "receipeDefinitiionToolStripMenuItem";
             this.receipeDefinitiionToolStripMenuItem.Size = new System.Drawing.Size(274, 22);
-            this.receipeDefinitiionToolStripMenuItem.Text = "Dye Receipe Consumable Definition";
+            this.receipeDefinitiionToolStripMenuItem.Text = "Dye Recipe Consumable Definition";
             this.receipeDefinitiionToolStripMenuItem.Click += new System.EventHandler(this.receipeDefinitiionToolStripMenuItem_Click);
             // 
             // dyeConsummableReceiptsToolStripMenuItem
@@ -1781,7 +1781,7 @@
             // 
             this.dyesAndChemicalConsumptionToolStripMenuItem.Name = "dyesAndChemicalConsumptionToolStripMenuItem";
             this.dyesAndChemicalConsumptionToolStripMenuItem.Size = new System.Drawing.Size(330, 22);
-            this.dyesAndChemicalConsumptionToolStripMenuItem.Text = "Dyes and Chemical Consumption (By Receipe)";
+            this.dyesAndChemicalConsumptionToolStripMenuItem.Text = "Dyes and Chemical Consumption (By Recipe)";
             this.dyesAndChemicalConsumptionToolStripMenuItem.Click += new System.EventHandler(this.dyesAndChemicalConsumptionToolStripMenuItem_Click);
             // 
             // dyeMachinePerformanceToolStripMenuItem
@@ -1823,7 +1823,7 @@
             // 
             this.dyeReceipesDifinitionByConsumableToolStripMenuItem.Name = "dyeReceipesDifinitionByConsumableToolStripMenuItem";
             this.dyeReceipesDifinitionByConsumableToolStripMenuItem.Size = new System.Drawing.Size(330, 22);
-            this.dyeReceipesDifinitionByConsumableToolStripMenuItem.Text = "Dye Receipes Definition By Consumable";
+            this.dyeReceipesDifinitionByConsumableToolStripMenuItem.Text = "Dye Recipes Definition by Consumable";
             this.dyeReceipesDifinitionByConsumableToolStripMenuItem.Click += new System.EventHandler(this.dyeReceipesDifinitionByConsumableToolStripMenuItem_Click);
             // 
             // dyesAndChemicalsConssumedByMonthToolStripMenuItem

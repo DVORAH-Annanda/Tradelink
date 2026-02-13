@@ -64,6 +64,6 @@ namespace Utilities
         public int TLSOH_SupplierTransNumber { get; set; }
         public bool TLSOH_BoughtInGoods { get; set; }
         public Nullable<int> TLSOH_BoughtInGoods_Fk { get; set; }
-        public bool TLSOH_RFD_NotYetDyed { get; set; }
+        public string TLSOH_PFD_BoxNumber { get; set; }
     }
 }

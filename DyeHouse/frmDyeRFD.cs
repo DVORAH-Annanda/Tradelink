@@ -1,3 +1,11 @@
+﻿using DyeHouse;
+using System;
+using System.Data;
+using System.Data.Entity;
+using System.Drawing;
+using System.Linq;
+using System.Windows.Forms;
+using Utilities;
 ﻿using System;
 using System.Data;
 using System.Data.Entity;
@@ -148,36 +156,6 @@ namespace DyeHouse
             }
         }
 
-        //private void dgvSizesQuantities_CellClick(object sender, DataGridViewCellEventArgs e)
-        //{
-        //    if (e.RowIndex >= 0 && e.ColumnIndex == 2)
-        //    {
-        //        dgvSizesQuantities.BeginEdit(true);
-        //    }
-        //}
-
-        //private void UpdateOutstanding()
-        //{
-        //    totalSelectedQuantity = 0;
-
-        //    foreach (DataGridViewRow row in dgvGarmentsAvailable.Rows)
-        //    {
-        //        if (Convert.ToBoolean(row.Cells["Select"].Value))
-        //        {
-        //            int selectedQuantity = Convert.ToInt32(row.Cells["ToBatchQty"].Value);
-        //            totalSelectedQuantity += selectedQuantity;
-        //        }
-        //    }
-
-        //    foreach (DataGridViewRow row in dgvSizesQuantities.Rows)
-        //    {
-        //        if (row.Cells["Outstanding"].Value != null)
-        //        {
-        //            int currentQuantity = Convert.ToInt32(row.Cells["Quantity"].Value);
-        //            row.Cells["Outstanding"].Value = currentQuantity - totalSelectedQuantity;
-        //        }
-        //    }
-        //}
 
         private void UpdateOutstanding()
         {
@@ -243,7 +221,7 @@ namespace DyeHouse
             dtGarmentsAvailable.Columns.Add(new DataColumn("GD_pk", typeof(int)) { DefaultValue = 0 });
             dtGarmentsAvailable.Columns.Add(new DataColumn("GD_Select", typeof(bool)) { DefaultValue = false });
             dtGarmentsAvailable.Columns.Add(new DataColumn("GD_BoxNo", typeof(string)) { DefaultValue = string.Empty });
-            dtGarmentsAvailable.Columns.Add(new DataColumn ("GD_SizeId", typeof(int)) { DefaultValue = 0 });
+            dtGarmentsAvailable.Columns.Add(new DataColumn("GD_SizeId", typeof(int)) { DefaultValue = 0 });
             dtGarmentsAvailable.Columns.Add(new DataColumn("GD_Size", typeof(string)) { DefaultValue = string.Empty });
             dtGarmentsAvailable.Columns.Add(new DataColumn("GD_Quantity", typeof(int)) { DefaultValue = 0 });
             dtGarmentsAvailable.Columns.Add(new DataColumn("SplitBox", typeof(bool)) { DefaultValue = false });
@@ -350,29 +328,7 @@ namespace DyeHouse
                 UpdateOutstanding();
             }
 
-            //DataGridView dgv = sender as DataGridView;
-            //if (dgv != null && e.RowIndex >= 0 && e.ColumnIndex >= 0)
-            //{
-            //    DataGridViewColumn column = dgv.Columns[e.ColumnIndex];
-            //    if (column.Name == "Select")
-            //    {
-            //        UpdateOutstanding();
 
-            //        int selectedQuantity = Convert.ToInt32(dgv.Rows[e.RowIndex].Cells[4].Value);
-            //        if (dgvSizesQuantities.CurrentRow != null)
-            //        {
-            //            int rowIndex = dgvSizesQuantities.CurrentRow.Index;
-
-            //            // Get the current quantity in dgvSizesQuantities
-            //            if (dgvSizesQuantities.Rows[rowIndex].Cells[3].Value != null)
-            //            {
-            //                int currentQuantity = Convert.ToInt32(dgvSizesQuantities.Rows[rowIndex].Cells[2].Value);
-            //                // Subtract the selected quantity from the current quantity in dgvSizesQuantities
-            //                dgvSizesQuantities.Rows[rowIndex].Cells[3].Value = currentQuantity - selectedQuantity;
-            //            }
-            //        }
-            //    }
-            //}
         }
 
         private void dgvGarmentsAvailable_CellEndEdit(object sender, DataGridViewCellEventArgs e)
@@ -438,7 +394,7 @@ namespace DyeHouse
                                        .Where(r => Convert.ToBoolean(r.Cells["Select"].Value))
                                        .ToList();
 
-                int accumulatedQuantity = 0;                
+                int accumulatedQuantity = 0;
 
                 foreach (var row in selectedRows)
                 {
@@ -449,21 +405,24 @@ namespace DyeHouse
                     if (StockOnHand != null)
                     {
                         accumulatedQuantity += toBatchQty;
-                         
+
+                        StockOnHand.TLSOH_Transfered = true; //maak eers seker of hierdie veld hier gebruik kan word!!
+                        StockOnHand.TLSOH_TransferNotes = txtBatchNumber.Text;
                         StockOnHand.TLSOH_Colour_FK = ColourSelected.Col_Id;
-                        StockOnHand.TLSOH_RFD_NotYetDyed =true;
+                        StockOnHand.TLSOH_WareHouse_FK = 93; //WIPGD - WIP Garment Dyeing
+                        //StockOnHand.TLSOH_PFD_BoxNumber = ;
 
                         _context.Entry(StockOnHand).State = EntityState.Modified;
 
                         if (Convert.ToBoolean(row.Cells["SplitBox"].Value))
                         {
                             char suffix = 'A';
-                            int newStockQty = Convert.ToInt32(row.Cells["StockQty"].Value);                            
+                            int newStockQty = Convert.ToInt32(row.Cells["StockQty"].Value);
 
-                            CreateNewBox(StockOnHand, newStockQty, ColourSelected.Col_Id, suffix);
+                            CreateNewBox(StockOnHand, newStockQty, suffix);
                             StockOnHand.TLSOH_BoxedQty = toBatchQty;
                             StockOnHand.TLSOH_BoxNumber += suffix;
-                        }                        
+                        }
 
                         var History = _context.TLDYE_RFDHistory.FirstOrDefault(x => x.DyeRFD_StockOnHand_Fk == Pk);
                         if (History == null)
@@ -510,25 +469,26 @@ namespace DyeHouse
             }
         }
 
-        private void CreateNewBox(TLCSV_StockOnHand originalBox,  int newQty, int colorId, char suffix)
+        private void CreateNewBox(TLCSV_StockOnHand originalBox, int newQty, char suffix)
         {
             suffix++;
-            var newBox = new TLCSV_StockOnHand
-            {
-                TLSOH_BoxNumber = originalBox.TLSOH_BoxNumber + suffix,
-                TLSOH_DateIntoStock = originalBox.TLSOH_DateIntoStock,
-                TLSOH_Split = true,
-                TLSOH_Style_FK = originalBox.TLSOH_Style_FK,
-                TLSOH_Size_FK = originalBox.TLSOH_Size_FK,
-                TLSOH_Colour_FK = colorId,
-                TLSOH_BoxedQty = newQty,
-                TLSOH_RFD_NotYetDyed = false
-            };
+
+            var newBox = new TLCSV_StockOnHand();
+
+            // Copy all scalar property values from originalBox
+            _context.Entry(newBox).CurrentValues.SetValues(originalBox);
+
+            // Reset the key so EF treats this as a new row
+            newBox.TLSOH_Pk = 0;
+
+            newBox.TLSOH_BoxNumber = originalBox.TLSOH_BoxNumber + suffix;
+            newBox.TLSOH_BoxedQty = newQty;
+            newBox.TLSOH_Split = true;
+            newBox.TLSOH_Colour_FK = 337;    // 9100 PFD
 
             _context.TLCSV_StockOnHand.Add(newBox);
-            
-
         }
+
 
         private void cmboStyles_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -546,12 +506,11 @@ namespace DyeHouse
 
         private void LoadGarmentsAvailable(TLADM_Styles selectedStyle, TLADM_Sizes selectedSize)
         {
-            //  var StockAvail = _context.TLCSV_StockOnHand.Where(x => x.TLSOH_Style_FK == selectedStyle.Sty_Id && x.TLSOH_Size_FK == selectedSize.SI_id && !x.TLSOH_RFD_NotYetDyed).OrderBy(x => x.TLSOH_BoxNumber).ToList();
+            //  var StockAvail = _context.TLCSV_StockOnHand.Where(x => x.TLSOH_Style_FK == selectedStyle.Sty_Id && x.TLSOH_Size_FK == selectedSize.SI_id.OrderBy(x => x.TLSOH_BoxNumber).ToList();
 
             var StockAvail = _context.TLCSV_StockOnHand
     .Where(x => x.TLSOH_Style_FK == selectedStyle.Sty_Id
-             && x.TLSOH_Size_FK == selectedSize.SI_id
-             && !x.TLSOH_RFD_NotYetDyed) //should be TLSOH_RFD_Dyed
+             && x.TLSOH_Size_FK == selectedSize.SI_id) //kyk weer na die query sodat net PFD gelys word
     .OrderBy(x => x.TLSOH_BoxNumber)
     .ToList();
 
@@ -572,64 +531,6 @@ namespace DyeHouse
                 dtGarmentsAvailable.Rows.Add(Row);
             }
         }
-
-        //private void LoadGarmentsAvailable(TLADM_Styles selectedStyle, TLADM_Sizes selectedSize)
-        //{
-        //    var StockAvail = _context.TLCSV_StockOnHand.Where(x => x.TLSOH_Style_FK == selectedStyle.Sty_Id && x.TLSOH_Size_FK == selectedSize.SI_id && !x.TLSOH_RFD_NotYetDyed).OrderBy(x => x.TLSOH_BoxNumber).ToList();
-
-        //    // Check if this is the first selection or if there are already garments displayed
-        //    if (dtGarmentsAvailable.Rows.Count == 0)
-        //    {
-        //        // If no garments are displayed, directly add the new ones
-        //        foreach (var SAvail in StockAvail)
-        //        {
-        //            DataRow Row = dtGarmentsAvailable.NewRow();
-        //            Row[0] = SAvail.TLSOH_Pk;
-        //            Row[1] = false;
-        //            Row[2] = SAvail.TLSOH_BoxNumber;
-        //            Row[3] = SAvail.TLSOH_Size_FK;
-        //            Row[4] = SAvail.TLSOH_BoxedQty;
-        //            Row[5] = false;
-        //            Row[6] = SAvail.TLSOH_BoxedQty;
-        //            Row[7] = 0;
-
-        //            dtGarmentsAvailable.Rows.Add(Row);
-        //        }
-        //    }
-        //    else
-        //    {
-        //        // If garments are already displayed, append the new ones for the selected size
-        //        foreach (var SAvail in StockAvail)
-        //        {
-        //            // Check if this garment is already displayed in the grid
-        //            bool garmentExists = false;
-        //            foreach (DataRow row in dtGarmentsAvailable.Rows)
-        //            {
-        //                if ((int)row[0] == SAvail.TLSOH_Pk)
-        //                {
-        //                    garmentExists = true;
-        //                    break;
-        //                }
-        //            }
-
-        //            // If the garment doesn't exist, add it to the grid
-        //            if (!garmentExists)
-        //            {
-        //                DataRow newRow = dtGarmentsAvailable.NewRow();
-        //                newRow[0] = SAvail.TLSOH_Pk;
-        //                newRow[1] = false;
-        //                newRow[2] = SAvail.TLSOH_BoxNumber;
-        //                newRow[3] = SAvail.TLSOH_Size_FK;
-        //                newRow[4] = SAvail.TLSOH_BoxedQty;
-        //                newRow[5] = false;
-        //                newRow[6] = SAvail.TLSOH_BoxedQty;
-        //                newRow[7] = 0;
-
-        //                dtGarmentsAvailable.Rows.Add(newRow);
-        //            }
-        //        }
-        //    }
-        //}
 
         private void frmDyeRFD_FormClosing(object sender, FormClosingEventArgs e)
         {

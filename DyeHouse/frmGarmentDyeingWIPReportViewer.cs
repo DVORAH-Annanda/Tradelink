@@ -85,7 +85,7 @@ namespace DyeHouse
                 IList<TLADM_Colours> _Colours = context.TLADM_Colours.ToList();
                 IList<TLADM_Sizes> _Sizes = context.TLADM_Sizes.ToList();
 
-                //select* from TLCSV_StockOnHand where TLSOH_Colour_FK = 337 and TLSOH_RFD_NotYetDyed = 1 (TLSOH_RFD_NotYetDyed === ALREADY DYED)
+                //select* from TLCSV_StockOnHand where TLSOH_Colour_FK = 337 
                 var result = context.TLCUT_CutSheet
                     .Join(context.TLDYE_DyeBatch,
                           cs => cs.TLCutSH_DyeBatch_FK,
