@@ -224,39 +224,94 @@ namespace CustomerServices
                     return;
                 }
 
+                //if (!TransferMode)
+                //{
+                //    TransferMode = !TransferMode;
+                //    btnSubmit.Text = "Transfer";
+                //    QueryParms.FromWhse = FromWhse.WhStore_Id;
+
+                //    var Existing = repo.FromWareHouse(QueryParms);
+                //    if (Existing.Count() == 0)
+                //    {
+                //        MessageBox.Show("No Records found for selection made", FromWhse.WhStore_Description);
+                //        return;
+                //    }
+
+                //    using (var context = new TTI2Entities())
+                //    {
+                //        foreach (var Record in Existing)
+                //        {
+                //            var index = dataGridView1.Rows.Add();
+                //            dataGridView1.Rows[index].Cells[0].Value = Record.TLSOH_Pk;
+                //            dataGridView1.Rows[index].Cells[1].Value = false;
+                //            dataGridView1.Rows[index].Cells[2].Value = Record.TLSOH_BoxNumber;
+                //            dataGridView1.Rows[index].Cells[3].Value = context.TLADM_Styles.Find(Record.TLSOH_Style_FK).Sty_Description;
+                //            dataGridView1.Rows[index].Cells[4].Value = context.TLADM_Colours.Find(Record.TLSOH_Colour_FK).Col_Display;
+                //            dataGridView1.Rows[index].Cells[5].Value = context.TLADM_Sizes.Find(Record.TLSOH_Size_FK).SI_Description;
+                //            dataGridView1.Rows[index].Cells[6].Value = Record.TLSOH_BoxedQty;
+                //        }
+                //    }
+                //}
                 if (!TransferMode)
                 {
                     TransferMode = !TransferMode;
                     btnSubmit.Text = "Transfer";
                     QueryParms.FromWhse = FromWhse.WhStore_Id;
 
-                    var Existing = repo.FromWareHouse(QueryParms);
-                    if (Existing.Count() == 0)
-                    {
-                        MessageBox.Show("No Records found for selection made", FromWhse.WhStore_Description);
-                        return;
-                    }
+                    dataGridView1.Rows.Clear();
 
-                    using (var context = new TTI2Entities())
+                    if (FromWhse.WhStore_RFD)
                     {
-                        foreach (var Record in Existing)
+                        var existingRfd = repo.FromRfdWarehouse(QueryParms);
+
+                        if (existingRfd.Count == 0)
+                        {
+                            MessageBox.Show("No Records found for selection made", FromWhse.WhStore_Description);
+                            return;
+                        }
+
+                        foreach (var record in existingRfd)
                         {
                             var index = dataGridView1.Rows.Add();
-                            dataGridView1.Rows[index].Cells[0].Value = Record.TLSOH_Pk;
+                            dataGridView1.Rows[index].Cells[0].Value = record.StockOnHandFk;   // important
                             dataGridView1.Rows[index].Cells[1].Value = false;
-                            dataGridView1.Rows[index].Cells[2].Value = Record.TLSOH_BoxNumber;
-                            dataGridView1.Rows[index].Cells[3].Value = context.TLADM_Styles.Find(Record.TLSOH_Style_FK).Sty_Description;
-                            dataGridView1.Rows[index].Cells[4].Value = context.TLADM_Colours.Find(Record.TLSOH_Colour_FK).Col_Display;
-                            dataGridView1.Rows[index].Cells[5].Value = context.TLADM_Sizes.Find(Record.TLSOH_Size_FK).SI_Description;
-                            dataGridView1.Rows[index].Cells[6].Value = Record.TLSOH_BoxedQty;
+                            dataGridView1.Rows[index].Cells[2].Value = record.BoxNumber;
+                            dataGridView1.Rows[index].Cells[3].Value = record.StyleDescription;
+                            dataGridView1.Rows[index].Cells[4].Value = record.ColourDescription;
+                            dataGridView1.Rows[index].Cells[5].Value = record.SizeDescription;
+                            dataGridView1.Rows[index].Cells[6].Value = record.BoxQty;
+                        }
+                    }
+                    else
+                    {
+                        var Existing = repo.FromWareHouse(QueryParms);
+                        if (Existing.Count() == 0)
+                        {
+                            MessageBox.Show("No Records found for selection made", FromWhse.WhStore_Description);
+                            return;
+                        }
+
+                        using (var context = new TTI2Entities())
+                        {
+                            foreach (var Record in Existing)
+                            {
+                                var index = dataGridView1.Rows.Add();
+                                dataGridView1.Rows[index].Cells[0].Value = Record.TLSOH_Pk;
+                                dataGridView1.Rows[index].Cells[1].Value = false;
+                                dataGridView1.Rows[index].Cells[2].Value = Record.TLSOH_BoxNumber;
+                                dataGridView1.Rows[index].Cells[3].Value = context.TLADM_Styles.Find(Record.TLSOH_Style_FK).Sty_Description;
+                                dataGridView1.Rows[index].Cells[4].Value = context.TLADM_Colours.Find(Record.TLSOH_Colour_FK).Col_Display;
+                                dataGridView1.Rows[index].Cells[5].Value = context.TLADM_Sizes.Find(Record.TLSOH_Size_FK).SI_Description;
+                                dataGridView1.Rows[index].Cells[6].Value = Record.TLSOH_BoxedQty;
+                            }
                         }
                     }
                 }
                 else
                 {
                     var CountSelected = (from Rows in dataGridView1.Rows.Cast<DataGridViewRow>()
-                                       where (bool)Rows.Cells[1].Value == true
-                                       select Rows).Count();
+                                         where (bool)Rows.Cells[1].Value == true
+                                         select Rows).Count();
 
                     if (CountSelected == 0)
                     {
@@ -265,9 +320,9 @@ namespace CustomerServices
                     }
 
 
-              
+
                     TransferMode = !TransferMode;
-                    btnSubmit.Text = "Submit"; 
+                    btnSubmit.Text = "Submit";
                     using (var context = new TTI2Entities())
                     {
                         //Need to create a Header Record in the file
@@ -300,7 +355,7 @@ namespace CustomerServices
                                     MessageBox.Show(ex.Message);
                                     return;
                                 }
-                               
+
 
                                 foreach (DataGridViewRow Row in dataGridView1.Rows)
                                 {
@@ -308,9 +363,9 @@ namespace CustomerServices
                                         continue;
 
                                     TLCSV_WhseTransferDetail WhDetail = new TLCSV_WhseTransferDetail();
-                                    
+
                                     WhDetail.TLCSVWHTD_WhseTranfer_FK = WhseTransfer.TLCSVWHT_Pk;
-                                    WhDetail.TLCSVWHTD_TLSOH_Fk  = (int)Row.Cells[0].Value;
+                                    WhDetail.TLCSVWHTD_TLSOH_Fk = (int)Row.Cells[0].Value;
                                     WhDetail.TLCSVWHTD_PickList = true;
 
                                     context.TLCSV_WhseTransferDetail.Add(WhDetail);
@@ -318,7 +373,7 @@ namespace CustomerServices
 
                                 try
                                 {
-                                  
+
 
                                     context.SaveChanges();
                                     MessageBox.Show("Records successfully updated to database");
@@ -326,7 +381,7 @@ namespace CustomerServices
                                     FormLoaded = false;
 
                                     frmCSViewRep vRep = new frmCSViewRep(18, WhseTransfer.TLCSVWHT_Pk);
-                                    
+
                                     int h = Screen.PrimaryScreen.WorkingArea.Height;
                                     int w = Screen.PrimaryScreen.WorkingArea.Width;
                                     vRep.ClientSize = new Size(w, h);

@@ -286,8 +286,10 @@ namespace DyeHouse
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"Error saving row: {ex.Message}");
+                    MessageBox.Show($"Error Saving Row: {ex.Message}");
                 }
+
+
             }
 
             try
@@ -305,9 +307,8 @@ namespace DyeHouse
         }
 
         private void SaveDataRow(DataGridViewRow row, string selectedTransactionNo, string selectedBatchNo, bool closeDyeBatch,
-            string sizeDescription, string grade, string boxNumber, int boxQuantity)
+    string sizeDescription, string grade, string boxNumber, int boxQuantity)
         {
-            //var sizeDescription = row.Cells["Size"].Value?.ToString();
             var size = _context.TLADM_Sizes.FirstOrDefault(s => s.SI_Description == sizeDescription);
             if (size == null)
             {
@@ -315,28 +316,127 @@ namespace DyeHouse
                 return;
             }
 
-            var sizeId = size.SI_id;
-            //var grade = row.Cells["Grade"].Value?.ToString();
-            //var boxNumber = row.Cells["BoxNumber"].Value?.ToString();
-            //var boxQuantity = int.Parse(row.Cells["BoxQuantity"].Value?.ToString() ?? "0");
-
             if (string.IsNullOrEmpty(grade) || string.IsNullOrEmpty(boxNumber) || boxQuantity == 0)
             {
                 MessageBox.Show("Please fill in all fields for each row.");
                 return;
             }
 
+            int transactionNo = int.Parse(selectedTransactionNo);
+            int sizeId = size.SI_id;
+            string newGarmentBoxNo = $"{selectedBatchNo}-{boxNumber.PadLeft(2, '0')}";
+
             var garmentDyeingProduction = new TLDYE_GarmentDyeingProduction
             {
-                GarmentDyeingTransactionNo = int.Parse(selectedTransactionNo),
+                GarmentDyeingTransactionNo = transactionNo,
                 Size = sizeId,
                 Grade = grade,
-                BoxNo = $"{selectedBatchNo}-{boxNumber.PadLeft(2, '0')}",
+                BoxNo = newGarmentBoxNo,
                 BoxQuantity = boxQuantity,
                 Closed = closeDyeBatch
             };
 
             _context.TLDYE_GarmentDyeingProduction.Add(garmentDyeingProduction);
+
+            var history = _context.TLDYE_RFDHistory
+                .FirstOrDefault(x => x.DyeRFD_Transaction_No == transactionNo);
+
+            if (history == null)
+            {
+                throw new Exception($"No PFD history found for transaction {selectedTransactionNo}");
+            }
+
+            UpdateMatchingStockOnHandRows(
+                transactionNo,
+                history.DyeRFD_CurrentStyle,
+                sizeId,
+                newGarmentBoxNo);
+        }
+
+        //private void SaveDataRow(DataGridViewRow row, string selectedTransactionNo, string selectedBatchNo, bool closeDyeBatch,
+        //    string sizeDescription, string grade, string boxNumber, int boxQuantity)
+        //{
+        //    //var sizeDescription = row.Cells["Size"].Value?.ToString();
+        //    var size = _context.TLADM_Sizes.FirstOrDefault(s => s.SI_Description == sizeDescription);
+        //    if (size == null)
+        //    {
+        //        MessageBox.Show($"Size not found: {sizeDescription}");
+        //        return;
+        //    }
+
+        //    string newGarmentBoxNo = $"{selectedBatchNo}-{boxNumber.PadLeft(2, '0')}";
+        //    var sizeId = size.SI_id;
+        //    //var grade = row.Cells["Grade"].Value?.ToString();
+        //    //var boxNumber = row.Cells["BoxNumber"].Value?.ToString();
+        //    //var boxQuantity = int.Parse(row.Cells["BoxQuantity"].Value?.ToString() ?? "0");
+
+        //    if (string.IsNullOrEmpty(grade) || string.IsNullOrEmpty(boxNumber) || boxQuantity == 0)
+        //    {
+        //        MessageBox.Show("Please fill in all fields for each row.");
+        //        return;
+        //    }
+
+        //    var garmentDyeingProduction = new TLDYE_GarmentDyeingProduction
+        //    {
+        //        GarmentDyeingTransactionNo = int.Parse(selectedTransactionNo),
+        //        Size = sizeId,
+        //        Grade = grade,
+        //        BoxNo = newGarmentBoxNo,
+        //        BoxQuantity = boxQuantity,
+        //        Closed = closeDyeBatch
+        //    };
+
+        //    _context.TLDYE_GarmentDyeingProduction.Add(garmentDyeingProduction);
+        //    var stock = _context.TLCSV_StockOnHand.Where(x => x.TLSOH_WareHouse_FK == 93 && x.TLSOH_Size_FK == sizeId && x.TLSOH_PFD_BoxNumber != null);
+        //    if (stock == null)
+        //    {
+        //        throw new Exception($"StockOnHand record not found");
+        //    }
+
+        //    var history = _context.TLDYE_RFDHistory
+        //        .FirstOrDefault(x => x.DyeRFD_Transaction_No == int.Parse(selectedTransactionNo));
+
+        //    if (history == null)
+        //    {
+        //        throw new Exception($"No RFD history found for transaction {selectedTransactionNo}");
+        //    }
+
+        //    UpdateMatchingStockOnHandRows(
+        //        int.Parse(selectedTransactionNo),
+        //        history.DyeRFD_CurrentStyle,
+        //        sizeId,
+        //        newGarmentBoxNo);
+
+        //}
+
+        private void UpdateMatchingStockOnHandRows(
+    int transactionNo,
+    int styleFk,
+    int sizeFk,
+    string newGarmentBoxNo)
+        {
+            var matchingStocks =
+                (from h in _context.TLDYE_RFDHistory
+                 join s in _context.TLCSV_StockOnHand
+                    on h.DyeRFD_StockOnHand_Fk equals s.TLSOH_Pk
+                 where h.DyeRFD_Transaction_No == transactionNo
+                       && h.DyeRFD_CurrentStyle == styleFk
+                       && s.TLSOH_Size_FK == sizeFk
+                       && s.TLSOH_WareHouse_FK == 93
+                       && s.TLSOH_PFD_BoxNumber != null
+                       && s.TLSOH_PFD_BoxNumber != ""
+                 select s).ToList();
+
+            if (matchingStocks.Count == 0)
+            {
+                throw new Exception($"No matching stock row found for transaction {transactionNo}, style {styleFk}, size {sizeFk}.");
+            }
+
+            foreach (var stock in matchingStocks)
+            {
+                stock.TLSOH_BoxNumber = newGarmentBoxNo;
+                stock.TLSOH_WareHouse_FK = 102;
+            }
         }
 
         private void frmGarmentDyeingBatchApproval_FormClosing(object sender, FormClosingEventArgs e)

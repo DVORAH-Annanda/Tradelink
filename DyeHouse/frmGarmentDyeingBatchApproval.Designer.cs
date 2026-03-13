@@ -90,6 +90,7 @@ namespace DyeHouse
             this.cboShift.Name = "cboShift";
             this.cboShift.Size = new System.Drawing.Size(200, 21);
             this.cboShift.TabIndex = 2;
+            this.cboShift.Visible = false;
             // 
             // cboMachine
             // 
@@ -98,6 +99,7 @@ namespace DyeHouse
             this.cboMachine.Name = "cboMachine";
             this.cboMachine.Size = new System.Drawing.Size(200, 21);
             this.cboMachine.TabIndex = 3;
+            this.cboMachine.Visible = false;
             // 
             // lblDateDyed
             // 
@@ -125,6 +127,7 @@ namespace DyeHouse
             this.lblShift.Size = new System.Drawing.Size(28, 13);
             this.lblShift.TabIndex = 10;
             this.lblShift.Text = "Shift";
+            this.lblShift.Visible = false;
             // 
             // lblMachine
             // 
@@ -134,6 +137,7 @@ namespace DyeHouse
             this.lblMachine.Size = new System.Drawing.Size(48, 13);
             this.lblMachine.TabIndex = 11;
             this.lblMachine.Text = "Machine";
+            this.lblMachine.Visible = false;
             // 
             // lblStyle
             // 

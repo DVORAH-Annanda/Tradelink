@@ -1773,8 +1773,7 @@ namespace DyeHouse
                             var DyeStandards = context.TLDYE_DyeingStandards.Where(x => x.DyeStan_Quality_FK == DyeBatch.DYEB_Greige_FK).FirstOrDefault();
                             if(DyeStandards == null)
                             {
-                                MessageBox.Show("Unable to print Standards control sheet..No Dye Standards found");
-
+                                MessageBox.Show("Unable to print Standards control sheet, no Dye Standards found");
                             }
                             else
                             {
@@ -1782,8 +1781,7 @@ namespace DyeHouse
                                 h = Screen.PrimaryScreen.WorkingArea.Height;
                                 w = Screen.PrimaryScreen.WorkingArea.Width;
                                 vRep.ClientSize = new Size(w, h);
-                                vRep.ShowDialog(this);
-                               
+                                vRep.ShowDialog(this);                             
 
                             }
                         }

@@ -36,12 +36,12 @@ namespace CustomerServices
 
         public TLCSV_RePackConfig LoadRePackConfig(int Pk)
         {
-            return _context.TLCSV_RePackConfig.FirstOrDefault(s => s.PORConfig_BoxNumber_Key  == Pk);
+            return _context.TLCSV_RePackConfig.FirstOrDefault(s => s.PORConfig_BoxNumber_Key == Pk);
         }
 
         public TLADM_CustomerFile LoadCustomers(int Pk)
         {
-            return _context.TLADM_CustomerFile.FirstOrDefault(s => s.Cust_Pk == Pk);    
+            return _context.TLADM_CustomerFile.FirstOrDefault(s => s.Cust_Pk == Pk);
         }
 
         public TLCSV_PurchaseOrder LoadPurchaseOrder(int Pk)
@@ -59,10 +59,10 @@ namespace CustomerServices
             return _context.TLADM_Sizes.ToList();
         }
 
-       
+
         public List<TLADM_Styles> LoadStyles()
         {
-            return _context.TLADM_Styles.ToList(); 
+            return _context.TLADM_Styles.ToList();
         }
 
         public TLADM_Months LoadMonths(int Pk)
@@ -88,7 +88,7 @@ namespace CustomerServices
         {
             return _context.TLADM_WhseStore.FirstOrDefault(s => s.WhStore_Id == Pk);
         }
-        
+
         public TLADM_Departments LoadDepart(int Pk)
         {
             return _context.TLADM_Departments.FirstOrDefault(s => s.Dep_Id == Pk);
@@ -169,7 +169,7 @@ namespace CustomerServices
 
         public IQueryable<TLCSV_OrderAllocated> OrderAllocatedQuery(CustomerServicesParameters parameters)
         {
-            var OrderAlloc = _context.TLCSV_OrderAllocated.Where(x=>x.TLORDA_PickListPrint && !x.TLORDA_Delivered).AsQueryable();
+            var OrderAlloc = _context.TLCSV_OrderAllocated.Where(x => x.TLORDA_PickListPrint && !x.TLORDA_Delivered).AsQueryable();
             if (parameters.Customers.Count() > 0)
             {
                 var custPredicate = PredicateBuilder.New<TLCSV_OrderAllocated>();
@@ -207,7 +207,7 @@ namespace CustomerServices
                     orderPredicate = orderPredicate.Or(s => s.TLORDA_Pk == temp.TLORDA_Pk);
                 }
 
-                OrderAlloc = OrderAlloc.AsExpandable().Where(orderPredicate); 
+                OrderAlloc = OrderAlloc.AsExpandable().Where(orderPredicate);
             }
 
             return OrderAlloc;
@@ -230,7 +230,7 @@ namespace CustomerServices
             }
 
             return CW;
-           
+
         }
 
         public IQueryable<TLCSV_PuchaseOrderDetail> POQuery(CustomerServicesParameters parameters)
@@ -245,7 +245,7 @@ namespace CustomerServices
             if (parameters.Customers.Count() > 0)
             {
                 var custPredicate = PredicateBuilder.New<TLCSV_PuchaseOrderDetail>();
-                foreach(var cust in parameters.Customers)
+                foreach (var cust in parameters.Customers)
                 {
                     var temp = cust;
                     custPredicate = custPredicate.Or(s => s.TLCUSTO_Customer_FK == temp.Cust_Pk);
@@ -290,21 +290,21 @@ namespace CustomerServices
             }
 
             return POD;
-     
-       }
+
+        }
 
         public IQueryable<TLCSV_PuchaseOrderDetail> WholeSaleOutStandingOrders(CustomerServicesParameters parameters)
         {
             var POD = (from T1 in _context.TLCSV_PurchaseOrder
                        join T2 in _context.TLCSV_PuchaseOrderDetail
                        on T1.TLCSVPO_Pk equals T2.TLCUSTO_PurchaseOrder_FK
-                       join T3 in _context.TLADM_CustomerFile 
-                       on T1.TLCSVPO_Customer_FK equals T3.Cust_Pk 
-                       join T4 in _context.TLADM_CustomerTypes 
-                       on T3.Cust_CustomerCat_FK equals T4.CT_Id 
+                       join T3 in _context.TLADM_CustomerFile
+                       on T1.TLCSVPO_Customer_FK equals T3.Cust_Pk
+                       join T4 in _context.TLADM_CustomerTypes
+                       on T3.Cust_CustomerCat_FK equals T4.CT_Id
                        where !T1.TLCSVPO_Closeed && !T2.TLCUSTO_Closed && T4.CT_ShortCode == "WS" && !T1.TLCSVPO_Provisional
                        select T2).AsQueryable();
-            
+
             if (parameters.Customers.Count() > 0)
             {
                 var custPredicate = PredicateBuilder.New<TLCSV_PuchaseOrderDetail>();
@@ -349,18 +349,18 @@ namespace CustomerServices
 
                 POD = POD.AsExpandable().Where(sizePredicate);
             }
-         
+
             return POD;
-       }
+        }
         public IQueryable<TLCSV_PuchaseOrderDetail> OutStandingOrdersByMonth(CustomerServicesParameters parameters)
         {
             var Date6Prev = DateTime.Now.AddMonths(-6);
-            
+
             var POD = (from T1 in _context.TLCSV_PurchaseOrder
                        join T2 in _context.TLCSV_PuchaseOrderDetail
                        on T1.TLCSVPO_Pk equals T2.TLCUSTO_PurchaseOrder_FK
                        where !T2.TLCUSTO_Closed && T2.TLCUSTO_DateRequired != null
-                       && T2.TLCUSTO_DateRequired >= Date6Prev 
+                       && T2.TLCUSTO_DateRequired >= Date6Prev
                        && !T1.TLCSVPO_FabricCustomer
                        select T2).AsQueryable();
 
@@ -414,13 +414,13 @@ namespace CustomerServices
         }
 
         public IQueryable<TLCSV_PuchaseOrderDetail> OutStandingOrders(CustomerServicesParameters parameters)
-       {
-           var POD = (from T1 in _context.TLCSV_PurchaseOrder
-                      join T2 in _context.TLCSV_PuchaseOrderDetail
-                      on T1.TLCSVPO_Pk equals T2.TLCUSTO_PurchaseOrder_FK
-                      where !T1.TLCSVPO_Closeed /*&& T2.TLCUSTO_DateRequired >= DateTime.Now*/ && !T2.TLCUSTO_Closed && T2.TLCUSTO_DateRequired != null
-                      && !T1.TLCSVPO_FabricCustomer
-                      select T2).AsQueryable();
+        {
+            var POD = (from T1 in _context.TLCSV_PurchaseOrder
+                       join T2 in _context.TLCSV_PuchaseOrderDetail
+                       on T1.TLCSVPO_Pk equals T2.TLCUSTO_PurchaseOrder_FK
+                       where !T1.TLCSVPO_Closeed /*&& T2.TLCUSTO_DateRequired >= DateTime.Now*/ && !T2.TLCUSTO_Closed && T2.TLCUSTO_DateRequired != null
+                       && !T1.TLCSVPO_FabricCustomer
+                       select T2).AsQueryable();
 
             if (parameters.Customers.Count() > 0)
             {
@@ -469,7 +469,7 @@ namespace CustomerServices
 
             return POD;
 
-       }
+        }
 
         public IQueryable<TLADM_WhseStore> SelWhse(CustomerServicesParameters parameters)
         {
@@ -758,12 +758,12 @@ namespace CustomerServices
 
         public IQueryable<TLCSV_StockOnHand> SOHOnHand(CustomerServicesParameters parameters)
         {
-            var SOH = _context.TLCSV_StockOnHand.Where(x => !x.TLSOH_Sold 
+            var SOH = _context.TLCSV_StockOnHand.Where(x => !x.TLSOH_Sold
                                                             && !x.TLSOH_Split
-                                                            && !x.TLSOH_InTransit 
-                                                            && !x.TLSOH_Write_Off 
+                                                            && !x.TLSOH_InTransit
+                                                            && !x.TLSOH_Write_Off
                                                             && !x.TLSOH_Returned).AsQueryable();
-           
+
             if (parameters.Whses.Count() > 0)
             {
                 var whsePredicate = PredicateBuilder.New<TLCSV_StockOnHand>();
@@ -789,7 +789,7 @@ namespace CustomerServices
                 SOH = SOH.AsExpandable().Where(CustPredicate);
             }
              */
- 
+
             if (parameters.Styles.Count() > 0)
             {
                 var stylePredicate = PredicateBuilder.New<TLCSV_StockOnHand>();
@@ -959,7 +959,7 @@ namespace CustomerServices
         public IQueryable<TLCSV_StockOnHand> CustomerAudit(CustomerServicesParameters parameters, int Customer_Pk)
         {
             var SOH = _context.TLCSV_StockOnHand.Where(x => x.TLSOH_Customer_Fk == Customer_Pk && x.TLSOH_Sold).AsQueryable();
-           if(parameters.PurchaseOrders.Count() > 0 )
+            if (parameters.PurchaseOrders.Count() > 0)
             {
                 var POPredicate = PredicateBuilder.New<TLCSV_StockOnHand>();
                 foreach (var POOrder in parameters.PurchaseOrders)
@@ -1070,9 +1070,9 @@ namespace CustomerServices
             return SOH;
         }
 
-        public IQueryable<TLCSV_StockOnHand>SOHSales(CustomerServicesParameters parameters)
+        public IQueryable<TLCSV_StockOnHand> SOHSales(CustomerServicesParameters parameters)
         {
-            var SOH = _context.TLCSV_StockOnHand.Where(x =>x.TLSOH_Sold && x.TLSOH_SoldDate >= parameters.FromDate && x.TLSOH_SoldDate <= parameters.ToDate).AsQueryable();
+            var SOH = _context.TLCSV_StockOnHand.Where(x => x.TLSOH_Sold && x.TLSOH_SoldDate >= parameters.FromDate && x.TLSOH_SoldDate <= parameters.ToDate).AsQueryable();
             if (parameters.Styles.Count() > 0)
             {
                 var stylePredicate = PredicateBuilder.New<TLCSV_StockOnHand>();
@@ -1084,7 +1084,7 @@ namespace CustomerServices
 
                 SOH = SOH.AsExpandable().Where(stylePredicate);
             }
-            
+
             if (parameters.Colours.Count() > 0)
             {
                 var colourPredicate = PredicateBuilder.New<TLCSV_StockOnHand>();
@@ -1096,7 +1096,7 @@ namespace CustomerServices
 
                 SOH = SOH.AsExpandable().Where(colourPredicate);
             }
-            
+
             if (parameters.Sizes.Count() > 0)
             {
                 var sizePredicate = PredicateBuilder.New<TLCSV_StockOnHand>();
@@ -1119,7 +1119,7 @@ namespace CustomerServices
                 }
 
                 SOH = SOH.AsExpandable().Where(CustomerPredicate);
-            }           
+            }
 
             return SOH;
         }
@@ -1128,10 +1128,10 @@ namespace CustomerServices
         {
             var SOH = _context.TLCSV_StockOnHand.Where(x => !x.TLSOH_Sold && !x.TLSOH_Split && !x.TLSOH_Write_Off && !x.TLSOH_Returned && !x.TLSOH_InTransit).AsQueryable();
             SOH = (from i in SOH
-                            join o in _context.TLADM_Sizes
-                            on i.TLSOH_Size_FK equals o.SI_id
-                            orderby o.SI_DisplayOrder
-                            select i);
+                   join o in _context.TLADM_Sizes
+                   on i.TLSOH_Size_FK equals o.SI_id
+                   orderby o.SI_DisplayOrder
+                   select i);
 
 
             if (parameters.Whses.Count() > 0)
@@ -1284,7 +1284,7 @@ namespace CustomerServices
 
         public IQueryable<TLCSV_StockOnHand> StockAdjustments(CustomerServicesParameters parameters)
         {
-            var SOH = _context.TLCSV_StockOnHand.Where(x=>!x.TLSOH_Picked || (x.TLSOH_Returned && !x.TLSOH_Sold)).AsQueryable();
+            var SOH = _context.TLCSV_StockOnHand.Where(x => !x.TLSOH_Picked || (x.TLSOH_Returned && !x.TLSOH_Sold)).AsQueryable();
             if (parameters.Whses.Count() > 0)
             {
                 var whsePredicate = PredicateBuilder.New<TLCSV_StockOnHand>();
@@ -1297,12 +1297,12 @@ namespace CustomerServices
                 SOH = SOH.AsExpandable().Where(whsePredicate);
             }
 
-           return SOH;
+            return SOH;
         }
 
-        public IQueryable<TLCSV_PuchaseOrderDetail> OutstandingPOOrderDetails ( CustomerServicesParameters parameters)
+        public IQueryable<TLCSV_PuchaseOrderDetail> OutstandingPOOrderDetails(CustomerServicesParameters parameters)
         {
-            var POD = _context.TLCSV_PuchaseOrderDetail.Where(x=>!x.TLCUSTO_Delivered && !x.TLCUSTO_Closed).AsQueryable();
+            var POD = _context.TLCSV_PuchaseOrderDetail.Where(x => !x.TLCUSTO_Delivered && !x.TLCUSTO_Closed).AsQueryable();
 
             if (parameters.Customers.Count() > 0)
             {
@@ -1330,7 +1330,7 @@ namespace CustomerServices
 
             return POD;
         }
-        public IQueryable<TLCSV_PurchaseOrder>PurchaseOrder(CustomerServicesParameters parameters)
+        public IQueryable<TLCSV_PurchaseOrder> PurchaseOrder(CustomerServicesParameters parameters)
         {
             IQueryable<TLCSV_PurchaseOrder> PO = null;
             if (!parameters.Both)
@@ -1340,7 +1340,7 @@ namespace CustomerServices
             else
             {
                 PO = _context.TLCSV_PurchaseOrder.Where(x => !x.TLCSVPO_Closeed).AsQueryable();
-                
+
             }
 
             if (parameters.PurchaseOrders.Count() > 0)
@@ -1371,7 +1371,7 @@ namespace CustomerServices
 
         public IQueryable<TLCSV_PuchaseOrderDetail> POPListQuery(CustomerServicesParameters parameters)
         {
-            var POD = _context.TLCSV_PuchaseOrderDetail.Where(x=>x.TLCUSTO_Picked && !x.TLCUSTO_Delivered).AsQueryable();
+            var POD = _context.TLCSV_PuchaseOrderDetail.Where(x => x.TLCUSTO_Picked && !x.TLCUSTO_Delivered).AsQueryable();
 
             if (parameters.Customers.Count() > 0)
             {
@@ -1423,10 +1423,10 @@ namespace CustomerServices
             return POD;
         }
 
-        public IQueryable<TLCSV_StockOnHand>PendingPS(CustomerServicesParameters parameters)
+        public IQueryable<TLCSV_StockOnHand> PendingPS(CustomerServicesParameters parameters)
         {
             var POD = _context.TLCSV_StockOnHand.Where(x => x.TLSOH_Picked && !x.TLSOH_Sold).AsQueryable();
-            
+
             if (parameters.Whses.Count() > 0)
             {
                 var StylePredicate = PredicateBuilder.New<TLCSV_StockOnHand>();
@@ -1479,12 +1479,12 @@ namespace CustomerServices
 
         public IQueryable<TLCMT_CompletedWork> Query(CustomerServicesParameters parameters)
         {
-            var completedWork = (from LI in _context.TLCMT_LineIssue 
-                                join CW in _context.TLCMT_CompletedWork
-                                on LI.TLCMTLI_CutSheet_FK equals CW.TLCMTWC_CutSheet_FK
-                                where LI.TLCMTLI_WorkCompleted && !CW.TLCMTWC_Picked
-                                select CW).AsQueryable();
-            
+            var completedWork = (from LI in _context.TLCMT_LineIssue
+                                 join CW in _context.TLCMT_CompletedWork
+                                 on LI.TLCMTLI_CutSheet_FK equals CW.TLCMTWC_CutSheet_FK
+                                 where LI.TLCMTLI_WorkCompleted && !CW.TLCMTWC_Picked
+                                 select CW).AsQueryable();
+
 
 
             if (parameters.Sizes.Count() > 0)
@@ -1518,12 +1518,12 @@ namespace CustomerServices
                 {
                     var temp = style;
                     stylePredicate = stylePredicate.Or(s => s.TLCMTWC_Style_FK == temp.Sty_Id);
-                       
+
                 }
 
                 completedWork = completedWork.AsExpandable().Where(stylePredicate);
             }
-            
+
             if (parameters.Whses.Count > 0)
             {
                 var whsePredicate = PredicateBuilder.New<TLCMT_CompletedWork>();
@@ -1535,7 +1535,7 @@ namespace CustomerServices
 
                 completedWork = completedWork.AsExpandable().Where(whsePredicate);
             }
-            
+
 
             if (parameters.Depts.Count > 0)
             {
@@ -1548,11 +1548,147 @@ namespace CustomerServices
 
                 completedWork = completedWork.AsExpandable().Where(deptPredicate);
             }
-            
+
             return completedWork;
         }
 
-        
+        public List<GarmentDyeTransferVM> FromRfdWarehouse(CustomerServicesParameters parameters)
+        {
+            var historyPerTransaction =
+                from h in _context.TLDYE_RFDHistory
+                join soh in _context.TLCSV_StockOnHand
+                    on h.DyeRFD_StockOnHand_Fk equals soh.TLSOH_Pk
+                //where soh.TLSOH_WareHouse_FK == parameters.FromWhse
+                group new { h, soh } by new
+                {
+                    h.DyeRFD_Transaction_No,
+                    h.DyeRFD_CurrentStyle,
+                    h.DyeRFD_DyeToColour
+                }
+                into grp
+                select new
+                {
+                    TransactionNo = grp.Key.DyeRFD_Transaction_No,
+                    StyleFk = grp.Key.DyeRFD_CurrentStyle,
+                    ColourFk = grp.Key.DyeRFD_DyeToColour,
+                    StockOnHandFk = grp.Min(x => x.h.DyeRFD_StockOnHand_Fk) // one representative FK
+                };
+
+            var query =
+                from g in _context.TLDYE_GarmentDyeingProduction
+                join h in historyPerTransaction
+                    on g.GarmentDyeingTransactionNo equals h.TransactionNo
+                join sty in _context.TLADM_Styles
+                    on h.StyleFk equals sty.Sty_Id
+                join col in _context.TLADM_Colours
+                    on h.ColourFk equals col.Col_Id
+                join siz in _context.TLADM_Sizes
+                    on g.Size equals siz.SI_id
+                where g.Closed == false
+                select new GarmentDyeTransferVM
+                {
+                    StockOnHandFk = h.StockOnHandFk,
+                    GarmentDyeingId = g.Id,
+                    TransactionNo = g.GarmentDyeingTransactionNo,
+                    BoxNumber = g.BoxNo,
+                    StyleFk = h.StyleFk,
+                    StyleDescription = sty.Sty_Description,
+                    ColourFk = h.ColourFk,
+                    ColourDescription = col.Col_Display,
+                    SizeFk = g.Size,
+                    SizeDescription = siz.SI_Description,
+                    Grade = g.Grade,
+                    BoxQty = g.BoxQuantity
+                };
+
+            if (parameters.Styles.Count > 0)
+            {
+                var styleIds = parameters.Styles.Select(x => x.Sty_Id).ToList();
+                query = query.Where(x => styleIds.Contains(x.StyleFk));
+            }
+
+            if (parameters.Colours.Count > 0)
+            {
+                var colourIds = parameters.Colours.Select(x => x.Col_Id).ToList();
+                query = query.Where(x => colourIds.Contains(x.ColourFk));
+            }
+
+            if (parameters.Sizes.Count > 0)
+            {
+                var sizeIds = parameters.Sizes.Select(x => x.SI_id).ToList();
+                query = query.Where(x => sizeIds.Contains(x.SizeFk));
+            }
+
+            return query
+                .OrderBy(x => x.BoxNumber)
+                .ToList();
+        }
+
+        //public List<GarmentDyeTransferVM> FromRfdWarehouse(CustomerServicesParameters parameters)
+        //{
+        //    var query =
+        //        from h in _context.TLDYE_RFDHistory
+        //        join g in _context.TLDYE_GarmentDyeingProduction
+        //            on h.DyeRFD_Transaction_No equals g.GarmentDyeingTransactionNo
+        //        join sty in _context.TLADM_Styles
+        //            on h.DyeRFD_CurrentStyle equals sty.Sty_Id
+        //        join col in _context.TLADM_Colours
+        //            on h.DyeRFD_DyeToColour equals col.Col_Id
+        //        join siz in _context.TLADM_Sizes
+        //            on g.Size equals siz.SI_id
+        //        where g.Closed == false
+        //        select new GarmentDyeTransferVM
+        //        {
+        //            StockOnHandFk = h.DyeRFD_StockOnHand_Fk,
+        //            GarmentDyeingId = g.Id,
+        //            TransactionNo = g.GarmentDyeingTransactionNo,
+        //            BoxNumber = g.BoxNo,
+        //            StyleFk = h.DyeRFD_CurrentStyle,
+        //            StyleDescription = sty.Sty_Description,
+        //            ColourFk = h.DyeRFD_DyeToColour,
+        //            ColourDescription = col.Col_Display,
+        //            SizeFk = g.Size,
+        //            SizeDescription = siz.SI_Description,
+        //            Grade = g.Grade,
+        //            BoxQty = g.BoxQuantity
+        //        };
+
+        //    if (parameters.Styles.Count > 0)
+        //    {
+        //        var styleIds = parameters.Styles.Select(x => x.Sty_Id).ToList();
+        //        query = query.Where(x => styleIds.Contains(x.StyleFk));
+        //    }
+
+        //    if (parameters.Colours.Count > 0)
+        //    {
+        //        var colourIds = parameters.Colours.Select(x => x.Col_Id).ToList();
+        //        query = query.Where(x => colourIds.Contains(x.ColourFk));
+        //    }
+
+        //    if (parameters.Sizes.Count > 0)
+        //    {
+        //        var sizeIds = parameters.Sizes.Select(x => x.SI_id).ToList();
+        //        query = query.Where(x => sizeIds.Contains(x.SizeFk));
+        //    }
+
+        //    return query.ToList();
+        //}
+    }
+
+    public class GarmentDyeTransferVM
+    {
+        public int StockOnHandFk { get; set; }
+        public int GarmentDyeingId { get; set; }
+        public int TransactionNo { get; set; }
+        public string BoxNumber { get; set; }
+        public int StyleFk { get; set; }
+        public string StyleDescription { get; set; }
+        public int ColourFk { get; set; }
+        public string ColourDescription { get; set; }
+        public int SizeFk { get; set; }
+        public string SizeDescription { get; set; }
+        public string Grade { get; set; }
+        public int BoxQty { get; set; }
     }
 
     public static class MyExtentions

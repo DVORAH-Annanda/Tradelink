@@ -406,11 +406,14 @@ namespace DyeHouse
                     {
                         accumulatedQuantity += toBatchQty;
 
-                        StockOnHand.TLSOH_Transfered = true; //maak eers seker of hierdie veld hier gebruik kan word!!
+                        StockOnHand.TLSOH_Transfered = true; 
                         StockOnHand.TLSOH_TransferNotes = txtBatchNumber.Text;
                         StockOnHand.TLSOH_Colour_FK = ColourSelected.Col_Id;
                         StockOnHand.TLSOH_WareHouse_FK = 93; //WIPGD - WIP Garment Dyeing
-                        //StockOnHand.TLSOH_PFD_BoxNumber = ;
+                        if (string.IsNullOrWhiteSpace(StockOnHand.TLSOH_PFD_BoxNumber))
+                        {
+                            StockOnHand.TLSOH_PFD_BoxNumber = StockOnHand.TLSOH_BoxNumber;
+                        }
 
                         _context.Entry(StockOnHand).State = EntityState.Modified;
 
