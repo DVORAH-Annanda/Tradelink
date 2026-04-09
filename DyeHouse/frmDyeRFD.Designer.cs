@@ -126,7 +126,6 @@ namespace DyeHouse
             this.cmboStyles.Name = "cmboStyles";
             this.cmboStyles.Size = new System.Drawing.Size(200, 21);
             this.cmboStyles.TabIndex = 7;
-            this.cmboStyles.SelectedIndexChanged += new System.EventHandler(this.cmboStyles_SelectedIndexChanged);
             // 
             // label4
             // 

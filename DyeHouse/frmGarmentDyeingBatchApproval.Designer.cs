@@ -45,8 +45,6 @@ namespace DyeHouse
             this.lblColour = new System.Windows.Forms.Label();
             this.txtStyle = new System.Windows.Forms.TextBox();
             this.txtColour = new System.Windows.Forms.TextBox();
-            this.lblCloseDyeBatch = new System.Windows.Forms.Label();
-            this.cboCloseDyeBatch = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.dgvDyeBatch)).BeginInit();
             this.SuspendLayout();
             // 
@@ -55,12 +53,12 @@ namespace DyeHouse
             this.dgvDyeBatch.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvDyeBatch.Location = new System.Drawing.Point(42, 162);
             this.dgvDyeBatch.Name = "dgvDyeBatch";
-            this.dgvDyeBatch.Size = new System.Drawing.Size(594, 244);
+            this.dgvDyeBatch.Size = new System.Drawing.Size(594, 267);
             this.dgvDyeBatch.TabIndex = 4;
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(561, 474);
+            this.btnSave.Location = new System.Drawing.Point(561, 452);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(75, 23);
             this.btnSave.TabIndex = 6;
@@ -175,30 +173,11 @@ namespace DyeHouse
             this.txtColour.TabIndex = 15;
             this.txtColour.TabStop = false;
             // 
-            // lblCloseDyeBatch
-            // 
-            this.lblCloseDyeBatch.AutoSize = true;
-            this.lblCloseDyeBatch.Location = new System.Drawing.Point(463, 433);
-            this.lblCloseDyeBatch.Name = "lblCloseDyeBatch";
-            this.lblCloseDyeBatch.Size = new System.Drawing.Size(92, 13);
-            this.lblCloseDyeBatch.TabIndex = 16;
-            this.lblCloseDyeBatch.Text = "Close Dye Batch?";
-            // 
-            // cboCloseDyeBatch
-            // 
-            this.cboCloseDyeBatch.FormattingEnabled = true;
-            this.cboCloseDyeBatch.Location = new System.Drawing.Point(561, 430);
-            this.cboCloseDyeBatch.Name = "cboCloseDyeBatch";
-            this.cboCloseDyeBatch.Size = new System.Drawing.Size(75, 21);
-            this.cboCloseDyeBatch.TabIndex = 5;
-            // 
             // frmGarmentDyeingBatchApproval
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(675, 528);
-            this.Controls.Add(this.cboCloseDyeBatch);
-            this.Controls.Add(this.lblCloseDyeBatch);
+            this.ClientSize = new System.Drawing.Size(675, 506);
             this.Controls.Add(this.txtColour);
             this.Controls.Add(this.txtStyle);
             this.Controls.Add(this.lblStyle);
@@ -239,7 +218,5 @@ namespace DyeHouse
         private System.Windows.Forms.Label lblColour;
         private System.Windows.Forms.TextBox txtStyle;
         private System.Windows.Forms.TextBox txtColour;
-        private System.Windows.Forms.Label lblCloseDyeBatch;
-        private System.Windows.Forms.ComboBox cboCloseDyeBatch;
     }
 }
