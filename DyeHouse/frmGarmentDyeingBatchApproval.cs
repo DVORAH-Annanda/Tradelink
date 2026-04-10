@@ -522,8 +522,11 @@ namespace DyeHouse
                 Grade = grade,
                 BoxNo = newGarmentBoxNo,
                 BoxQuantity = boxQuantity,
-                Closed = true  //**TODO-AS: should validate if box quantities is same as original batch quantities -> DyeRFD_NoumberOfAGrades (also rename this field! to DyePFD_BoxQuantity) )
+
             };
+
+            //**Close dye batch: DyeRFD_Completed = 1 (not supposed to show in )
+            //**TODO-AS: should validate if box quantities is same as original batch quantities -> DyeRFD_NoumberOfAGrades (also rename this field! to DyePFD_BoxQuantity) )
 
             _context.TLDYE_GarmentDyeingProduction.Add(garmentDyeingProduction);
 
