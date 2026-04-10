@@ -274,6 +274,34 @@ namespace DyeHouse
             return sb.ToString();
         }
 
+        private static bool TryGetFixedStandard(string desc, out string standard)
+        {
+            standard = null;
+            if (string.IsNullOrWhiteSpace(desc))
+                return false;
+
+            var d = desc.Trim().ToLowerInvariant();
+
+            if (d == "length shrinkage %" || d == "length shrinkage%")
+            {
+                standard = "-6%";
+                return true;
+            }
+
+            if (d == "width shrinkage %" || d == "width shrinkage%")
+            {
+                standard = "-6%";
+                return true;
+            }
+
+            if (d == "spirality" || d == "spirility" || d == "spirality %" || d == "spirality%")
+            {
+                standard = "3%";
+                return true;
+            }
+
+            return false;
+        }
 
         private void frmDyeViewReport_Load(object sender, EventArgs e)
         {
@@ -6597,8 +6625,10 @@ namespace DyeHouse
                         dataTable2.Rows.Add(NRow);
                     }
 
-                    DryerMeasurements = context.TLADM_QADyeProcessFields.Where(x => x.TLQAPF_Compactor || x.TLQADPF_Process_FK == 3).ToList();
-                    foreach (var Meas in DryerMeasurements)
+                    var Measurements = context.TLADM_QADyeProcessFields
+    .Where(x => x.TLQAPF_Compactor || x.TLQADPF_Process_FK == 3)
+    .ToList();
+                    foreach (var Meas in Measurements)
                     {
                         NRow = dataTable2.NewDataTable2Row();
                         NRow.Pk = 1;
@@ -6608,13 +6638,22 @@ namespace DyeHouse
                             NRow.Description += " ****";
                         }
 
-                        var Standard = context.TLDYE_DyeingStandards.Where(x => x.DyeStan_QAProccessField_FK == Meas.TLQADPF_Pk && x.DyeStan_Quality_FK == DyeBatch.DYEB_Greige_FK).FirstOrDefault();
-                        if (Standard != null)
+                        if (TryGetFixedStandard(Meas.TLQADPF_Description, out var fixedStd))
                         {
-                            NRow.Standard = Standard.DyeStan_Value.ToString();
+                            NRow.Standard = fixedStd;
+                        }
+                        else
+                        {
+                            var standardRow = context.TLDYE_DyeingStandards
+                                .FirstOrDefault(x =>
+                                    x.DyeStan_QAProccessField_FK == Meas.TLQADPF_Pk &&
+                                    x.DyeStan_Quality_FK == DyeBatch.DYEB_Greige_FK);
+
+                            if (standardRow != null)
+                                NRow.Standard = standardRow.DyeStan_Value.ToString();
                         }
                         NRow.Section = 3;
-                        NRow.SectionDescription = "Compacter";
+                        NRow.SectionDescription = "Compactor";
                         dataTable2.Rows.Add(NRow);
                     }
 
@@ -6624,6 +6663,7 @@ namespace DyeHouse
                     NRow.Standard = "Width";
                     NRow.QCColour = "QC Colour";
                     NRow.QCWidth = "QC Width";
+                    //NRow.QCWidth = "Width Qual Audit";
                     NRow.Cutting = "Cutting";
                     NRow.Section = 4;
                     dataTable2.Rows.Add(NRow);
