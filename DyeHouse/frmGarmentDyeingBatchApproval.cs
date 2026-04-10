@@ -50,8 +50,6 @@ namespace DyeHouse
             LoadMachineDefinitions();
             LoadShifts();
 
-            InitializeCloseDyeBatchComboBox();
-
             FormLoaded = true;
         }
 
@@ -83,14 +81,6 @@ namespace DyeHouse
 
             cboBatchNo.DataSource = batchNumbers;
             cboBatchNo.SelectedIndex = -1;
-        }
-
-        private void InitializeCloseDyeBatchComboBox()
-        {
-            cboCloseDyeBatch.Items.Clear();
-            cboCloseDyeBatch.Items.Add("Yes");
-            cboCloseDyeBatch.Items.Add("No");
-            cboCloseDyeBatch.SelectedIndex = 1; // Default to "No"
         }
 
         private void cboBatchNo_SelectedIndexChanged(object sender, EventArgs e)
@@ -445,7 +435,6 @@ namespace DyeHouse
             int rowsSaved = 0;
             var selectedBatchNo = cboBatchNo.SelectedItem.ToString();
             var selectedTransactionNo = selectedBatchNo.Replace("GD000", "");
-            bool closeDyeBatch = cboCloseDyeBatch.SelectedItem.ToString() == "Yes";
             int transactionNo = int.Parse(selectedTransactionNo);
 
             if (_hasExistingRows && _gridDirty)
@@ -476,7 +465,7 @@ namespace DyeHouse
 
                 try
                 {
-                    SaveDataRow(row, selectedTransactionNo, selectedBatchNo, closeDyeBatch,
+                    SaveDataRow(row, selectedTransactionNo, selectedBatchNo,
                         sizeDescription, grade, boxNumber, boxQuantity);
                     rowsSaved++;
                 }
@@ -502,8 +491,7 @@ namespace DyeHouse
             }
         }
 
-        private void SaveDataRow(DataGridViewRow row, string selectedTransactionNo, string selectedBatchNo, bool closeDyeBatch,
-    string sizeDescription, string grade, string boxNumber, int boxQuantity)
+        private void SaveDataRow(DataGridViewRow row, string selectedTransactionNo, string selectedBatchNo, string sizeDescription, string grade, string boxNumber, int boxQuantity)
         {
             var size = _context.TLADM_Sizes.FirstOrDefault(s => s.SI_Description == sizeDescription);
             if (size == null)
