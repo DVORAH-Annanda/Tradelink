@@ -407,7 +407,7 @@ namespace DyeHouse
                         accumulatedQuantity += toBatchQty;
 
                         StockOnHand.TLSOH_Transfered = true; 
-                        StockOnHand.TLSOH_TransferNotes = txtBatchNumber.Text;
+                        StockOnHand.TLSOH_TransferNotes = txtBatchNumber.Text;  //Garment Dyeing Batch Number
                         StockOnHand.TLSOH_Colour_FK = ColourSelected.Col_Id;
                         StockOnHand.TLSOH_WareHouse_FK = 93; //WIPGD - WIP Garment Dyeing
                         if (string.IsNullOrWhiteSpace(StockOnHand.TLSOH_PFD_BoxNumber))
@@ -437,6 +437,7 @@ namespace DyeHouse
                                 DyeRFD_FinishDyeDate = dtpDateDyeCompletion.Value.Date,
                                 DyeRFD_DyeToColour = ColourSelected.Col_Id,
                                 DyeRFD_StockOnHand_Fk = StockOnHand.TLSOH_Pk,
+                                DyeRFD_NoumberOfAGrades = StockOnHand.TLSOH_BoxedQty,
                                 DyeRFD_Transaction_No = lastBatchNo.col14
                             };
 
@@ -493,29 +494,25 @@ namespace DyeHouse
         }
 
 
-        private void cmboStyles_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            ComboBox oCmbo = sender as ComboBox;
-            //if (oCmbo != null && formLoaded)
-            //{
-            //    TLADM_Styles StyleSelected = (TLADM_Styles)oCmbo.SelectedItem;
+        //private void cmboStyles_SelectedIndexChanged(object sender, EventArgs e)
+        //{
+        //    ComboBox oCmbo = sender as ComboBox;
 
-            //    if (StyleSelected != null)
-            //    {
-            //        LoadGarmentsAvailable(StyleSelected);
-            //    }               
-            //}
-        }
+        //}
 
         private void LoadGarmentsAvailable(TLADM_Styles selectedStyle, TLADM_Sizes selectedSize)
         {
-            //  var StockAvail = _context.TLCSV_StockOnHand.Where(x => x.TLSOH_Style_FK == selectedStyle.Sty_Id && x.TLSOH_Size_FK == selectedSize.SI_id.OrderBy(x => x.TLSOH_BoxNumber).ToList();
-
             var StockAvail = _context.TLCSV_StockOnHand
-    .Where(x => x.TLSOH_Style_FK == selectedStyle.Sty_Id
-             && x.TLSOH_Size_FK == selectedSize.SI_id) //kyk weer na die query sodat net PFD gelys word
-    .OrderBy(x => x.TLSOH_BoxNumber)
-    .ToList();
+                .Where(x => x.TLSOH_Style_FK == selectedStyle.Sty_Id
+                         && x.TLSOH_Size_FK == selectedSize.SI_id
+                         //&& x.TLSOH_WareHouse_FK == 92  //*George PFD Garments for Dyeing Warehouse = GPFDGD **MOET hierdie terugsit! AS20260409
+                         && !x.TLSOH_Sold
+                         && !x.TLSOH_Write_Off
+                         && !_context.TLDYE_RFDHistory
+                                .Select(h => h.DyeRFD_StockOnHand_Fk)
+                                .Contains(x.TLSOH_Pk))
+                .OrderBy(x => x.TLSOH_BoxNumber)
+                .ToList();
 
             foreach (var SAvail in StockAvail)
             {

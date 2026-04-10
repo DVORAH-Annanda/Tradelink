@@ -19,6 +19,10 @@ namespace DyeHouse
         int gPreviousRowIndex = -1;
         protected readonly TTI2Entities _context;
 
+        private bool _loadingExistingRows = false;
+        private bool _gridDirty = false;
+        private bool _hasExistingRows = false;
+
         public frmGarmentDyeingBatchApproval()
         {
             InitializeComponent();
@@ -28,9 +32,11 @@ namespace DyeHouse
             cboBatchNo.SelectedIndexChanged += new EventHandler(cboBatchNo_SelectedIndexChanged);
 
             // Add event handlers for DataGridView
-            //dgvDyeBatch.CellValueChanged += new DataGridViewCellEventHandler(dgvDyeBatch_CellValueChanged);
-            //dgvDyeBatch.RowValidating += new DataGridViewCellCancelEventHandler(dgvDyeBatch_RowValidating);
             dgvDyeBatch.RowValidating += dgvDyeBatch_RowValidating;
+            dgvDyeBatch.CellValueChanged += dgvDyeBatch_CellValueChanged;
+            dgvDyeBatch.CurrentCellDirtyStateChanged += dgvDyeBatch_CurrentCellDirtyStateChanged;
+            dgvDyeBatch.UserDeletedRow += dgvDyeBatch_UserDeletedRow;
+            dgvDyeBatch.RowsAdded += dgvDyeBatch_RowsAdded;
         }
 
 
@@ -60,7 +66,11 @@ namespace DyeHouse
             dtpDateDyed.Value = DateTimePicker.MinimumDateTime;
 
             dgvDyeBatch.AutoGenerateColumns = false;
-            dgvDyeBatch.AllowUserToAddRows = false;            
+            dgvDyeBatch.AllowUserToAddRows = false;
+
+            _gridDirty = false;
+            _hasExistingRows = false;
+            btnSave.Enabled = false;
         }
 
         private void LoadBatchNumbers()
@@ -93,63 +103,174 @@ namespace DyeHouse
 
         private void PopulateDataGridForSelectedBatch()
         {
-            //if (cboBatchNo.SelectedIndex == -1 || cboBatchNo.SelectedIndex == 0) return;
+            var selectedTransactionNo = int.Parse(cboBatchNo.SelectedItem.ToString().Replace("GD000", ""));
 
-            var selectedTransactionNo = cboBatchNo.SelectedItem.ToString().Replace("GD000", "");
             var transactionEntries = _context.TLDYE_RFDHistory
-                .Where(x => x.DyeRFD_Transaction_No.ToString() == selectedTransactionNo)
+                .Where(x => x.DyeRFD_Transaction_No == selectedTransactionNo)
                 .ToList();
 
-            if (transactionEntries.Any())
+            dgvDyeBatch.Columns.Clear();
+            dgvDyeBatch.Rows.Clear();
+
+            if (!transactionEntries.Any())
             {
-                var transactionEntry = transactionEntries.First();
-
-                dtpDateDyed.Value = transactionEntry.DyeRFD_BeginDyeDate ?? DateTimePicker.MinimumDateTime; // Use DateTimePicker.MinimumDateTime if the date is null
-
-                var styles = transactionEntries
-                    .Select(x => _context.TLADM_Styles.FirstOrDefault(s => s.Sty_Id == x.DyeRFD_CurrentStyle)?.Sty_Description)
-                    .Distinct()
-                    .ToList();
-
-                var colours = transactionEntries
-                    .Select(x => _context.TLADM_Colours.FirstOrDefault(c => c.Col_Id == x.DyeRFD_DyeToColour)?.Col_Display)
-                    .Distinct()
-                    .ToList();
-
-                txtStyle.Text = styles.FirstOrDefault();
-                txtColour.Text = colours.FirstOrDefault();
-
-                var sizes = _context.TLADM_Sizes
-                    .Where(x => !x.SI_Discontinued)
-                    .OrderBy(x => x.SI_DisplayOrder)
-                    .Select(x => x.SI_Description)
-                    .ToList();
-
-                // Clear existing columns and add new columns
-                dgvDyeBatch.Columns.Clear();
-                dgvDyeBatch.Rows.Clear();
-
-                AddSizeComboBoxColumn("Size", "Size", sizes);
-                AddGridColumn("BoxNumber", "Box Number", true);
-                AddComboBoxColumn("Grade", "Grade", new List<string> { "A", "B", "C", "D", "E" });
-                AddGridColumn("BoxQuantity", "Box Quantity", true);
-
-                //dgvDyeBatch.AllowUserToAddRows = true;
-                AddNewRow(1); // Start with Box Number 1
-                
+                btnSave.Enabled = false;
+                return;
             }
-            else
+
+            var transactionEntry = transactionEntries.First();
+
+            dtpDateDyed.Value = transactionEntry.DyeRFD_BeginDyeDate ?? DateTimePicker.MinimumDateTime;
+
+            var styles = transactionEntries
+                .Select(x => _context.TLADM_Styles
+                    .Where(s => s.Sty_Id == x.DyeRFD_CurrentStyle)
+                    .Select(s => s.Sty_Description)
+                    .FirstOrDefault())
+                .Distinct()
+                .ToList();
+
+            var colours = transactionEntries
+                .Select(x => _context.TLADM_Colours
+                    .Where(c => c.Col_Id == x.DyeRFD_DyeToColour)
+                    .Select(c => c.Col_Display)
+                    .FirstOrDefault())
+                .Distinct()
+                .ToList();
+
+            txtStyle.Text = styles.FirstOrDefault();
+            txtColour.Text = colours.FirstOrDefault();
+
+            var sizes = _context.TLADM_Sizes
+                .Where(x => !x.SI_Discontinued)
+                .OrderBy(x => x.SI_DisplayOrder)
+                .Select(x => x.SI_Description)
+                .ToList();
+
+            AddSizeComboBoxColumn("Size", "Size", sizes);
+            AddGridColumn("BoxNumber", "Box Number", true);
+            AddComboBoxColumn("Grade", "Grade", new List<string> { "A", "B", "C", "D", "E" });
+            AddGridColumn("BoxQuantity", "Box Quantity", true);
+
+            var existingProductionRows = _context.TLDYE_GarmentDyeingProduction
+                .Where(x => x.GarmentDyeingTransactionNo == selectedTransactionNo)
+                .OrderBy(x => x.BoxNo)
+                .ToList();
+
+            _loadingExistingRows = true;
+            try
             {
-                // Clear existing columns if no entries found
-                dgvDyeBatch.Columns.Clear();
-                dgvDyeBatch.Rows.Clear();
+                if (existingProductionRows.Any())
+                {
+                    _hasExistingRows = true;
+                    _gridDirty = false;
+                    btnSave.Enabled = false;
+
+                    foreach (var prodRow in existingProductionRows)
+                    {
+                        var sizeDesc = _context.TLADM_Sizes
+                            .Where(s => s.SI_id == prodRow.Size)
+                            .Select(s => s.SI_Description)
+                            .FirstOrDefault();
+
+                        int rowIndex = dgvDyeBatch.Rows.Add();
+                        dgvDyeBatch.Rows[rowIndex].Cells["Size"].Value = sizeDesc;
+                        dgvDyeBatch.Rows[rowIndex].Cells["BoxNumber"].Value = ExtractBoxSuffix(prodRow.BoxNo);
+                        dgvDyeBatch.Rows[rowIndex].Cells["Grade"].Value = prodRow.Grade;
+                        dgvDyeBatch.Rows[rowIndex].Cells["BoxQuantity"].Value = prodRow.BoxQuantity;
+                    }
+
+                    dgvDyeBatch.AllowUserToAddRows = true;
+                }
+                else
+                {
+                    _hasExistingRows = false;
+                    _gridDirty = false;
+                    btnSave.Enabled = false;
+
+                    AddNewRow(1);
+                }
             }
+            finally
+            {
+                _loadingExistingRows = false;
+            }
+        }
+
+        //private void PopulateDataGridForSelectedBatch()
+        //{
+        //    //if (cboBatchNo.SelectedIndex == -1 || cboBatchNo.SelectedIndex == 0) return;
+
+        //    var selectedTransactionNo = cboBatchNo.SelectedItem.ToString().Replace("GD000", "");
+        //    var transactionEntries = _context.TLDYE_RFDHistory
+        //        .Where(x => x.DyeRFD_Transaction_No.ToString() == selectedTransactionNo)
+        //        .ToList();
+
+        //    if (transactionEntries.Any())
+        //    {
+        //        var transactionEntry = transactionEntries.First();
+
+        //        dtpDateDyed.Value = transactionEntry.DyeRFD_BeginDyeDate ?? DateTimePicker.MinimumDateTime; // Use DateTimePicker.MinimumDateTime if the date is null
+
+        //        var styles = transactionEntries
+        //            .Select(x => _context.TLADM_Styles.FirstOrDefault(s => s.Sty_Id == x.DyeRFD_CurrentStyle)?.Sty_Description)
+        //            .Distinct()
+        //            .ToList();
+
+        //        var colours = transactionEntries
+        //            .Select(x => _context.TLADM_Colours.FirstOrDefault(c => c.Col_Id == x.DyeRFD_DyeToColour)?.Col_Display)
+        //            .Distinct()
+        //            .ToList();
+
+        //        txtStyle.Text = styles.FirstOrDefault();
+        //        txtColour.Text = colours.FirstOrDefault();
+
+        //        var sizes = _context.TLADM_Sizes
+        //            .Where(x => !x.SI_Discontinued)
+        //            .OrderBy(x => x.SI_DisplayOrder)
+        //            .Select(x => x.SI_Description)
+        //            .ToList();
+
+        //        // Clear existing columns and add new columns
+        //        dgvDyeBatch.Columns.Clear();
+        //        dgvDyeBatch.Rows.Clear();
+
+        //        AddSizeComboBoxColumn("Size", "Size", sizes);
+        //        AddGridColumn("BoxNumber", "Box Number", true);
+        //        AddComboBoxColumn("Grade", "Grade", new List<string> { "A", "B", "C", "D", "E" });
+        //        AddGridColumn("BoxQuantity", "Box Quantity", true);
+
+        //        //dgvDyeBatch.AllowUserToAddRows = true;
+        //        AddNewRow(1); // Start with Box Number 1
+
+        //    }
+        //    else
+        //    {
+        //        // Clear existing columns if no entries found
+        //        dgvDyeBatch.Columns.Clear();
+        //        dgvDyeBatch.Rows.Clear();
+        //    }
+        //}
+
+        private string ExtractBoxSuffix(string fullBoxNo)
+        {
+            if (string.IsNullOrWhiteSpace(fullBoxNo))
+                return string.Empty;
+
+            int lastDash = fullBoxNo.LastIndexOf('-');
+            if (lastDash >= 0 && lastDash < fullBoxNo.Length - 1)
+                return fullBoxNo.Substring(lastDash + 1);
+
+            return fullBoxNo;
         }
 
         private void dgvDyeBatch_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
+            if (_loadingExistingRows) return;
+
             if (e.RowIndex >= 0 && !dgvDyeBatch.Rows[e.RowIndex].IsNewRow)
             {
+                MarkGridDirty();
                 ValidateAndAddRow(e.RowIndex);
             }
         }
@@ -162,8 +283,39 @@ namespace DyeHouse
             }
         }
 
+        private void dgvDyeBatch_CurrentCellDirtyStateChanged(object sender, EventArgs e)
+        {
+            if (dgvDyeBatch.IsCurrentCellDirty)
+            {
+                dgvDyeBatch.CommitEdit(DataGridViewDataErrorContexts.Commit);
+            }
+        }
+
+        private void dgvDyeBatch_UserDeletedRow(object sender, DataGridViewRowEventArgs e)
+        {
+            MarkGridDirty();
+        }
+
+        private void dgvDyeBatch_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
+        {
+            if (!_loadingExistingRows && FormLoaded)
+            {
+                MarkGridDirty();
+            }
+        }
+
+        private void MarkGridDirty()
+        {
+            if (_loadingExistingRows) return;
+
+            _gridDirty = true;
+            btnSave.Enabled = true;
+        }
+
         private void ValidateAndAddRow(int rowIndex)
         {
+            if (_loadingExistingRows) return;
+
             var row = dgvDyeBatch.Rows[rowIndex];
             bool isRowComplete = true;
 
@@ -177,15 +329,41 @@ namespace DyeHouse
             }
 
             if (isRowComplete && gPreviousRowIndex != rowIndex)
-            {                
-                int nextBoxNumber = rowIndex + 2; // Since rowIndex is 0-based, next box number is rowIndex + 2
+            {
+                int nextBoxNumber = rowIndex + 2;
                 gPreviousRowIndex = rowIndex;
-                this.BeginInvoke((MethodInvoker)delegate {
+
+                this.BeginInvoke((MethodInvoker)delegate
+                {
                     AddNewRow(nextBoxNumber);
-                    //dgvDyeBatch.AllowUserToAddRows = true;
                 });
             }
         }
+
+        //private void ValidateAndAddRow(int rowIndex)
+        //{
+        //    var row = dgvDyeBatch.Rows[rowIndex];
+        //    bool isRowComplete = true;
+
+        //    foreach (DataGridViewCell cell in row.Cells)
+        //    {
+        //        if (cell.Value == null || string.IsNullOrWhiteSpace(cell.Value.ToString()))
+        //        {
+        //            isRowComplete = false;
+        //            break;
+        //        }
+        //    }
+
+        //    if (isRowComplete && gPreviousRowIndex != rowIndex)
+        //    {                
+        //        int nextBoxNumber = rowIndex + 2; // Since rowIndex is 0-based, next box number is rowIndex + 2
+        //        gPreviousRowIndex = rowIndex;
+        //        this.BeginInvoke((MethodInvoker)delegate {
+        //            AddNewRow(nextBoxNumber);
+        //            //dgvDyeBatch.AllowUserToAddRows = true;
+        //        });
+        //    }
+        //}
 
         private void AddComboBoxColumn(string dataPropertyName, string headerText, List<string> items)
         {
@@ -268,6 +446,24 @@ namespace DyeHouse
             var selectedBatchNo = cboBatchNo.SelectedItem.ToString();
             var selectedTransactionNo = selectedBatchNo.Replace("GD000", "");
             bool closeDyeBatch = cboCloseDyeBatch.SelectedItem.ToString() == "Yes";
+            int transactionNo = int.Parse(selectedTransactionNo);
+
+            if (_hasExistingRows && _gridDirty)
+            {
+                var existingRows = _context.TLDYE_GarmentDyeingProduction
+                    .Where(x => x.GarmentDyeingTransactionNo == transactionNo)
+                    .ToList();
+
+                foreach (var existing in existingRows)
+                {
+                    _context.TLDYE_GarmentDyeingProduction.Remove(existing);
+                }
+            }
+            else if (_hasExistingRows && !_gridDirty)
+            {
+                MessageBox.Show("No changes were made.");
+                return;
+            }
 
             foreach (DataGridViewRow row in dgvDyeBatch.Rows)
             {
@@ -333,7 +529,7 @@ namespace DyeHouse
                 Grade = grade,
                 BoxNo = newGarmentBoxNo,
                 BoxQuantity = boxQuantity,
-                Closed = closeDyeBatch
+                Closed = true  //**TODO-AS: should validate if box quantities is same as original batch quantities -> DyeRFD_NoumberOfAGrades (also rename this field! to DyePFD_BoxQuantity) )
             };
 
             _context.TLDYE_GarmentDyeingProduction.Add(garmentDyeingProduction);
@@ -353,67 +549,10 @@ namespace DyeHouse
                 newGarmentBoxNo);
         }
 
-        //private void SaveDataRow(DataGridViewRow row, string selectedTransactionNo, string selectedBatchNo, bool closeDyeBatch,
-        //    string sizeDescription, string grade, string boxNumber, int boxQuantity)
-        //{
-        //    //var sizeDescription = row.Cells["Size"].Value?.ToString();
-        //    var size = _context.TLADM_Sizes.FirstOrDefault(s => s.SI_Description == sizeDescription);
-        //    if (size == null)
-        //    {
-        //        MessageBox.Show($"Size not found: {sizeDescription}");
-        //        return;
-        //    }
-
-        //    string newGarmentBoxNo = $"{selectedBatchNo}-{boxNumber.PadLeft(2, '0')}";
-        //    var sizeId = size.SI_id;
-        //    //var grade = row.Cells["Grade"].Value?.ToString();
-        //    //var boxNumber = row.Cells["BoxNumber"].Value?.ToString();
-        //    //var boxQuantity = int.Parse(row.Cells["BoxQuantity"].Value?.ToString() ?? "0");
-
-        //    if (string.IsNullOrEmpty(grade) || string.IsNullOrEmpty(boxNumber) || boxQuantity == 0)
-        //    {
-        //        MessageBox.Show("Please fill in all fields for each row.");
-        //        return;
-        //    }
-
-        //    var garmentDyeingProduction = new TLDYE_GarmentDyeingProduction
-        //    {
-        //        GarmentDyeingTransactionNo = int.Parse(selectedTransactionNo),
-        //        Size = sizeId,
-        //        Grade = grade,
-        //        BoxNo = newGarmentBoxNo,
-        //        BoxQuantity = boxQuantity,
-        //        Closed = closeDyeBatch
-        //    };
-
-        //    _context.TLDYE_GarmentDyeingProduction.Add(garmentDyeingProduction);
-        //    var stock = _context.TLCSV_StockOnHand.Where(x => x.TLSOH_WareHouse_FK == 93 && x.TLSOH_Size_FK == sizeId && x.TLSOH_PFD_BoxNumber != null);
-        //    if (stock == null)
-        //    {
-        //        throw new Exception($"StockOnHand record not found");
-        //    }
-
-        //    var history = _context.TLDYE_RFDHistory
-        //        .FirstOrDefault(x => x.DyeRFD_Transaction_No == int.Parse(selectedTransactionNo));
-
-        //    if (history == null)
-        //    {
-        //        throw new Exception($"No RFD history found for transaction {selectedTransactionNo}");
-        //    }
-
-        //    UpdateMatchingStockOnHandRows(
-        //        int.Parse(selectedTransactionNo),
-        //        history.DyeRFD_CurrentStyle,
-        //        sizeId,
-        //        newGarmentBoxNo);
-
-        //}
-
-        private void UpdateMatchingStockOnHandRows(
-    int transactionNo,
-    int styleFk,
-    int sizeFk,
-    string newGarmentBoxNo)
+        private void UpdateMatchingStockOnHandRows(int transactionNo,
+                                                   int styleFk,
+                                                   int sizeFk,
+                                                   string newGarmentBoxNo)
         {
             var matchingStocks =
                 (from h in _context.TLDYE_RFDHistory
@@ -425,7 +564,7 @@ namespace DyeHouse
                        && s.TLSOH_WareHouse_FK == 93
                        && s.TLSOH_PFD_BoxNumber != null
                        && s.TLSOH_PFD_BoxNumber != ""
-                 select s).ToList();
+                 select s).Distinct().ToList();
 
             if (matchingStocks.Count == 0)
             {
@@ -434,9 +573,52 @@ namespace DyeHouse
 
             foreach (var stock in matchingStocks)
             {
-                stock.TLSOH_BoxNumber = newGarmentBoxNo;
-                stock.TLSOH_WareHouse_FK = 102;
+                stock.TLSOH_PFD_BoxNumber = AppendGarmentBoxNo(
+                    stock.TLSOH_PFD_BoxNumber,
+                    newGarmentBoxNo,
+                    stock.TLSOH_BoxNumber
+                );
+
+                stock.TLSOH_WareHouse_FK = 101;
             }
+        }
+
+        private string AppendGarmentBoxNo(string existingValue, string newGarmentBoxNo, string currentBoxNo)
+        {
+            // If field is empty, start with original box number
+            if (string.IsNullOrWhiteSpace(existingValue))
+            {
+                return $"{currentBoxNo}|{newGarmentBoxNo}";
+            }
+
+            string originalBox = existingValue;
+            string existingGarmentBoxes = string.Empty;
+
+            if (existingValue.Contains("|"))
+            {
+                var parts = existingValue.Split('|');
+                originalBox = parts[0];
+
+                if (parts.Length > 1)
+                    existingGarmentBoxes = parts[1];
+            }
+
+            var garmentBoxList = new List<string>();
+
+            if (!string.IsNullOrWhiteSpace(existingGarmentBoxes))
+            {
+                garmentBoxList = existingGarmentBoxes
+                    .Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+                    .Select(x => x.Trim())
+                    .ToList();
+            }
+
+            if (!garmentBoxList.Contains(newGarmentBoxNo))
+            {
+                garmentBoxList.Add(newGarmentBoxNo);
+            }
+
+            return $"{originalBox}|{string.Join(",", garmentBoxList)}";
         }
 
         private void frmGarmentDyeingBatchApproval_FormClosing(object sender, FormClosingEventArgs e)
