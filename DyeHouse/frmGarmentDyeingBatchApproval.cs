@@ -50,7 +50,6 @@ namespace DyeHouse
             LoadMachineDefinitions();
             LoadShifts();
 
-         
             FormLoaded = true;
         }
 
@@ -83,8 +82,6 @@ namespace DyeHouse
             cboBatchNo.DataSource = batchNumbers;
             cboBatchNo.SelectedIndex = -1;
         }
-
-
 
         private void cboBatchNo_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -438,7 +435,6 @@ namespace DyeHouse
             int rowsSaved = 0;
             var selectedBatchNo = cboBatchNo.SelectedItem.ToString();
             var selectedTransactionNo = selectedBatchNo.Replace("GD000", "");
-            
             int transactionNo = int.Parse(selectedTransactionNo);
 
             if (_hasExistingRows && _gridDirty)
@@ -469,7 +465,7 @@ namespace DyeHouse
 
                 try
                 {
-                    SaveDataRow(row, selectedTransactionNo, selectedBatchNo, 
+                    SaveDataRow(row, selectedTransactionNo, selectedBatchNo,
                         sizeDescription, grade, boxNumber, boxQuantity);
                     rowsSaved++;
                 }
@@ -495,8 +491,7 @@ namespace DyeHouse
             }
         }
 
-        private void SaveDataRow(DataGridViewRow row, string selectedTransactionNo, string selectedBatchNo, 
-    string sizeDescription, string grade, string boxNumber, int boxQuantity)
+        private void SaveDataRow(DataGridViewRow row, string selectedTransactionNo, string selectedBatchNo, string sizeDescription, string grade, string boxNumber, int boxQuantity)
         {
             var size = _context.TLADM_Sizes.FirstOrDefault(s => s.SI_Description == sizeDescription);
             if (size == null)
@@ -525,7 +520,7 @@ namespace DyeHouse
 
             };
 
-            //**Close dye batch: DyeRFD_Completed = 1 (not supposed to show in )
+            //TLDYE_RFDHistory.DyeRFD_Completed = 1 (Close dye batch: TLDYE_GarmentDyeingProduction.Closed - production should be closed when in BLW warehouse)
             //**TODO-AS: should validate if box quantities is same as original batch quantities -> DyeRFD_NoumberOfAGrades (also rename this field! to DyePFD_BoxQuantity) )
 
             _context.TLDYE_GarmentDyeingProduction.Add(garmentDyeingProduction);
