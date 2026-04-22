@@ -1364,7 +1364,6 @@ namespace CustomerServices
                     PLWait.SetDataSource(ds);
                     crystalReportViewer1.ReportSource = PLWait;
                 }
-
             }
             else if (_RepNo == 10)   // Orders Picked --- Delivery Note  
             {
@@ -1380,6 +1379,9 @@ namespace CustomerServices
 
                 using (var context = new TTI2Entities())
                 {
+                    Util core = new Util();
+                    var productCodeLookup = core.BuildProductCodeLookup();
+
                     if (!_Svces.DNReprint)
                     {
                         var Index = _QueryParms.Customers.FirstOrDefault().Cust_Pk;
@@ -1434,7 +1436,10 @@ namespace CustomerServices
                                         nr.WareHouse = context.TLADM_WhseStore.Find(Row.TLSOH_WareHouse_FK).WhStore_Description;
                                         //============================================================
                                         nr.Pk = 1;
-                                        nr.ProductCode = Row.TLSOH_PastelNumber;
+                                        //nr.ProductCode = Row.TLSOH_PastelNumber;
+                                        nr.ProductCode = core.GetProductCodeFromStockLookup(productCodeLookup,
+                                                                                            Row,
+                                                                                            Row.TLSOH_PastelNumber);
                                         var PODetail = context.TLCSV_PuchaseOrderDetail.Find(Row.TLSOH_POOrderDetail_FK);
                                         if (PODetail != null)
                                             nr.OrderNumber = context.TLCSV_PurchaseOrder.Find(PODetail.TLCUSTO_PurchaseOrder_FK).TLCSVPO_PurchaseOrder;
@@ -1550,7 +1555,10 @@ namespace CustomerServices
                                         DataSet10.DataTable1Row nr = dataTable1.NewDataTable1Row();
                                         nr.WareHouse = context.TLADM_WhseStore.Find(Row.TLSOH_WareHouse_FK).WhStore_Description;
                                         nr.Pk = 1;
-                                        nr.ProductCode = Row.TLSOH_PastelNumber;
+                                        nr.ProductCode = core.GetProductCodeFromStockLookup(productCodeLookup,
+                                                                                            Row,
+                                                                                            Row.TLSOH_PastelNumber);
+
                                         var PODetail = context.TLCSV_PuchaseOrderDetail.Find(Row.TLSOH_POOrderDetail_FK);
                                         if (PODetail != null)
                                             nr.OrderNumber = context.TLCSV_PurchaseOrder.Find(PODetail.TLCUSTO_PurchaseOrder_FK).TLCSVPO_PurchaseOrder;
