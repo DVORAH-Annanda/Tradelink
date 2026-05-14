@@ -15,7 +15,8 @@ using System.Security.Principal;
 using System.Net;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
-using Microsoft.Office.Interop.Outlook;
+using System.Configuration;
+using System.Data.SqlClient;
 
 namespace Utilities
 {
@@ -366,8 +367,6 @@ namespace Utilities
         public bool AGrade { get; set; }
         public bool SplitBoxOnly { get; set; }
         public bool Discontinued { get; set; } 
-
-
     }
 
     public class CMTReportOptions
@@ -820,13 +819,27 @@ namespace Utilities
         public bool GKM_Quality  { get; set;}
         public bool GKM_Machines  { get; set;}
         public bool GKM_Operators { get; set; }
-      
 
     }
 
     public class Util
     {
         bool nonNumeric;
+
+        private string BuildProductCodeKey(int styleId, int colourId, int sizeId)
+        {
+            return styleId.ToString() + "|" + colourId.ToString() + "|" + sizeId.ToString();
+        }
+
+        private string GetConnectionString()
+        {
+            var cs = ConfigurationManager.ConnectionStrings["TTISqlConnection"];
+            if (cs == null || string.IsNullOrWhiteSpace(cs.ConnectionString))
+                throw new ApplicationException("Connection string 'TTISqlConnection' was not found.");
+
+            return cs.ConnectionString;
+        }
+
         public double standardVariance(double mean, IEnumerable<double> sequence)
         {
             double temp = 0;
@@ -839,12 +852,12 @@ namespace Utilities
                 }
             }
             return temp / (sequence.Count() - 0);
-     
+
         }
         public double standardDeviation(IEnumerable<double> sequence)
         {
             double result = 0;
-                     
+
             if (sequence.Any())
             {
                 double average = sequence.Average();
@@ -860,7 +873,7 @@ namespace Utilities
             int Seed = 0;
             foreach (var item in SelectionMade)
             {
-                if(item.Equals(true))
+                if (item.Equals(true))
                 {
                     Res += (int)Math.Pow(2.000, (double)Seed);
                 }
@@ -900,7 +913,7 @@ namespace Utilities
                 {
                     GreigeP = GreigeP.Where(x => x.GreigeP_Grade != null && (x.GreigeP_Grade.Trim() == "B" || x.GreigeP_Grade.Trim() == "C")).ToList();
                 }
-                
+
 
                 if (GradeSelection == 1 || GradeSelection == 3 ||
                     GradeSelection == 5 || GradeSelection == 7)
@@ -916,7 +929,7 @@ namespace Utilities
         public decimal DyeOrdersLT8Weeks(int Pk)
         {
             var Result = 0.00M;
-            using(var context = new TTI2Entities())
+            using (var context = new TTI2Entities())
             {
                 int ThisWeek = GetIso8601WeekOfYear(DateTime.Now);
                 ThisWeek += 8;
@@ -926,7 +939,7 @@ namespace Utilities
 
                 var LessThan = from DO in context.TLDYE_DyeOrder
                                join DOD in context.TLDYE_DyeOrderDetails on DO.TLDYO_Pk equals DOD.TLDYOD_DyeOrder_Fk
-                               where DOD.TLDYOD_BodyOrTrim && !DO.TLDYO_Closed && 
+                               where DOD.TLDYOD_BodyOrTrim && !DO.TLDYO_Closed &&
                                ((DO.TLDYO_OrderDate.Year == ThisYear && DO.TLDYO_DyeReqWeek <= ThisWeek) ||
                                (DO.TLDYO_OrderDate.Year <= PrevYear)) && DO.TLDYO_Greige_FK == Pk
                                select new { DO, DOD };
@@ -942,12 +955,12 @@ namespace Utilities
 
                     if (AlreadyBatched.Count() != 0)
                     {
-                        Result  -= (decimal)AlreadyBatched.Sum(x => (decimal?)x.DYEB_BatchKG ?? 0.00M);
+                        Result -= (decimal)AlreadyBatched.Sum(x => (decimal?)x.DYEB_BatchKG ?? 0.00M);
                     }
                 }
 
 
-                
+
             }
             return Result;
         }
@@ -956,9 +969,9 @@ namespace Utilities
         {
             var Result = 0.00M;
             int ThisWeek = GetIso8601WeekOfYear(DateTime.Now);
-            int ThisYear = DateTime.Now.Year; 
+            int ThisYear = DateTime.Now.Year;
 
-            using ( var context = new TTI2Entities())
+            using (var context = new TTI2Entities())
             {
                 var GreaterThan = (from DO in context.TLDYE_DyeOrder
                                    join DOD in context.TLDYE_DyeOrderDetails on DO.TLDYO_Pk equals DOD.TLDYOD_DyeOrder_Fk
@@ -989,9 +1002,9 @@ namespace Utilities
             using (var context = new TTI2Entities())
             {
                 var DORecordCount = (from DOrder in context.TLDYE_DyeOrder
-                           join DOrderD in context.TLDYE_DyeOrderDetails on DOrder.TLDYO_Pk equals DOrderD.TLDYOD_DyeOrder_Fk
-                           where !DOrder.TLDYO_Closed && DOrderD.TLDYOD_MarkerRating_FK == RatingKey
-                           select DOrderD).Count();
+                                     join DOrderD in context.TLDYE_DyeOrderDetails on DOrder.TLDYO_Pk equals DOrderD.TLDYOD_DyeOrder_Fk
+                                     where !DOrder.TLDYO_Closed && DOrderD.TLDYOD_MarkerRating_FK == RatingKey
+                                     select DOrderD).Count();
                 if (DORecordCount == 0)
                 {
                     var DBRecordCount = (from DBatch in context.TLDYE_DyeBatch
@@ -1016,9 +1029,9 @@ namespace Utilities
         public decimal CalculateVariance(decimal BenchMark, decimal Actual)
         {
             return (Actual / BenchMark) * 100 - 100;
-            
+
         }
-        public void SendEmailtoContacts(string EMailAddress, DataTable _dt, int MailNo, DateTime Date,  string PO, String TransNo)
+        public void SendEmailtoContacts(string EMailAddress, DataTable _dt, int MailNo, DateTime Date, string PO, String TransNo)
         {
             StringBuilder html = new StringBuilder();
             string subjectEmail = String.Empty;
@@ -1115,8 +1128,8 @@ namespace Utilities
 
         public decimal CalculatePalletNett(TLKNI_YarnOrderPallets Pallet)
         {
-            Decimal NettValue = ((Pallet.TLKNIOP_NettWeight - Pallet.TLKNIOP_NettWeightReserved ) + Pallet.TLKNIOP_AdditionalYarn) + Pallet.TLKNIOP_NettWeightReturned;
-            return  Math.Round(NettValue, 1);
+            Decimal NettValue = ((Pallet.TLKNIOP_NettWeight - Pallet.TLKNIOP_NettWeightReserved) + Pallet.TLKNIOP_AdditionalYarn) + Pallet.TLKNIOP_NettWeightReturned;
+            return Math.Round(NettValue, 1);
         }
 
 
@@ -1187,7 +1200,7 @@ namespace Utilities
 
         }
         */
-              
+
         public int GetWorkingDays(DateTime from, DateTime to)
         {
             int ans = 0;
@@ -1208,8 +1221,8 @@ namespace Utilities
                .Select(x => from.AddDays(x))
                .Count(x => x.DayOfWeek != DayOfWeek.Saturday && x.DayOfWeek != DayOfWeek.Sunday);
             }
-            return ans; 
-            
+            return ans;
+
         }
 
         public int GetWeekNumber(DateTime dt)
@@ -1237,8 +1250,8 @@ namespace Utilities
 
         public decimal CalCulateVariance(decimal firstValue, decimal secondValue)
         {
-                // the easiest way is :
-                return Math.Round(100.0M * (secondValue / firstValue) - 100.0M, 2);
+            // the easiest way is :
+            return Math.Round(100.0M * (secondValue / firstValue) - 100.0M, 2);
         }
 
         public bool GetUserAuthorisation(UserDetails ud, string SectionName)
@@ -1250,7 +1263,7 @@ namespace Utilities
                 using (var context = new TTI2Entities())
                 {
                     var Section = context.TLSEC_Sections.Where(x => x.TLSECSect_Name == SectionName).FirstOrDefault();
-                    if(Section != null)
+                    if (Section != null)
                     {
                         var User = context.TLSEC_UserSections.Where(x => x.TLSECDEP_Section_FK == Section.TLSECSect_Pk && x.TLSECDEP_User_FK == ud._UserPk).FirstOrDefault();
                         if (User != null && User.TLSECDEP_AccessGranted)
@@ -1282,7 +1295,7 @@ namespace Utilities
             {
                 var ColIndex = Cell.ColumnIndex;
 
-                if(ColIndex == 1 || ColIndex > 4)
+                if (ColIndex == 1 || ColIndex > 4)
                 {
                     if (ColIndex == 1)
                     {
@@ -1370,7 +1383,7 @@ namespace Utilities
         public string[][] CreateColumnNames()
         {
             string[][] ColumnNames = new string[][]
-            {   new string[] {"Text4", string.Empty},        
+            {   new string[] {"Text4", string.Empty},
                         new string[] {"Text5", string.Empty},
                         new string[] {"Text6", string.Empty},
                         new string[] {"Text7", string.Empty},
@@ -1381,9 +1394,9 @@ namespace Utilities
                         new string[] {"Text12", string.Empty},
                         new string[] {"Text13", string.Empty},
                         new string[] {"Text14", string.Empty}
-                      
+
             };
-            
+
             using (var context = new TTI2Entities())
             {
                 var Sizes = context.TLADM_Sizes.Where(x => (bool)!x.SI_Discontinued).OrderBy(x => x.SI_DisplayOrder).GroupBy(x => x.SI_ColNumber).ToList();
@@ -1419,10 +1432,10 @@ namespace Utilities
                 var result = (from u in MandatoryFields
                               where u[0] == cell.ColumnIndex.ToString()
                               select u).FirstOrDefault();
-                
+
                 if (result == null)
                     continue;
-               
+
                 if (cell.Value == null && cell.EditedFormattedValue == null)
                     continue;
 
@@ -1442,7 +1455,7 @@ namespace Utilities
 
                 int nbr = Convert.ToInt32(result[2].ToString());
                 complete[nbr] = true;
-      
+
             }
 
             return complete;
@@ -1472,11 +1485,11 @@ namespace Utilities
             }
 
             ExpectedUnits = QtyOrdered - AllReadyPicked;
-            
+
             return ExpectedUnits;
         }
 
-        public Int32 CalculateSales_Units(int Style, int Colour, int Size , DateTime DateFrom, DateTime DateTo)
+        public Int32 CalculateSales_Units(int Style, int Colour, int Size, DateTime DateFrom, DateTime DateTo)
         {
             int ExpectedUnits = 0;
             IList<TLCSV_StockOnHand> StockOnHand = null;
@@ -1499,36 +1512,36 @@ namespace Utilities
         {
             int ExpectedUnits = 0;
             IList<TLCSV_StockOnHand> StockOnHand = null;
- 
+
             using (var context = new TTI2Entities())
             {
-                StockOnHand = (from soh in context.TLCSV_StockOnHand 
+                StockOnHand = (from soh in context.TLCSV_StockOnHand
                                join whse in context.TLADM_WhseStore on soh.TLSOH_WareHouse_FK equals whse.WhStore_Id
-                               where soh.TLSOH_Style_FK == Style 
-                               && soh.TLSOH_Colour_FK == Colour 
+                               where soh.TLSOH_Style_FK == Style
+                               && soh.TLSOH_Colour_FK == Colour
                                && soh.TLSOH_Size_FK == Size
-                               && soh.TLSOH_Is_A  
-                               && !soh.TLSOH_Picked 
-                               && !soh.TLSOH_Sold 
-                               && !soh.TLSOH_Write_Off 
-                               && !soh.TLSOH_Split 
+                               && soh.TLSOH_Is_A
+                               && !soh.TLSOH_Picked
+                               && !soh.TLSOH_Sold
+                               && !soh.TLSOH_Write_Off
+                               && !soh.TLSOH_Split
                                && !soh.TLSOH_Returned
                                && whse.WhStore_GradeA
                                select soh).ToList();
- 
-               if (StockOnHand != null)
-               {
+
+                if (StockOnHand != null)
+                {
                     ExpectedUnits = StockOnHand.Sum(x => (int?)x.TLSOH_BoxedQty) ?? 0;
-               }
+                }
             }
-            
+
             return ExpectedUnits;
         }
 
         public Int32 CalculateDO_Units(int Style, int Colour, int Size)
         {
             int ExpectedUnits = 0;
-          
+
             using (var context = new TTI2Entities())
             {
                 var DyeOrders = context.TLDYE_DyeOrder.Where(x => x.TLDYO_Style_FK == Style && x.TLDYO_Colour_FK == Colour && !x.TLDYO_Closed).ToList();
@@ -1602,7 +1615,7 @@ namespace Utilities
             return ExpectedUnits;
         }
 
-      
+
         public Int32 CalculateDBPrep_Units(int Style, int Colour, int Size)
         {
             int ExpectedUnits = 0;
@@ -1627,9 +1640,9 @@ namespace Utilities
                 {
                     BindingList<KeyValuePair<int, decimal>> Ratios = null;
 
-                   
+
                     var Order = DOOrder.FirstOrDefault();
-                    
+
                     var DyeOrderDetail = context.TLDYE_DyeOrderDetails.Where(x => x.TLDYOD_DyeOrder_Fk == Order.TLDYO_Pk && x.TLDYOD_BodyOrTrim).FirstOrDefault();
                     if (DyeOrderDetail != null)
                     {
@@ -1643,7 +1656,7 @@ namespace Utilities
                         Amt = 0;
                         var FabricYield = DyeOrderDetail.TLDYOD_Yield;
                         var FabricRating = DyeOrderDetail.TLDYOD_Rating;
-                        
+
                         try
                         {
                             var TotalWeight = DOOrder.Sum(x => (decimal?)x.DYEBD_GreigeProduction_Weight) ?? 0.00M;
@@ -1658,7 +1671,7 @@ namespace Utilities
                         ExpectedUnits += Convert.ToInt32((Entry.Value / Total) * Amt);
                         // We dont need to allow for any losses
                         //------------------------------------------------------------
-                        
+
                     }
                 }
             }
@@ -1676,11 +1689,11 @@ namespace Utilities
                 // We have to get it from the respective Dye Orders 
                 //---------------------------------------------------------------
                 var DOrders = from T1 in context.TLDYE_DyeOrder
-                          join T2 in context.TLDYE_DyeBatch on T1.TLDYO_Pk equals T2.DYEB_DyeOrder_FK
-                          join T3 in context.TLDYE_DyeBatchDetails on T2.DYEB_Pk equals T3.DYEBD_DyeBatch_FK
-                          where !T2.DYEB_CommissinCust && T1.TLDYO_Style_FK == Style && T1.TLDYO_Colour_FK == Colour
-                          && !T2.DYEB_Closed && T2.DYEB_Allocated && !T2.DYEB_OutProcess && T3.DYEBD_BodyTrim
-                          select new { T1.TLDYO_Pk, T2.DYEB_Pk, T2.DYEB_Greige_FK, T3.DYEBD_GreigeProduction_Weight };
+                              join T2 in context.TLDYE_DyeBatch on T1.TLDYO_Pk equals T2.DYEB_DyeOrder_FK
+                              join T3 in context.TLDYE_DyeBatchDetails on T2.DYEB_Pk equals T3.DYEBD_DyeBatch_FK
+                              where !T2.DYEB_CommissinCust && T1.TLDYO_Style_FK == Style && T1.TLDYO_Colour_FK == Colour
+                              && !T2.DYEB_Closed && T2.DYEB_Allocated && !T2.DYEB_OutProcess && T3.DYEBD_BodyTrim
+                              select new { T1.TLDYO_Pk, T2.DYEB_Pk, T2.DYEB_Greige_FK, T3.DYEBD_GreigeProduction_Weight };
 
                 var DOrdersx = DOrders.GroupBy(x => x.TLDYO_Pk);
 
@@ -1723,7 +1736,7 @@ namespace Utilities
                         Answer = Convert.ToInt32(Answer * 0.95);
 
                         ExpectedUnits += Answer;
-                        
+
                     }
                 }
             }
@@ -1792,7 +1805,7 @@ namespace Utilities
         public Int32 CalculateCuttingWIP_Units(int Style, int Colour, int Size)
         {
             int ExpectedUnits = 0;
-            using ( var context = new TTI2Entities())
+            using (var context = new TTI2Entities())
             {
                 var CutSheets = context.TLCUT_CutSheet.Where(x => !x.TLCutSH_WIPComplete && x.TLCutSH_Accepted && x.TLCutSH_Styles_FK == Style && x.TLCutSH_Colour_FK == Colour && !x.TLCutSH_Closed).ToList();
                 foreach (var CutSheet in CutSheets)
@@ -1800,7 +1813,7 @@ namespace Utilities
                     var CutSheetDetails = context.TLCUT_CutSheetDetail.Where(x => x.TLCutSHD_CutSheet_FK == CutSheet.TLCutSH_Pk).ToList();
                     if (CutSheetDetails.Count() != 0)
                     {
-                       var EUnits = context.TLCUT_ExpectedUnits.Where(x => x.TLCUTE_CutSheet_FK == CutSheet.TLCutSH_Pk && x.TLCUTE_Size_FK == Size).ToList();
+                        var EUnits = context.TLCUT_ExpectedUnits.Where(x => x.TLCUTE_CutSheet_FK == CutSheet.TLCutSH_Pk && x.TLCUTE_Size_FK == Size).ToList();
                         if (EUnits.Count != 0)
                         {
                             int BoxedUnits = EUnits.Sum(x => (int?)x.TLCUTE_NoofGarments) ?? 0;
@@ -1809,7 +1822,7 @@ namespace Utilities
                         }
                     }
                 }
-                
+
             }
             return ExpectedUnits;
         }
@@ -1831,7 +1844,7 @@ namespace Utilities
                 {
                     ExpectedUnits += CutSheetR.Sum(x => (int?)x.TLCUTSHRD_BoxUnits) ?? 0; ;
                 }
-               
+
             }
             return ExpectedUnits;
 
@@ -1842,10 +1855,10 @@ namespace Utilities
             using (var context = new TTI2Entities())
             {
                 var CMTPanelStore = (from LI in context.TLCMT_LineIssue
-                                    join CR in context.TLCUT_CutSheetReceipt on LI.TLCMTLI_CutSheet_FK equals CR.TLCUTSHR_CutSheet_FK
-                                    join CRD in context.TLCUT_CutSheetReceiptDetail on CR.TLCUTSHR_Pk equals CRD.TLCUTSHRD_CutSheet_FK
-                                    where LI.TLCMTLI_IssuedToLine == false && LI.TLCMTLI_WorkCompleted == false && CR.TLCUTSHR_Style_FK == Style && CR.TLCUTSHR_Colour_FK == Colour && CRD.TLCUTSHRD_Size_FK == Size
-                                    select new { CR.TLCUTSHR_Style_FK, CR.TLCUTSHR_Colour_FK, CRD.TLCUTSHRD_Size_FK, CRD.TLCUTSHRD_BundleQty, CRD.TLCUTSHRD_RejectQty }).ToList();
+                                     join CR in context.TLCUT_CutSheetReceipt on LI.TLCMTLI_CutSheet_FK equals CR.TLCUTSHR_CutSheet_FK
+                                     join CRD in context.TLCUT_CutSheetReceiptDetail on CR.TLCUTSHR_Pk equals CRD.TLCUTSHRD_CutSheet_FK
+                                     where LI.TLCMTLI_IssuedToLine == false && LI.TLCMTLI_WorkCompleted == false && CR.TLCUTSHR_Style_FK == Style && CR.TLCUTSHR_Colour_FK == Colour && CRD.TLCUTSHRD_Size_FK == Size
+                                     select new { CR.TLCUTSHR_Style_FK, CR.TLCUTSHR_Colour_FK, CRD.TLCUTSHRD_Size_FK, CRD.TLCUTSHRD_BundleQty, CRD.TLCUTSHRD_RejectQty }).ToList();
 
                 if (CMTPanelStore.Count != 0)
                 {
@@ -1862,10 +1875,10 @@ namespace Utilities
             using (var context = new TTI2Entities())
             {
                 var CMTWIP = (from LI in context.TLCMT_LineIssue
-                             join CR in context.TLCUT_CutSheetReceipt on LI.TLCMTLI_CutSheet_FK equals CR.TLCUTSHR_CutSheet_FK
-                             join CRD in context.TLCUT_CutSheetReceiptDetail on CR.TLCUTSHR_Pk equals CRD.TLCUTSHRD_CutSheet_FK
-                             where LI.TLCMTLI_IssuedToLine == true && LI.TLCMTLI_WorkCompleted == false && CR.TLCUTSHR_Style_FK == Style && CR.TLCUTSHR_Colour_FK == Colour && CRD.TLCUTSHRD_Size_FK == Size
-                             select new { CR.TLCUTSHR_Style_FK, CR.TLCUTSHR_Colour_FK, CRD.TLCUTSHRD_Size_FK, CRD.TLCUTSHRD_BundleQty, CRD.TLCUTSHRD_RejectQty }).ToList();
+                              join CR in context.TLCUT_CutSheetReceipt on LI.TLCMTLI_CutSheet_FK equals CR.TLCUTSHR_CutSheet_FK
+                              join CRD in context.TLCUT_CutSheetReceiptDetail on CR.TLCUTSHR_Pk equals CRD.TLCUTSHRD_CutSheet_FK
+                              where LI.TLCMTLI_IssuedToLine == true && LI.TLCMTLI_WorkCompleted == false && CR.TLCUTSHR_Style_FK == Style && CR.TLCUTSHR_Colour_FK == Colour && CRD.TLCUTSHRD_Size_FK == Size
+                              select new { CR.TLCUTSHR_Style_FK, CR.TLCUTSHR_Colour_FK, CRD.TLCUTSHRD_Size_FK, CRD.TLCUTSHRD_BundleQty, CRD.TLCUTSHRD_RejectQty }).ToList();
 
                 if (CMTWIP.Count != 0)
                 {
@@ -1903,13 +1916,13 @@ namespace Utilities
             {
                 if (rw.Cells[0].Value != null)
                 {
-                    int Pk         = (int)rw.Cells[0].Value;
-                    string size    = rw.Cells[1].Value.ToString();
-                    decimal ratio  = 0.00M;
-                    int Garments   = 0;
-                    decimal Trims  = 0.00M;
-                    decimal Binding    = 0.00M;
-                    
+                    int Pk = (int)rw.Cells[0].Value;
+                    string size = rw.Cells[1].Value.ToString();
+                    decimal ratio = 0.00M;
+                    int Garments = 0;
+                    decimal Trims = 0.00M;
+                    decimal Binding = 0.00M;
+
                     if (!String.IsNullOrEmpty(rw.Cells[2].Value.ToString()))
                     {
                         ratio = Convert.ToDecimal(rw.Cells[2].Value.ToString());
@@ -1948,7 +1961,7 @@ namespace Utilities
             }
             return OutData;
         }
-       
+
         public DataTable Cal(DataGridView oDgv)
         {
             DataTable dt = new DataTable();
@@ -1964,7 +1977,7 @@ namespace Utilities
             int GTotal = 0;
             decimal GBinding = 0;
             decimal GTrims = 0;
-           
+
             foreach (DataGridViewRow rw in oDgv.Rows)
             {
                 if (rw.Cells[0].Value != null)
@@ -2015,13 +2028,13 @@ namespace Utilities
                         }
                         else
                             drow[6] = 0;
-                                             
+
                         Total += Convert.ToDecimal(rw.Cells[2].Value.ToString());
-                        if(rw.Cells[3].Value != null)
+                        if (rw.Cells[3].Value != null)
                             GTotal += Convert.ToInt32(rw.Cells[3].Value.ToString());
-                        if(rw.Cells[4].Value != null)
+                        if (rw.Cells[4].Value != null)
                             GBinding += Convert.ToDecimal(rw.Cells[4].Value.ToString());
-                        if(rw.Cells[5].Value != null)
+                        if (rw.Cells[5].Value != null)
                             GTrims += Convert.ToInt32(rw.Cells[5].Value.ToString());
 
                     }
@@ -2048,7 +2061,7 @@ namespace Utilities
                         }
                     }
                 }
-             
+
             }
             return dt;
         }
@@ -2067,17 +2080,17 @@ namespace Utilities
                         var Ratios = context.TLADM_ProductRating_Detail.Where(x => x.prd_Parent_FK == Rating.Pr_Id).ToList();
                         foreach (var Ratio in Ratios)
                         {
-                           if (Ratio.Prd_MarkerRatio == 0)
-                               continue;
+                            if (Ratio.Prd_MarkerRatio == 0)
+                                continue;
 
-                           ratioOptions.Add(new KeyValuePair<int, decimal>(Ratio.Prd_SizePN, Ratio.Prd_MarkerRatio));
+                            ratioOptions.Add(new KeyValuePair<int, decimal>(Ratio.Prd_SizePN, Ratio.Prd_MarkerRatio));
                         }
                     }
                     else
                     {
                         ratioOptions.Add(new KeyValuePair<int, decimal>(Rating.Pr_Size_FK, 1));
                     }
-               
+
                 }
             }
             return ratioOptions;
@@ -2106,23 +2119,6 @@ namespace Utilities
         public bool IsAuthorised(string Sender)
         {
             bool IsAuth = false;
-            
-            /*
-            WindowsIdentity currentIdentity;
-            WindowsPrincipal currentPrincipal;
-
-            //----------------------------------------------------------------------------
-            currentIdentity = WindowsIdentity.GetCurrent();
-            AppDomain.CurrentDomain.SetPrincipalPolicy(PrincipalPolicy.WindowsPrincipal);
-            currentPrincipal = (WindowsPrincipal)Thread.CurrentPrincipal;
-            //--------------------------------------------------------------------------------
-
-            Mach_IP = Dns.GetHostEntry(Dns.GetHostName())
-                         .AddressList.First(f => f.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
-                         .ToString();
-            */
-
-            
             return IsAuth;
         }
 
@@ -2156,7 +2152,7 @@ namespace Utilities
                         }
                         else
                         {
-                            MessageBox.Show("Rating Detail Table does not correlate to Ratings Table. Check Rating Table. A default will apply ","Error", MessageBoxButtons.OK , MessageBoxIcon.Error  );
+                            MessageBox.Show("Rating Detail Table does not correlate to Ratings Table. Check Rating Table. A default will apply ", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                             RatioOptions.Add(new KeyValuePair<int, int>(Rating.Pr_Size_FK, NoOfGarments));
                         }
                     }
@@ -2169,7 +2165,7 @@ namespace Utilities
 
             return RatioOptions;
         }
-       
+
         public string DetermineSizes(int Pk)
         {
             StringBuilder sb = new StringBuilder();
@@ -2198,7 +2194,7 @@ namespace Utilities
                     else
                     {
                         var Size = context.TLADM_Sizes.Where(x => x.SI_id == Rating.Pr_Size_Power).FirstOrDefault();
-                        if(Size != null)
+                        if (Size != null)
                             sb.Append(Size.SI_Description);
                     }
                 }
@@ -2208,7 +2204,7 @@ namespace Utilities
 
         public BindingList<KeyValuePair<int, String>> CurrentCustomers(bool FinshedGood)
         {
-            var CC = new BindingList<KeyValuePair<int, string>>(); 
+            var CC = new BindingList<KeyValuePair<int, string>>();
             using (var context = new TTI2Entities())
             {
                 foreach (var Customer in context.TLADM_CustomerFile)
@@ -2247,9 +2243,9 @@ namespace Utilities
                 {
                     if (!Whse.WhStore_WhseOrStore || !Whse.WhStore_GradeA)
                         continue;
-                   
+
                     CC.Add(Whse.WhStore_Code);
-                   
+
                 }
             }
             return CC;
@@ -2291,9 +2287,9 @@ namespace Utilities
 
         public DataTable ListDetermineSizes(int Pk)
         {
-           //============================================================
-           //---------Define the datatable 
-           //=================================================================
+            //============================================================
+            //---------Define the datatable 
+            //=================================================================
             System.Data.DataTable dt = new System.Data.DataTable();
             DataColumn column;
 
@@ -2314,11 +2310,11 @@ namespace Utilities
             column = new DataColumn();
             column.DataType = System.Type.GetType("System.Decimal");
             column.ColumnName = "Col1";
-            
+
             // Add the column to the DataTable.Columns collection.
             //--------------------------------------------------------------
             dt.Columns.Add(column);
-                     
+
             using (var context = new TTI2Entities())
             {
                 var Rating = context.TLADM_ProductRating.Find(Pk);
@@ -2336,7 +2332,7 @@ namespace Utilities
                             DR[0] = row.Prd_SizePN;
                             DR[1] = row.Prd_MarkerRatio;
                             dt.Rows.Add(DR);
-                         }
+                        }
                     }
                     else
                     {
@@ -2344,7 +2340,7 @@ namespace Utilities
                         DR[0] = Rating.Pr_Size_Power;
                         DR[1] = 1.00;
                         dt.Rows.Add(DR);
-                     
+
                     }
                 }
             }
@@ -2368,7 +2364,7 @@ namespace Utilities
         {
             decimal answer = 0.00M;
 
-            if(width > 0.00M && weight > 0.00M)
+            if (width > 0.00M && weight > 0.00M)
                 answer = 50000 / weight / width;
 
             return answer;
@@ -2380,7 +2376,7 @@ namespace Utilities
             decimal Perc = (100 + lossP) / 100;
 
             return Amt * Perc;
-            
+
         }
 
         public decimal ProdNLoss(decimal Amt, decimal lossP)
@@ -2432,10 +2428,10 @@ namespace Utilities
                    };
             }
             var result = (from u in MonthEndDays
-                            where u[0] == Mth
-                            select u).FirstOrDefault();
+                          where u[0] == Mth
+                          select u).FirstOrDefault();
             if (result != null)
-                  LastDay = result[1];
+                LastDay = result[1];
 
             return LastDay;
         }
@@ -2524,7 +2520,7 @@ namespace Utilities
         {
             // Just Integers 
             //----------------------------------------------------------------------------
-             nonNumeric = false;
+            nonNumeric = false;
             //-------------------------------------------------------------------------
             // Determine whether the keystroke is a number from the top of the keyboard. 
             if (e.KeyCode < Keys.D0 || e.KeyCode > Keys.D9)
@@ -2548,7 +2544,7 @@ namespace Utilities
             {
                 nonNumeric = true;
             }
-       }
+        }
 
         public void txtWin_KeyDownTS(object sender, KeyEventArgs e)
         {
@@ -2588,15 +2584,6 @@ namespace Utilities
                     nonNumeric = true;
                 }
             }
-
-            //If shift key was pressed, it's not a number. 
-            /*
-            if (Control.ModifierKeys == Keys.Shift)
-            {
-                nonNumeric = true;
-            }
-             */
- 
         }
         public void txtWin_KeyDown(object sender, KeyEventArgs e)
         {
@@ -2703,7 +2690,7 @@ namespace Utilities
             List<int> ans = new List<int>();
             while (Number > 0)
             {
-                int power = (int)Math.Pow(2.00D, (double) Cnt);
+                int power = (int)Math.Pow(2.00D, (double)Cnt);
                 if (Number >= power)
                 {
                     ans.Add(power);
@@ -2715,15 +2702,13 @@ namespace Utilities
             return ans;
         }
 
-        
+
 
         public DateTime CenturyDate(Int32 CDN)
         {
             DateTime centuryBegin = new DateTime(2001, 1, 1);
             DateTime now = centuryBegin.AddDays(CDN);
             return now;
-           
-    
         }
 
         public Int32 CenturyDayNumber(DateTime today)
@@ -2732,20 +2717,19 @@ namespace Utilities
             var zeroDate = DateTime.MinValue.AddHours(now.Hour).AddMinutes(now.Minute).AddSeconds(now.Second).AddMilliseconds(now.Millisecond);
             int uniqueId = (int)(zeroDate.Ticks / 10000);
 
-            return  uniqueId;
-
+            return uniqueId;
         }
 
         public DataGridView Get_Styles(DataGridView odgv, int LabelId)
         {
             DataGridView oDgv = odgv;
-                    
+
             oDgv.Rows.Clear();
 
             using (var Context = new TTI2Entities())
             {
                 var ExistingData = Context.TLADM_Styles
-                                   .Where(x=>x.Sty_Customer_Fk == LabelId)
+                                   .Where(x => x.Sty_Customer_Fk == LabelId)
                                    .OrderBy(x => x.Sty_Id).ToList();
 
                 foreach (var ExistingRow in ExistingData)
@@ -2826,13 +2810,13 @@ namespace Utilities
                         }
                         else
                             clrs.Sty_Discontinued_Date = null;
-                        
+
                         if (row.Cells[5].Value != null)
-                           // clrs.Sty_Sizes_PN = (int)Math.Pow(2.00D, (double)row.Index);
-                           clrs.Sty_Sizes_PN = Convert.ToInt32(row.Cells[5].Value.ToString());
+                            // clrs.Sty_Sizes_PN = (int)Math.Pow(2.00D, (double)row.Index);
+                            clrs.Sty_Sizes_PN = Convert.ToInt32(row.Cells[5].Value.ToString());
 
                         if (row.Cells[6].Value != null)
-                           clrs.Sty_Trims_PN = Convert.ToInt32(row.Cells[6].Value.ToString());
+                            clrs.Sty_Trims_PN = Convert.ToInt32(row.Cells[6].Value.ToString());
 
                         if (row.Cells[7].Value != null)
                             clrs.Sty_Labels_FK = Convert.ToInt32(row.Cells[7].Value.ToString());
@@ -2856,7 +2840,7 @@ namespace Utilities
 
                         if (row.Cells[10].Value != null)
                         {
-                               clrs.Sty_PastelNo = (int)row.Cells[10].Value;
+                            clrs.Sty_PastelNo = (int)row.Cells[10].Value;
                         }
                         else
                         {
@@ -2907,21 +2891,21 @@ namespace Utilities
                         }
 
                         clrs.Sty_BoughtIn = false;
-                        if(row.Cells[15].Value != null)
+                        if (row.Cells[15].Value != null)
                             clrs.Sty_BoughtIn = Convert.ToBoolean(row.Cells[15].Value.ToString());
-                        
+
                         clrs.Sty_DisplayOrder = 0;
                         if (row.Cells[16].Value != null)
-                           clrs.Sty_DisplayOrder = Convert.ToInt32(row.Cells[16].Value.ToString());
-                        
+                            clrs.Sty_DisplayOrder = Convert.ToInt32(row.Cells[16].Value.ToString());
+
                         clrs.Sty_WorkWear = false;
-                        if(row.Cells[17].Value != null)
-                           clrs.Sty_WorkWear = Convert.ToBoolean(row.Cells[17].Value.ToString());
+                        if (row.Cells[17].Value != null)
+                            clrs.Sty_WorkWear = Convert.ToBoolean(row.Cells[17].Value.ToString());
 
                         clrs.Sty_PFD = false;
                         if (row.Cells[18].Value != null)
                             clrs.Sty_PFD = Convert.ToBoolean(row.Cells[18].Value.ToString());
-                        
+
                         clrs.Sty_Customer_Fk = SelectedLabel;
 
                         if (lAdd)
@@ -2939,7 +2923,6 @@ namespace Utilities
                         }
                     }
                 }
-
             }
             return lTransSuccessful;
         }
@@ -2953,9 +2936,9 @@ namespace Utilities
             {
                 var ExistingData = Context.TLADM_Colours
                                    .OrderBy(x => x.Col_Description).ToList();
-          
+
                 ((DataGridViewTextBoxColumn)oDgv.Columns[5]).MaxInputLength = 5;
-          
+
                 foreach (var ExistingRow in ExistingData)
                 {
                     var index = oDgv.Rows.Add();
@@ -2973,9 +2956,8 @@ namespace Utilities
                     oDgv.Rows[index].Cells[4].Value = ExistingRow.Col_PowerN.ToString();
                     oDgv.Rows[index].Cells[5].Value = ExistingRow.Col_FinishedCode;
                     oDgv.Rows[index].Cells[6].Value = ExistingRow.Col_StandardTime;
-                    // oDgv.Rows[index].Cells[7].Value = ExistingRow.Col_AuxPowerN.ToString();
-                    
-                    if(ExistingRow.Col_Benchmark) 
+
+                    if (ExistingRow.Col_Benchmark)
                         oDgv.Rows[index].Cells[7].Value = true;
                     else
                         oDgv.Rows[index].Cells[7].Value = false;
@@ -3017,7 +2999,7 @@ namespace Utilities
                         }
 
                         clrs.Col_Description = row.Cells[0].Value.ToString();
-                        
+
                         clrs.Col_Discontinued = false;
                         if (row.Cells[1].Value != null && row.Cells[1].Value.ToString() == bool.TrueString)
                         {
@@ -3029,9 +3011,9 @@ namespace Utilities
                         {
                             clrs.Col_Discontinued_Date = Convert.ToDateTime(row.Cells[2].Value.ToString());
                         }
-                       
+
                         clrs.Col_PowerN = (int)Math.Pow(2.00D, (double)row.Index);
-                                               
+
                         if (row.Cells[4].Value == null && lAdd)
                         {
                             ///clrs.Col_PowerN = (int)Math.Pow(2.00D, (double)row.Index);
@@ -3041,10 +3023,10 @@ namespace Utilities
                             //clrs.Col_PowerN = Convert.ToInt32(row.Cells[4].Value.ToString());
                             // clrs.Col_PowerN = 1;
 
-                        clrs.Col_FinishedCode = string.Empty;
+                            clrs.Col_FinishedCode = string.Empty;
                         if (row.Cells[5].Value != null)
                             clrs.Col_FinishedCode = row.Cells[5].Value.ToString();
-                        
+
                         clrs.Col_Display = clrs.Col_FinishedCode + " " + clrs.Col_Description;
 
                         clrs.Col_StandardTime = 0.00M;
@@ -3056,14 +3038,14 @@ namespace Utilities
                         clrs.Col_Benchmark = false;
                         if (row.Cells[7].Value != null)
                         {
-                            clrs.Col_Benchmark  = (bool)row.Cells[7].Value;
+                            clrs.Col_Benchmark = (bool)row.Cells[7].Value;
                         }
 
                         clrs.Col_Ratio = 0.00M;
                         if (row.Cells[8].Value != null)
                         {
                             clrs.Col_Ratio = (decimal)row.Cells[8].Value;
-                            
+
                         }
 
                         clrs.Col_Padding = false;
@@ -3077,7 +3059,7 @@ namespace Utilities
                         {
                             clrs.Col_Pastel = row.Cells[10].Value.ToString();
                         }
-                        
+
                         if (lAdd)
                             Context.TLADM_Colours.Add(clrs);
 
@@ -3101,122 +3083,22 @@ namespace Utilities
                         }
                     }
                 }
-
             }
             return lTransSuccessful;
         }
-
-        /*
-
-        public DataGridView Get_MaintenanceDetail(DataGridView odgv)
-        {
-           
-        }
-
-        public bool Save_MaintenanceDetail(DataGridView oDgv)
-        {
-           
-        }
-        */
-
-        /*
-        public DataGridView Get_AuxColours(DataGridView odgv)
-        {
-            DataGridView oDgv = odgv;
-            ((DataGridViewTextBoxColumn)oDgv.Columns[3]).MaxInputLength = 5;
-
-            using (var Context = new TTI2Entities())
-            {
-                var ExistingData = Context.TLADM_AuxColours
-                                   .OrderBy(x => x.AuxCol_Description).ToList();
-
-                foreach (var ExistingRow in ExistingData)
-                {
-                    var index = oDgv.Rows.Add();
-                    oDgv.Rows[index].Cells[0].Value = ExistingRow.AuxCol_Description;
-                    oDgv.Rows[index].Cells[1].Value = ExistingRow.AuxCol_Id;
-                    oDgv.Rows[index].Cells[2].Value = ExistingRow.AuxCol_PowerN;
-                    oDgv.Rows[index].Cells[3].Value = ExistingRow.AuxCol_FinishedCode;
-
-                }
-            }
-            return oDgv;
-        }
-
-        public bool Save_AuxColours(DataGridView oDgv)
-        {
-            var lAdd = false;
-            var lTransSuccessful = false;
-
-            using (var Context = new TTI2Entities())
-            {
-                foreach (DataGridViewRow row in oDgv.Rows)
-                {
-                    if (row.Cells[0].Value != null && !String.IsNullOrEmpty(row.Cells[0].Value.ToString()))
-                    {
-                        lAdd = false;
-
-                        TLADM_AuxColours clrs = null;
-
-                        if (row.Cells[1].Value != null)
-                        {
-                            int index = Convert.ToInt32(row.Cells[1].Value.ToString());
-                            clrs = Context.TLADM_AuxColours.Find(index);
-
-                        }
-                        else
-                        {
-                            clrs = new TLADM_AuxColours();
-                            lAdd = true;
-                        }
-
-                        clrs.AuxCol_Description = row.Cells[0].Value.ToString();
-
-                        if (row.Cells[2].Value == null && lAdd)
-                        {
-                            clrs.AuxCol_PowerN = (int)Math.Pow(2.00D, (double)row.Index);
-                        }
-                        else
-                            clrs.AuxCol_PowerN = Convert.ToInt32(row.Cells[2].Value.ToString());
-
-                        if (row.Cells[3].Value != null)
-                            clrs.AuxCol_FinishedCode = row.Cells[3].Value.ToString();
-                        else
-                            clrs.AuxCol_FinishedCode = string.Empty; 
-                       
-                        if (lAdd)
-                            Context.TLADM_AuxColours.Add(clrs);
-
-                        try
-                        {
-                            Context.SaveChanges();
-                            lTransSuccessful = true;
-                        }
-                        catch (Exception ex)
-                        {
-                            MessageBox.Show(ex.Message);
-                            lTransSuccessful = false;
-                        }
-                    }
-                }
-
-            }
-            return lTransSuccessful;
-        }
-        */
 
         public DataGridView Get_Yarn(DataGridView odgv)
         {
             DataGridView oDgv = odgv;
-                    
+
 
             using (var Context = new TTI2Entities())
             {
-                
+
 
                 var ExistingData = Context.TLADM_Yarn
                                    .OrderBy(x => x.YA_Id).ToList();
-               
+
                 foreach (var ExistingRow in ExistingData)
                 {
                     var index = oDgv.Rows.Add();
@@ -3230,23 +3112,23 @@ namespace Utilities
                     if (ExistingRow.YA_Discontnued_Date != null)
                         oDgv.Rows[index].Cells[2].Value = ExistingRow.YA_Discontnued_Date;
 
-                    oDgv.Rows[index].Cells[3].Value  = ExistingRow.YA_Id;
-                    oDgv.Rows[index].Cells[4].Value  = ExistingRow.YA_PowerN;
-                    oDgv.Rows[index].Cells[5].Value  = ExistingRow.YA_YarnType;
-                    oDgv.Rows[index].Cells[6].Value  = ExistingRow.YA_TexCount;
-                    oDgv.Rows[index].Cells[7].Value  = ExistingRow.YA_Twist;
-                    oDgv.Rows[index].Cells[8].Value  = ExistingRow.YA_CottonOrigin_FK;
-                    oDgv.Rows[index].Cells[9].Value  = ExistingRow.YA_Supplier_FK;
+                    oDgv.Rows[index].Cells[3].Value = ExistingRow.YA_Id;
+                    oDgv.Rows[index].Cells[4].Value = ExistingRow.YA_PowerN;
+                    oDgv.Rows[index].Cells[5].Value = ExistingRow.YA_YarnType;
+                    oDgv.Rows[index].Cells[6].Value = ExistingRow.YA_TexCount;
+                    oDgv.Rows[index].Cells[7].Value = ExistingRow.YA_Twist;
+                    oDgv.Rows[index].Cells[8].Value = ExistingRow.YA_CottonOrigin_FK;
+                    oDgv.Rows[index].Cells[9].Value = ExistingRow.YA_Supplier_FK;
                     oDgv.Rows[index].Cells[10].Value = ExistingRow.YA_ProductType_FK;
-                    
-                    if(ExistingRow.YA_Blocked)
+
+                    if (ExistingRow.YA_Blocked)
                         oDgv.Rows[index].Cells[11].Value = true;
                     else
-                         oDgv.Rows[index].Cells[11].Value = false;
+                        oDgv.Rows[index].Cells[11].Value = false;
 
                     oDgv.Rows[index].Cells[12].Value = ExistingRow.YA_UOM_Fk;
-                    
-                    if(ExistingRow.YA_StdCost_Show)
+
+                    if (ExistingRow.YA_StdCost_Show)
                         oDgv.Rows[index].Cells[13].Value = true;
                     else
                         oDgv.Rows[index].Cells[13].Value = false;
@@ -3255,13 +3137,13 @@ namespace Utilities
                     oDgv.Rows[index].Cells[15].Value = ExistingRow.YA_ROL;
                     oDgv.Rows[index].Cells[16].Value = ExistingRow.YA_ROQ;
 
-                    if(ExistingRow.YA_Qty_Show)
+                    if (ExistingRow.YA_Qty_Show)
                         oDgv.Rows[index].Cells[17].Value = true;
                     else
                         oDgv.Rows[index].Cells[17].Value = false;
 
                     oDgv.Rows[index].Cells[18].Value = ExistingRow.YA_ConeColour;
-                   
+
                 }
             }
             return oDgv;
@@ -3280,7 +3162,7 @@ namespace Utilities
                     {
                         lAdd = false;
                         TLADM_Yarn clrs = null;
-                                            
+
                         if (row.Cells[3].Value != null)
                         {
                             int index = Convert.ToInt32(row.Cells[3].Value.ToString());
@@ -3464,7 +3346,7 @@ namespace Utilities
                         }
 
                         clrs.TLGreige_Description = row.Cells[0].Value.ToString();
-                        clrs.TLGriege_Discontinued  = false;
+                        clrs.TLGriege_Discontinued = false;
                         if (row.Cells[1].Value != null)
                         {
                             if (row.Cells[1].Value.ToString() == bool.TrueString)
@@ -3500,7 +3382,7 @@ namespace Utilities
                         clrs.TLGreige_UOM_Fk = Convert.ToInt32(row.Cells[12].Value.ToString());
                         clrs.TLGreige_ROL = Convert.ToInt32(row.Cells[13].Value.ToString());
                         clrs.TLGreige_ROQ = Convert.ToInt32(row.Cells[14].Value.ToString());
-                      
+
 
                         if (row.Cells[11].Value != null && !String.IsNullOrEmpty(row.Cells[11].Value.ToString()))
                         {
@@ -3511,7 +3393,7 @@ namespace Utilities
                         }
                         else
                             clrs.TLGreige_BarCode = false;
-                       
+
                         if (row.Cells[15].Value != null && !String.IsNullOrEmpty(row.Cells[15].Value.ToString()))
                         {
                             if (row.Cells[15].Value.ToString() == bool.TrueString)
@@ -3525,7 +3407,7 @@ namespace Utilities
 
                         if (row.Cells[16].Value != null && !String.IsNullOrEmpty(row.Cells[16].Value.ToString()))
                         {
-                            clrs.TLGreige_StockTakeFreq_FK = Convert.ToInt32(row.Cells[16].Value.ToString()); 
+                            clrs.TLGreige_StockTakeFreq_FK = Convert.ToInt32(row.Cells[16].Value.ToString());
                         }
 
                         clrs.TLGreige_KgPerPiece = Convert.ToDecimal(row.Cells[17].Value.ToString());
@@ -3562,7 +3444,7 @@ namespace Utilities
         public DataGridView Get_FabricWidth(DataGridView odgv)
         {
             DataGridView oDgv = odgv;
-         
+
 
             using (var Context = new TTI2Entities())
             {
@@ -3603,7 +3485,7 @@ namespace Utilities
                         lAdd = false;
 
                         TLADM_FabWidth clrs = null;
-                       
+
                         if (row.Cells[3].Value != null)
                         {
                             int index = Convert.ToInt32(row.Cells[3].Value.ToString());
@@ -3789,7 +3671,7 @@ namespace Utilities
 
                     oDgv.Rows[index].Cells[3].Value = ExistingRow.TR_Id.ToString();
                     oDgv.Rows[index].Cells[4].Value = ExistingRow.TR_powerN.ToString();
-                   
+
                     if (ExistingRow.Tr_Body == true)
                     {
                         oDgv.Rows[index].Cells[5].Value = true;
@@ -3857,8 +3739,8 @@ namespace Utilities
                         else
                             clrs.TR_Discontinued_Date = null;
 
-                       // clrs.TR_powerN = (int)Math.Pow(2.00D, (double)Index++);
-                                                
+                        // clrs.TR_powerN = (int)Math.Pow(2.00D, (double)Index++);
+
                         if (row.Cells[5].Value != null)
                         {
                             if (row.Cells[5].Value.ToString() == bool.TrueString)
@@ -3892,7 +3774,7 @@ namespace Utilities
 
                         if (row.Cells[10].Value != null)
                         {
-                            clrs.TR_Size_FK  = (int)row.Cells[10].Value;
+                            clrs.TR_Size_FK = (int)row.Cells[10].Value;
                         }
                         if (lAdd)
                         {
@@ -3961,7 +3843,7 @@ namespace Utilities
                         lAdd = false;
 
                         TLADM_Sizes clrs = null;
-                      
+
                         if (row.Cells[3].Value != null)
                         {
                             int index = Convert.ToInt32(row.Cells[3].Value.ToString());
@@ -4014,7 +3896,7 @@ namespace Utilities
                         else
                             clrs.SI_ColNumber = 1;
 
-                        clrs.SI_Display  = (String)row.Cells[8].Value;
+                        clrs.SI_Display = (String)row.Cells[8].Value;
 
                         if (row.Cells[9].Value == null)
                             row.Cells[9].Value = 0;
@@ -4036,7 +3918,6 @@ namespace Utilities
                         }
                     }
                 }
-
             }
             return lTransSuccessful;
         }
@@ -4084,7 +3965,7 @@ namespace Utilities
                         lAdd = false;
 
                         TLADM_Labels clrs = null;
-                      
+
                         if (row.Cells[3].Value != null)
                         {
                             int index = Convert.ToInt32(row.Cells[3].Value.ToString());
@@ -4097,7 +3978,7 @@ namespace Utilities
                             lAdd = true;
                         }
 
-                        clrs.Lbl_Discontinued= false;
+                        clrs.Lbl_Discontinued = false;
                         clrs.Lbl_Description = row.Cells[0].Value.ToString();
 
                         if (row.Cells[1].Value != null)
@@ -4154,7 +4035,7 @@ namespace Utilities
         public DataGridView Get_FabricProduct(DataGridView odgv)
         {
             DataGridView oDgv = odgv;
-            
+
             using (var Context = new TTI2Entities())
             {
                 var ExistingData = Context.TLADM_FabricProduct
@@ -4194,7 +4075,7 @@ namespace Utilities
                         lAdd = false;
 
                         TLADM_FabricProduct clrs = null;
-                       
+
 
                         if (row.Cells[3].Value != null)
                         {
@@ -4299,7 +4180,7 @@ namespace Utilities
                         lAdd = false;
 
                         TLADM_FabricWeight clrs = null;
-                     
+
                         if (row.Cells[3].Value != null)
                         {
                             int index = Convert.ToInt32(row.Cells[3].Value.ToString());
@@ -4332,7 +4213,6 @@ namespace Utilities
                             clrs.FWW_Discontinued_Date = null;
 
 
-
                         if (row.Cells[4].Value == null && lAdd)
                         {
                             clrs.FWW_PowerN = (int)Math.Pow(2.00D, (double)row.Index);
@@ -4362,16 +4242,14 @@ namespace Utilities
                         }
                     }
                 }
-
             }
-
             return lTransSuccessful;
         }
 
         public DataGridView Get_GreigeQuality(DataGridView odgv)
         {
             DataGridView oDgv = odgv;
-            
+
 
             using (var Context = new TTI2Entities())
             {
@@ -4393,7 +4271,7 @@ namespace Utilities
 
                     oDgv.Rows[index].Cells[3].Value = ExistingRow.GQ_Pk.ToString();
                     oDgv.Rows[index].Cells[4].Value = ExistingRow.GQ_PowerN.ToString();
-             
+
                 }
             }
             return oDgv;
@@ -4413,7 +4291,7 @@ namespace Utilities
                         lAdd = false;
 
                         TLADM_GreigeQuality clrs = null;
-                       
+
 
                         if (row.Cells[3].Value != null)
                         {
@@ -4423,7 +4301,7 @@ namespace Utilities
                         }
                         else
                         {
-                            clrs =  new TLADM_GreigeQuality();
+                            clrs = new TLADM_GreigeQuality();
                             lAdd = true;
                         }
 
@@ -4450,11 +4328,10 @@ namespace Utilities
 
 
                         clrs.GQ_PowerN = (int)Math.Pow(2.00D, (double)row.Index);
-                                               
+
                         if (lAdd)
                             Context.TLADM_GreigeQuality.Add(clrs);
 
-                       
                     }
                 }
 
@@ -4497,12 +4374,12 @@ namespace Utilities
                     oDgv.Rows[index].Cells[3].Value = ExistingRow.FbAtrib_Pk.ToString();
                     oDgv.Rows[index].Cells[4].Value = ExistingRow.FbAtrib_PowerN.ToString();
 
-                    oDgv.Rows[index].Cells[5].Value  = ExistingRow.FbAtrib_Greige_FK;
-                    oDgv.Rows[index].Cells[6].Value  = ExistingRow.FbAtrib_Brand_FK;
-                    oDgv.Rows[index].Cells[7].Value  = ExistingRow.FbAtrib_FabProductTypes_FK;
-                    oDgv.Rows[index].Cells[8].Value  = ExistingRow.FbAtrib_Colour_FK;
-                    oDgv.Rows[index].Cells[9].Value  = ExistingRow.FbAtrib_FabProduct_FK;
-                    oDgv.Rows[index].Cells[11].Value = ExistingRow.FbAtrib_UOM_Fk; 
+                    oDgv.Rows[index].Cells[5].Value = ExistingRow.FbAtrib_Greige_FK;
+                    oDgv.Rows[index].Cells[6].Value = ExistingRow.FbAtrib_Brand_FK;
+                    oDgv.Rows[index].Cells[7].Value = ExistingRow.FbAtrib_FabProductTypes_FK;
+                    oDgv.Rows[index].Cells[8].Value = ExistingRow.FbAtrib_Colour_FK;
+                    oDgv.Rows[index].Cells[9].Value = ExistingRow.FbAtrib_FabProduct_FK;
+                    oDgv.Rows[index].Cells[11].Value = ExistingRow.FbAtrib_UOM_Fk;
                     oDgv.Rows[index].Cells[12].Value = ExistingRow.FbAtrib_PreferedSupplier_FK;
 
                     if (ExistingRow.FbAtrib_Blocked)
@@ -4514,7 +4391,7 @@ namespace Utilities
                         oDgv.Rows[index].Cells[13].Value = true;
                     else
                         oDgv.Rows[index].Cells[13].Value = false;
-                    
+
                     if (ExistingRow.FbAtrib_ShowQty)
                         oDgv.Rows[index].Cells[14].Value = true;
                     else
@@ -4539,7 +4416,7 @@ namespace Utilities
                         lAdd = false;
 
                         TLADM_FabricAttributes clrs = null;
-                     
+
 
                         if (row.Cells[3].Value != null)
                         {
@@ -4585,13 +4462,13 @@ namespace Utilities
                         //
                         //--------------------------------------------------------------------------------
 
-                        clrs.FbAtrib_Greige_FK            = Convert.ToInt32(row.Cells[5].Value.ToString());
-                        clrs.FbAtrib_Brand_FK             = Convert.ToInt32(row.Cells[6].Value.ToString());
-                        clrs.FbAtrib_FabProductTypes_FK   = Convert.ToInt32(row.Cells[7].Value.ToString());
-                        clrs.FbAtrib_Colour_FK            = Convert.ToInt32(row.Cells[8].Value.ToString());
-                        clrs.FbAtrib_FabProduct_FK        = Convert.ToInt32(row.Cells[9].Value.ToString());
-                        clrs.FbAtrib_UOM_Fk               = Convert.ToInt32(row.Cells[11].Value.ToString());
-                        clrs.FbAtrib_PreferedSupplier_FK  = Convert.ToInt32(row.Cells[12].Value.ToString());
+                        clrs.FbAtrib_Greige_FK = Convert.ToInt32(row.Cells[5].Value.ToString());
+                        clrs.FbAtrib_Brand_FK = Convert.ToInt32(row.Cells[6].Value.ToString());
+                        clrs.FbAtrib_FabProductTypes_FK = Convert.ToInt32(row.Cells[7].Value.ToString());
+                        clrs.FbAtrib_Colour_FK = Convert.ToInt32(row.Cells[8].Value.ToString());
+                        clrs.FbAtrib_FabProduct_FK = Convert.ToInt32(row.Cells[9].Value.ToString());
+                        clrs.FbAtrib_UOM_Fk = Convert.ToInt32(row.Cells[11].Value.ToString());
+                        clrs.FbAtrib_PreferedSupplier_FK = Convert.ToInt32(row.Cells[12].Value.ToString());
 
                         if (row.Cells[10].Value != null)
                         {
@@ -4622,7 +4499,7 @@ namespace Utilities
                         }
                         else
                             clrs.FbAtrib_Blocked = false;
-                       
+
                         if (lAdd)
                             Context.TLADM_FabricAttributes.Add(clrs);
 
@@ -4643,169 +4520,18 @@ namespace Utilities
             return lTransSuccessful;
         }
 
-        
+
         public DataGridView Get_PanelAttributes(DataGridView odgv)
         {
-            
             DataGridView oDgv = odgv;
-            /*
-            using (var Context = new TTI2Entities())
-            {
-                var ExistingData = Context.TLADM_PanelAttributes
-                                   .OrderBy(x => x.Pan_PK).ToList();
-
-                foreach (var ExistingRow in ExistingData)
-                {
-                    var index = oDgv.Rows.Add();
-                    oDgv.Rows[index].Cells[0].Value = ExistingRow.Pan_Description;
-
-                    if (ExistingRow.Pan_Discontinued == true)
-                        oDgv.Rows[index].Cells[1].Value = true;
-                    else
-                        oDgv.Rows[index].Cells[1].Value = false;
-
-                    if (ExistingRow.Pan_Discontinued_Date != null)
-                        oDgv.Rows[index].Cells[2].Value = ExistingRow.Pan_Discontinued_Date.ToString();
-
-                    oDgv.Rows[index].Cells[3].Value = ExistingRow.Pan_PK.ToString();
-                    oDgv.Rows[index].Cells[4].Value = ExistingRow.Pan_PowerN.ToString();
-                    //oDgv.Rows[index].Cells[5].Value = ExistingRow.Pan_Style_FK;
-                    oDgv.Rows[index].Cells[5].Value = ExistingRow.Pan_Grade;
-                    oDgv.Rows[index].Cells[6].Value = ExistingRow.Pan_Size_FK;
-                    oDgv.Rows[index].Cells[8].Value = ExistingRow.Pan_UOM_FK;
-                    oDgv.Rows[index].Cells[9].Value = ExistingRow.Pan_PreferedSupplier_FK;
-                    oDgv.Rows[index].Cells[11].Value = ExistingRow.Pan_FabricAtributes_FK;
-
-                    if (ExistingRow.Pan_Blocked)
-                        oDgv.Rows[index].Cells[7].Value = true;
-                    else
-                        oDgv.Rows[index].Cells[7].Value = false;
-
-                    if (ExistingRow.Pan_ShowQty)
-                        oDgv.Rows[index].Cells[10].Value = true;
-                    else
-                        oDgv.Rows[index].Cells[10].Value = false;
-
-                }
-            }
-            */
             return oDgv;
-            
         }
-        
+
         public bool Save_PanelAttributes(DataGridView oDgv)
         {
-
             var lTransSuccessful = false;
-
-            /*var lAdd = false;
-                        
-
-            using (var Context = new TTI2Entities())
-            {
-                foreach (DataGridViewRow row in oDgv.Rows)
-                {
-                    if (row.Cells[0].Value != null && !String.IsNullOrEmpty(row.Cells[0].Value.ToString()))
-                    {
-                        lAdd = false;
-
-                        TLADM_PanelAttributes clrs = null;
-                      
-
-                        if (row.Cells[3].Value != null)
-                        {
-                            int index = Convert.ToInt32(row.Cells[3].Value.ToString());
-                            clrs = Context.TLADM_PanelAttributes.Find(index);
-
-                        }
-                        else
-                        {
-                            clrs = new TLADM_PanelAttributes();
-                            lAdd = true;
-                        }
-
-                        clrs.Pan_Discontinued = false;
-                        clrs.Pan_Description = row.Cells[0].Value.ToString();
-
-                        if (row.Cells[1].Value != null)
-                        {
-                            if (row.Cells[1].Value.ToString() == bool.TrueString)
-                                clrs.Pan_Discontinued = true;
-                            else
-                                clrs.Pan_Discontinued = false;
-
-                        }
-
-                        if (row.Cells[2].Value != null && !String.IsNullOrEmpty(row.Cells[2].Value.ToString()))
-                        {
-                            clrs.Pan_Discontinued_Date = Convert.ToDateTime(row.Cells[2].Value.ToString());
-                        }
-                        else
-                            clrs.Pan_Discontinued_Date = null;
-
-
-
-                        if (row.Cells[4].Value == null && lAdd)
-                        {
-                            clrs.Pan_PowerN = (int)Math.Pow(2.00D, (double)row.Index);
-                        }
-                        else
-                            clrs.Pan_PowerN = Convert.ToInt32(row.Cells[4].Value.ToString());
-
-                        //--------------------------------------------------------------------------------
-                        //
-                        //--------------------------------------------------------------------------------
-
-                        // clrs.Pan_Style_FK = Convert.ToInt32(row.Cells[5].Value.ToString());
-                        clrs.Pan_Grade = row.Cells[5].Value.ToString();
-
-                        clrs.Pan_Size_FK = Convert.ToInt32(row.Cells[6].Value.ToString());
-                        clrs.Pan_UOM_FK = Convert.ToInt32(row.Cells[8].Value.ToString());
-                        clrs.Pan_PreferedSupplier_FK = Convert.ToInt32(row.Cells[9].Value.ToString());
-                        clrs.Pan_FabricAtributes_FK = Convert.ToInt32(row.Cells[11].Value.ToString());
-                   
-                        if (row.Cells[7].Value != null)
-                        {
-                            if (row.Cells[7].Value.ToString() == bool.TrueString)
-                                clrs.Pan_Blocked = true;
-                            else
-                                clrs.Pan_Blocked = false;
-                        }
-                        else
-                            clrs.Pan_Blocked = false;
-
-                        if (row.Cells[10].Value != null)
-                        {
-                            if (row.Cells[10].Value.ToString() == bool.TrueString)
-                                clrs.Pan_ShowQty = true;
-                            else
-                                clrs.Pan_ShowQty = false;
-                        }
-                        else
-                            clrs.Pan_ShowQty = false;
-
-                       
-                        if (lAdd)
-                            Context.TLADM_PanelAttributes.Add(clrs);
-
-                        try
-                        {
-                            Context.SaveChanges();
-                            lTransSuccessful = true;
-                        }
-                        catch (System.Exception ex)
-                        {
-                            MessageBox.Show(ex.Message);
-                            lTransSuccessful = false;
-                        }
-                    }
-                }
-            }
-            */
             return lTransSuccessful;
-            
         }
-      
 
         public DataGridView Get_ProductionLoss(DataGridView oDgv)
         {
@@ -4821,7 +4547,7 @@ namespace Utilities
                     oDgv.Rows[index].Cells[3].Value = row.TLProdLoss_Percent.ToString();
                     oDgv.Rows[index].Cells[4].Value = row.TLProdLoss_Kg.ToString();
                 }
-               
+
             }
             return oDgv;
         }
@@ -4841,17 +4567,17 @@ namespace Utilities
                     lAdd = false;
 
                     TLADM_ProductionLoss clrs = null;
-                    
+
                     if (row.Cells[0].Value != null)
                     {
-                            int index = Convert.ToInt32(row.Cells[0].Value.ToString());
-                            clrs = Context.TLADM_ProductionLoss.Find(index);
+                        int index = Convert.ToInt32(row.Cells[0].Value.ToString());
+                        clrs = Context.TLADM_ProductionLoss.Find(index);
 
                     }
                     else
                     {
-                            clrs = new TLADM_ProductionLoss();
-                            lAdd = true;
+                        clrs = new TLADM_ProductionLoss();
+                        lAdd = true;
                     }
 
                     clrs.TLProdLoss_Dept_Fk = Convert.ToInt32(row.Cells[2].Value.ToString());
@@ -4859,18 +4585,18 @@ namespace Utilities
                     clrs.TLProdLoss_Kg = Convert.ToInt32(row.Cells[4].Value.ToString());
 
                     if (lAdd)
-                            Context.TLADM_ProductionLoss.Add(clrs);
+                        Context.TLADM_ProductionLoss.Add(clrs);
                 }
                 try
                 {
-                       Context.SaveChanges();
-                       lTransSuccessful = true;
+                    Context.SaveChanges();
+                    lTransSuccessful = true;
                 }
                 catch (System.Exception ex)
                 {
-                       MessageBox.Show(ex.Message);
-                       lTransSuccessful = false;
-                 }
+                    MessageBox.Show(ex.Message);
+                    lTransSuccessful = false;
+                }
             }
             return lTransSuccessful;
         }
@@ -4909,7 +4635,7 @@ namespace Utilities
                     lAdd = false;
 
                     TLADM_StylesGrades clrs = null;
-                   
+
                     if (row.Cells[0].Value != null)
                     {
                         int index = Convert.ToInt32(row.Cells[0].Value.ToString());
@@ -4941,6 +4667,130 @@ namespace Utilities
                 }
             }
             return lTransSuccessful;
+        }
+
+        public string GetProductCode(int styleId, int colourId, int sizeId)
+        {
+            string productCode = string.Empty;
+
+            using (SqlConnection conn = new SqlConnection(GetConnectionString()))
+            {
+                conn.Open();
+
+                using (SqlCommand cmd = new SqlCommand(
+                    @"SELECT ProductCode
+              FROM TLADM_ProductCodes
+              WHERE StyleId = @StyleId
+                AND ColourId = @ColourId
+                AND SizeId = @SizeId", conn))
+                {
+                    cmd.Parameters.AddWithValue("@StyleId", styleId);
+                    cmd.Parameters.AddWithValue("@ColourId", colourId);
+                    cmd.Parameters.AddWithValue("@SizeId", sizeId);
+
+                    var result = cmd.ExecuteScalar();
+                    if (result != null && result != DBNull.Value)
+                    {
+                        productCode = result.ToString();
+                    }
+                }
+            }
+
+            return productCode;
+        }
+
+        public string GetProductCodeOrFallback(int styleId, int colourId, int sizeId, string fallbackProductCode = "")
+        {
+            string productCode = GetProductCode(styleId, colourId, sizeId);
+
+            if (!string.IsNullOrWhiteSpace(productCode))
+                return productCode;
+
+            return fallbackProductCode ?? string.Empty;
+        }
+
+        public string GetProductCodeFromStock(TLCSV_StockOnHand stock, string fallbackProductCode = "")
+        {
+            if (stock == null)
+                return fallbackProductCode ?? string.Empty;
+
+            return GetProductCodeOrFallback(
+                stock.TLSOH_Style_FK,
+                stock.TLSOH_Colour_FK,
+                stock.TLSOH_Size_FK,
+                fallbackProductCode);
+        }
+
+        public Dictionary<string, string> BuildProductCodeLookup()
+        {
+            var lookup = new Dictionary<string, string>();
+
+            using (SqlConnection conn = new SqlConnection(GetConnectionString()))
+            {
+                conn.Open();
+
+                using (SqlCommand cmd = new SqlCommand(
+                    @"SELECT StyleId, ColourId, SizeId, ProductCode
+              FROM TLADM_ProductCodes", conn))
+                {
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            int styleId = Convert.ToInt32(reader["StyleId"]);
+                            int colourId = Convert.ToInt32(reader["ColourId"]);
+                            int sizeId = Convert.ToInt32(reader["SizeId"]);
+                            string productCode = reader["ProductCode"] == DBNull.Value
+                                ? string.Empty
+                                : reader["ProductCode"].ToString();
+
+                            string key = BuildProductCodeKey(styleId, colourId, sizeId);
+
+                            if (!lookup.ContainsKey(key))
+                            {
+                                lookup.Add(key, productCode);
+                            }
+                        }
+                    }
+                }
+            }
+
+            return lookup;
+        }
+
+        public string GetProductCodeFromLookup(
+            Dictionary<string, string> lookup,
+            int styleId,
+            int colourId,
+            int sizeId,
+            string fallbackProductCode = "")
+        {
+            if (lookup == null)
+                return fallbackProductCode ?? string.Empty;
+
+            string key = BuildProductCodeKey(styleId, colourId, sizeId);
+
+            string productCode;
+            if (lookup.TryGetValue(key, out productCode) && !string.IsNullOrWhiteSpace(productCode))
+                return productCode;
+
+            return fallbackProductCode ?? string.Empty;
+        }
+
+        public string GetProductCodeFromStockLookup(
+            Dictionary<string, string> lookup,
+            TLCSV_StockOnHand stock,
+            string fallbackProductCode = "")
+        {
+            if (stock == null)
+                return fallbackProductCode ?? string.Empty;
+
+            return GetProductCodeFromLookup(
+                lookup,
+                stock.TLSOH_Style_FK,
+                stock.TLSOH_Colour_FK,
+                stock.TLSOH_Size_FK,
+                fallbackProductCode);
         }
 
     }
