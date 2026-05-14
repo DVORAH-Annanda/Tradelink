@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -289,10 +290,10 @@ namespace Knitting
                 txtYLTSetting.KeyDown += core.txtWin_KeyDownOEM;
                 txtYLTSetting.KeyPress += core.txtWin_KeyPress;
 
-                txtYLTSetting.Text= "0.00";
+                txtYLTSetting.Text = 0m.ToString("0.00", System.Globalization.CultureInfo.CurrentCulture);
                 txtFabricWidth.Text = string.Empty;
                 txtGreigeWeight.Text = String.Empty;
-                txtOrderKG.Text = "0.00";
+                txtOrderKG.Text = 0m.ToString("0.00", System.Globalization.CultureInfo.CurrentCulture);
                 txtOrderPieces.Text = "0";
 
                 dtpDateRequired.Value = DateTime.Now;
@@ -600,20 +601,24 @@ namespace Knitting
                 }
             }
         }
-        
+
         private void OrderQty_Changed(object sender, EventArgs e)
         {
             decimal stdWeight = 25.00M;
 
             TextBox oTxt = sender as TextBox;
-            if (oTxt.TextLength > 0)
+            if (oTxt != null && oTxt.TextLength > 0)
             {
-                var selected =(TLADM_Griege)cmbFabricType.SelectedItem;
-                if (selected != null)
-                    if (selected.TLGreige_KgPerPiece != 0)
-                        stdWeight = selected.TLGreige_KgPerPiece;
+                var selected = (TLADM_Griege)cmbFabricType.SelectedItem;
+                if (selected != null && selected.TLGreige_KgPerPiece != 0)
+                    stdWeight = selected.TLGreige_KgPerPiece;
 
-                txtOrderPieces.Text = Math.Round(Convert.ToDecimal(oTxt.Text) / stdWeight, 0).ToString();
+                decimal qty;
+                if (!decimal.TryParse(oTxt.Text, NumberStyles.Any, CultureInfo.CurrentCulture, out qty))
+                    return;
+
+                txtOrderPieces.Text = Math.Round(qty / stdWeight, 0).ToString();
+
                 var result = (from u in MandatoryFields
                               where u[0] == oTxt.Name
                               select u).FirstOrDefault();
@@ -621,13 +626,9 @@ namespace Knitting
                 if (result != null)
                 {
                     int nbr = Convert.ToInt32(result[2].ToString());
-                    if(oTxt.TextLength != 0)
-                         MandSelected[nbr] = true;
-                    else
-                        MandSelected[nbr] = false;                    
+                    MandSelected[nbr] = oTxt.TextLength != 0;
                 }
             }
-           
         }
 
         private void OrderPieces_Changed(object sender, EventArgs e)

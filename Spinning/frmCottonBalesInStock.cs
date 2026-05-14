@@ -34,7 +34,7 @@ namespace Spinning
 
             using (var context = new TTI2Entities())
             {
-                var GrpBalesinStock = context.TLSPN_CottonReceivedBales.Where(x=>!x.CoBales_IssuedToProd &&x.CotBales_ConfirmedByQA).OrderBy(x=>x.CotBales_LotNo).GroupBy(x => x.CotBales_LotNo).ToList();
+                var GrpBalesinStock = context.TLSPN_CottonReceivedBales.Where(x=>!x.CoBales_IssuedToProd && !x.CoBales_CottonReturned && x.CotBales_ConfirmedByQA).OrderBy(x=>x.CotBales_LotNo).GroupBy(x => x.CotBales_LotNo).ToList();
                 foreach (var Grp in GrpBalesinStock)
                 {
                     comboLotNo.Items.Add(new Spinning.CheckComboBoxItem(Grp.FirstOrDefault().CotBales_LotNo , Grp.FirstOrDefault().CotBales_LotNo.ToString(), false));
