@@ -21,8 +21,74 @@ namespace Administration
         public frmProductCodeMapping()
         {
             InitializeComponent();
+
+            ConfigureMappingGrid();
+
             LoadComboBoxData();
             LoadProductCodes();
+        }
+
+        private void ConfigureMappingGrid()
+        {
+            dgvMapping.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvMapping.MultiSelect = true;
+            dgvMapping.AllowUserToDeleteRows = false;
+            dgvMapping.EditMode = DataGridViewEditMode.EditOnEnter;
+
+            dgvMapping.SelectionChanged += dgvMapping_SelectionChanged;
+            dgvMapping.CellValidating += dgvMapping_CellValidating;
+        }
+
+        private void dgvMapping_SelectionChanged(object sender, EventArgs e)
+        {
+            btnDeleteProductCode.Enabled = dgvMapping.SelectedRows
+                .Cast<DataGridViewRow>()
+                .Any(row => !row.IsNewRow);
+        }
+
+        private void dgvMapping_CellValidating(
+    object sender,
+    DataGridViewCellValidatingEventArgs e)
+        {
+            if (dgvMapping.Columns[e.ColumnIndex].Name != "cProductCode")
+                return;
+
+            string productCode = NormaliseProductCode(e.FormattedValue);
+
+            // Allow blank while the user is editing.
+            // Save will enforce that it is required.
+            if (string.IsNullOrWhiteSpace(productCode))
+                return;
+
+            DataGridViewRow duplicateRow = dgvMapping.Rows
+                .Cast<DataGridViewRow>()
+                .FirstOrDefault(row =>
+                    !row.IsNewRow &&
+                    row.Index != e.RowIndex &&
+                    string.Equals(
+                        NormaliseProductCode(row.Cells["cProductCode"].Value),
+                        productCode,
+                        StringComparison.OrdinalIgnoreCase));
+
+            if (duplicateRow != null)
+            {
+                e.Cancel = true;
+
+                string message =
+                    $"Product Code '{productCode}' already exists in row {duplicateRow.Index + 1}.";
+
+                dgvMapping.Rows[e.RowIndex].ErrorText = message;
+
+                MessageBox.Show(
+                    message,
+                    "Duplicate Product Code",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+            }
+            else
+            {
+                dgvMapping.Rows[e.RowIndex].ErrorText = string.Empty;
+            }
         }
 
         private void LoadProductCodes()
@@ -42,13 +108,22 @@ namespace Administration
                         int rowIndex = dgvMapping.Rows.Add();
                         DataGridViewRow row = dgvMapping.Rows[rowIndex];
 
-                        row.Cells["cProductCode"].Value = reader["ProductCode"].ToString();
+                        string originalProductCode = NormaliseProductCode(reader["ProductCode"]);
+                        row.Tag = originalProductCode; // Keeps the original database key
+                        row.Cells["cProductCode"].Value = originalProductCode;
                         row.Cells["cStyle"].Value = reader["StyleId"];
                         row.Cells["cColour"].Value = reader["ColourId"];
                         row.Cells["cSize"].Value = reader["SizeId"];
                     }
                 }
             }
+        }
+
+        private static string NormaliseProductCode(object value)
+        {
+            return (value?.ToString() ?? string.Empty)
+                .Trim()
+                .ToUpperInvariant();
         }
 
         private void LoadComboBoxData()
@@ -95,56 +170,136 @@ namespace Administration
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-            using (SqlConnection conn = new SqlConnection(connectionString))
+            try
             {
-                conn.Open();
-                foreach (DataGridViewRow row in dgvMapping.Rows)
+                dgvMapping.EndEdit();
+
+                List<ProductCodeMappingSaveItem> saveItems;
+
+                if (!TryBuildSaveItems(out saveItems))
+                    return;
+
+                const string insertSql = @"
+            INSERT INTO TLADM_ProductCodes
+            (
+                ProductCode,
+                StyleId,
+                ColourId,
+                SizeId
+            )
+            VALUES
+            (
+                @ProductCode,
+                @StyleId,
+                @ColourId,
+                @SizeId
+            );";
+
+                const string updateSql = @"
+            UPDATE TLADM_ProductCodes
+            SET
+                ProductCode = @ProductCode,
+                StyleId = @StyleId,
+                ColourId = @ColourId,
+                SizeId = @SizeId
+            WHERE ProductCode = @OriginalProductCode;";
+
+                using (SqlConnection conn = new SqlConnection(connectionString))
                 {
-                    if (row.IsNewRow) continue; // Skip empty new row
+                    conn.Open();
 
-                    string productCode = row.Cells["cProductCode"].Value?.ToString().ToUpper();
-                    int styleId = Convert.ToInt32(row.Cells["cStyle"].Value);
-                    int colourId = Convert.ToInt32(row.Cells["cColour"].Value);
-                    int sizeId = Convert.ToInt32(row.Cells["cSize"].Value);
-
-                    // Check if the product code exists
-                    string checkQuery = "SELECT COUNT(*) FROM TLADM_ProductCodes WHERE ProductCode = @ProductCode";
-                    using (SqlCommand checkCmd = new SqlCommand(checkQuery, conn))
+                    using (SqlTransaction transaction = conn.BeginTransaction())
                     {
-                        checkCmd.Parameters.AddWithValue("@ProductCode", productCode);
-                        int count = (int)checkCmd.ExecuteScalar();
+                        try
+                        {
+                            foreach (ProductCodeMappingSaveItem item in saveItems)
+                            {
+                                bool isNewRow =
+                                    string.IsNullOrWhiteSpace(item.OriginalProductCode);
 
-                        if (count > 0)
-                        {
-                            // Update existing record
-                            string updateQuery = "UPDATE TLADM_ProductCodes SET StyleId = @StyleId, ColourId = @ColourId, SizeId = @SizeId WHERE ProductCode = @ProductCode";
-                            using (SqlCommand updateCmd = new SqlCommand(updateQuery, conn))
-                            {
-                                updateCmd.Parameters.AddWithValue("@ProductCode", productCode);
-                                updateCmd.Parameters.AddWithValue("@StyleId", styleId);
-                                updateCmd.Parameters.AddWithValue("@ColourId", colourId);
-                                updateCmd.Parameters.AddWithValue("@SizeId", sizeId);
-                                updateCmd.ExecuteNonQuery();
+                                using (SqlCommand cmd = new SqlCommand(
+                                    isNewRow ? insertSql : updateSql,
+                                    conn,
+                                    transaction))
+                                {
+                                    cmd.Parameters.AddWithValue(
+                                        "@ProductCode",
+                                        item.ProductCode);
+
+                                    cmd.Parameters.AddWithValue(
+                                        "@StyleId",
+                                        item.StyleId);
+
+                                    cmd.Parameters.AddWithValue(
+                                        "@ColourId",
+                                        item.ColourId);
+
+                                    cmd.Parameters.AddWithValue(
+                                        "@SizeId",
+                                        item.SizeId);
+
+                                    if (!isNewRow)
+                                    {
+                                        cmd.Parameters.AddWithValue(
+                                            "@OriginalProductCode",
+                                            item.OriginalProductCode);
+                                    }
+
+                                    int affectedRows = cmd.ExecuteNonQuery();
+
+                                    if (!isNewRow && affectedRows == 0)
+                                    {
+                                        throw new InvalidOperationException(
+                                            $"Product Code '{item.OriginalProductCode}' no longer exists. Please reload the screen and try again.");
+                                    }
+                                }
                             }
+
+                            transaction.Commit();
                         }
-                        else
+                        catch
                         {
-                            // Insert new record
-                            string insertQuery = "INSERT INTO TLADM_ProductCodes (ProductCode, StyleId, ColourId, SizeId) VALUES (@ProductCode, @StyleId, @ColourId, @SizeId)";
-                            using (SqlCommand insertCmd = new SqlCommand(insertQuery, conn))
-                            {
-                                insertCmd.Parameters.AddWithValue("@ProductCode", productCode);
-                                insertCmd.Parameters.AddWithValue("@StyleId", styleId);
-                                insertCmd.Parameters.AddWithValue("@ColourId", colourId);
-                                insertCmd.Parameters.AddWithValue("@SizeId", sizeId);
-                                insertCmd.ExecuteNonQuery();
-                            }
+                            transaction.Rollback();
+                            throw;
                         }
                     }
                 }
-            }
 
-            MessageBox.Show("Data saved successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                LoadProductCodes();
+
+                MessageBox.Show(
+                    "Data saved successfully.",
+                    "Success",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+            }
+            catch (SqlException ex)
+            {
+                if (ex.Number == 2601 || ex.Number == 2627)
+                {
+                    MessageBox.Show(
+                        "A Product Code with that value already exists.",
+                        "Duplicate Product Code",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
+
+                    return;
+                }
+
+                MessageBox.Show(
+                    $"Could not save Product Code Mapping.{Environment.NewLine}{Environment.NewLine}{ex.Message}",
+                    "Save Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    $"Could not save Product Code Mapping.{Environment.NewLine}{Environment.NewLine}{ex.Message}",
+                    "Save Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
         }
 
         private void btnPrintProductCodes_Click(object sender, EventArgs e)
@@ -522,6 +677,222 @@ namespace Administration
             }
 
             return "\"" + value.Replace("\"", "\"\"") + "\"";
+        }
+
+        private void btnDeleteProductCode_Click(object sender, EventArgs e)
+        {
+            dgvMapping.EndEdit();
+
+            List<DataGridViewRow> selectedRows = dgvMapping.SelectedRows
+                .Cast<DataGridViewRow>()
+                .Where(row => !row.IsNewRow)
+                .ToList();
+
+            if (!selectedRows.Any())
+                return;
+
+            int savedRowCount = selectedRows.Count(row =>
+                !string.IsNullOrWhiteSpace(row.Tag?.ToString()));
+
+            string message = savedRowCount > 0
+                ? $"Delete {selectedRows.Count} selected Product Code mapping(s)?{Environment.NewLine}{Environment.NewLine}This cannot be undone."
+                : $"Remove {selectedRows.Count} unsaved row(s)?";
+
+            if (MessageBox.Show(
+                message,
+                "Delete Product Code Mapping",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Warning) != DialogResult.Yes)
+            {
+                return;
+            }
+
+            try
+            {
+                List<DataGridViewRow> savedRows = selectedRows
+                    .Where(row => !string.IsNullOrWhiteSpace(row.Tag?.ToString()))
+                    .ToList();
+
+                if (savedRows.Any())
+                {
+                    using (SqlConnection conn = new SqlConnection(connectionString))
+                    {
+                        conn.Open();
+
+                        using (SqlTransaction transaction = conn.BeginTransaction())
+                        {
+                            try
+                            {
+                                foreach (DataGridViewRow row in savedRows)
+                                {
+                                    using (SqlCommand cmd = new SqlCommand(
+                                        @"DELETE FROM TLADM_ProductCodes
+                                  WHERE ProductCode = @ProductCode;",
+                                        conn,
+                                        transaction))
+                                    {
+                                        cmd.Parameters.AddWithValue(
+                                            "@ProductCode",
+                                            row.Tag.ToString());
+
+                                        cmd.ExecuteNonQuery();
+                                    }
+                                }
+
+                                transaction.Commit();
+                            }
+                            catch
+                            {
+                                transaction.Rollback();
+                                throw;
+                            }
+                        }
+                    }
+                }
+
+                foreach (DataGridViewRow row in selectedRows
+                    .OrderByDescending(row => row.Index))
+                {
+                    dgvMapping.Rows.Remove(row);
+                }
+
+                MessageBox.Show(
+                    "Selected Product Code mapping(s) deleted.",
+                    "Deleted",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    $"Could not delete the selected Product Code mapping(s).{Environment.NewLine}{Environment.NewLine}{ex.Message}",
+                    "Delete Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
+        }
+
+        private bool TryGetIntValue(
+    DataGridViewRow row,
+    string columnName,
+    out int value)
+        {
+            value = 0;
+
+            object cellValue = row.Cells[columnName].Value;
+
+            return cellValue != null &&
+                   cellValue != DBNull.Value &&
+                   int.TryParse(cellValue.ToString(), out value);
+        }
+
+        private bool ShowGridValidationError(
+            DataGridViewRow row,
+            string columnName,
+            string message)
+        {
+            row.ErrorText = message;
+
+            dgvMapping.ClearSelection();
+            row.Selected = true;
+            dgvMapping.CurrentCell = row.Cells[columnName];
+
+            MessageBox.Show(
+                message,
+                "Product Code Mapping",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Warning);
+
+            return false;
+        }
+
+        private bool TryBuildSaveItems(
+            out List<ProductCodeMappingSaveItem> saveItems)
+        {
+            saveItems = new List<ProductCodeMappingSaveItem>();
+
+            HashSet<string> usedProductCodes =
+                new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+            foreach (DataGridViewRow row in dgvMapping.Rows)
+            {
+                if (row.IsNewRow)
+                    continue;
+
+                row.ErrorText = string.Empty;
+
+                string productCode =
+                    NormaliseProductCode(row.Cells["cProductCode"].Value);
+
+                if (string.IsNullOrWhiteSpace(productCode))
+                {
+                    return ShowGridValidationError(
+                        row,
+                        "cProductCode",
+                        $"Row {row.Index + 1}: Product Code is required.");
+                }
+
+                if (!usedProductCodes.Add(productCode))
+                {
+                    return ShowGridValidationError(
+                        row,
+                        "cProductCode",
+                        $"Row {row.Index + 1}: Product Code '{productCode}' appears more than once.");
+                }
+
+                int styleId;
+                int colourId;
+                int sizeId;
+
+                if (!TryGetIntValue(row, "cStyle", out styleId))
+                {
+                    return ShowGridValidationError(
+                        row,
+                        "cStyle",
+                        $"Row {row.Index + 1}: Please select a Style.");
+                }
+
+                if (!TryGetIntValue(row, "cColour", out colourId))
+                {
+                    return ShowGridValidationError(
+                        row,
+                        "cColour",
+                        $"Row {row.Index + 1}: Please select a Colour.");
+                }
+
+                if (!TryGetIntValue(row, "cSize", out sizeId))
+                {
+                    return ShowGridValidationError(
+                        row,
+                        "cSize",
+                        $"Row {row.Index + 1}: Please select a Size.");
+                }
+
+                // Ensure the grid also displays the normalised value.
+                row.Cells["cProductCode"].Value = productCode;
+
+                saveItems.Add(new ProductCodeMappingSaveItem
+                {
+                    GridRow = row,
+                    OriginalProductCode = row.Tag?.ToString(),
+                    ProductCode = productCode,
+                    StyleId = styleId,
+                    ColourId = colourId,
+                    SizeId = sizeId
+                });
+            }
+
+            return true;
+        }
+
+        private sealed class ProductCodeMappingSaveItem
+        {
+            public DataGridViewRow GridRow { get; set; }
+            public string OriginalProductCode { get; set; }
+            public string ProductCode { get; set; }
+            public int StyleId { get; set; }
+            public int ColourId { get; set; }
+            public int SizeId { get; set; }
         }
     }
 }
