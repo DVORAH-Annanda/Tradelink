@@ -18,14 +18,250 @@ namespace Administration
         private TTI2Entities _context = new TTI2Entities();
         string connectionString = ConfigurationManager.ConnectionStrings["TTISqlConnection"].ConnectionString;
 
+        private bool _loadingFilters;
+
         public frmProductCodeMapping()
         {
             InitializeComponent();
 
             ConfigureMappingGrid();
+            ConfigureFilters();
 
             LoadComboBoxData();
+            LoadFilterComboBoxData();
             LoadProductCodes();
+        }
+
+        private void ConfigureFilters()
+        {
+            txtFilterProductCode.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+            txtFilterProductCode.AutoCompleteSource = AutoCompleteSource.CustomSource;
+
+            txtFilterProductCode.TextChanged += FilterControlChanged;
+
+            cmboFilterStyle.CheckStateChanged += FilterControlChanged;
+            cmboFilterColour.CheckStateChanged += FilterControlChanged;
+            cmboFilterSize.CheckStateChanged += FilterControlChanged;
+
+            btnClearFilters.Click += btnClearFilters_Click;
+        }
+
+        private void FilterControlChanged(object sender, EventArgs e)
+        {
+            if (_loadingFilters)
+                return;
+
+            ApplyFilters();
+        }
+
+        private void ApplyFilters()
+        {
+            if (_loadingFilters)
+                return;
+
+            string productCodeFilter =
+                NormaliseProductCode(txtFilterProductCode.Text);
+
+            HashSet<int> styleIds = GetSelectedIds(cmboFilterStyle);
+            HashSet<int> colourIds = GetSelectedIds(cmboFilterColour);
+            HashSet<int> sizeIds = GetSelectedIds(cmboFilterSize);
+
+            List<DataGridViewRow> rows = dgvMapping.Rows
+                .Cast<DataGridViewRow>()
+                .Where(row => !row.IsNewRow)
+                .ToList();
+
+            List<DataGridViewRow> visibleRows = rows
+                .Where(row => RowMatchesFilters(
+                    row,
+                    productCodeFilter,
+                    styleIds,
+                    colourIds,
+                    sizeIds))
+                .ToList();
+
+            HashSet<int> visibleRowIndexes = new HashSet<int>(
+                visibleRows.Select(row => row.Index));
+
+            dgvMapping.SuspendLayout();
+
+            try
+            {
+                DataGridViewRow currentRow = dgvMapping.CurrentRow;
+
+                bool currentRowWillBeHidden =
+                    currentRow != null &&
+                    !currentRow.IsNewRow &&
+                    !visibleRowIndexes.Contains(currentRow.Index);
+
+                // First make matching rows visible again.
+                // Some may still be hidden from the previous filter text.
+                foreach (DataGridViewRow row in visibleRows)
+                {
+                    row.Visible = true;
+                }
+
+                // Only now can we move to a visible row.
+                if (currentRowWillBeHidden)
+                {
+                    if (visibleRows.Any())
+                    {
+                        dgvMapping.CurrentCell =
+                            visibleRows[0].Cells["cProductCode"];
+                    }
+                    else
+                    {
+                        // No rows match the filter.
+                        dgvMapping.CurrentCell = null;
+                    }
+                }
+
+                dgvMapping.ClearSelection();
+
+                // Hide rows that no longer match.
+                foreach (DataGridViewRow row in rows)
+                {
+                    if (!visibleRowIndexes.Contains(row.Index))
+                    {
+                        row.Visible = false;
+                    }
+                }
+            }
+            finally
+            {
+                dgvMapping.ResumeLayout();
+            }
+
+            if (lblFilterCount != null)
+            {
+                lblFilterCount.Text =
+                    $"{visibleRows.Count:N0} of {rows.Count:N0} mappings";
+            }
+        }
+
+        private HashSet<int> GetSelectedIds(ComboBox comboBox)
+        {
+            return new HashSet<int>(
+                comboBox.Items
+                    .Cast<object>()
+                    .OfType<CheckComboBoxItem>()
+                    .Where(item => item.CheckState)
+                    .Select(item => item._Pk));
+        }
+
+        private bool MatchesSelectedIds(DataGridViewRow row,
+                                    string columnName,
+                                    HashSet<int> selectedIds)
+        {
+            if (selectedIds.Count == 0)
+                return true;
+
+            object value = row.Cells[columnName].Value;
+
+            int id;
+
+            return value != null &&
+                   int.TryParse(value.ToString(), out id) &&
+                   selectedIds.Contains(id);
+        }
+
+        private bool RowMatchesFilters(
+    DataGridViewRow row,
+    string productCodeFilter,
+    HashSet<int> styleIds,
+    HashSet<int> colourIds,
+    HashSet<int> sizeIds)
+        {
+            string productCode =
+                NormaliseProductCode(row.Cells["cProductCode"].Value);
+
+            bool matchesProductCode =
+                string.IsNullOrWhiteSpace(productCodeFilter) ||
+                productCode.IndexOf(
+                    productCodeFilter,
+                    StringComparison.OrdinalIgnoreCase) >= 0;
+
+            return matchesProductCode &&
+                   MatchesSelectedIds(row, "cStyle", styleIds) &&
+                   MatchesSelectedIds(row, "cColour", colourIds) &&
+                   MatchesSelectedIds(row, "cSize", sizeIds);
+        }
+
+        private void RefreshProductCodeAutoComplete()
+        {
+            AutoCompleteStringCollection productCodes =
+                new AutoCompleteStringCollection();
+
+            foreach (DataGridViewRow row in dgvMapping.Rows)
+            {
+                if (row.IsNewRow)
+                    continue;
+
+                string productCode =
+                    NormaliseProductCode(row.Cells["cProductCode"].Value);
+
+                if (!string.IsNullOrWhiteSpace(productCode))
+                {
+                    productCodes.Add(productCode);
+                }
+            }
+
+            txtFilterProductCode.AutoCompleteCustomSource = productCodes;
+        }
+
+        private void LoadFilterComboBoxData()
+        {
+            _loadingFilters = true;
+
+            try
+            {
+                cmboFilterStyle.Items.Clear();
+                cmboFilterColour.Items.Clear();
+                cmboFilterSize.Items.Clear();
+
+                List<TLADM_Styles> styles = _context.TLADM_Styles
+                    .OrderBy(x => x.Sty_Description)
+                    .ToList();
+
+                foreach (TLADM_Styles style in styles)
+                {
+                    cmboFilterStyle.Items.Add(
+                        new CheckComboBoxItem(
+                            style.Sty_Id,
+                            style.Sty_Description,
+                            false));
+                }
+
+                List<TLADM_Colours> colours = _context.TLADM_Colours
+                    .OrderBy(x => x.Col_Display)
+                    .ToList();
+
+                foreach (TLADM_Colours colour in colours)
+                {
+                    cmboFilterColour.Items.Add(
+                        new CheckComboBoxItem(
+                            colour.Col_Id,
+                            colour.Col_Display,
+                            false));
+                }
+
+                List<TLADM_Sizes> sizes = _context.TLADM_Sizes
+                    .OrderBy(x => x.SI_Description)
+                    .ToList();
+
+                foreach (TLADM_Sizes size in sizes)
+                {
+                    cmboFilterSize.Items.Add(
+                        new CheckComboBoxItem(
+                            size.SI_id,
+                            size.SI_Description,
+                            false));
+                }
+            }
+            finally
+            {
+                _loadingFilters = false;
+            }
         }
 
         private void ConfigureMappingGrid()
@@ -117,6 +353,9 @@ namespace Administration
                     }
                 }
             }
+
+            RefreshProductCodeAutoComplete();
+            ApplyFilters();
         }
 
         private static string NormaliseProductCode(object value)
@@ -756,6 +995,9 @@ namespace Administration
                     dgvMapping.Rows.Remove(row);
                 }
 
+                RefreshProductCodeAutoComplete();
+                ApplyFilters();
+
                 MessageBox.Show(
                     "Selected Product Code mapping(s) deleted.",
                     "Deleted",
@@ -893,6 +1135,25 @@ namespace Administration
             public int StyleId { get; set; }
             public int ColourId { get; set; }
             public int SizeId { get; set; }
+        }
+
+        private void btnClearFilters_Click(object sender, EventArgs e)
+        {
+            _loadingFilters = true;
+
+            try
+            {
+                txtFilterProductCode.Text = string.Empty;
+
+                // Reloading the dropdowns clears all checked values.
+                LoadFilterComboBoxData();
+            }
+            finally
+            {
+                _loadingFilters = false;
+            }
+
+            ApplyFilters();
         }
     }
 }
