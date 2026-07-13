@@ -39,11 +39,109 @@ namespace Administration
 
             txtFilterProductCode.TextChanged += FilterControlChanged;
 
-            cmboFilterStyle.CheckStateChanged += FilterControlChanged;
+            cmboFilterStyle.CheckStateChanged += cmboFilterStyle_CheckStateChanged;
             cmboFilterColour.CheckStateChanged += FilterControlChanged;
             cmboFilterSize.CheckStateChanged += FilterControlChanged;
 
             btnClearFilters.Click += btnClearFilters_Click;
+        }
+
+        private void cmboFilterStyle_CheckStateChanged(object sender, EventArgs e)
+        {
+            if (_loadingFilters)
+                return;
+
+            RefreshColourFilterForSelectedStyles();
+
+            ApplyFilters();
+        }
+
+        private void RefreshColourFilterForSelectedStyles()
+        {
+            HashSet<int> selectedStyleIds = GetSelectedIds(cmboFilterStyle);
+            HashSet<int> previouslySelectedColourIds = GetSelectedIds(cmboFilterColour);
+
+            _loadingFilters = true;
+
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                using (SqlCommand cmd = new SqlCommand())
+                {
+                    conn.Open();
+
+                    cmd.Connection = conn;
+
+                    if (selectedStyleIds.Count == 0)
+                    {
+                        cmd.CommandText = @"
+                    SELECT DISTINCT
+                        C.Col_Id,
+                        C.Col_Display
+                    FROM TLADM_ProductCodes PC
+                    INNER JOIN TLADM_Colours C
+                        ON C.Col_Id = PC.ColourId
+                    ORDER BY C.Col_Display;";
+                    }
+                    else
+                    {
+                        string styleParameterList =
+                            AddIntegerListParameters(cmd, selectedStyleIds, "StyleId");
+
+                        cmd.CommandText = $@"
+                    SELECT DISTINCT
+                        C.Col_Id,
+                        C.Col_Display
+                    FROM TLADM_ProductCodes PC
+                    INNER JOIN TLADM_Colours C
+                        ON C.Col_Id = PC.ColourId
+                    WHERE PC.StyleId IN ({styleParameterList})
+                    ORDER BY C.Col_Display;";
+                    }
+
+                    cmboFilterColour.Items.Clear();
+
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            int colourId = Convert.ToInt32(reader["Col_Id"]);
+                            string colourDisplay = reader["Col_Display"]?.ToString() ?? string.Empty;
+
+                            cmboFilterColour.Items.Add(
+                                new CheckComboBoxItem(
+                                    colourId,
+                                    colourDisplay,
+                                    previouslySelectedColourIds.Contains(colourId)));
+                        }
+                    }
+                }
+            }
+            finally
+            {
+                _loadingFilters = false;
+            }
+        }
+
+        private string AddIntegerListParameters(
+    SqlCommand cmd,
+    IEnumerable<int> values,
+    string parameterPrefix)
+        {
+            List<string> parameterNames = new List<string>();
+            int index = 0;
+
+            foreach (int value in values.Distinct())
+            {
+                string parameterName = $"@{parameterPrefix}{index}";
+
+                cmd.Parameters.AddWithValue(parameterName, value);
+                parameterNames.Add(parameterName);
+
+                index++;
+            }
+
+            return string.Join(",", parameterNames);
         }
 
         private void FilterControlChanged(object sender, EventArgs e)
@@ -215,52 +313,90 @@ namespace Administration
 
             try
             {
-                cmboFilterStyle.Items.Clear();
-                cmboFilterColour.Items.Clear();
-                cmboFilterSize.Items.Clear();
-
-                List<TLADM_Styles> styles = _context.TLADM_Styles
-                    .OrderBy(x => x.Sty_Description)
-                    .ToList();
-
-                foreach (TLADM_Styles style in styles)
+                using (SqlConnection conn = new SqlConnection(connectionString))
                 {
-                    cmboFilterStyle.Items.Add(
-                        new CheckComboBoxItem(
-                            style.Sty_Id,
-                            style.Sty_Description,
-                            false));
-                }
+                    conn.Open();
 
-                List<TLADM_Colours> colours = _context.TLADM_Colours
-                    .OrderBy(x => x.Col_Display)
-                    .ToList();
+                    LoadCheckComboItems(
+                        conn,
+                        cmboFilterStyle,
+                        @"
+                SELECT DISTINCT
+                    S.Sty_Id,
+                    S.Sty_Description
+                FROM TLADM_ProductCodes PC
+                INNER JOIN TLADM_Styles S
+                    ON S.Sty_Id = PC.StyleId
+                ORDER BY S.Sty_Description;",
+                        "Sty_Id",
+                        "Sty_Description",
+                        null);
 
-                foreach (TLADM_Colours colour in colours)
-                {
-                    cmboFilterColour.Items.Add(
-                        new CheckComboBoxItem(
-                            colour.Col_Id,
-                            colour.Col_Display,
-                            false));
-                }
+                    LoadCheckComboItems(
+                        conn,
+                        cmboFilterColour,
+                        @"
+                SELECT DISTINCT
+                    C.Col_Id,
+                    C.Col_Display
+                FROM TLADM_ProductCodes PC
+                INNER JOIN TLADM_Colours C
+                    ON C.Col_Id = PC.ColourId
+                ORDER BY C.Col_Display;",
+                        "Col_Id",
+                        "Col_Display",
+                        null);
 
-                List<TLADM_Sizes> sizes = _context.TLADM_Sizes
-                    .OrderBy(x => x.SI_Description)
-                    .ToList();
-
-                foreach (TLADM_Sizes size in sizes)
-                {
-                    cmboFilterSize.Items.Add(
-                        new CheckComboBoxItem(
-                            size.SI_id,
-                            size.SI_Description,
-                            false));
+                    LoadCheckComboItems(
+                        conn,
+                        cmboFilterSize,
+                        @"
+                SELECT DISTINCT
+                    SZ.SI_id,
+                    SZ.SI_Description
+                FROM TLADM_ProductCodes PC
+                INNER JOIN TLADM_Sizes SZ
+                    ON SZ.SI_id = PC.SizeId
+                ORDER BY SZ.SI_Description;",
+                        "SI_id",
+                        "SI_Description",
+                        null);
                 }
             }
             finally
             {
                 _loadingFilters = false;
+            }
+        }
+
+        private void LoadCheckComboItems(
+    SqlConnection conn,
+    ComboBox comboBox,
+    string sql,
+    string idColumnName,
+    string displayColumnName,
+    HashSet<int> checkedIds)
+        {
+            comboBox.Items.Clear();
+
+            using (SqlCommand cmd = new SqlCommand(sql, conn))
+            using (SqlDataReader reader = cmd.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    int id = Convert.ToInt32(reader[idColumnName]);
+                    string displayText = reader[displayColumnName]?.ToString() ?? string.Empty;
+
+                    bool isChecked =
+                        checkedIds != null &&
+                        checkedIds.Contains(id);
+
+                    comboBox.Items.Add(
+                        new CheckComboBoxItem(
+                            id,
+                            displayText,
+                            isChecked));
+                }
             }
         }
 
@@ -541,6 +677,37 @@ namespace Administration
             }
         }
 
+        private string GetCellDisplayText(DataGridViewRow row, string columnName)
+        {
+            object formattedValue = row.Cells[columnName].FormattedValue;
+
+            if (formattedValue != null && formattedValue != DBNull.Value)
+                return formattedValue.ToString();
+
+            object rawValue = row.Cells[columnName].Value;
+
+            return rawValue == null || rawValue == DBNull.Value
+                ? string.Empty
+                : rawValue.ToString();
+        }
+
+        private List<ProductCodeMappingReportRow> GetVisibleProductCodeRows()
+        {
+            dgvMapping.EndEdit();
+
+            return dgvMapping.Rows
+                .Cast<DataGridViewRow>()
+                .Where(row => !row.IsNewRow && row.Visible)
+                .Select(row => new ProductCodeMappingReportRow
+                {
+                    ProductCode = NormaliseProductCode(row.Cells["cProductCode"].Value),
+                    Style = GetCellDisplayText(row, "cStyle"),
+                    Colour = GetCellDisplayText(row, "cColour"),
+                    Size = GetCellDisplayText(row, "cSize")
+                })
+                .ToList();
+        }
+
         private void btnPrintProductCodes_Click(object sender, EventArgs e)
         {
             try
@@ -572,221 +739,201 @@ namespace Administration
         {
             StringBuilder rows = new StringBuilder();
 
-            string query = @"
-        SELECT
-            PC.ProductCode,
-            S.Sty_Description AS StyleDescription,
-            C.Col_Display AS ColourDescription,
-            SZ.SI_Description AS SizeDescription
-        FROM TLADM_ProductCodes PC
-        LEFT JOIN TLADM_Styles S
-            ON S.Sty_Id = PC.StyleId
-        LEFT JOIN TLADM_Colours C
-            ON C.Col_Id = PC.ColourId
-        LEFT JOIN TLADM_Sizes SZ
-            ON SZ.SI_id = PC.SizeId
-        ORDER BY
-            S.Sty_Description,
-            C.Col_Display,
-            SZ.SI_Description,
-            PC.ProductCode;";
+            List<ProductCodeMappingReportRow> reportRows = GetVisibleProductCodeRows();
 
-            using (SqlConnection conn = new SqlConnection(connectionString))
-            using (SqlCommand cmd = new SqlCommand(query, conn))
+            foreach (ProductCodeMappingReportRow reportRow in reportRows)
             {
-                conn.Open();
+                string productCode = HtmlEncode(reportRow.ProductCode);
+                string style = HtmlEncode(reportRow.Style);
+                string colour = HtmlEncode(reportRow.Colour);
+                string size = HtmlEncode(reportRow.Size);
 
-                using (SqlDataReader reader = cmd.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                        string productCode = HtmlEncode(reader["ProductCode"]?.ToString());
-                        string style = HtmlEncode(reader["StyleDescription"]?.ToString());
-                        string colour = HtmlEncode(reader["ColourDescription"]?.ToString());
-                        string size = HtmlEncode(reader["SizeDescription"]?.ToString());
-
-                        rows.AppendLine($@"
+                rows.AppendLine($@"
                     <tr>
                         <td>{productCode}</td>
                         <td>{style}</td>
                         <td>{colour}</td>
                         <td>{size}</td>
                     </tr>");
-                    }
-                }
             }
 
+            int totalProductCodes = dgvMapping.Rows
+                .Cast<DataGridViewRow>()
+                .Count(r => !r.IsNewRow);
+
+            int filteredProductCodes = reportRows.Count;
+
             return $@"<!DOCTYPE html>
-<html>
-<head>
-    <meta charset='utf-8' />
-    <title>Product Code Mapping</title>
+                <html>
+                <head>
+                    <meta charset='utf-8' />
+                    <title>Product Code Mapping</title>
 
-    <style>
-        body {{
-            font-family: Arial, sans-serif;
-            margin: 30px;
-            color: #222;
-        }}
+                    <style>
+                        body {{
+                            font-family: Arial, sans-serif;
+                            margin: 30px;
+                            color: #222;
+                        }}
 
-        h1 {{
-            margin-bottom: 5px;
-            color: #185785;
-        }}
+                        h1 {{
+                            margin-bottom: 5px;
+                            color: #185785;
+                        }}
 
-        .report-info {{
-            margin-bottom: 20px;
-            color: #666;
-            font-size: 13px;
-        }}
+                        .report-info {{
+                            margin-bottom: 20px;
+                            color: #666;
+                            font-size: 13px;
+                        }}
 
-        .toolbar {{
-            margin-bottom: 20px;
-        }}
+                        .toolbar {{
+                            margin-bottom: 20px;
+                        }}
 
-        button {{
-            background: #185785;
-            color: white;
-            border: none;
-            padding: 9px 16px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 14px;
-        }}
+                        button {{
+                            background: #185785;
+                            color: white;
+                            border: none;
+                            padding: 9px 16px;
+                            border-radius: 4px;
+                            cursor: pointer;
+                            font-size: 14px;
+                        }}
 
-        button:hover {{
-            opacity: 0.9;
-        }}
+                        button:hover {{
+                            opacity: 0.9;
+                        }}
 
-        table {{
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 13px;
-        }}
+                        table {{
+                            width: 100%;
+                            border-collapse: collapse;
+                            font-size: 13px;
+                        }}
 
-        th {{
-            background: #185785;
-            color: white;
-            padding: 10px;
-            text-align: left;
-            cursor: pointer;
-            user-select: none;
-        }}
+                        th {{
+                            background: #185785;
+                            color: white;
+                            padding: 10px;
+                            text-align: left;
+                            cursor: pointer;
+                            user-select: none;
+                        }}
 
-        th:hover {{
-            background: #123f61;
-        }}
+                        th:hover {{
+                            background: #123f61;
+                        }}
 
-        td {{
-            border: 1px solid #d6d6d6;
-            padding: 8px 10px;
-        }}
+                        td {{
+                            border: 1px solid #d6d6d6;
+                            padding: 8px 10px;
+                        }}
 
-        tr:nth-child(even) {{
-            background: #f6f8fa;
-        }}
+                        tr:nth-child(even) {{
+                            background: #f6f8fa;
+                        }}
 
-        tr:hover {{
-            background: #eaf3f8;
-        }}
+                        tr:hover {{
+                            background: #eaf3f8;
+                        }}
 
-        .sort-note {{
-            margin-top: 10px;
-            font-size: 12px;
-            color: #777;
-        }}
+                        .sort-note {{
+                            margin-top: 10px;
+                            font-size: 12px;
+                            color: #777;
+                        }}
 
-        @media print {{
-            body {{
-                margin: 12mm;
-            }}
+                        @media print {{
+                            body {{
+                                margin: 12mm;
+                            }}
 
-            .toolbar,
-            .sort-note {{
-                display: none;
-            }}
+                            .toolbar,
+                            .sort-note {{
+                                display: none;
+                            }}
 
-            th {{
-                background: #e5e5e5 !important;
-                color: black !important;
-            }}
+                            th {{
+                                background: #e5e5e5 !important;
+                                color: black !important;
+                            }}
 
-            tr:nth-child(even) {{
-                background: #f8f8f8 !important;
-            }}
-        }}
-    </style>
-</head>
+                            tr:nth-child(even) {{
+                                background: #f8f8f8 !important;
+                            }}
+                        }}
+                    </style>
+                </head>
 
-<body>
-    <h1>Product Code Mapping</h1>
+                <body>
+                    <h1>Product Code Mapping</h1>
 
-    <div class='report-info'>
-        Generated: {DateTime.Now:dd MMMM yyyy HH:mm}<br />
-        Total Product Codes: {dgvMapping.Rows.Cast<DataGridViewRow>().Count(r => !r.IsNewRow)}
-    </div>
+                    <div class='report-info'>
+                        Generated: {DateTime.Now:dd MMMM yyyy HH:mm}<br />
+                        Product Codes: {filteredProductCodes:N0} of {totalProductCodes:N0}
+                    </div>
 
-    <div class='toolbar'>
-        <button onclick='window.print()'>Print / Save as PDF</button>
-    </div>
+                    <div class='toolbar'>
+                        <button onclick='window.print()'>Print / Save as PDF</button>
+                    </div>
 
-    <table id='productCodeTable'>
-        <thead>
-            <tr>
-                <th onclick='sortTable(0)'>Product Code ↕</th>
-                <th onclick='sortTable(1)'>Style ↕</th>
-                <th onclick='sortTable(2)'>Colour ↕</th>
-                <th onclick='sortTable(3)'>Size ↕</th>
-            </tr>
-        </thead>
-        <tbody>
-            {rows}
-        </tbody>
-    </table>
+                    <table id='productCodeTable'>
+                        <thead>
+                            <tr>
+                                <th onclick='sortTable(0)'>Product Code ↕</th>
+                                <th onclick='sortTable(1)'>Style ↕</th>
+                                <th onclick='sortTable(2)'>Colour ↕</th>
+                                <th onclick='sortTable(3)'>Size ↕</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {rows}
+                        </tbody>
+                    </table>
 
-    <div class='sort-note'>
-        Click any column heading to sort the table.
-    </div>
+                    <div class='sort-note'>
+                        Click any column heading to sort the table.
+                    </div>
 
-    <script>
-        let currentSortColumn = -1;
-        let ascending = true;
+                    <script>
+                        let currentSortColumn = -1;
+                        let ascending = true;
 
-        function sortTable(columnIndex) {{
-            const table = document.getElementById('productCodeTable');
-            const tbody = table.tBodies[0];
-            const rows = Array.from(tbody.rows);
+                        function sortTable(columnIndex) {{
+                            const table = document.getElementById('productCodeTable');
+                            const tbody = table.tBodies[0];
+                            const rows = Array.from(tbody.rows);
 
-            if (currentSortColumn === columnIndex) {{
-                ascending = !ascending;
-            }} else {{
-                currentSortColumn = columnIndex;
-                ascending = true;
-            }}
+                            if (currentSortColumn === columnIndex) {{
+                                ascending = !ascending;
+                            }} else {{
+                                currentSortColumn = columnIndex;
+                                ascending = true;
+                            }}
 
-            rows.sort(function (rowA, rowB) {{
-                const valueA = rowA.cells[columnIndex].innerText.trim();
-                const valueB = rowB.cells[columnIndex].innerText.trim();
+                            rows.sort(function (rowA, rowB) {{
+                                const valueA = rowA.cells[columnIndex].innerText.trim();
+                                const valueB = rowB.cells[columnIndex].innerText.trim();
 
-                const comparison = valueA.localeCompare(
-                    valueB,
-                    undefined,
-                    {{
-                        numeric: true,
-                        sensitivity: 'base'
-                    }}
-                );
+                                const comparison = valueA.localeCompare(
+                                    valueB,
+                                    undefined,
+                                    {{
+                                        numeric: true,
+                                        sensitivity: 'base'
+                                    }}
+                                );
 
-                return ascending ? comparison : -comparison;
-            }});
+                                return ascending ? comparison : -comparison;
+                            }});
 
-            rows.forEach(function (row) {{
-                tbody.appendChild(row);
-            }});
-        }}
-    </script>
-</body>
-</html>";
+                            rows.forEach(function (row) {{
+                                tbody.appendChild(row);
+                            }});
+                        }}
+                    </script>
+                </body>
+                </html>";
         }
 
         private string HtmlEncode(string value)
@@ -855,46 +1002,67 @@ namespace Administration
 
             csv.AppendLine("Product Code,Style,Colour,Size");
 
-            string query = @"
-        SELECT
-            PC.ProductCode,
-            S.Sty_Description AS StyleDescription,
-            C.Col_Display AS ColourDescription,
-            SZ.SI_Description AS SizeDescription
-        FROM TLADM_ProductCodes PC
-        LEFT JOIN TLADM_Styles S
-            ON S.Sty_Id = PC.StyleId
-        LEFT JOIN TLADM_Colours C
-            ON C.Col_Id = PC.ColourId
-        LEFT JOIN TLADM_Sizes SZ
-            ON SZ.SI_id = PC.SizeId
-        ORDER BY
-            S.Sty_Description,
-            C.Col_Display,
-            SZ.SI_Description,
-            PC.ProductCode;";
+            List<ProductCodeMappingReportRow> reportRows = GetVisibleProductCodeRows();
 
-            using (SqlConnection conn = new SqlConnection(connectionString))
-            using (SqlCommand cmd = new SqlCommand(query, conn))
+            foreach (ProductCodeMappingReportRow row in reportRows)
             {
-                conn.Open();
-
-                using (SqlDataReader reader = cmd.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                        csv.AppendLine(string.Join(",",
-                            EscapeCsvValue(reader["ProductCode"]?.ToString()),
-                            EscapeCsvValue(reader["StyleDescription"]?.ToString()),
-                            EscapeCsvValue(reader["ColourDescription"]?.ToString()),
-                            EscapeCsvValue(reader["SizeDescription"]?.ToString(), forceText: true)
-                        ));
-                    }
-                }
+                csv.AppendLine(string.Join(",",
+                    EscapeCsvValue(row.ProductCode),
+                    EscapeCsvValue(row.Style),
+                    EscapeCsvValue(row.Colour),
+                    EscapeCsvValue(row.Size, forceText: true)
+                ));
             }
 
             return csv.ToString();
         }
+
+        //private string BuildProductCodesCsv()
+        //{
+        //    StringBuilder csv = new StringBuilder();
+
+        //    csv.AppendLine("Product Code,Style,Colour,Size");
+
+        //    string query = @"
+        //SELECT
+        //    PC.ProductCode,
+        //    S.Sty_Description AS StyleDescription,
+        //    C.Col_Display AS ColourDescription,
+        //    SZ.SI_Description AS SizeDescription
+        //FROM TLADM_ProductCodes PC
+        //LEFT JOIN TLADM_Styles S
+        //    ON S.Sty_Id = PC.StyleId
+        //LEFT JOIN TLADM_Colours C
+        //    ON C.Col_Id = PC.ColourId
+        //LEFT JOIN TLADM_Sizes SZ
+        //    ON SZ.SI_id = PC.SizeId
+        //ORDER BY
+        //    S.Sty_Description,
+        //    C.Col_Display,
+        //    SZ.SI_Description,
+        //    PC.ProductCode;";
+
+        //    using (SqlConnection conn = new SqlConnection(connectionString))
+        //    using (SqlCommand cmd = new SqlCommand(query, conn))
+        //    {
+        //        conn.Open();
+
+        //        using (SqlDataReader reader = cmd.ExecuteReader())
+        //        {
+        //            while (reader.Read())
+        //            {
+        //                csv.AppendLine(string.Join(",",
+        //                    EscapeCsvValue(reader["ProductCode"]?.ToString()),
+        //                    EscapeCsvValue(reader["StyleDescription"]?.ToString()),
+        //                    EscapeCsvValue(reader["ColourDescription"]?.ToString()),
+        //                    EscapeCsvValue(reader["SizeDescription"]?.ToString(), forceText: true)
+        //                ));
+        //            }
+        //        }
+        //    }
+
+        //    return csv.ToString();
+        //}
 
         private string EscapeCsvValue(string value, bool forceText = false)
         {
@@ -1127,6 +1295,24 @@ namespace Administration
             return true;
         }
 
+        private void btnClearFilters_Click(object sender, EventArgs e)
+        {
+            _loadingFilters = true;
+
+            try
+            {
+                txtFilterProductCode.Text = string.Empty;
+
+                LoadFilterComboBoxData();
+            }
+            finally
+            {
+                _loadingFilters = false;
+            }
+
+            ApplyFilters();
+        }
+
         private sealed class ProductCodeMappingSaveItem
         {
             public DataGridViewRow GridRow { get; set; }
@@ -1137,23 +1323,12 @@ namespace Administration
             public int SizeId { get; set; }
         }
 
-        private void btnClearFilters_Click(object sender, EventArgs e)
+        private sealed class ProductCodeMappingReportRow
         {
-            _loadingFilters = true;
-
-            try
-            {
-                txtFilterProductCode.Text = string.Empty;
-
-                // Reloading the dropdowns clears all checked values.
-                LoadFilterComboBoxData();
-            }
-            finally
-            {
-                _loadingFilters = false;
-            }
-
-            ApplyFilters();
+            public string ProductCode { get; set; }
+            public string Style { get; set; }
+            public string Colour { get; set; }
+            public string Size { get; set; }
         }
     }
 }
