@@ -55,6 +55,9 @@ namespace CustomerServices
 
             _PickList = PickList;
 
+            btnExport.Visible = !_PickList;
+            btnExport.Enabled = !_PickList;
+
             //============================================================
             //---------Define the datatable 
             //=================================================================
@@ -244,6 +247,39 @@ namespace CustomerServices
                     }
                 }
             }
+        }
+
+        private void btnExport_Click(object sender, EventArgs e)
+        {
+            if (!FormLoaded)
+                return;
+
+            if (_PickList)
+            {
+                MessageBox.Show(
+                    "The Odoo export is only available for Delivery Notes.",
+                    "Odoo Export",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+
+                return;
+            }
+
+            int deliveryNoteNumber;
+
+            if (!int.TryParse(txtNo.Text.Trim(), out deliveryNoteNumber))
+            {
+                MessageBox.Show(
+                    "Please enter a valid Delivery Note number.",
+                    "Odoo Export",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+
+                txtNo.Focus();
+                return;
+            }
+
+            core.ExportOdooDeliveryNote(deliveryNoteNumber, this);
         }
     }
 }

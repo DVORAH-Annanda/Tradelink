@@ -232,14 +232,28 @@ namespace CustomerServices
 
                     try
                     {
-                        _context.SaveChanges();
-                        MessageBox.Show("data successfully saved to database");
-                    
-                        dataGridView1.Rows.Clear();
-                        cmboCustomers.SelectedValue = -1;
-                    
+                    _context.SaveChanges();
 
-                        svces.TransNumber = TransNumber;
+                    var exportResult = MessageBox.Show(
+                        "The delivery note was saved successfully." +
+                        Environment.NewLine +
+                        Environment.NewLine +
+                        "Would you like to export the Odoo import file now?",
+                        "Delivery Note Saved",
+                        MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Question);
+
+                    if (exportResult == DialogResult.Yes)
+                    {
+                        Util core = new Util();
+                        core.ExportOdooDeliveryNote(TransNumber, this);
+                    }
+
+                    dataGridView1.Rows.Clear();
+                    cmboCustomers.SelectedValue = -1;
+
+
+                    svces.TransNumber = TransNumber;
                         svces.DateIntoStock = DateTime.Now;
                         svces.DNReprint = false;
 

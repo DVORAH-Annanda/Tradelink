@@ -1374,6 +1374,217 @@ namespace Utilities
             return OutPut;
         }
 
+        public bool ExportOdooDeliveryNote(
+    int deliveryNoteNumber,
+    IWin32Window owner,
+    string salesperson = "Miranda")
+        {
+            const string companyName = "Tradelink Textile Services (Pty)Ltd";
+
+            string customerName;
+            DateTime orderDate;
+            List<OdooDeliveryLine> exportLines;
+
+            using (var context = new TTI2Entities())
+            {
+                var orderAllocation = context.TLCSV_OrderAllocated
+                    .FirstOrDefault(x => x.TLORDA_DelTransNumber == deliveryNoteNumber);
+
+                if (orderAllocation == null)
+                {
+                    MessageBox.Show(
+                        owner,
+                        "The delivery note could not be found.",
+                        "Odoo Export",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
+
+                    return false;
+                }
+
+                var customer = context.TLADM_CustomerFile
+                    .Find(orderAllocation.TLORDA_Customer_FK);
+
+                if (customer == null)
+                {
+                    MessageBox.Show(
+                        owner,
+                        "The customer for this delivery note could not be found.",
+                        "Odoo Export",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
+
+                    return false;
+                }
+
+                customerName = customer.Cust_Description;
+
+                orderDate = orderAllocation.TLORDA_DeliveredDate.HasValue
+                    ? orderAllocation.TLORDA_DeliveredDate.Value
+                    : DateTime.Now;
+
+                var stockRows = context.TLCSV_StockOnHand
+                    .Where(x => x.TLSOH_DNListNo == deliveryNoteNumber)
+                    .ToList();
+
+                if (stockRows.Count == 0)
+                {
+                    MessageBox.Show(
+                        owner,
+                        "No stock records were found for this delivery note.",
+                        "Odoo Export",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
+
+                    return false;
+                }
+
+                var productCodeLookup = BuildProductCodeLookup();
+
+                exportLines = stockRows
+                    .Select(x => new
+                    {
+                        ProductCode = GetProductCodeFromStockLookup(
+                            productCodeLookup,
+                            x,
+                            x.TLSOH_PastelNumber),
+
+                        Quantity = x.TLSOH_BoxedQty
+                    })
+                    .Where(x => !string.IsNullOrWhiteSpace(x.ProductCode))
+                    .GroupBy(x => x.ProductCode.Trim())
+                    .Select(g => new OdooDeliveryLine
+                    {
+                        ProductCode = g.Key,
+                        Quantity = g.Sum(x => x.Quantity)
+                    })
+                    .OrderBy(x => x.ProductCode)
+                    .ToList();
+            }
+
+            if (exportLines.Count == 0)
+            {
+                MessageBox.Show(
+                    owner,
+                    "No valid Product Codes were found for this delivery note.",
+                    "Odoo Export",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+
+                return false;
+            }
+
+            string deliveryNoteReference =
+                "F" + deliveryNoteNumber.ToString().PadLeft(6, '0');
+
+            using (var saveDialog = new SaveFileDialog())
+            {
+                saveDialog.Title = "Export Odoo Sales Order";
+                saveDialog.Filter = "CSV file (*.csv)|*.csv";
+                saveDialog.FileName =
+                    "Sales Order " + deliveryNoteReference + ".csv";
+                saveDialog.AddExtension = true;
+                saveDialog.DefaultExt = "csv";
+
+                if (saveDialog.ShowDialog(owner) != DialogResult.OK)
+                    return false;
+
+                var csv = new StringBuilder();
+
+                csv.AppendLine(
+                    "Activities,Company,Customer,Invoice Status,Order Date," +
+                    "Order Reference,Salesperson,Total,Website,Order Lines," +
+                    "Order Lines/Quantity,Order Lines/Product");
+
+                for (int index = 0; index < exportLines.Count; index++)
+                {
+                    var line = exportLines[index];
+
+                    if (index == 0)
+                    {
+                        csv.Append(CsvValue(string.Empty));
+                        csv.Append(",");
+                        csv.Append(CsvValue(companyName));
+                        csv.Append(",");
+                        csv.Append(CsvValue(customerName));
+                        csv.Append(",");
+                        csv.Append(CsvValue(string.Empty));
+                        csv.Append(",");
+
+                        // Exact style used in the supplied spreadsheet:
+                        // 07 07 2026  00:00:00
+                        csv.Append(CsvValue(
+                            orderDate.Date.ToString("dd MM yyyy  HH:mm:ss")));
+
+                        csv.Append(",");
+                        csv.Append(CsvValue(deliveryNoteReference));
+                        csv.Append(",");
+                        csv.Append(CsvValue(salesperson));
+                        csv.Append(",");
+                        csv.Append(CsvValue(string.Empty));
+                        csv.Append(",");
+                        csv.Append(CsvValue(string.Empty));
+                        csv.Append(",");
+                        csv.Append(CsvValue(string.Empty));
+                        csv.Append(",");
+                        csv.Append(line.Quantity);
+                        csv.Append(",");
+                        csv.Append(CsvValue(line.ProductCode));
+                        csv.AppendLine();
+                    }
+                    else
+                    {
+                        // The general order information must only occur on the
+                        // first line. Subsequent lines contain product and quantity.
+                        csv.Append(",,,,,,,,,,");
+                        csv.Append(line.Quantity);
+                        csv.Append(",");
+                        csv.Append(CsvValue(line.ProductCode));
+                        csv.AppendLine();
+                    }
+                }
+
+                File.WriteAllText(
+                    saveDialog.FileName,
+                    csv.ToString(),
+                    new UTF8Encoding(true));
+            }
+
+            MessageBox.Show(
+                owner,
+                "The Odoo import file was exported successfully.",
+                "Odoo Export",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Information);
+
+            return true;
+        }
+
+        private string CsvValue(string value)
+        {
+            if (value == null)
+                value = string.Empty;
+
+            bool requiresQuotes =
+                value.Contains(",") ||
+                value.Contains("\"") ||
+                value.Contains("\r") ||
+                value.Contains("\n");
+
+            value = value.Replace("\"", "\"\"");
+
+            return requiresQuotes
+                ? "\"" + value + "\""
+                : value;
+        }
+
+        private class OdooDeliveryLine
+        {
+            public string ProductCode { get; set; }
+
+            public int Quantity { get; set; }
+        }
+
         public List<DATA> test()
         {
             List<DATA> RatioData = new List<DATA>();

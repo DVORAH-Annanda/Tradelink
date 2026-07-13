@@ -37,6 +37,7 @@
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.btnReprint = new System.Windows.Forms.Button();
             this.btnSubmit = new System.Windows.Forms.Button();
+            this.btnExport = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -100,9 +101,9 @@
             // 
             // btnReprint
             // 
-            this.btnReprint.Location = new System.Drawing.Point(502, 505);
+            this.btnReprint.Location = new System.Drawing.Point(514, 505);
             this.btnReprint.Name = "btnReprint";
-            this.btnReprint.Size = new System.Drawing.Size(98, 40);
+            this.btnReprint.Size = new System.Drawing.Size(86, 32);
             this.btnReprint.TabIndex = 11;
             this.btnReprint.Text = " PL Reprint";
             this.btnReprint.UseVisualStyleBackColor = true;
@@ -110,19 +111,30 @@
             // 
             // btnSubmit
             // 
-            this.btnSubmit.Location = new System.Drawing.Point(463, 22);
+            this.btnSubmit.Location = new System.Drawing.Point(514, 24);
             this.btnSubmit.Name = "btnSubmit";
-            this.btnSubmit.Size = new System.Drawing.Size(75, 23);
+            this.btnSubmit.Size = new System.Drawing.Size(86, 20);
             this.btnSubmit.TabIndex = 12;
             this.btnSubmit.Text = "Submit";
             this.btnSubmit.UseVisualStyleBackColor = true;
             this.btnSubmit.Click += new System.EventHandler(this.btnSubmit_Click);
+            // 
+            // btnExport
+            // 
+            this.btnExport.Location = new System.Drawing.Point(420, 505);
+            this.btnExport.Name = "btnExport";
+            this.btnExport.Size = new System.Drawing.Size(79, 32);
+            this.btnExport.TabIndex = 13;
+            this.btnExport.Text = "Export";
+            this.btnExport.UseVisualStyleBackColor = true;
+            this.btnExport.Click += new System.EventHandler(this.btnExport_Click);
             // 
             // frmPickListView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(655, 557);
+            this.Controls.Add(this.btnExport);
             this.Controls.Add(this.btnSubmit);
             this.Controls.Add(this.btnReprint);
             this.Controls.Add(this.dataGridView1);
@@ -152,5 +164,6 @@
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.Button btnReprint;
         private System.Windows.Forms.Button btnSubmit;
+        private System.Windows.Forms.Button btnExport;
     }
 }
