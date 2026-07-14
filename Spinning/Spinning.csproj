@@ -303,11 +303,15 @@
     <Compile Include="frmCottonBalesInStock.Designer.cs">
       <DependentUpon>frmCottonBalesInStock.cs</DependentUpon>
     </Compile>
-    <Compile Include="frmCottonDeliverySampleBales.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="frmCottonDeliverySampleBales.cs" />
     <Compile Include="frmCottonDeliverySampleBales.Designer.cs">
       <DependentUpon>frmCottonDeliverySampleBales.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmCottonDeliveryVarianceReport .cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmCottonDeliveryVarianceReport .Designer.cs">
+      <DependentUpon>frmCottonDeliveryVarianceReport .cs</DependentUpon>
     </Compile>
     <Compile Include="frmCottonDespatchedInspection.cs">
       <SubType>Form</SubType>
@@ -537,6 +541,7 @@
       <DependentUpon>RawCottonStock.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="rptCottonDeliveryVariance.cs" />
     <Compile Include="SliverProductionDetail.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

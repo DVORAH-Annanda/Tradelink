@@ -42,13 +42,14 @@ namespace CustomerServices
 
             if (PickList)
             {
-                this.Text = "Picking List View And Reprint";
-                this.label1.Text = "Whse PickList Number";
+                this.Text = "Picking List View and Reprint";
+                this.label1.Text = "    Whse Pick List Number";
+                this.label1.Padding = new Padding(12, 0, 0, 0);
                 this.btnReprint.Text = "PL Reprint";
             }
             else
             {
-                this.Text = "Delivery Note View And Reprint";
+                this.Text = "Delivery Note View and Reprint";
                 this.label1.Text = "Whse Delivery Note Number";
                 this.btnReprint.Text = "DN Reprint";
             }

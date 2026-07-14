@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30413.136
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36301.6 d17.14
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TTI2_WF", "TTI2_WF\TTI2_WF.csproj", "{98627474-680D-486F-BC1F-C368E69BDDFC}"
 EndProject
@@ -28,6 +28,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QAReporting", "QAReporting\QAReporting.csproj", "{A5C95387-4EEB-4C41-A12E-1F62B56D00C7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExecutiveReporting", "ExecutiveReporting\ExecutiveReporting.csproj", "{46DAA6EA-3291-4B79-BC22-6E2D94D5A3CE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TTI.VicbayStockFeedExporter", "TTI.VicbayStockFeedExporter\TTI.VicbayStockFeedExporter.csproj", "{39EFA09F-F93D-7595-4198-18CD3A07B117}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -87,6 +89,10 @@ Global
 		{46DAA6EA-3291-4B79-BC22-6E2D94D5A3CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{46DAA6EA-3291-4B79-BC22-6E2D94D5A3CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{46DAA6EA-3291-4B79-BC22-6E2D94D5A3CE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{39EFA09F-F93D-7595-4198-18CD3A07B117}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{39EFA09F-F93D-7595-4198-18CD3A07B117}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{39EFA09F-F93D-7595-4198-18CD3A07B117}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{39EFA09F-F93D-7595-4198-18CD3A07B117}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

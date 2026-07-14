@@ -1285,7 +1285,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="CrystalReport1.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
-      <LastGenOutput>CrystalReport1.cs</LastGenOutput>
+      <LastGenOutput>CrystalReport11.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="frmGarmentDyeBatchesWIP.resx">
       <DependentUpon>frmGarmentDyeBatchesWIP.cs</DependentUpon>
