@@ -94,6 +94,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Web" />
@@ -252,6 +253,12 @@
     <Compile Include="frmSelReorderDetails.Designer.cs">
       <DependentUpon>frmSelReorderDetails.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmStockBelowReorderLevel.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmStockBelowReorderLevel.Designer.cs">
+      <DependentUpon>frmStockBelowReorderLevel.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmSuggestedKO.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -288,6 +295,7 @@
       <DependentUpon>ItemStatus.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="OutOfStockItemsReport.cs" />
     <Compile Include="PKnitStock.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -380,6 +388,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmSelReorderDetails.resx">
       <DependentUpon>frmSelReorderDetails.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmStockBelowReorderLevel.resx">
+      <DependentUpon>frmStockBelowReorderLevel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmSuggestedKO.resx">
       <DependentUpon>frmSuggestedKO.cs</DependentUpon>

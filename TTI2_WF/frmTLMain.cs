@@ -1,32 +1,34 @@
-﻿using System;
+﻿using Administration;
+using CMT;
+using CustomerServices;
+using Cutting;
+using DyeHouse;
+using EntityFramework.Extensions; 
+using ExecutiveReporting;
+using Knitting;
+using ProductionPlanning;
+using Security;
+using Spinning;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using System.Reflection;
-using Administration;
-using Knitting;
-using Utilities;
-using Spinning;
 using System.Deployment.Application;
-using DyeHouse;
-using Cutting;
-using CMT;
-using CustomerServices;
-using ProductionPlanning;
-using ExecutiveReporting;
-using System.Security.Principal;
-using System.Security.Permissions;
-using System.Threading;
-using Security;
-using System.Xml;
+using System.Diagnostics;
+using System.Drawing;
+using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Sockets;
-using EntityFramework.Extensions; 
+using System.Reflection;
+using System.Security.Permissions;
+using System.Security.Principal;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using System.Xml;
+using Utilities;
 
 namespace TTI2_WF
 {
@@ -343,7 +345,7 @@ namespace TTI2_WF
                 {
                     TreeNode node = new TreeNode(((ToolStripDropDownItem)item).Text);
                     tn.Nodes.Add(node);
-                 
+
                     var Existing = Sect.FirstOrDefault(s => s.TLSECSect_Name == item.Name);
                     if (Existing != null)
                     {
@@ -449,7 +451,7 @@ namespace TTI2_WF
                 try
                 {
                     frmNewForm gd = new frmNewForm(5);
-                   //  frmTLADMGardDef gd = new frmTLADMGardDef(5);
+                    //  frmTLADMGardDef gd = new frmTLADMGardDef(5);
                     gd.ShowDialog();
                 }
                 catch (Exception ex)
@@ -1127,7 +1129,7 @@ namespace TTI2_WF
                 try
                 {
                     frmTLADM_QualityDefinition qd = new frmTLADM_QualityDefinition(5);
-                    
+
                     var myScreen = Screen.FromControl(this);
                     var mySecondScreen = Screen.AllScreens.FirstOrDefault(s => !s.Equals(myScreen)) ?? myScreen;
                     qd.Left = mySecondScreen.Bounds.Left;
@@ -1412,7 +1414,7 @@ namespace TTI2_WF
             {
                 MessageBox.Show(ex.Message);
             }
-             
+
         }
 
         private void panelsToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1422,7 +1424,7 @@ namespace TTI2_WF
             {
                 try
                 {
-                    Administration.frmNewForm  gd = new Administration.frmNewForm(17);
+                    Administration.frmNewForm gd = new Administration.frmNewForm(17);
                     // frmTLADMGardDef gd = new frmTLADMGardDef(17);
                     gd.ShowDialog();
                 }
@@ -2282,7 +2284,7 @@ namespace TTI2_WF
             {
                 try
                 {
-                   //  frmShiftDefinition shiftdef = new frmShiftDefinition();
+                    //  frmShiftDefinition shiftdef = new frmShiftDefinition();
                     Administration.frmNewForm shiftdef = new Administration.frmNewForm(50);
                     shiftdef.ShowDialog(this);
                 }
@@ -7414,17 +7416,17 @@ namespace TTI2_WF
             ToolStripMenuItem oTi = sender as ToolStripMenuItem;
             if (core.GetUserAuthorisation(ud, oTi.Name))
             {
-               /* using (frmTLADMCustomerTypes vCustomerTypes = new frmTLADMCustomerTypes(21))
-                {
-                    DialogResult dr = vCustomerTypes.ShowDialog(this);
-                    if (dr == DialogResult.OK)
-                    {
+                /* using (frmTLADMCustomerTypes vCustomerTypes = new frmTLADMCustomerTypes(21))
+                 {
+                     DialogResult dr = vCustomerTypes.ShowDialog(this);
+                     if (dr == DialogResult.OK)
+                     {
 
-                    }
-                }
-               */
+                     }
+                 }
+                */
 
-               
+
                 using (frmNewForm vTypes = new frmNewForm(21))
                 {
                     DialogResult dr = vTypes.ShowDialog(this);
@@ -10041,7 +10043,7 @@ namespace TTI2_WF
             {
                 try
                 {
-                   ProductionPlanning.frmInterDeptFaults  InterCMTTrnsfr = new ProductionPlanning.frmInterDeptFaults();
+                    ProductionPlanning.frmInterDeptFaults InterCMTTrnsfr = new ProductionPlanning.frmInterDeptFaults();
                     InterCMTTrnsfr.ShowDialog();
                 }
                 catch (Exception ex)
@@ -10168,8 +10170,8 @@ namespace TTI2_WF
             {
                 try
                 {
-                     CMT.frmCutSheetReturn greigeP = new CMT.frmCutSheetReturn();
-                     greigeP.ShowDialog(this);
+                    CMT.frmCutSheetReturn greigeP = new CMT.frmCutSheetReturn();
+                    greigeP.ShowDialog(this);
                 }
                 catch (Exception ex)
                 {
@@ -10567,7 +10569,7 @@ namespace TTI2_WF
             {
                 try
                 {
-                    DyeHouse.frmDyesChemicalStockAdjustment  ProcessL = new DyeHouse.frmDyesChemicalStockAdjustment(); ;
+                    DyeHouse.frmDyesChemicalStockAdjustment ProcessL = new DyeHouse.frmDyesChemicalStockAdjustment(); ;
                     ProcessL.ShowDialog(this);
                 }
                 catch (Exception ex)
@@ -10591,8 +10593,8 @@ namespace TTI2_WF
             {
                 using (DialogCenteringService centeringService = new DialogCenteringService(this)) // center message box
                 {
-                    DialogResult Result = MessageBox.Show("Please confirm this transaction", "Confirmation Required", MessageBoxButtons.YesNo , MessageBoxIcon.Question );   
-                    if(Result == DialogResult.Yes)
+                    DialogResult Result = MessageBox.Show("Please confirm this transaction", "Confirmation Required", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                    if (Result == DialogResult.Yes)
                     {
                         // Display the ProgressBar control.
                         PBar1.Visible = true;
@@ -10604,7 +10606,7 @@ namespace TTI2_WF
                         PBar1.Step = 1;
                         using (var context = new TTI2Entities())
                         {
-                            foreach(var Record in context.TLDYE_ConsumableSOH)
+                            foreach (var Record in context.TLDYE_ConsumableSOH)
                             {
                                 Record.DYCSH_K_Closing = Record.DYCSH_K_Opening + Record.DYCSH_SOHKitchen - Record.DYCSH_K_Used + Record.DCSH_K_Adjusted;
                                 Record.DYCSH_K_Opening = Record.DYCSH_K_Closing;
@@ -10619,10 +10621,10 @@ namespace TTI2_WF
                             {
                                 context.SaveChanges();
                                 MessageBox.Show("Data successfully saved to database");
-                                
+
 
                             }
-                            catch(Exception ex)
+                            catch (Exception ex)
                             {
                                 MessageBox.Show(ex.InnerException.Message);
                             }
@@ -10631,7 +10633,7 @@ namespace TTI2_WF
                         }
                     }
                 }
-                
+
             }
             else
             {
@@ -10819,7 +10821,7 @@ namespace TTI2_WF
             ToolStripMenuItem oTi = sender as ToolStripMenuItem;
             if (core.GetUserAuthorisation(ud, oTi.Name))
             {
-               Knitting.frmPalletSold Pallets = new Knitting.frmPalletSold(); ;
+                Knitting.frmPalletSold Pallets = new Knitting.frmPalletSold(); ;
                 Pallets.ShowDialog(this);
             }
             else
@@ -11006,6 +11008,102 @@ namespace TTI2_WF
                 }
             }
         }
+
+        private void stockBelowReorderLevelToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ToolStripMenuItem oTi = sender as ToolStripMenuItem;
+            if (core.GetUserAuthorisation(ud, oTi.Name))
+            {
+                try
+                {
+                    frmStockBelowReorderLevel stockBelowReorderLevelReport = new frmStockBelowReorderLevel();
+                    stockBelowReorderLevelReport.ShowDialog(this);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+            else
+            {
+                using (DialogCenteringService centeringService = new DialogCenteringService(this)) // center message box
+                {
+                    MessageBox.Show(ud._NotAuthorisedMessage, ud._UserName);
+                }
+            }
+
+        }
+
+        private void outOfStockItemsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ToolStripMenuItem oTi = sender as ToolStripMenuItem;
+            if (core.GetUserAuthorisation(ud, oTi.Name))
+            {
+                try
+                {
+                    Cursor = Cursors.WaitCursor;
+
+                    var report =
+                        new ProductionPlanning.OutOfStockItemsReport();
+
+                    DataTable reportData =
+                        report.GetOutOfStockItems();
+
+                    if (reportData.Rows.Count == 0)
+                    {
+                        MessageBox.Show(
+                            "No out-of-stock product items were found.",
+                            "Out of Stock Items",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Information);
+
+                        return;
+                    }
+
+                    string html =
+                        report.BuildOutOfStockHtml(reportData);
+
+                    string reportPath = Path.Combine(
+                        Path.GetTempPath(),
+                        "OutOfStockItems_" +
+                        DateTime.Now.ToString("yyyyMMdd_HHmmss") +
+                        ".html");
+
+                    File.WriteAllText(
+                        reportPath,
+                        html,
+                        new UTF8Encoding(true));
+
+                    Process.Start(new ProcessStartInfo
+                    {
+                        FileName = reportPath,
+                        UseShellExecute = true
+                    });
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(
+                        "The Out of Stock Items report could not be generated." +
+                        Environment.NewLine +
+                        Environment.NewLine +
+                        ex.Message,
+                        "Out of Stock Items",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
+                }
+                finally
+                {
+                    Cursor = Cursors.Default;
+                }
+            }
+            else
+            {
+                using (DialogCenteringService centeringService = new DialogCenteringService(this)) // center message box
+                {
+                    MessageBox.Show(ud._NotAuthorisedMessage, ud._UserName);
+                }
+            }
+        }
     }
-       
+
 }
