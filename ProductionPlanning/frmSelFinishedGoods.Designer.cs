@@ -241,6 +241,7 @@
             this.btnODOOImport.Size = new System.Drawing.Size(75, 100);
             this.btnODOOImport.TabIndex = 0;
             this.btnODOOImport.Text = "Import ODOO SOH and Oustanding Orders";
+            this.btnODOOImport.Visible = false;
             this.btnODOOImport.Click += new System.EventHandler(this.btnODOOImport_Click);
             // 
             // frmSelFinishedGoods
