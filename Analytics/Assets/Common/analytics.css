@@ -220,3 +220,19 @@ h1 {
     color: #777;
     padding: 30px 0;
 }
+
+#holesMachineChartContainer {
+    height: 480px;
+}
+
+.spinning-chart-card {
+    margin-top: 25px;
+}
+
+.spinning-defect-chart {
+    height: 480px;
+}
+
+.spinning-mix-chart {
+    height: 430px;
+}

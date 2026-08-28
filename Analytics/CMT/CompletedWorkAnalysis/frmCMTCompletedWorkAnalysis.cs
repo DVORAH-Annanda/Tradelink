@@ -180,6 +180,16 @@ namespace Analytics.CMT.CompletedWorkAnalysis
         fromDate,
         toDate);
 
+                List<CMTBGradeHolesByMachine> holesByMachine =
+    repository.GetBGradeHolesByMachine(
+        fromDate,
+        toDate);
+
+                List<CMTSpinningByYarnType> spinningByYarnType =
+    repository.GetSpinningByYarnType(
+        fromDate,
+        toDate);
+
 
                 var builder =
                     new CMTCompletedWorkDashboardBuilder();
@@ -190,6 +200,8 @@ namespace Analytics.CMT.CompletedWorkAnalysis
                         summary,
                         bGradeByStyle,
                         mnffAndOspec,
+                         holesByMachine,
+                         spinningByYarnType,
                         fromDate,
                         toDate);
 

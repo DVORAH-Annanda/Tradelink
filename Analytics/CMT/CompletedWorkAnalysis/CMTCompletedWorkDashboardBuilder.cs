@@ -12,6 +12,8 @@ namespace Analytics.CMT.CompletedWorkAnalysis
             CMTCompletedWorkSummary summary,
             List<CMTBGradeByStyle> bGradeByStyle,
             List<CMTMnffOspecByStyle> mnffAndOspec,
+            List<CMTBGradeHolesByMachine> holesByMachine,
+            List<CMTSpinningByYarnType> spinningByYarnType,
             DateTime fromDate,
             DateTime toDate)
         {
@@ -85,7 +87,7 @@ namespace Analytics.CMT.CompletedWorkAnalysis
                         })
                         .ToList(),
 
-                        mnffAndOspec =
+                mnffAndOspec =
     mnffAndOspec
         .Select(x => new
         {
@@ -99,6 +101,52 @@ namespace Analytics.CMT.CompletedWorkAnalysis
 
             ospec =
                 x.Ospec
+        })
+        .ToList(),
+
+                holesByMachine =
+    holesByMachine
+        .Select(x => new
+        {
+            machine =
+                x.KnittingMachine,
+
+            totalUnits =
+                x.TotalUnits,
+
+            holes =
+                x.Holes,
+
+            holesPercentage =
+                Math.Round(
+                    x.HolesPercentage,
+                    2)
+        })
+        .ToList(),
+
+                spinningByYarnType =
+    spinningByYarnType
+        .Select(x => new
+        {
+            yarnType =
+                x.YarnType,
+
+            totalUnits =
+                x.TotalUnits,
+
+            barreLines =
+                x.BarreLines,
+
+            fflaw =
+                x.Fflaw,
+
+            contam =
+                x.Contam,
+
+            spinningBGradePercentage =
+                Math.Round(
+                    x.SpinningBGradePercentage,
+                    2)
         })
         .ToList()
             };
