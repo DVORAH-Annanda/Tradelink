@@ -360,6 +360,10 @@
       <Project>{022b44a8-8319-4720-a5e9-b043f243e102}</Project>
       <Name>Administration</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Analytics\Analytics.csproj">
+      <Project>{b29b0d06-dbd7-4918-a4b6-6d4f5a9fe341}</Project>
+      <Name>Analytics</Name>
+    </ProjectReference>
     <ProjectReference Include="..\CMT\CMT.csproj">
       <Project>{63a02526-ea45-47d8-ab30-35bdc70be2d1}</Project>
       <Name>CMT</Name>

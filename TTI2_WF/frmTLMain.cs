@@ -3,6 +3,7 @@ using CMT;
 using CustomerServices;
 using Cutting;
 using DyeHouse;
+using Analytics;
 using EntityFramework.Extensions; 
 using ExecutiveReporting;
 using Knitting;
@@ -9198,30 +9199,6 @@ namespace TTI2_WF
             }
         }
 
-        private void executiveReportingToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            ToolStripMenuItem oTi = sender as ToolStripMenuItem;
-            if (core.GetUserAuthorisation(ud, oTi.Name))
-            {
-                try
-                {
-                    frmExecSel ExecSel = new frmExecSel();
-                    ExecSel.ShowDialog(this);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message);
-                }
-            }
-            else
-            {
-                using (DialogCenteringService centeringService = new DialogCenteringService(this)) // center message box
-                {
-                    MessageBox.Show(ud._NotAuthorisedMessage, ud._UserName);
-                }
-
-            }
-        }
 
         private void greigeKeyMeasurementToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -11103,6 +11080,45 @@ namespace TTI2_WF
                     MessageBox.Show(ud._NotAuthorisedMessage, ud._UserName);
                 }
             }
+        }
+
+        private void completedWorkAnalyisToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using (var frm = new Analytics.CMT.CompletedWorkAnalysis
+    .frmCMTCompletedWorkAnalysis())
+            {
+                frm.ShowDialog();
+            }
+        }
+
+        private void executiveReportingToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ToolStripMenuItem oTi = sender as ToolStripMenuItem;
+            if (core.GetUserAuthorisation(ud, oTi.Name))
+            {
+                try
+                {
+                    frmExecSel ExecSel = new frmExecSel();
+                    ExecSel.ShowDialog(this);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+            else
+            {
+                using (DialogCenteringService centeringService = new DialogCenteringService(this)) // center message box
+                {
+                    MessageBox.Show(ud._NotAuthorisedMessage, ud._UserName);
+                }
+
+            }
+        }
+
+        private void toolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+
         }
     }
 

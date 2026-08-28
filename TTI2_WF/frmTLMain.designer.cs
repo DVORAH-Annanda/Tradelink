@@ -387,10 +387,14 @@
             this.processLossPerCutSheetAcrossProductionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.wIPQuickLookForExpiditingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.stockBelowReorderLevelToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.outOfStockItemsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.qAReportingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.qAReportingManagerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.daysDelayReportingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.analyticsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.completedWorkAnalyisToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.reportingToolStripMenuItem5 = new System.Windows.Forms.ToolStripMenuItem();
             this.executiveReportingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.qAReportingManagerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.daysDelayReportingToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.administrationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.usersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.applicationMethodsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -487,7 +491,6 @@
             this.inUseResetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
             this.PBar1 = new System.Windows.Forms.ProgressBar();
-            this.outOfStockItemsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             this.SuspendLayout();
@@ -507,8 +510,7 @@
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(916, 24);
-            this.menuStrip1.TabIndex = 0;
-            this.menuStrip1.Text = "menuStrip1";
+            this.menuStrip1.TabIndex = 6;
             // 
             // spinningToolStripMenuItem
             // 
@@ -3242,7 +3244,7 @@
             // dyeOrderPlanningToolStripMenuItem
             // 
             this.dyeOrderPlanningToolStripMenuItem.Name = "dyeOrderPlanningToolStripMenuItem";
-            this.dyeOrderPlanningToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.dyeOrderPlanningToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
             this.dyeOrderPlanningToolStripMenuItem.Text = "Dye Order Planning";
             this.dyeOrderPlanningToolStripMenuItem.Click += new System.EventHandler(this.dyeOrderPlanningToolStripMenuItem_Click);
             // 
@@ -3255,7 +3257,7 @@
             this.replenishmentMachineCapacityToolStripMenuItem,
             this.interDepartmentalAnalysisDefinitionToolStripMenuItem});
             this.replenishmentDefinitionToolStripMenuItem.Name = "replenishmentDefinitionToolStripMenuItem";
-            this.replenishmentDefinitionToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.replenishmentDefinitionToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
             this.replenishmentDefinitionToolStripMenuItem.Text = "PPS Replenishment";
             // 
             // replenishmentDefinitionToolStripMenuItem1
@@ -3306,7 +3308,7 @@
             this.stockBelowReorderLevelToolStripMenuItem,
             this.outOfStockItemsToolStripMenuItem});
             this.reportingToolStripMenuItem4.Name = "reportingToolStripMenuItem4";
-            this.reportingToolStripMenuItem4.Size = new System.Drawing.Size(180, 22);
+            this.reportingToolStripMenuItem4.Size = new System.Drawing.Size(177, 22);
             this.reportingToolStripMenuItem4.Text = "PPS Reporting";
             // 
             // replenishmentDetailsToolStripMenuItem
@@ -3365,37 +3367,68 @@
             this.stockBelowReorderLevelToolStripMenuItem.Text = "Stock below Re-order Level";
             this.stockBelowReorderLevelToolStripMenuItem.Click += new System.EventHandler(this.stockBelowReorderLevelToolStripMenuItem_Click);
             // 
+            // outOfStockItemsToolStripMenuItem
+            // 
+            this.outOfStockItemsToolStripMenuItem.Name = "outOfStockItemsToolStripMenuItem";
+            this.outOfStockItemsToolStripMenuItem.Size = new System.Drawing.Size(312, 22);
+            this.outOfStockItemsToolStripMenuItem.Text = "Out of Stock Items";
+            this.outOfStockItemsToolStripMenuItem.Click += new System.EventHandler(this.outOfStockItemsToolStripMenuItem_Click);
+            // 
             // qAReportingToolStripMenuItem
             // 
             this.qAReportingToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.qAReportingManagerToolStripMenuItem,
-            this.daysDelayReportingToolStripMenuItem,
-            this.executiveReportingToolStripMenuItem});
+            this.analyticsToolStripMenuItem,
+            this.reportingToolStripMenuItem5});
             this.qAReportingToolStripMenuItem.Name = "qAReportingToolStripMenuItem";
-            this.qAReportingToolStripMenuItem.Size = new System.Drawing.Size(105, 20);
-            this.qAReportingToolStripMenuItem.Text = "Reporting Portal";
+            this.qAReportingToolStripMenuItem.Size = new System.Drawing.Size(145, 20);
+            this.qAReportingToolStripMenuItem.Text = "Analytics and Reporting";
             this.qAReportingToolStripMenuItem.Click += new System.EventHandler(this.qAReportingToolStripMenuItem_Click);
             // 
-            // qAReportingManagerToolStripMenuItem
+            // analyticsToolStripMenuItem
             // 
-            this.qAReportingManagerToolStripMenuItem.Name = "qAReportingManagerToolStripMenuItem";
-            this.qAReportingManagerToolStripMenuItem.Size = new System.Drawing.Size(196, 22);
-            this.qAReportingManagerToolStripMenuItem.Text = "QA Reporting Manager";
-            this.qAReportingManagerToolStripMenuItem.Click += new System.EventHandler(this.qAReportingManagerToolStripMenuItem_Click);
+            this.analyticsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.completedWorkAnalyisToolStripMenuItem});
+            this.analyticsToolStripMenuItem.Name = "analyticsToolStripMenuItem";
+            this.analyticsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.analyticsToolStripMenuItem.Text = "Analytics";
             // 
-            // daysDelayReportingToolStripMenuItem
+            // completedWorkAnalyisToolStripMenuItem
             // 
-            this.daysDelayReportingToolStripMenuItem.Name = "daysDelayReportingToolStripMenuItem";
-            this.daysDelayReportingToolStripMenuItem.Size = new System.Drawing.Size(196, 22);
-            this.daysDelayReportingToolStripMenuItem.Text = "Days Delay Reporting";
-            this.daysDelayReportingToolStripMenuItem.Click += new System.EventHandler(this.daysDelayReportingToolStripMenuItem_Click);
+            this.completedWorkAnalyisToolStripMenuItem.Name = "completedWorkAnalyisToolStripMenuItem";
+            this.completedWorkAnalyisToolStripMenuItem.Size = new System.Drawing.Size(234, 22);
+            this.completedWorkAnalyisToolStripMenuItem.Text = "CMT Completed Work Analyis";
+            this.completedWorkAnalyisToolStripMenuItem.Click += new System.EventHandler(this.completedWorkAnalyisToolStripMenuItem_Click);
+            // 
+            // reportingToolStripMenuItem5
+            // 
+            this.reportingToolStripMenuItem5.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.executiveReportingToolStripMenuItem,
+            this.qAReportingManagerToolStripMenuItem,
+            this.daysDelayReportingToolStripMenuItem1});
+            this.reportingToolStripMenuItem5.Name = "reportingToolStripMenuItem5";
+            this.reportingToolStripMenuItem5.Size = new System.Drawing.Size(180, 22);
+            this.reportingToolStripMenuItem5.Text = "Reporting";
             // 
             // executiveReportingToolStripMenuItem
             // 
             this.executiveReportingToolStripMenuItem.Name = "executiveReportingToolStripMenuItem";
-            this.executiveReportingToolStripMenuItem.Size = new System.Drawing.Size(196, 22);
+            this.executiveReportingToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
             this.executiveReportingToolStripMenuItem.Text = "Executive Reporting";
             this.executiveReportingToolStripMenuItem.Click += new System.EventHandler(this.executiveReportingToolStripMenuItem_Click);
+            // 
+            // qAReportingManagerToolStripMenuItem
+            // 
+            this.qAReportingManagerToolStripMenuItem.Name = "qAReportingManagerToolStripMenuItem";
+            this.qAReportingManagerToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
+            this.qAReportingManagerToolStripMenuItem.Text = "QA Reporting";
+            this.qAReportingManagerToolStripMenuItem.Click += new System.EventHandler(this.qAReportingManagerToolStripMenuItem_Click);
+            // 
+            // daysDelayReportingToolStripMenuItem1
+            // 
+            this.daysDelayReportingToolStripMenuItem1.Name = "daysDelayReportingToolStripMenuItem1";
+            this.daysDelayReportingToolStripMenuItem1.Size = new System.Drawing.Size(186, 22);
+            this.daysDelayReportingToolStripMenuItem1.Text = "Days Delay Reporting";
+            this.daysDelayReportingToolStripMenuItem1.Click += new System.EventHandler(this.daysDelayReportingToolStripMenuItem_Click);
             // 
             // administrationToolStripMenuItem
             // 
@@ -4161,13 +4194,6 @@
             this.PBar1.Size = new System.Drawing.Size(402, 23);
             this.PBar1.TabIndex = 5;
             // 
-            // outOfStockItemsToolStripMenuItem
-            // 
-            this.outOfStockItemsToolStripMenuItem.Name = "outOfStockItemsToolStripMenuItem";
-            this.outOfStockItemsToolStripMenuItem.Size = new System.Drawing.Size(312, 22);
-            this.outOfStockItemsToolStripMenuItem.Text = "Out of Stock Items";
-            this.outOfStockItemsToolStripMenuItem.Click += new System.EventHandler(this.outOfStockItemsToolStripMenuItem_Click);
-            // 
             // frmTLMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -4575,10 +4601,7 @@
         private System.Windows.Forms.ToolStripMenuItem yarnStockReceivedTransactionsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem qAReportingToolStripMenuItem;
         private System.Windows.Forms.ErrorProvider errorProvider1;
-        private System.Windows.Forms.ToolStripMenuItem qAReportingManagerToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem daysDelayReportingToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem inspectionAfterDryingToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem executiveReportingToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem greigeKeyMeasurementToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem cMTMeasurementValuesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem negativeStockByCustomerToolStripMenuItem;
@@ -4650,5 +4673,11 @@
         private System.Windows.Forms.ToolStripMenuItem cottonDeliveryWeightVarianceToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem stockBelowReorderLevelToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem outOfStockItemsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem analyticsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem completedWorkAnalyisToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem reportingToolStripMenuItem5;
+        private System.Windows.Forms.ToolStripMenuItem executiveReportingToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem qAReportingManagerToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem daysDelayReportingToolStripMenuItem1;
     }
 }

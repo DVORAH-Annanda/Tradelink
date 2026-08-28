@@ -1,0 +1,222 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: #f4f5f7;
+    margin: 0;
+    padding: 30px;
+    color: #222;
+}
+
+h1 {
+    margin-top: 0;
+    margin-bottom: 4px;
+}
+
+.period {
+    color: #666;
+    margin-bottom: 30px;
+}
+
+.dashboard-tabs {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 25px;
+    border-bottom: 1px solid #d9dde3;
+}
+
+.dashboard-tab-button {
+    border: none;
+    background: transparent;
+    padding: 12px 18px;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    color: #666;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+}
+
+    .dashboard-tab-button:hover {
+        background: #f8f9fa;
+        color: #222;
+    }
+
+    .dashboard-tab-button.active {
+        color: #222;
+        border-bottom-color: #5b8def;
+    }
+
+.dashboard-tab-page {
+    display: none;
+}
+
+    .dashboard-tab-page.active {
+        display: block;
+    }
+
+.cards {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-bottom: 25px;
+}
+
+.card {
+    background: white;
+    min-width: 210px;
+    flex: 1;
+    padding: 24px;
+    border-radius: 8px;
+    box-shadow: 0 2px 7px rgba(0, 0, 0, .10);
+}
+
+.label {
+    color: #666;
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+
+.value {
+    font-size: 30px;
+    font-weight: 600;
+}
+
+.chart-card,
+.table-card {
+    background: white;
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0 2px 7px rgba(0, 0, 0, .10);
+}
+
+.table-card {
+    margin-top: 25px;
+}
+
+.chart-title {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.chart-subtitle {
+    color: #777;
+    font-size: 13px;
+    margin-bottom: 20px;
+}
+
+.chart-container {
+    position: relative;
+    width: 100%;
+    min-height: 420px;
+}
+
+.defect-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+    min-width: 145px;
+}
+
+.defect-bar-track {
+    width: 90px;
+    height: 9px;
+    background: #e5e8ec;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.defect-bar {
+    height: 100%;
+    border-radius: 5px;
+    background: #5b8def;
+}
+
+    .defect-bar.ospec {
+        background: #7d98c9;
+    }
+
+.defect-value {
+    min-width: 35px;
+    text-align: right;
+}
+
+.table-wrapper {
+    overflow-x: auto;
+}
+
+.style-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+    .style-table th {
+        text-align: left;
+        color: #555;
+        font-weight: 600;
+        padding: 12px 14px;
+        border-bottom: 2px solid #ddd;
+        white-space: nowrap;
+    }
+
+    .style-table td {
+        padding: 11px 14px;
+        border-bottom: 1px solid #eee;
+    }
+
+    .style-table tbody tr:hover {
+        background: #f7f8fa;
+    }
+
+    .style-table .number {
+        text-align: right;
+        white-space: nowrap;
+    }
+
+    .style-table .style-name {
+        min-width: 220px;
+    }
+
+    .style-table tfoot td {
+        font-weight: 600;
+        border-top: 2px solid #ccc;
+        border-bottom: none;
+        background: #fafafa;
+    }
+
+.percent-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+    min-width: 170px;
+}
+
+.percent-bar-track {
+    width: 100px;
+    height: 10px;
+    background: #e5e8ec;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.percent-bar {
+    height: 100%;
+    background: #5b8def;
+    border-radius: 5px;
+}
+
+.percent-text {
+    min-width: 55px;
+    text-align: right;
+}
+
+.empty-message {
+    color: #777;
+    padding: 30px 0;
+}

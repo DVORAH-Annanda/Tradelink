@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+
+    <style>
+        {{ANALYTICS_CSS}}
+    </style>
+
+    <script>
+        {{CHART_JS}}
+    </script>
+
+</head>
+
+<body>
+
+    <h1>CMT Completed Work Analysis</h1>
+
+    <div id="period" class="period"></div>
+
+
+    <div class="cards">
+
+        <div class="card">
+            <div class="label">Total Units</div>
+            <div id="totalUnits" class="value">0</div>
+        </div>
+
+        <div class="card">
+            <div class="label">A Grade</div>
+            <div id="aGrade" class="value">0</div>
+        </div>
+
+        <div class="card">
+            <div class="label">B Grade</div>
+            <div id="bGrade" class="value">0</div>
+        </div>
+
+        <div class="card">
+            <div class="label">B Grade %</div>
+            <div id="bGradePercentage" class="value">0.00%</div>
+        </div>
+
+    </div>
+
+    <!-- =========================================================
+       DASHBOARD TABS
+       ========================================================= -->
+
+    <div class="dashboard-tabs">
+
+        <button class="dashboard-tab-button active"
+                data-tab="bGradeByStylePage">
+
+            B Grade % by Style
+
+        </button>
+
+        <button class="dashboard-tab-button"
+                data-tab="mnffOspecPage">
+
+            MNFF &amp; Ospec
+
+        </button>
+
+    </div>
+
+
+    <!-- =========================================================
+         TAB 1 : B GRADE % BY STYLE
+         ========================================================= -->
+
+    <div id="bGradeByStylePage"
+         class="dashboard-tab-page active">
+
+        <!-- Existing B Grade detail table -->
+
+        <div class="table-card">
+
+            <div class="chart-title">
+                B Grade % by Style - Detail
+            </div>
+
+            <div class="chart-subtitle">
+                Total units and grade performance by style
+            </div>
+
+            <div class="table-wrapper">
+
+                <table class="style-table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Style
+                            </th>
+
+                            <th class="number">
+                                Total Units
+                            </th>
+
+                            <th class="number">
+                                A Grade
+                            </th>
+
+                            <th class="number">
+                                B Grade
+                            </th>
+
+                            <th class="number">
+                                B Grade %
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody id="styleTableBody">
+                    </tbody>
+
+
+                    <tfoot>
+
+                        <tr>
+
+                            <td>
+                                Grand Total
+                            </td>
+
+                            <td class="number"
+                                id="styleTotalUnits">
+                            </td>
+
+                            <td class="number"
+                                id="styleTotalAGrade">
+                            </td>
+
+                            <td class="number"
+                                id="styleTotalBGrade">
+                            </td>
+
+                            <td class="number"
+                                id="styleTotalPercentage">
+                            </td>
+
+                        </tr>
+
+                    </tfoot>
+
+                </table>
+
+            </div>
+
+        </div>
+
+        <!-- Existing B Grade chart -->
+
+        <div class="chart-card">
+
+            <div class="chart-title">
+                B Grade % by Style
+            </div>
+
+            <div class="chart-subtitle">
+                B Grade as a percentage of total A + B grades
+            </div>
+
+            <div id="styleChartContainer"
+                 class="chart-container">
+
+                <canvas id="bGradeByStyleChart"></canvas>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================================================
+         TAB 2 : MNFF & OSPEC
+         ========================================================= -->
+
+    <div id="mnffOspecPage"
+         class="dashboard-tab-page">
+
+
+        <div class="table-card">
+
+            <div class="chart-title">
+                MNFF &amp; Ospec
+            </div>
+
+            <div class="chart-subtitle">
+                MNFF and Ospec defects by style
+            </div>
+
+            <div class="table-wrapper">
+
+                <table class="style-table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Style
+                            </th>
+
+                            <th class="number">
+                                Total Units
+                            </th>
+
+                            <th class="number">
+                                MNFF
+                            </th>
+
+                            <th class="number">
+                                Ospec
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody id="mnffOspecTableBody">
+                    </tbody>
+
+
+                    <tfoot>
+
+                        <tr>
+
+                            <td>
+                                Grand Total
+                            </td>
+
+                            <td class="number"
+                                id="mnffTotalUnits">
+                            </td>
+
+                            <td class="number"
+                                id="mnffTotal">
+                            </td>
+
+                            <td class="number"
+                                id="ospecTotal">
+                            </td>
+
+                        </tr>
+
+                    </tfoot>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <script>
+
+        window.cmtDashboardData =
+            {{DASHBOARD_DATA}};
+
+    </script>
+
+    <script>
+        {{PAGE_JS}}
+    </script>
+
+</body>
+
+</html>
