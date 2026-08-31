@@ -1,4 +1,5 @@
-﻿using Analytics.Common;
+﻿using Analytics.CMT.CompletedWorkAnalysis.Models;
+using Analytics.Common;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -176,19 +177,39 @@ namespace Analytics.CMT.CompletedWorkAnalysis
                         toDate);
 
                 List<CMTMnffOspecByStyle> mnffAndOspec =
-    repository.GetMnffAndOspecByStyle(
-        fromDate,
-        toDate);
+        repository.GetMnffAndOspecByStyle(
+            fromDate,
+            toDate);
 
                 List<CMTBGradeHolesByMachine> holesByMachine =
-    repository.GetBGradeHolesByMachine(
+                repository.GetBGradeHolesByMachine(
+                    fromDate,
+                    toDate);
+
+                List<CMTSpinningByYarnType> spinningByYarnType =
+                repository.GetSpinningByYarnType(
+                    fromDate,
+                    toDate);
+
+                List<CMTKnittingByMachine> knittingByMachine =
+                repository.GetKnittingByMachine(
+                    fromDate,
+                    toDate);
+
+                List<CMTDyeingByStyleQuality> dyeingByStyleQuality =
+    repository.GetDyeingByStyleQuality(
         fromDate,
         toDate);
 
-                List<CMTSpinningByYarnType> spinningByYarnType =
-    repository.GetSpinningByYarnType(
-        fromDate,
-        toDate);
+                List<CMTDyeingByStyleQuality> dyeingByGreigeQuality =
+                repository.GetDyeingByGreigeQuality(
+                    fromDate,
+                    toDate);
+
+                List<CMTCuttingByStyle> cuttingByStyle =
+                    repository.GetCuttingByStyle(
+                        fromDate,
+                        toDate);
 
 
                 var builder =
@@ -200,8 +221,12 @@ namespace Analytics.CMT.CompletedWorkAnalysis
                         summary,
                         bGradeByStyle,
                         mnffAndOspec,
-                         holesByMachine,
-                         spinningByYarnType,
+                        holesByMachine,
+                        spinningByYarnType,
+                        knittingByMachine,
+                        dyeingByStyleQuality,
+                                dyeingByGreigeQuality,
+        cuttingByStyle,
                         fromDate,
                         toDate);
 

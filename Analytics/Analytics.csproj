@@ -56,19 +56,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CMT\CompletedWorkAnalysis\CMTBGradeByStyle.cs" />
-    <Compile Include="CMT\CompletedWorkAnalysis\CMTBGradeHolesByMachine.cs" />
+    <Compile Include="CMT\CompletedWorkAnalysis\Models\CMTBGradeByStyle.cs" />
+    <Compile Include="CMT\CompletedWorkAnalysis\Models\CMTBGradeHolesByMachine.cs" />
     <Compile Include="CMT\CompletedWorkAnalysis\CMTCompletedWorkDashboardBuilder.cs" />
     <Compile Include="CMT\CompletedWorkAnalysis\CMTCompletedWorkRepository.cs" />
-    <Compile Include="CMT\CompletedWorkAnalysis\CMTCompletedWorkSummary.cs" />
-    <Compile Include="CMT\CompletedWorkAnalysis\CMTMnffOspecByStyle.cs" />
-    <Compile Include="CMT\CompletedWorkAnalysis\CMTSpinningByYarnType.cs" />
+    <Compile Include="CMT\CompletedWorkAnalysis\Models\CMTCompletedWorkSummary.cs" />
+    <Compile Include="CMT\CompletedWorkAnalysis\Models\CMTKnittingByMachine.cs" />
+    <Compile Include="CMT\CompletedWorkAnalysis\Models\CMTMnffOspecByStyle.cs" />
+    <Compile Include="CMT\CompletedWorkAnalysis\Models\CMTSpinningByYarnType.cs" />
     <Compile Include="CMT\CompletedWorkAnalysis\frmCMTCompletedWorkAnalysis.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="CMT\CompletedWorkAnalysis\frmCMTCompletedWorkAnalysis.Designer.cs">
       <DependentUpon>frmCMTCompletedWorkAnalysis.cs</DependentUpon>
     </Compile>
+    <Compile Include="CMT\CompletedWorkAnalysis\Models\CMTCuttingByStyle.cs" />
+    <Compile Include="CMT\CompletedWorkAnalysis\Models\CMTDyeingByStyleQuality.cs" />
     <Compile Include="Common\EmbeddedResourceLoader.cs" />
     <Compile Include="Common\HTMLDashboardViewer.cs">
       <SubType>UserControl</SubType>

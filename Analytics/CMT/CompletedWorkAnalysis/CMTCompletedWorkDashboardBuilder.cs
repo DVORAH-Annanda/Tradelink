@@ -1,8 +1,9 @@
-﻿using System;
+﻿using Analytics.CMT.CompletedWorkAnalysis.Models;
+using Analytics.Common;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Script.Serialization;
-using Analytics.Common;
 
 namespace Analytics.CMT.CompletedWorkAnalysis
 {
@@ -14,6 +15,10 @@ namespace Analytics.CMT.CompletedWorkAnalysis
             List<CMTMnffOspecByStyle> mnffAndOspec,
             List<CMTBGradeHolesByMachine> holesByMachine,
             List<CMTSpinningByYarnType> spinningByYarnType,
+            List<CMTKnittingByMachine> knittingByMachine,
+            List<CMTDyeingByStyleQuality> dyeingByStyleQuality,
+            List<CMTDyeingByStyleQuality> dyeingByGreigeQuality,
+            List<CMTCuttingByStyle> cuttingByStyle,
             DateTime fromDate,
             DateTime toDate)
         {
@@ -148,8 +153,117 @@ namespace Analytics.CMT.CompletedWorkAnalysis
                     x.SpinningBGradePercentage,
                     2)
         })
+        .ToList(),
+
+                knittingByMachine =
+    knittingByMachine
+        .Select(x => new
+        {
+            machine =
+                x.KnittingMachine,
+
+            totalUnits =
+                x.TotalUnits,
+
+            twisting =
+                x.Twisting,
+
+            holes =
+                x.Holes,
+
+            oilMarks =
+                x.OilMarks,
+
+            needleLines =
+                x.NeedleLines,
+
+            knittingBGradePercentage =
+                Math.Round(
+                    x.KnittingBGradePercentage,
+                    2)
+        })
+        .ToList(),
+                dyeingByStyleQuality =
+    dyeingByStyleQuality
+        .Select(x => new
+        {
+            style =
+                x.Style,
+
+            greigeQuality =
+                x.GreigeQuality,
+
+            totalUnits =
+                x.TotalUnits,
+
+            stains =
+                x.Stains,
+
+            ospec =
+                x.Ospec,
+
+            shading =
+                x.Shading,
+
+            dyeingBGradePercentage =
+                Math.Round(
+                    x.DyeingBGradePercentage,
+                    2)
+        })
+        .ToList(),
+
+                dyeingByGreigeQuality =
+    dyeingByGreigeQuality
+        .Select(x => new
+        {
+            greigeQuality =
+                x.GreigeQuality,
+
+            totalUnits =
+                x.TotalUnits,
+
+            stains =
+                x.Stains,
+
+            ospec =
+                x.Ospec,
+
+            shading =
+                x.Shading,
+
+            dyeingBGradePercentage =
+                Math.Round(
+                    x.DyeingBGradePercentage,
+                    2)
+        })
+        .ToList(),
+
+                cuttingByStyle =
+    cuttingByStyle
+        .Select(x => new
+        {
+            style =
+                x.Style,
+
+            totalUnits =
+                x.TotalUnits,
+
+            mnff =
+                x.MNFF,
+
+            poorCutting =
+                x.PoorCutting,
+
+            cuttingBGradePercentage =
+                Math.Round(
+                    x.CuttingBGradePercentage,
+                    2)
+        })
         .ToList()
+
             };
+
+
 
 
             var serializer =

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Analytics.CMT.CompletedWorkAnalysis.Models;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -383,6 +384,337 @@ ORDER BY YarnType;";
                                 Contam =
                                     Convert.ToInt32(
                                         reader["Contam"])
+                            });
+                    }
+                }
+            }
+
+            return results;
+        }
+
+        public List<CMTKnittingByMachine> GetKnittingByMachine(
+    DateTime fromDate,
+    DateTime toDate)
+        {
+            const string sql = @"
+SELECT
+    KnittingMachine,
+
+    ISNULL(SUM(TotalUnitsOnCutSheet), 0) AS TotalUnits,
+    ISNULL(SUM(Twisting), 0) AS Twisting,
+    ISNULL(SUM(Holes), 0) AS Holes,
+    ISNULL(SUM(OilMarks), 0) AS OilMarks,
+    ISNULL(SUM(NeedleLines), 0) AS NeedleLines
+
+FROM dbo.vw_CMTCompletedWorkAnalysis
+
+WHERE TransactionDate >= @FromDate
+  AND TransactionDate < @ToDateExclusive
+
+  AND KnittingMachine IS NOT NULL
+  AND LTRIM(RTRIM(KnittingMachine)) <> ''
+
+GROUP BY KnittingMachine
+
+ORDER BY KnittingMachine;";
+
+            var results =
+                new List<CMTKnittingByMachine>();
+
+            using (var connection =
+                   new SqlConnection(connectionString))
+
+            using (var command =
+                   new SqlCommand(sql, connection))
+            {
+                command.Parameters.Add(
+                    "@FromDate",
+                    SqlDbType.DateTime)
+                    .Value = fromDate.Date;
+
+                command.Parameters.Add(
+                    "@ToDateExclusive",
+                    SqlDbType.DateTime)
+                    .Value = toDate.Date.AddDays(1);
+
+                connection.Open();
+
+                using (var reader =
+                       command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        results.Add(
+                            new CMTKnittingByMachine
+                            {
+                                KnittingMachine =
+                                    Convert.ToString(
+                                        reader["KnittingMachine"]),
+
+                                TotalUnits =
+                                    Convert.ToInt32(
+                                        reader["TotalUnits"]),
+
+                                Twisting =
+                                    Convert.ToInt32(
+                                        reader["Twisting"]),
+
+                                Holes =
+                                    Convert.ToInt32(
+                                        reader["Holes"]),
+
+                                OilMarks =
+                                    Convert.ToInt32(
+                                        reader["OilMarks"]),
+
+                                NeedleLines =
+                                    Convert.ToInt32(
+                                        reader["NeedleLines"])
+                            });
+                    }
+                }
+            }
+
+            return results;
+        }
+
+        public List<CMTDyeingByStyleQuality> GetDyeingByStyleQuality(
+    DateTime fromDate,
+    DateTime toDate)
+        {
+            const string sql = @"
+SELECT
+    Styles,
+    GreigeQuality,
+
+    ISNULL(SUM(TotalUnitsOnCutSheet), 0) AS TotalUnits,
+    ISNULL(SUM(Stains), 0) AS Stains,
+    ISNULL(SUM(Ospec), 0) AS Ospec,
+    ISNULL(SUM(Shading), 0) AS Shading
+
+FROM dbo.vw_CMTCompletedWorkAnalysis
+
+WHERE TransactionDate >= @FromDate
+  AND TransactionDate < @ToDateExclusive
+
+  AND Styles IS NOT NULL
+  AND LTRIM(RTRIM(Styles)) <> ''
+
+GROUP BY
+    Styles,
+    GreigeQuality
+
+ORDER BY
+    Styles,
+    GreigeQuality;";
+
+            var results =
+                new List<CMTDyeingByStyleQuality>();
+
+            using (var connection =
+                   new SqlConnection(connectionString))
+
+            using (var command =
+                   new SqlCommand(sql, connection))
+            {
+                command.Parameters.Add(
+                    "@FromDate",
+                    SqlDbType.DateTime)
+                    .Value = fromDate.Date;
+
+                command.Parameters.Add(
+                    "@ToDateExclusive",
+                    SqlDbType.DateTime)
+                    .Value = toDate.Date.AddDays(1);
+
+                connection.Open();
+
+                using (var reader =
+                       command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        results.Add(
+                            new CMTDyeingByStyleQuality
+                            {
+                                Style =
+                                    Convert.ToString(
+                                        reader["Styles"]),
+
+                                GreigeQuality =
+                                    Convert.ToString(
+                                        reader["GreigeQuality"]),
+
+                                TotalUnits =
+                                    Convert.ToInt32(
+                                        reader["TotalUnits"]),
+
+                                Stains =
+                                    Convert.ToInt32(
+                                        reader["Stains"]),
+
+                                Ospec =
+                                    Convert.ToInt32(
+                                        reader["Ospec"]),
+
+                                Shading =
+                                    Convert.ToInt32(
+                                        reader["Shading"])
+                            });
+                    }
+                }
+            }
+
+            return results;
+        }
+
+        public List<CMTDyeingByStyleQuality> GetDyeingByGreigeQuality(
+    DateTime fromDate,
+    DateTime toDate)
+        {
+            const string sql = @"
+SELECT
+    GreigeQuality,
+
+    ISNULL(SUM(TotalUnitsOnCutSheet), 0) AS TotalUnits,
+    ISNULL(SUM(Stains), 0) AS Stains,
+    ISNULL(SUM(Ospec), 0) AS Ospec,
+    ISNULL(SUM(Shading), 0) AS Shading
+
+FROM dbo.vw_CMTCompletedWorkAnalysis
+
+WHERE TransactionDate >= @FromDate
+  AND TransactionDate < @ToDateExclusive
+  AND GreigeQuality IS NOT NULL
+  AND LTRIM(RTRIM(GreigeQuality)) <> ''
+
+GROUP BY GreigeQuality
+
+ORDER BY GreigeQuality;";
+
+            var results =
+                new List<CMTDyeingByStyleQuality>();
+
+            using (var connection =
+                   new SqlConnection(connectionString))
+
+            using (var command =
+                   new SqlCommand(sql, connection))
+            {
+                command.Parameters.Add(
+                    "@FromDate",
+                    SqlDbType.DateTime)
+                    .Value = fromDate.Date;
+
+                command.Parameters.Add(
+                    "@ToDateExclusive",
+                    SqlDbType.DateTime)
+                    .Value = toDate.Date.AddDays(1);
+
+                connection.Open();
+
+                using (var reader =
+                       command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        results.Add(
+                            new CMTDyeingByStyleQuality
+                            {
+                                GreigeQuality =
+                                    Convert.ToString(
+                                        reader["GreigeQuality"]),
+
+                                TotalUnits =
+                                    Convert.ToInt32(
+                                        reader["TotalUnits"]),
+
+                                Stains =
+                                    Convert.ToInt32(
+                                        reader["Stains"]),
+
+                                Ospec =
+                                    Convert.ToInt32(
+                                        reader["Ospec"]),
+
+                                Shading =
+                                    Convert.ToInt32(
+                                        reader["Shading"])
+                            });
+                    }
+                }
+            }
+
+            return results;
+        }
+
+        public List<CMTCuttingByStyle> GetCuttingByStyle(
+    DateTime fromDate,
+    DateTime toDate)
+        {
+            const string sql = @"
+SELECT
+    Styles,
+
+    ISNULL(SUM(TotalUnitsOnCutSheet), 0) AS TotalUnits,
+    ISNULL(SUM(MNFF), 0) AS MNFF,
+    ISNULL(SUM(PoorCutting), 0) AS PoorCutting
+
+FROM dbo.vw_CMTCompletedWorkAnalysis
+
+WHERE TransactionDate >= @FromDate
+  AND TransactionDate < @ToDateExclusive
+  AND Styles IS NOT NULL
+  AND LTRIM(RTRIM(Styles)) <> ''
+
+GROUP BY Styles
+
+ORDER BY Styles;";
+
+            var results =
+                new List<CMTCuttingByStyle>();
+
+            using (var connection =
+                   new SqlConnection(connectionString))
+
+            using (var command =
+                   new SqlCommand(sql, connection))
+            {
+                command.Parameters.Add(
+                    "@FromDate",
+                    SqlDbType.DateTime)
+                    .Value = fromDate.Date;
+
+                command.Parameters.Add(
+                    "@ToDateExclusive",
+                    SqlDbType.DateTime)
+                    .Value = toDate.Date.AddDays(1);
+
+                connection.Open();
+
+                using (var reader =
+                       command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        results.Add(
+                            new CMTCuttingByStyle
+                            {
+                                Style =
+                                    Convert.ToString(
+                                        reader["Styles"]),
+
+                                TotalUnits =
+                                    Convert.ToInt32(
+                                        reader["TotalUnits"]),
+
+                                MNFF =
+                                    Convert.ToInt32(
+                                        reader["MNFF"]),
+
+                                PoorCutting =
+                                    Convert.ToInt32(
+                                        reader["PoorCutting"])
                             });
                     }
                 }

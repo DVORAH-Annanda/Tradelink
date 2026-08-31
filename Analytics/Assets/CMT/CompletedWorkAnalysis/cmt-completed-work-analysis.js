@@ -1370,4 +1370,1347 @@
             'No spinning defect mix data was found.' +
             '</div>';
     }
+
+    // ---------------------------------------------------------
+    // B Grades - Knitting
+    // ---------------------------------------------------------
+
+    const knittingRows =
+        data.knittingByMachine || [];
+
+
+    // ---------------------------------------------------------
+    // Knitting Detail Table
+    // ---------------------------------------------------------
+
+    const knittingTableBody =
+        document.getElementById(
+            'knittingTableBody');
+
+
+    let knittingTotalUnits = 0;
+    let knittingTotalTwisting = 0;
+    let knittingTotalHoles = 0;
+    let knittingTotalOilMarks = 0;
+    let knittingTotalNeedleLines = 0;
+
+    let maxKnittingPercentage = 0;
+
+
+    knittingRows.forEach(
+        function (row) {
+
+            const percentage =
+                Number(
+                    row.knittingBGradePercentage || 0);
+
+            if (percentage >
+                maxKnittingPercentage) {
+
+                maxKnittingPercentage =
+                    percentage;
+            }
+        });
+
+
+    if (maxKnittingPercentage <= 0) {
+        maxKnittingPercentage = 1;
+    }
+
+
+    knittingRows.forEach(
+        function (row) {
+
+            const totalUnits =
+                Number(row.totalUnits || 0);
+
+            const twisting =
+                Number(row.twisting || 0);
+
+            const holes =
+                Number(row.holes || 0);
+
+            const oilMarks =
+                Number(row.oilMarks || 0);
+
+            const needleLines =
+                Number(row.needleLines || 0);
+
+            const percentage =
+                Number(
+                    row.knittingBGradePercentage || 0);
+
+
+            knittingTotalUnits +=
+                totalUnits;
+
+            knittingTotalTwisting +=
+                twisting;
+
+            knittingTotalHoles +=
+                holes;
+
+            knittingTotalOilMarks +=
+                oilMarks;
+
+            knittingTotalNeedleLines +=
+                needleLines;
+
+
+            const barWidth =
+                Math.min(
+                    100,
+                    Math.max(
+                        0,
+                        (percentage /
+                            maxKnittingPercentage)
+                        * 100));
+
+
+            const tr =
+                document.createElement('tr');
+
+
+            tr.innerHTML =
+
+                '<td class="style-name">' +
+                escapeHtml(row.machine) +
+                '</td>' +
+
+                '<td class="number">' +
+                formatNumber(totalUnits) +
+                '</td>' +
+
+                '<td class="number">' +
+                formatNumber(twisting) +
+                '</td>' +
+
+                '<td class="number">' +
+                formatNumber(holes) +
+                '</td>' +
+
+                '<td class="number">' +
+                formatNumber(oilMarks) +
+                '</td>' +
+
+                '<td class="number">' +
+                formatNumber(needleLines) +
+                '</td>' +
+
+                '<td class="number">' +
+
+                '<div class="percent-wrapper">' +
+
+                '<div class="percent-bar-track">' +
+
+                '<div class="percent-bar" ' +
+                'style="width:' +
+                barWidth.toFixed(1) +
+                '%">' +
+                '</div>' +
+
+                '</div>' +
+
+                '<span class="percent-text">' +
+                percentage.toFixed(2) +
+                '%' +
+                '</span>' +
+
+                '</div>' +
+
+                '</td>';
+
+
+            knittingTableBody
+                .appendChild(tr);
+        });
+
+    const knittingTotalDefects =
+        knittingTotalTwisting +
+        knittingTotalHoles +
+        knittingTotalOilMarks +
+        knittingTotalNeedleLines;
+
+
+    const knittingTotalPercentage =
+        knittingTotalUnits === 0
+            ? 0
+            : (
+                knittingTotalDefects /
+                knittingTotalUnits
+            ) * 100;
+
+
+    document.getElementById(
+        'knittingTotalUnits')
+        .textContent =
+        formatNumber(
+            knittingTotalUnits);
+
+
+    document.getElementById(
+        'knittingTotalTwisting')
+        .textContent =
+        formatNumber(
+            knittingTotalTwisting);
+
+
+    document.getElementById(
+        'knittingTotalHoles')
+        .textContent =
+        formatNumber(
+            knittingTotalHoles);
+
+
+    document.getElementById(
+        'knittingTotalOilMarks')
+        .textContent =
+        formatNumber(
+            knittingTotalOilMarks);
+
+
+    document.getElementById(
+        'knittingTotalNeedleLines')
+        .textContent =
+        formatNumber(
+            knittingTotalNeedleLines);
+
+
+    document.getElementById(
+        'knittingTotalPercentage')
+        .textContent =
+        knittingTotalPercentage
+            .toFixed(2) + '%';
+
+    // ---------------------------------------------------------
+    // Knitting Defect Count Chart
+    // ---------------------------------------------------------
+
+    const knittingDefectChartContainer =
+        document.getElementById(
+            'knittingDefectChartContainer');
+
+
+    if (knittingRows.length > 0) {
+
+        new Chart(
+            document.getElementById(
+                'knittingDefectChart'),
+
+            {
+                type: 'bar',
+
+                data: {
+
+                    labels:
+                        knittingRows.map(
+                            row =>
+                                row.machine),
+
+                    datasets: [
+
+                        {
+                            label:
+                                'Twisting',
+
+                            data:
+                                knittingRows.map(
+                                    row =>
+                                        row.twisting),
+
+                            borderWidth: 1
+                        },
+
+                        {
+                            label:
+                                'Holes',
+
+                            data:
+                                knittingRows.map(
+                                    row =>
+                                        row.holes),
+
+                            borderWidth: 1
+                        },
+
+                        {
+                            label:
+                                'Oil Marks',
+
+                            data:
+                                knittingRows.map(
+                                    row =>
+                                        row.oilMarks),
+
+                            borderWidth: 1
+                        },
+
+                        {
+                            label:
+                                'Needle Lines',
+
+                            data:
+                                knittingRows.map(
+                                    row =>
+                                        row.needleLines),
+
+                            borderWidth: 1
+                        }
+                    ]
+                },
+
+
+                options: {
+
+                    indexAxis: 'y',
+
+                    responsive: true,
+
+                    maintainAspectRatio: false,
+
+
+                    scales: {
+
+                        x: {
+
+                            beginAtZero: true,
+
+                            title: {
+                                display: true,
+                                text: 'Defect Count'
+                            }
+                        },
+
+                        y: {
+
+                            ticks: {
+                                autoSkip: false
+                            }
+                        }
+                    },
+
+
+                    plugins: {
+
+                        legend: {
+                            display: true,
+                            position: 'top'
+                        },
+
+                        tooltip: {
+
+                            callbacks: {
+
+                                afterBody:
+                                    function (items) {
+
+                                        if (!items ||
+                                            items.length === 0) {
+                                            return '';
+                                        }
+
+                                        const row =
+                                            knittingRows[
+                                            items[0].dataIndex];
+
+                                        return (
+                                            'Total Units: ' +
+                                            formatNumber(
+                                                row.totalUnits)
+                                        );
+                                    }
+                            }
+                        }
+                    }
+                }
+            });
+
+    }
+    else {
+
+        knittingDefectChartContainer
+            .innerHTML =
+
+            '<div class="empty-message">' +
+            'No knitting data was found for this period.' +
+            '</div>';
+    }
+
+    // ---------------------------------------------------------
+    // Knitting Defect Mix
+    // ---------------------------------------------------------
+
+    const knittingMixChartContainer =
+        document.getElementById(
+            'knittingMixChartContainer');
+
+
+    const knittingMixRows =
+        knittingRows.map(
+            function (row) {
+
+                const twisting =
+                    Number(row.twisting || 0);
+
+                const holes =
+                    Number(row.holes || 0);
+
+                const oilMarks =
+                    Number(row.oilMarks || 0);
+
+                const needleLines =
+                    Number(row.needleLines || 0);
+
+
+                const total =
+                    twisting +
+                    holes +
+                    oilMarks +
+                    needleLines;
+
+
+                return {
+
+                    machine:
+                        row.machine,
+
+                    twistingPercentage:
+                        total === 0
+                            ? 0
+                            : (twisting /
+                                total) * 100,
+
+                    holesPercentage:
+                        total === 0
+                            ? 0
+                            : (holes /
+                                total) * 100,
+
+                    oilMarksPercentage:
+                        total === 0
+                            ? 0
+                            : (oilMarks /
+                                total) * 100,
+
+                    needleLinesPercentage:
+                        total === 0
+                            ? 0
+                            : (needleLines /
+                                total) * 100
+                };
+            });
+
+
+    if (knittingMixRows.length > 0) {
+
+        new Chart(
+            document.getElementById(
+                'knittingMixChart'),
+
+            {
+                type: 'bar',
+
+                data: {
+
+                    labels:
+                        knittingMixRows.map(
+                            row =>
+                                row.machine),
+
+                    datasets: [
+
+                        {
+                            label: 'Twisting',
+
+                            data:
+                                knittingMixRows.map(
+                                    row =>
+                                        row.twistingPercentage),
+
+                            stack: 'knitting'
+                        },
+
+                        {
+                            label: 'Holes',
+
+                            data:
+                                knittingMixRows.map(
+                                    row =>
+                                        row.holesPercentage),
+
+                            stack: 'knitting'
+                        },
+
+                        {
+                            label: 'Oil Marks',
+
+                            data:
+                                knittingMixRows.map(
+                                    row =>
+                                        row.oilMarksPercentage),
+
+                            stack: 'knitting'
+                        },
+
+                        {
+                            label: 'Needle Lines',
+
+                            data:
+                                knittingMixRows.map(
+                                    row =>
+                                        row.needleLinesPercentage),
+
+                            stack: 'knitting'
+                        }
+                    ]
+                },
+
+
+                options: {
+
+                    indexAxis: 'y',
+
+                    responsive: true,
+
+                    maintainAspectRatio: false,
+
+
+                    scales: {
+
+                        x: {
+
+                            stacked: true,
+
+                            min: 0,
+                            max: 100,
+
+                            title: {
+                                display: true,
+                                text: 'Defect Mix %'
+                            },
+
+                            ticks: {
+
+                                callback:
+                                    function (value) {
+
+                                        return value + '%';
+                                    }
+                            }
+                        },
+
+                        y: {
+
+                            stacked: true,
+
+                            ticks: {
+                                autoSkip: false
+                            }
+                        }
+                    },
+
+
+                    plugins: {
+
+                        legend: {
+                            display: true,
+                            position: 'top'
+                        },
+
+                        tooltip: {
+
+                            callbacks: {
+
+                                label:
+                                    function (context) {
+
+                                        return (
+                                            context.dataset.label +
+                                            ': ' +
+                                            context.parsed.x
+                                                .toFixed(1) +
+                                            '%'
+                                        );
+                                    }
+                            }
+                        }
+                    }
+                }
+            });
+
+    }
+    else {
+
+        knittingMixChartContainer
+            .innerHTML =
+
+            '<div class="empty-message">' +
+            'No knitting defect mix data was found.' +
+            '</div>';
+    }
+
+    // ---------------------------------------------------------
+    // B Grades - Dyeing
+    // ---------------------------------------------------------
+
+    const dyeingRows =
+        data.dyeingByStyleQuality || [];
+
+    const dyeingStyleMap = {};
+
+
+    dyeingRows.forEach(function (row) {
+
+        const style =
+            row.style || '(Unknown Style)';
+
+
+        if (!dyeingStyleMap[style]) {
+
+            dyeingStyleMap[style] = {
+
+                style: style,
+
+                totalUnits: 0,
+
+                stains: 0,
+
+                ospec: 0,
+
+                shading: 0
+            };
+        }
+
+
+        dyeingStyleMap[style].totalUnits +=
+            Number(row.totalUnits || 0);
+
+        dyeingStyleMap[style].stains +=
+            Number(row.stains || 0);
+
+        dyeingStyleMap[style].ospec +=
+            Number(row.ospec || 0);
+
+        dyeingStyleMap[style].shading +=
+            Number(row.shading || 0);
+    });
+
+
+    const dyeingStyleRows =
+        Object.keys(dyeingStyleMap)
+            .map(function (key) {
+                return dyeingStyleMap[key];
+            });
+
+    const dyeingTableBody =
+        document.getElementById(
+            'dyeingTableBody');
+
+
+    let dyeingTotalUnits = 0;
+    let dyeingTotalStains = 0;
+    let dyeingTotalOspec = 0;
+    let dyeingTotalShading = 0;
+
+    let maxDyeingPercentage = 0;
+
+
+    dyeingRows.forEach(function (row) {
+
+        const percentage =
+            Number(
+                row.dyeingBGradePercentage || 0);
+
+        if (percentage >
+            maxDyeingPercentage) {
+
+            maxDyeingPercentage =
+                percentage;
+        }
+    });
+
+
+    if (maxDyeingPercentage <= 0) {
+        maxDyeingPercentage = 1;
+    }
+
+
+    dyeingRows.forEach(function (row) {
+
+        const totalUnits =
+            Number(row.totalUnits || 0);
+
+        const stains =
+            Number(row.stains || 0);
+
+        const ospec =
+            Number(row.ospec || 0);
+
+        const shading =
+            Number(row.shading || 0);
+
+        const percentage =
+            Number(
+                row.dyeingBGradePercentage || 0);
+
+
+        dyeingTotalUnits +=
+            totalUnits;
+
+        dyeingTotalStains +=
+            stains;
+
+        dyeingTotalOspec +=
+            ospec;
+
+        dyeingTotalShading +=
+            shading;
+
+
+        const barWidth =
+            Math.min(
+                100,
+                Math.max(
+                    0,
+                    (percentage /
+                        maxDyeingPercentage)
+                    * 100));
+
+
+        const tr =
+            document.createElement('tr');
+
+
+        tr.innerHTML =
+
+        '<td class="style-name">' +
+        escapeHtml(row.style) +
+        '</td>' +
+
+        '<td>' +
+        escapeHtml(row.greigeQuality || '') +
+        '</td>' +
+
+            '<td class="number">' +
+            formatNumber(totalUnits) +
+            '</td>' +
+
+            '<td class="number">' +
+            formatNumber(stains) +
+            '</td>' +
+
+            '<td class="number">' +
+            formatNumber(ospec) +
+            '</td>' +
+
+            '<td class="number">' +
+            formatNumber(shading) +
+            '</td>' +
+
+            '<td class="number">' +
+
+            '<div class="percent-wrapper">' +
+
+            '<div class="percent-bar-track">' +
+
+            '<div class="percent-bar" ' +
+            'style="width:' +
+            barWidth.toFixed(1) +
+            '%">' +
+            '</div>' +
+
+            '</div>' +
+
+            '<span class="percent-text">' +
+            percentage.toFixed(2) +
+            '%' +
+            '</span>' +
+
+            '</div>' +
+
+            '</td>';
+
+
+        dyeingTableBody
+            .appendChild(tr);
+    });
+
+
+    const dyeingTotalDefects =
+        dyeingTotalStains +
+        dyeingTotalOspec +
+        dyeingTotalShading;
+
+
+    const dyeingTotalPercentage =
+        dyeingTotalUnits === 0
+            ? 0
+            : (
+                dyeingTotalDefects /
+                dyeingTotalUnits
+            ) * 100;
+
+
+    document.getElementById(
+        'dyeingTotalUnits')
+        .textContent =
+        formatNumber(dyeingTotalUnits);
+
+    document.getElementById(
+        'dyeingTotalStains')
+        .textContent =
+        formatNumber(dyeingTotalStains);
+
+    document.getElementById(
+        'dyeingTotalOspec')
+        .textContent =
+        formatNumber(dyeingTotalOspec);
+
+    document.getElementById(
+        'dyeingTotalShading')
+        .textContent =
+        formatNumber(dyeingTotalShading);
+
+    document.getElementById(
+        'dyeingTotalPercentage')
+        .textContent =
+        dyeingTotalPercentage
+            .toFixed(2) + '%';
+
+    const dyeingDefectChartContainer =
+        document.getElementById(
+            'dyeingDefectChartContainer');
+
+
+    if (dyeingRows.length > 0) {
+
+        new Chart(
+            document.getElementById(
+                'dyeingDefectChart'),
+
+            {
+                type: 'bar',
+
+                data: {
+
+                    labels:
+                        dyeingStyleRows.map(
+                            row => row.style),
+
+                    datasets: [
+                        {
+                            label: 'Stains',
+
+                            data:
+                                dyeingStyleRows.map(
+                                    row => row.stains)
+                        },
+
+                        {
+                            label: 'Ospec',
+
+                            data:
+                                dyeingStyleRows.map(
+                                    row => row.ospec)
+                        },
+
+                        {
+                            label: 'Shading',
+
+                            data:
+                                dyeingStyleRows.map(
+                                    row => row.shading)
+                        }
+                    ]
+                },
+
+                options: {
+
+                    indexAxis: 'y',
+
+                    responsive: true,
+
+                    maintainAspectRatio: false,
+
+                    scales: {
+
+                        x: {
+                            beginAtZero: true,
+
+                            title: {
+                                display: true,
+                                text: 'Defect Count'
+                            }
+                        },
+
+                        y: {
+                            ticks: {
+                                autoSkip: false
+                            }
+                        }
+                    },
+
+                    plugins: {
+
+                        legend: {
+                            display: true,
+                            position: 'top'
+                        }
+                    }
+                }
+            });
+
+    }
+    else {
+
+        dyeingDefectChartContainer
+            .innerHTML =
+
+            '<div class="empty-message">' +
+            'No dyeing data was found for this period.' +
+            '</div>';
+    }
+
+    const dyeingMixRows =
+        dyeingStyleRows.map(function (row) {
+
+            const stains =
+                Number(row.stains || 0);
+
+            const ospec =
+                Number(row.ospec || 0);
+
+            const shading =
+                Number(row.shading || 0);
+
+            const total =
+                stains +
+                ospec +
+                shading;
+
+
+            return {
+
+                style:
+                    row.style,
+
+                stainsPercentage:
+                    total === 0
+                        ? 0
+                        : stains / total * 100,
+
+                ospecPercentage:
+                    total === 0
+                        ? 0
+                        : ospec / total * 100,
+
+                shadingPercentage:
+                    total === 0
+                        ? 0
+                        : shading / total * 100
+            };
+        });
+
+
+    new Chart(
+        document.getElementById(
+            'dyeingMixChart'),
+
+        {
+            type: 'bar',
+
+            data: {
+
+                labels:
+                    dyeingMixRows.map(
+                        row =>
+                            row.style),
+
+                datasets: [
+
+                    {
+                        label: 'Stains',
+
+                        data:
+                            dyeingMixRows.map(
+                                row =>
+                                    row.stainsPercentage),
+
+                        stack: 'dyeing'
+                    },
+
+                    {
+                        label: 'Ospec',
+
+                        data:
+                            dyeingMixRows.map(
+                                row =>
+                                    row.ospecPercentage),
+
+                        stack: 'dyeing'
+                    },
+
+                    {
+                        label: 'Shading',
+
+                        data:
+                            dyeingMixRows.map(
+                                row =>
+                                    row.shadingPercentage),
+
+                        stack: 'dyeing'
+                    }
+                ]
+            },
+
+            options: {
+
+                indexAxis: 'y',
+
+                responsive: true,
+
+                maintainAspectRatio: false,
+
+                scales: {
+
+                    x: {
+                        stacked: true,
+                        min: 0,
+                        max: 100,
+
+                        ticks: {
+                            callback:
+                                value =>
+                                    value + '%'
+                        }
+                    },
+
+                    y: {
+                        stacked: true
+                    }
+                }
+            }
+        });
+
+    // ---------------------------------------------------------
+    // B Grades - Cutting
+    // ---------------------------------------------------------
+
+    const cuttingRows =
+        data.cuttingByStyle || [];
+
+
+    const cuttingTableBody =
+        document.getElementById(
+            'cuttingTableBody');
+
+
+    let cuttingTotalUnits = 0;
+    let cuttingTotalMNFF = 0;
+    let cuttingTotalPoorCutting = 0;
+
+    let maxCuttingPercentage = 0;
+
+
+    cuttingRows.forEach(function (row) {
+
+        const percentage =
+            Number(
+                row.cuttingBGradePercentage || 0);
+
+        if (percentage >
+            maxCuttingPercentage) {
+
+            maxCuttingPercentage =
+                percentage;
+        }
+    });
+
+
+    if (maxCuttingPercentage <= 0) {
+        maxCuttingPercentage = 1;
+    }
+
+
+    cuttingRows.forEach(function (row) {
+
+        const totalUnits =
+            Number(row.totalUnits || 0);
+
+        const mnff =
+            Number(row.mnff || 0);
+
+        const poorCutting =
+            Number(row.poorCutting || 0);
+
+        const percentage =
+            Number(
+                row.cuttingBGradePercentage || 0);
+
+
+        cuttingTotalUnits +=
+            totalUnits;
+
+        cuttingTotalMNFF +=
+            mnff;
+
+        cuttingTotalPoorCutting +=
+            poorCutting;
+
+
+        const barWidth =
+            Math.min(
+                100,
+                Math.max(
+                    0,
+                    percentage /
+                    maxCuttingPercentage *
+                    100));
+
+
+        const tr =
+            document.createElement('tr');
+
+
+        tr.innerHTML =
+
+            '<td class="style-name">' +
+            escapeHtml(row.style) +
+            '</td>' +
+
+            '<td class="number">' +
+            formatNumber(totalUnits) +
+            '</td>' +
+
+            '<td class="number">' +
+            formatNumber(mnff) +
+            '</td>' +
+
+            '<td class="number">' +
+            formatNumber(poorCutting) +
+            '</td>' +
+
+            '<td class="number">' +
+
+            '<div class="percent-wrapper">' +
+
+            '<div class="percent-bar-track">' +
+
+            '<div class="percent-bar" ' +
+            'style="width:' +
+            barWidth.toFixed(1) +
+            '%">' +
+            '</div>' +
+
+            '</div>' +
+
+            '<span class="percent-text">' +
+            percentage.toFixed(2) +
+            '%' +
+            '</span>' +
+
+            '</div>' +
+
+            '</td>';
+
+
+        cuttingTableBody
+            .appendChild(tr);
+    });
+
+
+    const cuttingTotalDefects =
+        cuttingTotalMNFF +
+        cuttingTotalPoorCutting;
+
+
+    const cuttingTotalPercentage =
+        cuttingTotalUnits === 0
+            ? 0
+            : (
+                cuttingTotalDefects /
+                cuttingTotalUnits
+            ) * 100;
+
+
+    document.getElementById(
+        'cuttingTotalUnits')
+        .textContent =
+        formatNumber(cuttingTotalUnits);
+
+    document.getElementById(
+        'cuttingTotalMNFF')
+        .textContent =
+        formatNumber(cuttingTotalMNFF);
+
+    document.getElementById(
+        'cuttingTotalPoorCutting')
+        .textContent =
+        formatNumber(
+            cuttingTotalPoorCutting);
+
+    document.getElementById(
+        'cuttingTotalPercentage')
+        .textContent =
+        cuttingTotalPercentage
+            .toFixed(2) + '%';
+
+    new Chart(
+        document.getElementById(
+            'cuttingDefectChart'),
+
+        {
+            type: 'bar',
+
+            data: {
+
+                labels:
+                    cuttingRows.map(
+                        row => row.style),
+
+                datasets: [
+
+                    {
+                        label: 'MNFF',
+
+                        data:
+                            cuttingRows.map(
+                                row => row.mnff)
+                    },
+
+                    {
+                        label: 'Poor Cutting',
+
+                        data:
+                            cuttingRows.map(
+                                row =>
+                                    row.poorCutting)
+                    }
+                ]
+            },
+
+            options: {
+
+                indexAxis: 'y',
+
+                responsive: true,
+
+                maintainAspectRatio: false,
+
+                scales: {
+
+                    x: {
+                        beginAtZero: true
+                    },
+
+                    y: {
+                        ticks: {
+                            autoSkip: false
+                        }
+                    }
+                }
+            }
+        });
+
+    const cuttingMixRows =
+        cuttingRows.map(function (row) {
+
+            const mnff =
+                Number(row.mnff || 0);
+
+            const poorCutting =
+                Number(
+                    row.poorCutting || 0);
+
+            const total =
+                mnff + poorCutting;
+
+
+            return {
+
+                style:
+                    row.style,
+
+                mnffPercentage:
+                    total === 0
+                        ? 0
+                        : mnff / total * 100,
+
+                poorCuttingPercentage:
+                    total === 0
+                        ? 0
+                        : poorCutting /
+                        total * 100
+            };
+        });
+
+
+    new Chart(
+        document.getElementById(
+            'cuttingMixChart'),
+
+        {
+            type: 'bar',
+
+            data: {
+
+                labels:
+                    cuttingMixRows.map(
+                        row => row.style),
+
+                datasets: [
+
+                    {
+                        label: 'MNFF',
+
+                        data:
+                            cuttingMixRows.map(
+                                row =>
+                                    row.mnffPercentage),
+
+                        stack: 'cutting'
+                    },
+
+                    {
+                        label:
+                            'Poor Cutting',
+
+                        data:
+                            cuttingMixRows.map(
+                                row =>
+                                    row.poorCuttingPercentage),
+
+                        stack: 'cutting'
+                    }
+                ]
+            },
+
+            options: {
+
+                indexAxis: 'y',
+
+                responsive: true,
+
+                maintainAspectRatio: false,
+
+                scales: {
+
+                    x: {
+                        stacked: true,
+                        min: 0,
+                        max: 100,
+
+                        ticks: {
+                            callback:
+                                value =>
+                                    value + '%'
+                        }
+                    },
+
+                    y: {
+                        stacked: true
+                    }
+                }
+            }
+        });
 })();

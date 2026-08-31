@@ -236,3 +236,27 @@ h1 {
 .spinning-mix-chart {
     height: 430px;
 }
+
+.knitting-chart-card {
+    margin-top: 25px;
+}
+
+.knitting-defect-chart {
+    height: 520px;
+}
+
+.knitting-mix-chart {
+    height: 480px;
+}
+
+.process-chart-card {
+    margin-top: 25px;
+}
+
+.process-defect-chart {
+    height: 520px;
+}
+
+.process-mix-chart {
+    height: 480px;
+}

@@ -81,6 +81,27 @@
 
         </button>
 
+        <button class="dashboard-tab-button"
+                data-tab="knittingPage">
+
+            B Grades - Knitting
+
+        </button>
+
+        <button class="dashboard-tab-button"
+                data-tab="dyeingPage">
+
+            B Grades - Dyeing
+
+        </button>
+
+        <button class="dashboard-tab-button"
+                data-tab="cuttingPage">
+
+            B Grades - Cutting
+
+        </button>
+
     </div>
 
 
@@ -533,6 +554,433 @@
 
     </div>
 
+    <!-- =========================================================
+     TAB 5 : B GRADES - KNITTING
+     ========================================================= -->
+
+    <div id="knittingPage"
+         class="dashboard-tab-page">
+
+
+        <!-- Detail Matrix -->
+
+        <div class="table-card">
+
+            <div class="chart-title">
+                B Grades - Knitting
+            </div>
+
+            <div class="chart-subtitle">
+                Knitting-related defects by knitting machine
+            </div>
+
+            <div class="table-wrapper">
+
+                <table class="style-table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Knitting Machine
+                            </th>
+
+                            <th class="number">
+                                Total Units
+                            </th>
+
+                            <th class="number">
+                                Twisting
+                            </th>
+
+                            <th class="number">
+                                Holes
+                            </th>
+
+                            <th class="number">
+                                Oil Marks
+                            </th>
+
+                            <th class="number">
+                                Needle Lines
+                            </th>
+
+                            <th class="number">
+                                B Grade %
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody id="knittingTableBody">
+                    </tbody>
+
+
+                    <tfoot>
+
+                        <tr>
+
+                            <td>
+                                Grand Total
+                            </td>
+
+                            <td class="number"
+                                id="knittingTotalUnits">
+                            </td>
+
+                            <td class="number"
+                                id="knittingTotalTwisting">
+                            </td>
+
+                            <td class="number"
+                                id="knittingTotalHoles">
+                            </td>
+
+                            <td class="number"
+                                id="knittingTotalOilMarks">
+                            </td>
+
+                            <td class="number"
+                                id="knittingTotalNeedleLines">
+                            </td>
+
+                            <td class="number"
+                                id="knittingTotalPercentage">
+                            </td>
+
+                        </tr>
+
+                    </tfoot>
+
+                </table>
+
+            </div>
+
+        </div>
+
+
+        <!-- Defect Count Chart -->
+
+        <div class="chart-card knitting-chart-card">
+
+            <div class="chart-title">
+                Knitting Defects by Machine
+            </div>
+
+            <div class="chart-subtitle">
+                Twisting, Holes, Oil Marks and Needle Lines
+            </div>
+
+            <div id="knittingDefectChartContainer"
+                 class="chart-container knitting-defect-chart">
+
+                <canvas id="knittingDefectChart"></canvas>
+
+            </div>
+
+        </div>
+
+
+        <!-- Defect Mix Chart -->
+
+        <div class="chart-card knitting-chart-card">
+
+            <div class="chart-title">
+                Knitting Defect Mix by Machine
+            </div>
+
+            <div class="chart-subtitle">
+                Percentage contribution of each knitting defect
+            </div>
+
+            <div id="knittingMixChartContainer"
+                 class="chart-container knitting-mix-chart">
+
+                <canvas id="knittingMixChart"></canvas>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+    <!-- =========================================================
+     TAB 6 : B GRADES - DYEING
+     ========================================================= -->
+
+    <div id="dyeingPage"
+         class="dashboard-tab-page">
+
+
+        <div class="table-card">
+
+            <div class="chart-title">
+                B Grades - Dyeing
+            </div>
+
+            <div class="chart-subtitle">
+                Dyeing-related defects by style and greige quality
+            </div>
+
+            <div class="table-wrapper">
+
+                <table class="style-table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Style
+                            </th>
+
+                            <th>
+                                Greige Quality
+                            </th>
+
+                            <th class="number">
+                                Total Units
+                            </th>
+
+                            <th class="number">
+                                Stains
+                            </th>
+
+                            <th class="number">
+                                Ospec
+                            </th>
+
+                            <th class="number">
+                                Shading
+                            </th>
+
+                            <th class="number">
+                                B Grade %
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody id="dyeingTableBody">
+                    </tbody>
+
+
+                    <tfoot>
+
+                        <tr>
+
+                            <td>
+                                Grand Total
+                            </td>
+                            <td>
+                            </td>
+                            <td class="number"
+                                id="dyeingTotalUnits">
+                            </td>
+
+                            <td class="number"
+                                id="dyeingTotalStains">
+                            </td>
+
+                            <td class="number"
+                                id="dyeingTotalOspec">
+                            </td>
+
+                            <td class="number"
+                                id="dyeingTotalShading">
+                            </td>
+
+                            <td class="number"
+                                id="dyeingTotalPercentage">
+                            </td>
+
+                        </tr>
+
+                    </tfoot>
+
+                </table>
+
+            </div>
+
+        </div>
+
+
+        <div class="chart-card process-chart-card">
+
+            <div class="chart-title">
+                Dyeing Defects by Style
+            </div>
+
+            <div class="chart-subtitle">
+                Stains, Ospec and Shading defect counts by Style
+            </div>
+
+            <div id="dyeingDefectChartContainer"
+                 class="chart-container process-defect-chart">
+
+                <canvas id="dyeingDefectChart"></canvas>
+
+            </div>
+
+        </div>
+
+
+        <div class="chart-card process-chart-card">
+
+            <div class="chart-title">
+                Dyeing Defect Mix by Style
+            </div>
+
+            <div class="chart-subtitle">
+                Percentage contribution of each dyeing defect
+            </div>
+
+            <div id="dyeingMixChartContainer"
+                 class="chart-container process-mix-chart">
+
+                <canvas id="dyeingMixChart"></canvas>
+
+            </div>
+
+        </div>
+
+    </div>
+    <!-- =========================================================
+     TAB 7 : B GRADES - CUTTING
+     ========================================================= -->
+
+    <div id="cuttingPage"
+         class="dashboard-tab-page">
+
+
+        <div class="table-card">
+
+            <div class="chart-title">
+                B Grades - Cutting
+            </div>
+
+            <div class="chart-subtitle">
+                Cutting-related defects by style
+            </div>
+
+            <div class="table-wrapper">
+
+                <table class="style-table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Style
+                            </th>
+
+                            <th class="number">
+                                Total Units
+                            </th>
+
+                            <th class="number">
+                                MNFF
+                            </th>
+
+                            <th class="number">
+                                Poor Cutting
+                            </th>
+
+                            <th class="number">
+                                B Grade %
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody id="cuttingTableBody">
+                    </tbody>
+
+
+                    <tfoot>
+
+                        <tr>
+
+                            <td>
+                                Grand Total
+                            </td>
+
+                            <td class="number"
+                                id="cuttingTotalUnits">
+                            </td>
+
+                            <td class="number"
+                                id="cuttingTotalMNFF">
+                            </td>
+
+                            <td class="number"
+                                id="cuttingTotalPoorCutting">
+                            </td>
+
+                            <td class="number"
+                                id="cuttingTotalPercentage">
+                            </td>
+
+                        </tr>
+
+                    </tfoot>
+
+                </table>
+
+            </div>
+
+        </div>
+
+
+        <div class="chart-card process-chart-card">
+
+            <div class="chart-title">
+                Cutting Defects by Style
+            </div>
+
+            <div class="chart-subtitle">
+                MNFF and Poor Cutting defect counts
+            </div>
+
+            <div id="cuttingDefectChartContainer"
+                 class="chart-container process-defect-chart">
+
+                <canvas id="cuttingDefectChart"></canvas>
+
+            </div>
+
+        </div>
+
+
+        <div class="chart-card process-chart-card">
+
+            <div class="chart-title">
+                Cutting Defect Mix by Style
+            </div>
+
+            <div class="chart-subtitle">
+                Percentage contribution of each cutting defect
+            </div>
+
+            <div id="cuttingMixChartContainer"
+                 class="chart-container process-mix-chart">
+
+                <canvas id="cuttingMixChart"></canvas>
+
+            </div>
+
+        </div>
+
+    </div>
     <script>
 
         window.cmtDashboardData =
