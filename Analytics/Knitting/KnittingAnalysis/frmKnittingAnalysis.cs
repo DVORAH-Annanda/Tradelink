@@ -1,5 +1,5 @@
-﻿using Analytics.CMT.CompletedWorkAnalysis.Models;
-using Analytics.Common;
+﻿using Analytics.Common;
+using Analytics.Knitting.KnittingAnalysis.Models;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -7,9 +7,9 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Analytics.CMT.CompletedWorkAnalysis
+namespace Analytics.Knitting.KnittingAnalysis
 {
-    public partial class frmCMTCompletedWorkAnalysis : Form
+    public partial class frmKnittingAnalysis : Form
     {
         private readonly HtmlDashboardViewer dashboardViewer;
 
@@ -20,12 +20,14 @@ namespace Analytics.CMT.CompletedWorkAnalysis
         private readonly Label lblFromDate;
         private readonly Label lblToDate;
 
-        public frmCMTCompletedWorkAnalysis()
+
+        public frmKnittingAnalysis()
         {
             InitializeComponent();
 
-            Text = "CMT Completed Work Analysis";
+            Text = "Knitting Analysis";
             WindowState = FormWindowState.Maximized;
+
 
             // -------------------------------------------------
             // Filter panel
@@ -38,12 +40,14 @@ namespace Analytics.CMT.CompletedWorkAnalysis
                 BackColor = Color.White
             };
 
+
             lblFromDate = new Label
             {
                 Text = "From Date:",
                 AutoSize = true,
                 Location = new Point(15, 23)
             };
+
 
             dtpFromDate = new DateTimePicker
             {
@@ -53,12 +57,14 @@ namespace Analytics.CMT.CompletedWorkAnalysis
                 Location = new Point(85, 18)
             };
 
+
             lblToDate = new Label
             {
                 Text = "To Date:",
                 AutoSize = true,
                 Location = new Point(225, 23)
             };
+
 
             dtpToDate = new DateTimePicker
             {
@@ -68,6 +74,7 @@ namespace Analytics.CMT.CompletedWorkAnalysis
                 Location = new Point(285, 18)
             };
 
+
             btnApply = new Button
             {
                 Text = "Apply",
@@ -76,13 +83,16 @@ namespace Analytics.CMT.CompletedWorkAnalysis
                 Location = new Point(425, 17)
             };
 
+
             btnApply.Click += Apply_Click;
+
 
             filterPanel.Controls.Add(lblFromDate);
             filterPanel.Controls.Add(dtpFromDate);
             filterPanel.Controls.Add(lblToDate);
             filterPanel.Controls.Add(dtpToDate);
             filterPanel.Controls.Add(btnApply);
+
 
             // -------------------------------------------------
             // Dashboard
@@ -92,34 +102,22 @@ namespace Analytics.CMT.CompletedWorkAnalysis
                 Dock = DockStyle.Fill
             };
 
+
             Controls.Add(dashboardViewer);
             Controls.Add(filterPanel);
 
-            Load += frmCMTCompletedWorkAnalysis_Load;
+
+            Load += KnittingAnalysis_Load;
         }
 
-        private async void frmCMTCompletedWorkAnalysis_Load(
+
+        private async void KnittingAnalysis_Load(
             object sender,
             EventArgs e)
         {
             try
             {
-                var repository = new CMTCompletedWorkRepository();
-
-                DateTime? latestDate =
-                    repository.GetLatestTransactionDate();
-
-                if (!latestDate.HasValue)
-                {
-                    await dashboardViewer.ShowHtmlAsync(
-                        "<h2>No CMT Completed Work data was found.</h2>");
-
-                    return;
-                }
-
-                // Default to the latest 7 full days that contain data
-                dtpToDate.Value = latestDate.Value.Date;
-                dtpFromDate.Value = latestDate.Value.Date.AddDays(-6);
+                SetDefaultPepDateRange();
 
                 await LoadDashboardAsync();
             }
@@ -129,11 +127,51 @@ namespace Analytics.CMT.CompletedWorkAnalysis
             }
         }
 
+
+        // =====================================================
+        // DEFAULT PEP PERIOD
+        //
+        // Previous Tuesday -> this Monday
+        //
+        // Example:
+        // Friday 21 Nov
+        // From: Tuesday 11 Nov
+        // To:   Monday 17 Nov
+        // =====================================================
+        private void SetDefaultPepDateRange()
+        {
+            DateTime today =
+                DateTime.Today;
+
+
+            int daysSinceMonday =
+                ((int)today.DayOfWeek + 6) % 7;
+
+
+            DateTime thisMonday =
+                today.AddDays(
+                    -daysSinceMonday);
+
+
+            DateTime previousTuesday =
+                thisMonday.AddDays(-6);
+
+
+            dtpFromDate.Value =
+                previousTuesday;
+
+
+            dtpToDate.Value =
+                thisMonday;
+        }
+
+
         private async void Apply_Click(
             object sender,
             EventArgs e)
         {
-            if (dtpFromDate.Value.Date > dtpToDate.Value.Date)
+            if (dtpFromDate.Value.Date >
+                dtpToDate.Value.Date)
             {
                 MessageBox.Show(
                     "The From Date cannot be later than the To Date.",
@@ -144,8 +182,10 @@ namespace Analytics.CMT.CompletedWorkAnalysis
                 return;
             }
 
+
             await LoadDashboardAsync();
         }
+
 
         private async Task LoadDashboardAsync()
         {
@@ -154,79 +194,65 @@ namespace Analytics.CMT.CompletedWorkAnalysis
                 btnApply.Enabled = false;
                 btnApply.Text = "Loading...";
 
+
                 DateTime fromDate =
                     dtpFromDate.Value.Date;
+
 
                 DateTime toDate =
                     dtpToDate.Value.Date;
 
 
                 var repository =
-                    new CMTCompletedWorkRepository();
+                    new KnittingAnalysisRepository();
 
 
-                CMTCompletedWorkSummary summary =
-                    repository.GetSummary(
-                        fromDate,
-                        toDate);
+                // =============================================
+                // Get all dashboard datasets
+                // =============================================
+
+                List<KnittingDiskVarianceRow>
+                    diskVariance =
+                        repository.GetDiskVariance(
+                            fromDate,
+                            toDate);
 
 
-                List<CMTBGradeByStyle> bGradeByStyle =
-                    repository.GetBGradeByStyle(
-                        fromDate,
-                        toDate);
+                List<KnittingQualityRow>
+                    knittingQuality =
+                        repository.GetKnittingQuality(
+                            fromDate,
+                            toDate);
 
-                List<CMTMnffOspecByStyle> mnffAndOspec =
-        repository.GetMnffAndOspecByStyle(
-            fromDate,
-            toDate);
 
-                List<CMTBGradeHolesByMachine> holesByMachine =
-                repository.GetBGradeHolesByMachine(
-                    fromDate,
-                    toDate);
+                List<KnittingProcessLossOrderRow>
+                    processLossOrders =
+                        repository.GetProcessLossOrders(
+                            fromDate,
+                            toDate);
 
-                List<CMTSpinningByYarnType> spinningByYarnType =
-                repository.GetSpinningByYarnType(
-                    fromDate,
-                    toDate);
 
-                List<CMTKnittingByMachine> knittingByMachine =
-                repository.GetKnittingByMachine(
-                    fromDate,
-                    toDate);
+                List<KnittingProcessLossMachineRow>
+                    processLossByMachine =
+                        repository.GetProcessLossByMachine(
+                            fromDate,
+                            toDate);
 
-                List<CMTDyeingByStyleQuality> dyeingByStyleQuality =
-    repository.GetDyeingByStyleQuality(
-        fromDate,
-        toDate);
 
-                List<CMTDyeingByStyleQuality> dyeingByGreigeQuality =
-                repository.GetDyeingByGreigeQuality(
-                    fromDate,
-                    toDate);
-
-                List<CMTCuttingByStyle> cuttingByStyle =
-                    repository.GetCuttingByStyle(
-                        fromDate,
-                        toDate);
-
+                // =============================================
+                // Build HTML dashboard
+                // =============================================
 
                 var builder =
-                    new CMTCompletedWorkDashboardBuilder();
+                    new KnittingAnalysisDashboardBuilder();
 
 
                 string html =
                     builder.Build(
-                        summary,
-                        bGradeByStyle,
-                        mnffAndOspec,
-                        holesByMachine,
-                        spinningByYarnType,
-                        knittingByMachine,
-                        dyeingByStyleQuality,
-                                dyeingByGreigeQuality,
-        cuttingByStyle,
+                        diskVariance,
+                        knittingQuality,
+                        processLossOrders,
+                        processLossByMachine,
                         fromDate,
                         toDate);
 
@@ -245,12 +271,17 @@ namespace Analytics.CMT.CompletedWorkAnalysis
             }
         }
 
-        private async Task ShowErrorAsync(Exception ex)
+
+        private async Task ShowErrorAsync(
+            Exception ex)
         {
-            string message = WebUtility.HtmlEncode(ex.Message);
+            string message =
+                WebUtility.HtmlEncode(
+                    ex.Message);
+
 
             await dashboardViewer.ShowHtmlAsync(
-                "<h2>Unable to load CMT Completed Work Analysis</h2>" +
+                "<h2>Unable to load Knitting Analysis</h2>" +
                 "<p>" + message + "</p>");
         }
     }

@@ -11116,8 +11116,13 @@ namespace TTI2_WF
             }
         }
 
-        private void toolStripMenuItem1_Click(object sender, EventArgs e)
+        private void knittingAnalysisToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            using (var frm = new Analytics.Knitting.KnittingAnalysis.frmKnittingAnalysis())
+
+            {
+                frm.ShowDialog();
+            }
 
         }
     }

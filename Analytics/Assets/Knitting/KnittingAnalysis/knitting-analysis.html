@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+
+    <title>Knitting Analysis</title>
+
+    <style>
+        {{ANALYTICS_CSS}}
+    </style>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: #f5f6f8;
+            color: #323130;
+        }
+
+        .knitting-dashboard {
+            padding: 18px 22px 30px 22px;
+        }
+
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 14px;
+        }
+
+        .dashboard-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: #252423;
+        }
+
+        .dashboard-period {
+            font-size: 13px;
+            color: #605e5c;
+        }
+
+
+        /* =====================================================
+           TABS
+           ===================================================== */
+
+        .tab-bar {
+            display: flex;
+            border-bottom: 1px solid #d2d0ce;
+            margin-bottom: 18px;
+            background: #ffffff;
+            padding-left: 4px;
+        }
+
+        .tab-button {
+            border: none;
+            background: transparent;
+            padding: 13px 22px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            color: #605e5c;
+            border-bottom: 3px solid transparent;
+        }
+
+            .tab-button:hover {
+                background: #f3f2f1;
+            }
+
+            .tab-button.active {
+                color: #118DFF;
+                border-bottom-color: #118DFF;
+            }
+
+        .tab-page {
+            display: none;
+        }
+
+            .tab-page.active {
+                display: block;
+            }
+
+
+        /* =====================================================
+           KPI CARDS
+           ===================================================== */
+
+        .kpi-row {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(150px, 1fr));
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .kpi-card {
+            background: #ffffff;
+            border: 1px solid #e1dfdd;
+            border-radius: 4px;
+            padding: 14px 16px;
+            min-height: 80px;
+        }
+
+        .kpi-label {
+            font-size: 12px;
+            color: #605e5c;
+            margin-bottom: 7px;
+        }
+
+        .kpi-value {
+            font-size: 24px;
+            font-weight: 600;
+            color: #252423;
+        }
+
+
+        /* =====================================================
+           PANELS
+           ===================================================== */
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+            .dashboard-grid.single {
+                grid-template-columns: 1fr;
+            }
+
+        .panel {
+            background: #ffffff;
+            border: 1px solid #e1dfdd;
+            border-radius: 4px;
+            padding: 14px;
+            min-width: 0;
+        }
+
+        .panel-title {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #323130;
+        }
+
+        .panel-subtitle {
+            font-size: 12px;
+            color: #605e5c;
+            margin-top: -5px;
+            margin-bottom: 10px;
+        }
+
+        .chart-wrapper {
+            position: relative;
+            width: 100%;
+            height: 420px;
+        }
+
+            .chart-wrapper.tall {
+                height: 520px;
+            }
+
+
+        /* =====================================================
+           TABLES
+           ===================================================== */
+
+        .table-scroll {
+            overflow-x: auto;
+            max-height: 520px;
+            overflow-y: auto;
+        }
+
+        table.report-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+        }
+
+            table.report-table thead th {
+                position: sticky;
+                top: 0;
+                z-index: 1;
+                background: #f3f2f1;
+                color: #323130;
+                text-align: center;
+                padding: 8px;
+                border-bottom: 1px solid #c8c6c4;
+                white-space: nowrap;
+            }
+
+                table.report-table thead th.number {
+                    text-align: center;
+                }
+
+            table.report-table tbody td {
+                padding: 7px 8px;
+                border-bottom: 1px solid #edebe9;
+                vertical-align: top;
+            }
+
+            table.report-table tbody tr:hover {
+                background: #faf9f8;
+            }
+
+        .number {
+            text-align: right;
+            white-space: nowrap;
+        }
+
+        .variance-good {
+            color: #107c10;
+            font-weight: 600;
+        }
+
+        .variance-bad {
+            color: #d13438;
+            font-weight: 600;
+        }
+
+        .variance-normal {
+            color: #0078d4;
+            font-weight: 600;
+        }
+
+        .quality-swatch {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 2px;
+            margin-right: 6px;
+        }
+
+
+        /* =====================================================
+           SMALLER SCREENS
+           ===================================================== */
+
+        @media (max-width: 1100px) {
+
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .kpi-row {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="knitting-dashboard">
+
+        <div class="dashboard-header">
+
+            <div class="dashboard-title">
+                Knitting Analysis
+            </div>
+
+            <div class="dashboard-period"
+                 id="dashboardPeriod">
+            </div>
+
+        </div>
+
+
+        <!-- ===================================================
+             TABS
+             =================================================== -->
+
+        <div class="tab-bar">
+
+            <button class="tab-button active"
+                    data-tab="diskVarianceTab">
+                Disk Variance
+            </button>
+
+            <button class="tab-button"
+                    data-tab="qualityTab">
+                Knitting Quality
+            </button>
+
+            <button class="tab-button"
+                    data-tab="processLossTab">
+                Process Loss
+            </button>
+
+        </div>
+
+
+        <!-- ===================================================
+             DISK VARIANCE
+             =================================================== -->
+
+        <div id="diskVarianceTab"
+             class="tab-page active">
+
+            <div class="kpi-row">
+
+                <div class="kpi-card">
+                    <div class="kpi-label">
+                        Greige Qualities
+                    </div>
+
+                    <div class="kpi-value"
+                         id="diskQualityCount">
+                        -
+                    </div>
+                </div>
+
+
+                <div class="kpi-card">
+                    <div class="kpi-label">
+                        Pieces
+                    </div>
+
+                    <div class="kpi-value"
+                         id="diskPieceCount">
+                        -
+                    </div>
+                </div>
+
+
+                <div class="kpi-card">
+                    <div class="kpi-label">
+                        Within &plusmn;1%
+                    </div>
+
+                    <div class="kpi-value"
+                         id="diskGoodCount">
+                        -
+                    </div>
+                </div>
+
+
+                <div class="kpi-card">
+                    <div class="kpi-label">
+                        Outside &plusmn;3.5%
+                    </div>
+
+                    <div class="kpi-value"
+                         id="diskBadCount">
+                        -
+                    </div>
+                </div>
+
+            </div>
+
+
+            <div class="dashboard-grid">
+
+                <div class="panel">
+
+                    <div class="panel-title">
+                        Disk Variance by Greige Quality
+                    </div>
+
+                    <div class="panel-subtitle">
+                        Green = within &plusmn;1% &middot; Red = outside &plusmn;3.5%
+                    </div>
+
+                    <div class="chart-wrapper tall">
+                        <canvas id="diskVarianceChart"></canvas>
+                    </div>
+
+                </div>
+
+
+                <div class="panel">
+
+                    <div class="panel-title">
+                        Disk Variance Detail
+                    </div>
+
+                    <div class="table-scroll">
+
+                        <table class="report-table">
+
+                            <thead>
+                                <tr>
+                                    <th>Greige Quality</th>
+                                    <th class="number">Pieces</th>
+                                    <th class="number">Std Disk</th>
+                                    <th class="number">Actual Disk</th>
+                                    <th class="number">Variance</th>
+                                </tr>
+                            </thead>
+
+                            <tbody id="diskVarianceTableBody">
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ===================================================
+             KNITTING QUALITY
+             =================================================== -->
+
+        <div id="qualityTab"
+             class="tab-page">
+
+            <div class="kpi-row">
+
+                <div class="kpi-card">
+                    <div class="kpi-label">
+                        Total Pieces
+                    </div>
+
+                    <div class="kpi-value"
+                         id="qualityTotalPieces">
+                        -
+                    </div>
+                </div>
+
+
+                <div class="kpi-card">
+                    <div class="kpi-label">
+                        A Grade
+                    </div>
+
+                    <div class="kpi-value"
+                         id="qualityAGrade">
+                        -
+                    </div>
+                </div>
+
+
+                <div class="kpi-card">
+                    <div class="kpi-label">
+                        B Grade
+                    </div>
+
+                    <div class="kpi-value"
+                         id="qualityBGrade">
+                        -
+                    </div>
+                </div>
+
+
+                <div class="kpi-card">
+                    <div class="kpi-label">
+                        Total Faults
+                    </div>
+
+                    <div class="kpi-value"
+                         id="qualityTotalFaults">
+                        -
+                    </div>
+                </div>
+
+            </div>
+
+
+            <div class="dashboard-grid">
+
+                <div class="panel">
+
+                    <div class="panel-title">
+                        Grade Distribution
+                    </div>
+
+                    <div class="chart-wrapper">
+                        <canvas id="gradeDistributionChart"></canvas>
+                    </div>
+
+                </div>
+
+
+                <div class="panel">
+
+                    <div class="panel-title">
+                        Fault Summary
+                    </div>
+
+                    <div class="chart-wrapper">
+                        <canvas id="faultSummaryChart"></canvas>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="dashboard-grid">
+
+                <div class="panel">
+
+                    <div class="panel-title">
+                        Faults by Machine
+                    </div>
+
+                    <div class="panel-subtitle">
+                        Fault colours remain consistent throughout the report.
+                    </div>
+
+                    <div class="chart-wrapper tall">
+                        <canvas id="faultsByMachineChart"></canvas>
+                    </div>
+
+                </div>
+
+
+                <div class="panel">
+
+                    <div class="panel-title">
+                        Faults by Greige Quality
+                    </div>
+
+                    <div class="chart-wrapper tall">
+                        <canvas id="faultsByQualityChart"></canvas>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="dashboard-grid single">
+
+                <div class="panel">
+
+                    <div class="panel-title">
+                        Knitting Quality Detail
+                    </div>
+
+                    <div class="table-scroll">
+
+                        <table class="report-table">
+
+                            <thead>
+                                <tr>
+                                    <th>Greige Product</th>
+                                    <th>Machine</th>
+                                    <th class="number">Pieces</th>
+                                    <th class="number">A</th>
+                                    <th class="number">B</th>
+                                    <th class="number">C</th>
+                                    <th class="number">Broken Needle</th>
+                                    <th class="number">Dropped Stitches</th>
+                                    <th class="number">Holes</th>
+                                    <th class="number">Oil Marks</th>
+                                    <th class="number">Press Off</th>
+                                    <th class="number">Slub Marks</th>
+                                    <th class="number">Thick</th>
+                                    <th class="number">Thin</th>
+                                    <th class="number">Total Faults</th>
+                                    <th class="number">Avg Faults/Piece</th>
+                                </tr>
+                            </thead>
+
+                            <tbody id="qualityTableBody">
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ===================================================
+             PROCESS LOSS
+             =================================================== -->
+
+        <div id="processLossTab"
+             class="tab-page">
+
+            <div class="kpi-row">
+
+                <div class="kpi-card">
+                    <div class="kpi-label">
+                        Knit Orders
+                    </div>
+
+                    <div class="kpi-value"
+                         id="processOrderCount">
+                        -
+                    </div>
+                </div>
+
+
+                <div class="kpi-card">
+                    <div class="kpi-label">
+                        Yarn Consumed
+                    </div>
+
+                    <div class="kpi-value"
+                         id="processYarnConsumed">
+                        -
+                    </div>
+                </div>
+
+
+                <div class="kpi-card">
+                    <div class="kpi-label">
+                        Total Knitted
+                    </div>
+
+                    <div class="kpi-value"
+                         id="processTotalKnitted">
+                        -
+                    </div>
+                </div>
+
+
+                <div class="kpi-card">
+                    <div class="kpi-label">
+                        Overall Process Loss
+                    </div>
+
+                    <div class="kpi-value"
+                         id="processOverallLoss">
+                        -
+                    </div>
+                </div>
+
+            </div>
+
+
+            <div class="dashboard-grid">
+
+                <div class="panel">
+
+                    <div class="panel-title">
+                        Process Loss by Machine / Quality
+                    </div>
+
+                    <div class="panel-subtitle">
+                        The same Greige Quality uses the same colour wherever possible.
+                    </div>
+
+                    <div class="chart-wrapper tall">
+                        <canvas id="processLossChart"></canvas>
+                    </div>
+
+                </div>
+
+
+                <div class="panel">
+
+                    <div class="panel-title">
+                        Machine / Quality Summary
+                    </div>
+
+                    <div class="table-scroll">
+
+                        <table class="report-table">
+
+                            <thead>
+                                <tr>
+                                    <th>Machine</th>
+                                    <th>Greige Quality</th>
+                                    <th class="number">Order Qty</th>
+                                    <th class="number">Yarn Consumed</th>
+                                    <th class="number">Total Knitted</th>
+                                    <th class="number">Process Loss %</th>
+                                </tr>
+                            </thead>
+
+                            <tbody id="processMachineTableBody">
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="dashboard-grid single">
+
+                <div class="panel">
+
+                    <div class="panel-title">
+                        Knit Order Detail
+                    </div>
+
+                    <div class="table-scroll">
+
+                        <table class="report-table">
+
+                            <thead>
+                                <tr>
+                                    <th>Production Date</th>
+                                    <th>Knit Order</th>
+                                    <th>Machine</th>
+                                    <th>Greige Quality</th>
+                                    <th>Yarn Type</th>
+                                    <th class="number">Tex</th>
+                                    <th class="number">Twist</th>
+                                    <th class="number">Order Qty</th>
+                                    <th class="number">Yarn Consumed</th>
+                                    <th class="number">Total Knitted</th>
+                                    <th class="number">Process Loss %</th>
+                                </tr>
+                            </thead>
+
+                            <tbody id="processOrderTableBody">
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <script>
+        window.knittingDashboardData =
+            {{DASHBOARD_DATA}};
+    </script>
+
+    <script>
+        {{CHART_JS}}
+    </script>
+
+    <script>
+        {{PAGE_JS}}
+    </script>
+
+</body>
+</html>

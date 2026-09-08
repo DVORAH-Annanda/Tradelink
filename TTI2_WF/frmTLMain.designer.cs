@@ -491,6 +491,7 @@
             this.inUseResetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
             this.PBar1 = new System.Windows.Forms.ProgressBar();
+            this.knittingAnalysisToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             this.SuspendLayout();
@@ -3387,7 +3388,8 @@
             // analyticsToolStripMenuItem
             // 
             this.analyticsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.completedWorkAnalyisToolStripMenuItem});
+            this.completedWorkAnalyisToolStripMenuItem,
+            this.knittingAnalysisToolStripMenuItem});
             this.analyticsToolStripMenuItem.Name = "analyticsToolStripMenuItem";
             this.analyticsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.analyticsToolStripMenuItem.Text = "Analytics";
@@ -4194,6 +4196,13 @@
             this.PBar1.Size = new System.Drawing.Size(402, 23);
             this.PBar1.TabIndex = 5;
             // 
+            // knittingAnalysisToolStripMenuItem
+            // 
+            this.knittingAnalysisToolStripMenuItem.Name = "knittingAnalysisToolStripMenuItem";
+            this.knittingAnalysisToolStripMenuItem.Size = new System.Drawing.Size(234, 22);
+            this.knittingAnalysisToolStripMenuItem.Text = "Knitting Analysis";
+            this.knittingAnalysisToolStripMenuItem.Click += new System.EventHandler(this.knittingAnalysisToolStripMenuItem_Click);
+            // 
             // frmTLMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -4679,5 +4688,6 @@
         private System.Windows.Forms.ToolStripMenuItem executiveReportingToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem qAReportingManagerToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem daysDelayReportingToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem knittingAnalysisToolStripMenuItem;
     }
 }
