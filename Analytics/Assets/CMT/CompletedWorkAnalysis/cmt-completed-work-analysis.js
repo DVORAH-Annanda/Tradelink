@@ -2,6 +2,32 @@
 
     const data = window.cmtDashboardData;
 
+    const chartColors = {
+        blue: '#4472C4',
+        orange: '#ED7D31',
+        grey: '#A5A5A5',
+        yellow: '#FFC000',
+        green: '#70AD47',
+        red: '#C00000',
+        lightBlue: '#5B9BD5',
+        purple: '#7030A0'
+    };
+
+    const defectColors = {
+        barreLines: '#4472C4',
+        twisting: '#5B9BD5',
+        holes: '#ED7D31',
+        fflaw: '#A5A5A5',
+        stains: '#FFC000',
+        ospec: '#70AD47',
+        mnff: '#7030A0',
+        oilMarks: '#C00000',
+        poorCutting: '#8064A2',
+        shading: '#4BACC6',
+        contam: '#9BBB59',
+        needleLines: '#F79646'
+    };
+
     // ---------------------------------------------------------
     // Dashboard tab navigation
     // ---------------------------------------------------------
@@ -153,6 +179,12 @@
                                 styleRows.map(
                                     row =>
                                         row.bGradePercentage),
+
+                            backgroundColor:
+                                chartColors.blue,
+
+                            borderColor:
+                                chartColors.blue,
 
                             borderWidth: 1
                         }
@@ -1078,6 +1110,9 @@
                                     row =>
                                         row.barreLines),
 
+                            backgroundColor:
+                                chartColors.blue,
+
                             borderWidth: 1
                         },
 
@@ -1090,6 +1125,9 @@
                                     row =>
                                         row.fflaw),
 
+                            backgroundColor:
+                                chartColors.orange,
+
                             borderWidth: 1
                         },
 
@@ -1101,6 +1139,9 @@
                                 spinningRows.map(
                                     row =>
                                         row.contam),
+
+                            backgroundColor:
+                                chartColors.grey,
 
                             borderWidth: 1
                         }
@@ -1618,6 +1659,9 @@
                                     row =>
                                         row.twisting),
 
+                            backgroundColor:
+                                chartColors.blue,
+
                             borderWidth: 1
                         },
 
@@ -1629,6 +1673,9 @@
                                 knittingRows.map(
                                     row =>
                                         row.holes),
+
+                            backgroundColor:
+                                chartColors.orange,
 
                             borderWidth: 1
                         },
@@ -1642,6 +1689,9 @@
                                     row =>
                                         row.oilMarks),
 
+                            backgroundColor:
+                                chartColors.grey,
+
                             borderWidth: 1
                         },
 
@@ -1653,6 +1703,9 @@
                                 knittingRows.map(
                                     row =>
                                         row.needleLines),
+
+                            backgroundColor:
+                                chartColors.yellow,
 
                             borderWidth: 1
                         }
@@ -1837,6 +1890,9 @@
                                 knittingMixRows.map(
                                     row =>
                                         row.holesPercentage),
+
+                            backgroundColor:
+                                chartColors.orange,
 
                             stack: 'knitting'
                         },
