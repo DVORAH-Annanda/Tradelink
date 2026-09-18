@@ -11125,6 +11125,14 @@ namespace TTI2_WF
             }
 
         }
+
+        private void cuttingAnalysisToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using (var frm = new Analytics.Cutting.CuttingAnalysis.frmCuttingAnalysis())
+            {
+                frm.ShowDialog();
+            }
+        }
     }
 
 }

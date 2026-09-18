@@ -492,6 +492,7 @@
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
             this.PBar1 = new System.Windows.Forms.ProgressBar();
             this.knittingAnalysisToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.cuttingAnalysisToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             this.SuspendLayout();
@@ -3389,7 +3390,8 @@
             // 
             this.analyticsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.completedWorkAnalyisToolStripMenuItem,
-            this.knittingAnalysisToolStripMenuItem});
+            this.knittingAnalysisToolStripMenuItem,
+            this.cuttingAnalysisToolStripMenuItem});
             this.analyticsToolStripMenuItem.Name = "analyticsToolStripMenuItem";
             this.analyticsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.analyticsToolStripMenuItem.Text = "Analytics";
@@ -4203,6 +4205,13 @@
             this.knittingAnalysisToolStripMenuItem.Text = "Knitting Analysis";
             this.knittingAnalysisToolStripMenuItem.Click += new System.EventHandler(this.knittingAnalysisToolStripMenuItem_Click);
             // 
+            // cuttingAnalysisToolStripMenuItem
+            // 
+            this.cuttingAnalysisToolStripMenuItem.Name = "cuttingAnalysisToolStripMenuItem";
+            this.cuttingAnalysisToolStripMenuItem.Size = new System.Drawing.Size(234, 22);
+            this.cuttingAnalysisToolStripMenuItem.Text = "Cutting Analysis";
+            this.cuttingAnalysisToolStripMenuItem.Click += new System.EventHandler(this.cuttingAnalysisToolStripMenuItem_Click);
+            // 
             // frmTLMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -4689,5 +4698,6 @@
         private System.Windows.Forms.ToolStripMenuItem qAReportingManagerToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem daysDelayReportingToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem knittingAnalysisToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem cuttingAnalysisToolStripMenuItem;
     }
 }

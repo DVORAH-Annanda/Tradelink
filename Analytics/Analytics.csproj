@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -88,6 +88,18 @@
     <Compile Include="Knitting\KnittingAnalysis\Models\KnittingProcessLossMachineRow.cs" />
     <Compile Include="Knitting\KnittingAnalysis\Models\KnittingProcessLossOrderRow.cs" />
     <Compile Include="Knitting\KnittingAnalysis\Models\KnittingQualityRow.cs" />
+    <Compile Include="Cutting\CuttingAnalysis\frmCuttingAnalysis.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Cutting\CuttingAnalysis\frmCuttingAnalysis.Designer.cs">
+      <DependentUpon>frmCuttingAnalysis.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Cutting\CuttingAnalysis\CuttingAnalysisDashboardBuilder.cs" />
+    <Compile Include="Cutting\CuttingAnalysis\CuttingAnalysisRepository.cs" />
+    <Compile Include="Cutting\CuttingAnalysis\Models\CuttingProductionDailyRow.cs" />
+    <Compile Include="Cutting\CuttingAnalysis\Models\CuttingProductionMachineRow.cs" />
+    <Compile Include="Cutting\CuttingAnalysis\Models\CuttingProductionQualityRow.cs" />
+    <Compile Include="Cutting\CuttingAnalysis\Models\CuttingWasteQualityRow.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -105,6 +117,10 @@
   <ItemGroup>
     <EmbeddedResource Include="Assets\Knitting\KnittingAnalysis\knitting-analysis.html" />
     <EmbeddedResource Include="Assets\Knitting\KnittingAnalysis\knitting-analysis.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Assets\Cutting\CuttingAnalysis\cutting-analysis.html" />
+    <EmbeddedResource Include="Assets\Cutting\CuttingAnalysis\cutting-analysis.js" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Web.WebView2.1.0.4129.50\build\Microsoft.Web.WebView2.targets" Condition="Exists('..\packages\Microsoft.Web.WebView2.1.0.4129.50\build\Microsoft.Web.WebView2.targets')" />

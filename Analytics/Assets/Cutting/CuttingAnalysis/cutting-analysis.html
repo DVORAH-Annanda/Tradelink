@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Cutting Analysis</title>
+
+    <style>
+        {{ANALYTICS_CSS}}
+    </style>
+
+    <style>
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: #f5f6f8;
+            color: #323130;
+        }
+
+        .cutting-dashboard { padding: 18px 22px 30px 22px; }
+
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 14px;
+        }
+
+        .dashboard-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: #252423;
+        }
+
+        .dashboard-period { font-size: 13px; color: #605e5c; }
+
+        .tab-bar {
+            display: flex;
+            border-bottom: 1px solid #d2d0ce;
+            margin-bottom: 18px;
+            background: #ffffff;
+            padding-left: 4px;
+        }
+
+        .tab-button {
+            border: none;
+            background: transparent;
+            padding: 13px 22px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            color: #605e5c;
+            border-bottom: 3px solid transparent;
+        }
+
+        .tab-button:hover { background: #f3f2f1; }
+        .tab-button.active { color: #118DFF; border-bottom-color: #118DFF; }
+
+        .tab-page { display: none; }
+        .tab-page.active { display: block; }
+
+        .kpi-row {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(150px, 1fr));
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .kpi-row.five { grid-template-columns: repeat(5, minmax(135px, 1fr)); }
+
+        .kpi-card {
+            background: #ffffff;
+            border: 1px solid #e1dfdd;
+            border-radius: 4px;
+            padding: 14px 16px;
+            min-height: 80px;
+        }
+
+        .kpi-label { font-size: 12px; color: #605e5c; margin-bottom: 7px; }
+        .kpi-value { font-size: 24px; font-weight: 600; color: #252423; }
+        .kpi-value.positive { color: #107c10; }
+        .kpi-value.negative { color: #d13438; }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .dashboard-grid.single { grid-template-columns: 1fr; }
+
+        .panel {
+            background: #ffffff;
+            border: 1px solid #e1dfdd;
+            border-radius: 4px;
+            padding: 14px;
+            min-width: 0;
+        }
+
+        .panel-title {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #323130;
+            text-align: center;
+        }
+
+        .panel-subtitle {
+            font-size: 12px;
+            color: #605e5c;
+            margin-top: -5px;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .chart-wrapper {
+            position: relative;
+            width: 100%;
+            height: 420px;
+        }
+
+        .chart-wrapper.dynamic { min-height: 360px; height: 420px; }
+
+        .table-scroll {
+            overflow-x: auto;
+            max-height: 560px;
+            overflow-y: auto;
+        }
+
+        table.report-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+        }
+
+        table.report-table thead th {
+            position: sticky;
+            top: 0;
+            z-index: 1;
+            background: #f3f2f1;
+            color: #323130;
+            text-align: center;
+            padding: 8px;
+            border-bottom: 1px solid #c8c6c4;
+            white-space: nowrap;
+        }
+
+        table.report-table tbody td {
+            padding: 7px 8px;
+            border-bottom: 1px solid #edebe9;
+            vertical-align: top;
+        }
+
+        table.report-table tbody tr:hover { background: #faf9f8; }
+
+        table.report-table tfoot td {
+            padding: 8px;
+            font-weight: 600;
+            border-top: 2px solid #c8c6c4;
+            background: #faf9f8;
+        }
+
+        .number { text-align: right; white-space: nowrap; }
+        .variance-positive { color: #107c10; font-weight: 600; }
+        .variance-negative { color: #d13438; font-weight: 600; }
+        .variance-zero { color: #605e5c; font-weight: 600; }
+        .empty-message { color: #777; padding: 30px 0; text-align: center; }
+
+        @media (max-width: 1150px) {
+            .dashboard-grid { grid-template-columns: 1fr; }
+            .kpi-row, .kpi-row.five { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+    <div class="cutting-dashboard">
+        <div class="dashboard-header">
+            <div class="dashboard-title">Cutting Analysis</div>
+            <div class="dashboard-period" id="dashboardPeriod"></div>
+        </div>
+
+        <div class="tab-bar">
+            <button class="tab-button active" data-tab="productionTab">Cutting Production</button>
+            <button class="tab-button" data-tab="wasteTab">Cutting Waste</button>
+        </div>
+
+        <div id="productionTab" class="tab-page active">
+            <div class="kpi-row">
+                <div class="kpi-card">
+                    <div class="kpi-label">Expected Qty</div>
+                    <div class="kpi-value" id="productionExpected">-</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Actual Cut</div>
+                    <div class="kpi-value" id="productionActual">-</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Variance Qty</div>
+                    <div class="kpi-value" id="productionVarianceQty">-</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Variance %</div>
+                    <div class="kpi-value" id="productionVariancePct">-</div>
+                </div>
+            </div>
+
+            <div class="dashboard-grid single">
+                <div class="panel">
+                    <div class="panel-title">Expected vs Actual Detail</div>
+                    <div class="table-scroll">
+                        <table class="report-table">
+                            <thead>
+                                <tr>
+                                    <th>Greige Quality</th>
+                                    <th class="number">Expected Qty</th>
+                                    <th class="number">Actual Cut</th>
+                                    <th class="number">Variance Qty</th>
+                                    <th class="number">Expected vs Actual %</th>
+                                    <th class="number">Variance %</th>
+                                </tr>
+                            </thead>
+                            <tbody id="productionTableBody"></tbody>
+                            <tfoot id="productionTableFoot"></tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dashboard-grid">
+                <div class="panel">
+                    <div class="panel-title">Expected vs Actual by Quality</div>
+                    <div class="panel-subtitle">Production yield comparison</div>
+                    <div class="chart-wrapper dynamic" id="expectedActualChartWrapper"><canvas id="expectedActualChart"></canvas></div>
+                </div>
+
+                <div class="panel">
+                    <div class="panel-title">Variance % by Quality</div>
+                    <div class="panel-subtitle">Green = on/above expected, red = below expected</div>
+                    <div class="chart-wrapper dynamic" id="varianceChartWrapper"><canvas id="varianceChart"></canvas></div>
+                </div>
+            </div>
+
+            <div class="dashboard-grid">
+                <div class="panel">
+                    <div class="panel-title">Cutting Production by Day</div>
+                    <div class="panel-subtitle">Actual boxed production</div>
+                    <div class="chart-wrapper"><canvas id="productionDayChart"></canvas></div>
+                </div>
+
+                <div class="panel">
+                    <div class="panel-title">Production by Machine</div>
+                    <div class="panel-subtitle">Actual boxed production by cutting machine</div>
+                    <div class="chart-wrapper dynamic" id="machineChartWrapper"><canvas id="productionMachineChart"></canvas></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="wasteTab" class="tab-page">
+            <div class="kpi-row five">
+                <div class="kpi-card">
+                    <div class="kpi-label">Fabric Weight</div>
+                    <div class="kpi-value" id="wasteFabricWeight">-</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Cutting Waste</div>
+                    <div class="kpi-value" id="wasteCutting">-</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Panel Waste</div>
+                    <div class="kpi-value" id="wastePanel">-</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Total Waste</div>
+                    <div class="kpi-value" id="wasteTotal">-</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Total Waste %</div>
+                    <div class="kpi-value" id="wasteTotalPct">-</div>
+                </div>
+            </div>
+
+            <div class="dashboard-grid single">
+                <div class="panel">
+                    <div class="panel-title">Cutting Waste Detail</div>
+                    <div class="table-scroll">
+                        <table class="report-table">
+                            <thead>
+                                <tr>
+                                    <th>Greige Quality</th>
+                                    <th class="number">Fabric Weight</th>
+                                    <th class="number">Cutting Waste</th>
+                                    <th class="number">Cutting Waste %</th>
+                                    <th class="number">Panel Waste</th>
+                                    <th class="number">Panel Waste %</th>
+                                    <th class="number">Total Waste</th>
+                                    <th class="number">Total Waste %</th>
+                                </tr>
+                            </thead>
+                            <tbody id="wasteTableBody"></tbody>
+                            <tfoot id="wasteTableFoot"></tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dashboard-grid">
+                <div class="panel">
+                    <div class="panel-title">Total Waste by Quality</div>
+                    <div class="panel-subtitle">Recorded cutting + panel waste</div>
+                    <div class="chart-wrapper dynamic" id="wasteKgChartWrapper"><canvas id="wasteKgChart"></canvas></div>
+                </div>
+
+                <div class="panel">
+                    <div class="panel-title">Total Waste % by Quality</div>
+                    <div class="panel-subtitle">Total waste divided by fabric net weight</div>
+                    <div class="chart-wrapper dynamic" id="wastePctChartWrapper"><canvas id="wastePctChart"></canvas></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        window.cuttingDashboardData = {{DASHBOARD_DATA}};
+    </script>
+    <script>{{CHART_JS}}</script>
+    <script>{{PAGE_JS}}</script>
+</body>
+</html>
