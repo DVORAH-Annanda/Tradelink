@@ -164,13 +164,29 @@ namespace TTI2_WF
         {
             formloaded = true;
             ConfirmPassword = false;
-            
-            using (var context = new TTI2Entities())
+
+            try
             {
-                cmboUserDetails.DataSource = context.TLSEC_UserAccess.Where(x => !x.TLSECUA_Discontinued).OrderBy(x => x.TLSECUA_UserName).ToList();
-                cmboUserDetails.ValueMember = "TLSECUA_Pk";
-                cmboUserDetails.DisplayMember = "TLSECUA_UserName";
-                cmboUserDetails.SelectedValue = -1;
+                using (var context = new TTI2Entities())
+                {
+                    cmboUserDetails.DataSource = context.TLSEC_UserAccess
+                        .Where(x => !x.TLSECUA_Discontinued)
+                        .OrderBy(x => x.TLSECUA_UserName)
+                        .ToList();
+
+                    cmboUserDetails.ValueMember = "TLSECUA_Pk";
+                    cmboUserDetails.DisplayMember = "TLSECUA_UserName";
+                    cmboUserDetails.SelectedValue = -1;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    ex.ToString(),
+                    "TTI2 SQL Connection Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error
+                );
             }
         }
 
