@@ -8,9 +8,12 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Utilities;
-using Microsoft.Office.Interop.Outlook;
 using EntityFramework.Extensions;
-using CrystalDecisions.Shared.Json;
+using System.Configuration;
+using System.Data.SqlClient;
+using System.Globalization;
+using System.IO;
+using ExcelDataReader;
 
 namespace CustomerServices
 {
@@ -1621,8 +1624,531 @@ namespace CustomerServices
             DataGridView oDgv = sender as DataGridView;
             if(oDgv != null && formloaded)
             {
-               
+
             }
+        }
+
+        private void btnImportPOLines_Click(object sender, EventArgs e)
+        {
+            var selectedCustomer =
+                cmboCustomers.SelectedItem as TLADM_CustomerFile;
+
+            if (selectedCustomer == null)
+            {
+                MessageBox.Show(
+                    "Please select the customer before importing the purchase order lines.",
+                    "Customer Required",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+
+                return;
+            }
+
+            if (FabricMode)
+            {
+                MessageBox.Show(
+                    "This import is currently only available for normal garment orders.",
+                    "Import Not Available",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+
+                return;
+            }
+
+            using (OpenFileDialog dialog = new OpenFileDialog())
+            {
+                dialog.Title = "Select Purchase Order Spreadsheet";
+                dialog.Filter =
+                    "Excel Workbooks (*.xlsx;*.xls)|*.xlsx;*.xls|" +
+                    "All Files (*.*)|*.*";
+
+                if (dialog.ShowDialog() != DialogResult.OK)
+                    return;
+
+                try
+                {
+                    ImportPurchaseOrderLines(dialog.FileName, selectedCustomer);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(
+                        "The spreadsheet could not be imported." +
+                        Environment.NewLine +
+                        Environment.NewLine +
+                        ex.Message,
+                        "Import Error",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
+                }
+            }
+        }
+
+        private void ImportPurchaseOrderLines(
+    string fileName,
+    TLADM_CustomerFile selectedCustomer)
+        {
+            DataTable sheet = ReadPurchaseOrderSpreadsheet(fileName);
+
+            if (sheet == null || sheet.Rows.Count == 0)
+            {
+                MessageBox.Show(
+                    "The spreadsheet does not contain any purchase order lines.",
+                    "Nothing to Import",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+
+                return;
+            }
+
+            string productColumn =
+                FindSpreadsheetColumn(sheet, "Product");
+
+            string quantityColumn =
+                FindSpreadsheetColumn(sheet, "Quantity");
+
+            string customerColumn =
+                FindSpreadsheetColumn(sheet, "Customer");
+
+            string orderNumberColumn =
+                FindSpreadsheetColumn(sheet, "Order Nr", "Order Number");
+
+            if (productColumn == null || quantityColumn == null)
+            {
+                MessageBox.Show(
+                    "The spreadsheet must contain Product and Quantity columns.",
+                    "Invalid Spreadsheet",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+
+                return;
+            }
+
+            List<string> errors = new List<string>();
+            List<ImportedPOLine> importedLines =
+                new List<ImportedPOLine>();
+
+            string spreadsheetCustomer = null;
+            string spreadsheetOrderNumber = null;
+
+            for (int rowIndex = 0; rowIndex < sheet.Rows.Count; rowIndex++)
+            {
+                DataRow excelRow = sheet.Rows[rowIndex];
+
+                int excelRowNumber = rowIndex + 2;
+
+                if (customerColumn != null &&
+                    !string.IsNullOrWhiteSpace(
+                        Convert.ToString(excelRow[customerColumn])))
+                {
+                    spreadsheetCustomer =
+                        Convert.ToString(excelRow[customerColumn]).Trim();
+                }
+
+                if (orderNumberColumn != null &&
+                    !string.IsNullOrWhiteSpace(
+                        Convert.ToString(excelRow[orderNumberColumn])))
+                {
+                    spreadsheetOrderNumber =
+                        Convert.ToString(excelRow[orderNumberColumn]).Trim();
+                }
+
+                string productCode =
+                    NormaliseImportedProductCode(
+                        excelRow[productColumn]);
+
+                string quantityText =
+                    Convert.ToString(
+                        excelRow[quantityColumn],
+                        CultureInfo.InvariantCulture);
+
+                // Completely empty spreadsheet row
+                if (string.IsNullOrWhiteSpace(productCode) &&
+                    string.IsNullOrWhiteSpace(quantityText))
+                {
+                    continue;
+                }
+
+                if (string.IsNullOrWhiteSpace(productCode))
+                {
+                    errors.Add(
+                        $"Excel row {excelRowNumber}: Product is empty.");
+
+                    continue;
+                }
+
+                decimal quantityValue;
+
+                if (!decimal.TryParse(
+                        quantityText,
+                        NumberStyles.Any,
+                        CultureInfo.InvariantCulture,
+                        out quantityValue) ||
+                    quantityValue <= 0 ||
+                    quantityValue != decimal.Truncate(quantityValue) ||
+                    quantityValue > int.MaxValue)
+                {
+                    errors.Add(
+                        $"Excel row {excelRowNumber}: Quantity must be a positive whole number.");
+
+                    continue;
+                }
+
+                importedLines.Add(new ImportedPOLine
+                {
+                    ExcelRowNumber = excelRowNumber,
+                    ProductCode = productCode,
+                    Quantity = Convert.ToInt32(quantityValue)
+                });
+            }
+
+            if (importedLines.Count == 0)
+            {
+                if (errors.Count != 0)
+                {
+                    ShowImportErrors(errors);
+                }
+                else
+                {
+                    MessageBox.Show(
+                        "No valid purchase order lines were found.",
+                        "Nothing to Import",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information);
+                }
+
+                return;
+            }
+
+            LoadProductMappings(importedLines, errors);
+
+            ValidateDuplicateMappings(importedLines, errors);
+
+            if (errors.Count != 0)
+            {
+                ShowImportErrors(errors);
+                return;
+            }
+
+            if (!string.IsNullOrWhiteSpace(spreadsheetCustomer) &&
+                !string.Equals(
+                    spreadsheetCustomer,
+                    selectedCustomer.Cust_Description.Trim(),
+                    StringComparison.OrdinalIgnoreCase))
+            {
+                DialogResult customerResult = MessageBox.Show(
+                    $"The spreadsheet customer is '{spreadsheetCustomer}'." +
+                    Environment.NewLine +
+                    $"The selected customer is '{selectedCustomer.Cust_Description}'." +
+                    Environment.NewLine +
+                    Environment.NewLine +
+                    "Do you still want to import these lines?",
+                    "Customer Does Not Match",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Warning);
+
+                if (customerResult != DialogResult.Yes)
+                    return;
+            }
+
+            bool existingLines = dataGridView1.Rows
+                .Cast<DataGridViewRow>()
+                .Any(row =>
+                    !row.IsNewRow &&
+                    row.Cells[1].Value != null);
+
+            if (existingLines)
+            {
+                DialogResult replaceResult = MessageBox.Show(
+                    "There are already lines in the order grid." +
+                    Environment.NewLine +
+                    Environment.NewLine +
+                    "Do you want to replace them with the imported lines?",
+                    "Replace Existing Lines",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Question);
+
+                if (replaceResult != DialogResult.Yes)
+                    return;
+            }
+
+            PopulateOrderGrid(importedLines);
+
+            if (!string.IsNullOrWhiteSpace(spreadsheetOrderNumber))
+            {
+                txtCustomerPO.Text = spreadsheetOrderNumber;
+            }
+
+            MessageBox.Show(
+                $"{importedLines.Count:N0} purchase order lines were imported successfully.",
+                "Import Complete",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Information);
+        }
+
+        private DataTable ReadPurchaseOrderSpreadsheet(string fileName)
+        {
+            using (FileStream stream = File.Open(
+                fileName,
+                FileMode.Open,
+                FileAccess.Read,
+                FileShare.ReadWrite))
+            using (IExcelDataReader reader =
+                ExcelReaderFactory.CreateReader(stream))
+            {
+                DataSet dataSet = reader.AsDataSet(
+                    new ExcelDataSetConfiguration
+                    {
+                        ConfigureDataTable = tableReader =>
+                            new ExcelDataTableConfiguration
+                            {
+                                UseHeaderRow = true
+                            }
+                    });
+
+                if (dataSet.Tables.Count == 0)
+                    return null;
+
+                return dataSet.Tables[0];
+            }
+        }
+
+        private string FindSpreadsheetColumn(
+    DataTable table,
+    params string[] possibleNames)
+        {
+            foreach (DataColumn column in table.Columns)
+            {
+                foreach (string possibleName in possibleNames)
+                {
+                    if (string.Equals(
+                        column.ColumnName.Trim(),
+                        possibleName,
+                        StringComparison.OrdinalIgnoreCase))
+                    {
+                        return column.ColumnName;
+                    }
+                }
+            }
+
+            return null;
+        }
+
+        private static string NormaliseImportedProductCode(object value)
+        {
+            return (value == null || value == DBNull.Value
+                    ? string.Empty
+                    : value.ToString())
+                .Trim()
+                .ToUpperInvariant();
+        }
+
+        private void LoadProductMappings(
+    List<ImportedPOLine> importedLines,
+    List<string> errors)
+        {
+            string connectionString =
+                ConfigurationManager
+                    .ConnectionStrings["TTISqlConnection"]
+                    .ConnectionString;
+
+            Dictionary<string, ImportedPOLine> mappingLookup =
+                new Dictionary<string, ImportedPOLine>(
+                    StringComparer.OrdinalIgnoreCase);
+
+            using (SqlConnection connection =
+                new SqlConnection(connectionString))
+            using (SqlCommand command = new SqlCommand(
+                @"SELECT
+              ProductCode,
+              StyleId,
+              ColourId,
+              SizeId
+          FROM TLADM_ProductCodes;",
+                connection))
+            {
+                connection.Open();
+
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        string productCode =
+                            NormaliseImportedProductCode(
+                                reader["ProductCode"]);
+
+                        if (string.IsNullOrWhiteSpace(productCode))
+                            continue;
+
+                        mappingLookup[productCode] =
+                            new ImportedPOLine
+                            {
+                                ProductCode = productCode,
+                                StyleId =
+                                    Convert.ToInt32(reader["StyleId"]),
+                                ColourId =
+                                    Convert.ToInt32(reader["ColourId"]),
+                                SizeId =
+                                    Convert.ToInt32(reader["SizeId"])
+                            };
+                    }
+                }
+            }
+
+            foreach (ImportedPOLine line in importedLines)
+            {
+                ImportedPOLine mapping;
+
+                if (!mappingLookup.TryGetValue(
+                        line.ProductCode,
+                        out mapping))
+                {
+                    errors.Add(
+                        $"Excel row {line.ExcelRowNumber}: " +
+                        $"Product '{line.ProductCode}' has no Product Code Mapping.");
+
+                    continue;
+                }
+
+                line.StyleId = mapping.StyleId;
+                line.ColourId = mapping.ColourId;
+                line.SizeId = mapping.SizeId;
+            }
+        }
+
+        private void ValidateDuplicateMappings(
+    List<ImportedPOLine> importedLines,
+    List<string> errors)
+        {
+            var duplicates = importedLines
+                .Where(line =>
+                    line.StyleId != 0 &&
+                    line.ColourId != 0 &&
+                    line.SizeId != 0)
+                .GroupBy(line => new
+                {
+                    line.StyleId,
+                    line.ColourId,
+                    line.SizeId
+                })
+                .Where(group => group.Count() > 1)
+                .ToList();
+
+            foreach (var duplicate in duplicates)
+            {
+                string rows = string.Join(
+                    ", ",
+                    duplicate.Select(
+                        line => line.ExcelRowNumber.ToString()));
+
+                errors.Add(
+                    $"Excel rows {rows} map to the same Style, Colour and Size.");
+            }
+        }
+
+        private void PopulateOrderGrid(
+    List<ImportedPOLine> importedLines)
+        {
+            bool previousFormLoaded = formloaded;
+
+            formloaded = false;
+
+            try
+            {
+                dataGridView1.Rows.Clear();
+                dataGridView1.AllowUserToAddRows = true;
+
+                int lineNumber = 1;
+
+                foreach (ImportedPOLine importedLine in importedLines)
+                {
+                    int rowIndex = dataGridView1.Rows.Add();
+
+                    DataGridViewRow gridRow =
+                        dataGridView1.Rows[rowIndex];
+
+                    // Existing database primary key
+                    gridRow.Cells[0].Value = null;
+
+                    // Line number
+                    gridRow.Cells[1].Value =
+                        "L" + lineNumber.ToString().PadLeft(5, '0');
+
+                    // Product Code Mapping values
+                    gridRow.Cells[2].Value = importedLine.StyleId;
+                    gridRow.Cells[3].Value = null;
+                    gridRow.Cells[4].Value = importedLine.ColourId;
+                    gridRow.Cells[5].Value = importedLine.SizeId;
+
+                    // Spreadsheet quantity
+                    gridRow.Cells[6].Value = importedLine.Quantity;
+
+                    // Default grade
+                    gridRow.Cells[7].Value = "A";
+
+                    // Default required date
+                    gridRow.Cells[8].Value = dtpRequiredDate.Value;
+
+                    // Stock Available and Order Status
+                    gridRow.Cells[9].Value = false;
+                    gridRow.Cells[10].Value = false;
+
+                    // Repack Centre Key
+                    gridRow.Cells[11].Value = null;
+
+                    lineNumber++;
+                }
+
+                EditMode = false;
+                AddnAdd = false;
+            }
+            finally
+            {
+                formloaded = previousFormLoaded;
+            }
+        }
+
+        private void ShowImportErrors(List<string> errors)
+        {
+            const int maximumDisplayedErrors = 20;
+
+            List<string> displayedErrors =
+                errors.Take(maximumDisplayedErrors).ToList();
+
+            StringBuilder message = new StringBuilder();
+
+            message.AppendLine(
+                "The spreadsheet was not imported because of the following problems:");
+
+            message.AppendLine();
+
+            foreach (string error in displayedErrors)
+            {
+                message.AppendLine("• " + error);
+            }
+
+            if (errors.Count > maximumDisplayedErrors)
+            {
+                message.AppendLine();
+                message.AppendLine(
+                    $"There are {errors.Count - maximumDisplayedErrors:N0} additional errors.");
+            }
+
+            MessageBox.Show(
+                message.ToString(),
+                "Purchase Order Import Errors",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Warning);
+        }
+
+        private sealed class ImportedPOLine
+        {
+            public int ExcelRowNumber { get; set; }
+            public string ProductCode { get; set; }
+            public int Quantity { get; set; }
+
+            public int StyleId { get; set; }
+            public int ColourId { get; set; }
+            public int SizeId { get; set; }
         }
     }
 }
