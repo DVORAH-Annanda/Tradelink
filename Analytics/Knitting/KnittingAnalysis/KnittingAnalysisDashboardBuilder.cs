@@ -32,6 +32,9 @@ namespace Analytics.Knitting.KnittingAnalysis
                     "chart.umd.min.js");
 
 
+            string colourPaletteJs =
+                EmbeddedResourceLoader.ReadText("colour-palette.js");
+
             string pageJs =
                 EmbeddedResourceLoader.ReadText(
                     "knitting-analysis.js");
@@ -285,6 +288,9 @@ namespace Analytics.Knitting.KnittingAnalysis
                     "{{DASHBOARD_DATA}}",
                     json)
 
+                .Replace(
+                    "{{COLOUR_PALETTE_JS}}",
+                    colourPaletteJs)
                 .Replace(
                     "{{PAGE_JS}}",
                     pageJs);

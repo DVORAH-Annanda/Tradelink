@@ -11133,6 +11133,12 @@ namespace TTI2_WF
                 frm.ShowDialog();
             }
         }
+
+        private void dyeProductionEfficiencyToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var frm = new Analytics.DyeHouse.DyeProductionEfficiency.frmDyeProductionEfficiency();
+            frm.ShowDialog();
+        }
     }
 
 }

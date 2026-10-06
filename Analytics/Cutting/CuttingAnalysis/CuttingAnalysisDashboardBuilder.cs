@@ -26,6 +26,9 @@ namespace Analytics.Cutting.CuttingAnalysis
             string chartJs =
                 EmbeddedResourceLoader.ReadText("chart.umd.min.js");
 
+            string colourPaletteJs =
+                EmbeddedResourceLoader.ReadText("colour-palette.js");
+
             string pageJs =
                 EmbeddedResourceLoader.ReadText("cutting-analysis.js");
 
@@ -85,7 +88,8 @@ namespace Analytics.Cutting.CuttingAnalysis
                 .Replace("{{ANALYTICS_CSS}}", css)
                 .Replace("{{CHART_JS}}", chartJs)
                 .Replace("{{DASHBOARD_DATA}}", json)
-                .Replace("{{PAGE_JS}}", pageJs);
+                .Replace("{{COLOUR_PALETTE_JS}}", colourPaletteJs)
+                           .Replace("{{PAGE_JS}}", pageJs);
         }
     }
 }
