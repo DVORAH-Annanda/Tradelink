@@ -643,12 +643,12 @@ namespace CMT
 
 
                 _repos = new CMTRepository();
-                var LineIssues = _repos.CMTLineIssue(_QueryParms);
-                var fnd = LineIssues.FirstOrDefault(s => s.TLCMTLI_CutSheet_FK == 8726);
+                var LineIssues = _repos.CMTLineIssue(_QueryParms).ToList();
+                var LineIssuesCw = _repos.CMTLineIssueCW(_QueryParms).ToList();
 
-                var LineIssuesCw = _repos.CMTLineIssueCW(_QueryParms);
-
-                LineIssues = LineIssues.Concat(LineIssuesCw);
+                var allLineIssues = LineIssues
+    .Concat(LineIssuesCw)
+    .ToList();
 
                 ColumnNames = new string[][]
                     {   new string[] {"Text10", string.Empty},
@@ -674,7 +674,7 @@ namespace CMT
                     }
 
 
-                    foreach (var LineIssue in LineIssues)
+                    foreach (var LineIssue in allLineIssues)
                     {
                         int Units_Per_Bag = 0;
 
