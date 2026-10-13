@@ -390,9 +390,10 @@
             this.outOfStockItemsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.qAReportingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.analyticsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.completedWorkAnalyisToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.knittingAnalysisToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cuttingAnalysisToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.dyeProductionEfficiencyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.completedWorkAnalyisToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.reportingToolStripMenuItem5 = new System.Windows.Forms.ToolStripMenuItem();
             this.executiveReportingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.qAReportingManagerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -493,7 +494,7 @@
             this.inUseResetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
             this.PBar1 = new System.Windows.Forms.ProgressBar();
-            this.dyeProductionEfficiencyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.salesAnalysisToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             this.SuspendLayout();
@@ -3393,17 +3394,11 @@
             this.knittingAnalysisToolStripMenuItem,
             this.cuttingAnalysisToolStripMenuItem,
             this.dyeProductionEfficiencyToolStripMenuItem,
-            this.completedWorkAnalyisToolStripMenuItem});
+            this.completedWorkAnalyisToolStripMenuItem,
+            this.salesAnalysisToolStripMenuItem});
             this.analyticsToolStripMenuItem.Name = "analyticsToolStripMenuItem";
             this.analyticsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.analyticsToolStripMenuItem.Text = "Analytics";
-            // 
-            // completedWorkAnalyisToolStripMenuItem
-            // 
-            this.completedWorkAnalyisToolStripMenuItem.Name = "completedWorkAnalyisToolStripMenuItem";
-            this.completedWorkAnalyisToolStripMenuItem.Size = new System.Drawing.Size(234, 22);
-            this.completedWorkAnalyisToolStripMenuItem.Text = "CMT Completed Work Analyis";
-            this.completedWorkAnalyisToolStripMenuItem.Click += new System.EventHandler(this.completedWorkAnalyisToolStripMenuItem_Click);
             // 
             // knittingAnalysisToolStripMenuItem
             // 
@@ -3418,6 +3413,20 @@
             this.cuttingAnalysisToolStripMenuItem.Size = new System.Drawing.Size(234, 22);
             this.cuttingAnalysisToolStripMenuItem.Text = "Cutting Analysis";
             this.cuttingAnalysisToolStripMenuItem.Click += new System.EventHandler(this.cuttingAnalysisToolStripMenuItem_Click);
+            // 
+            // dyeProductionEfficiencyToolStripMenuItem
+            // 
+            this.dyeProductionEfficiencyToolStripMenuItem.Name = "dyeProductionEfficiencyToolStripMenuItem";
+            this.dyeProductionEfficiencyToolStripMenuItem.Size = new System.Drawing.Size(234, 22);
+            this.dyeProductionEfficiencyToolStripMenuItem.Text = "Dye Production Efficiency";
+            this.dyeProductionEfficiencyToolStripMenuItem.Click += new System.EventHandler(this.dyeProductionEfficiencyToolStripMenuItem_Click);
+            // 
+            // completedWorkAnalyisToolStripMenuItem
+            // 
+            this.completedWorkAnalyisToolStripMenuItem.Name = "completedWorkAnalyisToolStripMenuItem";
+            this.completedWorkAnalyisToolStripMenuItem.Size = new System.Drawing.Size(234, 22);
+            this.completedWorkAnalyisToolStripMenuItem.Text = "CMT Completed Work Analyis";
+            this.completedWorkAnalyisToolStripMenuItem.Click += new System.EventHandler(this.completedWorkAnalyisToolStripMenuItem_Click);
             // 
             // reportingToolStripMenuItem5
             // 
@@ -4214,12 +4223,12 @@
             this.PBar1.Size = new System.Drawing.Size(402, 23);
             this.PBar1.TabIndex = 5;
             // 
-            // dyeProductionEfficiencyToolStripMenuItem
+            // salesAnalysisToolStripMenuItem
             // 
-            this.dyeProductionEfficiencyToolStripMenuItem.Name = "dyeProductionEfficiencyToolStripMenuItem";
-            this.dyeProductionEfficiencyToolStripMenuItem.Size = new System.Drawing.Size(234, 22);
-            this.dyeProductionEfficiencyToolStripMenuItem.Text = "Dye Production Efficiency";
-            this.dyeProductionEfficiencyToolStripMenuItem.Click += new System.EventHandler(this.dyeProductionEfficiencyToolStripMenuItem_Click);
+            this.salesAnalysisToolStripMenuItem.Name = "salesAnalysisToolStripMenuItem";
+            this.salesAnalysisToolStripMenuItem.Size = new System.Drawing.Size(234, 22);
+            this.salesAnalysisToolStripMenuItem.Text = "Sales Analysis";
+            this.salesAnalysisToolStripMenuItem.Click += new System.EventHandler(this.salesAnalysisToolStripMenuItem_Click);
             // 
             // frmTLMain
             // 
@@ -4709,5 +4718,6 @@
         private System.Windows.Forms.ToolStripMenuItem knittingAnalysisToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem cuttingAnalysisToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem dyeProductionEfficiencyToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem salesAnalysisToolStripMenuItem;
     }
 }

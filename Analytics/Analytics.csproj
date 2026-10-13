@@ -110,6 +110,18 @@
     <Compile Include="DyeHouse\DyeProductionEfficiency\DyeProductionEfficiencyRepository.cs" />
     <Compile Include="DyeHouse\DyeProductionEfficiency\Models\DyeProcessLossRow.cs" />
     <Compile Include="DyeHouse\DyeProductionEfficiency\Models\DyeDiskVarianceRow.cs" />
+    <Compile Include="Sales\SalesAnalysis\frmSalesAnalysis.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Sales\SalesAnalysis\frmSalesAnalysis.Designer.cs">
+      <DependentUpon>frmSalesAnalysis.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Sales\SalesAnalysis\SalesAnalysisDashboardBuilder.cs" />
+    <Compile Include="Sales\SalesAnalysis\SalesAnalysisRepository.cs" />
+    <Compile Include="Sales\SalesAnalysis\Models\SalesSummary.cs" />
+    <Compile Include="Sales\SalesAnalysis\Models\SalesMonthlyComparisonRow.cs" />
+    <Compile Include="Sales\SalesAnalysis\Models\SalesPerformanceRow.cs" />
+    <Compile Include="Sales\SalesAnalysis\Models\SalesDataQualitySummary.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -136,6 +148,13 @@
   <ItemGroup>
     <EmbeddedResource Include="Assets\DyeHouse\DyeProductionEfficiency\dye-production-efficiency.html" />
     <EmbeddedResource Include="Assets\DyeHouse\DyeProductionEfficiency\dye-production-efficiency.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Assets\Sales\SalesAnalysis\sales-analysis.html" />
+    <EmbeddedResource Include="Assets\Sales\SalesAnalysis\sales-analysis.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Sql\vw_SalesAnalysis.sql" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Web.WebView2.1.0.4129.50\build\Microsoft.Web.WebView2.targets" Condition="Exists('..\packages\Microsoft.Web.WebView2.1.0.4129.50\build\Microsoft.Web.WebView2.targets')" />

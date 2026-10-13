@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Sales Analytics</title>
+    <style>{{ANALYTICS_CSS}}</style>
+    <style>
+        body { padding: 0; background: #f5f6f8; }
+        .sales-dashboard { padding: 18px 22px 30px 22px; }
+        .dashboard-header { display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:14px; gap:20px; }
+        .dashboard-title { font-size:24px; font-weight:600; color:#252423; }
+        .dashboard-period { font-size:13px; color:#605e5c; text-align:right; }
+        .comparison-note { color:#777; font-size:12px; margin-top:3px; }
+        .tab-bar { display:flex; border-bottom:1px solid #d2d0ce; margin-bottom:18px; background:#fff; padding-left:4px; }
+        .tab-button { border:none; background:transparent; padding:13px 22px; cursor:pointer; font:600 14px 'Segoe UI',Arial,sans-serif; color:#605e5c; border-bottom:3px solid transparent; }
+        .tab-button.active { color:#252423; border-bottom-color:#118DFF; }
+        .tab-page { display:none; }
+        .tab-page.active { display:block; }
+        .kpi-grid { display:grid; grid-template-columns:repeat(5,minmax(155px,1fr)); gap:14px; margin-bottom:18px; }
+        .kpi-card { background:#fff; border-radius:8px; box-shadow:0 2px 7px rgba(0,0,0,.08); padding:18px 20px; min-height:112px; }
+        .kpi-label { color:#666; font-size:13px; margin-bottom:8px; }
+        .kpi-value { font-size:28px; font-weight:650; color:#252423; }
+        .kpi-sub { margin-top:5px; color:#777; font-size:12px; }
+        .positive { color:#107c10 !important; }
+        .negative { color:#c00000 !important; }
+        .neutral { color:#605e5c !important; }
+        .grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+        .section-card { background:#fff; padding:22px; border-radius:8px; box-shadow:0 2px 7px rgba(0,0,0,.08); margin-bottom:18px; }
+        .section-title { font-size:18px; font-weight:600; margin-bottom:4px; }
+        .section-subtitle { font-size:12px; color:#777; margin-bottom:16px; }
+        .chart-wrap { position:relative; min-height:380px; }
+        .horizontal-chart-wrap { position:relative; min-height:430px; }
+        .sales-table { width:100%; border-collapse:collapse; font-size:13px; }
+        .sales-table th { text-align:left; padding:10px 12px; border-bottom:2px solid #ddd; color:#555; white-space:nowrap; }
+        .sales-table td { padding:9px 12px; border-bottom:1px solid #eee; }
+        .sales-table .number { text-align:right; white-space:nowrap; }
+        .sales-table tbody tr:hover { background:#f8f9fa; }
+        .table-scroll { overflow:auto; max-height:520px; }
+        .movement { font-weight:600; }
+        .quality-grid { display:grid; grid-template-columns:repeat(3,minmax(180px,1fr)); gap:15px; margin-bottom:18px; }
+        .quality-card { background:#fff; border-radius:8px; box-shadow:0 2px 7px rgba(0,0,0,.08); padding:20px; }
+        .quality-label { color:#666; font-size:13px; margin-bottom:7px; }
+        .quality-value { font-size:23px; font-weight:600; }
+        .quality-note { color:#777; font-size:12px; margin-top:6px; line-height:1.35; }
+        @media (max-width: 1100px) { .kpi-grid { grid-template-columns:repeat(2,1fr); } .grid-2 { grid-template-columns:1fr; } .quality-grid { grid-template-columns:repeat(2,1fr); } }
+    </style>
+</head>
+<body>
+<div class="sales-dashboard">
+    <div class="dashboard-header">
+        <div>
+            <div class="dashboard-title">Sales Analytics</div>
+            <div class="comparison-note">Gross sales, returns, net sales and year-on-year performance</div>
+        </div>
+        <div class="dashboard-period">
+            <div id="period"></div>
+            <div id="previousPeriod" class="comparison-note"></div>
+        </div>
+    </div>
+
+    <div class="tab-bar">
+        <button class="tab-button active" data-tab="overview">Overview</button>
+        <button class="tab-button" data-tab="customers">Customers</button>
+        <button class="tab-button" data-tab="products">Products &amp; Colours</button>
+        <button class="tab-button" data-tab="quality">Operational Checks</button>
+    </div>
+
+    <div id="overview" class="tab-page active">
+        <div class="kpi-grid">
+            <div class="kpi-card"><div class="kpi-label">Gross Sales</div><div class="kpi-value" id="grossSales"></div><div class="kpi-sub" id="grossPrev"></div></div>
+            <div class="kpi-card"><div class="kpi-label">Returns</div><div class="kpi-value" id="returns"></div><div class="kpi-sub" id="returnsPrev"></div></div>
+            <div class="kpi-card"><div class="kpi-label">Net Sales</div><div class="kpi-value" id="netSales"></div><div class="kpi-sub" id="netPrev"></div></div>
+            <div class="kpi-card"><div class="kpi-label">Return Rate</div><div class="kpi-value" id="returnRate"></div><div class="kpi-sub" id="returnRatePrev"></div></div>
+            <div class="kpi-card"><div class="kpi-label">YoY Net Growth</div><div class="kpi-value" id="growth"></div><div class="kpi-sub">vs same date range last year</div></div>
+        </div>
+
+        <div class="section-card">
+            <div class="section-title">Monthly comparison</div>
+            <div class="section-subtitle">The table is shown first so management can see the exact quantities before the chart.</div>
+            <div class="table-scroll">
+                <table class="sales-table">
+                    <thead><tr><th>Month</th><th class="number" id="prevNetHead">Previous Net</th><th class="number" id="currNetHead">Current Net</th><th class="number">Difference</th><th class="number">Growth</th><th class="number">Current Returns</th></tr></thead>
+                    <tbody id="monthlyBody"></tbody>
+                </table>
+            </div>
+        </div>
+        <div class="section-card">
+            <div class="section-title">Net sales trend</div>
+            <div class="section-subtitle">Selected period compared with the same period last year.</div>
+            <div class="chart-wrap"><canvas id="monthlyChart"></canvas></div>
+        </div>
+    </div>
+
+    <div id="customers" class="tab-page">
+        <div class="section-card">
+            <div class="section-title">Customer performance</div>
+            <div class="section-subtitle">Ranked by current net sales. Growth compares the same date range last year.</div>
+            <div class="table-scroll">
+                <table class="sales-table">
+                    <thead><tr><th>Customer</th><th class="number">Previous Net</th><th class="number">Current Gross</th><th class="number">Returns</th><th class="number">Current Net</th><th class="number">Growth</th></tr></thead>
+                    <tbody id="customerBody"></tbody>
+                </table>
+            </div>
+        </div>
+        <div class="section-card">
+            <div class="section-title">Top customers</div>
+            <div class="section-subtitle">Top 15 by current net sales.</div>
+            <div class="horizontal-chart-wrap" id="customerChartWrap"><canvas id="customerChart"></canvas></div>
+        </div>
+    </div>
+
+    <div id="products" class="tab-page">
+        <div class="grid-2">
+            <div>
+                <div class="section-card">
+                    <div class="section-title">Style performance</div>
+                    <div class="section-subtitle">Top styles by current net sales.</div>
+                    <div class="table-scroll"><table class="sales-table"><thead><tr><th>Style</th><th class="number">Prev Net</th><th class="number">Current Net</th><th class="number">Growth</th></tr></thead><tbody id="styleBody"></tbody></table></div>
+                </div>
+            </div>
+            <div>
+                <div class="section-card">
+                    <div class="section-title">Colour performance</div>
+                    <div class="section-subtitle">Colour bars use the shared Analytics colour-family mapping.</div>
+                    <div class="table-scroll"><table class="sales-table"><thead><tr><th>Colour</th><th class="number">Prev Net</th><th class="number">Current Net</th><th class="number">Growth</th></tr></thead><tbody id="colourBody"></tbody></table></div>
+                </div>
+            </div>
+        </div>
+        <div class="grid-2">
+            <div class="section-card"><div class="section-title">Top styles</div><div class="horizontal-chart-wrap" id="styleChartWrap"><canvas id="styleChart"></canvas></div></div>
+            <div class="section-card"><div class="section-title">Top colours</div><div class="horizontal-chart-wrap" id="colourChartWrap"><canvas id="colourChart"></canvas></div></div>
+        </div>
+    </div>
+
+    <div id="quality" class="tab-page">
+        <div class="quality-grid">
+            <div class="quality-card"><div class="quality-label">Sold source rows in selected period</div><div class="quality-value" id="soldRows"></div><div class="quality-note">Useful as a transaction-volume sanity check.</div></div>
+            <div class="quality-card"><div class="quality-label">Zero / negative sold quantities</div><div class="quality-value" id="zeroQty"></div><div class="quality-note">These deserve investigation if non-zero.</div></div>
+            <div class="quality-card"><div class="quality-label">Missing master-data links</div><div class="quality-value" id="missingMaster"></div><div class="quality-note">Sold rows missing customer, style, colour, size or warehouse descriptions.</div></div>
+            <div class="quality-card"><div class="quality-label">Sold rows with missing sold date</div><div class="quality-value" id="missingDate"></div><div class="quality-note">A sold item without a date cannot be placed correctly in period analytics.</div></div>
+            <div class="quality-card"><div class="quality-label">Latest sale recorded</div><div class="quality-value" id="latestSale"></div><div class="quality-note">Helps spot whether sales processing has stopped or fallen behind.</div></div>
+            <div class="quality-card"><div class="quality-label">Latest return recorded</div><div class="quality-value" id="latestReturn"></div><div class="quality-note">The database currently shows historic returns only; this is deliberately surfaced rather than hidden.</div></div>
+        </div>
+        <div class="section-card">
+            <div class="section-title">How this report defines the numbers</div>
+            <div class="section-subtitle">These rules are deliberately simple and auditable.</div>
+            <table class="sales-table"><tbody>
+                <tr><td><b>Gross Sales</b></td><td>TLSOH_Sold = 1, summed by TLSOH_SoldDate using TLSOH_BoxedQty.</td></tr>
+                <tr><td><b>Returns</b></td><td>TLSOH_Returned = 1, summed by TLSOH_ReturnedDate using TLSOH_ReturnedBoxQty.</td></tr>
+                <tr><td><b>Net Sales</b></td><td>Gross Sales minus Returns for the reporting period.</td></tr>
+                <tr><td><b>YoY comparison</b></td><td>The selected date range compared with exactly the same dates one year earlier.</td></tr>
+            </tbody></table>
+        </div>
+    </div>
+</div>
+<script>{{CHART_JS}}</script>
+<script>{{COLOUR_PALETTE_JS}}</script>
+<script>window.salesDashboardData = {{DASHBOARD_DATA}};</script>
+<script>{{PAGE_JS}}</script>
+</body>
+</html>

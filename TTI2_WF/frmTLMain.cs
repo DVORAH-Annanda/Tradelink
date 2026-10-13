@@ -11139,6 +11139,12 @@ namespace TTI2_WF
             var frm = new Analytics.DyeHouse.DyeProductionEfficiency.frmDyeProductionEfficiency();
             frm.ShowDialog();
         }
+
+        private void salesAnalysisToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var frm = new Analytics.Sales.SalesAnalysis.frmSalesAnalysis();
+            frm.ShowDialog(this);
+        }
     }
 
 }
