@@ -76,7 +76,7 @@
 
         <div class="section-card">
             <div class="section-title">Monthly comparison</div>
-            <div class="section-subtitle">The table is shown first so management can see the exact quantities before the chart.</div>
+            <div class="section-subtitle"></div>
             <div class="table-scroll">
                 <table class="sales-table">
                     <thead><tr><th>Month</th><th class="number" id="prevNetHead">Previous Net</th><th class="number" id="currNetHead">Current Net</th><th class="number">Difference</th><th class="number">Growth</th><th class="number">Current Returns</th></tr></thead>
@@ -104,7 +104,7 @@
         </div>
         <div class="section-card">
             <div class="section-title">Top customers</div>
-            <div class="section-subtitle">Top 15 by current net sales.</div>
+            <div class="section-subtitle">Current net sales.</div>
             <div class="horizontal-chart-wrap" id="customerChartWrap"><canvas id="customerChart"></canvas></div>
         </div>
     </div>
@@ -114,14 +114,14 @@
             <div>
                 <div class="section-card">
                     <div class="section-title">Style performance</div>
-                    <div class="section-subtitle">Top styles by current net sales.</div>
+                    <div class="section-subtitle"></div>
                     <div class="table-scroll"><table class="sales-table"><thead><tr><th>Style</th><th class="number">Prev Net</th><th class="number">Current Net</th><th class="number">Growth</th></tr></thead><tbody id="styleBody"></tbody></table></div>
                 </div>
             </div>
             <div>
                 <div class="section-card">
                     <div class="section-title">Colour performance</div>
-                    <div class="section-subtitle">Colour bars use the shared Analytics colour-family mapping.</div>
+                    <div class="section-subtitle"></div>
                     <div class="table-scroll"><table class="sales-table"><thead><tr><th>Colour</th><th class="number">Prev Net</th><th class="number">Current Net</th><th class="number">Growth</th></tr></thead><tbody id="colourBody"></tbody></table></div>
                 </div>
             </div>
@@ -134,16 +134,16 @@
 
     <div id="quality" class="tab-page">
         <div class="quality-grid">
-            <div class="quality-card"><div class="quality-label">Sold source rows in selected period</div><div class="quality-value" id="soldRows"></div><div class="quality-note">Useful as a transaction-volume sanity check.</div></div>
-            <div class="quality-card"><div class="quality-label">Zero / negative sold quantities</div><div class="quality-value" id="zeroQty"></div><div class="quality-note">These deserve investigation if non-zero.</div></div>
+            <div class="quality-card"><div class="quality-label">Sold source rows in selected period</div><div class="quality-value" id="soldRows"></div><div class="quality-note">Transaction-volume check.</div></div>
+            <div class="quality-card"><div class="quality-label">Zero / negative sold quantities</div><div class="quality-value" id="zeroQty"></div><div class="quality-note">Investigate if non-zero.</div></div>
             <div class="quality-card"><div class="quality-label">Missing master-data links</div><div class="quality-value" id="missingMaster"></div><div class="quality-note">Sold rows missing customer, style, colour, size or warehouse descriptions.</div></div>
-            <div class="quality-card"><div class="quality-label">Sold rows with missing sold date</div><div class="quality-value" id="missingDate"></div><div class="quality-note">A sold item without a date cannot be placed correctly in period analytics.</div></div>
-            <div class="quality-card"><div class="quality-label">Latest sale recorded</div><div class="quality-value" id="latestSale"></div><div class="quality-note">Helps spot whether sales processing has stopped or fallen behind.</div></div>
-            <div class="quality-card"><div class="quality-label">Latest return recorded</div><div class="quality-value" id="latestReturn"></div><div class="quality-note">The database currently shows historic returns only; this is deliberately surfaced rather than hidden.</div></div>
+            <div class="quality-card"><div class="quality-label">Sold rows with missing sold date</div><div class="quality-value" id="missingDate"></div><div class="quality-note"></div></div>
+            <div class="quality-card"><div class="quality-label">Latest sale recorded</div><div class="quality-value" id="latestSale"></div><div class="quality-note"></div></div>
+            <div class="quality-card"><div class="quality-label">Latest return recorded</div><div class="quality-value" id="latestReturn"></div><div class="quality-note"></div></div>
         </div>
         <div class="section-card">
-            <div class="section-title">How this report defines the numbers</div>
-            <div class="section-subtitle">These rules are deliberately simple and auditable.</div>
+            <div class="section-title">Database rules used</div>
+            <div class="section-subtitle"></div>
             <table class="sales-table"><tbody>
                 <tr><td><b>Gross Sales</b></td><td>TLSOH_Sold = 1, summed by TLSOH_SoldDate using TLSOH_BoxedQty.</td></tr>
                 <tr><td><b>Returns</b></td><td>TLSOH_Returned = 1, summed by TLSOH_ReturnedDate using TLSOH_ReturnedBoxQty.</td></tr>
