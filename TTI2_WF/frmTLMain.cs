@@ -1,9 +1,10 @@
 ﻿using Administration;
+using Analytics;
+using Analytics.Spinning.IpiAnalysis;
 using CMT;
 using CustomerServices;
 using Cutting;
 using DyeHouse;
-using Analytics;
 using EntityFramework.Extensions; 
 using ExecutiveReporting;
 using Knitting;
@@ -11144,6 +11145,15 @@ namespace TTI2_WF
         {
             var frm = new Analytics.Sales.SalesAnalysis.frmSalesAnalysis();
             frm.ShowDialog(this);
+        }
+
+        private void spinningIPIResults_Click(object sender, EventArgs e)
+        {
+          
+            using (var frm = new Analytics.Spinning.IpiAnalysis.frmSpinningIpiAnalysis())
+            {
+                frm.ShowDialog(this);
+            }
         }
     }
 

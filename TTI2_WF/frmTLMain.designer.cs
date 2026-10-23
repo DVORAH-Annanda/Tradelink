@@ -394,6 +394,7 @@
             this.cuttingAnalysisToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dyeProductionEfficiencyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.completedWorkAnalyisToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.salesAnalysisToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.reportingToolStripMenuItem5 = new System.Windows.Forms.ToolStripMenuItem();
             this.executiveReportingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.qAReportingManagerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -494,7 +495,7 @@
             this.inUseResetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
             this.PBar1 = new System.Windows.Forms.ProgressBar();
-            this.salesAnalysisToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.spinningIPIResults = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             this.SuspendLayout();
@@ -3391,6 +3392,7 @@
             // analyticsToolStripMenuItem
             // 
             this.analyticsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.spinningIPIResults,
             this.knittingAnalysisToolStripMenuItem,
             this.cuttingAnalysisToolStripMenuItem,
             this.dyeProductionEfficiencyToolStripMenuItem,
@@ -3427,6 +3429,13 @@
             this.completedWorkAnalyisToolStripMenuItem.Size = new System.Drawing.Size(234, 22);
             this.completedWorkAnalyisToolStripMenuItem.Text = "CMT Completed Work Analyis";
             this.completedWorkAnalyisToolStripMenuItem.Click += new System.EventHandler(this.completedWorkAnalyisToolStripMenuItem_Click);
+            // 
+            // salesAnalysisToolStripMenuItem
+            // 
+            this.salesAnalysisToolStripMenuItem.Name = "salesAnalysisToolStripMenuItem";
+            this.salesAnalysisToolStripMenuItem.Size = new System.Drawing.Size(234, 22);
+            this.salesAnalysisToolStripMenuItem.Text = "Sales Analysis";
+            this.salesAnalysisToolStripMenuItem.Click += new System.EventHandler(this.salesAnalysisToolStripMenuItem_Click);
             // 
             // reportingToolStripMenuItem5
             // 
@@ -4223,12 +4232,12 @@
             this.PBar1.Size = new System.Drawing.Size(402, 23);
             this.PBar1.TabIndex = 5;
             // 
-            // salesAnalysisToolStripMenuItem
+            // spinningIPIResults
             // 
-            this.salesAnalysisToolStripMenuItem.Name = "salesAnalysisToolStripMenuItem";
-            this.salesAnalysisToolStripMenuItem.Size = new System.Drawing.Size(234, 22);
-            this.salesAnalysisToolStripMenuItem.Text = "Sales Analysis";
-            this.salesAnalysisToolStripMenuItem.Click += new System.EventHandler(this.salesAnalysisToolStripMenuItem_Click);
+            this.spinningIPIResults.Name = "spinningIPIResults";
+            this.spinningIPIResults.Size = new System.Drawing.Size(234, 22);
+            this.spinningIPIResults.Text = "Spinning IPI Results";
+            this.spinningIPIResults.Click += new System.EventHandler(this.spinningIPIResults_Click);
             // 
             // frmTLMain
             // 
@@ -4719,5 +4728,6 @@
         private System.Windows.Forms.ToolStripMenuItem cuttingAnalysisToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem dyeProductionEfficiencyToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem salesAnalysisToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem spinningIPIResults;
     }
 }
