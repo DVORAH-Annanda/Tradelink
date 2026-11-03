@@ -5,7 +5,7 @@
     const summary = data.summary || {};
     const blue = '#118DFF', grey = '#A19F9D', green = '#107C10', red = '#C00000';
 
-    function n(v) { return Number(v || 0).toLocaleString(undefined, { maximumFractionDigits: 0 }); }
+    function n(v) { return Number(v || 0).toLocaleString('en-US', { maximumFractionDigits: 0, useGrouping: false }); }
     function pct(v) { const x = Number(v || 0); return (x > 0 ? '+' : '') + x.toFixed(2) + '%'; }
     function esc(v) { return String(v == null ? '' : v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
     function movementClass(v) { const x = Number(v || 0); return x > 0 ? 'positive' : x < 0 ? 'negative' : 'neutral'; }

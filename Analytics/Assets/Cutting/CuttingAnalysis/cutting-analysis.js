@@ -72,9 +72,10 @@
     function number(value, decimals) {
         const n = Number(value || 0);
         const d = decimals || 0;
-        return n.toLocaleString(undefined, {
+        return n.toLocaleString('en-US', {
             minimumFractionDigits: d,
-            maximumFractionDigits: d
+            maximumFractionDigits: d,
+            useGrouping: false
         });
     }
 

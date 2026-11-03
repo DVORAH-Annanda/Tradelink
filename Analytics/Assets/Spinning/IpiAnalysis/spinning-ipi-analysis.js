@@ -10,7 +10,7 @@
     var el = function(id) { return document.getElementById(id); };
     var finite = function(v) { return v !== null && v !== undefined && v !== '' && isFinite(Number(v)); };
     var num = function(v) { return finite(v) ? Number(v) : null; };
-    var fmt = function(v, dp) { return finite(v) ? Number(v).toLocaleString('en-ZA', {minimumFractionDigits:dp||0,maximumFractionDigits:dp||0}) : '—'; };
+    var fmt = function (v, dp) { return finite(v) ? Number(v).toLocaleString('en-US', { minimumFractionDigits: dp || 0, maximumFractionDigits: dp || 0,useGrouping: false }) : '—'; };
     var esc = function(v) { return String(v == null ? '' : v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); };
     var mean = function(rows,key) { var a=rows.map(function(r){return num(r[key]);}).filter(function(v){return v!==null;});return a.length ? a.reduce(function(s,v){return s+v;},0)/a.length : null; };
     var minVal = function(rows,key) {var a=rows.map(function(r){return num(r[key]);}).filter(function(v){return v!==null;});return a.length?Math.min.apply(null,a):null;};
@@ -62,7 +62,7 @@
         body+='<tr class="group-footer">'+keys.map(function(k){var g=groups[k];return '<td>Average</td><td colspan="2">'+fmt(g.length,0)+' tests</td>'+cell(mean(g,'tex'),2)+cell(mean(g,'cv'),2)+cell(mean(g,'thin'),1)+cell(mean(g,'thick'),1)+cell(mean(g,'nep'),1)+cell(mean(g,'ipi'),1);}).join('')+'</tr>';
         el('matrixContainer').innerHTML='<table><thead>'+head1+head2+'</thead><tbody>'+body+'</tbody></table>';
         var hidden=keys.reduce(function(s,k){return s+Math.max(0,groups[k].length-matrixLimit);},0);
-        el('matrixStatus').textContent= hidden ? fmt(hidden,0)+' additional rows hidden in matrix for readability. Use “Show more” or CSV to see everything.' : 'Showing all rows for each tex group.';
+        el('matrixStatus').textContent= hidden ? fmt(hidden,0)+' additional rows hidden in matrix for readability. Use “Show more” or export to CSV to see all.' : 'Showing all rows for each tex group.';
         el('matrixMore').disabled=hidden===0;
     }
     function renderSummary() {

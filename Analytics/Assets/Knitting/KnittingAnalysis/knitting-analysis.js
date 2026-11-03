@@ -130,13 +130,14 @@
 
 
         return n.toLocaleString(
-            undefined,
+            'en-US',
             {
                 minimumFractionDigits:
                     decimals || 0,
 
                 maximumFractionDigits:
-                    decimals || 0
+                    decimals || 0,
+                useGrouping: false
             });
     }
 

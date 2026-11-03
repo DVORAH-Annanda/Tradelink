@@ -5,9 +5,10 @@
     const blue = '#118DFF', red = '#C00000';
 
     function n(v, d) {
-        return Number(v || 0).toLocaleString(undefined, {
+        return Number(v || 0).toLocaleString('en-US', {
             minimumFractionDigits: d,
-            maximumFractionDigits: d
+            maximumFractionDigits: d,
+            useGrouping: false
         });
     }
 

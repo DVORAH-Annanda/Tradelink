@@ -33,11 +33,11 @@ namespace Analytics.Spinning.IpiAnalysis
                 Location = new Point(431, 17) };
             btnApply.Click += Apply_Click;
             filters.Controls.Add(btnApply);
-            filters.Controls.Add(new Label
-            {
-                Text = "Filter machine, tex, merge and yarn order inside the report",
-                AutoSize = true, ForeColor = Color.DimGray, Location = new Point(550, 23)
-            });
+            //filters.Controls.Add(new Label
+            //{
+            //    Text = "Filter machine, tex, merge and yarn order inside the report",
+            //    AutoSize = true, ForeColor = Color.DimGray, Location = new Point(550, 23)
+            //});
 
             dashboardViewer = new HtmlDashboardViewer { Dock = DockStyle.Fill };
             Controls.Add(dashboardViewer);

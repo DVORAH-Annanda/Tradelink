@@ -83,33 +83,30 @@ tbody tr:hover td { background:#eef7ff; }
  <div class="kpi"><span>Unreconciled IPI tests</span><strong id="kpiMismatch">0</strong></div>
 </div>
 <section class="section">
- <div class="sectionhead"><div><h2>IPI results by nominal tex — Excel layout</h2><p class="muted">Each tex group follows the photo: Date, Merge, Y O, Tex, CV %, Thin, Thick, Nep and IPI. Scroll sideways to see more tex groups. The date range is selected above this report.</p></div>
+ <div class="sectionhead"><div><h2>IPI results by nominal tex</h2><p class="muted">Scroll sideways for more tex groups.</p></div>
  <div class="actions"><button id="matrixMore">Show more rows per group</button></div></div>
  <div class="matrix" id="matrixContainer"><div class="empty">Loading measurements…</div></div>
  <div id="matrixStatus" class="muted"></div>
 </section>
 <section class="section">
- <div class="sectionhead"><div><h2>Quality summary by yarn tex</h2><p class="muted">Average values are calculated from individual tests. Lower IPI typically indicates fewer imperfections, but tolerances depend on yarn specifications.</p></div></div>
+ <div class="sectionhead"><div><h2>Quality summary by yarn tex</h2><p class="muted">Average values are calculated from individual tests.</p></div></div>
  <div class="scroller"><table><thead><tr><th>Nominal tex</th><th class="num">Tests</th><th class="num">Avg measured tex</th><th class="num">Avg CV %</th><th class="num">Avg Thin</th><th class="num">Avg Thick</th><th class="num">Avg Nep</th><th class="num">Avg IPI</th><th class="num">IPI range</th></tr></thead><tbody id="texSummary"></tbody></table></div>
 </section>
 <section class="section">
- <div class="sectionhead"><div><h2>Machine and tex comparison</h2><p class="muted">Compare machines <strong>within the same tex</strong> to avoid misleading conclusions.</p></div></div>
+ <div class="sectionhead"><div><h2>Machine and tex comparison</h2><p class="muted">Compare machines <strong>with the same tex.</strong></p></div></div>
  <div class="scroller"><table><thead><tr><th>Machine</th><th>Nominal tex</th><th class="num">Tests</th><th class="num">Avg CV %</th><th class="num">Avg IPI</th><th class="num">Min IPI</th><th class="num">Max IPI</th></tr></thead><tbody id="machineSummary"></tbody></table></div>
 </section>
 <div class="grid">
- <section class="section"><h2>Average IPI by yarn tex</h2><p class="muted">Average across test records, not a pass/fail threshold.</p><div class="chart-wrap"><canvas id="chartTex"></canvas></div></section>
+ <section class="section"><h2>Average IPI by yarn tex</h2><p class="muted">Average across test records.</p><div class="chart-wrap"><canvas id="chartTex"></canvas></div></section>
  <section class="section"><h2>Imperfection components</h2><p class="muted">Average thin, thick and nep values per tex.</p><div class="chart-wrap"><canvas id="chartComponents"></canvas></div></section>
 </div>
 <section class="section">
- <div class="sectionhead"><div><h2>Test details</h2><p class="muted">One row per quality measurement. A red IPI indicates that the stored IPI differs from Thin + Thick + Nep.</p></div></div>
+ <div class="sectionhead"><div><h2>Test details</h2><p class="muted">All quality measurements. Red IPIs indicate that the stored IPI differs from Thin + Thick + Nep.</p></div></div>
  <div class="scroller"><table><thead><tr><th>Date</th><th>Machine</th><th>Merge</th><th>Y O</th><th class="num">Nominal tex</th><th class="num">Tex</th><th class="num">CV %</th><th class="num">Thin</th><th class="num">Thick</th><th class="num">Nep</th><th class="num">IPI</th><th>Check</th></tr></thead><tbody id="detailBody"></tbody></table></div>
  <div class="pager"><button id="prevPage">Previous</button><button id="nextPage">Next</button><span id="pageStatus"></span></div>
 </section>
-<section class="section">
- <h2>Data checks</h2><p class="muted">These checks concern data completeness and consistency, not manufacturing quality limits.</p>
- <div class="scroller"><table><thead><tr><th>Check</th><th class="num">Records</th><th>Explanation</th></tr></thead><tbody id="checksBody"></tbody></table></div>
-</section>
-<div id="reportStatus">Source: TTI2 • TLSPN_QAMeasurements (measurement type 2), joined to yarn orders, cotton merges, yarn types and machine definitions.</div>
+
+
 <script>{{CHART_JS}}</script>
 <script>window.spinningIpiDashboardData = {{DASHBOARD_DATA}};</script>
 <script>{{PAGE_JS}}</script>
