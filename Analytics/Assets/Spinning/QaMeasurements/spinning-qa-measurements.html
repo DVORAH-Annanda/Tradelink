@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Spinning Quality Measurements</title>
+<style>{{ANALYTICS_CSS}}</style>
+<style>
+:root{--ink:#252423;--muted:#686b73;--line:#dee3eb;--blue:#126bba;--navy:#173a61;--red:#bf3340;--green:#28764d}
+*{box-sizing:border-box}
+body{margin:0;padding:21px 24px 42px;background:#f4f6fa;color:var(--ink);font:13px 'Segoe UI',Arial,sans-serif}
+h1{font-size:25px;margin:0 0 5px;font-weight:650}h2{font-size:17px;margin:0 0 6px;font-weight:650}
+p{margin:4px 0 13px;line-height:1.45}.muted{font-size:12px;color:var(--muted)}
+.head{display:flex;align-items:start;justify-content:space-between;gap:18px;flex-wrap:wrap;margin-bottom:15px}
+.subtitle{color:var(--muted);font-size:13px;margin:4px 0 0}
+.actions{display:flex;gap:8px;flex-wrap:wrap}
+button{padding:9px 13px;background:#fff;border:1px solid #c7ccd5;border-radius:5px;cursor:pointer;font:inherit}
+button:hover{background:#eef5ff;border-color:#80b6e9}button.primary{background:var(--blue);color:#fff;border-color:var(--blue)}button:disabled{cursor:not-allowed;opacity:.5}
+.filters{background:#fff;border:1px solid var(--line);padding:13px 15px;border-radius:8px;display:flex;flex-wrap:wrap;gap:13px;align-items:end;margin-bottom:15px}
+.filter{display:flex;flex-direction:column;gap:5px;min-width:140px}.filter label{font-size:12px;color:var(--muted);font-weight:650}
+.filter select,.filter input{border:1px solid #c7cbd4;background:white;border-radius:5px;font:inherit;padding:8px 9px;height:36px;min-width:142px}
+.filter input[type=number]{min-width:0;width:115px}.filters .hint{flex:1 1 240px;line-height:1.5;font-size:12px;color:var(--muted)}
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(145px,1fr));gap:12px;margin-bottom:15px}
+.kpi{padding:15px 16px;border:1px solid var(--line);border-radius:8px;background:#fff;border-top:3px solid #c7dff6}
+.kpi span{font-size:12px;color:var(--muted);display:block;margin-bottom:7px}.kpi strong{font-size:27px;line-height:1.2;font-weight:660;display:block}.kpi small{display:block;color:var(--muted);margin-top:5px;font-size:11px}
+.section{background:#fff;border:1px solid var(--line);border-radius:8px;padding:16px;margin-bottom:15px;min-width:0}
+.sectionhead{display:flex;justify-content:space-between;align-items:start;gap:12px;flex-wrap:wrap;margin-bottom:10px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:15px}.chart{height:315px;position:relative}.chart canvas{width:100%!important}
+.scroll{overflow:auto;max-height:500px;border:1px solid #e5e9ee;border-radius:4px}
+table{border-collapse:collapse;width:100%;font-size:12px}th,td{white-space:nowrap;padding:8px 10px;border-bottom:1px solid #eef0f4;text-align:left}
+thead th{position:sticky;top:0;background:#eaf1fa;z-index:2;color:#233d5d}tbody tr:nth-child(even){background:#fbfcff}tbody tr:hover{background:#eef6ff}
+.num{text-align:right;font-variant-numeric:tabular-nums}.bad{color:#b51f31;font-weight:650}.good{color:#28764d;font-weight:650}
+.pill{display:inline-block;border:1px solid #bcd3e7;background:#eaf4ff;color:#224f7b;padding:3px 7px;border-radius:100px;font-size:11px}
+.pill.bad{background:#fff0f1;border-color:#f2bec5;color:#a62030}
+.pill.good{background:#eaf7ef;border-color:#b7dec7;color:#23714a}
+.note{padding:10px 13px;border-radius:6px;border:1px solid #d9e7f6;background:#f3f8fe;margin-bottom:15px;color:#395371;font-size:12px;line-height:1.5}
+.empty{text-align:center;padding:24px;color:var(--muted)}.pager{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:10px}
+.pager span{font-size:12px;color:var(--muted)}.right{margin-left:auto}
+@media(max-width:980px){.grid{grid-template-columns:1fr}.kpis{grid-template-columns:repeat(2,minmax(120px,1fr))}}
+@media print{body{background:#fff;padding:0}.actions,.filters,.pager{display:none!important}.section{border:0;break-inside:avoid}.scroll{overflow:visible;max-height:none}.chart{break-inside:avoid}}
+</style>
+</head>
+<body>
+<div class="head">
+  <div><h1 id="title">Spinning Quality</h1><div id="period" class="muted"></div><div class="subtitle" id="intro"></div></div>
+  <div class="actions"><button class="primary" id="btnCsv">Export filtered rows to CSV</button><button id="btnPrint">Print</button></div>
+</div>
+<div class="filters">
+  <div class="filter"><label for="machineFilter">Machine</label><select id="machineFilter"><option value="">All machines</option></select></div>
+  <div class="filter" id="shiftControl" style="display:none"><label for="shiftFilter">Shift</label><select id="shiftFilter"><option value="">Both shifts</option><option value="1">Day shift</option><option value="2">Night shift</option><option value="other">Unknown shift</option></select></div>
+  <div class="filter" id="statusControl" style="display:none"><label for="statusFilter">Tolerance status</label><select id="statusFilter"><option value="">All measurements</option><option value="outside">Outside limits</option><option value="inside">Within limits</option><option value="missing">Missing readings</option></select></div>
+  <div class="filter" id="lowerControl" style="display:none"><label for="lowerInput">RSB lower limit</label><input id="lowerInput" type="number" step="any" value="4410"></div>
+  <div class="filter" id="upperControl" style="display:none"><label for="upperInput">RSB upper limit</label><input id="upperInput" type="number" step="any" value="4590"></div>
+  <button id="clearFilters">Clear filters</button><div class="hint" id="filterStatus"></div>
+</div>
+<div id="toleranceWarning" class="note" style="display:none">The RSB tolerance starts at <strong>4410–4590</strong>, copied from the original Spinning report's default fields. These are <strong>not verified manufacturing specifications</strong>. Adjust the limits above after confirmation by QA. In this dashboard the limits are inclusive: a value equal to either boundary is within range.</div>
+<div class="kpis">
+  <div class="kpi"><span id="kpiTitle1"></span><strong id="kpiValue1">—</strong><small id="kpiNote1"></small></div>
+  <div class="kpi"><span id="kpiTitle2"></span><strong id="kpiValue2">—</strong><small id="kpiNote2"></small></div>
+  <div class="kpi"><span id="kpiTitle3"></span><strong id="kpiValue3">—</strong><small id="kpiNote3"></small></div>
+  <div class="kpi"><span id="kpiTitle4"></span><strong id="kpiValue4">—</strong><small id="kpiNote4"></small></div>
+</div>
+<section class="section" id="machineSection">
+  <div class="sectionhead"><div><h2 id="machineTitle"></h2><p class="muted" id="machineSubtitle"></p></div></div>
+  <div class="scroll"><table><thead id="machineHeader"></thead><tbody id="machineBody"></tbody></table></div>
+</section>
+<div class="grid">
+  <section class="section"><h2 id="chartTitle1"></h2><p class="muted" id="chartNote1"></p><div class="chart"><canvas id="chart1"></canvas></div></section>
+  <section class="section"><h2 id="chartTitle2"></h2><p class="muted" id="chartNote2"></p><div class="chart"><canvas id="chart2"></canvas></div></section>
+</div>
+<section class="section" id="shiftSection" style="display:none">
+  <h2>Day vs night shift</h2><p class="muted">Descriptive averages only; examine the machines and dates behind any difference.</p>
+  <div class="scroll"><table><thead><tr><th>Shift</th><th class="num">Readings</th><th class="num">Avg measurement</th><th class="num">Minimum</th><th class="num">Maximum</th><th class="num">Outside limits</th><th class="num">Outside %</th></tr></thead><tbody id="shiftBody"></tbody></table></div>
+</section>
+<section class="section">
+  <div class="sectionhead"><div><h2 id="detailTitle"></h2><p class="muted" id="detailSubtitle"></p></div></div>
+  <div class="scroll"><table><thead id="detailHeader"></thead><tbody id="detailBody"></tbody></table></div>
+  <div class="pager"><button id="prevPage">Previous</button><button id="nextPage">Next</button><span id="pageStatus"></span><span class="right muted">Sorted newest first</span></div>
+</section>
+<section class="section"><h2>Data completeness</h2><p class="muted">These checks concern missing or unexpected entries, not approved yarn quality specifications.</p><div class="scroll"><table><thead><tr><th>Check</th><th class="num">Records</th><th>Explanation</th></tr></thead><tbody id="checksBody"></tbody></table></div></section>
+<script>{{CHART_JS}}</script>
+<script>window.spinningQaDashboardData = {{DASHBOARD_DATA}};</script>
+<script>{{PAGE_JS}}</script>
+</body>
+</html>

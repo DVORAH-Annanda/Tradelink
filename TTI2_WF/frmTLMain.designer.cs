@@ -4236,7 +4236,7 @@
             // 
             this.spinningIPIResults.Name = "spinningIPIResults";
             this.spinningIPIResults.Size = new System.Drawing.Size(234, 22);
-            this.spinningIPIResults.Text = "Spinning IPI Results";
+            this.spinningIPIResults.Text = "Spinning Quality Control";
             this.spinningIPIResults.Click += new System.EventHandler(this.spinningIPIResults_Click);
             // 
             // frmTLMain

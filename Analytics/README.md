@@ -93,3 +93,42 @@ and date**. Investigate any missing merge/master-data or stored IPI mismatches.
 The uploaded archives contain source but no SQL Server instance. The SQL query
 and WinForms UI have not been run against your TTI2 database or tested on the
 Windows host. The host application needs the menu integration noted above.
+
+## Spinning Quality tabs — Card and RSB (9 November 2026)
+
+The existing `frmSpinningIpiAnalysis` now opens a WinForms `TabControl` with three tabs:
+
+1. **Spinning IPI** — existing HTML analytics and calculations unchanged.
+2. **Card Measurements** — card daily-average and CV% analysis with machine comparison, trend chart, details, data checks and CSV export.
+3. **RSB Measurements** — machine/canister/shift measurements, adjustable tolerance limits, out-of-tolerance rate, machine and shift comparisons, trend chart, details and CSV export.
+
+The top From/To date selectors apply to all three tabs. Each tab is loaded **only when selected**, to avoid loading three potentially large result sets at once. Clicking Apply refreshes the active tab and invalidates the caches for the other tabs. The existing calling code (class `frmSpinningIpiAnalysis`) is unchanged.
+
+### SQL mapping validated against Spinning.frmDQControlReport and frmViewReport
+
+These reports use `dbo.TLSPN_QAMeasurements`, joined to `dbo.TLADM_MachineDefinitions` for the machine name, with inclusive date filtering implemented using an exclusive next-day SQL bound:
+
+| Kind | MeasureNo | Original field | Meaning in original Spinning application |
+|---|---:|---|---|
+| Card | 1 | `YarnQA_TestNo` | Card test / Avg number |
+| Card | 1 | `YarnQA_08H00` | Daily Avg (measurement units still to be confirmed) |
+| Card | 1 | `YarnQA_10H00` | CV % |
+| RSB | 3 | `YarnQA_TestNo` | 1 = Day shift; 2 = Night shift |
+| RSB | 3 | `YarnQA_10H00` | Canister number |
+| RSB | 3 | `YarnQA_12H00` | Measurement (units still to be confirmed) |
+
+**Important:** The hour-like SQL column names are reused measurement slots, not timestamps. Do not label the card average or RSB measurement with a guessed physical unit without consulting QA. No SQL view, new table or database migration is required.
+
+### RSB tolerance handling
+
+The original Spinning QA Report Selection form defaults to **4410–4590**. The new RSB tab uses these as **editable reference values** and explicitly marks them *not yet verified as factory specifications*. The new analytics consistently defines **within tolerance as inclusive** of both limits, and **outside as strictly less than lower or strictly greater than upper**. Note: the legacy Spinning repository uses inconsistent boundary tests (`> lower AND <= upper` vs `< lower OR >= upper`), so counts at exactly 4410/4590 may not match the old Crystal report. Confirm intended QA boundary rules before treating differences as defects.
+
+### Production verification checklist
+
+- Rebuild the Analytics class library and publish its updated DLL using your existing Visual Studio workflow.
+- Run the same period as the legacy Card QA Crystal report; compare date, machine, Avg/number, Daily Avg and CV%.
+- Compare RSB machine, shift, canister and result against the legacy RSB Crystal report (use all readings first; then inspect outside-tolerance results).
+- Ask the Spinning Manager to confirm the measurement units, relevant QA limits, and boundary convention; only then introduce formal pass/fail quality indicators.
+- The report applies local browser filters; data checks are computed on the filtered result set. RSB output exports the chosen tolerance limits alongside each record.
+
+These files were inspected and the JavaScript dashboards were exercised with illustrative data, but the Windows `.NET Framework` app cannot be compiled or run against your TTI2 SQL database in this environment. No source changes were made to the original Spinning desktop project.
