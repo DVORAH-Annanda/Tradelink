@@ -94,20 +94,9 @@ namespace Analytics.Cutting.CuttingAnalysis
         {
             try
             {
-                var repository = new CuttingAnalysisRepository();
-                DateTime? latestDate = repository.GetLatestProductionDate();
-
-                if (!latestDate.HasValue)
-                {
-                    await dashboardViewer.ShowHtmlAsync(
-                        "<h2>No Cutting Production data was found.</h2>");
-                    return;
-                }
-
-                // Same default behaviour as the CMT dashboard:
-                // latest 7 calendar days ending on the latest data date.
-                dtpToDate.Value = latestDate.Value.Date;
-                dtpFromDate.Value = latestDate.Value.Date.AddDays(-6);
+                // Previous Monday to this Monday (initial default only).
+                dtpFromDate.Value = AnalyticsDateDefaults.PreviousMonday();
+                dtpToDate.Value = AnalyticsDateDefaults.ThisMonday();
 
                 await LoadDashboardAsync();
             }

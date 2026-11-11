@@ -45,10 +45,9 @@ namespace Analytics.DyeHouse.DyeProductionEfficiency
         {
             try
             {
-                var repository = new DyeProductionEfficiencyRepository();
-                DateTime latest = repository.GetLatestReportingDate() ?? DateTime.Today;
-                dtpToDate.Value = latest.Date;
-                dtpFromDate.Value = latest.Date.AddMonths(-5);
+                // Previous Monday to this Monday (initial default only).
+                dtpFromDate.Value = AnalyticsDateDefaults.PreviousMonday();
+                dtpToDate.Value = AnalyticsDateDefaults.ThisMonday();
                 await LoadDashboardAsync();
             }
             catch (Exception ex) { await ShowErrorAsync(ex); }

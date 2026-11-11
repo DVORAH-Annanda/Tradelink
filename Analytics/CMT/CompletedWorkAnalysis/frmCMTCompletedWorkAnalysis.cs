@@ -104,22 +104,9 @@ namespace Analytics.CMT.CompletedWorkAnalysis
         {
             try
             {
-                var repository = new CMTCompletedWorkRepository();
-
-                DateTime? latestDate =
-                    repository.GetLatestTransactionDate();
-
-                if (!latestDate.HasValue)
-                {
-                    await dashboardViewer.ShowHtmlAsync(
-                        "<h2>No CMT Completed Work data was found.</h2>");
-
-                    return;
-                }
-
-                // Default to the latest 7 full days that contain data
-                dtpToDate.Value = latestDate.Value.Date;
-                dtpFromDate.Value = latestDate.Value.Date.AddDays(-6);
+                // Previous Monday to this Monday (initial default only).
+                dtpFromDate.Value = AnalyticsDateDefaults.PreviousMonday();
+                dtpToDate.Value = AnalyticsDateDefaults.ThisMonday();
 
                 await LoadDashboardAsync();
             }

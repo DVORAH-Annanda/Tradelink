@@ -55,13 +55,9 @@ namespace Analytics.Sales.SalesAnalysis
         {
             try
             {
-                var repository = new SalesAnalysisRepository();
-                DateTime latest = repository.GetLatestSoldDate() ?? DateTime.Today;
-
-                // Default to the last three completed calendar months.
-                DateTime lastCompletedMonth = new DateTime(latest.Year, latest.Month, 1).AddDays(-1);
-                dtpToDate.Value = lastCompletedMonth;
-                dtpFromDate.Value = new DateTime(lastCompletedMonth.Year, lastCompletedMonth.Month, 1).AddMonths(-2);
+                // Previous completed calendar month (initial default only).
+                dtpFromDate.Value = AnalyticsDateDefaults.PreviousMonthStart();
+                dtpToDate.Value = AnalyticsDateDefaults.PreviousMonthEnd();
                 await LoadDashboardAsync();
             }
             catch (Exception ex) { await ShowErrorAsync(ex); }

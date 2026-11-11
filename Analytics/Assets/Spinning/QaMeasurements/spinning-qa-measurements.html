@@ -53,7 +53,7 @@ thead th{position:sticky;top:0;background:#eaf1fa;z-index:2;color:#233d5d}tbody 
   <div class="filter" id="upperControl" style="display:none"><label for="upperInput">RSB upper limit</label><input id="upperInput" type="number" step="any" value="4590"></div>
   <button id="clearFilters">Clear filters</button><div class="hint" id="filterStatus"></div>
 </div>
-<div id="toleranceWarning" class="note" style="display:none">The RSB tolerance starts at <strong>4410–4590</strong>, copied from the original Spinning report's default fields. These are <strong>not verified manufacturing specifications</strong>. Adjust the limits above after confirmation by QA. In this dashboard the limits are inclusive: a value equal to either boundary is within range.</div>
+<div id="toleranceWarning" class="note" style="display:none">RSB tolerance: <strong>4410–4590</strong>. Limits are inclusive: a value equal to either boundary is within range.</div>
 <div class="kpis">
   <div class="kpi"><span id="kpiTitle1"></span><strong id="kpiValue1">—</strong><small id="kpiNote1"></small></div>
   <div class="kpi"><span id="kpiTitle2"></span><strong id="kpiValue2">—</strong><small id="kpiNote2"></small></div>
@@ -69,7 +69,7 @@ thead th{position:sticky;top:0;background:#eaf1fa;z-index:2;color:#233d5d}tbody 
   <section class="section"><h2 id="chartTitle2"></h2><p class="muted" id="chartNote2"></p><div class="chart"><canvas id="chart2"></canvas></div></section>
 </div>
 <section class="section" id="shiftSection" style="display:none">
-  <h2>Day vs night shift</h2><p class="muted">Descriptive averages only; examine the machines and dates behind any difference.</p>
+  <h2>Day vs night shift</h2>
   <div class="scroll"><table><thead><tr><th>Shift</th><th class="num">Readings</th><th class="num">Avg measurement</th><th class="num">Minimum</th><th class="num">Maximum</th><th class="num">Outside limits</th><th class="num">Outside %</th></tr></thead><tbody id="shiftBody"></tbody></table></div>
 </section>
 <section class="section">
@@ -77,7 +77,7 @@ thead th{position:sticky;top:0;background:#eaf1fa;z-index:2;color:#233d5d}tbody 
   <div class="scroll"><table><thead id="detailHeader"></thead><tbody id="detailBody"></tbody></table></div>
   <div class="pager"><button id="prevPage">Previous</button><button id="nextPage">Next</button><span id="pageStatus"></span><span class="right muted">Sorted newest first</span></div>
 </section>
-<section class="section"><h2>Data completeness</h2><p class="muted">These checks concern missing or unexpected entries, not approved yarn quality specifications.</p><div class="scroll"><table><thead><tr><th>Check</th><th class="num">Records</th><th>Explanation</th></tr></thead><tbody id="checksBody"></tbody></table></div></section>
+
 <script>{{CHART_JS}}</script>
 <script>window.spinningQaDashboardData = {{DASHBOARD_DATA}};</script>
 <script>{{PAGE_JS}}</script>

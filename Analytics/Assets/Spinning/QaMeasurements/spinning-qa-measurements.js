@@ -50,7 +50,7 @@
 
   setText('title', isRsb ? 'RSB Measurements Analysis' : 'Card Measurements Analysis');
   setText('period', (data.fromDate || '') + ' – ' + (data.toDate || ''));
-  setText('intro', isRsb ? 'Draw-frame measurements by machine, canister and shift' : 'Daily card averages and CV % trends by machine');
+  setText('intro', isRsb ? '' : 'Daily card averages and CV % trends by machine');
   setVisible('shiftControl', isRsb);
   setVisible('statusControl', isRsb);
   setVisible('lowerControl', isRsb);
@@ -74,7 +74,7 @@
   function renderMachineSummary(l) {
     var groups = machineGroups(filtered);
     setText('machineTitle', isRsb ? 'Machine performance against selected limits' : 'Card averages by machine');
-    setText('machineSubtitle', isRsb ? 'Outside % uses only recorded measurements; selected tolerance is inclusive.' : 'Compare average CV % and daily values across machines; no quality pass/fail limit has been set.');
+    setText('machineSubtitle', isRsb ? 'Outside % uses recorded measurements; selected tolerance is inclusive.' : 'Compare average CV % and daily values across machines.');
     el('machineHeader').innerHTML = isRsb
       ? '<tr><th>Machine</th><th class="num">Readings</th><th class="num">Avg measurement</th><th class="num">Minimum</th><th class="num">Maximum</th><th class="num">Outside</th><th class="num">Outside %</th></tr>'
       : '<tr><th>Machine</th><th class="num">Tests</th><th class="num">Avg daily value</th><th class="num">Min daily value</th><th class="num">Max daily value</th><th class="num">Avg CV %</th><th class="num">CV % range</th></tr>';
@@ -91,16 +91,16 @@
   function renderKpis(l) {
     var count = filtered.length;
     var machines = new Set(filtered.filter(function (r) { return r.hasMachine; }).map(function (r) { return machine(r); })).size;
-    setKpi(1, baseLabels[0], fmt(count, 0), 'Selected period and filters');
-    setKpi(2, baseLabels[1], fmt(mean(filtered, isRsb ? 'measurement' : 'dailyAverage'), 2), isRsb ? 'Captured RSB results' : 'As captured by the Spinning team');
+    setKpi(1, baseLabels[0], fmt(count, 0), '');
+    setKpi(2, baseLabels[1], fmt(mean(filtered, isRsb ? 'measurement' : 'dailyAverage'), 2), isRsb ? 'Captured RSB results' : '');
     if (isRsb) {
       var nonNull = filtered.filter(validMeasurement).length;
       var failed = filtered.filter(function (r) { return outside(r, l); }).length;
       setKpi(3, baseLabels[2], fmt(calcOutsideRate(filtered, l), 1) + (nonNull ? '%' : ''), fmt(failed, 0) + ' outside / ' + fmt(nonNull, 0) + ' tested', failed > 0);
     } else {
-      setKpi(3, baseLabels[2], fmt(mean(filtered, 'cv'), 2), 'A lower CV% generally means more even material');
+      setKpi(3, baseLabels[2], fmt(mean(filtered, 'cv'), 2), '');
     }
-    setKpi(4, baseLabels[3], fmt(machines, 0), 'Machines with a matching master record');
+    setKpi(4, baseLabels[3], fmt(machines, 0), '');
   }
 
   function renderShiftSummary(l) {
@@ -122,9 +122,9 @@
     var options = function (legend) { return { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: !!legend, position: 'top' } }, scales: axes }; };
     if (isRsb) {
       setText('chartTitle1', 'Out-of-tolerance rate by machine');
-      setText('chartNote1', 'Share of recorded RSB results outside the selected limits, by machine.');
+      setText('chartNote1', 'Recorded RSB results outside the selected limits, by machine (%).');
       setText('chartTitle2', 'Daily RSB measurement trend');
-      setText('chartNote2', 'Daily average with your editable lower and upper limits. Daily averages may hide individual outliers.');
+      setText('chartNote2', 'Daily average with lower and upper limits.');
       charts.push(new Chart(el('chart1'), { type: 'bar', data: { labels: groups.map(function (g) { return g.name; }), datasets: [{ label: 'Outside %', data: groups.map(function (g) { return calcOutsideRate(g.rows, l); }), backgroundColor: '#cf7783' }] }, options: options(false) }));
       charts.push(new Chart(el('chart2'), { type: 'line', data: { labels: dates.map(function (g) { return g.label; }), datasets: [
         { label: 'Daily average', data: dates.map(function (g) { return mean(g.rows, 'measurement'); }), borderColor: '#1679ca', pointRadius: 3, tension: .2 },
@@ -133,9 +133,9 @@
       ] }, options: options(true) }));
     } else {
       setText('chartTitle1', 'Average CV % by carding machine');
-      setText('chartNote1', 'A lower CV % usually indicates more consistent material; compare similar testing conditions.');
+        setText('chartNote1', ''); //A lower CV % usually indicates more consistent material; compare similar testing conditions.
       setText('chartTitle2', 'Card measurements over time');
-      setText('chartNote2', 'Daily averages of recorded CV % and daily card values; the two series have separate scales.');
+      setText('chartNote2', 'Daily averages of recorded CV % and daily card values.');
       charts.push(new Chart(el('chart1'), { type: 'bar', data: { labels: groups.map(function (g) { return g.name; }), datasets: [{ label: 'Average CV %', data: groups.map(function (g) { return mean(g.rows, 'cv'); }), backgroundColor: '#3d8acc' }] }, options: options(false) }));
       charts.push(new Chart(el('chart2'), { type: 'line', data: { labels: dates.map(function (g) { return g.label; }), datasets: [
         { label: 'Daily avg CV %', data: dates.map(function (g) { return mean(g.rows, 'cv'); }), borderColor: '#196fb7', yAxisID: 'cv', tension: .2, pointRadius: 3 },
@@ -149,8 +149,8 @@
   }
 
   function renderDetails(l) {
-    setText('detailTitle', isRsb ? 'RSB readings — canister detail' : 'Card quality — individual tests');
-    setText('detailSubtitle', isRsb ? 'Red rows are outside the currently selected tolerance. Limits are inclusive.' : 'Daily average and CV% are directly recorded in the original Spinning application.');
+    setText('detailTitle', isRsb ? 'RSB readings' : 'Card quality — individual tests');
+    setText('detailSubtitle', isRsb ? 'Outside the selected tolerance (red). Limits are inclusive.' : '');
     el('detailHeader').innerHTML = isRsb
       ? '<tr><th>Date</th><th>Machine</th><th>Shift</th><th class="num">Canister</th><th class="num">Measurement</th><th>Result</th></tr>'
       : '<tr><th>Date</th><th>Machine</th><th>Test</th><th class="num">Daily average</th><th class="num">CV %</th></tr>';
@@ -209,7 +209,7 @@
     renderShiftSummary(l);
     renderCharts(groups, l);
     renderDetails(l);
-    renderChecks();
+    //renderChecks();
   }
 
   function csvEscape(v) { return '"' + String(v == null ? '' : v).replace(/"/g, '""') + '"'; }
@@ -246,6 +246,6 @@
   el('nextPage').addEventListener('click', function () { page++; renderDetails(limits()); });
   el('btnCsv').addEventListener('click', exportCsv);
   el('btnPrint').addEventListener('click', function () { window.print(); });
-  renderChecks();
+  //renderChecks();
   update();
 })();

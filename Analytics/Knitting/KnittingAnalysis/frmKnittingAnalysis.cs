@@ -128,41 +128,11 @@ namespace Analytics.Knitting.KnittingAnalysis
         }
 
 
-        // =====================================================
-        // DEFAULT PEP PERIOD
-        //
-        // Previous Tuesday -> this Monday
-        //
-        // Example:
-        // Friday 21 Nov
-        // From: Tuesday 11 Nov
-        // To:   Monday 17 Nov
-        // =====================================================
+        // Default dates apply only when this Analytics form opens.
         private void SetDefaultPepDateRange()
         {
-            DateTime today =
-                DateTime.Today;
-
-
-            int daysSinceMonday =
-                ((int)today.DayOfWeek + 6) % 7;
-
-
-            DateTime thisMonday =
-                today.AddDays(
-                    -daysSinceMonday);
-
-
-            DateTime previousTuesday =
-                thisMonday.AddDays(-6);
-
-
-            dtpFromDate.Value =
-                previousTuesday;
-
-
-            dtpToDate.Value =
-                thisMonday;
+            dtpFromDate.Value = AnalyticsDateDefaults.PreviousMonday();
+            dtpToDate.Value = AnalyticsDateDefaults.ThisMonday();
         }
 
 

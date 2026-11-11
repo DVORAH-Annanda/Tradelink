@@ -72,6 +72,7 @@
     </Compile>
     <Compile Include="CMT\CompletedWorkAnalysis\Models\CMTCuttingByStyle.cs"/>
     <Compile Include="CMT\CompletedWorkAnalysis\Models\CMTDyeingByStyleQuality.cs"/>
+    <Compile Include="Common\AnalyticsDateDefaults.cs"/>
     <Compile Include="Common\EmbeddedResourceLoader.cs"/>
     <Compile Include="Common\HTMLDashboardViewer.cs">
       <SubType>UserControl</SubType>

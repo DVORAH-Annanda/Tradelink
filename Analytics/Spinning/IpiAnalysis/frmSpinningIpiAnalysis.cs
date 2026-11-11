@@ -64,10 +64,9 @@ namespace Analytics.Spinning.IpiAnalysis
         {
             try
             {
-                // Preserve the previous default range based on latest spinning IPI test.
-                DateTime last = new SpinningIpiRepository().GetLatestMeasurementDate() ?? DateTime.Today;
-                dtpToDate.Value = last.Date;
-                dtpFromDate.Value = last.Date.AddMonths(-3);
+                // Previous Monday to this Monday (initial default only).
+                dtpFromDate.Value = AnalyticsDateDefaults.PreviousMonday();
+                dtpToDate.Value = AnalyticsDateDefaults.ThisMonday();
                 ready = true;
                 await LoadSelectedTabAsync();
             }
