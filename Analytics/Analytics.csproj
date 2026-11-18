@@ -120,6 +120,7 @@
     <Compile Include="Sales\SalesAnalysis\SalesAnalysisDashboardBuilder.cs"/>
     <Compile Include="Sales\SalesAnalysis\SalesAnalysisRepository.cs"/>
     <Compile Include="Sales\SalesAnalysis\Models\SalesSummary.cs"/>
+    <Compile Include="Sales\SalesAnalysis\Models\SalesFinancialYearRow.cs"/>
     <Compile Include="Sales\SalesAnalysis\Models\SalesMonthlyComparisonRow.cs"/>
     <Compile Include="Sales\SalesAnalysis\Models\SalesPerformanceRow.cs"/>
     <Compile Include="Sales\SalesAnalysis\Models\SalesDataQualitySummary.cs"/>

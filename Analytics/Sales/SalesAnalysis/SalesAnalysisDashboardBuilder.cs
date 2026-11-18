@@ -15,6 +15,7 @@ namespace Analytics.Sales.SalesAnalysis
                             List<SalesPerformanceRow> styles,
                             List<SalesPerformanceRow> colours,
                             SalesDataQualitySummary quality,
+                            List<SalesFinancialYearRow> financialYears,
                             DateTime fromDate,
                             DateTime toDate)
         {
@@ -55,6 +56,7 @@ namespace Analytics.Sales.SalesAnalysis
                     previousNetSales = x.PreviousNetSales,
                     netGrowthPercentage = Math.Round(x.NetGrowthPercentage, 2)
                 }).ToList(),
+                financialYears = financialYears.Select(x => new { endYear = x.EndYear, netSales = x.NetSales }).ToList(),
                 customers = ToPayload(customers),
                 styles = ToPayload(styles),
                 colours = ToPayload(colours),

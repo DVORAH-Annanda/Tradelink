@@ -37,6 +37,14 @@
         .sales-table tbody tr:hover { background:#f8f9fa; }
         .table-scroll { overflow:auto; max-height:520px; }
         .movement { font-weight:600; }
+        .fy-controls { display:flex; flex-wrap:wrap; gap:14px; align-items:flex-start; margin-bottom:16px; }
+        .fy-year-picker { display:flex; flex-wrap:wrap; gap:7px; max-width:100%; }
+        .fy-year-option { display:flex; align-items:center; gap:6px; padding:7px 10px; border:1px solid #dedede; border-radius:5px; background:#fafafa; cursor:pointer; font-size:12px; white-space:nowrap; }
+        .fy-year-option:has(input:checked) { border-color:#118DFF; background:#eef6ff; }
+        .fy-year-option.disabled { opacity:.5; cursor:not-allowed; }
+        .fy-note { font-size:12px; color:#666; margin:6px 0 12px; }
+        .fy-message { font-size:12px; color:#a4262c; min-height:18px; }
+        .fy-stat { padding:13px 18px; background:#f5f8fc; border-radius:7px; font-size:13px; }
         .quality-grid { display:grid; grid-template-columns:repeat(3,minmax(180px,1fr)); gap:15px; margin-bottom:18px; }
         .quality-card { background:#fff; border-radius:8px; box-shadow:0 2px 7px rgba(0,0,0,.08); padding:20px; }
         .quality-label { color:#666; font-size:13px; margin-bottom:7px; }
@@ -62,6 +70,7 @@
         <button class="tab-button active" data-tab="overview">Overview</button>
         <button class="tab-button" data-tab="customers">Customers</button>
         <button class="tab-button" data-tab="products">Products &amp; Colours</button>
+        <button class="tab-button" data-tab="financial">Financial Year Comparisons</button>
         <button class="tab-button" data-tab="quality">Operational Checks</button>
     </div>
 
@@ -129,6 +138,35 @@
         <div class="grid-2">
             <div class="section-card"><div class="section-title">Top styles</div><div class="horizontal-chart-wrap" id="styleChartWrap"><canvas id="styleChart"></canvas></div></div>
             <div class="section-card"><div class="section-title">Top colours</div><div class="horizontal-chart-wrap" id="colourChartWrap"><canvas id="colourChart"></canvas></div></div>
+        </div>
+    </div>
+
+    <div id="financial" class="tab-page">
+        <div class="section-card">
+            <div class="section-title">Financial year net sales comparison</div>
+            <div class="section-subtitle">Financial year from 1 July to 30 June. Select any combination of completed financial years.</div>
+            <div class="fy-controls">
+                <div>
+                    <b style="font-size:13px">Financial years</b>
+                    <div class="fy-note" id="fySelectedCount"></div>
+                    <div class="fy-year-picker" id="fyYearPicker"></div>
+                    <div class="fy-message" id="fyMessage" aria-live="polite"></div>
+                </div>
+            </div>
+            
+        </div>
+        <div class="section-card">
+            <div class="section-title">Net sales by financial year</div>
+            <div class="section-subtitle">Year-on-year difference and percentage change are calculated against the preceding selected financial year.</div>
+            <div class="table-scroll"><table class="sales-table"><thead><tr>
+                <th>Financial Year</th><th>Period</th><th class="number">Net Units Sold</th>
+                <th class="number">Change in Units</th><th class="number">Change %</th>
+            </tr></thead><tbody id="fyTableBody"></tbody></table></div>
+        </div>
+        <div class="section-card">
+            <div class="section-title">Net sales trend across selected financial years</div>
+            <div class="section-subtitle">Comparative annual net volume.</div>
+            <div class="chart-wrap"><canvas id="fyChart"></canvas></div>
         </div>
     </div>
 

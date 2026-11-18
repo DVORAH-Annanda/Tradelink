@@ -17,6 +17,68 @@ namespace Analytics.Sales.SalesAnalysis
             connectionString = ConfigurationManager.ConnectionStrings["TTISqlConnection"].ConnectionString;
         }
 
+        // One grouped query for every COMPLETED financial year (1 July to 30 June).
+        // The unfinished current financial year is deliberately not included.
+        public List<SalesFinancialYearRow> GetCompletedFinancialYears()
+        {
+            DateTime today = DateTime.Today;
+            int latestEndYear = today.Month >= 7 ? today.Year : today.Year - 1;
+            DateTime cutoffExclusive = new DateTime(latestEndYear, 7, 1);
+            const string sql = @"
+SELECT FiscalEndYear,
+       SUM(GrossQty) AS GrossQty,
+       SUM(ReturnQty) AS ReturnQty
+FROM (
+    SELECT YEAR(DATEADD(month, 6, SoldDate)) AS FiscalEndYear,
+           SUM(CONVERT(bigint, GrossSalesQty)) AS GrossQty,
+           CONVERT(bigint, 0) AS ReturnQty
+    FROM dbo.vw_SalesAnalysis
+    WHERE Sold = 1 AND SoldDate < @CutoffExclusive
+    GROUP BY YEAR(DATEADD(month, 6, SoldDate))
+
+    UNION ALL
+
+    SELECT YEAR(DATEADD(month, 6, ReturnedDate)) AS FiscalEndYear,
+           CONVERT(bigint, 0) AS GrossQty,
+           SUM(CONVERT(bigint, ReturnedQty)) AS ReturnQty
+    FROM dbo.vw_SalesAnalysis
+    WHERE Returned = 1 AND ReturnedDate < @CutoffExclusive
+    GROUP BY YEAR(DATEADD(month, 6, ReturnedDate))
+) AS Activity
+GROUP BY FiscalEndYear
+ORDER BY FiscalEndYear;";
+            var fromDb = new Dictionary<int, SalesFinancialYearRow>();
+            using (var connection = new SqlConnection(connectionString))
+            using (var command = new SqlCommand(sql, connection))
+            {
+                command.CommandTimeout = 120;
+                command.Parameters.Add("@CutoffExclusive", SqlDbType.Date).Value = cutoffExclusive;
+                connection.Open();
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        var year = Convert.ToInt32(reader["FiscalEndYear"]);
+                        fromDb[year] = new SalesFinancialYearRow
+                        {
+                            EndYear = year,
+                            GrossSales = Convert.ToInt64(reader["GrossQty"]),
+                            Returns = Convert.ToInt64(reader["ReturnQty"])
+                        };
+                    }
+                }
+            }
+            var result = new List<SalesFinancialYearRow>();
+            if (fromDb.Count == 0) return result;
+            // Include zero-activity years for a correct annual timeline.
+            for (int year = fromDb.Keys.Min(); year <= latestEndYear; year++)
+            {
+                SalesFinancialYearRow row;
+                result.Add(fromDb.TryGetValue(year, out row) ? row : new SalesFinancialYearRow { EndYear = year });
+            }
+            return result;
+        }
+
         public DateTime? GetLatestSoldDate()
         {
             const string sql = "SELECT MAX(SoldDate) FROM dbo.vw_SalesAnalysis WHERE Sold = 1;";

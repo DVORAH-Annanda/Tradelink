@@ -100,4 +100,55 @@
     setText('missingDate', n(q.missingSoldDateRows), Number(q.missingSoldDateRows || 0) > 0 ? 'negative' : 'positive');
     setText('latestSale', q.latestSoldDate || '');
     setText('latestReturn', q.latestReturnDate || '');
+
+    // Completed financial years: selection is client-side, no extra SQL calls.
+    const financialYears = (data.financialYears || []).slice().sort(function(a,b){ return a.endYear-b.endYear; });
+    const fyPicker = document.getElementById('fyYearPicker');
+    const fySelected = new Set(financialYears.slice(-5).map(function(r){ return Number(r.endYear); }));
+    let financialChart = null;
+    function fyLabel(endYear) { return 'FY ' + (endYear - 1) + '/' + String(endYear).slice(-2); }
+    function fyNum(v) { return Number(v || 0).toLocaleString('en-ZA').replace(/\u00a0/g,' '); }
+    function drawFinancialYears() {
+        const selected = financialYears.filter(function(r){ return fySelected.has(Number(r.endYear)); });
+        const count = fySelected.size;
+        setText('fySelectedCount', count + ' of 10 financial years selected');
+        fyPicker.innerHTML = financialYears.slice().reverse().map(function(r){
+            const year = Number(r.endYear), checked = fySelected.has(year);
+            const disabled = count >= 10 && !checked;
+            return '<label class="fy-year-option' + (disabled ? ' disabled' : '') + '">' +
+                '<input type="checkbox" data-year="' + year + '" ' + (checked ? 'checked ' : '') +
+                (disabled ? 'disabled ' : '') + '>' + esc(fyLabel(year)) + '</label>';
+        }).join('');
+        fyPicker.querySelectorAll('input[type=checkbox]').forEach(function(input){
+            input.addEventListener('change', function(){
+                const year = Number(input.dataset.year);
+                if (input.checked && fySelected.size < 10) fySelected.add(year);
+                else if (!input.checked) fySelected.delete(year);
+                drawFinancialYears();
+            });
+        });
+        const tbody = document.getElementById('fyTableBody');
+        let previous = null;
+        tbody.innerHTML = selected.length ? selected.map(function(r){
+            const net = Number(r.netSales || 0);
+            const difference = previous ? net - Number(previous.netSales || 0) : null;
+            const percent = difference === null || Number(previous.netSales || 0) === 0 ? null : difference / Math.abs(Number(previous.netSales)) * 100;
+            previous = r;
+            return '<tr><td>' + esc(fyLabel(r.endYear)) + '</td><td>01 Jul ' + (r.endYear - 1) + ' – 30 Jun ' + r.endYear + '</td>' +
+                '<td class="number">' + fyNum(net) + '</td>' +
+                '<td class="number ' + (difference === null ? '' : movementClass(difference)) + '">' + (difference === null ? '—' : ((difference > 0 ? '+' : '') + fyNum(difference))) + '</td>' +
+                '<td class="number ' + (percent === null ? '' : movementClass(percent)) + '">' + (percent === null ? '—' : pct(percent)) + '</td></tr>';
+        }).join('') : '<tr><td colspan="5">Select at least one financial year to display results.</td></tr>';
+        const latest = selected.length ? selected[selected.length-1] : null;
+        //setText('fySummary', selected.length ? 'Selected: ' + selected.length + ' financial year(s)  |  Most recent selected: ' + fyLabel(latest.endYear) + '  |  Net units: ' + fyNum(latest.netSales) : 'No years selected');
+        if (financialChart) { financialChart.destroy(); financialChart = null; }
+        if (selected.length && typeof Chart !== 'undefined') {
+            financialChart = new Chart(document.getElementById('fyChart'), {
+                type:'bar',
+                data:{labels:selected.map(function(r){return fyLabel(r.endYear);}),datasets:[{label:'Net units sold',data:selected.map(function(r){return r.netSales;}),backgroundColor:blue}]},
+                options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:function(ctx){return 'Net units: '+fyNum(ctx.raw);}}}},scales:{y:{beginAtZero:true,ticks:{callback:function(v){return fyNum(v);}}},x:{grid:{display:false}}}}
+            });
+        }
+    }
+    drawFinancialYears();
 })();

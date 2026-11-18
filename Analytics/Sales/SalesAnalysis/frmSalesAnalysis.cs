@@ -90,8 +90,9 @@ namespace Analytics.Sales.SalesAnalysis
                 List<SalesPerformanceRow> styles = repository.GetStylePerformance(fromDate, toDate);
                 List<SalesPerformanceRow> colours = repository.GetColourPerformance(fromDate, toDate);
                 SalesDataQualitySummary quality = repository.GetDataQuality(fromDate, toDate);
+                List<SalesFinancialYearRow> financialYears = repository.GetCompletedFinancialYears();
 
-                string html = new SalesAnalysisDashboardBuilder().Build(summary, monthly, customers, styles, colours, quality, fromDate, toDate);
+                string html = new SalesAnalysisDashboardBuilder().Build(summary, monthly, customers, styles, colours, quality, financialYears, fromDate, toDate);
                 await dashboardViewer.ShowHtmlAsync(html);
             }
             catch (Exception ex) { await ShowErrorAsync(ex); }
